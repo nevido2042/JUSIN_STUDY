@@ -97,13 +97,14 @@ list<Node*> bresenhamList;
 
 
 bool isLine = false;
-int old_lineX;
-int old_lineY;
-int cur_lineX;
-int cur_lineY;
+
+POS g_OldPos;
+POS g_CurrentPos;
+POS g_OldTile;
+
 HBRUSH g_hLineBrush;
-int old_iTileX;
-int old_iTileY;
+//int old_iTileX;
+//int old_iTileY;
 //-----------------------------------//
 
 void RenderGrid(HDC hdc)
@@ -177,8 +178,8 @@ void RenderLine(HDC hdc)
 {
 	HPEN hOldPen = (HPEN)SelectObject(hdc, g_hParentPen_Close);
 
-	MoveToEx(hdc, old_lineX, old_lineY, NULL);
-	LineTo(hdc, cur_lineX, cur_lineY);
+	MoveToEx(hdc, g_OldPos.iX, g_OldPos.iY, NULL);
+	LineTo(hdc, g_CurrentPos.iX, g_CurrentPos.iY);
 
 	SelectObject(hdc, hOldPen);
 }
@@ -1462,13 +1463,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if (isLine == true)
 				break;
 
-			old_lineX = cur_lineX;
-			old_lineY = cur_lineY;
+			g_OldPos.iX = g_CurrentPos.iX;
+			g_OldPos.iY = g_CurrentPos.iY;
 
-			old_iTileX = old_lineX / GRID_SIZE;
-			old_iTileY = old_lineY / GRID_SIZE;
+			g_OldTile.iX = g_OldPos.iX / GRID_SIZE;
+			g_OldTile.iY = g_OldPos.iY / GRID_SIZE;
 
-			g_Tile[old_iTileY][old_iTileX] = LINE;
+			g_Tile[g_OldTile.iY][g_OldTile.iX] = LINE;
 
 			isLine = true;
 		}
@@ -1519,20 +1520,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_RBUTTONDOWN:
 	{
 		//우클릭
-		int iX = LOWORD(lParam) / GRID_SIZE;
-		int iY = HIWORD(lParam) / GRID_SIZE;
+		POS ClickPos(LOWORD(lParam) / GRID_SIZE, HIWORD(lParam) / GRID_SIZE);
+		//const int iX = LOWORD(lParam) / GRID_SIZE;
+		//const int iY = HIWORD(lParam) / GRID_SIZE;
+
+		if (ClickPos.iX < 0 && ClickPos.iX >= GRID_WIDTH && ClickPos.iY < 0 && ClickPos.iY >= GRID_HEIGHT)
+		{
+			break;
+		}
 
 		//시작타일 없으면 -> 시작타일 만든다
 		if (g_Start.iX == -1)
 		{
-			g_Tile[iY][iX] = START;
-			g_Start(iX, iY);
+			g_Tile[ClickPos.iY][ClickPos.iX] = START;
+			g_Start(ClickPos.iX, ClickPos.iY);
 		}
 		//시작타일 있는데 끝타일이 없으면 -> 끝타일을 만든다.
 		else if (g_Start.iX != -1 && g_end.iX == -1)
 		{
-			g_Tile[iY][iX] = END;
-			g_end(iX, iY);
+			g_Tile[ClickPos.iY][ClickPos.iX] = END;
+			g_end(ClickPos.iX, ClickPos.iY);
 		}
 		//시작타일, 끝타일 모두 있으면 -> 시작타일의 위치를 바꾸고 끝타일을 제거
 		else if(g_Start.iX != -1 && g_end.iX != -1)
@@ -1541,13 +1548,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			g_end(-1, -1);
 
 			g_Tile[g_Start.iY][g_Start.iX] = NONE;
-			g_Start(iX, iY);
+			g_Start(ClickPos.iX, ClickPos.iY);
 
-			if (iX >= 0 && iX < GRID_WIDTH && iY >= 0 && iY < GRID_HEIGHT) 
-			{
-				// 유효한 범위일 경우에만 작업 수행
-				g_Tile[iY][iX] = START;
-			}
+			g_Tile[ClickPos.iY][ClickPos.iX] = START;
+
 			
 		}
 		InvalidateRect(hWnd, NULL, false);
@@ -1556,12 +1560,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:
 		g_bDrag = true;
 		{
-			int xPos = LOWORD(lParam);
+			POS ClickPos(LOWORD(lParam) / GRID_SIZE, HIWORD(lParam) / GRID_SIZE);
+			/*int xPos = LOWORD(lParam);
 			int yPos = HIWORD(lParam);
 			int iTileX = xPos / GRID_SIZE;
-			int iTileY = yPos / GRID_SIZE;
+			int iTileY = yPos / GRID_SIZE;*/
 			//첫 선택 타일이 장애물이면 지우기모드 아니면 장애물 넣기 모드
-			if (g_Tile[iTileY][iTileX] == OBSTACLE)
+			if (g_Tile[ClickPos.iY][ClickPos.iX] == OBSTACLE)
 			{
 				g_bErase = true;
 			}
@@ -1579,8 +1584,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 	{
 		//마우스 현재위치 갱신
-		cur_lineX = LOWORD(lParam);
-		cur_lineY = HIWORD(lParam);
+		g_CurrentPos.iX = LOWORD(lParam);
+		g_CurrentPos.iY = HIWORD(lParam);
 
 		if (isLine == true)
 		{
@@ -1589,7 +1594,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				for (int iCntH = 0; iCntH < GRID_HEIGHT; iCntH++)
 				{
-					if (iCntW == old_iTileX && iCntH == old_iTileY)
+					if (iCntW == g_OldTile.iX && iCntH == g_OldTile.iY)
 						continue;
 
 					if (g_Tile[iCntH][iCntW] == LINE)
@@ -1597,245 +1602,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 
-			int iTileX = cur_lineX / GRID_SIZE;
-			int iTileY = cur_lineY / GRID_SIZE;
+			int iTileX = g_CurrentPos.iX / GRID_SIZE;
+			int iTileY = g_CurrentPos.iY / GRID_SIZE;
 
-			//중간 타일 그리기///////////////////////////////
-
-			int oldX = old_iTileX;
-			int oldY = old_iTileY;
-			int curX = iTileX;
-			int curY = iTileY;
-
-			int h = curX - oldX;
-			int v = curY - oldY;
-			int big;
-			int small;
-
-			int xValue(0);
-			int yValue(0);
-
-
-
-			if (abs(h) > abs(v))
-			{
-				big = abs(h);
-				small = abs(v);
-
-				if (h > 0 && v < 0)
-				{
-					xValue = 1;
-					yValue = -1;
-				}
-				else if (h > 0 && v > 0)
-				{
-					xValue = 1;
-					yValue = 1;
-				}
-				else if (h < 0 && v < 0)
-				{
-					xValue = -1;
-					yValue = -1;
-				}
-				else if (h < 0 && v > 0)
-				{
-					xValue = -1;
-					yValue = 1;
-				}
-				else if (h > 0 && v == 0)
-				{
-					xValue = 1;
-					//yValue = 1;
-				}
-				else if (h < 0 && v == 0)
-				{
-					xValue = -1;
-					//yValue = 1;
-				}
-				int  i = 0;
-				if (v < 0)
-				{
-					while (oldY > curY)
-					{
-						i += small;
-						if (i > big)
-						{
-							i -= big;
-							oldY += yValue;
-
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						else
-						{
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						oldX += xValue;
-					}
-				}
-				else if (v==0)
-				{
-					while (oldX != curX)
-					{
-						if (g_Tile[oldY][oldX] == OBSTACLE)
-							return 0;
-
-						g_Tile[oldY][oldX] = LINE;
-						InvalidateRect(hWnd, NULL, false);
-						oldX += xValue;
-					}
-				}
-				else
-				{
-					while (oldY < curY)
-					{
-						i += small;
-						if (i > big)
-						{
-							i -= big;
-							oldY += yValue;
-
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						else
-						{
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						oldX += xValue;
-					}
-				}
-			}
-			else
-			{
-				big = abs(v);
-				small = abs(h);
-
-				if (h > 0 && v < 0)
-				{
-					xValue = 1;
-					yValue = -1;
-				}
-				else if (h > 0 && v > 0)
-				{
-					xValue = 1;
-					yValue = 1;
-				}
-				else if (h < 0 && v < 0)
-				{
-					xValue = -1;
-					yValue = -1;
-				}
-				else if (h < 0 && v>0)
-				{
-					xValue = -1;
-					yValue = 1;
-				}
-				else if (v > 0 && h == 0)
-				{
-					//xValue = 1;
-					yValue = 1;
-				}
-				else if (v < 0 && h == 0)
-				{
-					//xValue = -1;
-					yValue = -1;
-				}
-
-				int  i = 0;
-				if (h < 0)
-				{
-					while (oldX > curX)
-					{
-						i += small;
-						if (i > big)
-						{
-							i -= big;
-							oldX += xValue;
-
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						else
-						{
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						oldY += yValue;
-					}
-				}
-				else if (h == 0)
-				{
-					while (oldY != curY)
-					{
-						if (g_Tile[oldY][oldX] == OBSTACLE)
-							return 0;
-
-						g_Tile[oldY][oldX] = LINE;
-						InvalidateRect(hWnd, NULL, false);
-						oldY += yValue;
-					}
-				}
-				else 
-				{
-					while (oldX < curX)
-					{
-						i += small;
-						if (i > big)
-						{
-							i -= big;
-							oldX += xValue;
-
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						else
-						{
-							if (g_Tile[oldY][oldX] == OBSTACLE)
-								return 0;
-
-							g_Tile[oldY][oldX] = LINE;
-							InvalidateRect(hWnd, NULL, false);
-						}
-						oldY += yValue;
-					}
-				}
-			}
-
-			//끝 타일 칠하기
-			if (g_Tile[iTileY][iTileX] == OBSTACLE)
-				return 0;
-
-			g_Tile[iTileY][iTileX] = LINE;
+			InvalidateRect(hWnd, NULL, false);
+			
 		}
 		//중간 타일 그리기///////////////////////////////
-
-
-
-
 		if (g_bDrag)
 		{
 			int xPos = LOWORD(lParam);
@@ -1914,19 +1687,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 		BitBlt(hdc, 0, 0, g_MemDCRect.right, g_MemDCRect.bottom, g_hMemDC, 0, 0, SRCCOPY);
 		EndPaint(hWnd, &ps);
-
-		//////////////////
-		//체크 브러쉬 색깔 랜덤
-		/*int r = rand()%200;
-		int g = rand()%200;
-		int b = rand()%200;
-		g_hCheckBrush = CreateSolidBrush(RGB(r, g, b));*/
-		//////////////////
 	}
-	/*hdc = beginPaint(hWnd, &ps);
-	RenderObstacle(hdc);
-	RenderGrid(hdc);
-	endPaint(hWnd, &ps);*/
 	break;
 
 	case WM_SIZE:
@@ -1950,148 +1711,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
 
-	//--------------------------------------//
-	//길찾기 구현 부
-	
-	//if (isStarted == true)
-	//{
-	//	//f값이 가장 작은 노드르 뽑는다
-	//	list<Node*>::iterator iter;
-	//	iter = openList.begin();
-	//	Node* popNode = *iter;
-	//	wprintf_s(L"popNode: (%d, %d) dir:%d\n", popNode->x, popNode->y, popNode->dir);
-	//	openList.Pop_Front();
-	//	//클로즈 리스트에 넣는다.
-	//	closeList.Push_Front(popNode);
-	//	wprintf_s(L"closeList:%d\n", closeList.size());
-	//	//뽑은 노드를 기준으로 8방향 검사를 한다.(부모노드의 방향에 따라 몇 방향 제외됨)
-
-	//	//시작 노드
-	//	if (popNode->parent == nullptr)
-	//	{
-	//		//8방향 검사
-	//		CheckUU(popNode->x, popNode->y, popNode);
-	//		CheckRR(popNode->x, popNode->y, popNode);
-	//		CheckDD(popNode->x, popNode->y, popNode);
-	//		CheckLL(popNode->x, popNode->y, popNode);
-	//		CheckRU(popNode);
-	//		CheckRD(popNode);
-	//		CheckLD(popNode);
-	//		CheckLU(popNode);
-	//	}
-	//	else
-	//	{
-	//		//자기방향 검사
-	//		switch (popNode->dir)
-	//		{
-	//		case UU:
-	//			//기본
-	//			CheckUU(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-	//				CheckLU(popNode);
-	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-	//				CheckRU(popNode);
-	//			break;
-
-	//		case RR:
-	//			//기본
-	//			CheckRR(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-	//			CheckRU(popNode);
-	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-	//			CheckRD(popNode);
-	//			break;
-
-	//		case DD:
-	//			//기본
-	//			CheckDD(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-	//				CheckRD(popNode);
-	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-	//				CheckLD(popNode);
-	//			break;
-
-	//		case LL:
-	//			//기본
-	//			CheckLL(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-	//				CheckLD(popNode);
-	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-	//				CheckLU(popNode);
-	//			break;
-
-	//		case RU:
-	//			//기본
-	//			CheckRU(popNode);
-	//			CheckUU(popNode->x, popNode->y, popNode);
-	//			CheckRR(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-	//				CheckLU(popNode);
-	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-	//				CheckRD(popNode);
-	//			break;
-
-	//		case RD:
-	//			//기본
-	//			CheckRD(popNode);
-	//			CheckRR(popNode->x, popNode->y, popNode);
-	//			CheckDD(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-	//				CheckRU(popNode);
-	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-	//				CheckLD(popNode);
-	//			break;
-
-	//		case LD:
-	//			//기본
-	//			CheckLD(popNode);
-	//			CheckLL(popNode->x, popNode->y, popNode);
-	//			CheckDD(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-	//				CheckLU(popNode);
-	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-	//				CheckRD(popNode);
-	//			break;
-
-	//		case LU:
-	//			//기본
-	//			CheckLU(popNode);
-	//			CheckUU(popNode->x, popNode->y, popNode);
-	//			CheckLL(popNode->x, popNode->y, popNode);
-	//			//벽 있을 시
-	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-	//				CheckRU(popNode);
-	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-	//				CheckLD(popNode);
-	//			break;
-	//		}
-	//	}
-
-	//	wprintf_s(L"openList:%d\n", openList.size());
-
-	//	//sort
-	//	SortList();
-
-
-	//	InvalidateRect(hWnd, NULL, false);
-	//	wprintf_s(L"---------------------------------------------\n\n");
-	//}
-
-
-
-	////--------------------------------------//
-
 	return 0;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(
+	_In_ HINSTANCE hInstance,
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPSTR lpCmdLine,
+	_In_ int nCmdShow)
 {
 	//도스 창 띄움
 	AllocConsole();
@@ -2113,7 +1740,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	RegisterClass(&wc);
 
-	HWND hWnd = CreateWindow(my_class_name, L"MyWindow",
+	HWND hWnd = CreateWindow(my_class_name, L"JPS",
 		WS_OVERLAPPEDWINDOW, 100, 90, 400, 350, NULL, NULL, hInstance, NULL);
 
 	ShowWindow(hWnd, nCmdShow);
