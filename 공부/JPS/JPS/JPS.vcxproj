@@ -136,9 +136,11 @@
     <ClInclude Include="JPS.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TileManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JPS.cpp" />
+    <ClCompile Include="TileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="JPS.rc" />
