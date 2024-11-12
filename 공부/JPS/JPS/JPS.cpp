@@ -1,9 +1,12 @@
 ﻿#include "framework.h"
 #include "JPS.h"
-#include "CList.h"
+//#include "list.h"
+#include<list>
 #include <math.h>
 #include<stdio.h>
 //#include <time.h>
+
+using namespace std;
 
 #define GRID_SIZE 16
 #define GRID_WIDTH 100
@@ -33,16 +36,23 @@ enum TileType
 	LINE
 };
 
-bool isStartTile = false;
-bool isEndTile = false;
+typedef struct tagPosition
+{
+	int iX;
+	int iY;
+	tagPosition(int _iX = -1, int _iY = -1) : iX(_iX), iY(_iY) {};
+	void operator()(int _iX = -1, int _iY = -1)
+	{
+		iX = _iX;
+		iY = _iY;
+	}
+}POS;
 
-int startX;
-int startY;
-int endX;
-int endY;
+POS g_Start;
+POS g_end;
 
 HBRUSH g_hStartBrush;
-HBRUSH g_hEndBrush;
+HBRUSH g_hendBrush;
 HBRUSH g_hCheckBrush;
 HBRUSH g_hNodeBrush;
 HPEN g_hParentPen_Open;
@@ -78,9 +88,10 @@ struct Node
 	Direction dir;
 };
 
-CList<Node*> openList;
-CList<Node*> closeList;
-CList<Node*> bresenhamList;
+
+list<Node*> openList;
+list<Node*> closeList;
+list<Node*> bresenhamList;
 
 #define COST 10
 
@@ -119,14 +130,14 @@ void RenderGrid(HDC hdc)
 void RenderParent(HDC hdc)
 {
 	HPEN hOldPen;
-	CList<Node*>::iterator iter;
-	if (openList.Size() > 0)
+	list<Node*>::iterator iter;
+	if (openList.size() > 0)
 	{
 		//오픈리스트 클로즈리스트에 있는 노드들은 순환하며
 		//자신의 위치와, 부모의 위치를 잇는다
 		hOldPen = (HPEN)SelectObject(hdc, g_hParentPen_Open);
 
-		for (iter = openList.Begin(); iter != openList.End(); iter++)
+		for (iter = openList.begin(); iter != openList.end(); iter++)
 		{
 			int myX = GRID_SIZE / 2 + (*iter)->x * GRID_SIZE;
 			int myY = GRID_SIZE / 2 + (*iter)->y * GRID_SIZE;
@@ -140,11 +151,11 @@ void RenderParent(HDC hdc)
 		SelectObject(hdc, hOldPen);
 	}
 
-	if (closeList.Size() > 0)
+	if (closeList.size() > 0)
 	{
 		hOldPen = (HPEN)SelectObject(hdc, g_hParentPen_Close);
 
-		for (iter = closeList.Begin(); iter != closeList.End(); iter++)
+		for (iter = closeList.begin(); iter != closeList.end(); iter++)
 		{
 			if ((*iter)->parent == nullptr)
 				continue;
@@ -175,21 +186,21 @@ void RenderLine(HDC hdc)
 void RenderBresenhamLine(HDC hdc)
 {
 	HPEN hOldPen;
-	CList<Node*>::iterator iter;
-	CList<Node*>::iterator iterNext;
-	if (bresenhamList.Size() > 0)
+	list<Node*>::iterator iter;
+	list<Node*>::iterator iterNext;
+	if (bresenhamList.size() > 0)
 	{
 		//브래즌햄리스트에 있는 노드들을 순환하며
 		//현재노드와 다음 노드를 이어준다
 		hOldPen = (HPEN)SelectObject(hdc, g_hBresenhamPen);
 
-		iter = bresenhamList.Begin();
+		iter = bresenhamList.begin();
 		iterNext = iter++;
 
 		/*if (iter == nullptr)
 			return;*/
 
-		for (; iter != bresenhamList.End();)
+		for (; iter != bresenhamList.end();)
 		{
 			int myX = GRID_SIZE / 2 + (*iter)->x * GRID_SIZE;
 			int myY = GRID_SIZE / 2 + (*iter)->y * GRID_SIZE;
@@ -209,24 +220,24 @@ void RenderBresenhamLine(HDC hdc)
 
 void DeleteAllOpenList()
 {
-	CList<Node*>::iterator iter;
-	for (iter = openList.Begin(); iter != openList.End(); iter++)
+	list<Node*>::iterator iter;
+	for (iter = openList.begin(); iter != openList.end(); iter++)
 	{
 		delete (*iter);
 	}
 
-	openList.Clear();
+	openList.clear();
 }
 
 void DeleteAllCloseList()
 {
-	CList<Node*>::iterator iter;
-	for (iter = closeList.Begin(); iter != closeList.End(); iter++)
+	list<Node*>::iterator iter;
+	for (iter = closeList.begin(); iter != closeList.end(); iter++)
 	{
 		delete (*iter);
 	}
 
-	closeList.Clear();
+	closeList.clear();
 }
 
 void ClearMap()
@@ -251,7 +262,7 @@ void ClearMap()
 
 int GetDistance(int x1, int y1, int x2, int y2)
 {
-	return sqrt(pow((x1 - x2) * COST, 2) + pow((y1 - y2) * COST, 2));
+	return (int)sqrt(pow((x1 - x2) * COST, 2) + pow((y1 - y2) * COST, 2));
 }
 
 int GetManhattan(int x1, int y1, int x2, int y2)
@@ -261,8 +272,8 @@ int GetManhattan(int x1, int y1, int x2, int y2)
 
 bool CheckOpenList(const int x, const int y)
 {
-	CList<Node*>::iterator iter;
-	for (iter = openList.Begin(); iter != openList.End(); iter++)
+	list<Node*>::iterator iter;
+	for (iter = openList.begin(); iter != openList.end(); iter++)
 	{
 		if ((*iter)->x == x && (*iter)->y == y)
 		{
@@ -274,8 +285,8 @@ bool CheckOpenList(const int x, const int y)
 
 bool CheckCloseList(const int x, const int y)
 {
-	CList<Node*>::iterator iter;
-	for (iter = closeList.Begin(); iter != closeList.End(); iter++)
+	list<Node*>::iterator iter;
+	for (iter = closeList.begin(); iter != closeList.end(); iter++)
 	{
 		if ((*iter)->x == x && (*iter)->y == y)
 		{
@@ -298,8 +309,8 @@ Node* MakeNode(int x, int y, Node* parent/*Direction dir = OO*/)
 	pNode->x = x;
 	pNode->y = y;
 	pNode->parent = parent;
-	pNode->g = GetDistance(x, y, startX, startY);
-	pNode->h = GetManhattan(x, y, endX, endY);
+	pNode->g = GetDistance(x, y, g_Start.iX, g_Start.iY);
+	pNode->h = GetManhattan(x, y, g_end.iX, g_end.iY);
 	pNode->f = pNode->g + pNode->h;
 
 	//노드 방향 정하기
@@ -346,7 +357,7 @@ Node* MakeNode(int x, int y, Node* parent/*Direction dir = OO*/)
 			pNode->dir = RR;
 		}
 	}
-	openList.Push_Front(pNode);
+	openList.push_front(pNode);
 
 	return pNode;
 }
@@ -378,7 +389,7 @@ void RenderTile(HDC hdc)
 			}
 			else if (g_Tile[iCntH][iCntW] == END)
 			{
-				hOldBrush = (HBRUSH)SelectObject(hdc, g_hEndBrush);
+				hOldBrush = (HBRUSH)SelectObject(hdc, g_hendBrush);
 			}
 			else if (g_Tile[iCntH][iCntW] == CHECK)
 			{
@@ -415,7 +426,7 @@ void CheckBresenham(Node* endNode)
 	Node* eNode_before = nullptr;
 	int passCount = 0;
 
-	while (sNode->x != startX && sNode->y != startY)
+	while (sNode->x != g_Start.iX && sNode->y != g_Start.iY)
 	{
 		if (eNode == nullptr)
 			return;
@@ -431,8 +442,8 @@ void CheckBresenham(Node* endNode)
 		int big;
 		int small;
 
-		int xValue;
-		int yValue;
+		int xValue(0);
+		int yValue(0);
 
 
 
@@ -487,8 +498,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -507,8 +518,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -531,8 +542,8 @@ void CheckBresenham(Node* endNode)
 						if (passCount > 0)
 						{
 							passCount = 0;
-							bresenhamList.Push_Back(eNode_before);
-							bresenhamList.Push_Back(sNode);
+							bresenhamList.push_back(eNode_before);
+							bresenhamList.push_back(sNode);
 						}
 
 						sNode = eNode_before;
@@ -560,8 +571,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -579,8 +590,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -647,8 +658,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -666,8 +677,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -690,8 +701,8 @@ void CheckBresenham(Node* endNode)
 						if (passCount > 0)
 						{
 							passCount = 0;
-							bresenhamList.Push_Back(eNode_before);
-							bresenhamList.Push_Back(sNode);
+							bresenhamList.push_back(eNode_before);
+							bresenhamList.push_back(sNode);
 						}
 
 						sNode = eNode_before;
@@ -719,8 +730,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -738,8 +749,8 @@ void CheckBresenham(Node* endNode)
 							if (passCount > 0)
 							{
 								passCount = 0;
-								bresenhamList.Push_Back(eNode_before);
-								bresenhamList.Push_Back(sNode);
+								bresenhamList.push_back(eNode_before);
+								bresenhamList.push_back(sNode);
 							}
 
 							sNode = eNode_before;
@@ -761,8 +772,8 @@ void CheckBresenham(Node* endNode)
 			if (passCount > 0)
 			{
 				passCount = 0;
-				bresenhamList.Push_Back(eNode_before);
-				bresenhamList.Push_Back(sNode);
+				bresenhamList.push_back(eNode_before);
+				bresenhamList.push_back(sNode);
 			}
 
 			sNode = eNode_before;
@@ -777,13 +788,13 @@ void CheckBresenham(Node* endNode)
 	}
 }
 
-void FindEnd(int x, int y, Node* node)
+void Findend(int x, int y, Node* node)
 {
 	isStarted = false;
 	Node* tempNode = MakeNode(x, y, node);
-	CList<Node*>::iterator iter = openList.Begin();
-	openList.Pop_Front();
-	closeList.Push_Front((*iter));
+	list<Node*>::iterator iter = openList.begin();
+	openList.pop_front();
+	closeList.pop_front();
 
 	CheckBresenham(tempNode);
 
@@ -805,7 +816,7 @@ void CheckUU(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 	for (; y >= 0; y--)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -815,7 +826,7 @@ void CheckUU(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
 			if (isSubSearch == true)
 			{
@@ -824,7 +835,7 @@ void CheckUU(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			}
 			else
 			{
-				FindEnd(x, y, node);
+				Findend(x, y, node);
 			}
 
 			return;
@@ -910,7 +921,7 @@ void CheckRR(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 	for (; x < GRID_WIDTH; x++)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -920,7 +931,7 @@ void CheckRR(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
 			if (isSubSearch == true)
 			{
@@ -929,7 +940,7 @@ void CheckRR(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			}
 			else
 			{
-				FindEnd(x, y, node);
+				Findend(x, y, node);
 			}
 			return;
 		}
@@ -1013,7 +1024,7 @@ void CheckDD(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 	for (; y < GRID_HEIGHT; y++)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -1023,7 +1034,7 @@ void CheckDD(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y )
+		if (g_end.iX == x && g_end.iY == y )
 		{
 			if (isSubSearch == true)
 			{
@@ -1032,7 +1043,7 @@ void CheckDD(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			}
 			else
 			{
-				FindEnd(x, y, node);
+				Findend(x, y, node);
 			}
 			return;
 		}
@@ -1116,7 +1127,7 @@ void CheckLL(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 	for (; x >= 0; x--)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -1126,7 +1137,7 @@ void CheckLL(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
 			if (isSubSearch == true)
 			{
@@ -1135,7 +1146,7 @@ void CheckLL(int _x, int _y, Node* node = nullptr, bool isSubSearch = false)
 			}
 			else
 			{
-				FindEnd(x, y, node);
+				Findend(x, y, node);
 			}
 			return;
 		}
@@ -1220,7 +1231,7 @@ void CheckRU(Node* node)
 	for (; x < GRID_WIDTH && y >= 0;)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -1230,9 +1241,9 @@ void CheckRU(Node* node)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
-			FindEnd(x, y, node);
+			Findend(x, y, node);
 			return;
 		}
 
@@ -1267,7 +1278,7 @@ void CheckRD(Node* node)
 	for (; x < GRID_WIDTH && y < GRID_HEIGHT;)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -1277,9 +1288,9 @@ void CheckRD(Node* node)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
-			FindEnd(x, y, node);
+			Findend(x, y, node);
 			return;
 		}
 
@@ -1314,7 +1325,7 @@ void CheckLD(Node* node)
 	for (; x >= 0 && y < GRID_HEIGHT;)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -1324,9 +1335,9 @@ void CheckLD(Node* node)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
-			FindEnd(x, y, node);
+			Findend(x, y, node);
 			return;
 		}
 
@@ -1361,7 +1372,7 @@ void CheckLU(Node* node)
 	for (; x >=0 && y >= 0;)
 	{
 		//시작지점인지 확인
-		if (startX == x && startY == y)
+		if (g_Start.iX == x && g_Start.iY == y)
 		{
 			return;
 		}
@@ -1371,9 +1382,9 @@ void CheckLU(Node* node)
 			return;
 
 		//도착지인지 확인
-		if (endX == x && endY == y)
+		if (g_end.iX == x && g_end.iY == y)
 		{
-			FindEnd(x, y, node);
+			Findend(x, y, node);
 			return;
 		}
 
@@ -1403,18 +1414,18 @@ void CheckLU(Node* node)
 
 void SortList()
 {
-	CList<Node*>::iterator iter;
+	list<Node*>::iterator iter;
 
 	//버블정렬
-	for (int i = openList.Size(); i > 0; i--)
+	for (size_t i = openList.size(); i > 0; i--)
 	{
-		iter = openList.Begin();
+		iter = openList.begin();
 
 		for (int j = 0; j < i; j++)
 		{
-			CList<Node*>::iterator iterNext = iter;
+			list<Node*>::iterator iterNext = iter;
 			iterNext++;
-			if (iterNext == openList.End())
+			if (iterNext == openList.end())
 				break;
 
 			if ((*iter)->f > (*iterNext)->f)
@@ -1428,7 +1439,7 @@ void SortList()
 		}
 	}
 
-	for (iter = openList.Begin(); iter != openList.End(); iter++)
+	for (iter = openList.begin(); iter != openList.end(); iter++)
 	{
 		wprintf_s(L"f:%d (%d,%d) %p\n", (*iter)->f, (*iter)->x, (*iter)->y, *iter);
 	}
@@ -1436,7 +1447,7 @@ void SortList()
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	//wprintf_s(L"openListSize: %d, closeListSize: %d\n", openList.Size(), closeList.Size());
+	//wprintf_s(L"openListsize: %d, closeListsize: %d\n", openList.size(), closeList.size());
 
 	PAINTSTRUCT ps;
 	HDC hdc;
@@ -1487,58 +1498,57 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 
-	case WM_MBUTTONDOWN:
-	{
-		//휠클릭
+	//case WM_MBUTTONDOWN:
+	//{
+	//	//휠클릭
 
-		//시작이 안됬으면 시작 및 초기화
-		if (isStarted == false)
-		{
-			DeleteAllOpenList();
-			DeleteAllCloseList();
-			bresenhamList.Clear();
-			ClearMap();
-			isStarted = true;
-			//시작노드를 만들고 오픈리스트 추가
-			MakeNode(startX, startY, nullptr);
+	//	//시작이 안됬으면 시작 및 초기화
+	//	if (isStarted == false)
+	//	{
+	//		DeleteAllOpenList();
+	//		DeleteAllCloseList();
+	//		bresenhamList.Clear();
+	//		ClearMap();
+	//		isStarted = true;
+	//		//시작노드를 만들고 오픈리스트 추가
+	//		MakeNode(g_Start.iX, g_Start.iY, nullptr);
 
-		}
-	}
-	break;
+	//	}
+	//}
+	//break;
 	case WM_RBUTTONDOWN:
 	{
 		//우클릭
-
-		int xPos = LOWORD(lParam);
-		int yPos = HIWORD(lParam);
-		int iTileX = xPos / GRID_SIZE;
-		int iTileY = yPos / GRID_SIZE;
+		int iX = LOWORD(lParam) / GRID_SIZE;
+		int iY = HIWORD(lParam) / GRID_SIZE;
 
 		//시작타일 없으면 -> 시작타일 만든다
-		if (isStartTile == false)
+		if (g_Start.iX == -1)
 		{
-			isStartTile = true;
-			g_Tile[iTileY][iTileX] = START;
-			startX = iTileX;
-			startY = iTileY;
+			g_Tile[iY][iX] = START;
+			g_Start(iX, iY);
 		}
 		//시작타일 있는데 끝타일이 없으면 -> 끝타일을 만든다.
-		else if (isStartTile == true && isEndTile == false)
+		else if (g_Start.iX != -1 && g_end.iX == -1)
 		{
-			isEndTile = true;
-			g_Tile[iTileY][iTileX] = END;
-			endX = iTileX;
-			endY = iTileY;
+			g_Tile[iY][iX] = END;
+			g_end(iX, iY);
 		}
 		//시작타일, 끝타일 모두 있으면 -> 시작타일의 위치를 바꾸고 끝타일을 제거
-		else if(isStartTile == true && isEndTile == true)
+		else if(g_Start.iX != -1 && g_end.iX != -1)
 		{
-			isEndTile = false;
-			g_Tile[startY][startX] = NONE;
-			g_Tile[iTileY][iTileX] = START;
-			startX = iTileX;
-			startY = iTileY;
-			g_Tile[endY][endX] = NONE;
+			g_Tile[g_end.iY][g_end.iX] = NONE;
+			g_end(-1, -1);
+
+			g_Tile[g_Start.iY][g_Start.iX] = NONE;
+			g_Start(iX, iY);
+
+			if (iX >= 0 && iX < GRID_WIDTH && iY >= 0 && iY < GRID_HEIGHT) 
+			{
+				// 유효한 범위일 경우에만 작업 수행
+				g_Tile[iY][iX] = START;
+			}
+			
 		}
 		InvalidateRect(hWnd, NULL, false);
 	}
@@ -1602,8 +1612,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			int big;
 			int small;
 
-			int xValue;
-			int yValue;
+			int xValue(0);
+			int yValue(0);
 
 
 
@@ -1871,7 +1881,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	g_hGridPen = CreatePen(PS_SOLID, 1, RGB(200, 200, 200));
 	g_hTileBrush = CreateSolidBrush(RGB(100, 100, 100));
 	g_hStartBrush = CreateSolidBrush(RGB(0, 200, 0));
-	g_hEndBrush = CreateSolidBrush(RGB(200, 0, 0));
+	g_hendBrush = CreateSolidBrush(RGB(200, 0, 0));
 	g_hCheckBrush = CreateSolidBrush(RGB(100, 100, 200));
 	g_hNodeBrush = CreateSolidBrush(RGB(200, 200, 0));
 	g_hParentPen_Open = CreatePen(PS_SOLID, 1, RGB(0, 200, 0));
@@ -1913,10 +1923,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		g_hCheckBrush = CreateSolidBrush(RGB(r, g, b));*/
 		//////////////////
 	}
-	/*hdc = BeginPaint(hWnd, &ps);
+	/*hdc = beginPaint(hWnd, &ps);
 	RenderObstacle(hdc);
 	RenderGrid(hdc);
-	EndPaint(hWnd, &ps);*/
+	endPaint(hWnd, &ps);*/
 	break;
 
 	case WM_SIZE:
@@ -1943,140 +1953,140 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	//--------------------------------------//
 	//길찾기 구현 부
 	
-	if (isStarted == true)
-	{
-		//f값이 가장 작은 노드르 뽑는다
-		CList<Node*>::iterator iter;
-		iter = openList.Begin();
-		Node* popNode = *iter;
-		wprintf_s(L"popNode: (%d, %d) dir:%d\n", popNode->x, popNode->y, popNode->dir);
-		openList.Pop_Front();
-		//클로즈 리스트에 넣는다.
-		closeList.Push_Front(popNode);
-		wprintf_s(L"closeList:%d\n", closeList.Size());
-		//뽑은 노드를 기준으로 8방향 검사를 한다.(부모노드의 방향에 따라 몇 방향 제외됨)
+	//if (isStarted == true)
+	//{
+	//	//f값이 가장 작은 노드르 뽑는다
+	//	list<Node*>::iterator iter;
+	//	iter = openList.begin();
+	//	Node* popNode = *iter;
+	//	wprintf_s(L"popNode: (%d, %d) dir:%d\n", popNode->x, popNode->y, popNode->dir);
+	//	openList.Pop_Front();
+	//	//클로즈 리스트에 넣는다.
+	//	closeList.Push_Front(popNode);
+	//	wprintf_s(L"closeList:%d\n", closeList.size());
+	//	//뽑은 노드를 기준으로 8방향 검사를 한다.(부모노드의 방향에 따라 몇 방향 제외됨)
 
-		//시작 노드
-		if (popNode->parent == nullptr)
-		{
-			//8방향 검사
-			CheckUU(popNode->x, popNode->y, popNode);
-			CheckRR(popNode->x, popNode->y, popNode);
-			CheckDD(popNode->x, popNode->y, popNode);
-			CheckLL(popNode->x, popNode->y, popNode);
-			CheckRU(popNode);
-			CheckRD(popNode);
-			CheckLD(popNode);
-			CheckLU(popNode);
-		}
-		else
-		{
-			//자기방향 검사
-			switch (popNode->dir)
-			{
-			case UU:
-				//기본
-				CheckUU(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-					CheckLU(popNode);
-				if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-					CheckRU(popNode);
-				break;
+	//	//시작 노드
+	//	if (popNode->parent == nullptr)
+	//	{
+	//		//8방향 검사
+	//		CheckUU(popNode->x, popNode->y, popNode);
+	//		CheckRR(popNode->x, popNode->y, popNode);
+	//		CheckDD(popNode->x, popNode->y, popNode);
+	//		CheckLL(popNode->x, popNode->y, popNode);
+	//		CheckRU(popNode);
+	//		CheckRD(popNode);
+	//		CheckLD(popNode);
+	//		CheckLU(popNode);
+	//	}
+	//	else
+	//	{
+	//		//자기방향 검사
+	//		switch (popNode->dir)
+	//		{
+	//		case UU:
+	//			//기본
+	//			CheckUU(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
+	//				CheckLU(popNode);
+	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
+	//				CheckRU(popNode);
+	//			break;
 
-			case RR:
-				//기본
-				CheckRR(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-				CheckRU(popNode);
-				if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-				CheckRD(popNode);
-				break;
+	//		case RR:
+	//			//기본
+	//			CheckRR(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
+	//			CheckRU(popNode);
+	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
+	//			CheckRD(popNode);
+	//			break;
 
-			case DD:
-				//기본
-				CheckDD(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-					CheckRD(popNode);
-				if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-					CheckLD(popNode);
-				break;
+	//		case DD:
+	//			//기본
+	//			CheckDD(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
+	//				CheckRD(popNode);
+	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
+	//				CheckLD(popNode);
+	//			break;
 
-			case LL:
-				//기본
-				CheckLL(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-					CheckLD(popNode);
-				if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-					CheckLU(popNode);
-				break;
+	//		case LL:
+	//			//기본
+	//			CheckLL(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
+	//				CheckLD(popNode);
+	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
+	//				CheckLU(popNode);
+	//			break;
 
-			case RU:
-				//기본
-				CheckRU(popNode);
-				CheckUU(popNode->x, popNode->y, popNode);
-				CheckRR(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-					CheckLU(popNode);
-				if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-					CheckRD(popNode);
-				break;
+	//		case RU:
+	//			//기본
+	//			CheckRU(popNode);
+	//			CheckUU(popNode->x, popNode->y, popNode);
+	//			CheckRR(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
+	//				CheckLU(popNode);
+	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
+	//				CheckRD(popNode);
+	//			break;
 
-			case RD:
-				//기본
-				CheckRD(popNode);
-				CheckRR(popNode->x, popNode->y, popNode);
-				CheckDD(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-					CheckRU(popNode);
-				if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
-					CheckLD(popNode);
-				break;
+	//		case RD:
+	//			//기본
+	//			CheckRD(popNode);
+	//			CheckRR(popNode->x, popNode->y, popNode);
+	//			CheckDD(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
+	//				CheckRU(popNode);
+	//			if (g_Tile[popNode->y][popNode->x - 1] == OBSTACLE)
+	//				CheckLD(popNode);
+	//			break;
 
-			case LD:
-				//기본
-				CheckLD(popNode);
-				CheckLL(popNode->x, popNode->y, popNode);
-				CheckDD(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
-					CheckLU(popNode);
-				if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-					CheckRD(popNode);
-				break;
+	//		case LD:
+	//			//기본
+	//			CheckLD(popNode);
+	//			CheckLL(popNode->x, popNode->y, popNode);
+	//			CheckDD(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y - 1][popNode->x] == OBSTACLE)
+	//				CheckLU(popNode);
+	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
+	//				CheckRD(popNode);
+	//			break;
 
-			case LU:
-				//기본
-				CheckLU(popNode);
-				CheckUU(popNode->x, popNode->y, popNode);
-				CheckLL(popNode->x, popNode->y, popNode);
-				//벽 있을 시
-				if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
-					CheckRU(popNode);
-				if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
-					CheckLD(popNode);
-				break;
-			}
-		}
+	//		case LU:
+	//			//기본
+	//			CheckLU(popNode);
+	//			CheckUU(popNode->x, popNode->y, popNode);
+	//			CheckLL(popNode->x, popNode->y, popNode);
+	//			//벽 있을 시
+	//			if (g_Tile[popNode->y][popNode->x + 1] == OBSTACLE)
+	//				CheckRU(popNode);
+	//			if (g_Tile[popNode->y + 1][popNode->x] == OBSTACLE)
+	//				CheckLD(popNode);
+	//			break;
+	//		}
+	//	}
 
-		wprintf_s(L"openList:%d\n", openList.Size());
+	//	wprintf_s(L"openList:%d\n", openList.size());
 
-		//sort
-		SortList();
-
-
-		InvalidateRect(hWnd, NULL, false);
-		wprintf_s(L"---------------------------------------------\n\n");
-	}
+	//	//sort
+	//	SortList();
 
 
+	//	InvalidateRect(hWnd, NULL, false);
+	//	wprintf_s(L"---------------------------------------------\n\n");
+	//}
 
-	//--------------------------------------//
+
+
+	////--------------------------------------//
 
 	return 0;
 }
@@ -2116,7 +2126,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DispatchMessage(&msg);
 	}
 
-	return msg.wParam;
+	return (int)msg.wParam;
 
 	// 도스 창 해제할때
 	FreeConsole();
