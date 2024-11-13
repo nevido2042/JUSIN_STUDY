@@ -10,20 +10,23 @@ int main()
     CMap Map(10, 10);
     Map.Initialize();
     
-    Map.Change_Tile(4, 0, WALL);
-    Map.Change_Tile(4, 1, WALL);
-    Map.Change_Tile(4, 2, WALL);
-    Map.Change_Tile(4, 3, WALL);
-    Map.Change_Tile(4, 4, WALL);
-    Map.Change_Tile(4, 5, WALL);
-    Map.Change_Tile(4, 6, WALL);
-    Map.Change_Tile(4, 7, WALL);
+    Map.Change_Tile(POS(4, 0), WALL);
+    Map.Change_Tile(POS(4, 1), WALL);
+    Map.Change_Tile(POS(4, 2), WALL);
+    Map.Change_Tile(POS(4, 3), WALL);
+    Map.Change_Tile(POS(4, 4), WALL);
+    Map.Change_Tile(POS(4, 5), WALL);
+    Map.Change_Tile(POS(4, 6), WALL);
+    Map.Change_Tile(POS(4, 7), WALL);
 
-    Map.Change_Tile(0, 0, START);
-    Map.Change_Tile(9, 0, END);
+    Map.Change_Tile(POS(0, 0), START);
+    Map.Change_Tile(POS(9, 0), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
+    PathFinder.Start();
+
+    system("pause");
 
 }
 

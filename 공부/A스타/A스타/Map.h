@@ -18,12 +18,30 @@ public:
 	void Initialize();
 	void Update();
 	//void Release();
+public:
+	POS Get_StartPos()
+	{
+		return m_StartPos;
+	}
+	POS Get_EndPos()
+	{
+		return m_EndPos;
+	}
+	int Get_Width()
+	{
+		return m_iWidth;
+	}
+	int Get_Height()
+	{
+		return m_iHeight;
+	}
 private:
 	void Visible_Cursor(bool _bool);
 	void GotoXY(int _iX, int _iY);
 	void Print_Tile(int _iX, int _iY, TILE_TYPE _Type);
 public:
 	void Render();
-	void Change_Tile(int _iX, int _iY, TILE_TYPE _Type);
+	void Change_Tile(POS _Pos, TILE_TYPE _Type);
+	TILE_TYPE Get_Tile_Type(POS _Pos);
 };
 

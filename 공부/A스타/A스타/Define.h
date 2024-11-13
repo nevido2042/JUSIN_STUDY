@@ -3,8 +3,21 @@
 
 enum TILE_TYPE { NONE = 0, ROAD, WALL, START, END, NODE };
 
+template<typename T>
+void Safe_Delete(T& _p)
+{
+    //T& p = const_cast<T&>(_p);
+
+    if (_p)
+    {
+        delete _p;
+        _p = nullptr;
+    }
+}
+
 typedef struct tagPosition
 {
+public:
     int iX;
     int iY;
     tagPosition() :iX(0), iY(0) {};
@@ -12,6 +25,18 @@ typedef struct tagPosition
         :iX(_iX), iY(_iY)
     {
 
+    }
+
+    bool operator==(const tagPosition& _Pos)
+    {
+        if (iX == _Pos.iX && iY == _Pos.iY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }POS;
 

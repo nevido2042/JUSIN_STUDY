@@ -86,17 +86,22 @@ void CMap::Render()
 	GotoXY(0, 0);
 }
 
-void CMap::Change_Tile(int _iX, int _iY, TILE_TYPE _Type)
+void CMap::Change_Tile(POS _Pos, TILE_TYPE _Type)
 {
-	m_vecTileMap[_iY][_iX] = _Type;
+	m_vecTileMap[_Pos.iY][_Pos.iX] = _Type;
 
 	if (_Type == START)
 	{
-		m_StartPos = POS(_iX, _iY);
+		m_StartPos = _Pos;
 	}
 
 	if (_Type == END)
 	{
-		m_EndPos = POS(_iX, _iY);
+		m_EndPos = _Pos;
 	}
+}
+
+TILE_TYPE CMap::Get_Tile_Type(POS _Pos)
+{
+	return m_vecTileMap[_Pos.iY][_Pos.iX];
 }

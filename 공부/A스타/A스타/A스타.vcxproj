@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Define.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="PathFinder.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="pch.h" />
