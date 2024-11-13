@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 
-enum TILE_TYPE { NONE = 0, ROAD, WALL, START, END, NODE };
+enum TILE_TYPE { NONE = 0, ROAD, WALL, START, END, NODE, PATH };
 
 template<typename T>
 void Safe_Delete(T& _p)
@@ -38,6 +38,19 @@ public:
             return false;
         }
     }
+
+    bool operator!=(const tagPosition& _Pos)
+    {
+        if (iX != _Pos.iX && iY != _Pos.iY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }POS;
 
 //»ö»ó

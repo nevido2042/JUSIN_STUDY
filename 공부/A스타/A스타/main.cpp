@@ -4,23 +4,39 @@
 #include "pch.h"
 #include "Map.h"
 #include "PathFinder.h"
+#include <time.h>
 
 int main()
 {
-    CMap Map(10, 10);
+    srand((time(NULL)));
+
+    const int iMapSize(20);
+
+    CMap Map(iMapSize, iMapSize);
     Map.Initialize();
+
+    for (int i = 0; i < iMapSize * 10; ++i)
+    {
+        Map.Change_Tile(POS(rand() % iMapSize, rand() % iMapSize), WALL);
+    }
     
-    Map.Change_Tile(POS(4, 0), WALL);
-    Map.Change_Tile(POS(4, 1), WALL);
-    Map.Change_Tile(POS(4, 2), WALL);
-    Map.Change_Tile(POS(4, 3), WALL);
-    Map.Change_Tile(POS(4, 4), WALL);
-    Map.Change_Tile(POS(4, 5), WALL);
-    Map.Change_Tile(POS(4, 6), WALL);
-    Map.Change_Tile(POS(4, 7), WALL);
+    /*for (int i = 0; i < 8; ++i)
+    {
+        Map.Change_Tile(POS(4, i), WALL);
+    }
+
+    for (int i = 1; i < 8; ++i)
+    {
+        Map.Change_Tile(POS(18, i), WALL);
+    }
+ 
+    for (int i = 5; i < 19; ++i)
+    {
+        Map.Change_Tile(POS(i, 7), WALL);
+    }*/
 
     Map.Change_Tile(POS(0, 0), START);
-    Map.Change_Tile(POS(9, 0), END);
+    Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);

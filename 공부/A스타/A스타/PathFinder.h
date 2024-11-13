@@ -21,6 +21,8 @@ public:
 public:
 	void Initialize(CMap& _pMap);
 	void Release();
+private:
+	static bool LessF(const CNode* _First, const CNode* _Second);
 public:
 	void Start();
 };

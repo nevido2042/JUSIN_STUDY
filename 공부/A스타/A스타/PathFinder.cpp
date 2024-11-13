@@ -34,6 +34,16 @@ void CPathFinder::Release()
 	}*/
 }
 
+bool CPathFinder::LessF(const CNode* _First, const CNode* _Second)
+{
+	return _First->Get_F() < _Second->Get_F();
+}
+
+//bool CPathFinder::LessF(const CNode& _First, const CNode& _Second)
+//{
+//	return _First.Get_F() < _Second.Get_F();
+//}
+
 void CPathFinder::Start()
 {
 	CNode* StartNode = new CNode(m_StartPos);
@@ -48,7 +58,20 @@ void CPathFinder::Start()
 		//도착 지점인지 확인한다.
 		if (m_EndPos == PopNode->Get_Pos())
 		{
-			system("pause");
+			m_pMap->Change_Tile(m_EndPos, END);
+			// 부모를 이어서 길을 만든다.
+			CNode* pParent = PopNode;
+			while (pParent = pParent->Get_Parent())
+			{
+				//시작지점은 색칠하지 않도록
+				if (pParent->Get_Pos() == m_StartPos)
+					break;
+
+				m_pMap->Change_Tile(pParent->Get_Pos(), PATH);
+				m_pMap->Update();
+				Sleep(10);
+			}
+
 			return;
 		}
 
@@ -57,7 +80,8 @@ void CPathFinder::Start()
 
 		//8방향 탐색한다.
 		int iDX[8]{ 0, 1, 1, 1,	0, -1, -1, -1 };
-		int iDY[8]{	-1,	-1, 1, 1, 1, 1,	0, -1 };
+		int iDY[8]{	-1,	-1, 0, 1, 1, 1,	0, -1 };
+				//  12   1  3  4  6   7   9  11
 
 		for (int i = 0; i < 8; ++i)
 		{
@@ -98,13 +122,14 @@ void CPathFinder::Start()
 			}
 			if (bIsNewPos)
 			{
-				m_OpenList.push_back(new CNode(NewPos));
+				CNode* NewNode = new CNode(NewPos, PopNode, m_EndPos);
+				m_OpenList.push_back(NewNode);
 				m_pMap->Change_Tile(NewPos, NODE);
 			}
 		}
 
 		//오픈 리스트 정렬
-		m_OpenList.sort();
+		m_OpenList.sort(LessF);
 
 		m_pMap->Update();
 		Sleep(10);

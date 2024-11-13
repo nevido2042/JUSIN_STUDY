@@ -64,6 +64,11 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 		cout << "бс";
 		Set_Color(GRAY);
 		break;
+	case PATH:
+		Set_Color(VIOLET);
+		cout << "бс";
+		Set_Color(GRAY);
+		break;
 	default:
 		break;
 	}
@@ -71,13 +76,15 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 
 void CMap::Render()
 {
+	int iOffset(2);
+
 	for (int i = 0; i < m_iHeight; ++i)
 	{
 		for (int j = 0; j < m_iWidth; ++j)
 		{
 			if (m_vecTileMap[i][j] != m_vecTileMap_Buffer[i][j])
 			{
-				Print_Tile(j, i, m_vecTileMap[i][j]);
+				Print_Tile(j + iOffset, i + iOffset, m_vecTileMap[i][j]);
 				m_vecTileMap_Buffer[i][j] = m_vecTileMap[i][j];
 			}
 		}
