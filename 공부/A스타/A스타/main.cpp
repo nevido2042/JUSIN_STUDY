@@ -2,11 +2,29 @@
 //
 
 #include "pch.h"
-#include <iostream>
+#include "Map.h"
+#include "PathFinder.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    CMap Map(10, 10);
+    Map.Initialize();
+    
+    Map.Change_Tile(4, 0, WALL);
+    Map.Change_Tile(4, 1, WALL);
+    Map.Change_Tile(4, 2, WALL);
+    Map.Change_Tile(4, 3, WALL);
+    Map.Change_Tile(4, 4, WALL);
+    Map.Change_Tile(4, 5, WALL);
+    Map.Change_Tile(4, 6, WALL);
+    Map.Change_Tile(4, 7, WALL);
+
+    Map.Change_Tile(0, 0, START);
+    Map.Change_Tile(9, 0, END);
+
+    CPathFinder PathFinder;
+    PathFinder.Initialize(Map);
+
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

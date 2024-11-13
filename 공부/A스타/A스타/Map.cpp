@@ -1,0 +1,102 @@
+#include "pch.h"
+#include "Map.h"
+
+CMap::CMap(int _iWidth, int _iHeight)
+	: 
+	m_vecTileMap(m_iHeight, vector<TILE_TYPE>(m_iWidth, ROAD)),
+	m_vecTileMap_Buffer(m_iHeight, vector<TILE_TYPE>(m_iWidth, NONE)),
+	m_iWidth(_iWidth), 
+	m_iHeight(_iHeight)
+{
+	
+}
+
+void CMap::Initialize()
+{
+	Visible_Cursor(false);
+}
+
+void CMap::Update()
+{
+	Render();
+}
+
+void CMap::Visible_Cursor(bool _bool)
+{
+	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+	cursorInfo.dwSize = 1; //Ä¿¼­ ±½±â (1 ~ 100)
+	cursorInfo.bVisible = _bool; //Ä¿¼­ Visible TRUE(º¸ÀÓ) FALSE(¼û±è)
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
+
+void CMap::GotoXY(int _iX, int _iY)
+{
+	COORD Pos;
+	Pos.X = _iX;
+	Pos.Y = _iY;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+}
+
+void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
+{
+	GotoXY(_iX * 2, _iY);
+
+	switch (_Type)
+	{
+	case ROAD:
+		cout << "¡à";
+		break;
+	case WALL:
+		cout << "¡á";
+		break;
+	case START:
+		Set_Color(GREEN);
+		cout << "¡á";
+		Set_Color(GRAY);
+		break;
+	case END:
+		Set_Color(RED);
+		cout << "¡á";
+		Set_Color(GRAY);
+		break;
+	case NODE:
+		Set_Color(YELLOW);
+		cout << "¡á";
+		Set_Color(GRAY);
+		break;
+	default:
+		break;
+	}
+}
+
+void CMap::Render()
+{
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			if (m_vecTileMap[i][j] != m_vecTileMap_Buffer[i][j])
+			{
+				Print_Tile(j, i, m_vecTileMap[i][j]);
+				m_vecTileMap_Buffer[i][j] = m_vecTileMap[i][j];
+			}
+		}
+		cout << endl;
+	}
+	GotoXY(0, 0);
+}
+
+void CMap::Change_Tile(int _iX, int _iY, TILE_TYPE _Type)
+{
+	m_vecTileMap[_iY][_iX] = _Type;
+
+	if (_Type == START)
+	{
+		m_StartPos = POS(_iX, _iY);
+	}
+
+	if (_Type == END)
+	{
+		m_EndPos = POS(_iX, _iY);
+	}
+}
