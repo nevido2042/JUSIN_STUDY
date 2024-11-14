@@ -24,6 +24,7 @@ public:
 private:
 	static bool LessF(const CNode* _First, const CNode* _Second);
 public:
-	void Start();
+	void Start_A_Star();
+	void Start_JPS();
 };
 

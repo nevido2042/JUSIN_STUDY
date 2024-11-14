@@ -40,7 +40,7 @@ int main()
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
-    PathFinder.Start();
+    PathFinder.Start_A_Star();
 
     system("pause");
 

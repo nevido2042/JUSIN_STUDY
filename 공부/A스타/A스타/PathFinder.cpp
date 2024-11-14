@@ -44,7 +44,7 @@ bool CPathFinder::LessF(const CNode* _First, const CNode* _Second)
 //	return _First.Get_F() < _Second.Get_F();
 //}
 
-void CPathFinder::Start()
+void CPathFinder::Start_A_Star()
 {
 	CNode* StartNode = new CNode(m_StartPos);
 	m_OpenList.push_back(StartNode);
@@ -134,4 +134,8 @@ void CPathFinder::Start()
 		m_pMap->Update();
 		Sleep(10);
 	}
+}
+
+void CPathFinder::Start_JPS()
+{
 }
