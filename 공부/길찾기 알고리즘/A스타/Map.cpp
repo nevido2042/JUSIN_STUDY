@@ -69,6 +69,11 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 		cout << "бс";
 		Set_Color(GRAY);
 		break;
+	case CHECK:
+		Set_Color(SKYBLUE);
+		cout << "бс";
+		Set_Color(GRAY);
+		break;
 	default:
 		break;
 	}

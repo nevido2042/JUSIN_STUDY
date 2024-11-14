@@ -8,19 +8,18 @@
 
 int main()
 {
-    srand((time(NULL)));
-
     const int iMapSize(20);
 
     CMap Map(iMapSize, iMapSize);
     Map.Initialize();
 
+    /*srand((time(NULL)));
     for (int i = 0; i < iMapSize * 10; ++i)
     {
         Map.Change_Tile(POS(rand() % iMapSize, rand() % iMapSize), WALL);
-    }
+    }*/
     
-    /*for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
         Map.Change_Tile(POS(4, i), WALL);
     }
@@ -29,19 +28,29 @@ int main()
     {
         Map.Change_Tile(POS(18, i), WALL);
     }
+
+    for (int i = 5; i < 19; ++i)
+    {
+        Map.Change_Tile(POS(6, i), WALL);
+    }
+
+    for (int i = 10; i < 20; ++i)
+    {
+        Map.Change_Tile(POS(10, i), WALL);
+    }
  
     for (int i = 5; i < 19; ++i)
     {
         Map.Change_Tile(POS(i, 7), WALL);
-    }*/
+    }
 
-    Map.Change_Tile(POS(0, 0), START);
+    Map.Change_Tile(POS(9, 15), START);
     Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
-    PathFinder.Start_A_Star();
-
+    //PathFinder.Start_A_Star();
+    PathFinder.Start_JPS();
     system("pause");
 
 }
