@@ -1,21 +1,14 @@
 #pragma once
 #include "Pawn.h"
-class CPlayer :
+class CMonster :
     public CPawn
 {
 public:
-    CPlayer();
-    virtual ~CPlayer();
-    
-
-    // CPawn을(를) 통해 상속됨
+    CMonster();
+    virtual ~CMonster();
+public:
     void Initialize() override;
-
-
-    // CPawn을(를) 통해 상속됨
     void Update() override;
-
     void Relase() override;
-
 };
 

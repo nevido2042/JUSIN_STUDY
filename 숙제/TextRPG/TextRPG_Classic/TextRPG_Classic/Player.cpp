@@ -10,7 +10,16 @@ CPlayer::~CPlayer()
 {
 }
 
-void CPlayer::Render()
+void CPlayer::Initialize()
 {
-	cout << m_szName << endl;
+	m_iMoney = 100;
+	CPawn::Initialize();
+}
+
+void CPlayer::Update()
+{
+}
+
+void CPlayer::Relase()
+{
 }

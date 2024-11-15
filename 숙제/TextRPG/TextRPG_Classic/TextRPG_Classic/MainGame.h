@@ -4,6 +4,7 @@
 class CMainGame
 {
 	CObj* m_pPlayer;
+	CObj* m_pDungeon;
 public:
 	CMainGame();
 	~CMainGame();
@@ -13,6 +14,8 @@ public:
 private:
 	void Select_Class();
 	void Select_Menu();
+	void Select_Dungeon();
+
 
 };
 
