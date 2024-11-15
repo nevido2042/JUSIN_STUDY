@@ -252,14 +252,19 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 		break;
 	}
 
+	bool bIsSub_Search(false);
+	POS Sub_Search_Pos;
 	POS CheckPos;
 	if (_Pos == POS(-999, -999))
 	{
 		CheckPos = _Node.Get_Pos(); //9,SLEEP_TIME
+		bIsSub_Search = false;
 	}
 	else
 	{
 		CheckPos = _Pos;
+		bIsSub_Search = true;
+		Sub_Search_Pos = CheckPos;
 	}
 
 	//전진
@@ -282,7 +287,17 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 		//체크하는 위치가 도착점 인지 확인
 		if (m_pMap->Get_Tile_Type(CheckPos) == END)
 		{
-			m_OpenList.push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
+			POS New_Node_Pos;
+			if (bIsSub_Search)
+			{
+				New_Node_Pos = Sub_Search_Pos;
+			}
+			else
+			{
+				New_Node_Pos = CheckPos;
+			}
+
+			m_OpenList.push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
 			//m_pMap->Change_Tile(CheckPos, NODE);
 			//m_pMap->Update();
 			Sleep(SLEEP_TIME);
@@ -325,8 +340,18 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 		{
 			if (m_pMap->Get_Tile_Type(Wall1) == WALL && m_pMap->Get_Tile_Type(Road1) == ROAD)
 			{
-				m_OpenList.push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
-				m_pMap->Change_Tile(CheckPos, NODE);
+				POS New_Node_Pos;
+				if (bIsSub_Search)
+				{
+					New_Node_Pos = Sub_Search_Pos;
+				}
+				else
+				{
+					New_Node_Pos = CheckPos;
+				}
+
+				m_OpenList.push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
+				m_pMap->Change_Tile(New_Node_Pos, NODE);
 				m_pMap->Update();
 				Sleep(SLEEP_TIME);
 				bIsNewNode = true;
@@ -337,8 +362,18 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 		{
 			if (m_pMap->Get_Tile_Type(Wall2) == WALL && m_pMap->Get_Tile_Type(Road2) == ROAD)
 			{
-				m_OpenList.push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
-				m_pMap->Change_Tile(CheckPos, NODE);
+				POS New_Node_Pos;
+				if (bIsSub_Search)
+				{
+					New_Node_Pos = Sub_Search_Pos;
+				}
+				else
+				{
+					New_Node_Pos = CheckPos;
+				}
+
+				m_OpenList.push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
+				m_pMap->Change_Tile(New_Node_Pos, NODE);
 				m_pMap->Update();
 				Sleep(SLEEP_TIME);
 				bIsNewNode = true;

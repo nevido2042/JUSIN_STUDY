@@ -45,7 +45,8 @@ int main()
     }
 
     Map.Change_Tile(POS(0, 0), START);
-    Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
+    //Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
+    Map.Change_Tile(POS(5, 0), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
