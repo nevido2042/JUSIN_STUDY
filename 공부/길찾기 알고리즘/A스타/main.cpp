@@ -38,6 +38,11 @@ int main()
     {
         Map.Change_Tile(POS(10, i), WALL);
     }
+
+    for (int i = 2; i < 19; ++i)
+    {
+        Map.Change_Tile(POS(15, i), WALL);
+    }
  
     for (int i = 5; i < 19; ++i)
     {
@@ -46,7 +51,7 @@ int main()
 
     Map.Change_Tile(POS(0, 0), START);
     //Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
-    Map.Change_Tile(POS(5, 0), END);
+    Map.Change_Tile(POS(5, 6), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
