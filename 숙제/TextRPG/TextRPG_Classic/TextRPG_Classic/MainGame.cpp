@@ -7,7 +7,7 @@
 #include "HardDungeon.h"
 
 CMainGame::CMainGame()
-	:m_pPlayer(nullptr), m_pDungeon(nullptr)
+	:m_pPlayer(nullptr), m_pDungeon(nullptr), m_pShop(nullptr)
 {
 }
 
@@ -24,6 +24,9 @@ void CMainGame::Initialize()
 void CMainGame::Release()
 {
 	Safe_Delete(m_pPlayer);
+	Safe_Delete(m_pDungeon);
+	Safe_Delete(m_pShop);
+
 }
 
 void CMainGame::Select_Class()
@@ -108,8 +111,13 @@ void CMainGame::Select_Menu()
 			Select_Dungeon();
 			break;
 		case 인벤토리:
+			dynamic_cast<CPlayer*>(m_pPlayer)->Get_Inventory()->Render();
 			break;
 		case 상점:
+			m_pShop = new CShop;
+			m_pShop->Initialize();
+			m_pShop->Render();
+			system("pause");
 			break;
 		case 게임종료:
 			return;

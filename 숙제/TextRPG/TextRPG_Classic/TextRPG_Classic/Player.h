@@ -1,21 +1,28 @@
 #pragma once
 #include "Pawn.h"
+#include "Inventory.h"
+
 class CPlayer :
     public CPawn
 {
+    CInventory* m_pInventory;
 public:
     CPlayer();
     virtual ~CPlayer();
     
+public:
 
-    // CPawn을(를) 통해 상속됨
     void Initialize() override;
 
-
-    // CPawn을(를) 통해 상속됨
     void Update() override;
 
     void Relase() override;
+
+public:
+    CInventory* Get_Inventory()
+    {
+        return m_pInventory;
+    }
 
 };
 

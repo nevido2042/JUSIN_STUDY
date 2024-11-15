@@ -138,12 +138,18 @@
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="EasyDungeon.cpp" />
     <ClCompile Include="EasyMonster.cpp" />
+    <ClCompile Include="EasySword.cpp" />
+    <ClCompile Include="Equipment.cpp" />
     <ClCompile Include="HardDungeon.cpp" />
     <ClCompile Include="HardMonster.cpp" />
+    <ClCompile Include="HardSword.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="NormalDungeon.cpp" />
     <ClCompile Include="NormalMonster.cpp" />
+    <ClCompile Include="NormalSword.cpp" />
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="pch.cpp">
@@ -153,6 +159,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Shop.cpp" />
     <ClCompile Include="TextRPG_Classic.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,16 +167,23 @@
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="EasyDungeon.h" />
     <ClInclude Include="EasyMonster.h" />
+    <ClInclude Include="EasySword.h" />
+    <ClInclude Include="Equipment.h" />
     <ClInclude Include="HardDungeon.h" />
     <ClInclude Include="HardMonster.h" />
+    <ClInclude Include="HardSword.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="NormalDungeon.h" />
     <ClInclude Include="NormalMonster.h" />
+    <ClInclude Include="NormalSword.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Shop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
