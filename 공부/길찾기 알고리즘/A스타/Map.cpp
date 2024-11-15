@@ -6,7 +6,8 @@ CMap::CMap(int _iWidth, int _iHeight)
 	m_vecTileMap(m_iHeight, vector<TILE_TYPE>(m_iWidth, ROAD)),
 	m_vecTileMap_Buffer(m_iHeight, vector<TILE_TYPE>(m_iWidth, NONE)),
 	m_iWidth(_iWidth), 
-	m_iHeight(_iHeight)
+	m_iHeight(_iHeight),
+	m_CHECK_Color(SKYBLUE)
 {
 	
 }
@@ -70,7 +71,7 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 		Set_Color(GRAY);
 		break;
 	case CHECK:
-		Set_Color(SKYBLUE);
+		Set_Color(m_CHECK_Color);
 		cout << "бс";
 		Set_Color(GRAY);
 		break;
@@ -116,4 +117,16 @@ void CMap::Change_Tile(POS _Pos, TILE_TYPE _Type)
 TILE_TYPE CMap::Get_Tile_Type(POS _Pos)
 {
 	return m_vecTileMap[_Pos.iY][_Pos.iX];
+}
+
+void CMap::Change_CHECK_Color()
+{
+	if (m_CHECK_Color == SKYBLUE)
+	{
+		m_CHECK_Color = DARK_BLUE;
+	}
+	else
+	{
+		m_CHECK_Color = SKYBLUE;
+	}
 }

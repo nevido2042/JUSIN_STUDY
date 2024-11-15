@@ -26,8 +26,7 @@ private:
 	static bool LessF(const CNode* _First, const CNode* _Second);
 	void Search_Corner(CNode& _Node);//코너를 찾는 함수
 	void Search_Linear(CNode& _Node, DIRECTION _Dir);//노드의 방향에 따른 직선 탐색 함수
-	void Search_Direction(const CNode& _Node, DIRECTION _Dir);//한 방향 탐색 함수
-	void Search_Direction(const POS _Pos, const CNode& _Parent, DIRECTION _Dir);//한 방향 탐색 함수
+	void Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS _Pos = POS(-999, -999));//한 방향 탐색 함수
 	void Search_Diagonal(CNode& _Node, DIRECTION _Dir);//노드의 방향에 따른 대각선 탐색 함수
 public:
 	void Start_A_Star();

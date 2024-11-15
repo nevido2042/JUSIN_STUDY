@@ -5,7 +5,7 @@ enum TILE_TYPE { NONE = 0, ROAD, WALL, START, END, NODE, PATH, CHECK };
 
 enum DIRECTION { OO, UU, RU, RR, RD, DD, LD, LL, LU }; //12시 ~ 1시 방향 순
 
-#define SLEEP_TIME 100
+#define SLEEP_TIME 10
 
 template<typename T>
 void Safe_Delete(T& _p)
@@ -43,7 +43,31 @@ public:
         }
     }
 
+    bool operator==(const tagPosition& _Pos) const
+    {
+        if (iX == _Pos.iX && iY == _Pos.iY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     bool operator!=(const tagPosition& _Pos)
+    {
+        if (iX != _Pos.iX && iY != _Pos.iY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool operator!=(const tagPosition& _Pos) const
     {
         if (iX != _Pos.iX && iY != _Pos.iY)
         {
@@ -58,7 +82,8 @@ public:
 }POS;
 
 //색상
-enum {
+enum COLOR
+{
     BLACK,
     DARK_BLUE,
     DARK_GREEN,
