@@ -30,6 +30,8 @@ void CInventory::Release()
 	{
 		Safe_Delete(pItem);
 	}
+
+	m_vecItem.clear();
 }
 
 void CInventory::Render()
@@ -67,6 +69,13 @@ void CInventory::Use_Item(int _iIndex)
 {
 	if (CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_vecItem[_iIndex]))
 	{
+		if (Is_Full())
+		{
+			cout << "장비를 벗을 여유 공간이 없습니다. 인벤토리를 한 칸 비워주세요." << endl;
+			system("pause");
+			return;
+		}
+
 		//장착된 아이템이 있으면 인벤토리로 반환
 		if (m_pOwner->Get_Weapon())
 		{
@@ -84,6 +93,13 @@ void CInventory::Use_Item(int _iIndex)
 
 	else if (CArmor* pArmor = dynamic_cast<CArmor*>(m_vecItem[_iIndex]))
 	{
+		if (Is_Full())
+		{
+			cout << "장비를 벗을 여유 공간이 없습니다. 인벤토리를 한 칸 비워주세요." << endl;
+			system("pause");
+			return;
+		}
+
 		//장착된 아이템이 있으면 인벤토리로 반환
 		if (m_pOwner->Get_Armor())
 		{

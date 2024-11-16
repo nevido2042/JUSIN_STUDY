@@ -58,6 +58,13 @@ void CPlayer::Open_Inventory()
 			return;
 		}
 
+		if (m_pInventory->Is_Full())
+		{
+			cout << "장비를 벗을 여유 공간이 없습니다. 인벤토리를 한 칸 비워주세요." << endl;
+			system("pause");
+			return;
+		}
+
 		//아이템 사용(장착)
 		m_pInventory->Use_Item(iInput - 1);
 

@@ -59,7 +59,7 @@ void CDungeon::Start_Battle(CObj* m_pPlayer)
 			{
 				if (pPlayer->Get_HP() <= 0)
 				{
-					pPlayer->Initialize();
+					pPlayer->Full_HP();
 				}
 
 				if (pMonster->Get_HP() <= 0)

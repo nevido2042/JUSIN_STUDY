@@ -15,6 +15,7 @@ CPawn::~CPawn()
 void CPawn::Initialize()
 {
 	m_iHP = m_iMaxHP;
+
 	if (m_pWeapon)
 	{
 		m_pWeapon->Initialize();

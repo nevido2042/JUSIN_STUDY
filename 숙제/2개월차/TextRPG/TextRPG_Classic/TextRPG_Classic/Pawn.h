@@ -76,5 +76,9 @@ public:
     }
 public:
     void Attack(CObj* _pTarget);
+    void Full_HP()
+    {
+        m_iHP = m_iMaxHP;
+    }
 };
 
