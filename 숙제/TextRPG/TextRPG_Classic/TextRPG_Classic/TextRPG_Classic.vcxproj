@@ -162,6 +162,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="TextRPG_Classic.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="ItemList.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="NormalDungeon.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

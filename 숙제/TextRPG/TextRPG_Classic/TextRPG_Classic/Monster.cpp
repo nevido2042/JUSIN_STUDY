@@ -17,6 +17,6 @@ void CMonster::Update()
 {
 }
 
-void CMonster::Relase()
+void CMonster::Release()
 {
 }

@@ -1,11 +1,13 @@
 #pragma once
 #include "Obj.h"
+#include "Player.h"
+#include "Dungeon.h"
 #include "Shop.h"
 
 class CMainGame
 {
-	CObj* m_pPlayer;
-	CObj* m_pDungeon;
+	CPlayer* m_pPlayer;
+	CDungeon* m_pDungeon;
 	CShop* m_pShop;
 public:
 	CMainGame();

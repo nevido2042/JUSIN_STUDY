@@ -1,7 +1,8 @@
 #pragma once
-#include "Equipment.h"
+#include "Weapon.h"
+
 class CEasySword :
-    public CEquipment
+    public CWeapon
 {
 public:
     // CEquipment을(를) 통해 상속됨

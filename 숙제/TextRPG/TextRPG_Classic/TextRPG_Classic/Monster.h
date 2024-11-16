@@ -9,6 +9,6 @@ public:
 public:
     void Initialize() override;
     void Update() override;
-    void Relase() override;
+    void Release() override;
 };
 

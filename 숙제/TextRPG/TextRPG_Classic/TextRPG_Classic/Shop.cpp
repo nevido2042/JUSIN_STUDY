@@ -13,7 +13,7 @@ CShop::CShop()
 
 CShop::~CShop()
 {
-	Relase();
+	Release();
 }
 
 void CShop::Initialize()
@@ -33,7 +33,7 @@ void CShop::Update()
 {
 }
 
-void CShop::Relase()
+void CShop::Release()
 {
 	for (CItem* pItem : m_vecItem)
 	{

@@ -10,7 +10,7 @@ public:
 public:
 	virtual void Initialize() = 0;
 	virtual void Update() = 0;
-	virtual void Relase() = 0;
+	virtual void Release() = 0;
 
 
 public:

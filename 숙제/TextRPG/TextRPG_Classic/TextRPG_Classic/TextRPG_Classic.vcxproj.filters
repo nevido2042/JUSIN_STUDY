@@ -90,6 +90,9 @@
     <ClCompile Include="ItemFactory.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -156,6 +159,12 @@
       <Filter>헤더 파일\Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemFactory.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include "EasyDungeon.h"
 #include "NormalDungeon.h"
 #include "HardDungeon.h"
+#include "ItemList.h"
 
 CMainGame::CMainGame()
 	:m_pPlayer(nullptr), m_pDungeon(nullptr), m_pShop(nullptr)
@@ -53,27 +54,33 @@ void CMainGame::Select_Class()
 		case 전사:
 			m_pPlayer = new CPlayer();
 			m_pPlayer->Set_Name("전사");
-			dynamic_cast<CPawn*>(m_pPlayer)->Set_MaxHP(15);
-			dynamic_cast<CPawn*>(m_pPlayer)->Set_STR(5);
-			dynamic_cast<CPawn*>(m_pPlayer)->Initialize();
+			m_pPlayer->Set_MaxHP(15);
+			m_pPlayer->Set_STR(5);
+			m_pPlayer->Set_Weapon(new CHardSword);
+
+			m_pPlayer->Initialize();
 
 
 			break;
 		case 마법사:
 			m_pPlayer = new CPlayer();
 			m_pPlayer->Set_Name("마법사");
-			dynamic_cast<CPawn*>(m_pPlayer)->Set_MaxHP(9);
-			dynamic_cast<CPawn*>(m_pPlayer)->Set_STR(1);
-			dynamic_cast<CPawn*>(m_pPlayer)->Initialize();
+			m_pPlayer->Set_MaxHP(9);
+			m_pPlayer->Set_STR(1);
+			m_pPlayer->Set_Weapon(new CEasySword);
+
+			m_pPlayer->Initialize();
 
 
 			break;
 		case 도적:
 			m_pPlayer = new CPlayer();
 			m_pPlayer->Set_Name("도적");
-			dynamic_cast<CPawn*>(m_pPlayer)->Set_MaxHP(9);
-			dynamic_cast<CPawn*>(m_pPlayer)->Set_STR(3);
-			dynamic_cast<CPawn*>(m_pPlayer)->Initialize();
+			m_pPlayer->Set_MaxHP(9);
+			m_pPlayer->Set_STR(3);
+			m_pPlayer->Set_Weapon(new CNormalSword);
+
+			m_pPlayer->Initialize();
 
 
 			break;
@@ -111,8 +118,7 @@ void CMainGame::Select_Menu()
 			Select_Dungeon();
 			break;
 		case 인벤토리:
-			dynamic_cast<CPlayer*>(m_pPlayer)->Get_Inventory()->Render();
-			system("pause");
+			dynamic_cast<CPlayer*>(m_pPlayer)->Open_Inventory();
 			break;
 		case 상점:
 			m_pShop = new CShop;

@@ -10,7 +10,7 @@ void CItemFactory::Update()
 {
 }
 
-void CItemFactory::Relase()
+void CItemFactory::Release()
 {
 }
 

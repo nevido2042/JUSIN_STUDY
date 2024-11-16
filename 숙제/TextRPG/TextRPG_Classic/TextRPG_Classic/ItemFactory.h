@@ -10,7 +10,7 @@ class CItemFactory :
     // CObj을(를) 통해 상속됨
     void Initialize() override;
     void Update() override;
-    void Relase() override;
+    void Release() override;
     void Render() override;
 public:
     CItem* Create_Item(const char* _szName);

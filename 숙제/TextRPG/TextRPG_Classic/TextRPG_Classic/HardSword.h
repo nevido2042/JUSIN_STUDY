@@ -1,7 +1,8 @@
 #pragma once
-#include "Equipment.h"
+#include "Weapon.h"
+
 class CHardSword :
-    public CEquipment
+    public CWeapon
 {
     // CEquipment을(를) 통해 상속됨
     void Initialize() override;

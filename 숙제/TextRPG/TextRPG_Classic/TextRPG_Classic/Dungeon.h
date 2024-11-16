@@ -13,7 +13,7 @@ public:
     // CObj을(를) 통해 상속됨
     void Initialize() override;
     void Update() override;
-    void Relase() override;
+    void Release() override;
 public:
     // CObj을(를) 통해 상속됨
     void Render() override;

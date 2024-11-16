@@ -16,13 +16,15 @@ public:
 
     void Update() override;
 
-    void Relase() override;
+    void Release() override;
 
 public:
     CInventory* Get_Inventory()
     {
         return m_pInventory;
     }
+    
+    void Open_Inventory();
 
 };
 

@@ -1,5 +1,7 @@
 #pragma once
 #include "Obj.h"
+#include "Weapon.h"
+
 class CPawn :
     public CObj
 {
@@ -9,6 +11,8 @@ protected:
     int m_iSTR;//°ø°Ý·Â
 
     int m_iMoney;
+
+    CWeapon* m_pWeapon;
 public:
     CPawn();
     virtual ~CPawn();
@@ -16,6 +20,24 @@ public:
     void Initialize() override;
 public:
     void Render() override;
+    void Release() override;
+    void Render_Equipment();
+    void Add_MaxHP(int _iMaxHP)
+    {
+        m_iMaxHP += _iMaxHP;
+    }
+    void Add_STR(int _iSTR)
+    {
+        m_iSTR += _iSTR;
+    }
+    CWeapon* Get_Weapon()
+    {
+        return m_pWeapon;
+    }
+    void Set_Weapon(CWeapon* _pWeapon)
+    {
+        m_pWeapon = _pWeapon;
+    }
     int Get_HP()
     {
         return m_iHP;

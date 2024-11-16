@@ -18,7 +18,7 @@ void CItem::Update()
 {
 }
 
-void CItem::Relase()
+void CItem::Release()
 {
 }
 

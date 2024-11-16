@@ -1,18 +1,24 @@
 #include "pch.h"
 #include "Pawn.h"
+#include "Define.h"
 
 CPawn::CPawn()
-	:m_iHP(0), m_iSTR(0), m_iMaxHP(0), m_iMoney(0)
+	:m_iHP(0), m_iSTR(0), m_iMaxHP(0), m_iMoney(0), m_pWeapon(nullptr)
 {
 }
 
 CPawn::~CPawn()
 {
+	Release();
 }
 
 void CPawn::Initialize()
 {
 	m_iHP = m_iMaxHP;
+	if (m_pWeapon)
+	{
+		m_pWeapon->Initialize();
+	}
 }
 
 void CPawn::Render()
@@ -33,6 +39,25 @@ void CPawn::Render()
 	cout << endl;
 
 	cout << "소지금: " << m_iMoney << endl;
+}
+
+void CPawn::Release()
+{
+	Safe_Delete(m_pWeapon);
+}
+
+//void CPawn::Release()
+//{
+//}
+
+void CPawn::Render_Equipment()
+{
+	cout << "무기: ";
+	if (m_pWeapon)
+	{
+		cout << m_pWeapon->Get_Name();
+	}
+	cout << endl;
 }
 
 void CPawn::Set_HP(int _iHP)

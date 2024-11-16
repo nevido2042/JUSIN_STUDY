@@ -10,7 +10,7 @@ CDungeon::CDungeon()
 
 CDungeon::~CDungeon()
 {
-	Relase();
+	Release();
 }
 
 void CDungeon::Render()
@@ -90,7 +90,7 @@ void CDungeon::Update()
 {
 }
 
-void CDungeon::Relase()
+void CDungeon::Release()
 {
 	Safe_Delete(m_pMonster);
 }
