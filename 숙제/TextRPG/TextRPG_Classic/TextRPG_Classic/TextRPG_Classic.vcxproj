@@ -135,11 +135,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="EasyArmor.cpp" />
     <ClCompile Include="EasyDungeon.cpp" />
     <ClCompile Include="EasyMonster.cpp" />
     <ClCompile Include="EasySword.cpp" />
     <ClCompile Include="Equipment.cpp" />
+    <ClCompile Include="HardArmor.cpp" />
     <ClCompile Include="HardDungeon.cpp" />
     <ClCompile Include="HardMonster.cpp" />
     <ClCompile Include="HardSword.cpp" />
@@ -148,6 +151,7 @@
     <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="NormalArmor.cpp" />
     <ClCompile Include="NormalDungeon.cpp" />
     <ClCompile Include="NormalMonster.cpp" />
     <ClCompile Include="NormalSword.cpp" />
@@ -165,12 +169,15 @@
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Armor.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Dungeon.h" />
+    <ClInclude Include="EasyArmor.h" />
     <ClInclude Include="EasyDungeon.h" />
     <ClInclude Include="EasyMonster.h" />
     <ClInclude Include="EasySword.h" />
     <ClInclude Include="Equipment.h" />
+    <ClInclude Include="HardArmor.h" />
     <ClInclude Include="HardDungeon.h" />
     <ClInclude Include="HardMonster.h" />
     <ClInclude Include="HardSword.h" />
@@ -180,6 +187,7 @@
     <ClInclude Include="ItemList.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="NormalArmor.h" />
     <ClInclude Include="NormalDungeon.h" />
     <ClInclude Include="NormalMonster.h" />
     <ClInclude Include="NormalSword.h" />

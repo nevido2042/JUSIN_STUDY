@@ -1,5 +1,7 @@
 #pragma once
 
+#define TWO_LINE "================================================================="
+
 template <typename T>
 void Safe_Delete(T& _p)
 {

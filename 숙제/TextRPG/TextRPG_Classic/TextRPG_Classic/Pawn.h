@@ -1,6 +1,7 @@
 #pragma once
 #include "Obj.h"
 #include "Weapon.h"
+#include "Armor.h"
 
 class CPawn :
     public CObj
@@ -13,6 +14,7 @@ protected:
     int m_iMoney;
 
     CWeapon* m_pWeapon;
+    CArmor* m_pArmor;
 public:
     CPawn();
     virtual ~CPawn();
@@ -37,6 +39,14 @@ public:
     void Set_Weapon(CWeapon* _pWeapon)
     {
         m_pWeapon = _pWeapon;
+    }
+    CArmor* Get_Armor()
+    {
+        return m_pArmor;
+    }
+    void Set_Armor(CArmor* _pArmor)
+    {
+        m_pArmor = _pArmor;
     }
     int Get_HP()
     {

@@ -39,9 +39,9 @@ void CPlayer::Open_Inventory()
 	{
 		system("cls");
 		Render();
-		cout << endl;
+		cout << TWO_LINE << endl;
 		Render_Equipment();
-		cout << endl;
+		cout << TWO_LINE << endl;
 		m_pInventory->Render();
 		cout << endl;
 		cout << "사용할 아이템을 선택하세요.(나가기 = 0)" << endl;

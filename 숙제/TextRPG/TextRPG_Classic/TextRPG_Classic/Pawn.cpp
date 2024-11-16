@@ -3,7 +3,7 @@
 #include "Define.h"
 
 CPawn::CPawn()
-	:m_iHP(0), m_iSTR(0), m_iMaxHP(0), m_iMoney(0), m_pWeapon(nullptr)
+	:m_iHP(0), m_iSTR(0), m_iMaxHP(0), m_iMoney(0), m_pWeapon(nullptr), m_pArmor(nullptr)
 {
 }
 
@@ -19,15 +19,23 @@ void CPawn::Initialize()
 	{
 		m_pWeapon->Initialize();
 	}
+	if (m_pArmor)
+	{
+		m_pArmor->Initialize();
+	}
 }
 
 void CPawn::Render()
 {
 	cout << "이름: " << m_szName << endl;
-	cout << "체력: " << m_iHP << " ";
+	cout << "체력: " << m_iHP << "/" << m_iMaxHP << " ";
 	for (int i = 0; i < m_iHP; ++i)
 	{
 		cout << "■";
+	}
+	for (int i = 0; i < m_iMaxHP - m_iHP; ++i)
+	{
+		cout << "□";
 	}
 	cout << endl;
 
@@ -44,6 +52,7 @@ void CPawn::Render()
 void CPawn::Release()
 {
 	Safe_Delete(m_pWeapon);
+	Safe_Delete(m_pArmor);
 }
 
 //void CPawn::Release()
@@ -52,10 +61,20 @@ void CPawn::Release()
 
 void CPawn::Render_Equipment()
 {
-	cout << "무기: ";
+	cout << "[장착중인 장비]" << endl;
+	cout << "<무기>" << endl;
 	if (m_pWeapon)
 	{
-		cout << m_pWeapon->Get_Name();
+		m_pWeapon->Render();
+		//cout << m_pWeapon->Get_Name();
+	}
+	cout << endl;
+
+	cout << "<갑옷>" << endl;
+	if (m_pArmor)
+	{
+		m_pArmor->Render();
+		//cout << m_pArmor->Get_Name();
 	}
 	cout << endl;
 }

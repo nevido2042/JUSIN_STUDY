@@ -2,9 +2,7 @@
 #include "Shop.h"
 #include "Define.h"
 #include "ItemFactory.h"
-#include "EasySword.h"
-#include "NormalSword.h"
-#include "HardSword.h"
+#include "ItemList.h"
 
 CShop::CShop()
 	:m_pPlayer(nullptr)
@@ -22,6 +20,9 @@ void CShop::Initialize()
 	m_vecItem.push_back(new CEasySword);
 	m_vecItem.push_back(new CNormalSword);
 	m_vecItem.push_back(new CHardSword);
+	m_vecItem.push_back(new CEasyArmor);
+	m_vecItem.push_back(new CNormalArmor);
+	m_vecItem.push_back(new CHardArmor);
 
 	for (CItem* pItem : m_vecItem)
 	{

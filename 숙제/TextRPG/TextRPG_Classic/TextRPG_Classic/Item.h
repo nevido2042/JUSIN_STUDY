@@ -19,7 +19,5 @@ public:
     {
         return m_iPrice;
     }
-public:
-    virtual void Use() = 0;
 };
 

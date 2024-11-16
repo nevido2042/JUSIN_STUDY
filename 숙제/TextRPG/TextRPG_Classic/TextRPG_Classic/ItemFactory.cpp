@@ -32,6 +32,18 @@ CItem* CItemFactory::Create_Item(const char* _szName)
 	{
 		return new CHardSword();
 	}
+	else if (!strcmp(_szName, "class CEasyArmor"))
+	{
+		return new CEasyArmor();
+	}
+	else if (!strcmp(_szName, "class CNormalArmor"))
+	{
+		return new CNormalArmor();
+	}
+	else if (!strcmp(_szName, "class CHardArmor"))
+	{
+		return new CHardArmor();
+	}
 
 	return nullptr;
 }

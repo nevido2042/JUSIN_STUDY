@@ -56,7 +56,8 @@ void CMainGame::Select_Class()
 			m_pPlayer->Set_Name("전사");
 			m_pPlayer->Set_MaxHP(15);
 			m_pPlayer->Set_STR(5);
-			m_pPlayer->Set_Weapon(new CHardSword);
+			m_pPlayer->Set_Weapon(new CEasySword);
+			m_pPlayer->Set_Armor(new CEasyArmor);
 
 			m_pPlayer->Initialize();
 
@@ -68,6 +69,7 @@ void CMainGame::Select_Class()
 			m_pPlayer->Set_MaxHP(9);
 			m_pPlayer->Set_STR(1);
 			m_pPlayer->Set_Weapon(new CEasySword);
+			m_pPlayer->Set_Armor(new CEasyArmor);
 
 			m_pPlayer->Initialize();
 
@@ -78,7 +80,8 @@ void CMainGame::Select_Class()
 			m_pPlayer->Set_Name("도적");
 			m_pPlayer->Set_MaxHP(9);
 			m_pPlayer->Set_STR(3);
-			m_pPlayer->Set_Weapon(new CNormalSword);
+			m_pPlayer->Set_Weapon(new CEasySword);
+			m_pPlayer->Set_Armor(new CEasyArmor);
 
 			m_pPlayer->Initialize();
 

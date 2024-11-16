@@ -15,6 +15,7 @@ CInventory::~CInventory()
 
 void CInventory::Initialize()
 {
+	Set_Name("인벤토리");
 	m_iMaxSize = 5;
 	m_vecItem.reserve(m_iMaxSize);
 }
@@ -33,6 +34,7 @@ void CInventory::Release()
 
 void CInventory::Render()
 {
+	cout << "[" << m_szName << "]" << endl;
 	if (m_vecItem.size() == 0)
 	{
 		cout << "아이템이 없습니다." << endl;
@@ -78,6 +80,22 @@ void CInventory::Use_Item(int _iIndex)
 		//능력치 증가
 		m_pOwner->Add_STR(pWeapon->Get_STR());
 
+	}
+
+	else if (CArmor* pArmor = dynamic_cast<CArmor*>(m_vecItem[_iIndex]))
+	{
+		//장착된 아이템이 있으면 인벤토리로 반환
+		if (m_pOwner->Get_Armor())
+		{
+			Add_Item(m_pOwner->Get_Armor());
+			//능력치 감소
+			m_pOwner->Add_MaxHP(-m_pOwner->Get_Armor()->Get_HP());
+
+		}
+
+		m_pOwner->Set_Armor(pArmor);
+		//능력치 증가
+		m_pOwner->Add_MaxHP(pArmor->Get_HP());
 	}
 
 	//장비 아이템이면 장착

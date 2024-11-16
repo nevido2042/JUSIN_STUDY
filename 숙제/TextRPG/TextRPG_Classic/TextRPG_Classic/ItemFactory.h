@@ -1,8 +1,6 @@
 #pragma once
 #include "Obj.h"
-#include "EasySword.h"
-#include "NormalSword.h"
-#include "HardSword.h"
+#include "ItemList.h"
 
 class CItemFactory :
     public CObj

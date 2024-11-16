@@ -13,14 +13,29 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="헤더 파일\Monster">
-      <UniqueIdentifier>{391dcd66-0209-41ed-9e01-13b704161380}</UniqueIdentifier>
+    <Filter Include="헤더 파일\Obj">
+      <UniqueIdentifier>{edec7197-ce8b-41f3-b396-abf23640fe7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Dungeon">
+    <Filter Include="헤더 파일\Obj\Item">
+      <UniqueIdentifier>{f85da7fe-44c4-4506-8391-57767f308815}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Obj\Item\Equipment">
+      <UniqueIdentifier>{42c02b95-088a-43fe-aced-54683b0e2be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Obj\Item\Equipment\Weapon">
+      <UniqueIdentifier>{e81b3983-69bf-4229-b9bf-355127f26170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Obj\Item\Equipment\Armor">
+      <UniqueIdentifier>{762d544d-c407-4442-8485-8fd5a9a9c4ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Obj\Dungeon">
       <UniqueIdentifier>{ebba37f8-b624-4970-b445-a3897904eb3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Item">
-      <UniqueIdentifier>{f85da7fe-44c4-4506-8391-57767f308815}</UniqueIdentifier>
+    <Filter Include="헤더 파일\Obj\Pawn">
+      <UniqueIdentifier>{b9472157-a215-46cf-bb63-8259b125f029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Obj\Pawn\Monster">
+      <UniqueIdentifier>{391dcd66-0209-41ed-9e01-13b704161380}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +108,18 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Armor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyArmor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalArmor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HardArmor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -104,68 +131,80 @@
     <ClInclude Include="Obj.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Pawn.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Dungeon.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="EasyMonster.h">
-      <Filter>헤더 파일\Monster</Filter>
+      <Filter>헤더 파일\Obj\Pawn\Monster</Filter>
     </ClInclude>
     <ClInclude Include="HardMonster.h">
-      <Filter>헤더 파일\Monster</Filter>
+      <Filter>헤더 파일\Obj\Pawn\Monster</Filter>
     </ClInclude>
     <ClInclude Include="NormalMonster.h">
-      <Filter>헤더 파일\Monster</Filter>
+      <Filter>헤더 파일\Obj\Pawn\Monster</Filter>
     </ClInclude>
     <ClInclude Include="EasyDungeon.h">
-      <Filter>헤더 파일\Dungeon</Filter>
+      <Filter>헤더 파일\Obj\Dungeon</Filter>
     </ClInclude>
     <ClInclude Include="HardDungeon.h">
-      <Filter>헤더 파일\Dungeon</Filter>
+      <Filter>헤더 파일\Obj\Dungeon</Filter>
     </ClInclude>
     <ClInclude Include="NormalDungeon.h">
-      <Filter>헤더 파일\Dungeon</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Shop.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Equipment.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="EasySword.h">
-      <Filter>헤더 파일\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="HardSword.h">
-      <Filter>헤더 파일\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalSword.h">
-      <Filter>헤더 파일\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemFactory.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Obj\Dungeon</Filter>
     </ClInclude>
     <ClInclude Include="ItemList.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="EasySword.h">
+      <Filter>헤더 파일\Obj\Item\Equipment\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="HardSword.h">
+      <Filter>헤더 파일\Obj\Item\Equipment\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalSword.h">
+      <Filter>헤더 파일\Obj\Item\Equipment\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Armor.h">
+      <Filter>헤더 파일\Obj\Item\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>헤더 파일\Obj\Item\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipment.h">
+      <Filter>헤더 파일\Obj\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>헤더 파일\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyArmor.h">
+      <Filter>헤더 파일\Obj\Item\Equipment\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>헤더 파일\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>헤더 파일\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemFactory.h">
+      <Filter>헤더 파일\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Pawn.h">
+      <Filter>헤더 파일\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일\Obj\Pawn</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>헤더 파일\Obj\Pawn</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop.h">
+      <Filter>헤더 파일\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalArmor.h">
+      <Filter>헤더 파일\Obj\Item\Equipment\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="HardArmor.h">
+      <Filter>헤더 파일\Obj\Item\Equipment\Armor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
