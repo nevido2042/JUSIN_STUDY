@@ -33,11 +33,20 @@ void CInventory::Relase()
 void CInventory::Render()
 {
 	system("cls");
+	if (m_vecItem.size() == 0)
+	{
+		cout << "아이템이 없습니다." << endl;
+		return;
+	}
+
+	int i(0);
 	for (CItem* pItem : m_vecItem)
 	{
+		++i;
+		cout << "[" << i << "]";
 		pItem->Render();
+		cout << endl;
 	}
-	system("pause");
 }
 
 void CInventory::Add_Item(CItem* _pItem)
@@ -50,4 +59,10 @@ void CInventory::Add_Item(CItem* _pItem)
 	}
 
 	m_vecItem.push_back(_pItem);
+}
+
+void CInventory::Remove_Item(int _iIndex)
+{
+	Safe_Delete(m_vecItem[_iIndex]);
+	m_vecItem.erase(m_vecItem.begin() + _iIndex);
 }

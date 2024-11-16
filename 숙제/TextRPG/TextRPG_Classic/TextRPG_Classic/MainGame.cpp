@@ -112,6 +112,7 @@ void CMainGame::Select_Menu()
 			break;
 		case 인벤토리:
 			dynamic_cast<CPlayer*>(m_pPlayer)->Get_Inventory()->Render();
+			system("pause");
 			break;
 		case 상점:
 			m_pShop = new CShop;

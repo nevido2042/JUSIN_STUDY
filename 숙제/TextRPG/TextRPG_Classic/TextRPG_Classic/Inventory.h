@@ -30,6 +30,14 @@ public:
             return false;
         }
     }
-    //void Remove_Item();
+    int Get_ItemCount()
+    {
+        return m_vecItem.size();
+    }
+    void Remove_Item(int _iIndex);
+    int Get_MaxSize()
+    {
+        return m_iMaxSize;
+    }
 };
 

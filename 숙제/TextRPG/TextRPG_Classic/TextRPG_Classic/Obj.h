@@ -16,5 +16,9 @@ public:
 public:
 	virtual void Render() = 0;
 	void Set_Name(const char* _szName);
+	const char* Get_Name()
+	{
+		return m_szName;
+	}
 };
 

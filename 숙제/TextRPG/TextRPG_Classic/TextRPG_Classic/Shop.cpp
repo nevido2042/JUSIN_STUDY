@@ -91,6 +91,10 @@ void CShop::Open_Buy_Menu()
 		system("cls");
 		Render();
 		cout << endl;
+		cout << "소지금: " << m_pPlayer->Get_Money() << endl;
+		cout << "인벤토리 공간";
+		cout << m_pPlayer->Get_Inventory()->Get_ItemCount() << "/" << m_pPlayer->Get_Inventory()->Get_MaxSize() << endl;
+		cout << endl;
 		cout << "구매할 아이템의 번호를 입력하세요. (나가기 = 0)" << endl;
 		cout << endl;
 		cin >> iInput;
@@ -131,10 +135,43 @@ void CShop::Open_Buy_Menu()
 		CreatedItem->Initialize();
 		m_pPlayer->Get_Inventory()->Add_Item(CreatedItem);
 
+		cout << "<" << CreatedItem->Get_Name() << ">" << " 구매 성공" << endl;
+		system("pause");
+
 
 	}
 }
 
 void CShop::Open_Sell_Menu()
 {
+
+	int iInput(0);
+	while (true)
+	{
+		system("cls");
+		m_pPlayer->Get_Inventory()->Render();
+		cout << endl;
+		cout << "소지금: " << m_pPlayer->Get_Money() << endl;
+		cout << endl;
+		cout << "판매할 아이템의 번호를 입력하세요. (나가기 = 0)" << endl;
+		cout << endl;
+		cin >> iInput;
+
+		//목록에 없는 아이템 입력시 재입력 받음
+		if (iInput > m_pPlayer->Get_Inventory()->Get_ItemCount())
+		{
+			continue;
+		}
+
+		if (iInput == 0)
+		{
+			return;
+		}
+
+		//소지금 증가
+		m_pPlayer->Add_Money(m_vecItem[iInput - 1]->Get_Price());
+
+		//인벤토리에서 아이템 제거
+		m_pPlayer->Get_Inventory()->Remove_Item(iInput - 1);
+	}
 }
