@@ -116,8 +116,9 @@ void CMainGame::Select_Menu()
 		case 상점:
 			m_pShop = new CShop;
 			m_pShop->Initialize();
-			m_pShop->Render();
-			system("pause");
+			m_pShop->Set_Player(dynamic_cast<CPlayer*>(m_pPlayer));
+			m_pShop->OpenShop();
+			Safe_Delete(m_pShop);
 			break;
 		case 게임종료:
 			return;
@@ -146,16 +147,19 @@ void CMainGame::Select_Dungeon()
 			m_pDungeon = new CEasyDungeon;
 			m_pDungeon->Initialize();
 			dynamic_cast<CDungeon*>(m_pDungeon)->Start_Battle(m_pPlayer);
+			Safe_Delete(m_pDungeon);
 			break;
 		case 중급:
 			m_pDungeon = new CNormalDungeon;
 			m_pDungeon->Initialize();
 			dynamic_cast<CDungeon*>(m_pDungeon)->Start_Battle(m_pPlayer);
+			Safe_Delete(m_pDungeon);
 			break;
 		case 고급:
 			m_pDungeon = new CHardDungeon;
 			m_pDungeon->Initialize();
 			dynamic_cast<CDungeon*>(m_pDungeon)->Start_Battle(m_pPlayer);
+			Safe_Delete(m_pDungeon);
 			break;
 		case 나가기:
 			return;

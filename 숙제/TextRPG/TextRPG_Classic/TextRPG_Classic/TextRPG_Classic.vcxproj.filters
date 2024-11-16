@@ -19,6 +19,9 @@
     <Filter Include="헤더 파일\Dungeon">
       <UniqueIdentifier>{ebba37f8-b624-4970-b445-a3897904eb3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Item">
+      <UniqueIdentifier>{f85da7fe-44c4-4506-8391-57767f308815}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextRPG_Classic.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="HardSword.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ItemFactory.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -141,12 +147,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="EasySword.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalSword.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Item</Filter>
     </ClInclude>
     <ClInclude Include="HardSword.h">
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalSword.h">
+      <Filter>헤더 파일\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemFactory.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

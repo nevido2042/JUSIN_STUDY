@@ -3,11 +3,21 @@
 class CItem abstract:
     public CObj
 {
-    // CObj을(를) 통해 상속됨
+protected:
+    int m_iPrice;
+
+public:
+    CItem();
+    virtual ~CItem();
 public:
     void Initialize() = 0;
     void Update() override;
     void Relase() override;
     void Render() override;
+public:
+    int Get_Price()
+    {
+        return m_iPrice;
+    }
 };
 

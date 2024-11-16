@@ -19,6 +19,17 @@ public:
     void Render() override;
 public:
     void Add_Item(CItem* _pItem);
+    bool Is_Full()
+    {
+        if (m_iMaxSize == m_vecItem.size())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     //void Remove_Item();
 };
 

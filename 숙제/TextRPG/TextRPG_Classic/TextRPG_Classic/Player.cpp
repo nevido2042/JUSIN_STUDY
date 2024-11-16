@@ -19,6 +19,7 @@ void CPlayer::Initialize()
 	CPawn::Initialize();
 
 	m_pInventory = new CInventory;
+	m_pInventory->Initialize();
 }
 
 void CPlayer::Update()
