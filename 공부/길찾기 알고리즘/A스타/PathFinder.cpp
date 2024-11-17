@@ -71,8 +71,8 @@ void CPathFinder::Search_Corner(CNode& _Node)
 	case UU:
 		Search_Linear(_Node, UU);
 
-		Search_Diagonal(_Node, LU);
-		Search_Diagonal(_Node, RU);
+		//Search_Diagonal(_Node, LU);
+		//Search_Diagonal(_Node, RU);
 
 		break;
 	case RU:
@@ -85,8 +85,8 @@ void CPathFinder::Search_Corner(CNode& _Node)
 	case RR:
 		Search_Linear(_Node, RR);
 
-		Search_Diagonal(_Node, RU);
-		Search_Diagonal(_Node, RD);
+		//Search_Diagonal(_Node, RU);
+		//Search_Diagonal(_Node, RD);
 
 		break;
 	case RD: //ex)
@@ -99,8 +99,8 @@ void CPathFinder::Search_Corner(CNode& _Node)
 	case DD:
 		Search_Linear(_Node, DD);
 
-		Search_Diagonal(_Node, LD);
-		Search_Diagonal(_Node, RD);
+		//Search_Diagonal(_Node, LD);
+		//Search_Diagonal(_Node, RD);
 
 		break;
 	case LD:
@@ -112,8 +112,8 @@ void CPathFinder::Search_Corner(CNode& _Node)
 	case LL:
 		Search_Linear(_Node, LL);
 
-		Search_Diagonal(_Node, LD);
-		Search_Diagonal(_Node, LU);
+		//Search_Diagonal(_Node, LD);
+		//Search_Diagonal(_Node, LU);
 
 		break;
 	case LU:
