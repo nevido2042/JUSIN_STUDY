@@ -732,6 +732,7 @@ void CPathFinder::Start_JPS()
 				Sleep(SLEEP_TIME);
 			}
 
+			Safe_Delete(PopNode);
 			return;
 		}
 		//클로즈 리스트에 넣는다.

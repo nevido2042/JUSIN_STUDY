@@ -21,7 +21,7 @@
 int main()
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // 메모리 누수 체크 명령어
-    //_CrtSetBreakAlloc(321); //번호로 누수 위치 확인 가능
+    //_CrtSetBreakAlloc(316); //번호로 누수 위치 확인 가능
 
     const int iMapSize(20);
 
