@@ -36,6 +36,7 @@ public:
 public:
 	void Make_Left_Sub_Tree(CNode* _pMain, CNode* _pSub);
 	void Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub);
+	void Preorder_Traverse(void (*_pAction)(CNode*));
 	void Inorder_Traverse(void (*_pAction)(CNode*));
 	void Posorder_Traverse(void (*_pAction)(CNode*));
 	void Delete_Tree();
@@ -64,6 +65,22 @@ inline void CNode<T>::Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub)
 	Safe_Delete(_pMain->Get_Right());
 
 	_pMain->Set_Right(_pSub);
+}
+
+template<typename T>
+inline void CNode<T>::Preorder_Traverse(void(*_pAction)(CNode*))
+{
+	_pAction(this);
+
+	if (Get_Left())
+	{
+		Get_Left()->Preorder_Traverse(_pAction);
+	}
+
+	if (Get_Right())
+	{
+		Get_Right()->Preorder_Traverse(_pAction);
+	}
 }
 
 template<typename T>
