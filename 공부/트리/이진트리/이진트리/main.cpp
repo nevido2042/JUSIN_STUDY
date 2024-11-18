@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "Node.h"
+#include "BinarySearchTree.h"
 
 #ifdef _DEBUG            // 메모리 누수 체크 매크로
 
@@ -21,39 +21,68 @@ int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // 메모리 누수 체크 명령어
 
-	CNode<int>* Node1 = new CNode<int>;
-	CNode<int>* Node2 = new CNode<int>;
-	CNode<int>* Node3 = new CNode<int>;
-	CNode<int>* Node4 = new CNode<int>;
+	//CNode<int>* Node1 = new CNode<int>;
+	//CNode<int>* Node2 = new CNode<int>;
+	//CNode<int>* Node3 = new CNode<int>;
+	//CNode<int>* Node4 = new CNode<int>;
 
-	Node1->Set_Data(1);
-	Node2->Set_Data(2);
-	Node3->Set_Data(3);
-	Node4->Set_Data(4);
+	//Node1->Set_Data(1);
+	//Node2->Set_Data(2);
+	//Node3->Set_Data(3);
+	//Node4->Set_Data(4);
 
-	Node1->Set_Left(Node2);
-	Node1->Set_Right(Node3);
-	Node2->Set_Left(Node4);
+	//Node1->Set_Left(Node2);
+	//Node1->Set_Right(Node3);
+	//Node2->Set_Left(Node4);
 
-	//cout << Node1->Get_Data() << endl;
-	//cout << Node1->Get_Left()->Get_Data() << endl;
-	//cout << Node1->Get_Right()->Get_Data() << endl;
-	//cout << Node1->Get_Left()->Get_Left()->Get_Data() << endl;
+	////cout << Node1->Get_Data() << endl;
+	////cout << Node1->Get_Left()->Get_Data() << endl;
+	////cout << Node1->Get_Right()->Get_Data() << endl;
+	////cout << Node1->Get_Left()->Get_Left()->Get_Data() << endl;
 
-	Node1->Preorder_Traverse(&CNode<int>::Print_Data);
-	cout << endl;
-	Node1->Inorder_Traverse(&CNode<int>::Print_Data);
-	cout << endl;
-	Node1->Posorder_Traverse(&CNode<int>::Print_Data);
+	//Node1->Preorder_Traverse(&CNode<int>::Print_Data);
+	//cout << endl;
+	//Node1->Inorder_Traverse(&CNode<int>::Print_Data);
+	//cout << endl;
+	//Node1->Posorder_Traverse(&CNode<int>::Print_Data);
 
-	//Node1->Posorder_Traverse(&CNode<int>::Delete_Tree);
-	Node1->Delete_Tree();
+	////Node1->Posorder_Traverse(&CNode<int>::Delete_Tree);
+	//Node1->Delete_Tree();
 
 	/*Safe_Delete(Node1);
 	Safe_Delete(Node2);
 	Safe_Delete(Node3);
 	Safe_Delete(Node4);*/
 
+	CBinarySearchTree<int> BinarySearchTree;
+	BinarySearchTree.Insert(2);
+	BinarySearchTree.Insert(3);
+	BinarySearchTree.Insert(1);
+
+	BinarySearchTree.Preorder_Traverse(CNode<int>::Print_Data);
+	cout << endl;
+	BinarySearchTree.Inorder_Traverse(CNode<int>::Print_Data);
+	cout << endl;
+	BinarySearchTree.Postorder_Traverse(CNode<int>::Print_Data);
+	cout << endl;
+	CNode<int>* SearchNode = BinarySearchTree.Search(1);
+	if (SearchNode)
+	{
+		cout << SearchNode->Get_Data() << endl;
+	}
+	else
+	{
+		cout << "탐색 실패" << endl;
+	}
+	SearchNode = BinarySearchTree.Search(99);
+	if (SearchNode)
+	{
+		cout << SearchNode->Get_Data() << endl;
+	}
+	else
+	{
+		cout << "탐색 실패" << endl;
+	}
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

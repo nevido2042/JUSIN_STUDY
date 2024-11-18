@@ -34,11 +34,9 @@ public:
 		m_Data = _Data;
 	}
 public:
-	void Make_Left_Sub_Tree(CNode* _pMain, CNode* _pSub);
-	void Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub);
 	void Preorder_Traverse(void (*_pAction)(CNode*));
 	void Inorder_Traverse(void (*_pAction)(CNode*));
-	void Posorder_Traverse(void (*_pAction)(CNode*));
+	void Postorder_Traverse(void (*_pAction)(CNode*));
 	void Delete_Tree();
 	static void Print_Data(CNode* _pNode);
 	static void Delete_Tree(CNode* _pNode);
@@ -49,22 +47,6 @@ inline CNode<T>::CNode()
 	:m_pLeft(nullptr), m_pRight(nullptr)
 {
 	memset(&m_Data, 0, sizeof(T));
-}
-
-template<typename T>
-inline void CNode<T>::Make_Left_Sub_Tree(CNode* _pMain, CNode* _pSub)
-{
-	Safe_Delete(_pMain->Get_Left());
-
-	_pMain->Set_Left(_pSub);
-}
-
-template<typename T>
-inline void CNode<T>::Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub)
-{
-	Safe_Delete(_pMain->Get_Right());
-
-	_pMain->Set_Right(_pSub);
 }
 
 template<typename T>
@@ -100,16 +82,16 @@ inline void CNode<T>::Inorder_Traverse(void (*_pAction)(CNode*))
 }
 
 template<typename T>
-inline void CNode<T>::Posorder_Traverse(void(*_pAction)(CNode*))
+inline void CNode<T>::Postorder_Traverse(void(*_pAction)(CNode*))
 {
 	if (Get_Left())
 	{
-		Get_Left()->Posorder_Traverse(_pAction);
+		Get_Left()->Postorder_Traverse(_pAction);
 	}
 
 	if (Get_Right())
 	{
-		Get_Right()->Posorder_Traverse(_pAction);
+		Get_Right()->Postorder_Traverse(_pAction);
 	}
 
 	_pAction(this);
@@ -118,7 +100,7 @@ inline void CNode<T>::Posorder_Traverse(void(*_pAction)(CNode*))
 template<typename T>
 inline void CNode<T>::Delete_Tree()
 {
-	Posorder_Traverse(&CNode<int>::Delete_Tree);
+	Postorder_Traverse(&CNode<int>::Delete_Tree);
 }
 
 template<typename T>
