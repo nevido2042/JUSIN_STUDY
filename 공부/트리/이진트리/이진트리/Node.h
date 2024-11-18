@@ -38,7 +38,9 @@ public:
 	void Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub);
 	void Inorder_Traverse(void (*_pAction)(CNode*));
 	void Posorder_Traverse(void (*_pAction)(CNode*));
+	void Delete_Tree();
 	static void Print_Data(CNode* _pNode);
+	static void Delete_Tree(CNode* _pNode);
 };
 
 template<typename T>
@@ -85,19 +87,31 @@ inline void CNode<T>::Posorder_Traverse(void(*_pAction)(CNode*))
 {
 	if (Get_Left())
 	{
-		Get_Left()->Inorder_Traverse(_pAction);
+		Get_Left()->Posorder_Traverse(_pAction);
 	}
 
 	if (Get_Right())
 	{
-		Get_Right()->Inorder_Traverse(_pAction);
+		Get_Right()->Posorder_Traverse(_pAction);
 	}
 
 	_pAction(this);
 }
 
 template<typename T>
+inline void CNode<T>::Delete_Tree()
+{
+	Posorder_Traverse(&CNode<int>::Delete_Tree);
+}
+
+template<typename T>
 inline void CNode<T>::Print_Data(CNode* _pNode)
 {
 	cout << _pNode->Get_Data() << endl;
+}
+
+template<typename T>
+inline void CNode<T>::Delete_Tree(CNode* _pNode)
+{
+	Safe_Delete(_pNode);
 }

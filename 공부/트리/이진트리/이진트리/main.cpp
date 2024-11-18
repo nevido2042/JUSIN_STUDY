@@ -44,10 +44,13 @@ int main()
 	cout << endl;
 	Node1->Posorder_Traverse(&CNode<int>::Print_Data);
 
-	Safe_Delete(Node1);
+	//Node1->Posorder_Traverse(&CNode<int>::Delete_Tree);
+	Node1->Delete_Tree();
+
+	/*Safe_Delete(Node1);
 	Safe_Delete(Node2);
 	Safe_Delete(Node3);
-	Safe_Delete(Node4);
+	Safe_Delete(Node4);*/
 
 }
 
