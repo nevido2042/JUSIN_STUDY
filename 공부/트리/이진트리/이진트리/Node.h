@@ -40,6 +40,11 @@ public:
 	void Delete_Tree();
 	static void Print_Data(CNode* _pNode);
 	static void Delete_Tree(CNode* _pNode);
+	CNode* Remove_Left_Sub_Tree();
+	CNode* Remove_Right_Sub_Tree();
+	void Change_Left_Sub_Tree(CNode* _pNode);
+	void Change_Right_Sub_Tree(CNode* _pNode);
+
 };
 
 template<typename T>
@@ -113,4 +118,36 @@ template<typename T>
 inline void CNode<T>::Delete_Tree(CNode* _pNode)
 {
 	Safe_Delete(_pNode);
+}
+
+template<typename T>
+inline CNode<T>* CNode<T>::Remove_Left_Sub_Tree()
+{
+	CNode* pRemoveNode = Get_Left();
+
+	Set_Left(nullptr);
+
+	return pRemoveNode;
+}
+
+template<typename T>
+inline CNode<T>* CNode<T>::Remove_Right_Sub_Tree()
+{
+	CNode* pRemoveNode = Get_Right();
+
+	Get_Right(nullptr);
+
+	return pRemoveNode;
+}
+
+template<typename T>
+inline void CNode<T>::Change_Left_Sub_Tree(CNode* _pNode)
+{
+	Set_Left(_pNode);
+}
+
+template<typename T>
+inline void CNode<T>::Change_Right_Sub_Tree(CNode* _pNode)
+{
+	Set_Right(_pNode);
 }

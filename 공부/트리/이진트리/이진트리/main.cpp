@@ -54,7 +54,7 @@ int main()
 	Safe_Delete(Node3);
 	Safe_Delete(Node4);*/
 
-	CBinarySearchTree<int> BinarySearchTree;
+	/*CBinarySearchTree<int> BinarySearchTree;
 	BinarySearchTree.Insert(2);
 	BinarySearchTree.Insert(3);
 	BinarySearchTree.Insert(1);
@@ -65,7 +65,8 @@ int main()
 	cout << endl;
 	BinarySearchTree.Postorder_Traverse(CNode<int>::Print_Data);
 	cout << endl;
-	CNode<int>* SearchNode = BinarySearchTree.Search(1);
+	CNode<int>* SearchNode;
+	SearchNode = BinarySearchTree.Search(1);
 	if (SearchNode)
 	{
 		cout << SearchNode->Get_Data() << endl;
@@ -82,7 +83,15 @@ int main()
 	else
 	{
 		cout << "탐색 실패" << endl;
-	}
+	}*/
+
+	CBinarySearchTree<int> BinarySearchTree;
+	BinarySearchTree.Insert(2);
+	BinarySearchTree.Insert(3);
+	BinarySearchTree.Insert(1);
+
+	BinarySearchTree.Inorder_Traverse(CNode<int>::Print_Data);
+	cout << endl;
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
