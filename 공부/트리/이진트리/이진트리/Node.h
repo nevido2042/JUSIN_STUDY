@@ -36,8 +36,9 @@ public:
 public:
 	void Make_Left_Sub_Tree(CNode* _pMain, CNode* _pSub);
 	void Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub);
-	void Inorder_Traverse(void (*_pAction)(T));
-	static void Print_Data(T _Data);
+	void Inorder_Traverse(void (*_pAction)(CNode*));
+	void Posorder_Traverse(void (*_pAction)(CNode*));
+	static void Print_Data(CNode* _pNode);
 };
 
 template<typename T>
@@ -64,15 +65,14 @@ inline void CNode<T>::Make_Right_Sub_Tree(CNode* _pMain, CNode* _pSub)
 }
 
 template<typename T>
-inline void CNode<T>::Inorder_Traverse(void (*_pAction)(T))
+inline void CNode<T>::Inorder_Traverse(void (*_pAction)(CNode*))
 {
 	if (Get_Left())
 	{
 		Get_Left()->Inorder_Traverse(_pAction);
 	}
 
-	_pAction(m_Data);
-	//cout << Get_Data() << endl;
+	_pAction(this);
 
 	if (Get_Right())
 	{
@@ -81,7 +81,23 @@ inline void CNode<T>::Inorder_Traverse(void (*_pAction)(T))
 }
 
 template<typename T>
-inline void CNode<T>::Print_Data(T _Data)
+inline void CNode<T>::Posorder_Traverse(void(*_pAction)(CNode*))
 {
-	cout << _Data << endl;
+	if (Get_Left())
+	{
+		Get_Left()->Inorder_Traverse(_pAction);
+	}
+
+	if (Get_Right())
+	{
+		Get_Right()->Inorder_Traverse(_pAction);
+	}
+
+	_pAction(this);
+}
+
+template<typename T>
+inline void CNode<T>::Print_Data(CNode* _pNode)
+{
+	cout << _pNode->Get_Data() << endl;
 }

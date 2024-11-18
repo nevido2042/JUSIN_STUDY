@@ -41,6 +41,8 @@ int main()
 	//cout << Node1->Get_Left()->Get_Left()->Get_Data() << endl;
 
 	Node1->Inorder_Traverse(&CNode<int>::Print_Data);
+	cout << endl;
+	Node1->Posorder_Traverse(&CNode<int>::Print_Data);
 
 	Safe_Delete(Node1);
 	Safe_Delete(Node2);
