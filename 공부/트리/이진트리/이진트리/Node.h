@@ -135,7 +135,7 @@ inline CNode<T>* CNode<T>::Remove_Right_Sub_Tree()
 {
 	CNode* pRemoveNode = Get_Right();
 
-	Get_Right(nullptr);
+	Set_Right(nullptr);
 
 	return pRemoveNode;
 }

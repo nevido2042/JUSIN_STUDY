@@ -7,6 +7,9 @@ class CBinarySearchTree
 	CNode<T>* m_pRootNode;
 public:
 	CBinarySearchTree();
+	~CBinarySearchTree();
+private:
+	void Release();
 public:
 	void Insert(T _Data);
 	CNode<T>* Remove(T _Target);
@@ -21,6 +24,18 @@ inline CBinarySearchTree<T>::CBinarySearchTree()
 	:m_pRootNode(nullptr)
 {
 
+}
+
+template<typename T>
+inline CBinarySearchTree<T>::~CBinarySearchTree()
+{
+	Release();
+}
+
+template<typename T>
+inline void CBinarySearchTree<T>::Release()
+{
+	Postorder_Traverse(CNode<int>::Delete_Tree);
 }
 
 template<typename T>
@@ -113,7 +128,7 @@ inline CNode<T>* CBinarySearchTree<T>::Remove(T _Target)
 		}
 	}
 	//두 번째 경우: 삭제 대상이 하나의 자식 노드를 갖는 경우
-	else if (pDeleteNode->Get_Left() == NULL || pDeleteNode->Get_Data())
+	else if (pDeleteNode->Get_Left() == nullptr || pDeleteNode->Get_Right() == nullptr)
 	{
 		CNode<T>* pDeleteNode_ChildNode(nullptr);
 

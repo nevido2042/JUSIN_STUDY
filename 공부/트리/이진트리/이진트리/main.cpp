@@ -89,9 +89,16 @@ int main()
 	BinarySearchTree.Insert(2);
 	BinarySearchTree.Insert(3);
 	BinarySearchTree.Insert(1);
+	BinarySearchTree.Insert(4);
+	BinarySearchTree.Insert(5);
+	BinarySearchTree.Insert(6);
 
 	BinarySearchTree.Inorder_Traverse(CNode<int>::Print_Data);
 	cout << endl;
+
+	CNode<int>* pNode = BinarySearchTree.Remove(4);
+	Safe_Delete(pNode);
+	BinarySearchTree.Inorder_Traverse(CNode<int>::Print_Data);
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
