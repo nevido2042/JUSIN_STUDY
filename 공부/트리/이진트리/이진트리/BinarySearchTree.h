@@ -4,15 +4,16 @@
 template<typename T>
 class CBinarySearchTree
 {
+protected:
 	CNode<T>* m_pRootNode;
 public:
 	CBinarySearchTree();
-	~CBinarySearchTree();
+	virtual ~CBinarySearchTree();
 private:
 	void Release();
 public:
-	void Insert(T _Data);
-	CNode<T>* Remove(T _Target);
+	virtual void Insert(T _Data);
+	virtual CNode<T>* Remove(T _Target);
 	CNode<T>* Search(T _Target);
 	void Preorder_Traverse(void (*_pAction)(CNode<T>*));
 	void Inorder_Traverse(void (*_pAction)(CNode<T>*));
@@ -153,7 +154,7 @@ inline CNode<T>* CBinarySearchTree<T>::Remove(T _Target)
 	//세 번째 경우: 두 개의 자식 노드를 모두 갖는 경우
 	else
 	{
-		CNode<T>* pReplaceNode = pDeleteNode->Get_Right(); //대체 노드를 가리킴 //왜 오른쪽?
+		CNode<T>* pReplaceNode = pDeleteNode->Get_Right(); //대체 노드를 가리킴 //왜 오른쪽? //왼쪽도 상관 없음
 		CNode<T>* pReplaceNode_Parent = pDeleteNode;
 		int DeleteData(0);
 
