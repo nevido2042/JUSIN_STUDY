@@ -35,10 +35,12 @@ int main()
 	Node1->Set_Right(Node3);
 	Node2->Set_Left(Node4);
 
-	cout << Node1->Get_Data() << endl;
-	cout << Node1->Get_Left()->Get_Data() << endl;
-	cout << Node1->Get_Right()->Get_Data() << endl;
-	cout << Node1->Get_Left()->Get_Left()->Get_Data() << endl;
+	//cout << Node1->Get_Data() << endl;
+	//cout << Node1->Get_Left()->Get_Data() << endl;
+	//cout << Node1->Get_Right()->Get_Data() << endl;
+	//cout << Node1->Get_Left()->Get_Left()->Get_Data() << endl;
+
+	Node1->Inorder_Traverse(&CNode<int>::Print_Data);
 
 	Safe_Delete(Node1);
 	Safe_Delete(Node2);
