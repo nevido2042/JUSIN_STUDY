@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "BinarySearchTree.h"
+#include "AVLTree.h"
 
 #ifdef _DEBUG            // 메모리 누수 체크 매크로
 
@@ -85,7 +85,7 @@ int main()
 		cout << "탐색 실패" << endl;
 	}*/
 
-	CBinarySearchTree<int> BinarySearchTree;
+	/*CBinarySearchTree<int> BinarySearchTree;
 	BinarySearchTree.Insert(2);
 	BinarySearchTree.Insert(3);
 	BinarySearchTree.Insert(1);
@@ -98,7 +98,24 @@ int main()
 
 	CNode<int>* pNode = BinarySearchTree.Remove(4);
 	Safe_Delete(pNode);
-	BinarySearchTree.Inorder_Traverse(CNode<int>::Print_Data);
+	BinarySearchTree.Inorder_Traverse(CNode<int>::Print_Data);*/
+
+	CAVLTree<int> AVLTree;
+
+	AVLTree.Insert(1);
+	AVLTree.Insert(2);
+	AVLTree.Insert(3);
+	AVLTree.Insert(4);
+	AVLTree.Insert(5);
+	AVLTree.Insert(6);
+
+	AVLTree.Inorder_Traverse(CNode<int>::Print_Data);
+	cout << endl;
+
+	delete AVLTree.Remove(3);
+
+	AVLTree.Inorder_Traverse(CNode<int>::Print_Data);
+
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

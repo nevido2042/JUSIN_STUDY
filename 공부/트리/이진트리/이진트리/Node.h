@@ -15,6 +15,10 @@ public:
 	}
 	void Set_Left(CNode* _pNode)
 	{
+		if(this == _pNode)
+		{
+			return;
+		}
 		m_pLeft = _pNode;
 	}
 	CNode* Get_Right()
@@ -23,6 +27,11 @@ public:
 	}
 	void Set_Right(CNode* _pNode)
 	{
+		if (this == _pNode)
+		{
+			return;
+		}
+
 		m_pRight = _pNode;
 	}
 	T& Get_Data()
