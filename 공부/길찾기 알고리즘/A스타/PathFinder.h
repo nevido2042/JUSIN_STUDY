@@ -28,6 +28,7 @@ private:
 	void Search_Linear(CNode& _Node, DIRECTION _Dir);//노드의 방향에 따른 직선 탐색 함수
 	void Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS _Pos = POS(-999, -999));//한 방향 탐색 함수
 	void Search_Diagonal(CNode& _Node, DIRECTION _Dir);//노드의 방향에 따른 대각선 탐색 함수
+	bool Check_Visit(POS& _Pos);
 public:
 	void Start_A_Star();
 	void Start_JPS();

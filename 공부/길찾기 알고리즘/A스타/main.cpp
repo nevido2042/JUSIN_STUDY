@@ -23,18 +23,23 @@ int main()
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // 메모리 누수 체크 명령어
     //_CrtSetBreakAlloc(316); //번호로 누수 위치 확인 가능
 
-    const int iMapSize(20);
+    //col = 가로, lines = 세로
+    system("mode con:cols=100 lines=50");
+
+    SetConsoleTitle(L"Text RPG");
+
+    const int iMapSize(40);
 
     CMap Map(iMapSize, iMapSize);
     Map.Initialize();
 
-    /*srand((time(NULL)));
-    for (int i = 0; i < iMapSize * 10; ++i)
+    srand((time(NULL)));
+    for (int i = 0; i < iMapSize; ++i)
     {
         Map.Change_Tile(POS(rand() % iMapSize, rand() % iMapSize), WALL);
-    }*/
+    }
     
-    for (int i = 0; i < 8; ++i)
+    /*for (int i = 0; i < 8; ++i)
     {
         Map.Change_Tile(POS(4, i), WALL);
     }
@@ -62,16 +67,22 @@ int main()
     for (int i = 5; i < 19; ++i)
     {
         Map.Change_Tile(POS(i, 7), WALL);
-    }
+    }*/
 
     Map.Change_Tile(POS(0, 0), START);
-    //Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
-    Map.Change_Tile(POS(5, 6), END);
+    Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
+    //Map.Change_Tile(POS(5, 6), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
+
+    ULONGLONG		dwTime = GetTickCount64();
+
     //PathFinder.Start_A_Star();
     PathFinder.Start_JPS();
+
+    cout << GetTickCount64() - dwTime << endl;
+
     system("pause");
 
 }

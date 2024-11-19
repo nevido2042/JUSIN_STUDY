@@ -24,7 +24,7 @@ CNode::CNode(POS _Pos, const CNode* _pParent, POS _EndPos)
 	m_Direction(OO)
 {
 	m_G = Distance(_Pos, _pParent->Get_Pos());//이 노드와 부모와의 거리
-	m_H = Distance(_Pos, _EndPos); //이 노드와 목적지 까지의 거리(맨해튼 별론데?)
+	m_H = Manhattan_Distance(_Pos, _EndPos); //이 노드와 목적지 까지의 거리(맨해튼 별론데?)
 
 	m_F = m_G + m_H;
 }
@@ -34,7 +34,7 @@ CNode::CNode(POS _Pos, const CNode* _pParent, POS _EndPos, DIRECTION _Dir)
 	m_Direction(_Dir)
 {
 	m_G = Distance(_Pos, _pParent->Get_Pos()) + _pParent->Get_G();//이 노드와 부모와의 거리 + 부모의 G값
-	m_H = Distance(_Pos, _EndPos); //이 노드와 목적지 까지의 거리(맨해튼 별론데?)
+	m_H = Manhattan_Distance(_Pos, _EndPos); //이 노드와 목적지 까지의 거리(맨해튼 별론데?)
 
 	m_F = m_G + m_H;
 }

@@ -287,6 +287,11 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 		//체크하는 위치가 도착점 인지 확인
 		if (m_pMap->Get_Tile_Type(CheckPos) == END)
 		{
+			if (Check_Visit(CheckPos))
+			{
+				break;
+			}
+
 			POS New_Node_Pos;
 			if (bIsSub_Search)
 			{
@@ -311,25 +316,18 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 			break;
 		}
 
+		POS New_Node_Pos;
+		if (bIsSub_Search)
+		{
+			New_Node_Pos = Sub_Search_Pos;
+		}
+		else
+		{
+			New_Node_Pos = CheckPos;
+		}
+
 		//오픈리스트 또는 클로즈 리스트에 이미 있는 지점인지 확인
-		bool bIsNewPos = true;
-		for (list<CNode*>::iterator iter = m_OpenList.begin(); iter != m_OpenList.end(); ++iter)
-		{
-			if (CheckPos == (*iter)->Get_Pos())
-			{
-				bIsNewPos = false;
-				break;
-			}
-		}
-		for (list<CNode*>::iterator iter = m_CloseList.begin(); iter != m_CloseList.end(); ++iter)
-		{
-			if (CheckPos == (*iter)->Get_Pos())
-			{
-				bIsNewPos = false;
-				break;
-			}
-		}
-		if (!bIsNewPos)
+		if (Check_Visit(New_Node_Pos))
 		{
 			break;
 		}
@@ -340,16 +338,6 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 		{
 			if (m_pMap->Get_Tile_Type(Wall1) == WALL && m_pMap->Get_Tile_Type(Road1) == ROAD)
 			{
-				POS New_Node_Pos;
-				if (bIsSub_Search)
-				{
-					New_Node_Pos = Sub_Search_Pos;
-				}
-				else
-				{
-					New_Node_Pos = CheckPos;
-				}
-
 				m_OpenList.push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
 				m_pMap->Change_Tile(New_Node_Pos, NODE);
 				m_pMap->Update();
@@ -532,6 +520,11 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir)
 		//체크하는 위치가 도착점 인지 확인
 		if (m_pMap->Get_Tile_Type(CheckPos) == END)
 		{
+			if (Check_Visit(CheckPos))
+			{
+				break;
+			}
+
 			m_OpenList.push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
 			//m_pMap->Change_Tile(CheckPos, NODE);
 			//m_pMap->Update();
@@ -547,24 +540,7 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir)
 		}
 
 		//오픈리스트 또는 클로즈 리스트에 이미 있는 지점인지 확인
-		bool bIsNewPos = true;
-		for (list<CNode*>::iterator iter = m_OpenList.begin(); iter != m_OpenList.end(); ++iter)
-		{
-			if (CheckPos == (*iter)->Get_Pos())
-			{
-				bIsNewPos = false;
-				break;
-			}
-		}
-		for (list<CNode*>::iterator iter = m_CloseList.begin(); iter != m_CloseList.end(); ++iter)
-		{
-			if (CheckPos == (*iter)->Get_Pos())
-			{
-				bIsNewPos = false;
-				break;
-			}
-		}
-		if (!bIsNewPos)
+		if (Check_Visit(CheckPos))
 		{
 			break;
 		}
@@ -611,6 +587,26 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir)
 	}
 
 
+}
+
+bool CPathFinder::Check_Visit(POS& _Pos)
+{
+	for (list<CNode*>::iterator iter = m_OpenList.begin(); iter != m_OpenList.end(); ++iter)
+	{
+		if (_Pos == (*iter)->Get_Pos())
+		{
+			return true;
+		}
+	}
+	for (list<CNode*>::iterator iter = m_CloseList.begin(); iter != m_CloseList.end(); ++iter)
+	{
+		if (_Pos == (*iter)->Get_Pos())
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CPathFinder::Start_A_Star()
