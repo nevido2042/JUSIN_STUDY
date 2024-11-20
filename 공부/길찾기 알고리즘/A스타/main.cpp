@@ -28,7 +28,7 @@ int main()
 
     SetConsoleTitle(L"Text RPG");
 
-    const int iMapSize(20);
+    const int iMapSize(40);
 
     CMap Map(iMapSize, iMapSize);
     Map.Initialize();
@@ -78,8 +78,11 @@ int main()
 
     ULONGLONG		dwTime = GetTickCount64();
 
+    //Map.Set_PrintPathOnly(true);
     //PathFinder.Start_A_Star();
     PathFinder.Start_JPS();
+
+    //Map.Render_Test();
 
     cout << GetTickCount64() - dwTime << endl;
 

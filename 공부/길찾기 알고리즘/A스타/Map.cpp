@@ -2,12 +2,13 @@
 #include "Map.h"
 
 CMap::CMap(int _iWidth, int _iHeight)
-	: 
+	:
 	m_vecTileMap(m_iHeight, vector<TILE_TYPE>(m_iWidth, ROAD)),
 	m_vecTileMap_Buffer(m_iHeight, vector<TILE_TYPE>(m_iWidth, NONE)),
-	m_iWidth(_iWidth), 
+	m_iWidth(_iWidth),
 	m_iHeight(_iHeight),
-	m_CHECK_Color(CHECK)
+	m_CHECK_Color(CHECK),
+	m_bPrintPathOnly(false)
 {
 	
 }
@@ -40,6 +41,14 @@ void CMap::GotoXY(int _iX, int _iY)
 
 void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 {
+	if (m_bPrintPathOnly)
+	{
+		if (_Type == CHECK || _Type == CHECK2)
+		{
+			return;
+		}
+	}
+
 	GotoXY(_iX * 2, _iY);
 
 	switch (_Type)
@@ -86,6 +95,25 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 }
 
 void CMap::Render()
+{
+	int iOffset(2);
+
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		for (int j = 0; j < m_iWidth; ++j)
+		{
+			if (m_vecTileMap[i][j] != m_vecTileMap_Buffer[i][j])
+			{
+				Print_Tile(j + iOffset, i + iOffset, m_vecTileMap[i][j]);
+				m_vecTileMap_Buffer[i][j] = m_vecTileMap[i][j];
+			}
+		}
+		cout << endl;
+	}
+	GotoXY(0, 0);
+}
+
+void CMap::Render_Test()
 {
 	int iOffset(2);
 

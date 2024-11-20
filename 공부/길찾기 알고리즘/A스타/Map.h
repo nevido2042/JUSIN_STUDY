@@ -13,6 +13,7 @@ class CMap
 	POS m_EndPos;
 
 	TILE_TYPE m_CHECK_Color;
+	bool m_bPrintPathOnly;
 
 public:
 	CMap(int _iWidth, int _iHeight);
@@ -37,12 +38,17 @@ public:
 	{
 		return m_iHeight;
 	}
+	void Set_PrintPathOnly(bool _bool)
+	{
+		m_bPrintPathOnly = _bool;
+	}
 private:
 	void Visible_Cursor(bool _bool);
 	void GotoXY(int _iX, int _iY);
 	void Print_Tile(int _iX, int _iY, TILE_TYPE _Type);
 public:
 	void Render();
+	void Render_Test();
 	void Change_Tile(POS _Pos, TILE_TYPE _Type);
 	void Change_Tile_Check(POS _Pos);
 	TILE_TYPE Get_Tile_Type(POS _Pos);
