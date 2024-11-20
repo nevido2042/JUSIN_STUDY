@@ -12,7 +12,7 @@ class CMap
 	POS m_StartPos;
 	POS m_EndPos;
 
-	COLOR m_CHECK_Color;
+	TILE_TYPE m_CHECK_Color;
 
 public:
 	CMap(int _iWidth, int _iHeight);
@@ -44,6 +44,7 @@ private:
 public:
 	void Render();
 	void Change_Tile(POS _Pos, TILE_TYPE _Type);
+	void Change_Tile_Check(POS _Pos);
 	TILE_TYPE Get_Tile_Type(POS _Pos);
 	void Change_CHECK_Color();
 };

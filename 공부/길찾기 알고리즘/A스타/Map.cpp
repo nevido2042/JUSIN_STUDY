@@ -7,7 +7,7 @@ CMap::CMap(int _iWidth, int _iHeight)
 	m_vecTileMap_Buffer(m_iHeight, vector<TILE_TYPE>(m_iWidth, NONE)),
 	m_iWidth(_iWidth), 
 	m_iHeight(_iHeight),
-	m_CHECK_Color(SKYBLUE)
+	m_CHECK_Color(CHECK)
 {
 	
 }
@@ -71,7 +71,12 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 		Set_Color(GRAY);
 		break;
 	case CHECK:
-		Set_Color(m_CHECK_Color);
+		Set_Color(DARK_BLUE);
+		cout << "бс";
+		Set_Color(GRAY);
+		break;
+	case CHECK2:
+		Set_Color(SKYBLUE);
 		cout << "бс";
 		Set_Color(GRAY);
 		break;
@@ -114,6 +119,11 @@ void CMap::Change_Tile(POS _Pos, TILE_TYPE _Type)
 	}
 }
 
+void CMap::Change_Tile_Check(POS _Pos)
+{
+	m_vecTileMap[_Pos.iY][_Pos.iX] = m_CHECK_Color;
+}
+
 TILE_TYPE CMap::Get_Tile_Type(POS _Pos)
 {
 	return m_vecTileMap[_Pos.iY][_Pos.iX];
@@ -121,12 +131,12 @@ TILE_TYPE CMap::Get_Tile_Type(POS _Pos)
 
 void CMap::Change_CHECK_Color()
 {
-	if (m_CHECK_Color == SKYBLUE)
+	if (m_CHECK_Color == CHECK2)
 	{
-		m_CHECK_Color = DARK_BLUE;
+		m_CHECK_Color = CHECK;
 	}
 	else
 	{
-		m_CHECK_Color = SKYBLUE;
+		m_CHECK_Color = CHECK2;
 	}
 }

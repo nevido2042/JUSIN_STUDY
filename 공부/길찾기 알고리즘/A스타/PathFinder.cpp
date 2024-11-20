@@ -374,7 +374,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, const POS
 			break;
 		}
 
-		m_pMap->Change_Tile(CheckPos, CHECK);
+		m_pMap->Change_Tile_Check(CheckPos);
 		m_pMap->Update();
 		Sleep(SLEEP_TIME);
 		
@@ -577,7 +577,7 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir)
 			break;
 		}
 
-		m_pMap->Change_Tile(CheckPos, CHECK);
+		m_pMap->Change_Tile_Check(CheckPos);
 		m_pMap->Update();
 		Sleep(SLEEP_TIME);
 

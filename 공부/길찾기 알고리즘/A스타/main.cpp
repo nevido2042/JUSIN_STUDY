@@ -28,18 +28,18 @@ int main()
 
     SetConsoleTitle(L"Text RPG");
 
-    const int iMapSize(40);
+    const int iMapSize(20);
 
     CMap Map(iMapSize, iMapSize);
     Map.Initialize();
 
-    srand((time(NULL)));
+    /*srand((time(NULL)));
     for (int i = 0; i < iMapSize; ++i)
     {
         Map.Change_Tile(POS(rand() % iMapSize, rand() % iMapSize), WALL);
-    }
+    }*/
     
-    /*for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < 8; ++i)
     {
         Map.Change_Tile(POS(4, i), WALL);
     }
@@ -54,7 +54,7 @@ int main()
         Map.Change_Tile(POS(6, i), WALL);
     }
 
-    for (int i = 10; i < 20; ++i)
+    for (int i = 10; i < 20; i += 2)
     {
         Map.Change_Tile(POS(10, i), WALL);
     }
@@ -67,11 +67,11 @@ int main()
     for (int i = 5; i < 19; ++i)
     {
         Map.Change_Tile(POS(i, 7), WALL);
-    }*/
+    }
 
     Map.Change_Tile(POS(0, 0), START);
-    Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
-    //Map.Change_Tile(POS(5, 6), END);
+    //Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
+    Map.Change_Tile(POS(5, 6), END);
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);

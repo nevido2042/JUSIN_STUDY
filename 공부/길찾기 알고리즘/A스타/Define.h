@@ -1,11 +1,11 @@
 #pragma once
 #include "pch.h"
 
-enum TILE_TYPE { NONE = 0, ROAD, WALL, START, END, NODE, PATH, CHECK };
+enum TILE_TYPE { NONE = 0, ROAD, WALL, START, END, NODE, PATH, CHECK, CHECK2 };
 
 enum DIRECTION { OO, UU, RU, RR, RD, DD, LD, LL, LU }; //12시 ~ 1시 방향 순
 
-#define SLEEP_TIME 0
+#define SLEEP_TIME 10
 
 template<typename T>
 void Safe_Delete(T& _p)
