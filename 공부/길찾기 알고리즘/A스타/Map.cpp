@@ -43,7 +43,7 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 {
 	if (m_bPrintPathOnly)
 	{
-		if (_Type == CHECK || _Type == CHECK2)
+		if (_Type == CHECK || _Type == CHECK2 || _Type == NODE)
 		{
 			return;
 		}
@@ -96,6 +96,11 @@ void CMap::Print_Tile(int _iX, int _iY, TILE_TYPE _Type)
 
 void CMap::Render()
 {
+	if (m_bPrintPathOnly)
+	{
+		return;
+	}
+
 	int iOffset(2);
 
 	for (int i = 0; i < m_iHeight; ++i)

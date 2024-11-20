@@ -78,7 +78,7 @@ int main()
 
     ULONGLONG		dwTime = GetTickCount64();
 
-    //Map.Set_PrintPathOnly(true);
+    Map.Set_PrintPathOnly(true);
     //PathFinder.Start_A_Star();
     PathFinder.Start_JPS();
 

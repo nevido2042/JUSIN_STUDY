@@ -623,6 +623,8 @@ void CPathFinder::Start_A_Star()
 		//도착 지점인지 확인한다.
 		if (m_EndPos == PopNode->Get_Pos())
 		{
+			m_pMap->Set_PrintPathOnly(false);
+
 			m_pMap->Change_Tile(m_EndPos, END);
 			// 부모를 이어서 길을 만든다.
 			const CNode* pParent = PopNode;
@@ -714,6 +716,8 @@ void CPathFinder::Start_JPS()
 		//도착 지점인가?
 		if (m_EndPos == PopNode->Get_Pos())
 		{
+			m_pMap->Set_PrintPathOnly(false);
+
 			m_pMap->Change_Tile(m_EndPos, END);
 			// 부모를 이어서 길을 만든다.
 			const CNode* pParent = PopNode;
