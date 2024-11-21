@@ -1,15 +1,46 @@
 ﻿#include "pch.h"
 
-#define STDCALL __stdcall
-#define CDECL __cdecl
+int main()
+{
+	array<int, 5> IntArr;
+	IntArr[0] = 1;
+	IntArr.at(2) = 1;
 
-void STDCALL MyStdcallFunction(const char* msg) {
-    printf("MyStdcallFunction: %s\n", msg);
-}
+	map<int, string> StringMap;
+	StringMap.insert({ 1,string("fdifjid") });
+	StringMap.emplace(3, string("fjdifd"));
+	StringMap.emplace(5, string("fjdifd"));
+	StringMap.emplace(2, string("fjdifd"));
 
-int main() {
-    // 호출 규약을 매크로로 관리해 잘못된 사용 방지
-    void (CDECL * myFunctionPointer)(const char*) = (void (CDECL*)(const char*))MyStdcallFunction;
-    myFunctionPointer("Using macro for consistency");
-    return 0;
+	set<string> StringSet;
+	StringSet.emplace(string("fd"));
+
+	forward_list<int> Int_FwdList;
+	Int_FwdList.emplace_front(1);
+	Int_FwdList.push_front(2);
+
+	vector<int> vecInt{ 1,2,3,4,5 };
+
+	std::sort(IntArr.begin(), IntArr.end());
+	Int_FwdList.sort();
+	//sort(StringMap.begin(), StringMap.end());
+	
+	for (auto iter = StringMap.begin(); iter != StringMap.end(); ++iter)
+	{
+		cout << iter->first << "\t" << iter->second << endl;
+	}
+
+	for (map<int,string>::iterator iter = StringMap.begin(); iter != StringMap.end(); ++iter)
+	{
+		cout << iter->first << "\t" << iter->second << endl;
+	}
+
+	cout << StringMap[3] << endl;
+
+	for (int i : Int_FwdList)
+	{
+		cout << i << endl;
+	}
+
+	return 0;
 }

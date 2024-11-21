@@ -27,3 +27,9 @@ map에 key값으로 const char* 를 넣는 경우 조심해야함
 
 ## Reinterpret_cast
 - const 포인터를 제외한 모든 포인터의 형 변환을 허용
+
+시퀀스 컨테이너: vector, list, deque, array, forward_list
+
+자동 정렬 연관 컨테이너: set, multiset, map, multimap
+
+비정렬 연관 컨테이너: unordered_set, unordered_multiset, unordered_map, unordered_multimap
