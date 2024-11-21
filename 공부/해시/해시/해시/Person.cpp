@@ -13,4 +13,5 @@ void CPerson::Show_Person_Info()
 	cout << "주민등록번호: " << m_iSSN << endl;
 	cout << "이름: " << m_szName << endl;
 	cout << "주소: " << m_szAddr << endl;
+	cout << endl;
 }

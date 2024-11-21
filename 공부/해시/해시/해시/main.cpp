@@ -3,18 +3,21 @@
 
 #include "pch.h"
 #include "Table.h"
+#include "Table2.h"
+
 int MyHashFunc(int _Key)
 {
     return _Key % 100;
 }
+
 int main()
 {
-    CTable MyTable;
-    MyTable.Initialize(MyHashFunc);
-
     CPerson Person1(19980806, "한영웅", "Jeju");
     CPerson Person2(00000000, "예수", "0000");
-    CPerson Person3(-99999, "지구", "Space");
+    CPerson Person3(99999999, "지구", "Space");
+
+    /*CTable MyTable;
+    MyTable.Initialize(MyHashFunc);
 
     MyTable.Insert(Person1.Get_SSN(), &Person1);
     MyTable.Insert(Person2.Get_SSN(), &Person2);
@@ -26,7 +29,24 @@ int main()
 
     MyTable.Delete(Person1.Get_SSN());
     MyTable.Delete(Person2.Get_SSN());
-    MyTable.Delete(Person3.Get_SSN());
+    MyTable.Delete(Person3.Get_SSN());*/
+
+    ////////////////////////////////////////////////////////
+    CTable2 MyTable2;
+    MyTable2.Initialize(MyHashFunc);
+
+    MyTable2.Insert(Person1.Get_SSN(), &Person1);
+    MyTable2.Insert(Person2.Get_SSN(), &Person2);
+    MyTable2.Insert(Person3.Get_SSN(), &Person3);
+
+    MyTable2.Search(Person1.Get_SSN())->Show_Person_Info();
+    MyTable2.Search(Person2.Get_SSN())->Show_Person_Info();
+    MyTable2.Search(Person3.Get_SSN())->Show_Person_Info();
+
+    MyTable2.Delete(Person1.Get_SSN());
+    MyTable2.Delete(Person2.Get_SSN());
+    MyTable2.Delete(Person3.Get_SSN());
+
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

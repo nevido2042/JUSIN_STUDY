@@ -143,14 +143,18 @@
     </ClCompile>
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Slot.cpp" />
+    <ClCompile Include="Slot2.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Table2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Slot.h" />
+    <ClInclude Include="Slot2.h" />
     <ClInclude Include="Table.h" />
+    <ClInclude Include="Table2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
