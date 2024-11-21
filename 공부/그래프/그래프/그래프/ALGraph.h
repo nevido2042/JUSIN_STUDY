@@ -9,7 +9,7 @@ class CALGraph
 public:
 	int m_iNumV;
 	int m_iNumE;
-	vector<list<int>*> m_vecADJList;
+	vector<list<int>> m_vecADJList;
 
 	void Initialize(int _iNumV);
 	void Release();
