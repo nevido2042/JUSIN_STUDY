@@ -11,8 +11,8 @@ public:
 	int m_iNumE;
 	vector<list<int>> m_vecADJList;
 
-	void Initialize(int _iNumV);
-	void Release();
+	virtual void Initialize(int _iNumV);
+	virtual void Release();
 	void AddEdge(int _iFromV, int _iToV);
 	void Show_GraphEdgeInfo();
 };

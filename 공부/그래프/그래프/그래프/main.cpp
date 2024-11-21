@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include "ALGraph.h"
+#include "ALGraphDFS.h"
 
 #ifdef _DEBUG            // 메모리 누수 체크 매크로
 
@@ -21,7 +22,7 @@ int main()
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // 메모리 누수 체크 명령어
     
-    CALGraph Graph;
+    /*CALGraph Graph;
     Graph.Initialize(5);
 
     Graph.AddEdge(A, B);
@@ -31,7 +32,29 @@ int main()
     Graph.AddEdge(D, E);
     Graph.AddEdge(E, A);
 
+    Graph.Show_GraphEdgeInfo();*/
+
+    CALGraphDFS Graph;
+    Graph.Initialize(7);
+
+    Graph.AddEdge(A, B);
+    Graph.AddEdge(A, D);
+    Graph.AddEdge(B, C);
+    Graph.AddEdge(D, C);
+    Graph.AddEdge(D, E);
+    Graph.AddEdge(E, F);
+    Graph.AddEdge(E, G);
+
     Graph.Show_GraphEdgeInfo();
+
+    Graph.Show_DFS_GraphVertex(A);
+    cout << endl;
+    Graph.Show_DFS_GraphVertex(C);
+    cout << endl;
+    Graph.Show_DFS_GraphVertex(E);
+    cout << endl;
+    Graph.Show_DFS_GraphVertex(G);
+    cout << endl;
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴

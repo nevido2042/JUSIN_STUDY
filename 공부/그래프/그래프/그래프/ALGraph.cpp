@@ -3,7 +3,7 @@
 
 void CALGraph::Initialize(int _iNumV)
 {
-	//m_vecADJList.reserve(_iNumV);
+	m_vecADJList.reserve(_iNumV);
 	for (int i = 0; i < _iNumV; ++i)
 	{
 		m_vecADJList.push_back(list<int>());
