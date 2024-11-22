@@ -135,7 +135,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ALEdge.cpp" />
     <ClCompile Include="ALGraph.cpp" />
+    <ClCompile Include="ALGraph_Kruskal.cpp" />
     <ClCompile Include="ALGraph_Search.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -146,7 +148,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ALEdge.h" />
     <ClInclude Include="ALGraph.h" />
+    <ClInclude Include="ALGraph_Kruskal.h" />
     <ClInclude Include="ALGraph_Search.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

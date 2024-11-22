@@ -7,6 +7,10 @@
 #ifndef PCH_H
 #define PCH_H
 #include <iostream>
+#include <stack>
+#include <queue>
+#include <vector>
+
 using namespace std;
 // 여기에 미리 컴파일하려는 헤더 추가
 

@@ -13,6 +13,5 @@ public:
     bool Visit_Vertex(int _iVisitV);
 public:
     bool* m_pVisitInfo;
-
 };
 

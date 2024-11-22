@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "ALGraph.h"
 #include "ALGraph_Search.h"
+#include "ALGraph_Kruskal.h"
 
 #ifdef _DEBUG            // 메모리 누수 체크 매크로
 
@@ -34,36 +35,54 @@ int main()
 
     Graph.Show_GraphEdgeInfo();*/
 
-    CALGraph_Search Graph;
-    Graph.Initialize(7);
+    //CALGraph_Search Graph;
+    //Graph.Initialize(7);
 
-    Graph.AddEdge(A, B);
-    Graph.AddEdge(A, D);
-    Graph.AddEdge(B, C);
-    Graph.AddEdge(D, C);
-    Graph.AddEdge(D, E);
-    Graph.AddEdge(E, F);
-    Graph.AddEdge(E, G);
+    //Graph.AddEdge(A, B);
+    //Graph.AddEdge(A, D);
+    //Graph.AddEdge(B, C);
+    //Graph.AddEdge(D, C);
+    //Graph.AddEdge(D, E);
+    //Graph.AddEdge(E, F);
+    //Graph.AddEdge(E, G);
 
+    //Graph.Show_GraphEdgeInfo();
+
+    ///*Graph.Show_DFS_GraphVertex(A);
+    //cout << endl;
+    //Graph.Show_DFS_GraphVertex(C);
+    //cout << endl;
+    //Graph.Show_DFS_GraphVertex(E);
+    //cout << endl;
+    //Graph.Show_DFS_GraphVertex(G);
+    //cout << endl;*/
+
+    //Graph.Show_BFS_GraphVertex(A);
+    //cout << endl;
+    //Graph.Show_BFS_GraphVertex(C);
+    //cout << endl;
+    //Graph.Show_BFS_GraphVertex(E);
+    //cout << endl;
+    //Graph.Show_BFS_GraphVertex(G);
+    //cout << endl;
+
+    CALGraph_Kruskal Graph;
+    Graph.Initialize(6);
+
+    Graph.AddEdge(A, B, 9);
+    Graph.AddEdge(B, C, 2);
+    Graph.AddEdge(A, C, 12);
+    Graph.AddEdge(A, D, 8);
+    Graph.AddEdge(D, C, 6);
+    Graph.AddEdge(A, F, 11);
+    Graph.AddEdge(F, D, 4);
+    Graph.AddEdge(D, E, 3);
+    Graph.AddEdge(E, C, 7);
+    Graph.AddEdge(F, E, 13);
+
+    Graph.Construct_KruskalMST();
     Graph.Show_GraphEdgeInfo();
-
-    /*Graph.Show_DFS_GraphVertex(A);
-    cout << endl;
-    Graph.Show_DFS_GraphVertex(C);
-    cout << endl;
-    Graph.Show_DFS_GraphVertex(E);
-    cout << endl;
-    Graph.Show_DFS_GraphVertex(G);
-    cout << endl;*/
-
-    Graph.Show_BFS_GraphVertex(A);
-    cout << endl;
-    Graph.Show_BFS_GraphVertex(C);
-    cout << endl;
-    Graph.Show_BFS_GraphVertex(E);
-    cout << endl;
-    Graph.Show_BFS_GraphVertex(G);
-    cout << endl;
+    Graph.Show_GraphEdgeWeightInfo();
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
