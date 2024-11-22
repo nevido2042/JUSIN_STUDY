@@ -29,53 +29,60 @@ void CALGraphDFS::Show_DFS_GraphVertex(int _iStartV)
 {
 	stack<int> Stack;
 	int iVisit_V = _iStartV;
-	int iNext_V;
-	auto Iter_Next_V = m_vecADJList[iVisit_V].begin();
+	int iPrevVisit_V(-1);
 
-	Visit_Vertex(iVisit_V);
-	Stack.push(iVisit_V);
-
-	while (m_vecADJList[iVisit_V].size() != 0)
+	while (true)
 	{
-		Iter_Next_V = m_vecADJList[iVisit_V].begin();
-
-		bool bVisitFlag = false;
-
-		if (Visit_Vertex(*Iter_Next_V))
+		if (Visit_Vertex(iVisit_V)) // 방문 성공
 		{
-			Stack.push(iVisit_V);
-			iVisit_V = *Iter_Next_V;
-			bVisitFlag = true;
+			iPrevVisit_V = iVisit_V;
+			Stack.push(iVisit_V);//방문 순서 저장
+			iVisit_V = *m_vecADJList[iVisit_V].begin();//방문한 노드와 연결된 녀석을 다음 탐색으로 지정
 		}
 		else
 		{
-			++Iter_Next_V;
-			
-			while (m_vecADJList[*Iter_Next_V].size() != 0)
+			//실패했으면 다른 인접노드도 검사
+			//int iStackTop = Stack.top();
+			auto Iter = m_vecADJList[iPrevVisit_V].begin();
+
+			bool bVisitFlag = false;
+			while (Iter != m_vecADJList[iPrevVisit_V].end())
 			{
-				if (Visit_Vertex(*Iter_Next_V))
+				iVisit_V = *Iter;
+				if (Visit_Vertex(iVisit_V)) // 방문 성공
 				{
-					Stack.push(iVisit_V);
+					iPrevVisit_V = iVisit_V;
+					Stack.push(iVisit_V);//방문 순서 저장
+					iVisit_V = *m_vecADJList[iVisit_V].begin();//방문한 노드와 연결된 녀석을 다음 탐색으로 지정
 					bVisitFlag = true;
 					break;
 				}
+				else
+				{
+					++Iter;
+				}
+				
 			}
-		}
 
-		if (bVisitFlag == false)
-		{
 			if (Stack.empty())
 			{
+				memset(m_pVisitInfo, 0, sizeof(bool) * m_iNumV);
 				break;
 			}
-			else
+
+			if (bVisitFlag == false)
 			{
 				iVisit_V = Stack.top();
+				iPrevVisit_V = Stack.top();
 				Stack.pop();
 			}
+			
 		}
+		
+
 	}
-	memset(m_pVisitInfo, 0, sizeof(bool) * m_iNumV);
+	
+	
 }
 
 bool CALGraphDFS::Visit_Vertex(int _iVisitV)
