@@ -12,6 +12,7 @@
 #include <Windows.h>
 #include <array>
 #include <chrono>
+#include <list>
 
 using namespace std;
 
