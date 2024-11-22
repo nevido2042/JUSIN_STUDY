@@ -3,7 +3,7 @@
 
 #include "pch.h"
 #include "ALGraph.h"
-#include "ALGraphDFS.h"
+#include "ALGraph_Search.h"
 
 #ifdef _DEBUG            // 메모리 누수 체크 매크로
 
@@ -34,7 +34,7 @@ int main()
 
     Graph.Show_GraphEdgeInfo();*/
 
-    CALGraphDFS Graph;
+    CALGraph_Search Graph;
     Graph.Initialize(7);
 
     Graph.AddEdge(A, B);
@@ -47,13 +47,22 @@ int main()
 
     Graph.Show_GraphEdgeInfo();
 
-    Graph.Show_DFS_GraphVertex(A);
+    /*Graph.Show_DFS_GraphVertex(A);
     cout << endl;
     Graph.Show_DFS_GraphVertex(C);
     cout << endl;
     Graph.Show_DFS_GraphVertex(E);
     cout << endl;
     Graph.Show_DFS_GraphVertex(G);
+    cout << endl;*/
+
+    Graph.Show_BFS_GraphVertex(A);
+    cout << endl;
+    Graph.Show_BFS_GraphVertex(C);
+    cout << endl;
+    Graph.Show_BFS_GraphVertex(E);
+    cout << endl;
+    Graph.Show_BFS_GraphVertex(G);
     cout << endl;
 }
 
