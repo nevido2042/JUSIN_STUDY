@@ -19,9 +19,9 @@ private:
     class CPQ_WeightCMP 
     {
     public:
-        bool operator()(CALEdge& a, CALEdge& b) const
+        bool operator()(CALEdge& _Edge1, CALEdge& _Edge2) const
         {
-            return a.m_weight - b.m_weight;
+            return _Edge1.m_weight < _Edge2.m_weight;
         }
     };
 

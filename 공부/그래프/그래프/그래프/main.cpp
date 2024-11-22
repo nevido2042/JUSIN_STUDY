@@ -80,7 +80,9 @@ int main()
     Graph.AddEdge(E, C, 7);
     Graph.AddEdge(F, E, 13);
 
+    Graph.Show_GraphEdgeInfo();
     Graph.Construct_KruskalMST();
+    cout << endl;
     Graph.Show_GraphEdgeInfo();
     Graph.Show_GraphEdgeWeightInfo();
 }
