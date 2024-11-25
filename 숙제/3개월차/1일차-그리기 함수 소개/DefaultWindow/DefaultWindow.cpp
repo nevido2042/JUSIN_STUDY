@@ -171,7 +171,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 // 2. USER : 유저 인터페이스와 윈도우(창)을 관리
 // 3. GDI : 화면 처리와 그래픽을 담당
 
-RECT        rc{ 350, 550, 450, 450 };
+RECT        rc{ 350, 450, 450, 550 };
 list<RECT>  BulletList;
 list<RECT>  LeftBulletList;
 list<RECT>  RightBulletList;
@@ -296,30 +296,56 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
 
-            for (auto& iter : BulletList)
+            for (list<RECT>::iterator Iter = BulletList.begin();Iter != BulletList.end();)
             {
-                Ellipse(hdc, iter.left, iter.top, iter.right, iter.bottom);
+                if (Iter->bottom < 0)
+                {
+                    Iter = BulletList.erase(Iter);
+                    continue;
+                }
 
-                iter.top    -= 10;
-                iter.bottom -= 10;
+                Ellipse(hdc, Iter->left, Iter->top, Iter->right, Iter->bottom);
+
+                Iter->top    -= 10;
+                Iter->bottom -= 10;
+
+                ++Iter;
             }
-            for (auto& iter : LeftBulletList)
-            {
-                Ellipse(hdc, iter.left, iter.top, iter.right, iter.bottom);
 
-                iter.left -= 10;
-                iter.right -= 10;
-                iter.top -= 10;
-                iter.bottom -= 10;
+            for (list<RECT>::iterator Iter = LeftBulletList.begin(); Iter != LeftBulletList.end();)
+            {
+                if (Iter->bottom < 0 || Iter->right < 0)
+                {
+                    Iter = LeftBulletList.erase(Iter);
+                    continue;
+                }
+
+                Ellipse(hdc, Iter->left, Iter->top, Iter->right, Iter->bottom);
+
+                Iter->left -= 10;
+                Iter->right -= 10;
+                Iter->top -= 10;
+                Iter->bottom -= 10;
+
+                ++Iter;
             }
-            for (auto& iter : RightBulletList)
+            
+            for (list<RECT>::iterator Iter = RightBulletList.begin(); Iter != RightBulletList.end();)
             {
-                Ellipse(hdc, iter.left, iter.top, iter.right, iter.bottom);
+                if (Iter->bottom < 0 || Iter->left > 800)
+                {
+                    Iter = RightBulletList.erase(Iter);
+                    continue;
+                }
 
-                iter.left += 10;
-                iter.right += 10;
-                iter.top -= 10;
-                iter.bottom -= 10;
+                Ellipse(hdc, Iter->left, Iter->top, Iter->right, Iter->bottom);
+
+                Iter->left += 10;
+                Iter->right += 10;
+                Iter->top -= 10;
+                Iter->bottom -= 10;
+
+                ++Iter;
             }
                       
             EndPaint(hWnd, &ps);
