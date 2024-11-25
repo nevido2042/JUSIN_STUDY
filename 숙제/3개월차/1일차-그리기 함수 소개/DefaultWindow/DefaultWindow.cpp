@@ -171,8 +171,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 // 2. USER : 유저 인터페이스와 윈도우(창)을 관리
 // 3. GDI : 화면 처리와 그래픽을 담당
 
-RECT        rc{ 100, 100, 200, 200 };
+RECT        rc{ 350, 550, 450, 450 };
 list<RECT>  BulletList;
+list<RECT>  LeftBulletList;
+list<RECT>  RightBulletList;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -226,15 +228,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             // MoveToEx : 커서를 이동 시키는 함수
             // nullptr : 커서를 이동하기 전 위치를 output으로 반환
-            // MoveToEx(hdc, 100, 100, nullptr);
-            // LineTo(hdc, 200, 100);
-            // LineTo(hdc, 200, 200);
-            // LineTo(hdc, 100, 200);
-            // LineTo(hdc, 100, 100);
-            // LineTo(hdc, 200, 200);
-            // 
-            // MoveToEx(hdc, 200, 100, nullptr);
-            // LineTo(hdc, 100, 200);
+            /* MoveToEx(hdc, 100, 100, nullptr);
+             LineTo(hdc, 200, 100);
+             LineTo(hdc, 200, 200);
+             LineTo(hdc, 100, 200);
+             LineTo(hdc, 100, 100);
+             LineTo(hdc, 200, 200);
+             
+             MoveToEx(hdc, 200, 100, nullptr);
+             LineTo(hdc, 100, 200);*/
 
            //// 선 그리기 함수
            //LineTo(hdc, 200, 200);
@@ -246,6 +248,52 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             //원 그리기 함수
             // Ellipse(hdc, 300, 300, 400, 400);
 
+            // 숙제 1. 그림을 그려와라.
+            //얼굴
+             MoveToEx(hdc, 100, 100, nullptr);
+             LineTo(hdc, 400, 100);
+             LineTo(hdc, 400, 400);
+             LineTo(hdc, 100, 400);
+             LineTo(hdc, 100, 100);
+             //머리
+             MoveToEx(hdc, 100, 250, nullptr);
+             LineTo(hdc, 150, 250);
+             LineTo(hdc, 150, 200);
+             LineTo(hdc, 350, 200);
+             LineTo(hdc, 350, 250);
+             LineTo(hdc, 400, 250);
+             //왼쪽 눈
+             MoveToEx(hdc, 150, 250, nullptr);
+             LineTo(hdc, 225, 250);
+             LineTo(hdc, 225, 275);
+             LineTo(hdc, 150, 275);
+             LineTo(hdc, 150, 250);
+             //오른 쪽 눈
+             MoveToEx(hdc, 350, 250, nullptr);
+             LineTo(hdc, 275, 250);
+             LineTo(hdc, 275, 275);
+             LineTo(hdc, 350, 275);
+             LineTo(hdc, 350, 250);
+             //코
+             MoveToEx(hdc, 275, 275, nullptr);
+             LineTo(hdc, 225, 275);
+             LineTo(hdc, 225, 300);
+             LineTo(hdc, 275, 300);
+             LineTo(hdc, 275, 275);
+             //입
+             MoveToEx(hdc, 190, 300, nullptr);
+             LineTo(hdc, 190, 350);
+             LineTo(hdc, 310, 350);
+             LineTo(hdc, 310, 300);
+             LineTo(hdc, 275, 300);
+             LineTo(hdc, 275, 325);
+             LineTo(hdc, 225, 325);
+             LineTo(hdc, 225, 300);
+             LineTo(hdc, 190, 300);
+
+
+
+
             Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
 
             for (auto& iter : BulletList)
@@ -253,6 +301,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 Ellipse(hdc, iter.left, iter.top, iter.right, iter.bottom);
 
                 iter.top    -= 10;
+                iter.bottom -= 10;
+            }
+            for (auto& iter : LeftBulletList)
+            {
+                Ellipse(hdc, iter.left, iter.top, iter.right, iter.bottom);
+
+                iter.left -= 10;
+                iter.right -= 10;
+                iter.top -= 10;
+                iter.bottom -= 10;
+            }
+            for (auto& iter : RightBulletList)
+            {
+                Ellipse(hdc, iter.left, iter.top, iter.right, iter.bottom);
+
+                iter.left += 10;
+                iter.right += 10;
+                iter.top -= 10;
                 iter.bottom -= 10;
             }
                       
@@ -290,6 +356,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             
         case VK_SPACE:
             BulletList.push_back(rc);
+            LeftBulletList.push_back(rc);
+            RightBulletList.push_back(rc);
             break;
         }
         break;
