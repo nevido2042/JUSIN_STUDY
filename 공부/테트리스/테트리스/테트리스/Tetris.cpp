@@ -27,8 +27,6 @@ void CTetris::Initialize()
 
 void CTetris::Update()
 {
-    //꽉찬 라인이 있으면 NONE 으로 변경
-    Check_Full_Line();
     //키 입력 받을 수 있도록
     m_bKeyDown = false;
     //모든 블럭 내리기
@@ -110,13 +108,6 @@ void CTetris::Start_Game()
                 m_Controlled_Block_Pos = Pos(m_Controlled_Block_Pos.iX + 1, m_Controlled_Block_Pos.iY);
             }
         }
-        /*else
-        {
-            if (bKeyDown)
-            {
-                bKeyDown = false;
-            }
-        }*/
 
         if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
         {
@@ -165,6 +156,12 @@ void CTetris::Render()
 void CTetris::Spawn_Block()
 {
     m_Controlled_Block_Pos(Horizontal / 2, 0);
+
+    m_vecControl_Pos.clear();
+    m_vecControl_Pos.push_back(Pos(Horizontal / 2, 0));
+    m_vecControl_Pos.push_back(Pos(Horizontal / 2 + 1, 0));
+    m_vecControl_Pos.push_back(Pos(Horizontal / 2 + 2, 0));
+
     m_TileMap[0][Horizontal / 2] = BLOCK;
 }
 
@@ -199,6 +196,9 @@ void CTetris::Drop_AllBlocks()
             if (m_TileMap[m_Controlled_Block_Pos.iY + 1][m_Controlled_Block_Pos.iX] == BLOCK
                 || m_TileMap[m_Controlled_Block_Pos.iY + 1][m_Controlled_Block_Pos.iX] == BORDER)
             {
+                //꽉찬 라인이 있으면 NONE 으로 변경
+                Check_Full_Line();
+
                 Spawn_Block();
             }
         }

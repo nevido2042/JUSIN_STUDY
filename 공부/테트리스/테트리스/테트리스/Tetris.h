@@ -1,9 +1,10 @@
 #pragma once
 #include "Object.h"
 #include <array>
+#include <vector>
 
-#define Horizontal 5*2
-#define Vertical 10*2
+#define Horizontal 5
+#define Vertical 10
 
 class CTetris :
     public CObject
@@ -41,6 +42,7 @@ private:
     array<array<TileType, Horizontal>, Vertical> m_TileMap;
 
     Pos m_Controlled_Block_Pos;
+    vector<Pos>m_vecControl_Pos;
     bool m_bKeyDown;
 };
 
