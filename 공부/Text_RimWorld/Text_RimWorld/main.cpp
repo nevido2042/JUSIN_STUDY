@@ -2,10 +2,13 @@
 //
 
 #include "pch.h"
+#include "Game.h"
 
 int main()
 {
-    
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // 메모리 누수 체크 명령어
+
+    CGame().Initialize();
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
