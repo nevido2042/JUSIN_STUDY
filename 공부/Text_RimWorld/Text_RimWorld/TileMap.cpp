@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TileMap.h"
+#include "Rim.h"
 
 CTileMap::CTileMap()
 {
@@ -24,6 +25,16 @@ void CTileMap::Update()
 
 void CTileMap::Release()
 {
+}
+
+void CTileMap::Change_Tile(Pos _Pos, CTile::Type _Type)
+{
+	m_TileMap[_Pos.iY][_Pos.iX].Set_Type(_Type);
+}
+
+void CTileMap::Spawn_Rim()
+{
+	(new CRim(this))->Move_Pos(Pos(0, 0));
 }
 
 void CTileMap::Render()

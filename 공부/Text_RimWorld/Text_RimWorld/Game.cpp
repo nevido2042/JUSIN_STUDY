@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Game.h"
 #include "TileMap.h"
+#include "Rim.h"
 
 CGame::CGame()
+    :m_pObjectManager(nullptr), m_pTileMap(nullptr)
 {
 }
 
@@ -18,32 +20,22 @@ void CGame::Initialize()
 
 void CGame::Update()
 {
+
 }
 
 void CGame::Release()
 {
+    Safe_Delete(m_pObjectManager);
+    //Safe_Delete(m_pTileMap);
 }
 
 void CGame::Print_InputAnyKey_StartToPlay()
 {
     cout << endl;	cout << "시작하려면 아무키나 누르세요." << endl;
 
-    // 현재 시간 저장
-    //auto iStart_Time = std::chrono::high_resolution_clock::now();
     bool bIsStart(false);
     while (true)
     {
-        //auto iCurrent_Time = chrono::high_resolution_clock::now();
-        //auto iElapsed = chrono::duration_cast<chrono::milliseconds>(iCurrent_Time - iStart_Time);
-        //if (iElapsed.count() < 1000)
-        //{ 
-        //    continue;
-        //}
-        //else
-        //{// 1초(1000ms) 경과
-        //    iStart_Time = chrono::high_resolution_clock::now();
-        //}
-
         for (int iKey = 0; iKey < 256; ++iKey)
         {
             if (GetKeyState(iKey) & 0x8000)
@@ -65,15 +57,18 @@ void CGame::Start_Game()
 {
     system("cls");
 
-    CTileMap TileMap;
-    TileMap.Initialize();
+    m_pObjectManager = new CObjectManager;
+    m_pObjectManager->Initialize();
+    m_pObjectManager->Add_Object(m_pTileMap = new CTileMap());
+    m_pObjectManager->Add_Object(new CRim(m_pTileMap));
 
     while (true)
     {
-        TileMap.Update();
+        m_pObjectManager->Update();
 
+        //esc 종료
         if (GetKeyState(VK_ESCAPE) & 0x8000)
-        { // 키가 눌렸는지 확인
+        {
             break;
         }
     }

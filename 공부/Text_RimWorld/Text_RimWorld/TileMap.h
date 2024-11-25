@@ -4,6 +4,8 @@
 #include "Tile.h"
 #include "Define.h"
 
+class CRim;
+
 #define MapSize 10
 using namespace std;
 
@@ -18,7 +20,9 @@ public:
     void Initialize() override;
     void Update() override;
     void Release() override;
-    
+public:
+    void Change_Tile(Pos _Pos, CTile::Type _Type);
+    void Spawn_Rim();
 private:
     void Render();
     void GotoXY(Pos _Pos);

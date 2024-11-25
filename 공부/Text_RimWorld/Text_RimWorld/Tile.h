@@ -17,6 +17,10 @@ public:
     {
         return m_Type;
     }
+    void Set_Type(const Type _Type)
+    {
+        m_Type = _Type;
+    }
 private:
     Type m_Type;
 };

@@ -1,24 +1,24 @@
 #pragma once
 #include "Object.h"
-#include "ObjectManager.h"
 #include "TileMap.h"
+#include <chrono>
 
-class CGame :
+class CRim :
     public CObject
 {
 public:
-    CGame();
-    virtual ~CGame();
-
+    CRim() = delete;
+    CRim(CTileMap* _pTileMap);
+public:
     // CObject을(를) 통해 상속됨
     void Initialize() override;
     void Update() override;
     void Release() override;
 public:
-    void Print_InputAnyKey_StartToPlay();
-    void Start_Game();
+    void Move_Pos(Pos _Pos);
 private:
-    CObjectManager* m_pObjectManager;
+    Pos m_Pos;
     CTileMap* m_pTileMap;
+    std::chrono::steady_clock::time_point Last_Move_Time;
 };
 
