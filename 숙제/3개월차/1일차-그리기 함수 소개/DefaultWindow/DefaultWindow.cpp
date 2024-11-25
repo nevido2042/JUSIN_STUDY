@@ -291,11 +291,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
              LineTo(hdc, 225, 300);
              LineTo(hdc, 190, 300);
 
-
-
-
-            Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
-
             for (list<RECT>::iterator Iter = BulletList.begin();Iter != BulletList.end();)
             {
                 if (Iter->bottom < 0)
@@ -304,7 +299,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     continue;
                 }
 
-                Ellipse(hdc, Iter->left, Iter->top, Iter->right, Iter->bottom);
+                Ellipse(hdc, Iter->left+25, Iter->top+25, Iter->right-25, Iter->bottom-25);
 
                 Iter->top    -= 10;
                 Iter->bottom -= 10;
@@ -320,7 +315,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     continue;
                 }
 
-                Ellipse(hdc, Iter->left, Iter->top, Iter->right, Iter->bottom);
+                Ellipse(hdc, Iter->left, Iter->top, Iter->right + Iter->right / 2 - 250, Iter->bottom + Iter->bottom / 2 - 250);
 
                 Iter->left -= 10;
                 Iter->right -= 10;
@@ -347,6 +342,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
                 ++Iter;
             }
+
+            Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+
                       
             EndPaint(hWnd, &ps);
         }
