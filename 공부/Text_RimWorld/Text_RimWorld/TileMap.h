@@ -22,10 +22,8 @@ public:
     void Release() override;
 public:
     void Change_Tile(Pos _Pos, CTile::Type _Type);
-    void Spawn_Rim();
 private:
     void Render();
-    void GotoXY(Pos _Pos);
     void Print_Tile(Pos _Pos, CTile::Type _Type);
     void Visible_Cursor(bool _bool);
 

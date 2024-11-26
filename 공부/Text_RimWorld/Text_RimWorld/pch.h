@@ -11,6 +11,9 @@
 #include <iostream>
 #include <chrono>
 #include <Windows.h>
+#include <vector>
+#include <array>
+
 using namespace std;
 
 #ifdef _DEBUG            // 메모리 누수 체크 매크로

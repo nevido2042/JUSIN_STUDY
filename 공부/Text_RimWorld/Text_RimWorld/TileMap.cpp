@@ -32,11 +32,6 @@ void CTileMap::Change_Tile(Pos _Pos, CTile::Type _Type)
 	m_TileMap[_Pos.iY][_Pos.iX].Set_Type(_Type);
 }
 
-void CTileMap::Spawn_Rim()
-{
-	(new CRim(this))->Move_Pos(Pos(0, 0));
-}
-
 void CTileMap::Render()
 {
 	for (int i = 0; i < MapSize; ++i)
@@ -53,14 +48,6 @@ void CTileMap::Render()
 	}
 	
 	GotoXY(Pos(0, 0));
-}
-
-void CTileMap::GotoXY(Pos _Pos)
-{
-	COORD Pos;
-	Pos.X = _Pos.iX;
-	Pos.Y = _Pos.iY;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
 
 void CTileMap::Print_Tile(Pos _Pos, CTile::Type _Type)

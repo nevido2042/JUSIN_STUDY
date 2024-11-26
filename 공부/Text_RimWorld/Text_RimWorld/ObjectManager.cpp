@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ObjectManager.h"
 #include "Define.h"
+#include "Rim.h"
 
 CObjectManager::~CObjectManager()
 {
@@ -13,9 +14,15 @@ void CObjectManager::Initialize()
 
 void CObjectManager::Update()
 {
+	int i = 0;
 	for (CObject* pObject : m_ObjectList)
 	{
 		pObject->Update();
+		if (CRim* pRim = dynamic_cast<CRim*>(pObject))
+		{
+			pRim->Print_State(i);
+			++i;
+		}
 	}
 }
 

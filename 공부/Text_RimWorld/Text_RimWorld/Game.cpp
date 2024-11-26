@@ -60,11 +60,22 @@ void CGame::Start_Game()
     m_pObjectManager = new CObjectManager;
     m_pObjectManager->Initialize();
     m_pObjectManager->Add_Object(m_pTileMap = new CTileMap());
-    m_pObjectManager->Add_Object(new CRim(m_pTileMap));
+    m_pObjectManager->Add_Object(new CRim(m_pTileMap, "말똥이"));
+    m_pObjectManager->Add_Object(new CRim(m_pTileMap, "개똥이"));
 
     while (true)
     {
         m_pObjectManager->Update();
+
+        //~ 명령어 입력
+        if (GetKeyState(VK_OEM_3) & 0x8000)
+        {
+            GotoXY(Pos(0, MapSize));
+            cout << "명령: ";
+            string string;
+            cin >> string;
+            GotoXY(Pos(0, 0));
+        }
 
         //esc 종료
         if (GetKeyState(VK_ESCAPE) & 0x8000)

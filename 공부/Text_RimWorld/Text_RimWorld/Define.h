@@ -26,3 +26,5 @@ void Safe_Delete(T& _p)
 		_p = nullptr;
 	}
 }
+
+void GotoXY(Pos _Pos);
