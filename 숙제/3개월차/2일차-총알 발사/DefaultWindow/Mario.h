@@ -17,5 +17,7 @@ private:
     bool m_bJump;
     ULONGLONG m_ullJumpTime;
     bool m_bGround;
+    float		m_fFallSpeed;
+    float       m_fGravity;
 };
 

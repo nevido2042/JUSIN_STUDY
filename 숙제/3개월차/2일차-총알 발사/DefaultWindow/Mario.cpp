@@ -2,7 +2,7 @@
 #include "Mario.h"
 
 CMario::CMario()
-	:m_bJump(false), m_ullJumpTime(0), m_bGround(false)
+	:m_bJump(false), m_ullJumpTime(0), m_bGround(false), m_fFallSpeed(0), m_fGravity(0)
 {
 }
 
@@ -13,6 +13,7 @@ void CMario::Initialize()
 	m_fSpeed = 5.f;
 	m_bJump = false;
 	m_bGround = true;
+	m_fGravity = 0.98f;
 }
 
 void CMario::Update()
@@ -21,11 +22,13 @@ void CMario::Update()
 
 	if (m_bJump)
 	{
-		m_tInfo.fY -= m_fSpeed;
+		m_tInfo.fY -= m_fFallSpeed;
+		m_fFallSpeed -= m_fGravity;
 
-		if (m_ullJumpTime + 300 < GetTickCount64())
+		if (m_fFallSpeed < 0/*m_ullJumpTime + 300 < GetTickCount64()*/)
 		{
 			m_bJump = false;
+			m_fFallSpeed = 0.f;
 		}
 	}
 	else
@@ -33,11 +36,14 @@ void CMario::Update()
 		if (MINI_WINCY_BOTTOM > Get_Info().fY + Get_Info().fCY * 0.5f)//¶¥¿¡ ¾È´ê¾ÒÀ¸¸é
 		{
 			m_bGround = false;
-			m_tInfo.fY += m_fSpeed;
+			m_tInfo.fY += m_fFallSpeed;
+			m_fFallSpeed += m_fGravity;
 		}
 		else
 		{
+			Set_Pos(Get_Info().fX, MINI_WINCY_BOTTOM - Get_Info().fCY * 0.5f);
 			m_bGround = true;
+			m_fFallSpeed = 0.f;
 		}
 	}
 
@@ -80,6 +86,7 @@ void CMario::Key_Input()
 			m_bJump = true;
 			m_bGround = false;
 			m_ullJumpTime = GetTickCount64();
+			m_fFallSpeed = 9.8f * 2.f;
 		}
 
 	}
