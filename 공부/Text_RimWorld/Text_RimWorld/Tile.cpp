@@ -17,3 +17,7 @@ void CTile::Update()
 void CTile::Release()
 {
 }
+
+void CTile::Render()
+{
+}

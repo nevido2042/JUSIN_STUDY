@@ -26,6 +26,10 @@ void CObjectManager::Update()
 	}
 }
 
+void CObjectManager::Render()
+{
+}
+
 void CObjectManager::Release()
 {
 	for (CObject* pObject : m_ObjectList)

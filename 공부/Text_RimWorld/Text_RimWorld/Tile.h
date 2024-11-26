@@ -12,6 +12,7 @@ public:
     void Initialize() override;
     void Update() override;
     void Release() override;
+    void Render() override;
 public:
     const Type& Get_Type() const
     {

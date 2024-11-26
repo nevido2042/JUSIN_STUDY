@@ -19,11 +19,12 @@ public:
     // CObject을(를) 통해 상속됨
     void Initialize() override;
     void Update() override;
+    void Render() override;
     void Release() override;
 public:
     void Change_Tile(Pos _Pos, CTile::Type _Type);
 private:
-    void Render();
+    //void Render();
     void Print_Tile(Pos _Pos, CTile::Type _Type);
     void Visible_Cursor(bool _bool);
 

@@ -22,6 +22,10 @@ void CRim::Update()
     }
 }
 
+void CRim::Render()
+{
+}
+
 void CRim::Release()
 {
 }

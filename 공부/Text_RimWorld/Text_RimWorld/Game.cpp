@@ -84,3 +84,7 @@ void CGame::Start_Game()
         }
     }
 }
+
+void CGame::Render()
+{
+}
