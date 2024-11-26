@@ -2,7 +2,7 @@
 #include "CPlayer.h"
 #include "CBullet.h"
 
-CPlayer::CPlayer() : m_pBullet(nullptr)
+CPlayer::CPlayer() : m_pBulletList(nullptr)
 {
 }
 
@@ -63,9 +63,44 @@ void CPlayer::Key_Input()
 		m_tInfo.fY += m_fSpeed;
 	}
 
-	if (GetAsyncKeyState(VK_SPACE))
+	if (GetAsyncKeyState('W'))
 	{
-		m_pBullet->push_back(Create_Bullet());
+		CObj* pObj = Create_Bullet();
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
+		{
+			pBullet->Set_Direction(CBullet::Direction::UP);
+		}
+		m_pBulletList->push_back(pObj);
+	}
+
+	if (GetAsyncKeyState('A'))
+	{
+		CObj* pObj = Create_Bullet();
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
+		{
+			pBullet->Set_Direction(CBullet::Direction::LEFT);
+		}
+		m_pBulletList->push_back(pObj);
+	}
+
+	if (GetAsyncKeyState('S'))
+	{
+		CObj* pObj = Create_Bullet();
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
+		{
+			pBullet->Set_Direction(CBullet::Direction::DOWN);
+		}
+		m_pBulletList->push_back(pObj);
+	}
+
+	if (GetAsyncKeyState('D'))
+	{
+		CObj* pObj = Create_Bullet();
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
+		{
+			pBullet->Set_Direction(CBullet::Direction::RIGHT);
+		}
+		m_pBulletList->push_back(pObj);
 	}
 }
 

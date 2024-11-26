@@ -2,6 +2,7 @@
 #include "CBullet.h"
 
 CBullet::CBullet()
+	:m_Direction(UP)
 {
 }
 
@@ -20,7 +21,24 @@ void CBullet::Initialize()
 
 void CBullet::Update()
 {
-	m_tInfo.fY -= m_fSpeed;
+	switch (m_Direction)
+	{
+	case CBullet::UP:
+		m_tInfo.fY -= m_fSpeed;
+		break;
+	case CBullet::LEFT:
+		m_tInfo.fX -= m_fSpeed;
+		break;
+	case CBullet::DOWN:
+		m_tInfo.fY += m_fSpeed;
+		break;
+	case CBullet::RIGHT:
+		m_tInfo.fX += m_fSpeed;
+		break;
+	default:
+		break;
+	}
+
 
 	__super::Update_Rect();
 }

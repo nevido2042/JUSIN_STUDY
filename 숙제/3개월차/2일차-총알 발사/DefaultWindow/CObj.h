@@ -15,6 +15,10 @@ public:
 		m_tInfo.fX = _fX;
 		m_tInfo.fY = _fY;
 	}
+	RECT&		Get_Rect()
+	{
+		return m_tRect;
+	}
 
 public:
 	virtual void		Initialize()PURE;

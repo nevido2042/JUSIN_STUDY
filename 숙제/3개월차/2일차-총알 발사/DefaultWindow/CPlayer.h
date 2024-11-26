@@ -8,7 +8,7 @@ public:
     virtual ~CPlayer();
 
 public:
-    void        Set_Bullet(list<CObj*>* pBullet) { m_pBullet = pBullet; }
+    void        Set_Bullet(list<CObj*>* pBullet) { m_pBulletList = pBullet; }
  
 public:
     void Initialize() override;
@@ -21,7 +21,7 @@ private:
     CObj* Create_Bullet();
 
 private:
-    list<CObj*>*        m_pBullet;
+    list<CObj*>*        m_pBulletList;
 
 };
 
