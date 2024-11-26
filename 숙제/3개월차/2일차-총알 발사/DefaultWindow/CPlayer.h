@@ -18,10 +18,11 @@ public:
 
 private:
     void        Key_Input();
-    CObj* Create_Bullet();
+    CObj*       Create_Bullet();
 
 private:
     list<CObj*>*        m_pBulletList;
+    ULONGLONG m_ullLast_Fire;
 
 };
 

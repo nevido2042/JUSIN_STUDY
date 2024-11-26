@@ -74,6 +74,8 @@ void CMainGame::Update()
 	}*/
 	if (m_MonsterList.size() == 0)
 	{
+		Sleep(3000);
+
 		PostQuitMessage(0);
 	}
 
@@ -101,6 +103,8 @@ void CMainGame::Update()
 	//마리오 굼바 충돌 검사
 	if (IntersectRect(&rc, &(m_pMario)->Get_Rect(), &(m_pGoomba)->Get_Rect()))
 	{
+		Sleep(3000);
+
 		PostQuitMessage(0);
 	}
 	//범위 벗어날 시 총알 삭wa제
@@ -191,10 +195,10 @@ void CMainGame::Render()
 	// wsprintf(szBuf, L"Bullet : %f", 3.141592f);	// 소수점 자릿수 출력이 불가능
 
 	swprintf_s(szBuf, L"Bullet : %I64u", m_BulletList.size());	// 모든 서식 문자 지원 함수
-	TextOut(m_hDC, 10, 10, szBuf, lstrlen(szBuf));
+	//TextOut(m_hDC, 10, 10, szBuf, lstrlen(szBuf));
 	
-	// RECT	rcRect{ 100, 100, 200, 200 };	
-	// DrawText(m_hDC, szBuf, lstrlen(szBuf), &rcRect, DT_CENTER);
+	RECT	rcRect{ 10, 10, 100, 100 };
+	DrawText(m_hDC, szBuf, lstrlen(szBuf), &rcRect, DT_CENTER);
 }
 
 void CMainGame::Release()

@@ -10,7 +10,7 @@ void CMonster::Initialize()
 {
 	m_tInfo = { WINCX * 0.5f, WINCY * 0.2f, 75.f, 75.f };
 	m_fSpeed = 5.f;
-	m_iHP = 10;
+	m_iHP = 3;
 	m_bRight = true;
 	m_bDead = false;
 }

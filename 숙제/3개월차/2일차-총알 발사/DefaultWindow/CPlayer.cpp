@@ -2,7 +2,7 @@
 #include "CPlayer.h"
 #include "CBullet.h"
 
-CPlayer::CPlayer() : m_pBulletList(nullptr)
+CPlayer::CPlayer() : m_pBulletList(nullptr), m_ullLast_Fire(0)
 {
 }
 
@@ -63,8 +63,15 @@ void CPlayer::Key_Input()
 		m_tInfo.fY += m_fSpeed;
 	}
 
+	//총알 발사 대기 시간
+	if (m_ullLast_Fire + 100 > GetTickCount64())
+	{
+		return;
+	}
+
 	if (GetAsyncKeyState('W'))
 	{
+		m_ullLast_Fire = GetTickCount64();
 		CObj* pObj = Create_Bullet();
 		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
 		{
@@ -75,6 +82,7 @@ void CPlayer::Key_Input()
 
 	if (GetAsyncKeyState('A'))
 	{
+		m_ullLast_Fire = GetTickCount64();
 		CObj* pObj = Create_Bullet();
 		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
 		{
@@ -85,6 +93,7 @@ void CPlayer::Key_Input()
 
 	if (GetAsyncKeyState('S'))
 	{
+		m_ullLast_Fire = GetTickCount64();
 		CObj* pObj = Create_Bullet();
 		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
 		{
@@ -95,6 +104,7 @@ void CPlayer::Key_Input()
 
 	if (GetAsyncKeyState('D'))
 	{
+		m_ullLast_Fire = GetTickCount64();
 		CObj* pObj = Create_Bullet();
 		if (CBullet* pBullet = dynamic_cast<CBullet*>(pObj))
 		{
