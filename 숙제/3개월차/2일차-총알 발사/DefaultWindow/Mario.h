@@ -1,24 +1,21 @@
 #pragma once
 #include "CObj.h"
-class CMonster :
+class CMario :
     public CObj
 {
 public:
-    CMonster();
+    CMario();
 public:
+    // CObj을(를) 통해 상속됨
     void Initialize() override;
     void Update() override;
     void Render(HDC hDC) override;
     void Release() override;
-public:
-    void Add_HP(int _iAmount);
-    bool Get_IsDead()
-    {
-        return m_bDead;
-    }
 private:
-    bool m_bDead;
-    bool m_bRight;
-    int m_iHP;
+    void Key_Input();
+private:
+    bool m_bJump;
+    ULONGLONG m_ullJumpTime;
+    bool m_bGround;
 };
 

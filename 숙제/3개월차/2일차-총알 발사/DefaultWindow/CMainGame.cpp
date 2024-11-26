@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "CMainGame.h"
 #include "Monster.h"
+#include "Mario.h"
 
 CMainGame::CMainGame()
-	: m_hDC(nullptr), m_pPlayer(nullptr), m_dwTime(GetTickCount64()), m_iFPS(0)//,
-	//m_pMonster(nullptr)
+	: m_hDC(nullptr), m_pPlayer(nullptr), m_dwTime(GetTickCount64()), m_iFPS(0),
+	m_pMario(nullptr), m_pGoomba(nullptr)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
@@ -24,19 +25,40 @@ void CMainGame::Initialize()
 		m_pPlayer->Initialize();
 	}
 
+	if (!m_pMario)
+	{
+		m_pMario = new CMario;
+		m_pMario->Initialize();
+	}
+
+	if (!m_pGoomba)
+	{
+		m_pGoomba = new CMonster();
+		m_pGoomba->Initialize();
+		m_pGoomba->Set_Pos(MINI_WINCX_RIGHT - MINI_WINCX_LEFT, MINI_WINCY_BOTTOM);
+		m_pGoomba->Set_Speed(1.f);
+	}
+
 	//if (!m_pMonster)
 	//{
 	//	m_pMonster = new CMonster;
 	//	m_pMonster->Initialize();
 	//}
-	CMonster* pMonster1 = new CMonster;
-	pMonster1->Initialize();
-	pMonster1->Set_Pos(WINCX * 0.8f, WINCY * 0.8f);
-	m_MonsterList.push_back(dynamic_cast<CObj*>(pMonster1));
 
-	CMonster* pMonster2 = new CMonster;
-	pMonster2->Initialize();
-	m_MonsterList.push_back(dynamic_cast<CObj*>(pMonster2));
+	for (int i = 1; i < 10; ++i)
+	{
+		CMonster* pMonster = new CMonster;
+		pMonster->Initialize();
+		pMonster->Set_Pos(WINCX * 0.1f * i, WINCY * 0.5f);
+		m_MonsterList.push_back(dynamic_cast<CObj*>(pMonster));
+	}
+	for (int i = 1; i < 10; ++i)
+	{
+		CMonster* pMonster = new CMonster;
+		pMonster->Initialize();
+		pMonster->Set_Pos(WINCX * 0.1f * i, WINCY * 0.2f);
+		m_MonsterList.push_back(dynamic_cast<CObj*>(pMonster));
+	}
 
 	dynamic_cast<CPlayer*>(m_pPlayer)->Set_Bullet(&m_BulletList);
 }
@@ -44,7 +66,8 @@ void CMainGame::Initialize()
 void CMainGame::Update()
 {
 	m_pPlayer->Update();
-
+	m_pMario->Update();
+	m_pGoomba->Update();
 	/*if (m_pMonster)
 	{
 		m_pMonster->Update();
@@ -75,12 +98,18 @@ void CMainGame::Update()
 
 
 	RECT rc;
+	//마리오 굼바 충돌 검사
+	if (IntersectRect(&rc, &(m_pMario)->Get_Rect(), &(m_pGoomba)->Get_Rect()))
+	{
+		PostQuitMessage(0);
+	}
+	//범위 벗어날 시 총알 삭wa제
 	for (list<CObj*>::iterator BulletIter = m_BulletList.begin(); BulletIter != m_BulletList.end();)
 	{
-		if (WINCY * 0.1f > (*BulletIter)->Get_Info().fY||
-			WINCX * 0.1f > (*BulletIter)->Get_Info().fX||
-			WINCY * 0.9f < (*BulletIter)->Get_Info().fY||
-			WINCX * 0.9f < (*BulletIter)->Get_Info().fX)
+		if (MINI_WINCY_TOP > (*BulletIter)->Get_Info().fY||
+			MINI_WINCX_LEFT > (*BulletIter)->Get_Info().fX||
+			MINI_WINCY_BOTTOM < (*BulletIter)->Get_Info().fY||
+			MINI_WINCX_RIGHT < (*BulletIter)->Get_Info().fX)
 		{
 			Safe_Delete(*BulletIter);
 			BulletIter = m_BulletList.erase(BulletIter);
@@ -103,7 +132,7 @@ void CMainGame::Update()
 				{
 					pMonster->Add_HP(-1);
 				}
-
+				//몬스터 충돌 시 총알 삭제
 				Safe_Delete(*BulletIter);
 				BulletIter = m_BulletList.erase(BulletIter);
 				continue;
@@ -136,9 +165,12 @@ void CMainGame::Render()
 	}
 
 
-	Rectangle(m_hDC, WINCX * 0.1f, WINCY * 0.1f, WINCX * 0.9f, WINCY * 0.9f);
+	Rectangle(m_hDC, int(MINI_WINCX_LEFT), int(MINI_WINCY_TOP)
+		, int(MINI_WINCX_RIGHT), int(MINI_WINCY_BOTTOM));
 
 	m_pPlayer->Render(m_hDC);
+	m_pMario->Render(m_hDC);
+	m_pGoomba->Render(m_hDC);
 
 	for (list<CObj*>::iterator Iter = m_MonsterList.begin(); Iter != m_MonsterList.end();)
 	{
@@ -168,6 +200,8 @@ void CMainGame::Render()
 void CMainGame::Release()
 {
 	Safe_Delete<CObj*>(m_pPlayer);
+	Safe_Delete<CObj*>(m_pMario);
+	Safe_Delete<CObj*>(m_pGoomba);
 
 	//Safe_Delete<CObj*>(m_pMonster);
 	for_each(m_MonsterList.begin(), m_MonsterList.end(), Safe_Delete<CObj*>);

@@ -3,6 +3,11 @@
 #define WINCX		800
 #define WINCY		600
 
+#define MINI_WINCX_LEFT		WINCX * 0.1f
+#define MINI_WINCY_TOP		WINCY * 0.1f
+#define MINI_WINCX_RIGHT		WINCX * 0.9f
+#define MINI_WINCY_BOTTOM		WINCY * 0.9f
+
 #define	PURE		= 0
 #define PI			3.141592f
 

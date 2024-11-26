@@ -18,11 +18,14 @@ public:
 private:
 	HDC			m_hDC;
 
+	CObj*		m_pMario;
+	CObj*		m_pGoomba;
+
 	CObj*		m_pPlayer;
 	list<CObj*>	m_BulletList;
 	list<CObj*>	m_MonsterList;
 
-	DWORD		m_dwTime;
+	ULONGLONG		m_dwTime;
 	int			m_iFPS;
 	TCHAR		m_szFPS[16];
 

@@ -19,6 +19,10 @@ public:
 	{
 		return m_tRect;
 	}
+	void Set_Speed(float _fSpeed)
+	{
+		m_fSpeed = _fSpeed;
+	}
 
 public:
 	virtual void		Initialize()PURE;

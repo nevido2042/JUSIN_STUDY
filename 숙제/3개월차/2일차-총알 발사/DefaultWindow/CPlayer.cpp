@@ -13,8 +13,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize()
 {
-	m_tInfo  = { WINCX / 2.f, WINCY / 2.f, 100.f, 100.f };
-	m_fSpeed = 10.f;
+	m_tInfo  = { WINCX / 2.f, WINCY / 2.f, 75.f, 75.f };
+	m_fSpeed = 5.f;
 }
 
 void CPlayer::Update()
