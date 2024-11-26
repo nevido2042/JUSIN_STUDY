@@ -3,8 +3,8 @@
 #include "Monster.h"
 
 CMainGame::CMainGame()
-	: m_hDC(nullptr), m_pPlayer(nullptr), m_dwTime(GetTickCount64()), m_iFPS(0),
-	m_pMonster(nullptr)
+	: m_hDC(nullptr), m_pPlayer(nullptr), m_dwTime(GetTickCount64()), m_iFPS(0)//,
+	//m_pMonster(nullptr)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
@@ -24,11 +24,19 @@ void CMainGame::Initialize()
 		m_pPlayer->Initialize();
 	}
 
-	if (!m_pMonster)
-	{
-		m_pMonster = new CMonster;
-		m_pMonster->Initialize();
-	}
+	//if (!m_pMonster)
+	//{
+	//	m_pMonster = new CMonster;
+	//	m_pMonster->Initialize();
+	//}
+	CMonster* pMonster1 = new CMonster;
+	pMonster1->Initialize();
+	pMonster1->Set_Pos(WINCX * 0.8f, WINCY * 0.8f);
+	m_MonsterList.push_back(dynamic_cast<CObj*>(pMonster1));
+
+	CMonster* pMonster2 = new CMonster;
+	pMonster2->Initialize();
+	m_MonsterList.push_back(dynamic_cast<CObj*>(pMonster2));
 
 	dynamic_cast<CPlayer*>(m_pPlayer)->Set_Bullet(&m_BulletList);
 }
@@ -37,52 +45,79 @@ void CMainGame::Update()
 {
 	m_pPlayer->Update();
 
-	if (m_pMonster)
+	/*if (m_pMonster)
 	{
 		m_pMonster->Update();
-	}
-	if (CMonster* pMonster = dynamic_cast<CMonster*>(m_pMonster))
+	}*/
+	if (m_MonsterList.size() == 0)
 	{
-		if (pMonster->Get_IsDead())
-		{
-			Safe_Delete(m_pMonster);
-		}
+		PostQuitMessage(0);
 	}
+
+	for (list<CObj*>::iterator Iter = m_MonsterList.begin(); Iter != m_MonsterList.end();)
+	{
+		(*Iter)->Update();
+
+		if (CMonster* pMonster = dynamic_cast<CMonster*>((*Iter)))
+		{
+			if (pMonster->Get_IsDead())
+			{
+				Safe_Delete(pMonster);
+				Iter = m_MonsterList.erase(Iter);
+				continue;
+			}
+		}
+
+		++Iter;
+	}
+
+
 
 
 	RECT rc;
-	for (list<CObj*>::iterator Iter = m_BulletList.begin(); Iter != m_BulletList.end();)
+	for (list<CObj*>::iterator BulletIter = m_BulletList.begin(); BulletIter != m_BulletList.end();)
 	{
-		if (WINCY * 0.1f > (*Iter)->Get_Info().fY||
-			WINCX * 0.1f > (*Iter)->Get_Info().fX||
-			WINCY * 0.9f < (*Iter)->Get_Info().fY||
-			WINCX * 0.9f < (*Iter)->Get_Info().fX)
+		if (WINCY * 0.1f > (*BulletIter)->Get_Info().fY||
+			WINCX * 0.1f > (*BulletIter)->Get_Info().fX||
+			WINCY * 0.9f < (*BulletIter)->Get_Info().fY||
+			WINCX * 0.9f < (*BulletIter)->Get_Info().fX)
 		{
-			Safe_Delete(*Iter);
-			Iter = m_BulletList.erase(Iter);
+			Safe_Delete(*BulletIter);
+			BulletIter = m_BulletList.erase(BulletIter);
 			continue;
 		}
 
 
 
 		//몬스터, 총알 충돌 검사
-		if (m_pMonster)
+		for (list<CObj*>::iterator MonsterIter = m_MonsterList.begin(); MonsterIter != m_MonsterList.end();)
 		{
-			if (IntersectRect(&rc, &m_pMonster->Get_Rect(), &(*Iter)->Get_Rect()))
+			if (BulletIter == m_BulletList.end())
 			{
-				if (CMonster* pMonster = dynamic_cast<CMonster*>(m_pMonster))
+				break;
+			}
+
+			if (IntersectRect(&rc, &(*MonsterIter)->Get_Rect(), &(*BulletIter)->Get_Rect()))
+			{
+				if (CMonster* pMonster = dynamic_cast<CMonster*>(*MonsterIter))
 				{
 					pMonster->Add_HP(-1);
 				}
 
-				Safe_Delete(*Iter);
-				Iter = m_BulletList.erase(Iter);
+				Safe_Delete(*BulletIter);
+				BulletIter = m_BulletList.erase(BulletIter);
 				continue;
 			}
+			++MonsterIter;
 		}
 
-		(*Iter)->Update();
-		++Iter;
+		if (BulletIter == m_BulletList.end())
+		{
+			break;
+		}
+
+		(*BulletIter)->Update();
+		++BulletIter;
 	}
 }
 
@@ -105,9 +140,13 @@ void CMainGame::Render()
 
 	m_pPlayer->Render(m_hDC);
 
-	if (m_pMonster)
+	for (list<CObj*>::iterator Iter = m_MonsterList.begin(); Iter != m_MonsterList.end();)
 	{
-		m_pMonster->Render(m_hDC);
+		if (*Iter)
+		{
+			(*Iter)->Render(m_hDC);
+		}
+		++Iter;
 	}
 
 	for (auto& pBullet : m_BulletList)
@@ -130,7 +169,9 @@ void CMainGame::Release()
 {
 	Safe_Delete<CObj*>(m_pPlayer);
 
-	Safe_Delete<CObj*>(m_pMonster);
+	//Safe_Delete<CObj*>(m_pMonster);
+	for_each(m_MonsterList.begin(), m_MonsterList.end(), Safe_Delete<CObj*>);
+	m_MonsterList.clear();
 
 	for_each(m_BulletList.begin(), m_BulletList.end(), Safe_Delete<CObj*>);
 	m_BulletList.clear();

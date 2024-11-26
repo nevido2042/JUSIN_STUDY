@@ -20,7 +20,7 @@ private:
 
 	CObj*		m_pPlayer;
 	list<CObj*>	m_BulletList;
-	CObj*		m_pMonster;
+	list<CObj*>	m_MonsterList;
 
 	DWORD		m_dwTime;
 	int			m_iFPS;

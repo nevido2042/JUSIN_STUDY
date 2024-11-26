@@ -4,6 +4,7 @@ class CMonster :
     public CObj
 {
     // CObj을(를) 통해 상속됨
+public:
     void Initialize() override;
     void Update() override;
     void Render(HDC hDC) override;
