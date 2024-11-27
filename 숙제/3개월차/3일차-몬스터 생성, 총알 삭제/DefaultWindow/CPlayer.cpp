@@ -73,17 +73,17 @@ void CPlayer::Key_Input()
 	if (GetAsyncKeyState(VK_SPACE))
 	{
 		m_pBullet->push_back(Create_Bullet(DIR_UP));
-		m_pBullet->push_back(Create_Bullet(DIR_LU));
-		m_pBullet->push_back(Create_Bullet(DIR_RU));
+		//m_pBullet->push_back(Create_Bullet(DIR_LU));
+		//m_pBullet->push_back(Create_Bullet(DIR_RU));
 	}
 
-	if (GetAsyncKeyState('W')) m_pBullet->push_back(Create_Bullet(DIR_UP));
+	/*if (GetAsyncKeyState('W')) m_pBullet->push_back(Create_Bullet(DIR_UP));
 	if (GetAsyncKeyState('S')) m_pBullet->push_back(Create_Bullet(DIR_DOWN));
 	if (GetAsyncKeyState('A')) m_pBullet->push_back(Create_Bullet(DIR_LEFT));
 	if (GetAsyncKeyState('D'))
 	{
 		m_pBullet->push_back(CAbstractFactory<CBullet>::Create(m_tInfo.fX, m_tInfo.fY, DIR_RIGHT));
-	}
+	}*/
 }
 
 CObj* CPlayer::Create_Bullet(DIRECTION eDir)
