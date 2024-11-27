@@ -4,7 +4,7 @@
 #include "CCollisionMgr.h"
 
 CMainGame::CMainGame()
-	: m_dwTime(GetTickCount()), m_iFPS(0)
+	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
@@ -88,7 +88,7 @@ void CMainGame::Late_Update()
 			pObj->Late_Update();
 	}
 
-	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+	CCollisionMgr::Check_Collision(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 }
 
 void CMainGame::Render()
@@ -96,14 +96,14 @@ void CMainGame::Render()
 #pragma region  FPS Ãâ·Â
 	++m_iFPS;
 
-	if (m_dwTime + 1000 < GetTickCount())
+	if (m_ullTime + 1000 < GetTickCount64())
 	{
 		swprintf_s(m_szFPS, L"FPS : %d", m_iFPS);
 
 		SetWindowText(g_hWnd, m_szFPS);
 
 		m_iFPS = 0;
-		m_dwTime = GetTickCount();
+		m_ullTime = GetTickCount64();
 	}
 #pragma endregion
 	

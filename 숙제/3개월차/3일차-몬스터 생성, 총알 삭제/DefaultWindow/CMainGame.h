@@ -22,7 +22,7 @@ private:
 
 	list<CObj*>		m_ObjList[OBJ_END];
 
-	DWORD		m_dwTime;
+	ULONGLONG		m_ullTime;
 	int			m_iFPS;
 	TCHAR		m_szFPS[16];
 
