@@ -4,7 +4,7 @@
 #include "CCollisionMgr.h"
 
 CMainGame::CMainGame()
-	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
+	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr), m_ullMonsterSpawnTime(0)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
@@ -17,24 +17,6 @@ CMainGame::~CMainGame()
 void CMainGame::Initialize()
 {
 	m_hDC = GetDC(g_hWnd);
-
-	// m_pPlayer = CAbstractFactory<CPlayer>::Create();
-	// dynamic_cast<CPlayer*>(m_pPlayer)->Set_Bullet(&m_BulletList);
-
-	//게임 시작 화면 출력
-
-	//while (true)
-	//{
-	//	TCHAR szBuf[32] = L"";
-	//	swprintf_s(szBuf, L"시작하려면 아무키나 누르세요.");
-	//	TextOut(m_hDC, 300, 450, szBuf, lstrlen(szBuf));
-
-	//	if (GetAsyncKeyState(VK_SPACE))
-	//	{
-	//		break;
-	//	}
-	//}
-
 
 	m_ObjList[OBJ_PLAYER].push_back(CAbstractFactory<CPlayer>::Create());
 	dynamic_cast<CPlayer*>(m_ObjList[OBJ_PLAYER].front())->Set_Bullet(&m_ObjList[OBJ_BULLET]);
@@ -51,12 +33,11 @@ void CMainGame::Initialize()
 	}
 
 
-	for (int i = 0; i < 3; ++i)
+	/*for (int i = 0; i < 3; ++i)
 	{
-		float fRandX = rand() % GAME_WIN_RIGHT;
-		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(fRandX, 200.f, DIR_END));
+
 		
-	}
+	}*/
 
 }
 
@@ -81,6 +62,13 @@ void CMainGame::Update()
 	// }
 
 #pragma endregion
+
+	if (m_ullMonsterSpawnTime + 500 < GetTickCount64())
+	{
+		float fRandX = GAME_WIN_LEFT + rand() % (int)(GAME_WIN_RIGHT - GAME_WIN_LEFT);
+		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(fRandX, GAME_WIN_TOP, DIR_END));
+		m_ullMonsterSpawnTime = GetTickCount64();
+	}
 
 	for (size_t i = 0; i < OBJ_END; ++i)
 	{

@@ -40,6 +40,9 @@
     <Filter Include="01. Obj\03. Satellite">
       <UniqueIdentifier>{d719fa6e-b0e5-448f-8bbb-ca6896271d22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\04. TornadoBullet">
+      <UniqueIdentifier>{9cfd813c-adab-4b81-a9fc-d5b47e665fbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -84,6 +87,9 @@
     <ClInclude Include="Satellite.h">
       <Filter>01. Obj\03. Satellite</Filter>
     </ClInclude>
+    <ClInclude Include="TornadoBullet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -112,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Satellite.cpp">
       <Filter>01. Obj\03. Satellite</Filter>
+    </ClCompile>
+    <ClCompile Include="TornadoBullet.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

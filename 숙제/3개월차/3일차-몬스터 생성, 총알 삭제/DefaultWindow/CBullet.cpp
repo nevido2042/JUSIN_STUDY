@@ -23,36 +23,6 @@ int CBullet::Update()
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	/*switch (m_eDir)
-	{
-	case DIR_LEFT:
-		m_tInfo.fX -= m_fSpeed;
-		break;
-
-	case DIR_RIGHT:
-		m_tInfo.fX += m_fSpeed;
-		break;
-
-	case DIR_UP:
-		m_tInfo.fY -= m_fSpeed;
-		break;
-
-	case DIR_DOWN:
-		m_tInfo.fY += m_fSpeed;
-		break;
-
-	case DIR_LU:
-		m_tInfo.fY -= m_fSpeed;
-		m_tInfo.fX -= m_fSpeed;
-		break;
-
-	case DIR_RU:
-		m_tInfo.fY -= m_fSpeed;
-		m_tInfo.fX += m_fSpeed;
-		break;
-
-	}*/
-
 	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * (PI / 180.f));
 	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * (PI / 180.f));
 

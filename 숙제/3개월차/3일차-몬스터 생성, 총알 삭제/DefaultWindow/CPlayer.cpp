@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CBullet.h"
 #include "CAbstractFactory.h"
+#include "TornadoBullet.h"
 
 CPlayer::CPlayer() : m_pBullet(nullptr), m_fGunLength(0.f)
 {
@@ -16,7 +17,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize()
 {
 	m_tInfo  = { WINCX / 2.f, WINCY / 2.f, 25.f, 25.f };
-	m_fSpeed = 10.f;
+	m_fSpeed = 5.f;
 
 	m_fGunLength = 20.f;
 }
@@ -40,8 +41,8 @@ void CPlayer::Late_Update()
 	//m_fAngle = 아크 코사인, 마우스 위치, 플레이어와 마우스 위치 거리
 	
 	//Get_Info().fX,fy 와 ptMouse의 거리
-	float fDist = sqrtf(pow(ptMouse.x - Get_Info().fX, 2) + pow(ptMouse.y - Get_Info().fY, 2));
-	m_fAngle = long(acosf((ptMouse.x - Get_Info().fX) / fDist) * (180.f / PI));
+	float fDist = sqrtf(float(pow(ptMouse.x - Get_Info().fX, 2) + pow(ptMouse.y - Get_Info().fY, 2)));
+	m_fAngle = float(acosf((ptMouse.x - Get_Info().fX) / fDist) * (180.f / PI));
 
 
 	m_tMuzzlePos.x = long(m_tInfo.fX + (m_fGunLength * cosf(m_fAngle * (PI / 180.f))));
@@ -95,25 +96,41 @@ void CPlayer::Key_Input()
 
 	if (GetAsyncKeyState(VK_LBUTTON))
 	{
-		m_pBullet->push_back(Create_Bullet(DIR_UP)); 
+		m_pBullet->push_back(Create_Bullet()); 
 	}
 
-	if (GetAsyncKeyState(VK_LEFT))
+	if (GetAsyncKeyState(VK_RBUTTON))
 	{
-		m_fAngle += 5.f;
+		m_pBullet->push_back(Create_TornadoBullet());
 	}
 
-	if (GetAsyncKeyState(VK_RIGHT))
-	{
-		m_fAngle -= 5.f;
-	}
+	//if (GetAsyncKeyState(VK_LEFT))
+	//{
+	//	m_fAngle += 5.f;
+	//}
+
+	//if (GetAsyncKeyState(VK_RIGHT))
+	//{
+	//	m_fAngle -= 5.f;
+	//}
 
 }
 
-CObj* CPlayer::Create_Bullet(DIRECTION eDir)
+CObj* CPlayer::Create_Bullet(/*DIRECTION eDir*/)
 {
 	CObj* pBullet = CAbstractFactory<CBullet>::Create();
-	pBullet->Set_Pos(m_tMuzzlePos.x, m_tMuzzlePos.y);
+	pBullet->Set_Pos(float(m_tMuzzlePos.x), float(m_tMuzzlePos.y));
+	//pBullet->Set_Direction(eDir);
+	pBullet->Set_Angle(m_fAngle);
+
+	return pBullet;
+}
+
+CObj* CPlayer::Create_TornadoBullet()
+{
+	CObj* pBullet = CAbstractFactory<CTornadoBullet>::Create();
+	dynamic_cast<CTornadoBullet*>(pBullet)->Set_FocalPoint(m_tMuzzlePos);
+	pBullet->Set_Pos(float(m_tMuzzlePos.x), float(m_tMuzzlePos.y));
 	//pBullet->Set_Direction(eDir);
 	pBullet->Set_Angle(m_fAngle);
 
