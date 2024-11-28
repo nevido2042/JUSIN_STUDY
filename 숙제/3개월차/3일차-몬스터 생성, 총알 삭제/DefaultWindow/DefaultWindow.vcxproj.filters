@@ -37,6 +37,9 @@
     <Filter Include="02. Design\CollisionMgr">
       <UniqueIdentifier>{f433f92d-d342-4dea-b2ac-76108aae2cba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\03. Satellite">
+      <UniqueIdentifier>{d719fa6e-b0e5-448f-8bbb-ca6896271d22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -78,6 +81,9 @@
     <ClInclude Include="CCollisionMgr.h">
       <Filter>02. Design\CollisionMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Satellite.h">
+      <Filter>01. Obj\03. Satellite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="CCollisionMgr.cpp">
       <Filter>02. Design\CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Satellite.cpp">
+      <Filter>01. Obj\03. Satellite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

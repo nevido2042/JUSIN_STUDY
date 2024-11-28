@@ -39,6 +39,18 @@ void CMainGame::Initialize()
 	m_ObjList[OBJ_PLAYER].push_back(CAbstractFactory<CPlayer>::Create());
 	dynamic_cast<CPlayer*>(m_ObjList[OBJ_PLAYER].front())->Set_Bullet(&m_ObjList[OBJ_BULLET]);
 
+	for (int i = 0; i < 10; ++i)
+	{
+		if (CSatellite* pSatellite = dynamic_cast<CSatellite*>(CAbstractFactory<CSatellite>::Create()))
+		{
+			pSatellite->Set_Player(m_ObjList[OBJ_PLAYER].front());
+			pSatellite->Set_Angle(float(i * 36.f));
+			m_ObjList[OBJ_SATELLITE].push_back(pSatellite);
+		}
+
+	}
+
+
 	for (int i = 0; i < 3; ++i)
 	{
 		float fRandX = rand() % GAME_WIN_RIGHT;
@@ -105,6 +117,7 @@ void CMainGame::Late_Update()
 	}
 
 	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_SATELLITE]);
 }
 
 void CMainGame::Render()

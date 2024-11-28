@@ -62,9 +62,9 @@ int CBullet::Update()
 }
 void CBullet::Late_Update()
 {
-	if (GAME_WIN_LEFT >= m_tRect.left				||
+	if (GAME_WIN_LEFT >= m_tRect.left	||
 		GAME_WIN_RIGHT <= m_tRect.right	||
-		GAME_WIN_TOP >= m_tRect.top				||
+		GAME_WIN_TOP >= m_tRect.top		||
 		GAME_WIN_BOTTOM <= m_tRect.bottom)
 	{
 		m_bDead = true;

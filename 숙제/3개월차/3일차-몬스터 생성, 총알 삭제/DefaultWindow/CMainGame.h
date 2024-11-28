@@ -3,6 +3,7 @@
 #include "Define.h"
 #include "CPlayer.h"
 #include "CMonster.h"
+#include "Satellite.h"
 
 class CMainGame
 {
