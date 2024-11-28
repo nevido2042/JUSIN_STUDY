@@ -41,7 +41,8 @@ void CMainGame::Initialize()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(200.f, (i+1) * 150.f, DIR_END));
+		int iRandX = rand() % GAME_WIN_RIGHT;
+		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(iRandX, 200.f, DIR_END));
 		
 	}
 
@@ -103,7 +104,7 @@ void CMainGame::Late_Update()
 			pObj->Late_Update();
 	}
 
-	CCollisionMgr::Check_Collision(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 }
 
 void CMainGame::Render()

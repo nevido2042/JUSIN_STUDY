@@ -22,7 +22,6 @@ int CPlayer::Update()
 {
 	Key_Input();
 
-	Clamp_PlayerToScreen();
 	// CObj::Update_Rect();
 	__super::Update_Rect();
 
@@ -72,9 +71,11 @@ void CPlayer::Key_Input()
 		m_tInfo.fY += m_fSpeed;
 	}
 
+	Clamp_PlayerToScreen();
+
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		m_pBullet->push_back(Create_Bullet(DIR_UP));
+		m_pBullet->push_back(Create_Bullet(DIR_UP)); 
 		//m_pBullet->push_back(Create_Bullet(DIR_LU));
 		//m_pBullet->push_back(Create_Bullet(DIR_RU));
 	}

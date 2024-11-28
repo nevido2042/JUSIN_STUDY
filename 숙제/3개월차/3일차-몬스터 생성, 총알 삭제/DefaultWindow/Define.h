@@ -11,8 +11,6 @@
 #define GAME_WIN_RIGHT		(WINCX - GAME_WINCX) * 0.5f + GAME_WINCX
 #define GAME_WIN_BOTTOM		(WINCY - GAME_WINCY) * 0.5f + GAME_WINCY
 
-
-
 #define	PURE		= 0
 #define PI			3.141592f
 

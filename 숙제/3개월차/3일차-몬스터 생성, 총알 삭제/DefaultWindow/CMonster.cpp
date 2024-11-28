@@ -12,8 +12,8 @@ CMonster::~CMonster()
 
 void CMonster::Initialize()
 {
-    m_tInfo.fCX = 50.f;
-    m_tInfo.fCY = 50.f;
+    m_tInfo.fCX = 25.f;
+    m_tInfo.fCY = 25.f;
     m_fSpeed = 3.f;
 }
 
@@ -22,7 +22,7 @@ int CMonster::Update()
     if (m_bDead)
         return OBJ_DEAD;
 
-    m_tInfo.fX += m_fSpeed;
+    m_tInfo.fY += m_fSpeed;
 
     __super::Update_Rect();
 
@@ -31,8 +31,13 @@ int CMonster::Update()
 
 void CMonster::Late_Update()
 {
-    if (100 >= m_tRect.left || WINCX - 100 <= m_tRect.right)
-        m_fSpeed *= -1.f;
+    /*if (100 >= m_tRect.left || WINCX - 100 <= m_tRect.right)
+        m_fSpeed *= -1.f;*/
+
+    if (GAME_WIN_BOTTOM - m_tInfo.fCY * 0.5f < m_tInfo.fY)
+    {
+        m_tInfo.fY = GAME_WIN_TOP;
+    }
 }
 
 void CMonster::Render(HDC hDC)
