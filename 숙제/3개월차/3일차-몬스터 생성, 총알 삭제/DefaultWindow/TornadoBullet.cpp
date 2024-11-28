@@ -15,7 +15,7 @@ void CTornadoBullet::Initialize()
 {
 	m_tInfo.fCX = 10.f;
 	m_tInfo.fCY = 10.f;
-	m_fDistance = 50.f;
+	m_fDistance = 0.f;
 	m_fSpeed = 2.f;
 }
 
@@ -24,6 +24,7 @@ int CTornadoBullet::Update()
 	if (m_bDead)
 		return OBJ_DEAD;
 
+	m_fDistance += 0.2f;
 	m_fOrbitalAngle += 10.f;
 
 	m_tInfo.fX = m_tFocalPoint.x + m_fDistance * cosf(m_fOrbitalAngle * (PI / 180.f));
