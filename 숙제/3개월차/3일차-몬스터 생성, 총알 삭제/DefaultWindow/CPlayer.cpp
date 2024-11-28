@@ -74,20 +74,50 @@ void CPlayer::Key_Input()
 
 	if (GetAsyncKeyState('D'))
 	{
-		m_tInfo.fX += m_fSpeed;
+		if (GetAsyncKeyState('W'))
+		{
+			m_tInfo.fX += m_fSpeed / sqrtf(2.f);
+			m_tInfo.fY -= m_fSpeed / sqrtf(2.f);
+		}
+
+		else if (GetAsyncKeyState('S'))
+		{
+			m_tInfo.fX += m_fSpeed / sqrtf(2.f);
+			m_tInfo.fY += m_fSpeed / sqrtf(2.f);
+		}
+
+		else
+		{
+			m_tInfo.fX += m_fSpeed;
+		}
 	}
 
-	if (GetAsyncKeyState('A'))
+	else if (GetAsyncKeyState('A'))
 	{
-		m_tInfo.fX -= m_fSpeed;
+		if (GetAsyncKeyState('W'))
+		{
+			m_tInfo.fX -= m_fSpeed / sqrtf(2.f);
+			m_tInfo.fY -= m_fSpeed / sqrtf(2.f);
+		}
+
+		else if (GetAsyncKeyState('S'))
+		{
+			m_tInfo.fX -= m_fSpeed / sqrtf(2.f);
+			m_tInfo.fY += m_fSpeed / sqrtf(2.f);
+		}
+
+		else
+		{
+			m_tInfo.fX -= m_fSpeed;
+		}
 	}
 
-	if (GetAsyncKeyState('W'))
+	else if (GetAsyncKeyState('W'))
 	{
 		m_tInfo.fY -= m_fSpeed;
 	}
 
-	if (GetAsyncKeyState('S'))
+	else if (GetAsyncKeyState('S'))
 	{
 		m_tInfo.fY += m_fSpeed;
 	}
