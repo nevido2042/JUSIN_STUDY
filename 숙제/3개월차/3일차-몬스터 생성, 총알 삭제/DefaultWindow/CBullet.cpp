@@ -12,8 +12,8 @@ CBullet::~CBullet()
 
 void CBullet::Initialize()
 {
-	m_tInfo.fCX = 30.f;
-	m_tInfo.fCY = 30.f;
+	m_tInfo.fCX = 5.f;
+	m_tInfo.fCY = 5.f;
 
 	m_fSpeed = 5.f;
 }
@@ -59,10 +59,10 @@ int CBullet::Update()
 }
 void CBullet::Late_Update()
 {
-	if (100 >= m_tRect.left				||
-		WINCX - 100 <= m_tRect.right	||
-		100 >= m_tRect.top				||
-		WINCY - 100 <= m_tRect.bottom)
+	if (GAME_WIN_LEFT >= m_tRect.left				||
+		GAME_WIN_RIGHT <= m_tRect.right	||
+		GAME_WIN_TOP >= m_tRect.top				||
+		GAME_WIN_BOTTOM <= m_tRect.bottom)
 	{
 		m_bDead = true;
 	}

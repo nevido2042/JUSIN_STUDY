@@ -14,7 +14,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize()
 {
-	m_tInfo  = { WINCX / 2.f, WINCY / 2.f, 100.f, 100.f };
+	m_tInfo  = { WINCX / 2.f, WINCY / 2.f, 25.f, 25.f };
 	m_fSpeed = 10.f;
 }
 
@@ -22,6 +22,7 @@ int CPlayer::Update()
 {
 	Key_Input();
 
+	Clamp_PlayerToScreen();
 	// CObj::Update_Rect();
 	__super::Update_Rect();
 
@@ -29,6 +30,7 @@ int CPlayer::Update()
 }
 void CPlayer::Late_Update()
 {
+	
 }
 
 
@@ -93,5 +95,29 @@ CObj* CPlayer::Create_Bullet(DIRECTION eDir)
 	pBullet->Set_Direction(eDir);
 
 	return pBullet;
+}
+
+void CPlayer::Clamp_PlayerToScreen()
+{
+	//맵 밖을 나갈 수 없도록
+	if (GAME_WIN_LEFT + m_tInfo.fCX * 0.5f > m_tInfo.fX)
+	{
+		m_tInfo.fX = GAME_WIN_LEFT + m_tInfo.fCX * 0.5f;
+	}
+
+	if (GAME_WIN_RIGHT - m_tInfo.fCX * 0.5f < m_tInfo.fX)
+	{
+		m_tInfo.fX = GAME_WIN_RIGHT - m_tInfo.fCX * 0.5f;
+	}
+
+	if (GAME_WIN_TOP + m_tInfo.fCY * 0.5f > m_tInfo.fY)
+	{
+		m_tInfo.fY = GAME_WIN_TOP + m_tInfo.fCY * 0.5f;
+	}
+
+	if (GAME_WIN_BOTTOM - m_tInfo.fCY * 0.5f < m_tInfo.fY)
+	{
+		m_tInfo.fY = GAME_WIN_BOTTOM - m_tInfo.fCY * 0.5f;
+	}
 }
 

@@ -20,7 +20,9 @@ public:
 private:
     void        Key_Input();
     CObj* Create_Bullet(DIRECTION eDir);
-
+    
+    //플레이어를 화면안에 가두는 함수
+    void Clamp_PlayerToScreen();
 private:
     list<CObj*>*        m_pBullet;
 
