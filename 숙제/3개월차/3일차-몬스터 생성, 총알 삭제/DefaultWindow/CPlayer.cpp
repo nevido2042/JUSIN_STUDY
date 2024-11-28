@@ -31,7 +31,19 @@ int CPlayer::Update()
 	return OBJ_NOEVENT;
 }
 void CPlayer::Late_Update()
-{
+{ 
+	POINT       ptMouse{};
+
+	GetCursorPos(&ptMouse);
+
+	ScreenToClient(g_hWnd, &ptMouse);
+	//m_fAngle = 아크 코사인, 마우스 위치, 플레이어와 마우스 위치 거리
+	
+	//Get_Info().fX,fy 와 ptMouse의 거리
+	float fDist = sqrtf(pow(ptMouse.x - Get_Info().fX, 2) + pow(ptMouse.y - Get_Info().fY, 2));
+	m_fAngle = long(acosf((ptMouse.x - Get_Info().fX) / fDist) * (180.f / PI));
+
+
 	m_tMuzzlePos.x = long(m_tInfo.fX + (m_fGunLength * cosf(m_fAngle * (PI / 180.f))));
 	m_tMuzzlePos.y = long(m_tInfo.fY - (m_fGunLength * sinf(m_fAngle * (PI / 180.f))));
 }
@@ -59,39 +71,39 @@ void CPlayer::Key_Input()
 	// GetKeyState
 	// GetAsyncKeyState // 함수 호출 시 반환되는 값에 따른 키 값 처리 가능
 
-	if (GetAsyncKeyState(VK_RIGHT))
+	if (GetAsyncKeyState('D'))
 	{
 		m_tInfo.fX += m_fSpeed;
 	}
 
-	if (GetAsyncKeyState(VK_LEFT))
+	if (GetAsyncKeyState('A'))
 	{
 		m_tInfo.fX -= m_fSpeed;
 	}
 
-	if (GetAsyncKeyState(VK_UP))
+	if (GetAsyncKeyState('W'))
 	{
 		m_tInfo.fY -= m_fSpeed;
 	}
 
-	if (GetAsyncKeyState(VK_DOWN))
+	if (GetAsyncKeyState('S'))
 	{
 		m_tInfo.fY += m_fSpeed;
 	}
 
 	Clamp_PlayerToScreen();
 
-	if (GetAsyncKeyState(VK_SPACE))
+	if (GetAsyncKeyState(VK_LBUTTON))
 	{
 		m_pBullet->push_back(Create_Bullet(DIR_UP)); 
 	}
 
-	if (GetAsyncKeyState('A'))
+	if (GetAsyncKeyState(VK_LEFT))
 	{
 		m_fAngle += 5.f;
 	}
 
-	if (GetAsyncKeyState('D'))
+	if (GetAsyncKeyState(VK_RIGHT))
 	{
 		m_fAngle -= 5.f;
 	}
