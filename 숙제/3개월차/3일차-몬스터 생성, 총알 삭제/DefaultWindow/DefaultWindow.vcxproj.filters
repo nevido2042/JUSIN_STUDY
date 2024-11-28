@@ -88,7 +88,7 @@
       <Filter>01. Obj\03. Satellite</Filter>
     </ClInclude>
     <ClInclude Include="TornadoBullet.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>01. Obj\04. TornadoBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <Filter>01. Obj\03. Satellite</Filter>
     </ClCompile>
     <ClCompile Include="TornadoBullet.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>01. Obj\04. TornadoBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
