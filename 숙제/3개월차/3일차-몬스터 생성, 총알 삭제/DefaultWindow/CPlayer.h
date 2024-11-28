@@ -25,7 +25,8 @@ private:
     void Clamp_PlayerToScreen();
 private:
     list<CObj*>*        m_pBullet;
-
+    POINT               m_tMuzzlePos;
+    float		        m_fGunLength;
 
 
 };

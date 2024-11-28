@@ -3,8 +3,9 @@
 #include "CBullet.h"
 #include "CAbstractFactory.h"
 
-CPlayer::CPlayer() : m_pBullet(nullptr)
+CPlayer::CPlayer() : m_pBullet(nullptr), m_fGunLength(0.f)
 {
+	ZeroMemory(&m_tMuzzlePos, sizeof(POINT));
 }
 
 CPlayer::~CPlayer()
@@ -16,6 +17,8 @@ void CPlayer::Initialize()
 {
 	m_tInfo  = { WINCX / 2.f, WINCY / 2.f, 25.f, 25.f };
 	m_fSpeed = 10.f;
+
+	m_fGunLength = 20.f;
 }
 
 int CPlayer::Update()
@@ -29,7 +32,8 @@ int CPlayer::Update()
 }
 void CPlayer::Late_Update()
 {
-	
+	m_tMuzzlePos.x = long(m_tInfo.fX + (m_fGunLength * cosf(m_fAngle * (PI / 180.f))));
+	m_tMuzzlePos.y = long(m_tInfo.fY - (m_fGunLength * sinf(m_fAngle * (PI / 180.f))));
 }
 
 
@@ -40,6 +44,10 @@ void CPlayer::Render(HDC hDC)
 		m_tRect.top, 
 		m_tRect.right, 
 		m_tRect.bottom);
+
+	// Æ÷½Å
+	MoveToEx(hDC, (int)m_tInfo.fX, (int)m_tInfo.fY, nullptr);
+	LineTo(hDC, m_tMuzzlePos.x, m_tMuzzlePos.y);
 }
 
 void CPlayer::Release()
@@ -76,24 +84,26 @@ void CPlayer::Key_Input()
 	if (GetAsyncKeyState(VK_SPACE))
 	{
 		m_pBullet->push_back(Create_Bullet(DIR_UP)); 
-		//m_pBullet->push_back(Create_Bullet(DIR_LU));
-		//m_pBullet->push_back(Create_Bullet(DIR_RU));
 	}
 
-	/*if (GetAsyncKeyState('W')) m_pBullet->push_back(Create_Bullet(DIR_UP));
-	if (GetAsyncKeyState('S')) m_pBullet->push_back(Create_Bullet(DIR_DOWN));
-	if (GetAsyncKeyState('A')) m_pBullet->push_back(Create_Bullet(DIR_LEFT));
+	if (GetAsyncKeyState('A'))
+	{
+		m_fAngle += 5.f;
+	}
+
 	if (GetAsyncKeyState('D'))
 	{
-		m_pBullet->push_back(CAbstractFactory<CBullet>::Create(m_tInfo.fX, m_tInfo.fY, DIR_RIGHT));
-	}*/
+		m_fAngle -= 5.f;
+	}
+
 }
 
 CObj* CPlayer::Create_Bullet(DIRECTION eDir)
 {
 	CObj* pBullet = CAbstractFactory<CBullet>::Create();
-	pBullet->Set_Pos(m_tInfo.fX, m_tInfo.fY);
-	pBullet->Set_Direction(eDir);
+	pBullet->Set_Pos(m_tMuzzlePos.x, m_tMuzzlePos.y);
+	//pBullet->Set_Direction(eDir);
+	pBullet->Set_Angle(m_fAngle);
 
 	return pBullet;
 }

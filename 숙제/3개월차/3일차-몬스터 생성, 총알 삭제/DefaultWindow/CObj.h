@@ -10,6 +10,7 @@ public:
 
 public:
 	INFO			Get_Info() { return m_tInfo; }
+	
 	const RECT*		Get_Rect() { return &m_tRect; }
 
 	void		Set_Pos(float _fX, float _fY)
@@ -19,6 +20,7 @@ public:
 	}
 	void		Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
 	void		Set_Dead() { m_bDead = true; }
+	void		Set_Angle(float _fAngle) { m_fAngle = _fAngle; }
 
 public:
 	virtual void		Initialize()PURE;
@@ -35,6 +37,8 @@ protected:
 	RECT		m_tRect;
 
 	float		m_fSpeed;
+	float		m_fAngle;
+
 	bool		m_bDead;
 	DIRECTION	m_eDir;
 };

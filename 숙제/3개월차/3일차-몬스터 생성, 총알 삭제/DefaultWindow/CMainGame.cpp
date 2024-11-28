@@ -41,8 +41,8 @@ void CMainGame::Initialize()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		int iRandX = rand() % GAME_WIN_RIGHT;
-		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(iRandX, 200.f, DIR_END));
+		float fRandX = rand() % GAME_WIN_RIGHT;
+		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(fRandX, 200.f, DIR_END));
 		
 	}
 
