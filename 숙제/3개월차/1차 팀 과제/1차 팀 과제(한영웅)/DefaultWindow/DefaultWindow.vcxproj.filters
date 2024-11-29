@@ -43,6 +43,9 @@
     <Filter Include="01. Obj\04. TornadoBullet">
       <UniqueIdentifier>{9cfd813c-adab-4b81-a9fc-d5b47e665fbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\00. TraceMonster">
+      <UniqueIdentifier>{2df30e01-162a-4438-91be-ebc347473442}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -90,6 +93,9 @@
     <ClInclude Include="TornadoBullet.h">
       <Filter>01. Obj\04. TornadoBullet</Filter>
     </ClInclude>
+    <ClInclude Include="TraceMonster.h">
+      <Filter>01. Obj\02. Monster\00. TraceMonster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -121,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="TornadoBullet.cpp">
       <Filter>01. Obj\04. TornadoBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="TraceMonster.cpp">
+      <Filter>01. Obj\02. Monster\00. TraceMonster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

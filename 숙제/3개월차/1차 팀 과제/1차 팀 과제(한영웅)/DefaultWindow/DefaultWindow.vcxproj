@@ -150,6 +150,7 @@
     <ClInclude Include="Satellite.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TornadoBullet.h" />
+    <ClInclude Include="TraceMonster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBullet.cpp" />
@@ -167,6 +168,7 @@
     </ClCompile>
     <ClCompile Include="Satellite.cpp" />
     <ClCompile Include="TornadoBullet.cpp" />
+    <ClCompile Include="TraceMonster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DefaultWindow.rc" />

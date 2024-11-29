@@ -63,7 +63,7 @@ void CMainGame::Update()
 
 #pragma endregion
 
-	if (m_ullMonsterSpawnTime + 500 < GetTickCount64())
+	if (m_ullMonsterSpawnTime + 1000 < GetTickCount64())
 	{
 		float fRandX = GAME_WIN_LEFT + rand() % (int)(GAME_WIN_RIGHT - GAME_WIN_LEFT);
 		m_ObjList[OBJ_MONSTER].push_back(CAbstractFactory<CMonster>::Create(fRandX, GAME_WIN_TOP, DIR_END));
