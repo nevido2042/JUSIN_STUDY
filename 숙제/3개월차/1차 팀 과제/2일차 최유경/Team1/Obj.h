@@ -22,6 +22,8 @@ public:
 public:
 	void		Update_Rect();
 	void Set_Dead() { m_bDead = true; }
+	void Set_Target(Obj* _pObj) { m_pTarget = _pObj; }
+	void Add_HP(int _iAmount);
 protected:
 	INFO		m_tInfo;
 	RECT		m_tRect;
@@ -33,6 +35,8 @@ protected:
 	bool		m_bDead;
 	int			m_iHp;
 	int			m_iDamage;
+
+	Obj*		m_pTarget;
 
 };
 

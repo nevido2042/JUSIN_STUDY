@@ -35,7 +35,7 @@ int StageScene::Update()
 			int result = (*iter)->Update();
 
 			if (OBJ_DEAD == result) {
-				if (static_cast<Player*>(*iter)) {
+				if (dynamic_cast<Player*>(*iter)) {
 					return OBJ_DEAD;
 				}
 				else {
@@ -60,6 +60,7 @@ void StageScene::Late_Update()
 	}
 
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
 
 	if (m_ObjList[OBJ_MONSTER].size() == 0) {
 		bFinish = true;
@@ -97,7 +98,9 @@ void StageScene::SpawnMonster()
 {
 	if (m_dwTime + 1000 < GetTickCount64()) {
 		m_dwTime = GetTickCount64();
-		m_ObjList[OBJ_MONSTER].push_back(new Monster());
+		Monster* pMonster = new Monster;
+		pMonster->Set_Target(m_ObjList[OBJ_PLAYER].front());
+		m_ObjList[OBJ_MONSTER].push_back(pMonster);
 		m_ObjList[OBJ_MONSTER].back()->Initialize();
 	}
 }

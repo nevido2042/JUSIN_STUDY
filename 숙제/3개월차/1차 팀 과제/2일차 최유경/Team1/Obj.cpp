@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Obj.h"
 
-Obj::Obj() : m_fSpeed(0.f), m_bDead(false), m_fAngle(0.0f), m_fDistance(0)
+Obj::Obj() : m_fSpeed(0.f), m_bDead(false), m_fAngle(0.0f), m_fDistance(0),
+m_pTarget(nullptr), m_iDamage(0), m_iHp(0)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
@@ -17,4 +18,14 @@ void Obj::Update_Rect()
 	m_tRect.top = LONG(m_tInfo.fY - (m_tInfo.fCY * 0.5f));
 	m_tRect.right = LONG(m_tInfo.fX + (m_tInfo.fCX * 0.5f));
 	m_tRect.bottom = LONG(m_tInfo.fY + (m_tInfo.fCY * 0.5f));
+}
+
+void Obj::Add_HP(int _iAmount)
+{
+	m_iHp += _iAmount;
+
+	if (m_iHp <= 0)
+	{
+		Set_Dead();
+	}
 }

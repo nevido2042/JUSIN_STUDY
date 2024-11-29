@@ -14,9 +14,9 @@ void Monster::Initialize()
 {
 	m_tInfo.fCX = 20.f;
 	m_tInfo.fCY = 20.f;
-	m_fSpeed = 5.f;
+	m_fSpeed = 1.f;
 
-	m_iHp = 10;
+	m_iHp = 5;
 
 	m_dir = rand() % 4;
 	int iXorY = 0;
@@ -66,6 +66,25 @@ void Monster::Late_Update()
 	if (m_iHp <= 0) {
 		m_bDead = true;
 	}
+
+	//Target을 추적한다.
+	float fDiagonal(0), fWidth(0), fHeight(0), fRadian(0);
+
+	fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
+	fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
+	fDiagonal = sqrtf(pow(fWidth, 2) + pow(fHeight, 2));
+	fRadian = acosf(fWidth / fDiagonal);
+
+	m_fAngle = fRadian * (180.f / PI);
+
+	if (m_pTarget->Get_Info().fY > m_tInfo.fY)
+	{
+		//m_fAngle *= -1.f;
+		m_fAngle = 360.f - m_fAngle;
+	}
+
+	m_tInfo.fX += m_fSpeed * (cos(m_fAngle * (PI / 180.f)));
+	m_tInfo.fY -= m_fSpeed * (sin(m_fAngle * (PI / 180.f)));
 }
 
 void Monster::Render(HDC _hdc)

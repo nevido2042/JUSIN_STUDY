@@ -2,7 +2,8 @@
 #include "Player.h"
 #include "Bullet.h"
 
-Player::Player() :  m_tPosin({}), m_BulletList(nullptr), m_iBulletLevel(BULLET_ONE)
+Player::Player() :  m_tPosin({}), m_BulletList(nullptr),
+m_iBulletLevel(BULLET_ONE), m_iFireRate(0), m_iTick(0)
 {
 }
 
@@ -19,7 +20,7 @@ void Player::Initialize()
 	m_iFireRate = 10;
 	m_iTick = 0;
 
-	m_iHp = 100;
+	m_iHp = 1;
 }
 
 int Player::Update()
