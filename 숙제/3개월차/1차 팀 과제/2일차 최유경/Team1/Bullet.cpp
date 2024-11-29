@@ -16,6 +16,7 @@ void Bullet::Initialize()
 	m_tInfo.fCY = 10.f;
 	m_fSpeed = 10.f;
 	m_iHp = 1;
+	m_iDamage = 1;
 }
 
 int Bullet::Update()

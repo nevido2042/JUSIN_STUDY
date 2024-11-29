@@ -2,8 +2,8 @@
 #include "Player.h"
 #include "Bullet.h"
 
-Player::Player() :  m_tPosin({}), m_BulletList(nullptr),
-m_iBulletLevel(BULLET_ONE), m_iFireRate(0), m_iTick(0)
+Player::Player() : m_tPosin({}), m_BulletList(nullptr),
+m_iBulletLevel(BULLET_ONE), m_iFireRate(0), m_iTick(0), m_eBulletType(BULLET_END)
 {
 }
 
@@ -19,8 +19,9 @@ void Player::Initialize()
 	m_iBulletLevel = BULLET_ONE;
 	m_iFireRate = 10;
 	m_iTick = 0;
-
+	m_iDamage = 1;
 	m_iHp = 1;
+	m_eBulletType = BULLET_ONE;
 }
 
 int Player::Update()
@@ -144,8 +145,31 @@ void Player::Key_Input()
 
 	if (GetAsyncKeyState(VK_LBUTTON)) { //총알 여러개 방지
 		if (m_iTick >= m_iFireRate) {
-			m_BulletList->push_back(Create_Bullet(m_fAngle));
-			m_iTick = 0;
+
+			switch (m_eBulletType)
+			{
+			case BULLET_ONE:
+				m_BulletList->push_back(Create_Bullet(m_fAngle));
+				m_iTick = 0;
+				break;
+			case BULLET_TWO:
+				m_BulletList->push_back(Create_Bullet(m_fAngle - 5.f));
+				m_BulletList->push_back(Create_Bullet(m_fAngle + 5.f));
+				m_iTick = 0;
+				break;
+			case BULLET_THREE:
+				m_BulletList->push_back(Create_Bullet(m_fAngle));
+				m_BulletList->push_back(Create_Bullet(m_fAngle - 5.f));
+				m_BulletList->push_back(Create_Bullet(m_fAngle + 5.f));
+				m_iTick = 0;
+				break;
+			case BULLET_SCREW:
+				break;
+			case BULLET_END:
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

@@ -4,6 +4,7 @@
 #include "Monster.h"
 #include "Satellite.h"
 #include "CollisionMgr.h"
+#include "Item.h"
 
 StageScene::StageScene() : m_dwTime(0), bFinish(false)
 {
@@ -61,6 +62,7 @@ void StageScene::Late_Update()
 
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_ITEM], m_ObjList[OBJ_PLAYER]);
 
 	if (m_ObjList[OBJ_MONSTER].size() == 0) {
 		bFinish = true;
@@ -70,7 +72,7 @@ void StageScene::Late_Update()
 void StageScene::Render(HDC _hDC)
 {
 
-	Rectangle(_hDC, (int)GAME_WIN_LEFT, (int)GAME_WIN_TOP, (int)GAME_WIN_RIGHT, (int)GAME_WIN_BOTTOM);
+	Rectangle(_hDC, int(GAME_WIN_LEFT), int(GAME_WIN_TOP), int(GAME_WIN_RIGHT), int(GAME_WIN_BOTTOM));
 	for (size_t i = 0; i < OBJ_END; ++i)
 	{
 		for (auto& pObj : m_ObjList[i])
@@ -100,6 +102,7 @@ void StageScene::SpawnMonster()
 		m_dwTime = GetTickCount64();
 		Monster* pMonster = new Monster;
 		pMonster->Set_Target(m_ObjList[OBJ_PLAYER].front());
+		pMonster->Set_ItemList(&m_ObjList[OBJ_ITEM]);
 		m_ObjList[OBJ_MONSTER].push_back(pMonster);
 		m_ObjList[OBJ_MONSTER].back()->Initialize();
 	}

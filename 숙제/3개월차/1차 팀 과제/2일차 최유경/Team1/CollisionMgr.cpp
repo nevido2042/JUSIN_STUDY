@@ -11,8 +11,8 @@ void CollisionMgr::Collision_Rect(list<Obj*> _Dst, list<Obj*> _Src)
 		{
 			if (IntersectRect(&rc, Dst->Get_Rect(), Src->Get_Rect()))
 			{
-				Dst->Add_HP(-1);
-				Src->Add_HP(-1);
+				Dst->Add_HP(-Src->Get_Damage());
+				Src->Add_HP(-Dst->Get_Damage());
 				//Dst->Set_Dead();
 				//Src->Set_Dead();
 			}
@@ -31,8 +31,8 @@ void CollisionMgr::Collision_Circle(list<Obj*> _Dst, list<Obj*> _Src)
 			float getVec = (float)sqrt((ax * ax) + (ay * ay));
 			if (getVec < (Dst->Get_Info().fCX * 0.5f) + Src->Get_Info().fCX * 0.5f) {
 
-				Dst->Add_HP(-1);
-				Src->Add_HP(-1);
+				Dst->Add_HP(-Src->Get_Damage());
+				Src->Add_HP(-Dst->Get_Damage());
 
 				//Dst->Set_Dead();
 				//Src->Set_Dead();

@@ -24,6 +24,7 @@ public:
 	void Set_Dead() { m_bDead = true; }
 	void Set_Target(Obj* _pObj) { m_pTarget = _pObj; }
 	void Add_HP(int _iAmount);
+	int Get_Damage() { return m_iDamage; }
 protected:
 	INFO		m_tInfo;
 	RECT		m_tRect;

@@ -24,8 +24,8 @@ void Obj::Add_HP(int _iAmount)
 {
 	m_iHp += _iAmount;
 
-	if (m_iHp <= 0)
+	/*if (m_iHp <= 0)
 	{
 		Set_Dead();
-	}
+	}*/
 }

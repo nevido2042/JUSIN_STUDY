@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Monster.h"
+#include "FireRate_Item.h"
+#include "Bullet_Item.h"
 
-Monster::Monster():m_dir(NODIR)
+Monster::Monster():m_dir(NODIR), m_ItemList(nullptr)
 {
 }
 
@@ -14,8 +16,8 @@ void Monster::Initialize()
 {
 	m_tInfo.fCX = 20.f;
 	m_tInfo.fCY = 20.f;
-	m_fSpeed = 1.f;
-
+	m_fSpeed = 0.5f;
+	m_iDamage = 1;
 	m_iHp = 5;
 
 	m_dir = rand() % 4;
@@ -24,24 +26,24 @@ void Monster::Initialize()
 	switch (m_dir)
 	{
 	case LEFT:
-		iXorY = rand() % GAME_WINCY + GAME_WIN_TOP;
-		m_tInfo.fX = GAME_WIN_LEFT + m_tInfo.fCX;
-		m_tInfo.fY = iXorY;
+		iXorY = rand() % (int)GAME_WINCY + (int)GAME_WIN_TOP;
+		m_tInfo.fX = (int)GAME_WIN_LEFT + m_tInfo.fCX;
+		m_tInfo.fY = (float)iXorY;
 		break;
 	case TOP:
-		iXorY = rand() % GAME_WINCX + GAME_WIN_LEFT;
-		m_tInfo.fY = GAME_WIN_TOP + m_tInfo.fCY;
-		m_tInfo.fX = iXorY;
+		iXorY = rand() % (int)GAME_WINCX + (int)GAME_WIN_LEFT;
+		m_tInfo.fY = (int)GAME_WIN_TOP + m_tInfo.fCY;
+		m_tInfo.fX = (float)iXorY;
 		break;
 	case RIGHT:
-		iXorY = rand() % GAME_WINCY + GAME_WIN_TOP;
-		m_tInfo.fX = GAME_WIN_RIGHT - m_tInfo.fCX;
-		m_tInfo.fY = iXorY;
+		iXorY = rand() % (int)GAME_WINCY + (int)GAME_WIN_TOP;
+		m_tInfo.fX = (int)GAME_WIN_RIGHT - m_tInfo.fCX;
+		m_tInfo.fY = (float)iXorY;
 		break;
 	case BOTTOM:
-		iXorY = rand() % GAME_WINCX + GAME_WIN_LEFT;
-		m_tInfo.fY = GAME_WIN_BOTTOM - m_tInfo.fCY;
-		m_tInfo.fX = iXorY;
+		iXorY = rand() % (int)GAME_WINCX + (int)GAME_WIN_LEFT;
+		m_tInfo.fY = (int)GAME_WIN_BOTTOM - m_tInfo.fCY;
+		m_tInfo.fX = (float)iXorY;
 		break;
 	case NODIR:
 		break;
@@ -52,9 +54,12 @@ void Monster::Initialize()
 
 int Monster::Update()
 {
+
 	if (m_bDead) {
 		return OBJ_DEAD;
 	}
+
+	m_fSpeed += 0.001f;
 
 	Obj::Update_Rect();
 
@@ -65,6 +70,8 @@ void Monster::Late_Update()
 {
 	if (m_iHp <= 0) {
 		m_bDead = true;
+
+		Drop_Item();
 	}
 
 	//Target을 추적한다.
@@ -72,7 +79,7 @@ void Monster::Late_Update()
 
 	fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
 	fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
-	fDiagonal = sqrtf(pow(fWidth, 2) + pow(fHeight, 2));
+	fDiagonal = sqrtf((float)pow(fWidth, 2) + (float)pow(fHeight, 2));
 	fRadian = acosf(fWidth / fDiagonal);
 
 	m_fAngle = fRadian * (180.f / PI);
@@ -83,8 +90,8 @@ void Monster::Late_Update()
 		m_fAngle = 360.f - m_fAngle;
 	}
 
-	m_tInfo.fX += m_fSpeed * (cos(m_fAngle * (PI / 180.f)));
-	m_tInfo.fY -= m_fSpeed * (sin(m_fAngle * (PI / 180.f)));
+	m_tInfo.fX += m_fSpeed * ((float)cos(m_fAngle * (PI / 180.f)));
+	m_tInfo.fY -= m_fSpeed * ((float)sin(m_fAngle * (PI / 180.f)));
 }
 
 void Monster::Render(HDC _hdc)
@@ -98,4 +105,32 @@ void Monster::Render(HDC _hdc)
 
 void Monster::Release()
 {
+}
+
+void Monster::Drop_Item()
+{
+	int iRandDrop = rand() % 100;
+	if (iRandDrop < 80)
+	{
+		int iRandItem = rand() % (int)ITEM_END;
+		Item* pItem(nullptr);
+		switch (iRandItem)
+		{
+		case FIRERATE:
+			pItem = new FireRate_Item;
+			break;
+		case BULLET:
+			pItem = new Bullet_Item;
+			break;
+		case ITEM_END:
+			break;
+		default:
+			break;
+		}
+
+		pItem->Set_Pos(Get_Info().fX, Get_Info().fY);
+		pItem->Set_Target(m_pTarget);
+		m_ItemList->push_back(pItem);
+		m_ItemList->back()->Initialize();
+	}
 }

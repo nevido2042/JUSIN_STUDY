@@ -46,6 +46,15 @@
     <Filter Include="02_Object\Satellite">
       <UniqueIdentifier>{4c0d5e8b-67ba-4509-875f-7abb9a428f03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_Object\Item">
+      <UniqueIdentifier>{037e1e10-c972-42e4-af12-c47e7b42992f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Object\Item\FireRate">
+      <UniqueIdentifier>{bec22ac3-cf76-4b71-9912-860a415a2026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Object\Item\Bullet">
+      <UniqueIdentifier>{0ddc5d7a-aa11-4f54-ada7-1bd376a5241c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -99,6 +108,15 @@
     <ClInclude Include="Satellite.h">
       <Filter>02_Object\Satellite</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>02_Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="FireRate_Item.h">
+      <Filter>02_Object\Item\FireRate</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet_Item.h">
+      <Filter>02_Object\Item\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Team1.cpp">
@@ -139,6 +157,15 @@
     </ClCompile>
     <ClCompile Include="Satellite.cpp">
       <Filter>02_Object\Satellite</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>02_Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FireRate_Item.cpp">
+      <Filter>02_Object\Item\FireRate</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet_Item.cpp">
+      <Filter>02_Object\Item\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

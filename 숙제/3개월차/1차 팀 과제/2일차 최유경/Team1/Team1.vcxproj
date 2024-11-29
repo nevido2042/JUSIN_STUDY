@@ -136,10 +136,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Bullet_Item.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
+    <ClInclude Include="FireRate_Item.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Obj.h" />
@@ -155,8 +158,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Bullet_Item.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="EndScene.cpp" />
+    <ClCompile Include="FireRate_Item.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Obj.cpp" />
