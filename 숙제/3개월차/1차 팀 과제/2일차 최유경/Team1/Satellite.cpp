@@ -14,15 +14,16 @@ void Satellite::Initialize()
 {
 	m_tInfo.fCX = 15.f;
 	m_tInfo.fCY = 15.f;
-	m_fDistance = 30.f;
+	m_fDistance = 50.f;
 	m_fSpeed = 5.f;
+	m_iDamage = 1.f;
 }
 
 int Satellite::Update()
 {
 	m_fAngle += m_fSpeed;
-	m_tInfo.fX = long(m_tInfo.fX + (m_fDistance * cosf(m_fAngle * (PI / 180.f))));
-	m_tInfo.fY = long(m_tInfo.fY - (m_fDistance * sinf(m_fAngle * (PI / 180.f))));
+	m_tInfo.fX = long(m_pTarget->Get_Info().fX + (m_fDistance * cosf(m_fAngle * (PI / 180.f))));
+	m_tInfo.fY = long(m_pTarget->Get_Info().fY - (m_fDistance * sinf(m_fAngle * (PI / 180.f))));
 
 	Obj::Update_Rect();
 	return OBJ_NOEVENT;

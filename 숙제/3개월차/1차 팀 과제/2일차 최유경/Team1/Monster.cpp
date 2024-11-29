@@ -2,8 +2,9 @@
 #include "Monster.h"
 #include "FireRate_Item.h"
 #include "Bullet_Item.h"
+#include "Satellite_Item.h"
 
-Monster::Monster():m_dir(NODIR), m_ItemList(nullptr)
+Monster::Monster():m_dir(NODIR), m_pItemList(nullptr)
 {
 }
 
@@ -122,6 +123,10 @@ void Monster::Drop_Item()
 		case BULLET:
 			pItem = new Bullet_Item;
 			break;
+		case SATELLITE:
+			pItem = new Satellite_Item;
+			static_cast<Satellite_Item*>(pItem)->Set_SatelliteList(m_pSatelliteList);
+			break;
 		case ITEM_END:
 			break;
 		default:
@@ -130,7 +135,7 @@ void Monster::Drop_Item()
 
 		pItem->Set_Pos(Get_Info().fX, Get_Info().fY);
 		pItem->Set_Target(m_pTarget);
-		m_ItemList->push_back(pItem);
-		m_ItemList->back()->Initialize();
+		m_pItemList->push_back(pItem);
+		m_pItemList->back()->Initialize();
 	}
 }

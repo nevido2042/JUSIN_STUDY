@@ -55,6 +55,9 @@
     <Filter Include="02_Object\Item\Bullet">
       <UniqueIdentifier>{0ddc5d7a-aa11-4f54-ada7-1bd376a5241c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_Object\Item\Satellite">
+      <UniqueIdentifier>{61d15aac-afdc-42da-b4f7-dc905f3af637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -117,6 +120,9 @@
     <ClInclude Include="Bullet_Item.h">
       <Filter>02_Object\Item\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Satellite_Item.h">
+      <Filter>02_Object\Item\Satellite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Team1.cpp">
@@ -166,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="Bullet_Item.cpp">
       <Filter>02_Object\Item\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Satellite_Item.cpp">
+      <Filter>02_Object\Item\Satellite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@ class StageScene : public SceneObj
 {
 public:
 	StageScene();
-	~StageScene();
+	virtual ~StageScene();
 public:
 	virtual void Initialize(Obj* _pPlayer) override;
 	virtual int Update() override;

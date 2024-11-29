@@ -150,6 +150,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Satellite.h" />
+    <ClInclude Include="Satellite_Item.h" />
     <ClInclude Include="SceneObj.h" />
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="StartScene.h" />
@@ -174,6 +175,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Satellite.cpp" />
+    <ClCompile Include="Satellite_Item.cpp" />
     <ClCompile Include="SceneObj.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="StartScene.cpp" />

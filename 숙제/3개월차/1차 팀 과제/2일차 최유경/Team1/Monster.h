@@ -4,9 +4,10 @@ class Monster :public Obj
 {
 public: 
 	Monster();
-	~Monster();
+	virtual ~Monster();
 public:
-	void        Set_ItemList(list<Obj*>* _pItemList) { m_ItemList = _pItemList; }
+	void        Set_ItemList(list<Obj*>* _pItemList) { m_pItemList = _pItemList; }
+	void        Set_SatelliteList(list<Obj*>* _pSatelliteList) { m_pSatelliteList = _pSatelliteList; }
 public:
 	virtual void Initialize() override;
 	virtual int Update() override;
@@ -17,6 +18,7 @@ private:
 	void Drop_Item();
 private:
 	int m_dir;
-	list<Obj*>* m_ItemList;
+	list<Obj*>* m_pItemList;
+	list<Obj*>* m_pSatelliteList;
 };
 

@@ -4,7 +4,7 @@ class Satellite :public Obj
 {
 public:
 	Satellite();
-	~Satellite();
+	virtual ~Satellite();
 public:
 	virtual void Initialize() override;
 	virtual int Update() override;

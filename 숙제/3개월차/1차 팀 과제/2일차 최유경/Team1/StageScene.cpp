@@ -19,7 +19,7 @@ void StageScene::Initialize(Obj* _pPlayer)
 {
 	m_ObjList[OBJ_PLAYER].push_back(_pPlayer);
 	static_cast<Player*>(m_ObjList[OBJ_PLAYER].front())->Set_Bullet(&m_ObjList[OBJ_BULLET]);
-	
+
 	m_dwTime = GetTickCount64();
 }
 
@@ -63,6 +63,7 @@ void StageScene::Late_Update()
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_ITEM], m_ObjList[OBJ_PLAYER]);
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_SATELLITE], m_ObjList[OBJ_MONSTER]);
 
 	if (m_ObjList[OBJ_MONSTER].size() == 0) {
 		bFinish = true;
@@ -103,6 +104,7 @@ void StageScene::SpawnMonster()
 		Monster* pMonster = new Monster;
 		pMonster->Set_Target(m_ObjList[OBJ_PLAYER].front());
 		pMonster->Set_ItemList(&m_ObjList[OBJ_ITEM]);
+		pMonster->Set_SatelliteList(&m_ObjList[OBJ_SATELLITE]);//이게 맞나...?
 		m_ObjList[OBJ_MONSTER].push_back(pMonster);
 		m_ObjList[OBJ_MONSTER].back()->Initialize();
 	}

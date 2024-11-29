@@ -4,7 +4,7 @@ class Player : public Obj
 {
 public:
 	Player();
-	~Player();
+	virtual ~Player();
 public:
 	void        Set_Bullet(list<Obj*>* pBullet) { m_BulletList = pBullet; }
 

@@ -7,7 +7,7 @@ class MainGame
 {
 public:
 	MainGame();
-	~MainGame();
+	virtual ~MainGame();
 public:
 	void Initialize();
 	int Update();

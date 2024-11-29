@@ -54,8 +54,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     srand((unsigned int)time(NULL));
 
-    bool bNext = false;
-    bool bGameEnd = false;
+    //bool bNext = false;
+    //bool bGameEnd = false;
 
     while (true) {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -76,7 +76,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 if (iNum == OBJ_CLEAR) {
                     mainGame.Load_Scene();
-                    bNext = false;
+                    //bNext = false;
                 }
 
                 if (iNum == OBJ_FINISH) {
