@@ -13,7 +13,11 @@ public:
 		m_tInfo.fX = _fX;
 		m_tInfo.fY = _fY;
 	}
-	
+	int Get_Hp() { return m_iHp; }
+	int Get_Damage() { return m_iDamage; }
+	void Set_Angle(float _fAngle) { m_fAngle = _fAngle; }
+	void Set_Target(Obj* pTarget) { m_pTarget = pTarget; }
+	void Set_Hp(int _iDamage);
 public:
 	virtual void Initialize() PURE;
 	virtual int Update() PURE;
@@ -22,25 +26,18 @@ public:
 	virtual void Release() PURE;
 public:
 	void		Update_Rect();
-	void Set_Dead() { m_bDead = true; }
-	void		Set_Hp(int _iHp) { m_iHp = _iHp; }
-	void		Set_Damage(int _iDamage) { m_iDamage = m_iDamage; }
-	int			Get_Hp() { return m_iHp; }
-	int			Get_Damage() { return m_iDamage; }
-	void		Set_Target(Obj* _Target) { m_pTarget = _Target; }
-	Obj*		Get_Target(){ return m_pTarget; }
 protected:
 	INFO		m_tInfo;
 	RECT		m_tRect;
 
-
 	float		m_fAngle;
 	float		m_fSpeed;
 	float		m_fDistance;
+	Obj* m_pTarget;
 
 	bool		m_bDead;
 	int			m_iHp;
 	int			m_iDamage;
-	Obj*		m_pTarget;
+
 };
 

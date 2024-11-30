@@ -12,10 +12,13 @@ MainGame::MainGame() :m_hDC(nullptr), m_pPlayer(nullptr), m_iScene(NONE)
 
 MainGame::~MainGame()
 {
+	Release();
 }
 
 void MainGame::Initialize()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // 메모리 누수 체크 명령어
+
 	m_hDC = GetDC(g_hWnd);
 	m_iScene = START;
 
