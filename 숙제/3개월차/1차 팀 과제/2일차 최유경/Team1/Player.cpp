@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "ScrewBullet.h"
 
 Player::Player() : m_tPosin({}), m_BulletList(nullptr),
 m_iBulletLevel(BULLET_ONE), m_iFireRate(0), m_iTick(0), m_eBulletType(BULLET_END)
@@ -164,6 +165,8 @@ void Player::Key_Input()
 				m_iTick = 0;
 				break;
 			case BULLET_SCREW:
+				m_BulletList->push_back(Create_ScrewBullet(m_fAngle));
+				m_iTick = 0;
 				break;
 			case BULLET_END:
 				break;
@@ -199,6 +202,16 @@ void Player::Calc_Angle()
 Obj* Player::Create_Bullet(float radian)
 {
 	Obj* pBullet = new Bullet(radian);
+
+	pBullet->Initialize();
+	pBullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));
+
+	return pBullet;
+}
+
+Obj* Player::Create_ScrewBullet(float radian)
+{
+	Obj* pBullet = new ScrewBullet(radian);
 
 	pBullet->Initialize();
 	pBullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));

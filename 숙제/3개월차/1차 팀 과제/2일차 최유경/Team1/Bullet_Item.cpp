@@ -14,7 +14,7 @@ void Bullet_Item::Upgrade_Target()
 		pPlayer->Set_BulletType(BULLET_THREE);
 		break;
 	case BULLET_THREE:
-
+		pPlayer->Set_BulletType(BULLET_SCREW);
 		break;
 	case BULLET_SCREW:
 		break;

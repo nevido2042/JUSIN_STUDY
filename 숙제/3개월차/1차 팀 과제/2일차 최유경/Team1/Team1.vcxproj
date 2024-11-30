@@ -152,6 +152,7 @@
     <ClInclude Include="Satellite.h" />
     <ClInclude Include="Satellite_Item.h" />
     <ClInclude Include="SceneObj.h" />
+    <ClInclude Include="ScrewBullet.h" />
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="StartScene.h" />
     <ClInclude Include="targetver.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="Satellite.cpp" />
     <ClCompile Include="Satellite_Item.cpp" />
     <ClCompile Include="SceneObj.cpp" />
+    <ClCompile Include="ScrewBullet.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="Team1.cpp" />

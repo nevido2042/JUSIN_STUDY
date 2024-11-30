@@ -18,6 +18,7 @@ private:
 	void Key_Input();
 	void Calc_Angle();
 	Obj* Create_Bullet(float radian);
+	Obj* Create_ScrewBullet(float radian);
 public:
 	int Get_FireRate() { return m_iFireRate; }
 	void Set_FireRate(int _iFireRate) { m_iFireRate = _iFireRate; }
