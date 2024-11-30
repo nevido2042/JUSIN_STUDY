@@ -5,7 +5,7 @@
 #include "Satellite_Item.h"
 #include "Heal_Item.h"
 
-Monster::Monster():m_dir(NODIR), m_pItemList(nullptr)
+Monster::Monster():m_dir(NODIR), m_pItemList(nullptr), m_pSatelliteList(nullptr)
 {
 }
 

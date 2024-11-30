@@ -3,7 +3,7 @@
 
 void Heal_Item::Upgrade_Target()
 {
-	m_pTarget->Add_HP(5);
+	m_pTarget->Add_HP(100);
 }
 
 void Heal_Item::Render(HDC _hDC)

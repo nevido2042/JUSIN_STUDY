@@ -2,9 +2,9 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "ScrewBullet.h"
+#include "Item.h"
 
-Player::Player() : m_tPosin({}), m_BulletList(nullptr),
-m_iBulletLevel(BULLET_ONE), m_iFireRate(0), m_iTick(0), m_eBulletType(BULLET_END)
+Player::Player() :  m_tPosin({}), m_BulletList(nullptr), m_iBulletLevel(BULLET_ONE), m_iFireRate(10), m_iTick(0)
 {
 }
 
@@ -18,11 +18,9 @@ void Player::Initialize()
 	m_fSpeed = 5.f;
 	m_fDistance = 30.f;
 	m_iBulletLevel = BULLET_ONE;
-	m_iFireRate = 10;
-	m_iTick = 0;
+
+	m_iHp = 100;
 	m_iDamage = 1;
-	m_iHp = 1;
-	m_eBulletType = BULLET_ONE;
 }
 
 int Player::Update()
@@ -143,38 +141,35 @@ void Player::Key_Input()
 			m_tInfo.fY -= m_fSpeed;
 		}
 	}
-
+	
+	
+	
+	
 	if (GetAsyncKeyState(VK_LBUTTON)) { //총알 여러개 방지
-		if (m_iTick >= m_iFireRate) {
-
-			switch (m_eBulletType)
-			{
-			case BULLET_ONE:
+		if (BULLET_ONE == m_iBulletLevel)
+		{
+			if (m_iTick >= m_iFireRate) {
 				m_BulletList->push_back(Create_Bullet(m_fAngle));
 				m_iTick = 0;
-				break;
-			case BULLET_TWO:
-				m_BulletList->push_back(Create_Bullet(m_fAngle - 5.f));
-				m_BulletList->push_back(Create_Bullet(m_fAngle + 5.f));
-				m_iTick = 0;
-				break;
-			case BULLET_THREE:
-				m_BulletList->push_back(Create_Bullet(m_fAngle));
-				m_BulletList->push_back(Create_Bullet(m_fAngle - 5.f));
-				m_BulletList->push_back(Create_Bullet(m_fAngle + 5.f));
-				m_iTick = 0;
-				break;
-			case BULLET_SCREW:
-				m_BulletList->push_back(Create_ScrewBullet(m_fAngle));
-				m_BulletList->push_back(Create_ScrewBullet(m_fAngle - 20.f));
-				m_BulletList->push_back(Create_ScrewBullet(m_fAngle + 20.f));
-				m_iTick = 0;
-				break;
-			case BULLET_END:
-				break;
-			default:
-				break;
 			}
+		}
+		else if (BULLET_TWO == m_iBulletLevel)
+		{
+			if (m_iTick >= m_iFireRate) {
+				m_BulletList->push_back(Create_Bullet(m_fAngle + 15));
+				m_BulletList->push_back(Create_Bullet(m_fAngle - 15));
+
+				m_iTick = 0;
+			}
+		}
+	}
+	
+	
+
+	if (GetAsyncKeyState(VK_RBUTTON)) { //screw 추가
+		if (m_iTick >= m_iFireRate) {
+			m_BulletList->push_back(Create_Screw_Bullet(m_fAngle));
+			m_iTick = 0;
 		}
 	}
 }
@@ -207,16 +202,18 @@ Obj* Player::Create_Bullet(float radian)
 
 	pBullet->Initialize();
 	pBullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));
-
+	dynamic_cast<Bullet*>(pBullet)->Set_Type(BM_PLAYER);
 	return pBullet;
 }
 
-Obj* Player::Create_ScrewBullet(float radian)
+Obj* Player::Create_Screw_Bullet(float radian)
 {
-	Obj* pBullet = new ScrewBullet(radian);
+	Obj* pSbullet = new ScrewBullet(radian);
 
-	pBullet->Initialize();
-	pBullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));
-
-	return pBullet;
+	pSbullet->Initialize();
+	pSbullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));
+	dynamic_cast<Bullet*>(pSbullet)->Set_Type(BM_PLAYER);
+	return pSbullet;
 }
+
+
