@@ -3,6 +3,7 @@
 #include "FireRate_Item.h"
 #include "Bullet_Item.h"
 #include "Satellite_Item.h"
+#include "Heal_Item.h"
 
 Monster::Monster():m_dir(NODIR), m_pItemList(nullptr)
 {
@@ -127,6 +128,11 @@ void Monster::Drop_Item()
 			pItem = new Satellite_Item;
 			static_cast<Satellite_Item*>(pItem)->Set_SatelliteList(m_pSatelliteList);
 			break;
+
+		case HEAL:
+			pItem = new Heal_Item;
+			break;
+
 		case ITEM_END:
 			break;
 		default:

@@ -142,6 +142,7 @@
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="FireRate_Item.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Heal_Item.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Monster.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="FireRate_Item.cpp" />
+    <ClCompile Include="Heal_Item.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Monster.cpp" />

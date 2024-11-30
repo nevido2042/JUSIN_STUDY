@@ -61,6 +61,9 @@
     <Filter Include="02_Object\Bullet\ScrewBullet">
       <UniqueIdentifier>{59d5556e-eccc-438a-afe2-dcf313569aff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_Object\Item\Heal">
+      <UniqueIdentifier>{ab75125d-7e5b-40f9-b7f9-ea1947223977}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -129,6 +132,9 @@
     <ClInclude Include="ScrewBullet.h">
       <Filter>02_Object\Bullet\ScrewBullet</Filter>
     </ClInclude>
+    <ClInclude Include="Heal_Item.h">
+      <Filter>02_Object\Item\Heal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Team1.cpp">
@@ -184,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="ScrewBullet.cpp">
       <Filter>02_Object\Bullet\ScrewBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Heal_Item.cpp">
+      <Filter>02_Object\Item\Heal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
