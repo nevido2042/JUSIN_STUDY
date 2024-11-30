@@ -156,8 +156,8 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="SceneObj.h" />
+    <ClInclude Include="Stage1.h" />
     <ClInclude Include="StageScene.h" />
-    <ClInclude Include="StageScene2.h" />
     <ClInclude Include="StartScene.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Team1.h" />
@@ -186,8 +186,8 @@
     <ClCompile Include="PSpeedItem.cpp" />
     <ClCompile Include="Shield.cpp" />
     <ClCompile Include="SceneObj.cpp" />
+    <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="StageScene.cpp" />
-    <ClCompile Include="StageScene2.cpp" />
     <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="Team1.cpp" />
   </ItemGroup>

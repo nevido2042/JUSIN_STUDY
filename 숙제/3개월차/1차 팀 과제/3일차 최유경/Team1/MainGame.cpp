@@ -4,7 +4,7 @@
 #include "StageScene.h"
 #include "EndScene.h"
 #include "Player.h"
-#include "StageScene2.h"
+#include "Stage1.h"
 
 MainGame::MainGame() :m_hDC(nullptr), m_pPlayer(nullptr), m_iScene(NONE)
 {
@@ -28,12 +28,13 @@ void MainGame::Initialize()
 
 	m_SceneArray[START] = new StartScene;
 	m_SceneArray[STAGE_ONE] = new StageScene;
-	m_SceneArray[STAGE_TWO] = new StageScene2;
+	m_SceneArray[STAGE_TWO] = new Stage1;
 	m_SceneArray[END] = new EndScene;
 
-	for (auto& sceneObj : m_SceneArray) {
-		sceneObj->Initialize(m_pPlayer);
-	}
+	m_SceneArray[START]->Initialize(m_pPlayer);
+	//for (auto& sceneObj : m_SceneArray) {
+	//	sceneObj->Initialize(m_pPlayer);
+	//}
 }
 
 int MainGame::Update()
