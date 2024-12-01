@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "Stage1.h"
 
+#include "StageHero.h"
+
 MainGame::MainGame() :m_hDC(nullptr), m_pPlayer(nullptr), m_iScene(NONE)
 {
 	ZeroMemory(m_SceneArray, sizeof(m_SceneArray));
@@ -31,6 +33,7 @@ void MainGame::Initialize()
 	m_SceneArray[START] = new StartScene;
 	m_SceneArray[STAGE_ONE] = new Stage1;
 	m_SceneArray[STAGE_TWO] = new Stage2;
+	m_SceneArray[STAGE_HERO] = new StageHero;
 	m_SceneArray[STAGE_YU] = new StageYu;
 	m_SceneArray[END] = new EndScene;
 
