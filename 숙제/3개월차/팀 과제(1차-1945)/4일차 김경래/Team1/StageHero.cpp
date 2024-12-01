@@ -11,6 +11,8 @@ void StageHero::SpawnMonster()
 	m_ObjList[OBJ_MONSTER].back()->Initialize();
 	m_ObjList[OBJ_MONSTER].back()->Set_Target(m_ObjList[OBJ_PLAYER].front());
 	static_cast<MonsterShoot*>(m_ObjList[OBJ_MONSTER].back())->Set_Bullet(&m_ObjList[OBJ_BULLET_MONSTER]);
+	static_cast<BossHero*>(m_ObjList[OBJ_MONSTER].back())->Set_MonsterList(&m_ObjList[OBJ_MONSTER]);
+
 }
 
 void StageHero::Initialize(Obj* _pPlayer)

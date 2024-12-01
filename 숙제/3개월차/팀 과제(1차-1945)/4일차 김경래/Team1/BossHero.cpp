@@ -3,7 +3,7 @@
 
 BossHero::BossHero()
 	:m_eState(STATE::IDLE), m_fCurSpeed(0.f), m_fChargeAngle(0.f)
-	,ullLastStateChange_Time(0)
+	,ullLastStateChange_Time(0), m_pMonsterList(nullptr)
 {
 	ZeroMemory(&m_tChargePos, sizeof(POINT));
 	
@@ -24,8 +24,8 @@ void BossHero::Initialize()
 	m_tInfo.fCY = 100.f;
 	m_fSpeed = 0.1f;
 
-	m_iHp = 999;
-	m_iDamage = 999;
+	m_iHp = 99;
+	m_iDamage = 50;
 
 	m_tInfo.fX = (GAME_WIN_RIGHT + GAME_WIN_LEFT) * 0.5f;
 	m_tInfo.fY = GAME_WIN_TOP + m_tInfo.fCY;
@@ -66,18 +66,20 @@ void BossHero::Late_Update()
 {
 	if (m_iHp <= 0) {
 		m_bDead = true;
+
+		CreateThis();
 	}
 
-	if (!m_bDead)
-	{
-		if (m_ulTime + 500 < GetTickCount64())
-		{
-			Shoot();
-			m_ulTime = GetTickCount64();
-		}
+	//if (!m_bDead)
+	//{
+	//	if (m_ulTime + 500 < GetTickCount64())
+	//	{
+	//		Shoot();
+	//		m_ulTime = GetTickCount64();
+	//	}
 
 
-	}
+	//}
 
 	switch (m_eState)
 	{
@@ -180,7 +182,7 @@ void BossHero::Render(HDC _hdc)
 {
 	if (m_eState == READY_CHARGE || m_eState == CHARGE)
 	{
-		HPEN hPen = CreatePen(PS_SOLID, Get_Info().fCX, RGB(255, 0, 0));
+		HPEN hPen = CreatePen(PS_SOLID, Get_Info().fCX*0.1f, RGB(255, 0, 0));
 		HPEN hOldPen = (HPEN)SelectObject(_hdc, hPen);
 		// 경로 그리기
 		MoveToEx(_hdc, Get_Info().fX, Get_Info().fY, NULL);
@@ -232,4 +234,27 @@ bool BossHero::IsOutMap()
 	}
 
 	return bOutMap;
+}
+
+void BossHero::CreateThis()
+{
+	m_pMonsterList->push_back(new BossHero());
+	m_pMonsterList->back()->Initialize();
+	m_pMonsterList->back()->Set_Pos(Get_Info().fX - Get_Info().fCX, Get_Info().fY);
+	static_cast<BossHero*>(m_pMonsterList->back())->IsOutMap();
+	m_pMonsterList->back()->Set_Target(m_pTarget);
+	static_cast<MonsterShoot*>(m_pMonsterList->back())->Set_Bullet(m_pBulletList);
+	static_cast<BossHero*>(m_pMonsterList->back())->Set_MonsterList(m_pMonsterList);
+	static_cast<BossHero*>(m_pMonsterList->back())->Set_Size(Get_Info().fCX * 0.8f, Get_Info().fCY * 0.8f);
+
+	m_pMonsterList->push_back(new BossHero());
+	m_pMonsterList->back()->Initialize();
+	m_pMonsterList->back()->Set_Pos(Get_Info().fX + Get_Info().fCX, Get_Info().fY);
+	static_cast<BossHero*>(m_pMonsterList->back())->IsOutMap();
+	m_pMonsterList->back()->Set_Target(m_pTarget);
+	static_cast<MonsterShoot*>(m_pMonsterList->back())->Set_Bullet(m_pBulletList);
+	static_cast<BossHero*>(m_pMonsterList->back())->Set_MonsterList(m_pMonsterList);
+	static_cast<BossHero*>(m_pMonsterList->back())->Set_Size(Get_Info().fCX * 0.8f, Get_Info().fCY * 0.8f);
+
+
 }
