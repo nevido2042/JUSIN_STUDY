@@ -14,6 +14,10 @@ StageKim::~StageKim()
 {
 }
 
+void StageKim::Initialize()
+{
+}
+
 void StageKim::SpawnMonster()
 {
 	m_ObjList[OBJ_MONSTER].push_back(new KBossMonster());

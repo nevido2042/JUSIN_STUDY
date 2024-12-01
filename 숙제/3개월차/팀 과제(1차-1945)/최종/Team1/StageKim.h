@@ -9,6 +9,7 @@ public:
 	virtual ~StageKim();
 
 private:
+	virtual void Initialize();
 	virtual void SpawnMonster();
 	virtual int	 Update();
 	virtual void Late_Update();

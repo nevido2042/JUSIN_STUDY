@@ -138,6 +138,7 @@
     <ClInclude Include="BossHero.h" />
     <ClInclude Include="BulletOne.h" />
     <ClInclude Include="BulletScrew.h" />
+    <ClInclude Include="KBossMonster.h" />
     <ClInclude Include="MonsterShoot.h" />
     <ClInclude Include="MonsterYu.h" />
     <ClInclude Include="ShieldItem.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="StageHero.h" />
+    <ClInclude Include="StageKim.h" />
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="StageYu.h" />
     <ClInclude Include="StartScene.h" />
@@ -172,6 +174,7 @@
     <ClCompile Include="BossHero.cpp" />
     <ClCompile Include="BulletOne.cpp" />
     <ClCompile Include="BulletScrew.cpp" />
+    <ClCompile Include="KBossMonster.cpp" />
     <ClCompile Include="MonsterShoot.cpp" />
     <ClCompile Include="MonsterYu.cpp" />
     <ClCompile Include="ShieldItem.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="StageHero.cpp" />
+    <ClCompile Include="StageKim.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="StageYu.cpp" />
     <ClCompile Include="StartScene.cpp" />
