@@ -36,7 +36,7 @@ int StageYu::Update()
 	if (m_bStart)
 	{
 		m_ulStartTime = GetTickCount64();
-		m_ulStartTime += 100000;
+		m_ulStartTime += 10000;
 		m_bStart = false;
 
 		SpawnMonster();
