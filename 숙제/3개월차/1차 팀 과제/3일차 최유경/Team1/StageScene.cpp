@@ -9,8 +9,9 @@
 #include "PSpeedItem.h"
 #include "ShieldItem.h"
 #include "CollisionMgr.h"
+#include "BulletMonster.h"
 
-StageScene::StageScene() : m_dwTime(0), m_bFinish(false), m_bStart(true)
+StageScene::StageScene() : m_dwTime(0), m_bFinish(false), m_bStart(true), m_dwStartTime(0)
 {
 }
 
@@ -37,7 +38,7 @@ int StageScene::Update()
 	if (m_bStart)
 	{
 		m_dwStartTime =  GetTickCount64();
-		m_dwStartTime += 6000;
+		m_dwStartTime += 30000;
 		m_bStart = false;
 	}
 
@@ -77,6 +78,8 @@ void StageScene::Late_Update()
 	CollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]); //몬스터 & 플레이어
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_SHIELD], m_ObjList[OBJ_MONSTER]); //몬스터 & 쉴드
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_ITEM], m_ObjList[OBJ_PLAYER]); //아이템 & 플레이어
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTERBULLET], m_ObjList[OBJ_PLAYER]); //몬스터 총알 & 플레이어
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTERBULLET], m_ObjList[OBJ_SHIELD]); //몬스터 총알 & 쉴드
 
 	if ((m_dwStartTime - GetTickCount64()) / 1000 <= 0) {
 		m_bFinish = true;
@@ -117,7 +120,7 @@ void StageScene::Render(HDC _hDC)
 	TextOut(_hDC, 350, 50, szTimer, lstrlen(szTimer));
 }
 
-void StageScene::Release() 
+void StageScene::Release()
 {
 	for (size_t i = 1; i < OBJ_END; ++i) {
 		for_each(m_ObjList[i].begin(), m_ObjList[i].end(), Safe_Delete<Obj*>);
@@ -139,7 +142,7 @@ void StageScene::SpawnItem(float _x, float _y)
 {
 	int iRate = rand() % 100; 
 	int iRandomItem =  rand() % 100;
-	if (0 <= iRate && iRate < 10) {  // 10% 확률
+	if (0 <= iRate && iRate < 100) {  // 10% 확률
 		if (0 <= iRandomItem && iRandomItem < 15) {  // 15% 확률 
 			m_ObjList[OBJ_ITEM].push_back(new BulletItem());
 		}

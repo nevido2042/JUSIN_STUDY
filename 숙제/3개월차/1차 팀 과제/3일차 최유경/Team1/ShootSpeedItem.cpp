@@ -20,5 +20,5 @@ void ShootSpeedItem::Render(HDC _hdc)
 
 void ShootSpeedItem::UseITem()
 {
-	static_cast<Player*>(m_pTarget)->Set_SSpeed(1);
+	static_cast<Player*>(m_pTarget)->Set_SSpeed(5);
 }

@@ -71,9 +71,9 @@ void Player::Upgrade_Bullet()
 
 void Player::Set_SSpeed(int _iRate)
 {
-	m_fSpeed -= _iRate;
-	if (m_fSpeed < 0) {
-		m_fSpeed += _iRate;
+	m_iFireRate -= _iRate;
+	if (m_iFireRate < 0) {
+		m_iFireRate += _iRate;
 	}
 }
 
