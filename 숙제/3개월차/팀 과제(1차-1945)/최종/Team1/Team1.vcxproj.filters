@@ -85,6 +85,12 @@
     <Filter Include="01_Scenes\2_Stage\StageYu">
       <UniqueIdentifier>{e8ab3d8b-0b5c-4be6-b849-1aba41c79ba4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01_Scenes\2_Stage\StageHero">
+      <UniqueIdentifier>{45baa015-cc79-4022-8b8a-bad8e8cb066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Object\Monster\ShotSpawner\BossHero">
+      <UniqueIdentifier>{c1c74e3d-ae29-45b5-ac5d-112de24971d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -177,6 +183,12 @@
     <ClInclude Include="StageYu.h">
       <Filter>01_Scenes\2_Stage\StageYu</Filter>
     </ClInclude>
+    <ClInclude Include="StageHero.h">
+      <Filter>01_Scenes\2_Stage\StageHero</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHero.h">
+      <Filter>02_Object\Monster\ShotSpawner\BossHero</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Team1.cpp">
@@ -256,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="StageYu.cpp">
       <Filter>01_Scenes\2_Stage\StageYu</Filter>
+    </ClCompile>
+    <ClCompile Include="StageHero.cpp">
+      <Filter>01_Scenes\2_Stage\StageHero</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHero.cpp">
+      <Filter>02_Object\Monster\ShotSpawner\BossHero</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
