@@ -76,6 +76,12 @@
     <Filter Include="02_Object\Monster\ShotSpawner">
       <UniqueIdentifier>{88878d8c-1232-46ca-8ad1-935e6399dad8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01_Scenes\2_Stage\StageHero">
+      <UniqueIdentifier>{648049ef-48f7-483a-b2ce-eaf1fc8a1ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Object\Monster\ShotSpawner\BossHero">
+      <UniqueIdentifier>{720cf06e-538c-4340-87cd-cafb076f0844}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -159,6 +165,12 @@
     <ClInclude Include="MonsterShoot.h">
       <Filter>02_Object\Monster\ShotSpawner</Filter>
     </ClInclude>
+    <ClInclude Include="StageHero.h">
+      <Filter>01_Scenes\2_Stage\StageHero</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHero.h">
+      <Filter>02_Object\Monster\ShotSpawner\BossHero</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Team1.cpp">
@@ -229,6 +241,12 @@
     </ClCompile>
     <ClCompile Include="MonsterShoot.cpp">
       <Filter>02_Object\Monster\ShotSpawner</Filter>
+    </ClCompile>
+    <ClCompile Include="StageHero.cpp">
+      <Filter>01_Scenes\2_Stage\StageHero</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHero.cpp">
+      <Filter>02_Object\Monster\ShotSpawner\BossHero</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
