@@ -96,7 +96,7 @@ void BossHero::Late_Update()
 	case BossHero::READY_CHARGE:
 
 		//몇초 뒤
-		if (ullLastStateChange_Time + 1000 < GetTickCount64())
+		if (ullLastStateChange_Time + 500 < GetTickCount64())
 		{
 			m_eState = CHARGE;
 			ullLastStateChange_Time = GetTickCount64();
@@ -104,8 +104,11 @@ void BossHero::Late_Update()
 		}
 
 		//경로 그리기
-		m_tChargePos.x += 100.f * cos(m_fAngle * (PI / 180.f));
-		m_tChargePos.y -= 100.f * sin(m_fAngle * (PI / 180.f));
+		//m_tChargePos.x += 100.f * cos(m_fAngle * (PI / 180.f));
+		//m_tChargePos.y -= 100.f * sin(m_fAngle * (PI / 180.f));
+
+		m_tChargePos.x = m_pTarget->Get_Info().fX;
+		m_tChargePos.y = m_pTarget->Get_Info().fY;
 
 		//if (GAME_WIN_LEFT > m_tChargePos.x)
 		//{
@@ -131,6 +134,23 @@ void BossHero::Late_Update()
 		//경로 그리기
 		m_tChargePos.x += 10.f * cos(m_fChargeAngle * (PI / 180.f));
 		m_tChargePos.y -= 10.f * sin(m_fChargeAngle * (PI / 180.f));
+
+		/*if (GAME_WIN_LEFT > m_tChargePos.x)
+		{
+			m_tChargePos.x = GAME_WIN_LEFT;
+		}
+		if (GAME_WIN_RIGHT < m_tChargePos.x)
+		{
+			m_tChargePos.x = GAME_WIN_RIGHT;
+		}
+		if (GAME_WIN_TOP > m_tChargePos.y)
+		{
+			m_tChargePos.y = GAME_WIN_TOP;
+		}
+		if (GAME_WIN_BOTTOM < m_tChargePos.y)
+		{
+			m_tChargePos.y = GAME_WIN_BOTTOM;
+		}*/
 
 		//몇초 뒤
 		if (ullLastStateChange_Time + 1000 > GetTickCount64())
