@@ -28,6 +28,13 @@ void StageHero::Initialize(Obj* _pPlayer)
 
 int StageHero::Update()
 {
+	if (GetAsyncKeyState(VK_SPACE)) {
+		if (m_bFinish)
+		{
+			m_IsNext = !m_IsNext;
+		}
+	}
+
 	if (m_bFinish) {
 		return OBJ_CLEAR;
 	}

@@ -61,71 +61,76 @@ void StageScene::Late_Update()
 
 void StageScene::Render(HDC _hDC)
 {
-	if (m_bFinish) 
-	{
-		Rectangle(_hDC, 0, 0, WINCX, WINCY);
-		HFONT newFont = CreateFont(50, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
-		HFONT oldFont = (HFONT)SelectObject(_hDC, newFont);
-		TCHAR szTitleText[32];
-		wsprintf(szTitleText, L"☻☻☻ Clear ☻☻☻");
-		TextOut(_hDC, WINCX / 2 - 200, WINCY / 2 - 150, szTitleText, lstrlen(szTitleText));
-		SelectObject(_hDC, oldFont);
-		DeleteObject(newFont);
+    if (m_bFinish)
+    {
+        Rectangle(_hDC, 0, 0, WINCX, WINCY);
+        HFONT newFont = CreateFont(50, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+        HFONT oldFont = (HFONT)SelectObject(_hDC, newFont);
+        TCHAR szTitleText[32];
+        wsprintf(szTitleText, L"☻☻☻ Clear ☻☻☻");
+        TextOut(_hDC, WINCX / 2 - 200, WINCY / 2 - 150, szTitleText, lstrlen(szTitleText));
+        SelectObject(_hDC, oldFont);
+        DeleteObject(newFont);
 
-		newFont = CreateFont(25, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
-		oldFont = (HFONT)SelectObject(_hDC, newFont);
-		TCHAR szStartText[32];
-		wsprintf(szStartText, L"Space: Load Next");
-		TextOut(_hDC, WINCX / 2 - 100, WINCY / 2 + 170, szStartText, lstrlen(szStartText));
-		SelectObject(_hDC, oldFont);
-		DeleteObject(newFont);
-	}
-	else {
-		Rectangle(_hDC, int(GAME_WIN_LEFT), int(GAME_WIN_TOP), int(GAME_WIN_RIGHT), int(GAME_WIN_BOTTOM));
+        newFont = CreateFont(25, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+        oldFont = (HFONT)SelectObject(_hDC, newFont);
+        TCHAR szStartText[32];
+        wsprintf(szStartText, L"Space: Load Next");
+        TextOut(_hDC, WINCX / 2 - 100, WINCY / 2 + 170, szStartText, lstrlen(szStartText));
+        SelectObject(_hDC, oldFont);
+        DeleteObject(newFont);
+    }
+    else {
+        Rectangle(_hDC, int(GAME_WIN_LEFT), int(GAME_WIN_TOP), int(GAME_WIN_RIGHT), int(GAME_WIN_BOTTOM));
 
-		for (size_t i = 0; i < OBJ_END; ++i)
-		{
-			for (auto& pObj : m_ObjList[i])
-				pObj->Render(_hDC);
-		}
-		SetBkMode(_hDC, TRANSPARENT);
+        for (size_t i = 0; i < OBJ_END; ++i)
+        {
+            for (auto& pObj : m_ObjList[i])
+                pObj->Render(_hDC);
+        }
+        SetBkMode(_hDC, TRANSPARENT);
 
-		HFONT hFont = CreateFont(28, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Arial");
-		SetTextColor(_hDC, RGB(255, 255, 255));
-		HFONT oldFont = (HFONT)SelectObject(_hDC, hFont);
+        HFONT hFont = CreateFont(28, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Arial");
+        SetTextColor(_hDC, RGB(255, 255, 255));
+        HFONT oldFont = (HFONT)SelectObject(_hDC, hFont);
 
-		TCHAR szTimer[32];
-		wsprintf(szTimer, L"Time: %d", int((m_ulStartTime - GetTickCount64()) / 1000));
-		TextOut(_hDC, 620, 50, szTimer, lstrlen(szTimer));
+        TCHAR szTimer[32];
+        wsprintf(szTimer, L"Time: %d", int((m_ulStartTime - GetTickCount64()) / 1000));
+        TextOut(_hDC, 620, 50, szTimer, lstrlen(szTimer));
 
-		SelectObject(_hDC, oldFont);
-		DeleteObject(hFont); 
 
-		Rectangle(_hDC, 620, 100, 720, 130);
-		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(220, 0, 0));
-		HBRUSH oldBrush = (HBRUSH)SelectObject(_hDC, myBrush);
-		Rectangle(_hDC, 620, 100, 620 + m_ObjList[OBJ_PLAYER].front()->Get_Hp(), 130);
-		SelectObject(_hDC, oldBrush);
-		DeleteObject(myBrush);
+        SelectObject(_hDC, oldFont);
+        DeleteObject(hFont);
 
-		oldFont = (HFONT)SelectObject(_hDC, hFont);
-		TCHAR szBullet[32];
-		wsprintf(szBullet, L"Pbullet: %d", (int)m_ObjList[OBJ_BULLET_PLAYER].size());
-		TextOut(_hDC, 620, 180, szBullet, lstrlen(szBullet));
+        TCHAR szPlayerHp[32];
+        wsprintf(szPlayerHp, L"PlayerHp");
+        TextOut(_hDC, 620, 110, szPlayerHp, lstrlen(szPlayerHp));
 
-		TCHAR szMBullet[32];
-		wsprintf(szMBullet, L"Mbullet: %d", (int)m_ObjList[OBJ_BULLET_MONSTER].size());
-		TextOut(_hDC, 620, 230, szMBullet, lstrlen(szMBullet));
+        Rectangle(_hDC, 620, 130, 720, 160);
+        HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(220, 0, 0));
+        HBRUSH oldBrush = (HBRUSH)SelectObject(_hDC, myBrush);
+        Rectangle(_hDC, 620, 130, 620 + m_ObjList[OBJ_PLAYER].front()->Get_Hp() * 0.1f, 160);
+        SelectObject(_hDC, oldBrush);
+        DeleteObject(myBrush);
 
-		TCHAR szMonster[32];
-		wsprintf(szMonster, L"Monster: %d", (int)m_ObjList[OBJ_MONSTER].size());
-		TextOut(_hDC, 620, 280, szMonster, lstrlen(szMonster));
+        oldFont = (HFONT)SelectObject(_hDC, hFont);
+        TCHAR szBullet[32];
+        wsprintf(szBullet, L"Pbullet: %d", (int)m_ObjList[OBJ_BULLET_PLAYER].size());
+        TextOut(_hDC, 620, 180, szBullet, lstrlen(szBullet));
 
-		SelectObject(_hDC, oldFont);
-		DeleteObject(hFont);
+        TCHAR szMonster[32];
+        wsprintf(szMonster, L"Monster: %d", (int)m_ObjList[OBJ_MONSTER].size());
+        TextOut(_hDC, 620, 230, szMonster, lstrlen(szMonster));
 
-		SetTextColor(_hDC, RGB(0, 0, 0));
-	}
+        TCHAR szMBullet[32];
+        wsprintf(szMBullet, L"Mbullet: %d", (int)m_ObjList[OBJ_BULLET_MONSTER].size());
+        TextOut(_hDC, 620, 280, szMBullet, lstrlen(szMBullet));
+
+        SelectObject(_hDC, oldFont);
+        DeleteObject(hFont);
+
+        SetTextColor(_hDC, RGB(0, 0, 0));
+    }
 }
 
 void StageScene::Release() 
