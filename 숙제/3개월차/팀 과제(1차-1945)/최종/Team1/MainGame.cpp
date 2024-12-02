@@ -52,6 +52,7 @@ int MainGame::Update()
 	}
 
 	if (result == OBJ_FINISH) {
+		PlayerWin_Render();
 		return OBJ_FINISH;
 	}
 
@@ -95,6 +96,20 @@ void MainGame::PlayerDead_Render()
 	TCHAR szTitleText[32];
 	wsprintf(szTitleText, L"☹☹☹ Dead ☹☹☹");
 	TextOut(m_hDC, WINCX / 2 - 200, WINCY / 2 - 150, szTitleText, lstrlen(szTitleText));
+	SelectObject(m_hDC, oldFont);
+	DeleteObject(newFont);
+	Sleep(3000);
+}
+
+
+void MainGame::PlayerWin_Render()
+{
+	Rectangle(m_hDC, 0, 0, WINCX, WINCY);
+	HFONT newFont = CreateFont(50, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+	HFONT oldFont = (HFONT)SelectObject(m_hDC, newFont);
+	TCHAR szTitleText[32];
+	wsprintf(szTitleText, L"☹☹☹ Thank you for Playing ☹☹☹");
+	TextOut(m_hDC, WINCX / 2 - 150, WINCY / 2 - 150, szTitleText, lstrlen(szTitleText));
 	SelectObject(m_hDC, oldFont);
 	DeleteObject(newFont);
 	Sleep(3000);

@@ -2,11 +2,12 @@
 #include "StageYu.h"
 #include "MonsterYu.h"
 #include "Player.h"
+#include "CollisionMgr.h"
 
 StageYu::StageYu()
 {
 }
-
+ 
 StageYu::~StageYu()
 {
 }
@@ -36,11 +37,7 @@ int StageYu::Update()
 	if (m_bStart)
 	{
 		m_ulStartTime = GetTickCount64();
-<<<<<<< HEAD
-		m_ulStartTime += 60000;
-=======
 		m_ulStartTime += 10000;
->>>>>>> origin/main
 		m_bStart = false;
 
 		SpawnMonster();
@@ -72,4 +69,34 @@ int StageYu::Update()
 	}
 
 	return OBJ_NOEVENT;
+}
+
+
+
+void StageYu::Late_Update()
+{
+
+	CollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]); //몬스터 & 플레이어
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET_PLAYER]); //몬스터 & 총알
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_SHIELD], m_ObjList[OBJ_MONSTER]); //몬스터 & 쉴드
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_ITEM], m_ObjList[OBJ_PLAYER]); //아이템 & 플레이어
+
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BULLET_MONSTER]); // 플레이어 & 총알
+	CollisionMgr::Collision_Circle(m_ObjList[OBJ_SHIELD], m_ObjList[OBJ_BULLET_MONSTER]); // 실드 & 총알
+
+	if ((m_ulStartTime - GetTickCount64()) / 1000 <= 0) {
+		m_bFinish = true;
+	}
+
+	if (m_ObjList[OBJ_MONSTER].size() == 0) {
+		m_bFinish = true;
+	}
+
+	for (size_t i = 0; i < OBJ_END; ++i)
+	{
+		for (auto& pObj : m_ObjList[i])
+			pObj->Late_Update();
+	}
+
+
 }

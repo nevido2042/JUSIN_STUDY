@@ -35,13 +35,13 @@ int StageHero::Update()
 		}
 	}
 
-	if (m_bFinish) {
+	if (m_IsNext) {
 		return OBJ_CLEAR;
 	}
 	if (m_bStart)
 	{
 		m_ulStartTime = GetTickCount64();
-		m_ulStartTime += 50000;
+		m_ulStartTime += 10000;
 		m_bStart = false;
 	}
 

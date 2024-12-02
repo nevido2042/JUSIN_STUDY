@@ -7,13 +7,20 @@
 
 int StageCY::Update()
 {
-	if (m_bFinish) {
+	if (GetAsyncKeyState(VK_SPACE)) {
+		if (m_bFinish)
+		{
+			m_IsNext = !m_IsNext;
+		}
+	}
+
+	if (m_IsNext) {
 		return OBJ_CLEAR;
 	}
 	if (m_bStart)
 	{
 		m_ulStartTime = GetTickCount64();
-		m_ulStartTime += 30000;
+		m_ulStartTime += 10000;
 		m_bStart = false;
 		m_ObjList[OBJ_MONSTER].push_back(new BossCY());
 		m_ObjList[OBJ_MONSTER].back()->Initialize();
@@ -59,6 +66,9 @@ void StageCY::Late_Update()
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BULLET_MONSTER]); // ÇÃ·¹ÀÌ¾î & ÃÑ¾Ë
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_SHIELD], m_ObjList[OBJ_BULLET_MONSTER]); // ½Çµå & ÃÑ¾Ë
 
+	if ((m_ulStartTime - GetTickCount64()) / 1000 <= 0) {
+		m_bFinish = true;
+	}
 
 	if (m_ObjList[OBJ_MONSTER].empty()) {
 		m_bFinish = true;

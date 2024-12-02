@@ -198,7 +198,15 @@ void BossCY::FollowPlayer()
 {
 	m_fSpeed = 2.f;
 	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * (PI / 180.f));
+	if (m_tInfo.fX + 35.f >= GAME_WINCX)
+		m_tInfo.fX = GAME_WINCX - 35.f;
+	else if (m_tInfo.fX <= 35.f)
+		m_tInfo.fX = 35.f;
 	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * (PI / 180.f));
+	if (m_tInfo.fY + 35.f >= GAME_WINCY)
+		m_tInfo.fY = GAME_WINCY - 35.f;
+	else if (m_tInfo.fY <= 35.f)
+		m_tInfo.fY = 35.f;
 	if (m_ullMovingTick + 5000 <= GetTickCount64())
 	{
 		m_bMovingPattern[FOLLOWPAT] = false;

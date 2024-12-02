@@ -23,22 +23,11 @@ void Bullet::Late_Update()
 
 void Bullet::Render(HDC _hdc)
 {
-	if (BM_PLAYER == m_iType)
-	{
-		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(220, 20, 60));
-		HBRUSH oldBrush = (HBRUSH)SelectObject(_hdc, myBrush);
-		Ellipse(_hdc, m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom);
-		SelectObject(_hdc, oldBrush);
-		DeleteObject(myBrush);
-	}
-	else if (BM_MONSTER == m_iType)
-	{
-		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(220, 220, 220));
-		HBRUSH oldBrush = (HBRUSH)SelectObject(_hdc, myBrush);
-		Ellipse(_hdc, m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom);
-		SelectObject(_hdc, oldBrush);
-		DeleteObject(myBrush);
-	}
+	HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(220, 20, 60));
+	HBRUSH oldBrush = (HBRUSH)SelectObject(_hdc, myBrush);
+	Ellipse(_hdc, m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom);
+	SelectObject(_hdc, oldBrush);
+	DeleteObject(myBrush);
 }
 
 void Bullet::Release()

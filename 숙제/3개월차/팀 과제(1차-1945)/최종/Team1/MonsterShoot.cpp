@@ -118,8 +118,6 @@ Obj* MonsterShoot::Create_Bullet()
 {
 	Obj* pBullet = new BulletOne();
 	pBullet->Initialize();
-	static_cast<Bullet*>(pBullet)->Set_Type(BM_MONSTER);
-	Set_Damage(1);
 	
 	return pBullet;
 }

@@ -21,7 +21,7 @@ void Player::Initialize()
 	m_iFireRate = 13;
 	m_iTick = 0;
 
-	m_iHp = 1000;
+	m_iHp = 100;
 	m_iDamage = 10;
 }
 
@@ -228,7 +228,6 @@ Obj* Player::Create_Bullet(float _fAngle)
 	pBullet = new BulletOne(m_fAngle + _fAngle);
 	pBullet->Initialize();
 	pBullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));
-	static_cast<Bullet*>(pBullet)->Set_Type(BM_PLAYER);
 
 	return pBullet;
 }
@@ -240,7 +239,5 @@ Obj* Player::Create_BulletScrew(float _fAngle)
 	pBullet->Initialize();
 	pBullet->Set_Pos(float(m_tPosin.x), float(m_tPosin.y));
 	pBullet->Set_Damage(20);
-	static_cast<Bullet*>(pBullet)->Set_Type(BM_PLAYER);
-
 	return pBullet;
 }

@@ -35,13 +35,15 @@ int StageKim::Update()
 		}
 	}
 
-	if (m_bFinish) {
+	if (m_IsNext) {
 		return OBJ_CLEAR;
 	}
+
+
 	if (m_bStart)
 	{
 		m_ulStartTime = GetTickCount64();
-		m_ulStartTime += 60000;
+		m_ulStartTime += 10000;
 		SpawnMonster();
 
 		// 2°³
@@ -113,43 +115,3 @@ void StageKim::Late_Update()
 
 	
 }
-
-//void StageKim::Render(HDC _hDC)
-//{
-//	Rectangle(_hDC, int(GAME_WIN_LEFT), int(GAME_WIN_TOP), int(GAME_WIN_RIGHT), int(GAME_WIN_BOTTOM));
-//
-//	for (size_t i = 0; i < OBJ_END; ++i)
-//	{
-//		for (auto& pObj : m_ObjList[i])
-//			pObj->Render(_hDC);
-//	}
-//
-//	TCHAR szBullet[32];
-//	wsprintf(szBullet, L"Pbullet: %d", (int)m_ObjList[OBJ_BULLET_PLAYER].size());
-//	TextOut(_hDC, 50, 50, szBullet, lstrlen(szBullet));
-//
-//	TCHAR szMBullet[32];
-//	wsprintf(szMBullet, L"Mbullet: %d", (int)m_ObjList[OBJ_BULLET_MONSTER].size());
-//	TextOut(_hDC, 150, 50, szMBullet, lstrlen(szMBullet));
-//
-//	TCHAR szMonster[32];
-//	wsprintf(szMonster, L"Monster: %d", (int)m_ObjList[OBJ_MONSTER].size());
-//	TextOut(_hDC, 250, 50, szMonster, lstrlen(szMonster));
-//
-//	TCHAR szPlayerHp[32];
-//	wsprintf(szPlayerHp, L"PlayerHp: %d", m_ObjList[OBJ_PLAYER].front()->Get_Hp());
-//	TextOut(_hDC, 350, 50, szPlayerHp, lstrlen(szPlayerHp));
-//
-//	if (!m_ObjList[OBJ_MONSTER].empty())
-//	{
-//		TCHAR szBossHp[32];
-//		wsprintf(szBossHp, L"BossHp: %d", m_ObjList[OBJ_MONSTER].front()->Get_Hp());
-//		TextOut(_hDC, 600, 50, szBossHp, lstrlen(szBossHp));
-//	}
-//	
-//
-//
-//	TCHAR szTimer[32];
-//	wsprintf(szTimer, L"Time: %d", int((m_ulStartTime - GetTickCount64()) / 1000));
-//	TextOut(_hDC, 450, 50, szTimer, lstrlen(szTimer));
-//}

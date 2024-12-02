@@ -24,7 +24,6 @@ int BulletOne::Update()
 		return OBJ_DEAD;
 	}
 
-	m_fSpeed += m_fAccel;
 	m_tInfo.fX = float(m_tInfo.fX + (m_fSpeed * cosf(m_fAngle * (PI / 180.f))));
 	m_tInfo.fY = float(m_tInfo.fY - (m_fSpeed * sinf(m_fAngle * (PI / 180.f))));
 

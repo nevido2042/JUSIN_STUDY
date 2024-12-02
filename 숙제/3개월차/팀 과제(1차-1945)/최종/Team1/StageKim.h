@@ -13,6 +13,5 @@ private:
 	virtual void SpawnMonster();
 	virtual int	 Update();
 	virtual void Late_Update();
-	//virtual void Render(HDC _hDC);
 };
 
