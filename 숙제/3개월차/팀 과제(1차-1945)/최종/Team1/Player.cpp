@@ -21,7 +21,7 @@ void Player::Initialize()
 	m_iFireRate = 13;
 	m_iTick = 0;
 
-	m_iHp = 100;
+	m_iHp = 1000;
 	m_iDamage = 10;
 }
 
