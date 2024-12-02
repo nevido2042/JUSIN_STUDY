@@ -10,6 +10,7 @@
 
 #include "StageHero.h"
 #include "StageKim.h"
+#include "StageCY.h"
 
 MainGame::MainGame() :m_hDC(nullptr), m_pPlayer(nullptr), m_iScene(NONE)
 {
@@ -37,6 +38,7 @@ void MainGame::Initialize()
 	m_SceneArray[STAGE_HERO] = new StageHero;
 	m_SceneArray[STAGE_KIM] = new StageKim;
 	m_SceneArray[STAGE_YU] = new StageYu;
+	m_SceneArray[STAGE_CY] = new StageCY;
 	m_SceneArray[END] = new EndScene;
 
 	m_SceneArray[START]->Initialize(m_pPlayer);

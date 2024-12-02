@@ -44,7 +44,6 @@ void StageScene::Late_Update()
 
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BULLET_MONSTER]); // 플레이어 & 총알
 	CollisionMgr::Collision_Circle(m_ObjList[OBJ_SHIELD], m_ObjList[OBJ_BULLET_MONSTER]); // 실드 & 총알
-	
 
 	if ((m_ulStartTime - GetTickCount64()) / 1000 <= 0) {
 		m_bFinish = true;

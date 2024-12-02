@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BossCY.h" />
     <ClInclude Include="BossHero.h" />
     <ClInclude Include="BulletOne.h" />
     <ClInclude Include="BulletScrew.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="SceneObj.h" />
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage2.h" />
+    <ClInclude Include="StageCY.h" />
     <ClInclude Include="StageHero.h" />
     <ClInclude Include="StageKim.h" />
     <ClInclude Include="StageScene.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Team1.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BossCY.cpp" />
     <ClCompile Include="BossHero.cpp" />
     <ClCompile Include="BulletOne.cpp" />
     <ClCompile Include="BulletScrew.cpp" />
@@ -200,6 +203,7 @@
     <ClCompile Include="SceneObj.cpp" />
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="StageCY.cpp" />
     <ClCompile Include="StageHero.cpp" />
     <ClCompile Include="StageKim.cpp" />
     <ClCompile Include="StageScene.cpp" />

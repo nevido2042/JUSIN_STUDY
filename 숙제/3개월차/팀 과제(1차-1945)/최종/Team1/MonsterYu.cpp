@@ -185,7 +185,11 @@ void MonsterYu::Pattern3()
 
 void MonsterYu::Pattern4()
 {
+<<<<<<< HEAD
 	m_fSpeed = 40.f;
+=======
+	m_fSpeed = 20.f;
+>>>>>>> origin/main
 	m_iShootRate = 800;
 	float _fAngle = Cal_Angle(300, 50);
 	m_tInfo.fX += m_fSpeed * cosf(_fAngle * (PI / 180.f));
