@@ -5,8 +5,10 @@
 #include "CObjMgr.h"
 
 CPlayer::CPlayer() 
+	:m_pPath(nullptr), m_bFollowingPath(false), m_fSlope(0.f)
 {
 	ZeroMemory(&m_tPosin, sizeof(POINT));
+	//ZeroMemory(&m_tTargetPoint, sizeof(POINT));
 }
 
 CPlayer::~CPlayer()
@@ -17,8 +19,24 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize()
 {
 	m_tInfo  = { 100.f, WINCY / 2.f, 100.f, 100.f };
-	m_fSpeed = 10.f;
+	m_fSpeed = 3.f;
 	m_fDistance = 100.f;
+}
+
+void CPlayer::Start()
+{
+	m_pPath = CObjMgr::Get_Instance()->Get_Path();
+	//점을 하나 받는다.
+	m_IterTargetPoint = static_cast<CPath*>(m_pPath)->Get_PointList()->begin();
+	if (m_IterTargetPoint == static_cast<CPath*>(m_pPath)->Get_PointList()->end())
+	{
+		m_bFollowingPath = false;
+	}
+	else
+	{
+		m_bFollowingPath = true;
+		m_fSlope = abs((m_IterTargetPoint->y - Get_Info().fY) / (m_IterTargetPoint->x - Get_Info().fX));
+	}
 }
 
 int CPlayer::Update()
@@ -36,6 +54,12 @@ void CPlayer::Late_Update()
 
 	m_tPosin.x = long(m_tInfo.fX + (m_fDistance * cosf(m_fAngle * (PI / 180.f))));
 	m_tPosin.y = long(m_tInfo.fY - (m_fDistance * sinf(m_fAngle * (PI / 180.f))));
+
+
+	if (m_bFollowingPath)
+	{
+		m_bFollowingPath = Follow_Path();
+	}
 }
 
 
@@ -176,6 +200,60 @@ CObj* CPlayer::Create_Shield()
 	pShield->Set_Target(this);
 
 	return pShield;
+}
+
+bool CPlayer::Follow_Path()
+{
+	float fWidth = Get_Info().fX - m_IterTargetPoint->x;
+	float fHeight = Get_Info().fY - m_IterTargetPoint->y;
+	float fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
+	//목표 점에 도달 했는가?
+	if (fDist <= m_fSpeed * m_fSlope)
+	{
+		//도달 했으면 새로운 목표를 설정하라
+		++m_IterTargetPoint;
+
+		if (m_IterTargetPoint != static_cast<CPath*>(m_pPath)->Get_PointList()->end())
+		{
+			m_fSlope = abs((m_IterTargetPoint->y - Get_Info().fY) / (m_IterTargetPoint->x - Get_Info().fX));
+
+
+			return true;
+		}
+		else
+		{
+			//더 이상 갈 목표가 없으면 길따라가기 종료
+			return false;
+		}
+	}
+
+	//기울기를 구하고
+	//속도만큼 fx를 증가시며 기울기 보정으로 y도 증가시켜라
+
+	//float fSlope(0.f);
+	if (m_IterTargetPoint->y > m_tInfo.fY)
+	{
+		m_tInfo.fY += m_fSlope * m_fSpeed;
+	}
+	else
+	{
+		m_tInfo.fY -= m_fSlope * m_fSpeed;
+	}
+
+	//m_tInfo.fY -= m_fSlope * m_fSpeed;
+		
+	if (m_IterTargetPoint->x > m_tInfo.fX)
+	{
+		m_tInfo.fX += m_fSpeed;
+	}
+	else
+	{
+		m_tInfo.fX -= m_fSpeed;
+	}
+
+
+	return true;
+
 }
 
 

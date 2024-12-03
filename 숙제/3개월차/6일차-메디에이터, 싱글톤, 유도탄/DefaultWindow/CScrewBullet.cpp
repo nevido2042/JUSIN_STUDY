@@ -64,3 +64,7 @@ void CScrewBullet::Render(HDC hDC)
 void CScrewBullet::Release()
 {
 }
+
+void CScrewBullet::Start()
+{
+}

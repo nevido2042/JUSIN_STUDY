@@ -40,6 +40,11 @@ void CMainGame::Initialize()
 	}*/
 }
 
+void CMainGame::Start()
+{
+	CObjMgr::Get_Instance()->Start();
+}
+
 void CMainGame::Update()
 {
 

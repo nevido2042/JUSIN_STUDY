@@ -68,3 +68,7 @@ void CGuideBullet::Render(HDC hDC)
 void CGuideBullet::Release()
 {
 }
+
+void CGuideBullet::Start()
+{
+}

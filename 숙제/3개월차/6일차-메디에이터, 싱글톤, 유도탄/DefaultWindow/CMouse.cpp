@@ -53,3 +53,7 @@ void CMouse::Render(HDC hDC)
 void CMouse::Release()
 {
 }
+
+void CMouse::Start()
+{
+}

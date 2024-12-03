@@ -67,3 +67,7 @@ void CMonster::Render(HDC hDC)
 void CMonster::Release()
 {
 }
+
+void CMonster::Start()
+{
+}

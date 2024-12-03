@@ -14,6 +14,7 @@ public:
 
 public:
 	void		Initialize();
+	void		Start();
 	void		Update();
 	void		Late_Update();
 	void		Render();

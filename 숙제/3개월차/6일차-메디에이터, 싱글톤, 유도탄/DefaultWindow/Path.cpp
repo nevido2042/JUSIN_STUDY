@@ -46,3 +46,7 @@ void CPath::Render(HDC hDC)
 void CPath::Release()
 {
 }
+
+void CPath::Start()
+{
+}

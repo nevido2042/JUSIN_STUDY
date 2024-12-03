@@ -3,6 +3,7 @@
 #include "CShield.h"
 #include "CScrewBullet.h"
 #include "CGuideBullet.h"
+#include "Path.h"
 
 class CPlayer :    public CObj
 {
@@ -20,11 +21,18 @@ public:
 private:
     void        Key_Input();
     CObj*       Create_Shield();
+    bool        Follow_Path();
 
 private:
-    POINT               m_tPosin;
+    POINT       m_tPosin;
 
+    CObj*       m_pPath;
+    bool        m_bFollowingPath;
+    list<POINT>::iterator m_IterTargetPoint;
+    float       m_fSlope;
 
+    // CObj을(를) 통해 상속됨
+    void Start() override;
 
 };
 

@@ -50,6 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
 
     CMainGame       MainGame;
     MainGame.Initialize();
+    MainGame.Start();
 
 
     ULONG64       dwTime = GetTickCount64();

@@ -50,3 +50,7 @@ void CShield::Render(HDC hDC)
 void CShield::Release()
 {
 }
+
+void CShield::Start()
+{
+}

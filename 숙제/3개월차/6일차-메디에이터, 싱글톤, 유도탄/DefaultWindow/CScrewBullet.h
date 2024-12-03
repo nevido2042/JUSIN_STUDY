@@ -21,5 +21,8 @@ private:
 	float			m_fRotSpeed;
 
 	bool			m_bStart;
+
+	// CObj을(를) 통해 상속됨
+	void Start() override;
 };
 
