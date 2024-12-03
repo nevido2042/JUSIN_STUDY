@@ -27,6 +27,10 @@ void CMainGame::Initialize()
 	{
 		for (int i = 0; i < 5; ++i)
 		{
+			//rand();
+			//rand();
+			//rand();
+			//rand();
 			pPath->Add_Point(POINT{ rand() % WINCX,rand() % WINCY });
 
 		}

@@ -19,7 +19,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize()
 {
 	m_tInfo  = { 100.f, WINCY / 2.f, 100.f, 100.f };
-	m_fSpeed = 3.f;
+	m_fSpeed = 10.f;
 	m_fDistance = 100.f;
 }
 
@@ -208,7 +208,7 @@ bool CPlayer::Follow_Path()
 	float fHeight = Get_Info().fY - m_IterTargetPoint->y;
 	float fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
 	//목표 점에 도달 했는가?
-	if (fDist <= m_fSpeed * m_fSlope)
+	if (fDist <= m_fSpeed + m_fSlope)
 	{
 		//도달 했으면 새로운 목표를 설정하라
 		++m_IterTargetPoint;
