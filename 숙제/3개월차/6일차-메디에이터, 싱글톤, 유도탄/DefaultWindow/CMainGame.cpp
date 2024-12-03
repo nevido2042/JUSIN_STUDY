@@ -5,7 +5,7 @@
 #include "CObjMgr.h"
 
 CMainGame::CMainGame()
-	: m_dwTime(GetTickCount()), m_iFPS(0)
+	: m_dwTime(GetTickCount()), m_iFPS(0), m_hDC(nullptr)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
@@ -21,11 +21,23 @@ void CMainGame::Initialize()
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
 
-	for (int i = 0; i < 7; ++i)
+	CObjMgr::Get_Instance()->Add_Object(OBJ_PATH, CAbstractFactory<CPath>::Create());
+
+	if (CPath* pPath = dynamic_cast<CPath*>(CObjMgr::Get_Instance()->Get_Path()))
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			pPath->Add_Point(POINT{ rand() % WINCX,rand() % WINCY });
+
+		}
+	}
+
+
+	/*for (int i = 0; i < 7; ++i)
 	{
 		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(rand() % WINCX, rand() % WINCY, 0.f));
 		CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(CObjMgr::Get_Instance()->Get_Player());
-	}
+	}*/
 }
 
 void CMainGame::Update()

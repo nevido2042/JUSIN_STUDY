@@ -23,7 +23,7 @@ void CPlayer::Initialize()
 
 int CPlayer::Update()
 {
-	Key_Input();
+	//Key_Input();
 
 	// CObj::Update_Rect();
 	__super::Update_Rect();
