@@ -19,7 +19,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize()
 {
 	m_tInfo  = { 100.f, WINCY / 2.f, 100.f, 100.f };
-	m_fSpeed = 5.f;
+	m_fSpeed = 10.f;
 	m_fDistance = 100.f;
 }
 
@@ -208,7 +208,7 @@ bool CPlayer::Follow_Path()
 	float fHeight = Get_Info().fY - m_IterTargetPoint->y;
 	float fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
 	//목표 점에 도달 했는가?
-	if (fDist <= m_fSpeed + m_fSlope)
+	if (fDist <= m_fSpeed)
 	{
 		//도달 했으면 새로운 목표를 설정하라
 		++m_IterTargetPoint;
@@ -231,26 +231,43 @@ bool CPlayer::Follow_Path()
 	//속도만큼 fx를 증가시며 기울기 보정으로 y도 증가시켜라
 
 	//float fSlope(0.f);
-	if (m_IterTargetPoint->y > m_tInfo.fY)
-	{
-		m_tInfo.fY += m_fSlope * m_fSpeed;
-	}
-	else
-	{
-		m_tInfo.fY -= m_fSlope * m_fSpeed;
-	}
+	//if (m_IterTargetPoint->y > m_tInfo.fY)
+	//{
+	//	m_tInfo.fY += m_fSlope * m_fSpeed / abs(m_IterTargetPoint->y - m_tInfo.fY);
+	//}
+	//else
+	//{
+	//	m_tInfo.fY -= m_fSlope * m_fSpeed / abs(m_IterTargetPoint->y - m_tInfo.fY);
+	//}
 
-	//m_tInfo.fY -= m_fSlope * m_fSpeed;
-		
-	if (m_IterTargetPoint->x > m_tInfo.fX)
-	{
-		m_tInfo.fX += m_fSpeed;
-	}
-	else
-	{
-		m_tInfo.fX -= m_fSpeed;
-	}
+	////m_tInfo.fY -= m_fSlope * m_fSpeed;
+	//	
+	//if (m_IterTargetPoint->x > m_tInfo.fX)
+	//{
+	//	m_tInfo.fX += m_fSpeed / abs(m_IterTargetPoint->x - m_tInfo.fX);
+	//}
+	//else
+	//{
+	//	m_tInfo.fX -= m_fSpeed / abs(m_IterTargetPoint->x - m_tInfo.fX);
+	//}
+	///////////////////////////(GPT의 도움, 노말벡터)
+	// 목표 지점과 현재 지점 간의 차이 계산
+	float deltaX = m_IterTargetPoint->x - m_tInfo.fX;
+	float deltaY = m_IterTargetPoint->y - m_tInfo.fY;
 
+	// 두 점 간의 거리 계산
+	float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+	// 이동할 거리 계산 (남은 거리가 속도보다 작으면 남은 거리로 이동)
+	float moveDistance = (distance < m_fSpeed) ? distance : m_fSpeed;
+
+	// 이동 벡터의 단위 벡터 계산
+	float normX = deltaX / distance;
+	float normY = deltaY / distance;
+
+	// 위치 업데이트
+	m_tInfo.fX += normX * moveDistance;
+	m_tInfo.fY += normY * moveDistance;
 
 	return true;
 
