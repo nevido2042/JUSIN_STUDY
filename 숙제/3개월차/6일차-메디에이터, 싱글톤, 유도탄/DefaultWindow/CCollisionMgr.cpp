@@ -36,6 +36,60 @@ void CCollisionMgr::Collision_Circle(list<CObj*> _Dst, list<CObj*> _Src)
 	}
 }
 
+void CCollisionMgr::Collision_CircleEx(list<CObj*> _Dst, list<CObj*> _Src)
+{
+	float	fR(0.f);
+
+	for (auto& Dst : _Dst)
+	{
+		for (auto& Src : _Src)
+		{
+			if (Check_Circle(Dst, Src, &fR))
+			{
+				//dst가 움직임
+				//dst가 소스의 반대방향으로 fR만큼 후퇴
+				
+				float fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f), fAngle(0.f);
+
+				fWidth = Dst->Get_Info().fX - Src->Get_Info().fX;
+				fHeight = Dst->Get_Info().fY - Src->Get_Info().fY;
+				fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+				fRadian = acosf(fWidth / fDiagonal);
+				fAngle = fRadian * (180 / PI);
+
+				if (Dst->Get_Info().fY < Src->Get_Info().fY)
+				{
+					fAngle = 360.f - fAngle;
+				}
+
+				Dst->Set_PosX(fR * cosf(fAngle * PI / 180.f));
+				Dst->Set_PosY(fR * sinf(fAngle * PI / 180.f));
+			}
+		}
+	}
+}
+
+bool CCollisionMgr::Check_Circle(CObj* _Dst, CObj* _Src, float* pR)
+{
+	float fRadius = (_Dst->Get_Info().fCX + _Src->Get_Info().fCX) * 0.5f;
+
+	float fWidth = abs(_Dst->Get_Info().fX - _Src->Get_Info().fX);
+	float fHeight = abs(_Dst->Get_Info().fY - _Src->Get_Info().fY);
+
+	float fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+	if (fRadius >= fDiagonal)
+	{
+		*pR = fRadius - fDiagonal;
+		return true;
+	}
+	else
+	{
+		false;
+	}
+}
+
 bool CCollisionMgr::Check_Circle(CObj* _Dst, CObj* _Src)
 {
 	float fRadius = (_Dst->Get_Info().fCX + _Src->Get_Info().fCX) * 0.5f;

@@ -12,8 +12,8 @@ CMonster::~CMonster()
 
 void CMonster::Initialize()
 {
-    m_tInfo.fCX = 50.f;
-    m_tInfo.fCY = 50.f;
+    m_tInfo.fCX = 100.f;
+    m_tInfo.fCY = 100.f;
     m_fSpeed = 3.f;
 }
 
@@ -57,7 +57,7 @@ void CMonster::Late_Update()
 
 void CMonster::Render(HDC hDC)
 {
-    Rectangle(hDC,
+    Ellipse(hDC,
         m_tRect.left,
         m_tRect.top,
         m_tRect.right,

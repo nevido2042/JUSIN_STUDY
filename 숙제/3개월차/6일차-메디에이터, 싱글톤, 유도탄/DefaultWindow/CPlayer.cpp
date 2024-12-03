@@ -19,7 +19,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize()
 {
 	m_tInfo  = { 100.f, WINCY / 2.f, 100.f, 100.f };
-	m_fSpeed = 10.f;
+	m_fSpeed = 5.f;
 	m_fDistance = 100.f;
 }
 
@@ -65,7 +65,7 @@ void CPlayer::Late_Update()
 
 void CPlayer::Render(HDC hDC)
 {
-	Rectangle(hDC, 
+	Ellipse(hDC, 
 		m_tRect.left, 
 		m_tRect.top, 
 		m_tRect.right, 
