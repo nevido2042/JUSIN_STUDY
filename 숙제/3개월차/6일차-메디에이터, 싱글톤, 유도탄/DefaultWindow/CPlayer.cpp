@@ -252,22 +252,22 @@ bool CPlayer::Follow_Path()
 	//}
 	///////////////////////////(GPT의 도움, 노말벡터)
 	// 목표 지점과 현재 지점 간의 차이 계산
-	float deltaX = m_IterTargetPoint->x - m_tInfo.fX;
-	float deltaY = m_IterTargetPoint->y - m_tInfo.fY;
+	float fDeltaX = m_IterTargetPoint->x - m_tInfo.fX;
+	float fDeltaY = m_IterTargetPoint->y - m_tInfo.fY;
 
 	// 두 점 간의 거리 계산
-	float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+	float fDistance = sqrt(fDeltaX * fDeltaX + fDeltaY * fDeltaY);
 
 	// 이동할 거리 계산 (남은 거리가 속도보다 작으면 남은 거리로 이동)
-	float moveDistance = (distance < m_fSpeed) ? distance : m_fSpeed;
+	float fMoveDistance = (fDistance < m_fSpeed) ? fDistance : m_fSpeed;
 
 	// 이동 벡터의 단위 벡터 계산
-	float normX = deltaX / distance;
-	float normY = deltaY / distance;
+	float fNormX = fDeltaX / fDistance;
+	float fNormY = fDeltaY / fDistance;
 
 	// 위치 업데이트
-	m_tInfo.fX += normX * moveDistance;
-	m_tInfo.fY += normY * moveDistance;
+	m_tInfo.fX += fNormX * fMoveDistance;
+	m_tInfo.fY += fNormY * fMoveDistance;
 
 	return true;
 
