@@ -48,7 +48,7 @@ void CPlayer::Late_Update()
 
 void CPlayer::Render(HDC hDC)
 {
-	Rectangle(hDC, 
+	Ellipse(hDC, 
 		m_tRect.left, 
 		m_tRect.top, 
 		m_tRect.right, 
@@ -120,7 +120,7 @@ void CPlayer::Jumping()
 {
 	float	fY(0.f);
 
-	bool	bLineCol = CLineMgr::Get_Instance()->Collision_Line(m_tInfo.fX, m_tInfo.fY, &fY);
+	bool	bLineCol = CLineMgr::Get_Instance()->Collision_Line(&m_tInfo, &fY);
 
 	if (m_bJump)
 	{

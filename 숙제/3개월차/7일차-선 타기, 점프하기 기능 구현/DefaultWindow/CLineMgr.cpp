@@ -12,8 +12,11 @@ CLineMgr::~CLineMgr()
 	Release();
 }
 
-bool CLineMgr::Collision_Line(float _fX, float _fY, float* pY)
+bool CLineMgr::Collision_Line(INFO* _pInfo, float* pY)
 {
+	float fX = _pInfo->fX;
+	float fY = _pInfo->fY;
+
 	if(m_Linelist.empty())
 		return false;
 
@@ -22,8 +25,8 @@ bool CLineMgr::Collision_Line(float _fX, float _fY, float* pY)
 	list<CLine*> TargetLineList;
 	for (auto& pLine : m_Linelist)
 	{
-		if (_fX >= pLine->Get_Info().tLPoint.fX &&
-			_fX < pLine->Get_Info().tRPoint.fX)
+		if (fX >= pLine->Get_Info().tLPoint.fX &&
+			fX < pLine->Get_Info().tRPoint.fX)
 		{
 			TargetLineList.push_back(pLine);
 			//pTargetLine = pLine;
@@ -34,11 +37,17 @@ bool CLineMgr::Collision_Line(float _fX, float _fY, float* pY)
 	float fHeight(0.f);
 	for (auto& pLine : TargetLineList)
 	{
-		if (pLine->Get_Info().tLPoint.fY < _fY&&
-			pLine->Get_Info().tRPoint.fY < _fY)
+		if (pLine->Get_Info().tLPoint.fY < fY&&
+			pLine->Get_Info().tRPoint.fY < fY)
 		{
 			continue;
 		}
+
+		//if (_fY > pLine->Get_Info().tLPoint.fY)
+		//{
+		//	continue;
+		//	//return false;
+		//}
 
 		if (!pTargetLine || pLine->Get_Info().tLPoint.fY < fHeight)
 		{
@@ -56,9 +65,20 @@ bool CLineMgr::Collision_Line(float _fX, float _fY, float* pY)
 	float	x2 = pTargetLine->Get_Info().tRPoint.fX;
 	float	y2 = pTargetLine->Get_Info().tRPoint.fY;
 
-	*pY = ((y2 - y1) / (x2 - x1)) * (_fX - x1) + y1;
+	*pY = ((y2 - y1) / (x2 - x1)) * (fX - x1) + y1;
+	*pY -= _pInfo->fCY * 0.5f;
+
+	/*if (pTargetLine->Get_Info().tLPoint.fY > _pInfo->fY)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}*/
 
 	return true;
+
 }
 
 void CLineMgr::Initialize()
