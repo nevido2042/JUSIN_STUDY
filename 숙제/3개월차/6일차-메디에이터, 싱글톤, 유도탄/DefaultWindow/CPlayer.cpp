@@ -5,7 +5,7 @@
 #include "CObjMgr.h"
 
 CPlayer::CPlayer() 
-	:m_pPath(nullptr), m_bFollowingPath(false), m_fSlope(0.f)
+	:m_pPath(nullptr), m_bFollowingPath(false)//, m_fSlope(0.f)
 {
 	ZeroMemory(&m_tPosin, sizeof(POINT));
 	//ZeroMemory(&m_tTargetPoint, sizeof(POINT));
@@ -35,7 +35,7 @@ void CPlayer::Start()
 	else
 	{
 		m_bFollowingPath = true;
-		m_fSlope = abs((m_IterTargetPoint->y - Get_Info().fY) / (m_IterTargetPoint->x - Get_Info().fX));
+		//m_fSlope = abs((m_IterTargetPoint->y - Get_Info().fY) / (m_IterTargetPoint->x - Get_Info().fX));
 	}
 }
 
@@ -215,7 +215,7 @@ bool CPlayer::Follow_Path()
 
 		if (m_IterTargetPoint != static_cast<CPath*>(m_pPath)->Get_PointList()->end())
 		{
-			m_fSlope = abs((m_IterTargetPoint->y - Get_Info().fY) / (m_IterTargetPoint->x - Get_Info().fX));
+			//m_fSlope = abs((m_IterTargetPoint->y - Get_Info().fY) / (m_IterTargetPoint->x - Get_Info().fX));
 
 
 			return true;
