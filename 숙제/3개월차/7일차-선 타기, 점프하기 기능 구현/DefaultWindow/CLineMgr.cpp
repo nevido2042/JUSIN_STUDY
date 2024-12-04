@@ -12,22 +12,41 @@ CLineMgr::~CLineMgr()
 	Release();
 }
 
-bool CLineMgr::Collision_Line(float _fX, float* pY)
+bool CLineMgr::Collision_Line(float _fX, float _fY, float* pY)
 {
 	if(m_Linelist.empty())
 		return false;
 
 
 	CLine* pTargetLine = nullptr;
-
+	list<CLine*> TargetLineList;
 	for (auto& pLine : m_Linelist)
 	{
 		if (_fX >= pLine->Get_Info().tLPoint.fX &&
 			_fX < pLine->Get_Info().tRPoint.fX)
 		{
-			pTargetLine = pLine;
+			TargetLineList.push_back(pLine);
+			//pTargetLine = pLine;
 		}
 	}
+	//x좌표로 걸러진 라인들 중, 내 발 아래 있고, 그 중에 가장 높은 녀석을 선택한다.
+
+	float fHeight(0.f);
+	for (auto& pLine : TargetLineList)
+	{
+		if (pLine->Get_Info().tLPoint.fY < _fY&&
+			pLine->Get_Info().tRPoint.fY < _fY)
+		{
+			continue;
+		}
+
+		if (!pTargetLine || pLine->Get_Info().tLPoint.fY < fHeight)
+		{
+			pTargetLine = pLine;
+			fHeight = pLine->Get_Info().tLPoint.fY;
+		}
+	}
+
 
 	if (!pTargetLine)
 		return false;
@@ -44,13 +63,18 @@ bool CLineMgr::Collision_Line(float _fX, float* pY)
 
 void CLineMgr::Initialize()
 {
-	LINEPOINT	tLinePoint[4]{
+	LINEPOINT	tLinePoint[6]{
 
 		{ 100.f, 450.f },
 		{ 300.f, 450.f },
 		{ 500.f, 250.f },
-		{ 700.f, 250.f }
+		{ 700.f, 250.f },
+
+		{ 100.f, 300.f },
+		{ 300.f, 300.f }
 	};
+
+	m_Linelist.push_back(new CLine(tLinePoint[4], tLinePoint[5]));
 
 	m_Linelist.push_back(new CLine(tLinePoint[0], tLinePoint[1]));
 	m_Linelist.push_back(new CLine(tLinePoint[1], tLinePoint[2]));

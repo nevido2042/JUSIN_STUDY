@@ -19,7 +19,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize()
 {
-	m_tInfo  = { 100.f, WINCY / 2.f, 100.f, 100.f };
+	m_tInfo  = { 0.f, WINCY / 2.f, 100.f, 100.f };
 	m_fSpeed = 10.f;
 	m_fDistance = 100.f;
 
@@ -65,17 +65,20 @@ void CPlayer::Release()
 
 void CPlayer::Key_Input()
 {
-	// if (GetAsyncKeyState(VK_UP))
-	// {
-	// 	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * (PI / 180.f));
-	// 	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * (PI / 180.f));
-	// }
-	// 
-	// if (GetAsyncKeyState(VK_DOWN))
-	// {
-	// 	m_tInfo.fX += -m_fSpeed * cosf(m_fAngle * (PI / 180.f));
-	// 	m_tInfo.fY -= -m_fSpeed * sinf(m_fAngle * (PI / 180.f));
-	// }
+	 if (GetAsyncKeyState(VK_UP))
+	 {
+	 	/*m_tInfo.fX += m_fSpeed * cosf(m_fAngle * (PI / 180.f));
+	 	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * (PI / 180.f));*/
+		 m_tInfo.fY -= m_fSpeed;
+	 }
+	 
+	 if (GetAsyncKeyState(VK_DOWN))
+	 {
+	 	/*m_tInfo.fX += -m_fSpeed * cosf(m_fAngle * (PI / 180.f));
+	 	m_tInfo.fY -= -m_fSpeed * sinf(m_fAngle * (PI / 180.f));*/
+		 m_tInfo.fY += m_fSpeed;
+
+	 }
 
 	// if (GetAsyncKeyState(VK_SPACE))
 	// {
@@ -117,11 +120,11 @@ void CPlayer::Jumping()
 {
 	float	fY(0.f);
 
-	bool	bLineCol = CLineMgr::Get_Instance()->Collision_Line(m_tInfo.fX, &fY);
+	bool	bLineCol = CLineMgr::Get_Instance()->Collision_Line(m_tInfo.fX, m_tInfo.fY, &fY);
 
 	if (m_bJump)
 	{
-		m_tInfo.fY -= (m_fJumpPower * sinf(45.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
+		m_tInfo.fY -= (m_fJumpPower * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
 		m_fTime += 0.2f;
 
 		if (bLineCol && (fY < m_tInfo.fY))
