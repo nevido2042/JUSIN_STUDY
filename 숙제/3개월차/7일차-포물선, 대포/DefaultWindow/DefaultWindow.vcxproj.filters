@@ -52,6 +52,9 @@
     <Filter Include="01. Obj\01. Bullet\GuideBullet">
       <UniqueIdentifier>{d0bc3b22-3ccb-4481-a360-7cd2d912e8b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\01. Bullet\CanonBullet">
+      <UniqueIdentifier>{40375630-0ebc-418b-b841-2d828ed85826}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="CGuideBullet.h">
       <Filter>01. Obj\01. Bullet\GuideBullet</Filter>
     </ClInclude>
+    <ClInclude Include="CCannonBullet.h">
+      <Filter>01. Obj\01. Bullet\CanonBullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="CGuideBullet.cpp">
       <Filter>01. Obj\01. Bullet\GuideBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CCannonBullet.cpp">
+      <Filter>01. Obj\01. Bullet\CanonBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

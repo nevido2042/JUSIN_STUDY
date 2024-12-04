@@ -158,7 +158,7 @@ void CPlayer::Key_Input()
 
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CGuideBullet>::
+		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CCannonBullet>::
 			Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
 	}
 

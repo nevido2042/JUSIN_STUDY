@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CCannonBullet.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CGuideBullet.h" />
     <ClInclude Include="CMainGame.h" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CCannonBullet.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CGuideBullet.cpp" />
     <ClCompile Include="CMainGame.cpp" />

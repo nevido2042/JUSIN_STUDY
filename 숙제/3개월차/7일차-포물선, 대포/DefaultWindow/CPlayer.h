@@ -3,6 +3,7 @@
 #include "CShield.h"
 #include "CScrewBullet.h"
 #include "CGuideBullet.h"
+#include "CCannonBullet.h"
 
 class CPlayer :    public CObj
 {
