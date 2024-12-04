@@ -37,17 +37,11 @@ bool CLineMgr::Collision_Line(INFO* _pInfo, float* pY)
 	float fHeight(0.f);
 	for (auto& pLine : TargetLineList)
 	{
-		if (pLine->Get_Info().tLPoint.fY < fY&&
-			pLine->Get_Info().tRPoint.fY < fY)
+		if (pLine->Get_Info().tLPoint.fY < fY /*+_pInfo->fCY * 0.5f*/ &&
+			pLine->Get_Info().tRPoint.fY < fY /*+ _pInfo->fCY * 0.5f*/)
 		{
 			continue;
 		}
-
-		//if (_fY > pLine->Get_Info().tLPoint.fY)
-		//{
-		//	continue;
-		//	//return false;
-		//}
 
 		if (!pTargetLine || pLine->Get_Info().tLPoint.fY < fHeight)
 		{
@@ -66,16 +60,16 @@ bool CLineMgr::Collision_Line(INFO* _pInfo, float* pY)
 	float	y2 = pTargetLine->Get_Info().tRPoint.fY;
 
 	*pY = ((y2 - y1) / (x2 - x1)) * (fX - x1) + y1;
-	*pY -= _pInfo->fCY * 0.5f;
+	/**pY -= _pInfo->fCY * 0.5f;*/
 
-	/*if (pTargetLine->Get_Info().tLPoint.fY > _pInfo->fY)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}*/
+	//if (pTargetLine->Get_Info().tLPoint.fY > _pInfo->fY)
+	//{
+	//	return false;
+	//}
+	//else
+	//{
+	//	return true;
+	//}
 
 	return true;
 
@@ -83,7 +77,7 @@ bool CLineMgr::Collision_Line(INFO* _pInfo, float* pY)
 
 void CLineMgr::Initialize()
 {
-	LINEPOINT	tLinePoint[6]{
+	LINEPOINT	tLinePoint[12]{
 
 		{ 100.f, 450.f },
 		{ 300.f, 450.f },
@@ -91,7 +85,16 @@ void CLineMgr::Initialize()
 		{ 700.f, 250.f },
 
 		{ 100.f, 300.f },
-		{ 300.f, 300.f }
+		{ 300.f, 300.f },
+
+		{ 300.f, 150.f },
+		{ 500.f, 200.f },
+
+		{ -100.f, 0.f },
+		{ 900.f, 0.f },
+
+		{ 100.f, 200.f },
+		{ 300.f, 200.f }
 	};
 
 	m_Linelist.push_back(new CLine(tLinePoint[4], tLinePoint[5]));
@@ -99,6 +102,13 @@ void CLineMgr::Initialize()
 	m_Linelist.push_back(new CLine(tLinePoint[0], tLinePoint[1]));
 	m_Linelist.push_back(new CLine(tLinePoint[1], tLinePoint[2]));
 	m_Linelist.push_back(new CLine(tLinePoint[2], tLinePoint[3]));
+	m_Linelist.push_back(new CLine(tLinePoint[6], tLinePoint[7]));
+
+	m_Linelist.push_back(new CLine(tLinePoint[0], tLinePoint[8]));
+	m_Linelist.push_back(new CLine(tLinePoint[3], tLinePoint[9]));
+
+	//m_Linelist.push_back(new CLine(tLinePoint[10], tLinePoint[11]));
+
 }
 
 void CLineMgr::Render(HDC hDC)

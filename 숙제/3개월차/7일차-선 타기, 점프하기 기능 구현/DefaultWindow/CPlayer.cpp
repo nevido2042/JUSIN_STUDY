@@ -19,7 +19,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize()
 {
-	m_tInfo  = { 0.f, WINCY / 2.f, 100.f, 100.f };
+	m_tInfo  = { 0.f, WINCY / 2.f, 50.f, 50.f };
 	m_fSpeed = 10.f;
 	m_fDistance = 100.f;
 
