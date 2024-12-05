@@ -37,7 +37,15 @@ bool CLineMgr::Collision_Line(float _fX, float* pY)
 	float	x2 = pTargetLine->Get_Info().tRPoint.fX;
 	float	y2 = pTargetLine->Get_Info().tRPoint.fY;
 
-	*pY = ((y2 - y1) / (x2 - x1)) * (_fX - x1) + y1;
+	if (y1 != y2)
+	{
+		*pY = ((y2 - y1) / (x2 - x1)) * (_fX - x1) + y1;
+	}
+	else
+	{
+		*pY = y1;
+	}
+
 
 	return true;
 }
