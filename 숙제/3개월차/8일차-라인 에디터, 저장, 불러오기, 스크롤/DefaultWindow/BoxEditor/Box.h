@@ -6,7 +6,7 @@ class CBox
 {
 public:
 	CBox();
-	CBox(LINEPOINT _tLinePoint, float _fSize);
+	CBox(LINEPOINT _tCenter, float _fSize);
 	CBox(BOX& _tInfo);
 	~CBox();
 

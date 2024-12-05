@@ -6,8 +6,8 @@ CBox::CBox()
 {
 }
 
-CBox::CBox(LINEPOINT _tLinePoint, float _fSize)
-	:m_tInfo(_tLinePoint, _fSize)
+CBox::CBox(LINEPOINT _tCenter, float _fSize)
+	:m_tInfo(_tCenter, _fSize)
 {
 }
 

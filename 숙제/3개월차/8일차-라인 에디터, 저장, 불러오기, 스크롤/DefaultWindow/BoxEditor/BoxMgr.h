@@ -44,6 +44,7 @@ private:
 	list<CBox*>			m_Boxlist;
 	//LINEPOINT			m_tLinePoint[DIR_END];
 	LINEPOINT			m_tBoxPoint[DRAWPOINT_END];
+	float				m_fBoxSize;
 
 };
 

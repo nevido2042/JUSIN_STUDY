@@ -58,12 +58,12 @@ typedef struct tagBox
 	tagBox() { ZeroMemory(this, sizeof(tagLine)); }
 	/*tagBox(LINEPOINT& _tLT, LINEPOINT& _tRT, LINEPOINT& _tLB, LINEPOINT& _tRB)
 		: tLT(_tLT), tRT(_tRT), tLB(_tLB), tRB(_tRB) {	}*/
-	tagBox(LINEPOINT& _tLinePoint, float _fSize)
+	tagBox(LINEPOINT& _tCenter, float _fSize)
 		:
-		tLT{ _tLinePoint.fX - _fSize * 0.5f, _tLinePoint.fY - _fSize * 0.5f },
-		tRT{ _tLinePoint.fX + _fSize * 0.5f, _tLinePoint.fY - _fSize * 0.5f },
-		tLB{ _tLinePoint.fX - _fSize * 0.5f, _tLinePoint.fY + _fSize * 0.5f },
-		tRB{ _tLinePoint.fX + _fSize * 0.5f, _tLinePoint.fY + _fSize * 0.5f }
+		tLT{ _tCenter.fX - _fSize * 0.5f, _tCenter.fY - _fSize * 0.5f },
+		tRT{ _tCenter.fX + _fSize * 0.5f, _tCenter.fY - _fSize * 0.5f },
+		tLB{ _tCenter.fX - _fSize * 0.5f, _tCenter.fY + _fSize * 0.5f },
+		tRB{ _tCenter.fX + _fSize * 0.5f, _tCenter.fY + _fSize * 0.5f }
 	{}
 
 }BOX;

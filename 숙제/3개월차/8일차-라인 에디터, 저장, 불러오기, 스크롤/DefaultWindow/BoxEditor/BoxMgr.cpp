@@ -6,6 +6,7 @@
 CBoxMgr* CBoxMgr::m_pInstance = nullptr;
 
 CBoxMgr::CBoxMgr()
+	:m_fBoxSize(0)
 {
 	ZeroMemory(&m_tBoxPoint, sizeof(m_tBoxPoint));
 }
@@ -17,8 +18,10 @@ CBoxMgr::~CBoxMgr()
 
 void CBoxMgr::Initialize()
 {
-	CBox* pBox = new CBox(LINEPOINT{ 100.f,100.f }, 100.f);
-	m_Boxlist.push_back(pBox);
+	//CBox* pBox = new CBox(LINEPOINT{ 100.f,100.f }, 50.f);
+	//m_Boxlist.push_back(pBox);
+
+	m_fBoxSize = 50.f;
 }
 
 int CBoxMgr::Update()
@@ -42,10 +45,34 @@ int CBoxMgr::Update()
 	{
 		m_tBoxPoint[TAIL].fX = (float)ptMouse.x;
 		m_tBoxPoint[TAIL].fY = m_tBoxPoint[HEAD].fY;
+
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 	{
+		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
+		float fDist = abs(m_tBoxPoint[HEAD].fX - m_tBoxPoint[TAIL].fX);
+		int iBoxCount = int(fDist / m_fBoxSize);
+		//HEAD부터 TAIL까지 박스들 생성
+		for (int i = 0; i < iBoxCount; ++i)
+		{
+			CBox* pBox = new CBox(
+				LINEPOINT
+				{
+					m_tBoxPoint[HEAD].fX + m_fBoxSize * 0.5f + i * m_fBoxSize,
+					m_tBoxPoint[HEAD].fY
+				}
+			, m_fBoxSize);
+
+			m_Boxlist.push_back(pBox);
+
+			/*Rectangle(hDC,
+				m_tBoxPoint[HEAD].fX + i * (int)m_fBoxSize,
+				m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f,
+				m_tBoxPoint[HEAD].fX + (int)m_fBoxSize + i * (int)m_fBoxSize,
+				m_tBoxPoint[HEAD].fY + (int)m_fBoxSize - m_fBoxSize * 0.5f);*/
+		}
+
 		ZeroMemory(&m_tBoxPoint, sizeof(m_tBoxPoint));
 	}
 
@@ -81,6 +108,19 @@ void CBoxMgr::Render(HDC hDC)
 
 	MoveToEx(hDC, (int)m_tBoxPoint[HEAD].fX, (int)m_tBoxPoint[HEAD].fY, nullptr);
 	LineTo(hDC, (int)m_tBoxPoint[TAIL].fX, (int)m_tBoxPoint[TAIL].fY);
+
+	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
+	float fDist = abs(m_tBoxPoint[HEAD].fX - m_tBoxPoint[TAIL].fX);
+	int iBoxCount = int(fDist / m_fBoxSize);
+	//HEAD부터 TAIL까지 박스들 출력
+	for (int i = 0; i < iBoxCount ; ++i)
+	{
+		Rectangle(hDC,
+			m_tBoxPoint[HEAD].fX + i * (int)m_fBoxSize,
+			m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f,
+			m_tBoxPoint[HEAD].fX + (int)m_fBoxSize + i * (int)m_fBoxSize,
+			m_tBoxPoint[HEAD].fY + (int)m_fBoxSize - m_fBoxSize * 0.5f);
+	}
 }
 
 void CBoxMgr::Release()
