@@ -17,13 +17,8 @@ CBoxMgr::~CBoxMgr()
 
 void CBoxMgr::Initialize()
 {
-	/*LINEPOINT LT{ 0,0 };
-	LINEPOINT RT{ 100,0 };
-	LINEPOINT LB{ 0,100 };
-	LINEPOINT RB{ 100,100 };
-
-	CBox* pBox = new CBox(LT, RT, LB, RB);
-	m_Boxlist.push_back(pBox);*/
+	CBox* pBox = new CBox(LINEPOINT{ 100.f,100.f }, 100.f);
+	m_Boxlist.push_back(pBox);
 }
 
 int CBoxMgr::Update()
@@ -46,7 +41,7 @@ int CBoxMgr::Update()
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
 	{
 		m_tBoxPoint[TAIL].fX = (float)ptMouse.x;
-		m_tBoxPoint[TAIL].fY = (float)ptMouse.y;
+		m_tBoxPoint[TAIL].fY = m_tBoxPoint[HEAD].fY;
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
@@ -84,8 +79,8 @@ void CBoxMgr::Render(HDC hDC)
 	for (auto& pLine : m_Boxlist)
 		pLine->Render(hDC);
 
-	MoveToEx(hDC, m_tBoxPoint[HEAD].fX, m_tBoxPoint[HEAD].fY, nullptr);
-	LineTo(hDC, m_tBoxPoint[TAIL].fX, m_tBoxPoint[TAIL].fY);
+	MoveToEx(hDC, (int)m_tBoxPoint[HEAD].fX, (int)m_tBoxPoint[HEAD].fY, nullptr);
+	LineTo(hDC, (int)m_tBoxPoint[TAIL].fX, (int)m_tBoxPoint[TAIL].fY);
 }
 
 void CBoxMgr::Release()

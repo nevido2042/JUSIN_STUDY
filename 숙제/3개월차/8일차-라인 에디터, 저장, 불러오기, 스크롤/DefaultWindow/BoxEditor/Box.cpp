@@ -6,8 +6,8 @@ CBox::CBox()
 {
 }
 
-CBox::CBox(LINEPOINT& _tLT, LINEPOINT& _tRT, LINEPOINT& _tLB, LINEPOINT& _tRB)
-	:m_tInfo(_tLT, _tRT, _tLB, _tRB)
+CBox::CBox(LINEPOINT _tLinePoint, float _fSize)
+	:m_tInfo(_tLinePoint, _fSize)
 {
 }
 
@@ -28,4 +28,5 @@ void CBox::Render(HDC hDC)
 	LineTo(hDC, (int)m_tInfo.tRT.fX + iScrollX, (int)m_tInfo.tRT.fY);
 	LineTo(hDC, (int)m_tInfo.tRB.fX + iScrollX, (int)m_tInfo.tRB.fY);
 	LineTo(hDC, (int)m_tInfo.tLB.fX + iScrollX, (int)m_tInfo.tLB.fY);
+	LineTo(hDC, (int)m_tInfo.tLT.fX + iScrollX, (int)m_tInfo.tLT.fY);
 }
