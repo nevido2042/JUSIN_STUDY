@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="KeyMgr">
+      <UniqueIdentifier>{b68cbb58-7ed4-4e67-95a4-3bb6f2d3a998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Line">
+      <UniqueIdentifier>{397bc4a5-2da0-4bdb-bf50-7327d514a9f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LineMgr">
+      <UniqueIdentifier>{3417e789-bf38-404e-87a3-46d8ba79495c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame">
+      <UniqueIdentifier>{8c0a0126-3463-4749-8153-6eb95bbab821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScrollMgr">
+      <UniqueIdentifier>{e3a9640c-fb93-4458-a85a-20211efec87e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -30,23 +45,23 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CKeyMgr.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CMainGame.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CLine.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CLineMgr.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>KeyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CLine.h">
+      <Filter>Line</Filter>
+    </ClInclude>
+    <ClInclude Include="CLineMgr.h">
+      <Filter>LineMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainGame.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
     <ClInclude Include="CScrollMgr.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>ScrollMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -57,19 +72,19 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>KeyMgr</Filter>
     </ClCompile>
     <ClCompile Include="CLine.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Line</Filter>
     </ClCompile>
     <ClCompile Include="CLineMgr.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>LineMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMainGame.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="CScrollMgr.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>ScrollMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
