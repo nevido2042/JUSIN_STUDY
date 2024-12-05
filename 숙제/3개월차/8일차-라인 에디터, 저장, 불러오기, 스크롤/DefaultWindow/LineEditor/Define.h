@@ -46,6 +46,19 @@ typedef struct tagLine
 
 }LINE;
 
+typedef struct tagBox
+{
+	LINEPOINT	tLeft;
+	LINEPOINT	tTop;
+	LINEPOINT	tRight;
+	LINEPOINT	tBottom;
+
+	tagBox() { ZeroMemory(this, sizeof(tagLine)); }
+	tagBox(LINEPOINT& _tLeft, LINEPOINT& _tTop, LINEPOINT& _tRight, LINEPOINT& _tBottom)
+		: tLeft(_tLeft), tTop(_tTop), tRight(_tRight), tBottom(_tBottom){	}
+
+}BOX;
+
 
 template<typename T>
 void Safe_Delete(T& Temp)
