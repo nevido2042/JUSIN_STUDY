@@ -73,7 +73,7 @@ void CPlayer::Key_Input()
 		m_tInfo.fX += m_fSpeed;
 	}
 
-	if (CKeyMgr::Get_Instance()->Key_Up(VK_SPACE))
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
 	{
 		m_bJump = true;
 	}
