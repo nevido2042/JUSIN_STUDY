@@ -13,24 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="00. MainGame">
-      <UniqueIdentifier>{13828fb6-a723-4d86-ab6f-9809b1211c82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design">
-      <UniqueIdentifier>{fc3aca44-edbd-446a-8d69-20db269dcfd8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\LineMgr">
-      <UniqueIdentifier>{3f637332-18dd-4a28-ad78-9e2077461dc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\LineMgr\Line">
-      <UniqueIdentifier>{328d590e-a613-4617-8155-0ed506d73f79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\KeyMgr">
-      <UniqueIdentifier>{35d39457-7602-4ce2-86e7-f6c882bdb56b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\ScrollMgr">
-      <UniqueIdentifier>{f5b5f6f7-26fe-438c-a650-166e00020a90}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -42,56 +24,56 @@
     <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultWindow.h">
+    <ClInclude Include="LineEditor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
     <ClInclude Include="CMainGame.h">
-      <Filter>00. MainGame</Filter>
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CLine.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CLineMgr.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CLine.h">
-      <Filter>02. Design\LineMgr\Line</Filter>
-    </ClInclude>
-    <ClInclude Include="CLineMgr.h">
-      <Filter>02. Design\LineMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="CKeyMgr.h">
-      <Filter>02. Design\KeyMgr</Filter>
-    </ClInclude>
     <ClInclude Include="CScrollMgr.h">
-      <Filter>02. Design\ScrollMgr</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DefaultWindow.cpp">
+    <ClCompile Include="LineEditor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CMainGame.cpp">
-      <Filter>00. MainGame</Filter>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CLine.cpp">
-      <Filter>02. Design\LineMgr\Line</Filter>
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CLineMgr.cpp">
-      <Filter>02. Design\LineMgr</Filter>
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CKeyMgr.cpp">
-      <Filter>02. Design\KeyMgr</Filter>
+    <ClCompile Include="CMainGame.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CScrollMgr.cpp">
-      <Filter>02. Design\ScrollMgr</Filter>
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DefaultWindow.rc">
+    <ResourceCompile Include="LineEditor.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -99,7 +81,7 @@
     <Image Include="small.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="DefaultWindow.ico">
+    <Image Include="LineEditor.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

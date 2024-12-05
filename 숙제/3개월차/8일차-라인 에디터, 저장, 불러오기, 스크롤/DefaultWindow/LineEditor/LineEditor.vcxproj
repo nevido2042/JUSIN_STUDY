@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{79e7befc-f46c-464b-8ada-28a71a720c5a}</ProjectGuid>
-    <RootNamespace>DefaultWindow</RootNamespace>
+    <ProjectGuid>{765f839c-ca11-4d0d-b271-6796a8da3a3d}</ProjectGuid>
+    <RootNamespace>LineEditor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -140,9 +140,9 @@
     <ClInclude Include="CLineMgr.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CScrollMgr.h" />
-    <ClInclude Include="DefaultWindow.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="LineEditor.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -153,7 +153,7 @@
     <ClCompile Include="CLineMgr.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CScrollMgr.cpp" />
-    <ClCompile Include="DefaultWindow.cpp" />
+    <ClCompile Include="LineEditor.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -162,10 +162,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DefaultWindow.rc" />
+    <ResourceCompile Include="LineEditor.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DefaultWindow.ico" />
+    <Image Include="LineEditor.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
