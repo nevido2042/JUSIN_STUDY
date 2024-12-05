@@ -26,8 +26,8 @@ CObj* CObjMgr::Get_Target(OBJID eID, CObj* pDst)
 		if (Src->Get_Dead())
 			continue;
 
-		float		fWidth = fabs(pDst->Get_Info().fX - Src->Get_Info().fX);
-		float		fHeight = fabs(pDst->Get_Info().fY - Src->Get_Info().fY);
+		float		fWidth = abs(pDst->Get_Info().fX - Src->Get_Info().fX);
+		float		fHeight = abs(pDst->Get_Info().fY - Src->Get_Info().fY);
 
 		float		fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
 
@@ -82,7 +82,7 @@ void CObjMgr::Late_Update()
 	//CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
-	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_MONSTER]);
+	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
 }
 
 void CObjMgr::Render(HDC hDC)

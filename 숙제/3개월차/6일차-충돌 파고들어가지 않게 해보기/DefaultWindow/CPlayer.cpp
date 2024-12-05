@@ -25,6 +25,7 @@ int CPlayer::Update()
 {
 	Key_Input();
 
+
 	// CObj::Update_Rect();
 	__super::Update_Rect();
 
@@ -32,6 +33,7 @@ int CPlayer::Update()
 }
 void CPlayer::Late_Update()
 {
+	//Key_Input();
 	// degree to radian
 
 	m_tPosin.x = long(m_tInfo.fX + (m_fDistance * cosf(m_fAngle * (PI / 180.f))));
