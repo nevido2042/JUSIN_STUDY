@@ -40,9 +40,10 @@ public:
 
 
 private:
-	static CBoxMgr* m_pInstance;
+	static CBoxMgr*		m_pInstance;
 	list<CBox*>			m_Boxlist;
-	//LINEPOINT				m_tLinePoint[DIR_END];
+	//LINEPOINT			m_tLinePoint[DIR_END];
+	LINEPOINT			m_tBoxPoint[DRAWPOINT_END];
 
 };
 

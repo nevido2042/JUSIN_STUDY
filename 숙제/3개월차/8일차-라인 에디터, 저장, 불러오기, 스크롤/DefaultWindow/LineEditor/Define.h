@@ -48,14 +48,14 @@ typedef struct tagLine
 
 typedef struct tagBox
 {
-	LINEPOINT	tLeft;
-	LINEPOINT	tTop;
-	LINEPOINT	tRight;
-	LINEPOINT	tBottom;
+	LINEPOINT	tLT;
+	LINEPOINT	tRT;
+	LINEPOINT	tLB;
+	LINEPOINT	tRB;
 
 	tagBox() { ZeroMemory(this, sizeof(tagLine)); }
 	tagBox(LINEPOINT& _tLeft, LINEPOINT& _tTop, LINEPOINT& _tRight, LINEPOINT& _tBottom)
-		: tLeft(_tLeft), tTop(_tTop), tRight(_tRight), tBottom(_tBottom){	}
+		: tLT(_tLeft), tRT(_tTop), tLB(_tRight), tRB(_tBottom){	}
 
 }BOX;
 

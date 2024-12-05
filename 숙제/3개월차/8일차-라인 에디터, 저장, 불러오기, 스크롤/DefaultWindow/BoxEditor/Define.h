@@ -15,6 +15,8 @@ extern HWND		g_hWnd;
 
 enum DIRECTION { LEFT, RIGHT, DIR_END };
 
+enum DRAWPOINT { HEAD, TAIL, DRAWPOINT_END };
+
 enum OBJID { OBJ_PLAYER, OBJ_BULLET, OBJ_MONSTER, OBJ_MOUSE, OBJ_SHIELD, OBJ_BUTTON, OBJ_END };
 
 typedef struct tagInfo
@@ -48,14 +50,14 @@ typedef struct tagLine
 
 typedef struct tagBox
 {
-	LINEPOINT	tLeft;
-	LINEPOINT	tTop;
-	LINEPOINT	tRight;
-	LINEPOINT	tBottom;
+	LINEPOINT	tLT;
+	LINEPOINT	tRT;
+	LINEPOINT	tLB;
+	LINEPOINT	tRB;
 
 	tagBox() { ZeroMemory(this, sizeof(tagLine)); }
-	tagBox(LINEPOINT& _tLeft, LINEPOINT& _tTop, LINEPOINT& _tRight, LINEPOINT& _tBottom)
-		: tLeft(_tLeft), tTop(_tTop), tRight(_tRight), tBottom(_tBottom) {	}
+	tagBox(LINEPOINT& _tLT, LINEPOINT& _tRT, LINEPOINT& _tLB, LINEPOINT& _tRB)
+		: tLT(_tLT), tRT(_tRT), tLB(_tLB), tRB(_tRB) {	}
 
 }BOX;
 
