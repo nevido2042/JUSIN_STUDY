@@ -64,6 +64,9 @@
     <Filter Include="02. Design\ScrollMgr">
       <UniqueIdentifier>{f51fd9c2-99b7-40b4-b3b8-741b940b5b00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\DummyMgr">
+      <UniqueIdentifier>{752777b1-8f1c-4b46-9b5a-868e17f85e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="CScrollMgr.h">
       <Filter>02. Design\ScrollMgr</Filter>
     </ClInclude>
+    <ClInclude Include="DummyMgr.h">
+      <Filter>02. Design\DummyMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -184,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="CScrollMgr.cpp">
       <Filter>02. Design\ScrollMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyMgr.cpp">
+      <Filter>02. Design\DummyMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

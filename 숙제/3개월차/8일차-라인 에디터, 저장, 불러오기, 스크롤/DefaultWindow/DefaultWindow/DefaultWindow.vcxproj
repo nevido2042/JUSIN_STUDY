@@ -153,6 +153,7 @@
     <ClInclude Include="CShield.h" />
     <ClInclude Include="DefaultWindow.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="DummyMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="CScrollMgr.cpp" />
     <ClCompile Include="CShield.cpp" />
     <ClCompile Include="DefaultWindow.cpp" />
+    <ClCompile Include="DummyMgr.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
