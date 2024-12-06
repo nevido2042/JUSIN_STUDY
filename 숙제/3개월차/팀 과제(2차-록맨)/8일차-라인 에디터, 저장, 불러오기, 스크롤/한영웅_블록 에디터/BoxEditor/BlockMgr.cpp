@@ -272,7 +272,7 @@ void CBlockMgr::Release()
 
 void CBlockMgr::Save_Block()
 {
-	HANDLE		hFile = CreateFile(L"../Data/Box.dat", // 파일 경로와 이름을 명시
+	HANDLE		hFile = CreateFile(L"../Data/Block.dat", // 파일 경로와 이름을 명시
 		GENERIC_WRITE,		// 파일 접근 모드(GENERIC_READ)
 		NULL,				// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈 할 때 허용할 것인가
 		NULL,				// 보안 속성, NULL인 경우 기본 보안 상태
@@ -302,7 +302,7 @@ void CBlockMgr::Load_Block()
 {
 	Release();
 
-	HANDLE		hFile = CreateFile(L"../Data/Box.dat", // 파일 경로와 이름을 명시
+	HANDLE		hFile = CreateFile(L"../Data/Block.dat", // 파일 경로와 이름을 명시
 		GENERIC_READ,		// 파일 접근 모드(GENERIC_READ)
 		NULL,				// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈 할 때 허용할 것인가
 		NULL,				// 보안 속성, NULL인 경우 기본 보안 상태
