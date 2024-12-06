@@ -181,7 +181,7 @@ void CBoxMgr::Save_Box()
 
 	for (auto& pBlock : m_BlockList)
 	{
-		WriteFile(hFile, static_cast<CBlock*>(pBlock)->Get_Info(), sizeof(CBlock), &dwByte, nullptr);
+		WriteFile(hFile, pBlock, sizeof(CBlock), &dwByte, nullptr);
 	}
 
 	CloseHandle(hFile);
@@ -208,11 +208,11 @@ void CBoxMgr::Load_Box()
 	}
 
 	DWORD	dwByte(0);
-	CBlock	Block{};
+	CBlock	Block;
 
 	while (true)
 	{
-		bool bResult = ReadFile(hFile, &Block, sizeof(BOX), &dwByte, nullptr);
+		bool bResult = ReadFile(hFile, &Block, sizeof(CBlock), &dwByte, nullptr);
 
 		if (0 == dwByte)
 			break;

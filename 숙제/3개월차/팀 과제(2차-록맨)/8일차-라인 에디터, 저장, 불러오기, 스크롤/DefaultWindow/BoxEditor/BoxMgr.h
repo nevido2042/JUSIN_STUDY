@@ -1,5 +1,5 @@
 #pragma once
-#include "Box.h" // 안 쓸 예정
+//#include "Box.h" // 안 쓸 예정
 #include "Block.h"
 
 class CBoxMgr

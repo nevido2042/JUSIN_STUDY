@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Block.h"
+#include "CScrollMgr.h"
 
 CBlock::CBlock()
 {
@@ -38,10 +39,12 @@ void CBlock::Late_Update()
 
 void CBlock::Render(HDC hDC)
 {
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+
     Rectangle(hDC,
-        m_tRect.left,
+        m_tRect.left + iScrollX,
         m_tRect.top,
-        m_tRect.right,
+        m_tRect.right + iScrollX,
         m_tRect.bottom);
 }
 
