@@ -3,6 +3,7 @@
 #include "BlockMgr.h"
 #include "CKeyMgr.h"
 #include "CScrollMgr.h"
+#include "CBmpMgr.h"
 
 CMainGame::CMainGame()
 	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
@@ -25,6 +26,9 @@ void CMainGame::Initialize()
 	// 	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(CObjMgr::Get_Instance()->Get_Player());
 	// }
 	CBlockMgr::Get_Instance()->Initialize();
+
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
 }
 
 void CMainGame::Update()
@@ -57,9 +61,21 @@ void CMainGame::Render()
 	}
 #pragma endregion
 	
-	Rectangle(m_hDC, 0, 0, WINCX, WINCY);
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Back");
+	HDC		hGroundDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
 
-	CBlockMgr::Get_Instance()->Render(m_hDC);
+	BitBlt(hMemDC, 0, 0, WINCX, WINCY, hGroundDC, 0, 0, SRCCOPY);
+
+	//Rectangle(m_hDC, 0, 0, WINCX, WINCY);
+
+	CBlockMgr::Get_Instance()->Render(hMemDC);
+
+	BitBlt(m_hDC,
+		0, 0, WINCX, WINCY,
+		hMemDC,
+		0,
+		0,
+		SRCCOPY);
 }
 
 void CMainGame::Release()

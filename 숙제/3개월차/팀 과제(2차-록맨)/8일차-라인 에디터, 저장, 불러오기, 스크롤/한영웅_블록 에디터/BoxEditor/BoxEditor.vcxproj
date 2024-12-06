@@ -139,8 +139,10 @@
     <ClInclude Include="BoxEditor.h" />
     <ClInclude Include="BlockMgr.h" />
     <ClInclude Include="CAbstractFactory.h" />
+    <ClInclude Include="CBmpMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CMainGame.h" />
+    <ClInclude Include="CMyBmp.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CScrollMgr.h" />
     <ClInclude Include="Define.h" />
@@ -153,8 +155,10 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BoxEditor.cpp" />
     <ClCompile Include="BlockMgr.cpp" />
+    <ClCompile Include="CBmpMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CMainGame.cpp" />
+    <ClCompile Include="CMyBmp.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CScrollMgr.cpp" />
     <ClCompile Include="pch.cpp">
