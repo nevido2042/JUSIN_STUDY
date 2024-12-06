@@ -1,6 +1,20 @@
 #include "pch.h"
 #include "Block.h"
 
+CBlock::CBlock()
+{
+}
+
+CBlock::CBlock(float _fX, float _fY, float _fSize)
+{
+    Set_Pos(_fX, _fX);
+    Set_Size(_fSize, _fSize);
+}
+
+CBlock::~CBlock()
+{
+}
+
 void CBlock::Initialize()
 {
     m_tInfo.fCX = 50.f;

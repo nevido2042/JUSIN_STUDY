@@ -28,6 +28,15 @@
     <Filter Include="Obj">
       <UniqueIdentifier>{22dadb02-9a75-4827-bf91-59c110a15fc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Box">
+      <UniqueIdentifier>{ae36532f-9465-4eb5-9f41-e291a8adfb65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BoxMgr">
+      <UniqueIdentifier>{334c6510-2ccf-43bf-b823-7d5f9b9351a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block">
+      <UniqueIdentifier>{c781a7fd-9056-4f03-90f2-d0068c0f319a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -57,17 +66,20 @@
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxMgr.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CAbstractFactory.h">
       <Filter>AbstractFactory</Filter>
     </ClInclude>
     <ClInclude Include="CObj.h">
       <Filter>Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Obj\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxMgr.h">
+      <Filter>BoxMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,14 +98,17 @@
     <ClCompile Include="CScrollMgr.cpp">
       <Filter>ScrollMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxMgr.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CObj.cpp">
       <Filter>Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Obj\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxMgr.cpp">
+      <Filter>BoxMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

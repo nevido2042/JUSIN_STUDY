@@ -41,10 +41,10 @@ public:
 
 private:
 	static CBoxMgr*		m_pInstance;
-	list<CBox*>			m_Boxlist;
+	list<CBox*>			m_BlockList;
 	//LINEPOINT			m_tLinePoint[DIR_END];
-	LINEPOINT			m_tBoxPoint[DRAWPOINT_END];
-	float				m_fBoxSize;
+	LINEPOINT			m_tBlockPoint[DRAWPOINT_END];
+	float				m_fBlockSize;
 
 };
 

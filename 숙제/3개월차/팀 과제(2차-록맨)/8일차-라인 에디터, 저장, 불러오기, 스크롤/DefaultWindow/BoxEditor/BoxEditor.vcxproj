@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxEditor.h" />
     <ClInclude Include="BoxMgr.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxEditor.cpp" />
     <ClCompile Include="BoxMgr.cpp" />
