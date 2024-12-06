@@ -19,6 +19,8 @@ CBoxMgr::~CBoxMgr()
 void CBoxMgr::Initialize()
 {
 	m_fBoxSize = 50.f;
+
+	Load_Box();
 }
 
 int CBoxMgr::Update()

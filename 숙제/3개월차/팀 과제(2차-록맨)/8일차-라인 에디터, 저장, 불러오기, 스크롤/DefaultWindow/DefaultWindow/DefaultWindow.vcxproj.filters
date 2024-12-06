@@ -67,6 +67,12 @@
     <Filter Include="02. Design\DummyMgr">
       <UniqueIdentifier>{752777b1-8f1c-4b46-9b5a-868e17f85e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\BoxMgr">
+      <UniqueIdentifier>{ce2a3d32-b948-4e07-b91b-05aced22c1b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\BoxMgr\Box">
+      <UniqueIdentifier>{cea92627-93c6-41cb-a275-03996bf6e092}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -138,6 +144,12 @@
     <ClInclude Include="DummyMgr.h">
       <Filter>02. Design\DummyMgr</Filter>
     </ClInclude>
+    <ClInclude Include="BoxMgr.h">
+      <Filter>02. Design\BoxMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>02. Design\BoxMgr\Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -193,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="DummyMgr.cpp">
       <Filter>02. Design\DummyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxMgr.cpp">
+      <Filter>02. Design\BoxMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>02. Design\BoxMgr\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

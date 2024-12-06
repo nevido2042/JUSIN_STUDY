@@ -15,6 +15,8 @@ extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 
+enum DRAWPOINT { HEAD, TAIL, DRAWPOINT_END };
+
 enum OBJID { OBJ_PLAYER, OBJ_BULLET, OBJ_MONSTER, OBJ_MOUSE, OBJ_SHIELD, OBJ_BUTTON, OBJ_END };
 
 typedef struct tagInfo
@@ -46,6 +48,25 @@ typedef struct tagLine
 
 }LINE;
 
+typedef struct tagBox
+{
+	LINEPOINT	tLT;
+	LINEPOINT	tRT;
+	LINEPOINT	tLB;
+	LINEPOINT	tRB;
+
+	tagBox() { ZeroMemory(this, sizeof(tagLine)); }
+	/*tagBox(LINEPOINT& _tLT, LINEPOINT& _tRT, LINEPOINT& _tLB, LINEPOINT& _tRB)
+		: tLT(_tLT), tRT(_tRT), tLB(_tLB), tRB(_tRB) {	}*/
+	tagBox(LINEPOINT& _tCenter, float _fSize)
+		:
+		tLT{ _tCenter.fX - _fSize * 0.5f, _tCenter.fY - _fSize * 0.5f },
+		tRT{ _tCenter.fX + _fSize * 0.5f, _tCenter.fY - _fSize * 0.5f },
+		tLB{ _tCenter.fX - _fSize * 0.5f, _tCenter.fY + _fSize * 0.5f },
+		tRB{ _tCenter.fX + _fSize * 0.5f, _tCenter.fY + _fSize * 0.5f }
+	{}
+
+}BOX;
 
 template<typename T>
 void Safe_Delete(T& Temp)

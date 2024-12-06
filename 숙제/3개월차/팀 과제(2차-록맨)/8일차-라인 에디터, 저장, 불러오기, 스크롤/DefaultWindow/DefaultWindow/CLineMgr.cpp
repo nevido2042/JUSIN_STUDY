@@ -86,7 +86,7 @@ void CLineMgr::Load_Line()
 
 	while (true)
 	{
-		ReadFile(hFile, &tLine, sizeof(LINE), &dwByte, nullptr);
+		bool bResult = ReadFile(hFile, &tLine, sizeof(LINE), &dwByte, nullptr);
 
 		if (0 == dwByte)
 			break;

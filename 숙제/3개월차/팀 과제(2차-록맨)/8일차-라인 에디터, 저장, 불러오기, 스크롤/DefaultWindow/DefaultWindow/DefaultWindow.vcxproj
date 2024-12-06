@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="BoxMgr.h" />
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCollisionMgr.h" />
@@ -160,6 +162,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="BoxMgr.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CGuideBullet.cpp" />

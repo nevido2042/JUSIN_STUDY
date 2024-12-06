@@ -21,7 +21,7 @@ public:
 private:
 	HDC			m_hDC;
 
-	DWORD		m_ullTime;
+	ULONGLONG		m_ullTime;
 	int			m_iFPS;
 	TCHAR		m_szFPS[16];
 
