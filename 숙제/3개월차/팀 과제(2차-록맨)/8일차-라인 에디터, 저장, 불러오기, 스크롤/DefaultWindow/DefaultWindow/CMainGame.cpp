@@ -7,6 +7,7 @@
 #include "CKeyMgr.h"
 #include "CScrollMgr.h"
 #include "BoxMgr.h"
+#include "CBmpMgr.h"
 
 CMainGame::CMainGame()
 	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
@@ -33,6 +34,9 @@ void CMainGame::Initialize()
 	// 	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(float(rand() % WINCX), float(rand() % WINCY), 0.f));
 	// 	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(CObjMgr::Get_Instance()->Get_Player());
 	// }
+
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
 }
 
 void CMainGame::Update()
@@ -67,18 +71,31 @@ void CMainGame::Render()
 	}
 #pragma endregion
 	
-	Rectangle(m_hDC, 0, 0, WINCX, WINCY);
+	//Rectangle(m_hDC, 0, 0, WINCX, WINCY);
+
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Back");
+	HDC		hGroundDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
+
+	BitBlt(hMemDC, 0, 0, WINCX, WINCY, hGroundDC, 0, 0, SRCCOPY);
 
 	//CLineMgr::Get_Instance()->Render(m_hDC);
-	CBoxMgr::Get_Instance()->Render(m_hDC);
+	CBoxMgr::Get_Instance()->Render(hMemDC);
 
-	CObjMgr::Get_Instance()->Render(m_hDC);
+	CObjMgr::Get_Instance()->Render(hMemDC);
+
+	BitBlt(m_hDC,
+		0, 0, WINCX, WINCY,
+		hMemDC,
+		0,
+		0,
+		SRCCOPY);
 
 }
 
 void CMainGame::Release()
 {
 	CScrollMgr::Destroy_Instance();
+	CBmpMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
 	CLineMgr::Destroy_Instance();
 	CBoxMgr::Destroy_Instance();

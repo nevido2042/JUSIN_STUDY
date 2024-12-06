@@ -76,6 +76,12 @@
     <Filter Include="01. Obj\05. Block">
       <UniqueIdentifier>{9518156e-dd56-45a0-9e56-bac028973e0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\BmpMgr">
+      <UniqueIdentifier>{d00107c6-15b7-4c49-9775-ca6489a8c4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\BmpMgr\MyBmp">
+      <UniqueIdentifier>{5a3ba895-245c-4be1-be73-c0eda20ee662}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -156,6 +162,12 @@
     <ClInclude Include="Block.h">
       <Filter>01. Obj\05. Block</Filter>
     </ClInclude>
+    <ClInclude Include="CBmpMgr.h">
+      <Filter>02. Design\BmpMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CMyBmp.h">
+      <Filter>02. Design\BmpMgr\MyBmp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -220,6 +232,12 @@
     </ClCompile>
     <ClCompile Include="Block.cpp">
       <Filter>01. Obj\05. Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CBmpMgr.cpp">
+      <Filter>02. Design\BmpMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMyBmp.cpp">
+      <Filter>02. Design\BmpMgr\MyBmp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

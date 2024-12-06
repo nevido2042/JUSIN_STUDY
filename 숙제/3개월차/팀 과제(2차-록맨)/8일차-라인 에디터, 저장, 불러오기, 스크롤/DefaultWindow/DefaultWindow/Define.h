@@ -87,3 +87,33 @@ void Safe_Delete(T& Temp)
 		Temp = nullptr;
 	}
 }
+
+struct tagFinder
+{
+public:
+	tagFinder(const TCHAR* pString) : m_pString(pString) {}
+
+public:
+	template<typename T>
+	bool	operator()(T& rObj)
+	{
+		return !lstrcmp(m_pString, rObj.first);
+	}
+
+private:
+	const TCHAR* m_pString;
+};
+
+struct DeleteMap
+{
+public:
+	template<typename T>
+	void	operator()(T& Pair)
+	{
+		if (Pair.second)
+		{
+			delete Pair.second;
+			Pair.second = nullptr;
+		}
+	}
+};
