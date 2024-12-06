@@ -83,6 +83,9 @@ void CObjMgr::Late_Update()
 	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
 	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
+
+	//블럭과 플레이어 충돌(플레이어가 밀려나감)
+	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BLOCK]);
 }
 
 void CObjMgr::Render(HDC hDC)

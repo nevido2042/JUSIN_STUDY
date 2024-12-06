@@ -77,7 +77,7 @@ void CMainGame::Release()
 {
 	CScrollMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
-	//CLineMgr::Destroy_Instance();
+	CLineMgr::Destroy_Instance();
 	CBoxMgr::Destroy_Instance();
 	CObjMgr::DestroyInstance();
 	ReleaseDC(g_hWnd, m_hDC);

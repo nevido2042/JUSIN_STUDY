@@ -73,6 +73,9 @@
     <Filter Include="02. Design\BoxMgr\Box">
       <UniqueIdentifier>{cea92627-93c6-41cb-a275-03996bf6e092}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\05. Block">
+      <UniqueIdentifier>{9518156e-dd56-45a0-9e56-bac028973e0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -150,6 +153,9 @@
     <ClInclude Include="Box.h">
       <Filter>02. Design\BoxMgr\Box</Filter>
     </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>01. Obj\05. Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -211,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>02. Design\BoxMgr\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>01. Obj\05. Block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

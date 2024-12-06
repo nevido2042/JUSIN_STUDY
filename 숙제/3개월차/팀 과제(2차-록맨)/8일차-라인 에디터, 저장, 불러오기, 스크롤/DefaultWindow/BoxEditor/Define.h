@@ -13,11 +13,21 @@
 
 extern HWND		g_hWnd;
 
-enum DIRECTION { LEFT, RIGHT, DIR_END };
+enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 
 enum DRAWPOINT { HEAD, TAIL, DRAWPOINT_END };
 
-enum OBJID { OBJ_PLAYER, OBJ_BULLET, OBJ_MONSTER, OBJ_MOUSE, OBJ_SHIELD, OBJ_BUTTON, OBJ_END };
+enum OBJID 
+{ 
+	OBJ_PLAYER,
+	OBJ_BULLET,
+	OBJ_MONSTER,
+	OBJ_MOUSE,
+	OBJ_SHIELD,
+	OBJ_BUTTON,
+	OBJ_BLOCK,
+	OBJ_END 
+};
 
 typedef struct tagInfo
 {
@@ -67,7 +77,6 @@ typedef struct tagBox
 	{}
 
 }BOX;
-
 
 template<typename T>
 void Safe_Delete(T& Temp)
