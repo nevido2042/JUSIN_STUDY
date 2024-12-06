@@ -40,12 +40,13 @@ void CBlock::Late_Update()
 void CBlock::Render(HDC hDC)
 {
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     Rectangle(hDC,
         m_tRect.left + iScrollX,
-        m_tRect.top,
+        m_tRect.top + iScrollY,
         m_tRect.right + iScrollX,
-        m_tRect.bottom);
+        m_tRect.bottom + iScrollY);
 }
 
 void CBlock::Release()

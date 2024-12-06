@@ -32,6 +32,7 @@ int CBlockMgr::Update()
 	ScreenToClient(g_hWnd, &ptMouse);
 
 	ptMouse.x -= (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	ptMouse.y -= (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 	{
@@ -74,8 +75,6 @@ int CBlockMgr::Update()
 			m_tBlockPoint[TAIL].fX = m_tBlockPoint[HEAD].fX;
 			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
 		}
-
-
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
@@ -176,6 +175,12 @@ int CBlockMgr::Update()
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT))
 		CScrollMgr::Get_Instance()->Set_ScrollX(-5.f);
 
+	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_UP))
+		CScrollMgr::Get_Instance()->Set_ScrollY(5.f);
+
+	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
+		CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
+
 	return 0;
 }
 
@@ -188,8 +193,11 @@ void CBlockMgr::Render(HDC hDC)
 	for (auto& pLine : m_BlockList)
 		pLine->Render(hDC);
 
-	MoveToEx(hDC, (int)m_tBlockPoint[HEAD].fX + (int)CScrollMgr::Get_Instance()->Get_ScrollX(), (int)m_tBlockPoint[HEAD].fY, nullptr);
-	LineTo(hDC, (int)m_tBlockPoint[TAIL].fX + (int)CScrollMgr::Get_Instance()->Get_ScrollX(), (int)m_tBlockPoint[TAIL].fY);
+	float fScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	float fScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	MoveToEx(hDC, (int)m_tBlockPoint[HEAD].fX + fScrollX, (int)m_tBlockPoint[HEAD].fY + fScrollY, nullptr);
+	LineTo(hDC, (int)m_tBlockPoint[TAIL].fX + fScrollX, (int)m_tBlockPoint[TAIL].fY + fScrollY);
 
 	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 
@@ -208,8 +216,8 @@ void CBlockMgr::Render(HDC hDC)
 		bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
 	}
 	int iBoxCount = int(fDist / m_fBlockSize);
-	//HEAD부터 TAIL까지 박스들 출력
 
+	//HEAD부터 TAIL까지 박스들 출력
 	for (int i = 0; i < iBoxCount ; ++i)
 	{
 		if (bPlus)
@@ -217,18 +225,18 @@ void CBlockMgr::Render(HDC hDC)
 			if (m_eDrawDir == HORIZONTAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX + i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize + i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f));
+					int(m_tBlockPoint[HEAD].fX + i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f + fScrollY),
+					int(m_tBlockPoint[HEAD].fX + m_fBlockSize + i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
 			}
 			else if(m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f),
-					int(m_tBlockPoint[HEAD].fY + i * m_fBlockSize),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize + i * m_fBlockSize));
+					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].fY + i * m_fBlockSize + fScrollY),
+					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].fY + m_fBlockSize + i * m_fBlockSize + fScrollY));
 			}
 
 		}
@@ -237,18 +245,18 @@ void CBlockMgr::Render(HDC hDC)
 			if (m_eDrawDir == HORIZONTAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize - i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f),
-					int(m_tBlockPoint[HEAD].fX - i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f));
+					int(m_tBlockPoint[HEAD].fX - m_fBlockSize - i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f + fScrollY),
+					int(m_tBlockPoint[HEAD].fX - i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
 			}
 			else if (m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f),
-					int(m_tBlockPoint[HEAD].fY - i * m_fBlockSize),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize - i * m_fBlockSize));
+					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].fY - i * m_fBlockSize + fScrollY),
+					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].fY - m_fBlockSize - i * m_fBlockSize + fScrollY));
 			}
 
 		}
