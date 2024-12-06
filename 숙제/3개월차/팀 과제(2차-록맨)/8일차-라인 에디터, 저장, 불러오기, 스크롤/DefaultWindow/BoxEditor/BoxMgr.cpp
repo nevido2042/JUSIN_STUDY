@@ -18,9 +18,6 @@ CBoxMgr::~CBoxMgr()
 
 void CBoxMgr::Initialize()
 {
-	//CBox* pBox = new CBox(LINEPOINT{ 100.f,100.f }, 50.f);
-	//m_Boxlist.push_back(pBox);
-
 	m_fBoxSize = 50.f;
 }
 
@@ -52,25 +49,36 @@ int CBoxMgr::Update()
 	{
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 		float fDist = abs(m_tBoxPoint[HEAD].fX - m_tBoxPoint[TAIL].fX);
+		bool bRight = m_tBoxPoint[HEAD].fX < m_tBoxPoint[TAIL].fX;
 		int iBoxCount = int(fDist / m_fBoxSize);
 		//HEAD부터 TAIL까지 박스들 생성
 		for (int i = 0; i < iBoxCount; ++i)
 		{
-			CBox* pBox = new CBox(
-				LINEPOINT
-				{
-					m_tBoxPoint[HEAD].fX + m_fBoxSize * 0.5f + i * m_fBoxSize,
-					m_tBoxPoint[HEAD].fY
-				}
-			, m_fBoxSize);
+			CBox* pBox(nullptr);
+			if (bRight)
+			{
+				pBox = new CBox(
+					LINEPOINT
+					{
+						m_tBoxPoint[HEAD].fX + m_fBoxSize * 0.5f + i * m_fBoxSize,
+						m_tBoxPoint[HEAD].fY
+					}
+				, m_fBoxSize);
+			}
+			else
+			{
+				pBox = new CBox(
+					LINEPOINT
+					{
+						m_tBoxPoint[HEAD].fX - m_fBoxSize * 0.5f - i * m_fBoxSize,
+						m_tBoxPoint[HEAD].fY
+					}
+				, m_fBoxSize);
+			}
+
+
 
 			m_Boxlist.push_back(pBox);
-
-			/*Rectangle(hDC,
-				m_tBoxPoint[HEAD].fX + i * (int)m_fBoxSize,
-				m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f,
-				m_tBoxPoint[HEAD].fX + (int)m_fBoxSize + i * (int)m_fBoxSize,
-				m_tBoxPoint[HEAD].fY + (int)m_fBoxSize - m_fBoxSize * 0.5f);*/
 		}
 
 		ZeroMemory(&m_tBoxPoint, sizeof(m_tBoxPoint));
@@ -106,20 +114,36 @@ void CBoxMgr::Render(HDC hDC)
 	for (auto& pLine : m_Boxlist)
 		pLine->Render(hDC);
 
-	MoveToEx(hDC, (int)m_tBoxPoint[HEAD].fX, (int)m_tBoxPoint[HEAD].fY, nullptr);
-	LineTo(hDC, (int)m_tBoxPoint[TAIL].fX, (int)m_tBoxPoint[TAIL].fY);
+	MoveToEx(hDC, (int)m_tBoxPoint[HEAD].fX + (int)CScrollMgr::Get_Instance()->Get_ScrollX(), (int)m_tBoxPoint[HEAD].fY, nullptr);
+	LineTo(hDC, (int)m_tBoxPoint[TAIL].fX + (int)CScrollMgr::Get_Instance()->Get_ScrollX(), (int)m_tBoxPoint[TAIL].fY);
 
 	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 	float fDist = abs(m_tBoxPoint[HEAD].fX - m_tBoxPoint[TAIL].fX);
+	bool bRight = m_tBoxPoint[HEAD].fX < m_tBoxPoint[TAIL].fX;
 	int iBoxCount = int(fDist / m_fBoxSize);
 	//HEAD부터 TAIL까지 박스들 출력
+
+
 	for (int i = 0; i < iBoxCount ; ++i)
 	{
-		Rectangle(hDC,
-			int(m_tBoxPoint[HEAD].fX + i * m_fBoxSize),
-			int(m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f),
-			int(m_tBoxPoint[HEAD].fX + m_fBoxSize + i * m_fBoxSize),
-			int(m_tBoxPoint[HEAD].fY + m_fBoxSize - m_fBoxSize * 0.5f));
+		if (bRight)
+		{
+			Rectangle(hDC,
+				int(m_tBoxPoint[HEAD].fX + i * m_fBoxSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+				int(m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f),
+				int(m_tBoxPoint[HEAD].fX + m_fBoxSize + i * m_fBoxSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+				int(m_tBoxPoint[HEAD].fY + m_fBoxSize - m_fBoxSize * 0.5f));
+		}
+		else
+		{
+			
+			Rectangle(hDC,
+				int(m_tBoxPoint[HEAD].fX - m_fBoxSize - i * m_fBoxSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+				int(m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f),
+				int(m_tBoxPoint[HEAD].fX - i * m_fBoxSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+				int(m_tBoxPoint[HEAD].fY + m_fBoxSize - m_fBoxSize * 0.5f));
+		}
+
 	}
 }
 
