@@ -20,6 +20,7 @@ public:
 
 	void	Save_Block();
 	void	Load_Block();
+	void	Load_Block(LPCWSTR _FilePath);
 
 public:
 	static CBlockMgr* Get_Instance()

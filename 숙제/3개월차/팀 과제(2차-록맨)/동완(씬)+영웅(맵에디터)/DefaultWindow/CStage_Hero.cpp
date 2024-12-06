@@ -19,8 +19,8 @@ CStage_Hero::~CStage_Hero()
 void CStage_Hero::Initialize()
 {
 	//모든 매니저들 불러서 모든것들 다 이니셜라이즈
-	CLineMgr::Get_Instance()->Initialize();
-	CBlockMgr::Get_Instance()->Initialize();
+	//CLineMgr::Get_Instance()->Initialize();
+	//CBlockMgr::Get_Instance()->Initialize();
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");

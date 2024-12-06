@@ -18,8 +18,8 @@ CStage_Chae::~CStage_Chae()
 
 void CStage_Chae::Initialize()
 {
-	CLineMgr::Get_Instance()->Initialize();
-	CBlockMgr::Get_Instance()->Initialize();
+	//CLineMgr::Get_Instance()->Initialize();
+	//CBlockMgr::Get_Instance()->Initialize();
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");

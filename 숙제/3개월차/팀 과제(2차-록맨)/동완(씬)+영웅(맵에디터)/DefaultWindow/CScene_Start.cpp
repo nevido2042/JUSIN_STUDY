@@ -6,6 +6,7 @@
 #include "CObjMgr.h"
 #include "CAbstractFactory.h"
 #include "CSceneMgr.h"
+#include "BlockMgr.h"
 
 CScene_Start::CScene_Start()
 {
@@ -42,34 +43,40 @@ void CScene_Start::Update() // 스테이지
 	{
 		//g_CurrentStage =(int)SCENE_TYPE::STAGE_Hong;
    		CSceneMgr::Get_Instance()->Set_Scene(SCENE_TYPE::STAGE_Hong); // 동완 스테이지로 전환
-		CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Hong.dat");
+		//CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Hong.dat");
+		CBlockMgr::Get_Instance()->Load_Block(L"../Data/Block_Hong.dat");
 	}
 	if (GetAsyncKeyState('2'))
 	{
 		//g_CurrentStage = (int)SCENE_TYPE::STAGE_Silver;
 		CSceneMgr::Get_Instance()->Set_Scene(SCENE_TYPE::STAGE_Silver); // 은성 스테이지로 전환		
-		CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Silver.dat");
+		//CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Silver.dat");
+		CBlockMgr::Get_Instance()->Load_Block(L"../Data/Block_Silver.dat");
+
 
 	}
 	if (GetAsyncKeyState('3'))
 	{
 		//g_CurrentStage = (int)SCENE_TYPE::STAGE_Hero;
 		CSceneMgr::Get_Instance()->Set_Scene(SCENE_TYPE::STAGE_Hero); // 영웅 스테이지로 전환	
-		CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Hero.dat");
+		//CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Hero.dat");
+		CBlockMgr::Get_Instance()->Load_Block(L"../Data/Block_Hero.dat");
 
 	}
 	if (GetAsyncKeyState('4'))
 	{
 		//g_CurrentStage = (int)SCENE_TYPE::STAGE_Chae;
 		CSceneMgr::Get_Instance()->Set_Scene(SCENE_TYPE::STAGE_Chae); // 채영 스테이지로 전환
-		CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Chae.dat");
+		//CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Chae.dat");
+		CBlockMgr::Get_Instance()->Load_Block(L"../Data/Block_Chae.dat");
 
 	}
 	if (GetAsyncKeyState('5'))
 	{
 		//g_CurrentStage = (int)SCENE_TYPE::STAGE_Moo;
 		CSceneMgr::Get_Instance()->Set_Scene(SCENE_TYPE::STAGE_Moo); // 무결 스테이지로 전환
-		CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Moo.dat");
+		//CLineMgr::Get_Instance()->Load_Line(L"../Data/Line_Moo.dat");
+		CBlockMgr::Get_Instance()->Load_Block(L"../Data/Block_Moo.dat");
 
 	}
 
