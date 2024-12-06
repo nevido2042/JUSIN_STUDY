@@ -1,28 +1,31 @@
 #include "pch.h"
-#include "BoxMgr.h"
+#include "BlockMgr.h"
 #include "CScrollMgr.h"
 #include "CKeyMgr.h"
 #include "CAbstractFactory.h"
+#include "CObjMgr.h"
 
-CBoxMgr* CBoxMgr::m_pInstance = nullptr;
+CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
-CBoxMgr::CBoxMgr()
+CBlockMgr::CBlockMgr()
 	:m_fBlockSize(0)
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
 
-CBoxMgr::~CBoxMgr()
+CBlockMgr::~CBlockMgr()
 {
 	Release();
 }
 
-void CBoxMgr::Initialize()
+void CBlockMgr::Initialize()
 {
 	m_fBlockSize = 50.f;
+
+	Load_Block();
 }
 
-int CBoxMgr::Update()
+int CBlockMgr::Update()
 {
 	for (auto& pObj : m_BlockList)
 		pObj->Update();
@@ -94,13 +97,13 @@ int CBoxMgr::Update()
 
 	if (CKeyMgr::Get_Instance()->Key_Down('S'))
 	{
-		Save_Box();
+		Save_Block();
 		return 0;
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Down('L'))
 	{
-		Load_Box();
+		Load_Block();
 		return 0;
 	}
 
@@ -113,11 +116,11 @@ int CBoxMgr::Update()
 	return 0;
 }
 
-void CBoxMgr::Late_Update()
+void CBlockMgr::Late_Update()
 {
 }
 
-void CBoxMgr::Render(HDC hDC)
+void CBlockMgr::Render(HDC hDC)
 {
 	for (auto& pLine : m_BlockList)
 		pLine->Render(hDC);
@@ -155,13 +158,13 @@ void CBoxMgr::Render(HDC hDC)
 	}
 }
 
-void CBoxMgr::Release()
+void CBlockMgr::Release()
 {
 	for_each(m_BlockList.begin(), m_BlockList.end(), Safe_Delete<CObj*>);
 	m_BlockList.clear();
 }
 
-void CBoxMgr::Save_Box()
+void CBlockMgr::Save_Block()
 {
 	HANDLE		hFile = CreateFile(L"../Data/Box.dat", // 파일 경로와 이름을 명시
 		GENERIC_WRITE,		// 파일 접근 모드(GENERIC_READ)
@@ -189,7 +192,7 @@ void CBoxMgr::Save_Box()
 	MessageBox(g_hWnd, _T("Save 완료"), L"성공", MB_OK);
 }
 
-void CBoxMgr::Load_Box()
+void CBlockMgr::Load_Block()
 {
 	Release();
 
@@ -217,7 +220,8 @@ void CBoxMgr::Load_Box()
 		if (0 == dwByte)
 			break;
 
-		m_BlockList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));
+		CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, CAbstractFactory<CBlock>::Create(Block.Get_Info()));
+		//m_BlockList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));
 		//m_BlockList.push_back(new CBlock(Block));
 	}
 

@@ -2,11 +2,11 @@
 //#include "Box.h" // 안 쓸 예정
 #include "Block.h"
 
-class CBoxMgr
+class CBlockMgr
 {
 private:
-	CBoxMgr();
-	~CBoxMgr();
+	CBlockMgr();
+	~CBlockMgr();
 
 public:
 	//bool	Collision_Box(float _fX, float* pY);
@@ -18,14 +18,14 @@ public:
 	void	Render(HDC hDC);
 	void	Release();
 
-	void	Save_Box();
-	void	Load_Box();
+	void	Save_Block();
+	void	Load_Block();
 
 public:
-	static CBoxMgr* Get_Instance()
+	static CBlockMgr* Get_Instance()
 	{
 		if (nullptr == m_pInstance)
-			m_pInstance = new CBoxMgr;
+			m_pInstance = new CBlockMgr;
 
 		return m_pInstance;
 	}
@@ -41,7 +41,7 @@ public:
 
 
 private:
-	static CBoxMgr*		m_pInstance;
+	static CBlockMgr*		m_pInstance;
 	list<CObj*>			m_BlockList;
 	//LINEPOINT			m_tLinePoint[DIR_END];
 	LINEPOINT			m_tBlockPoint[DRAWPOINT_END];

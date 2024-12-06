@@ -86,6 +86,13 @@ void CObjMgr::Late_Update()
 
 	//블럭과 플레이어 충돌(플레이어가 밀려나감)
 	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BLOCK]);
+
+	//충돌 후 렉트 수정
+	for (size_t i = 0; i < OBJ_END; ++i)
+	{
+		for (auto& pObj : m_ObjList[i])
+			pObj->Update_Rect();
+	}
 }
 
 void CObjMgr::Render(HDC hDC)

@@ -6,7 +6,7 @@
 #include "CLineMgr.h"
 #include "CKeyMgr.h"
 #include "CScrollMgr.h"
-#include "BoxMgr.h"
+#include "BlockMgr.h"
 #include "CBmpMgr.h"
 
 CMainGame::CMainGame()
@@ -25,7 +25,7 @@ void CMainGame::Initialize()
 	m_hDC = GetDC(g_hWnd);
 
 	//CLineMgr::Get_Instance()->Initialize();
-	CBoxMgr::Get_Instance()->Initialize();
+	CBlockMgr::Get_Instance()->Initialize();
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
 
@@ -42,8 +42,6 @@ void CMainGame::Initialize()
 void CMainGame::Update()
 {
 	CObjMgr::Get_Instance()->Update();
-
-	CBoxMgr::Get_Instance()->Update();//»¬ ¿¹Á¤
 
 }
 
@@ -79,7 +77,7 @@ void CMainGame::Render()
 	BitBlt(hMemDC, 0, 0, WINCX, WINCY, hGroundDC, 0, 0, SRCCOPY);
 
 	//CLineMgr::Get_Instance()->Render(m_hDC);
-	CBoxMgr::Get_Instance()->Render(hMemDC);
+	CBlockMgr::Get_Instance()->Render(hMemDC);
 
 	CObjMgr::Get_Instance()->Render(hMemDC);
 
@@ -98,7 +96,7 @@ void CMainGame::Release()
 	CBmpMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
 	CLineMgr::Destroy_Instance();
-	CBoxMgr::Destroy_Instance();
+	CBlockMgr::Destroy_Instance();
 	CObjMgr::DestroyInstance();
 	ReleaseDC(g_hWnd, m_hDC);
 }

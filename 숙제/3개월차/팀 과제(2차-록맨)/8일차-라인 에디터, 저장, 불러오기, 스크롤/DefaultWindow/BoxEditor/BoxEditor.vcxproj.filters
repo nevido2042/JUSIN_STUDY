@@ -28,14 +28,11 @@
     <Filter Include="Obj">
       <UniqueIdentifier>{22dadb02-9a75-4827-bf91-59c110a15fc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Box">
-      <UniqueIdentifier>{ae36532f-9465-4eb5-9f41-e291a8adfb65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BoxMgr">
-      <UniqueIdentifier>{334c6510-2ccf-43bf-b823-7d5f9b9351a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Obj\Block">
       <UniqueIdentifier>{c781a7fd-9056-4f03-90f2-d0068c0f319a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BlockMgr">
+      <UniqueIdentifier>{334c6510-2ccf-43bf-b823-7d5f9b9351a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,11 +72,8 @@
     <ClInclude Include="Block.h">
       <Filter>Obj\Block</Filter>
     </ClInclude>
-    <ClInclude Include="BoxMgr.h">
-      <Filter>BoxMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Box</Filter>
+    <ClInclude Include="BlockMgr.h">
+      <Filter>BlockMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,11 +98,8 @@
     <ClCompile Include="Block.cpp">
       <Filter>Obj\Block</Filter>
     </ClCompile>
-    <ClCompile Include="BoxMgr.cpp">
-      <Filter>BoxMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Box</Filter>
+    <ClCompile Include="BlockMgr.cpp">
+      <Filter>BlockMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

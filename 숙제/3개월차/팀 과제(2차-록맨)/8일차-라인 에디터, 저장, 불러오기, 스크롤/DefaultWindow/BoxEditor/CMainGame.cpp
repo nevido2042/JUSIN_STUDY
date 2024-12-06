@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CMainGame.h"
-#include "BoxMgr.h"
+#include "BlockMgr.h"
 #include "CKeyMgr.h"
 #include "CScrollMgr.h"
 
@@ -24,19 +24,19 @@ void CMainGame::Initialize()
 	// 	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(float(rand() % WINCX), float(rand() % WINCY), 0.f));
 	// 	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(CObjMgr::Get_Instance()->Get_Player());
 	// }
-	CBoxMgr::Get_Instance()->Initialize();
+	CBlockMgr::Get_Instance()->Initialize();
 }
 
 void CMainGame::Update()
 {
-	CBoxMgr::Get_Instance()->Update();
+	CBlockMgr::Get_Instance()->Update();
 }
 
 void CMainGame::Late_Update()
 {
 	CKeyMgr::Get_Instance()->Update();
 
-	CBoxMgr::Get_Instance()->Late_Update();
+	CBlockMgr::Get_Instance()->Late_Update();
 
 }
 
@@ -59,14 +59,14 @@ void CMainGame::Render()
 	
 	Rectangle(m_hDC, 0, 0, WINCX, WINCY);
 
-	CBoxMgr::Get_Instance()->Render(m_hDC);
+	CBlockMgr::Get_Instance()->Render(m_hDC);
 }
 
 void CMainGame::Release()
 {
 	CScrollMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
-	CBoxMgr::Destroy_Instance();
+	CBlockMgr::Destroy_Instance();
 
 	ReleaseDC(g_hWnd, m_hDC);
 }

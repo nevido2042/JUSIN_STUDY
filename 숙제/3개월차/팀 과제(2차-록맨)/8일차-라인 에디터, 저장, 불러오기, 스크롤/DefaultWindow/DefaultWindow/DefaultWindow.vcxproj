@@ -136,8 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="BoxMgr.h" />
+    <ClInclude Include="BlockMgr.h" />
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBmpMgr.h" />
     <ClInclude Include="CBullet.h" />
@@ -166,8 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Box.cpp" />
-    <ClCompile Include="BoxMgr.cpp" />
+    <ClCompile Include="BlockMgr.cpp" />
     <ClCompile Include="CBmpMgr.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
