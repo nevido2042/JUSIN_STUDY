@@ -7,7 +7,7 @@
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
-	:m_fBlockSize(0)
+	:m_fBlockSize(0), m_eDrawDir(NO_DIR)
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
@@ -44,52 +44,118 @@ int CBlockMgr::Update()
 
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
 	{
-		m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
-		m_tBlockPoint[TAIL].fY = m_tBlockPoint[HEAD].fY;
+		if (m_eDrawDir == NO_DIR)
+		{
+			m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
+			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
+
+			float fDistH = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
+			float fDistV = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
+
+			if (fDistH > m_fBlockSize)
+			{
+				m_eDrawDir = HORIZONTAL;
+			}
+
+			if (fDistV > m_fBlockSize)
+			{
+				m_eDrawDir = VERTICAL;
+			}
+		}
+
+
+		if (m_eDrawDir == HORIZONTAL)
+		{
+			m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
+			m_tBlockPoint[TAIL].fY = m_tBlockPoint[HEAD].fY;
+		}
+		else if (m_eDrawDir == VERTICAL)
+		{
+			m_tBlockPoint[TAIL].fX = m_tBlockPoint[HEAD].fX;
+			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
+		}
+
 
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 	{
+		float fDist(0.f);
+		bool bPlus(false);
+
+		if (m_eDrawDir == HORIZONTAL)
+		{
+			fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
+			bPlus = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+		}
+		else if (m_eDrawDir == VERTICAL)
+		{
+			fDist = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
+			bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
+		}
+
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
-		float fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-		bool bRight = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
 		int iBoxCount = int(fDist / m_fBlockSize);
 		//HEAD부터 TAIL까지 박스들 생성
 		for (int i = 0; i < iBoxCount; ++i)
 		{
 			CObj* pBlock(nullptr);
-			if (bRight)
+			if (bPlus)
 			{
-				INFO tInfo
+				if (m_eDrawDir == HORIZONTAL)
 				{
-					m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + i * m_fBlockSize,
-					m_tBlockPoint[HEAD].fY,
-					m_fBlockSize,
-					m_fBlockSize
-				};
-
-				pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					INFO tInfo
+					{
+						m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + i * m_fBlockSize,
+						m_tBlockPoint[HEAD].fY,
+						m_fBlockSize,
+						m_fBlockSize
+					};
+					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+				}
+				else if (m_eDrawDir == VERTICAL)
+				{
+					INFO tInfo
+					{
+						m_tBlockPoint[HEAD].fX,
+						m_tBlockPoint[HEAD].fY + m_fBlockSize * 0.5f + i * m_fBlockSize,
+						m_fBlockSize,
+						m_fBlockSize
+					};
+					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+				}
 			}
 			else
 			{
-				INFO tInfo
+				if (m_eDrawDir == HORIZONTAL)
 				{
-					m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f - i * m_fBlockSize,
-					m_tBlockPoint[HEAD].fY,
-					m_fBlockSize,
-					m_fBlockSize
-				};
-
-				pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					INFO tInfo
+					{
+						m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f - i * m_fBlockSize,
+						m_tBlockPoint[HEAD].fY,
+						m_fBlockSize,
+						m_fBlockSize
+					};
+					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+				}
+				else if (m_eDrawDir == VERTICAL)
+				{
+					INFO tInfo
+					{
+						m_tBlockPoint[HEAD].fX,
+						m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f - i * m_fBlockSize,
+						m_fBlockSize,
+						m_fBlockSize
+					};
+					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+				}		
 			}
-
-
-
 			m_BlockList.push_back(pBlock);
 		}
 
 		ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
+
+		m_eDrawDir = NO_DIR;
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Down('S'))
@@ -126,30 +192,65 @@ void CBlockMgr::Render(HDC hDC)
 	LineTo(hDC, (int)m_tBlockPoint[TAIL].fX + (int)CScrollMgr::Get_Instance()->Get_ScrollX(), (int)m_tBlockPoint[TAIL].fY);
 
 	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
-	float fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-	bool bRight = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+
+
+	float fDist(0.f);
+	bool bPlus(false);
+
+	if (m_eDrawDir == HORIZONTAL)
+	{
+		fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
+		bPlus = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+	}
+	else if(m_eDrawDir == VERTICAL)
+	{
+		fDist = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
+		bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
+	}
 	int iBoxCount = int(fDist / m_fBlockSize);
 	//HEAD부터 TAIL까지 박스들 출력
 
-
 	for (int i = 0; i < iBoxCount ; ++i)
 	{
-		if (bRight)
+		if (bPlus)
 		{
-			Rectangle(hDC,
-				int(m_tBlockPoint[HEAD].fX + i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-				int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f),
-				int(m_tBlockPoint[HEAD].fX + m_fBlockSize + i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-				int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f));
+			if (m_eDrawDir == HORIZONTAL)
+			{
+				Rectangle(hDC,
+					int(m_tBlockPoint[HEAD].fX + i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f),
+					int(m_tBlockPoint[HEAD].fX + m_fBlockSize + i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f));
+			}
+			else if(m_eDrawDir == VERTICAL)
+			{
+				Rectangle(hDC,
+					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f),
+					int(m_tBlockPoint[HEAD].fY + i * m_fBlockSize),
+					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f),
+					int(m_tBlockPoint[HEAD].fY + m_fBlockSize + i * m_fBlockSize));
+			}
+
 		}
 		else
 		{
-			
-			Rectangle(hDC,
-				int(m_tBlockPoint[HEAD].fX - m_fBlockSize - i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-				int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f),
-				int(m_tBlockPoint[HEAD].fX - i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
-				int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f));
+			if (m_eDrawDir == HORIZONTAL)
+			{
+				Rectangle(hDC,
+					int(m_tBlockPoint[HEAD].fX - m_fBlockSize - i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f),
+					int(m_tBlockPoint[HEAD].fX - i * m_fBlockSize + (int)CScrollMgr::Get_Instance()->Get_ScrollX()),
+					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f));
+			}
+			else if (m_eDrawDir == VERTICAL)
+			{
+				Rectangle(hDC,
+					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f),
+					int(m_tBlockPoint[HEAD].fY - i * m_fBlockSize),
+					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f),
+					int(m_tBlockPoint[HEAD].fY - m_fBlockSize - i * m_fBlockSize));
+			}
+
 		}
 
 	}

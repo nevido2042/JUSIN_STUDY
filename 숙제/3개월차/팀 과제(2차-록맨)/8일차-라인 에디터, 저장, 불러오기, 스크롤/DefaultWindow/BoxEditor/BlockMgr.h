@@ -46,6 +46,7 @@ private:
 	//LINEPOINT			m_tLinePoint[DIR_END];
 	LINEPOINT			m_tBlockPoint[DRAWPOINT_END];
 	float				m_fBlockSize;
+	DRAWDIR				m_eDrawDir;
 
 };
 
