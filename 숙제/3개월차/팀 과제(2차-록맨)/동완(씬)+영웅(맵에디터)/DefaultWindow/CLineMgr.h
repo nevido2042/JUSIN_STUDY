@@ -18,6 +18,7 @@ public:
 	void	Release();
 
 	void	Load_Line();
+	void	Load_Line(LPCWSTR _FilePath);
 
 public:
 	static CLineMgr* Get_Instance()

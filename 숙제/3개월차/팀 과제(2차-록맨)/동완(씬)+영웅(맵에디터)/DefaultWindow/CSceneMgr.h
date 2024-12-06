@@ -2,9 +2,6 @@
 #include "Define.h"
 #include "CScene.h"
 
-class CScene;
-
-
 class CSceneMgr
 {
 private:

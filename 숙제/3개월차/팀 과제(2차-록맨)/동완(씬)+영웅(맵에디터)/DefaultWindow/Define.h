@@ -11,12 +11,12 @@
 
 #define VK_MAX				0xff // 영웅코드
 
-#define STAGE_HONG			1
-#define STAGE_SILVER		2
-#define STAGE_HERO			3
-#define STAGE_CHAE			4
-#define STAGE_MOO           5
-#define STAGE_FINISH		6
+//#define STAGE_HONG			1
+//#define STAGE_SILVER		2
+//#define STAGE_HERO			3
+//#define STAGE_CHAE			4
+//#define STAGE_MOO           5
+//#define STAGE_FINISH		6
 
 #define VK_MAX				0xff
 
@@ -26,7 +26,7 @@
 #define DEGREE(Radian)        (Radian)*180.f/PI
 
 extern HWND		g_hWnd;
-extern int g_CurrentStage; // 현재 스테이지 어떤 스테이지인지 
+//extern int g_CurrentStage; // 현재 스테이지 어떤 스테이지인지 
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 

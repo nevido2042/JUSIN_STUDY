@@ -7,7 +7,7 @@
 #include "CStage_Moo.h"
 #include "CStage_Silver.h"
 
-int g_CurrentStage = (int)SCENE_TYPE::STAGE_START; // 기본값 START
+//SCENE_TYPE g_CurrentStage = SCENE_TYPE::STAGE_START; // 기본값 START
 
 CSceneMgr* CSceneMgr::m_pInstance = nullptr; // 스태틱 변수는 CPP에서 초기화해주기, 
 
@@ -17,7 +17,7 @@ void CSceneMgr::Set_Scene(SCENE_TYPE eType)
 		m_pCurScene->Release();
 
 	m_pCurScene = m_arrScene[(UINT)eType];
-	g_CurrentStage = (int)eType; // 현재 스테이지 업데이트
+	//g_CurrentStage = (int)eType; // 현재 스테이지 업데이트
 	m_pCurScene->Initialize();
 }
 
