@@ -116,10 +116,10 @@ void CBoxMgr::Render(HDC hDC)
 	for (int i = 0; i < iBoxCount ; ++i)
 	{
 		Rectangle(hDC,
-			m_tBoxPoint[HEAD].fX + i * (int)m_fBoxSize,
-			m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f,
-			m_tBoxPoint[HEAD].fX + (int)m_fBoxSize + i * (int)m_fBoxSize,
-			m_tBoxPoint[HEAD].fY + (int)m_fBoxSize - m_fBoxSize * 0.5f);
+			int(m_tBoxPoint[HEAD].fX + i * m_fBoxSize),
+			int(m_tBoxPoint[HEAD].fY - m_fBoxSize * 0.5f),
+			int(m_tBoxPoint[HEAD].fX + m_fBoxSize + i * m_fBoxSize),
+			int(m_tBoxPoint[HEAD].fY + m_fBoxSize - m_fBoxSize * 0.5f));
 	}
 }
 
