@@ -83,6 +83,7 @@ void CMainGame::Release()
 	CScrollMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
 	CBlockMgr::Destroy_Instance();
+	CBmpMgr::Destroy_Instance();
 
 	ReleaseDC(g_hWnd, m_hDC);
 }
