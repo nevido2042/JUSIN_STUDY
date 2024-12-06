@@ -38,6 +38,9 @@ void CMainGame::Initialize()
 void CMainGame::Update()
 {
 	CObjMgr::Get_Instance()->Update();
+
+	CBoxMgr::Get_Instance()->Update();//»¬ ¿¹Á¤
+
 }
 
 void CMainGame::Late_Update()

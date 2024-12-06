@@ -1,5 +1,6 @@
 #pragma once
-#include "Box.h"
+//#include "Box.h" // 안 쓸 예정
+#include "Block.h"
 
 class CBoxMgr
 {
@@ -41,7 +42,7 @@ public:
 
 private:
 	static CBoxMgr*		m_pInstance;
-	list<CBox*>			m_BlockList;
+	list<CObj*>			m_BlockList;
 	//LINEPOINT			m_tLinePoint[DIR_END];
 	LINEPOINT			m_tBlockPoint[DRAWPOINT_END];
 	float				m_fBlockSize;

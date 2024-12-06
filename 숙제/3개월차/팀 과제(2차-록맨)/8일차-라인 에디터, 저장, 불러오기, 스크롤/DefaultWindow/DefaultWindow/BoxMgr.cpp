@@ -2,6 +2,8 @@
 #include "BoxMgr.h"
 #include "CScrollMgr.h"
 #include "CKeyMgr.h"
+#include "CAbstractFactory.h"
+#include "CObjMgr.h"
 
 CBoxMgr* CBoxMgr::m_pInstance = nullptr;
 
@@ -25,6 +27,9 @@ void CBoxMgr::Initialize()
 
 int CBoxMgr::Update()
 {
+	for (auto& pObj : m_BlockList)
+		pObj->Update();
+
 	POINT	ptMouse{};
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
@@ -56,31 +61,35 @@ int CBoxMgr::Update()
 		//HEAD부터 TAIL까지 박스들 생성
 		for (int i = 0; i < iBoxCount; ++i)
 		{
-			CBox* pBox(nullptr);
+			CObj* pBlock(nullptr);
 			if (bRight)
 			{
-				pBox = new CBox(
-					LINEPOINT
-					{
-						m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + i * m_fBlockSize,
-						m_tBlockPoint[HEAD].fY
-					}
-				, m_fBlockSize);
+				INFO tInfo
+				{
+					m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + i * m_fBlockSize,
+					m_tBlockPoint[HEAD].fY,
+					m_fBlockSize,
+					m_fBlockSize
+				};
+
+				pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
 			}
 			else
 			{
-				pBox = new CBox(
-					LINEPOINT
-					{
-						m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f - i * m_fBlockSize,
-						m_tBlockPoint[HEAD].fY
-					}
-				, m_fBlockSize);
+				INFO tInfo
+				{
+					m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f - i * m_fBlockSize,
+					m_tBlockPoint[HEAD].fY,
+					m_fBlockSize,
+					m_fBlockSize
+				};
+
+				pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
 			}
 
 
 
-			m_BlockList.push_back(pBox);
+			m_BlockList.push_back(pBlock);
 		}
 
 		ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
@@ -151,7 +160,7 @@ void CBoxMgr::Render(HDC hDC)
 
 void CBoxMgr::Release()
 {
-	for_each(m_BlockList.begin(), m_BlockList.end(), Safe_Delete<CBox*>);
+	for_each(m_BlockList.begin(), m_BlockList.end(), Safe_Delete<CObj*>);
 	m_BlockList.clear();
 }
 
@@ -173,9 +182,9 @@ void CBoxMgr::Save_Box()
 
 	DWORD	dwByte(0);
 
-	for (auto& pLine : m_BlockList)
+	for (auto& pBlock : m_BlockList)
 	{
-		WriteFile(hFile, pLine->Get_Info(), sizeof(BOX), &dwByte, nullptr);
+		WriteFile(hFile, pBlock, sizeof(CBlock), &dwByte, nullptr);
 	}
 
 	CloseHandle(hFile);
@@ -202,16 +211,18 @@ void CBoxMgr::Load_Box()
 	}
 
 	DWORD	dwByte(0);
-	BOX	tBox{};
+	CBlock	Block;
 
 	while (true)
 	{
-		bool bResult = ReadFile(hFile, &tBox, sizeof(BOX), &dwByte, nullptr);
+		bool bResult = ReadFile(hFile, &Block, sizeof(CBlock), &dwByte, nullptr);
 
 		if (0 == dwByte)
 			break;
 
-		m_BlockList.push_back(new CBox(tBox));
+		CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, CAbstractFactory<CBlock>::Create(Block.Get_Info()));
+		//m_BlockList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));
+		//m_BlockList.push_back(new CBlock(Block));
 	}
 
 	CloseHandle(hFile);
