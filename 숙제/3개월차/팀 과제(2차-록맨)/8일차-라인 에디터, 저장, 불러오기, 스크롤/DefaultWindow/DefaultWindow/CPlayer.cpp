@@ -39,7 +39,9 @@ int CPlayer::Update()
 }
 void CPlayer::Late_Update()
 {
-	Jumping();
+	Set_PosY(1.f);
+
+	//Jumping();
 	Offset();	
 }
 
