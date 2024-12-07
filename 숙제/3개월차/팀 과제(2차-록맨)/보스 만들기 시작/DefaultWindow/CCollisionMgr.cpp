@@ -66,49 +66,50 @@ bool CCollisionMgr::Check_Circle(CObj* _Dst, CObj* _Src)
 
 //사각형 충돌처리
 // - 충돌 발생 시 객체의 위치를 밀어내는 방식으로 처리
-//void CCollisionMgr::Collision_RectEx(list<CObj*> _Dst, list<CObj*> _Src)
-//{
-//	float	fX(0.f), fY(0.f);// ?
-//
-//	for (auto& Dst : _Dst)
-//	{
-//		for (auto& Src : _Src)
-//		{
-//			if (Check_Rect(Dst, Src, &fX, &fY)) 
-//			{
-//				// 상 하 충돌
-//				if (fX > fY)
-//				{
-//					// 상 충돌
-//					if (Dst->Get_Info().fY < Src->Get_Info().fY)
-//					{
-//						Dst->Set_PosY(-fY);
-//					}
-//					// 하 충돌
-//					else
-//					{
-//						Dst->Set_PosY(+fY);
-//					}
-//				}
-//				
-//				// 좌 우 충돌
-//				else
-//				{
-//					// 좌 충돌
-//					if (Dst->Get_Info().fX < Src->Get_Info().fX)
-//					{
-//						Dst->Set_PosX(-fX);
-//					}
-//					// 우 충돌
-//					else
-//					{
-//						Dst->Set_PosX(fX);
-//					}
-//				}
-//			}
-//		}
-//	}
-//}
+void CCollisionMgr::Collision_RectEx_Base(list<CObj*> _Dst, list<CObj*> _Src)
+{
+	float	fX(0.f), fY(0.f);// ?
+
+	for (auto& Dst : _Dst)
+	{
+		for (auto& Src : _Src)
+		{
+			if (Check_Rect(Dst, Src, &fX, &fY)) 
+			{
+				// 상 하 충돌
+				if (fX > fY)
+				{
+					// 상 충돌
+					if (Dst->Get_Info().fY < Src->Get_Info().fY)
+					{
+						Dst->Set_PosY(-fY);
+					}
+					// 하 충돌
+					else
+					{
+						Dst->Set_PosY(+fY);
+					}
+				}
+				
+				// 좌 우 충돌
+				else
+				{
+					// 좌 충돌
+					if (Dst->Get_Info().fX < Src->Get_Info().fX)
+					{
+						Dst->Set_PosX(-fX);
+					}
+					// 우 충돌
+					else
+					{
+						Dst->Set_PosX(fX);
+					}
+				}
+			}
+		}
+		Dst->Update_Rect();
+	}
+}
 // 
 // 
 // - 충돌 발생 시 객체의 위치를 밀어내는 방식으로 처리? ( 무결코드 ) 위 주석 코드랑 비교

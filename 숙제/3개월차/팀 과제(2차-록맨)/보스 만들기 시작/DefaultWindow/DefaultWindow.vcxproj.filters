@@ -219,7 +219,7 @@
     <ClInclude Include="CWall.h">
       <Filter>01. Obj\07. Wall</Filter>
     </ClInclude>
-    <ClInclude Include="CBoss.h">
+    <ClInclude Include="Boss_IceMan.h">
       <Filter>01. Obj\08. Boss</Filter>
     </ClInclude>
     <ClInclude Include="CMonster_Bullet.h">
@@ -314,7 +314,7 @@
     <ClCompile Include="CWall.cpp">
       <Filter>01. Obj\07. Wall</Filter>
     </ClCompile>
-    <ClCompile Include="CBoss.cpp">
+    <ClCompile Include="Boss_IceMan.cpp">
       <Filter>01. Obj\08. Boss</Filter>
     </ClCompile>
     <ClCompile Include="CMonster_Bullet.cpp">

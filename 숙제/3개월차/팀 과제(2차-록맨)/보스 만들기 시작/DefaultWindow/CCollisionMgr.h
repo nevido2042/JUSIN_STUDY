@@ -15,6 +15,9 @@ public:
     // 원 충돌 여부 확인
     static bool Check_Circle(CObj* _Dst, CObj* _Src);
 
+    //선생님 코드
+    static void Collision_RectEx_Base(list<CObj*> _Dst, list<CObj*> _Src);
+
     // 사각형 충돌 처리: 충돌 후 위치 조정
     static void Collision_RectEx(list<CObj*> _Dst, list<CObj*> _Src);
 

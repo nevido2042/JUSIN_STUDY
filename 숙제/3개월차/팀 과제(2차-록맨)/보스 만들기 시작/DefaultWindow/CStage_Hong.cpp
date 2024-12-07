@@ -9,6 +9,7 @@
 #include "BlockMgr.h"
 #include "CWall.h"
 #include "CScrollMgr.h"
+#include "Boss_IceMan.h"
 
 
 CStage_Hong::CStage_Hong()
@@ -26,7 +27,10 @@ void CStage_Hong::Initialize()
 	
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
+
 	
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(500.f, 100.f, DIR_END));
 }
 
 void CStage_Hong::Update()

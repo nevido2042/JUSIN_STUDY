@@ -139,7 +139,7 @@
     <ClInclude Include="BlockMgr.h" />
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBmpMgr.h" />
-    <ClInclude Include="CBoss.h" />
+    <ClInclude Include="Boss_IceMan.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
@@ -176,7 +176,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockMgr.cpp" />
     <ClCompile Include="CBmpMgr.cpp" />
-    <ClCompile Include="CBoss.cpp" />
+    <ClCompile Include="Boss_IceMan.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
