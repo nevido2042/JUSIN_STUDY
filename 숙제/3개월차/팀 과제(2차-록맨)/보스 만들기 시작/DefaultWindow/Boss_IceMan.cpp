@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Boss_IceMan.h"
 #include "CScrollMgr.h"
+#include "Ice_Slasher.h"
+#include "CAbstractFactory.h"
+#include "CObjMgr.h"
 
 CBoss_IceMan::CBoss_IceMan()
 	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ m_bJump(false),
@@ -24,6 +27,7 @@ void CBoss_IceMan::Initialize()
 	//m_fFallSpeed = m_fGravity;
 	m_fJumpSpeed = 15.f;
 	m_ullJumpTimer = GetTickCount64();
+	m_ullFireTimer = GetTickCount64();
 }
 
 int CBoss_IceMan::Update()
@@ -44,6 +48,12 @@ void CBoss_IceMan::Late_Update()
 	{
 		m_ullJumpTimer = GetTickCount64();
 		m_bJump = true;
+	}
+
+	if (m_ullFireTimer + 100.f < GetTickCount64())
+	{
+		m_ullFireTimer = GetTickCount64();
+		Fire();
 	}
 
 	Jumping();
@@ -112,4 +122,5 @@ void CBoss_IceMan::Jumping()
 
 void CBoss_IceMan::Fire()
 {
+	CObjMgr::Get_Instance()->Add_Object(OBJ_BOSSBULLET, CAbstractFactory<CIce_Slasher>::Create(m_tInfo.fX, m_tInfo.fY, DIR_LEFT));
 }

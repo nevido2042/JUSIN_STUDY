@@ -106,9 +106,6 @@
     <Filter Include="01. Obj\07. Wall">
       <UniqueIdentifier>{edf2431b-74cd-429d-a6fe-d0e5d645a6a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\01. Bullet\01_Player_Bullet">
-      <UniqueIdentifier>{c6d37ab7-8611-41e3-acec-ee5234587767}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\01. Bullet\02_Monster_Bullet">
       <UniqueIdentifier>{1af127c1-ef6f-4f9c-93c9-64f1d6574752}</UniqueIdentifier>
     </Filter>
@@ -228,6 +225,9 @@
     <ClInclude Include="CBullet.h">
       <Filter>01. Obj\01. Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Ice_Slasher.h">
+      <Filter>01. Obj\01. Bullet\03_Boss_Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -322,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="CBullet.cpp">
       <Filter>01. Obj\01. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Ice_Slasher.cpp">
+      <Filter>01. Obj\01. Bullet\03_Boss_Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

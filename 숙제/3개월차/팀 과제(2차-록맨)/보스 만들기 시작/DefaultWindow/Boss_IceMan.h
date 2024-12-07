@@ -31,6 +31,7 @@ private:
 	bool  m_bJump;
 	float  m_fTime;
 	ULONGLONG  m_ullJumpTimer;
+	ULONGLONG  m_ullFireTimer;
 	float m_fPrevY;
 
 };
