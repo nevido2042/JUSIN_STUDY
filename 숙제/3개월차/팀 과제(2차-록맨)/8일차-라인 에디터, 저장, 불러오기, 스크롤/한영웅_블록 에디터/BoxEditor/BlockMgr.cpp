@@ -345,7 +345,7 @@ void CBlockMgr::Save_Block()
 	//Obj 종류 별로 저장해야한다.
 	for (size_t i = 0; i < OBJ_END; ++i)
 	{
-
+		//각 각 오브젝트 리스트 마다 객체의 CObj를 저장한다.
 		for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
 		{
 			WriteFile(hFile,
@@ -378,53 +378,29 @@ void CBlockMgr::Load_Block()
 		return;
 	}
 
-	DWORD	dwTotalByte(0);
 	DWORD	dwByte(0);
-
-	//이게 맞나...
-	size_t ReadSize = 1024 * 1024;
-	char* pBuffer = new char[ReadSize];
+	char pBuffer[sizeof(CObj)];
 	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
 	//해당 리스트에 넣어줘야한다.
 	while (true)
 	{
-
+		//오브젝트 하나를 가져온다.
 		bool bResult = ReadFile(hFile,
 								pBuffer,
-								(DWORD)ReadSize,
+								sizeof(CObj),
 								&dwByte, nullptr);
-
-		dwTotalByte += dwByte;
-
+		//읽어온게 없으면 끝
 		if (0 == dwByte)
 			break;
 
-		//Obj 종류 별로 로드해야한다.
-		/*for (size_t i = 0; i < OBJ_END; ++i)
-		{
-			for (auto& pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
-			{
-				WriteFile(hFile,
-					pObj,
-					sizeof(CObjMgr::Get_Instance()->Get_ObjList()[i]),
-					&dwByte, nullptr);
-			}
-		}
-		m_ObjList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));*/
-		//m_BlockList.push_back(new CBlock(Block));
-	}
-
-	//int iCurIndex; 를 기준으로 CObj 형변환해서, 오브젝트 종류와 크기를 알아낸후
-	//그만큼 리스트에 추가하고, iCurIndex를 증가시키고, iCurIndex == dwByte -1 이면 파일 로드 끝
-	//cBuffer에 담겨 있는 오브젝트들중
-	int iCurIndex(0);
-
-	while (iCurIndex != dwTotalByte)
-	{
-		CObj* pObj = (CObj*)&pBuffer[iCurIndex];
+		//버퍼에 넣은 오브젝트를 형변환하여
+		CObj* pObj = (CObj*)&pBuffer;
+		//오브젝트 아이디 확인
 		OBJID eOBJID = pObj->Get_OBJID();
-		size_t ObjSize(0);
-		CObj* pNewObj(nullptr);
+
+		//오브젝트 아이디 확인하여 사이즈 정하기
+		size_t ObjSize(0); //오브젝트 사이즈
+		CObj* pNewObj(nullptr); //만들어진 오브젝트
 		switch (eOBJID)
 		{
 		case OBJ_PLAYER:
@@ -441,24 +417,23 @@ void CBlockMgr::Load_Block()
 			break;
 		case OBJ_BLOCK:
 		{
+			//오브젝트 사이즈 결정
 			ObjSize = sizeof(CBlock);
+			//Info값 저장
 			INFO tInfo = pObj->Get_Info();
+			//Info값 대로 블럭 생성
 			pNewObj = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+			//해당 리스트에 오브젝트 추가
 			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
 			break;
 		}
-			
+
 		case OBJ_END:
 			break;
 		default:
 			break;
 		}
-
-		iCurIndex += (int)ObjSize;
 	}
-
-	delete[] pBuffer;
-	pBuffer = nullptr;
 
 	CloseHandle(hFile);
 
