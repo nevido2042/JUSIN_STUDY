@@ -27,7 +27,7 @@ void CBlockMgr::Initialize()
 
 int CBlockMgr::Update()
 {
-	for (auto& pObj : m_BlockList)
+	for (auto& pObj : m_ObjList)
 		pObj->Update();
 
 	POINT	ptMouse{};
@@ -89,7 +89,7 @@ int CBlockMgr::Update()
 
 
 
-			m_BlockList.push_back(pBlock);
+			m_ObjList.push_back(pBlock);
 		}
 
 		ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
@@ -122,7 +122,7 @@ void CBlockMgr::Late_Update()
 
 void CBlockMgr::Render(HDC hDC)
 {
-	for (auto& pLine : m_BlockList)
+	for (auto& pLine : m_ObjList)
 		pLine->Render(hDC);
 
 	MoveToEx(hDC, (int)m_tBlockPoint[HEAD].fX + (int)CScrollMgr::Get_Instance()->Get_ScrollX(), (int)m_tBlockPoint[HEAD].fY, nullptr);
@@ -160,8 +160,8 @@ void CBlockMgr::Render(HDC hDC)
 
 void CBlockMgr::Release()
 {
-	for_each(m_BlockList.begin(), m_BlockList.end(), Safe_Delete<CObj*>);
-	m_BlockList.clear();
+	for_each(m_ObjList.begin(), m_ObjList.end(), Safe_Delete<CObj*>);
+	m_ObjList.clear();
 }
 
 void CBlockMgr::Save_Block()
@@ -182,7 +182,7 @@ void CBlockMgr::Save_Block()
 
 	DWORD	dwByte(0);
 
-	for (auto& pBlock : m_BlockList)
+	for (auto& pBlock : m_ObjList)
 	{
 		WriteFile(hFile, pBlock, sizeof(CBlock), &dwByte, nullptr);
 	}

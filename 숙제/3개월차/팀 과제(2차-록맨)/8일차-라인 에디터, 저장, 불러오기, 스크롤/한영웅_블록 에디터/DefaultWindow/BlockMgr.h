@@ -42,7 +42,7 @@ public:
 
 private:
 	static CBlockMgr*		m_pInstance;
-	list<CObj*>			m_BlockList;
+	list<CObj*>			m_ObjList;
 	//LINEPOINT			m_tLinePoint[DIR_END];
 	LINEPOINT			m_tBlockPoint[DRAWPOINT_END];
 	float				m_fBlockSize;

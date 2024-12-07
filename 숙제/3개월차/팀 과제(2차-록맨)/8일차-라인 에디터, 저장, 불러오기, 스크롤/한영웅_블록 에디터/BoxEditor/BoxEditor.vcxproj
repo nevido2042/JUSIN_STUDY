@@ -140,6 +140,7 @@
     <ClInclude Include="BlockMgr.h" />
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBmpMgr.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMyBmp.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="BoxEditor.cpp" />
     <ClCompile Include="BlockMgr.cpp" />
     <ClCompile Include="CBmpMgr.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMyBmp.cpp" />
