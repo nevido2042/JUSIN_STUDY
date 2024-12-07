@@ -13,10 +13,7 @@
 #include <list>
 #include <algorithm>
 #include <map>
-
-#include <string>
-using std::string;
-using std::wstring;
+#include <vector>
 
 #ifdef _DEBUG
 

@@ -3,11 +3,13 @@
 #include "CScrollMgr.h"
 #include "CKeyMgr.h"
 #include "CAbstractFactory.h"
+#include "CObjMgr.h"
 
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
-	:m_fBlockSize(0), m_eDrawDir(NO_DIR)
+	:m_fBlockSize(0), m_eDrawDir(NO_DIR),
+	m_iWidth(0), m_iHeight(0), m_eCurrentObj(OBJ_END)
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
@@ -20,12 +22,17 @@ CBlockMgr::~CBlockMgr()
 void CBlockMgr::Initialize()
 {
 	m_fBlockSize = 50.f;
+
+	m_iWidth = 50;
+	m_iHeight = 50;
+
+	m_eCurrentObj = OBJ_BLOCK;
 }
 
 int CBlockMgr::Update()
 {
-	for (auto& pObj : m_BlockList)
-		pObj->Update();
+	/*for (auto& pObj : ObjMgr)
+		pObj->Update();*/
 
 	POINT	ptMouse{};
 	GetCursorPos(&ptMouse);
@@ -36,10 +43,10 @@ int CBlockMgr::Update()
 
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 	{
-		if ((!m_tBlockPoint[HEAD].fX) && (!m_tBlockPoint[HEAD].fY))
+		if ((!m_tBlockPoint[HEAD].x) && (!m_tBlockPoint[HEAD].y))
 		{
-			m_tBlockPoint[HEAD].fX = (float)ptMouse.x;
-			m_tBlockPoint[HEAD].fY = (float)ptMouse.y;
+			m_tBlockPoint[HEAD].x = ptMouse.x - (ptMouse.x % long(m_fBlockSize));
+			m_tBlockPoint[HEAD].y = ptMouse.y - (ptMouse.y % long(m_fBlockSize));
 		}
 	}
 
@@ -47,11 +54,11 @@ int CBlockMgr::Update()
 	{
 		if (m_eDrawDir == NO_DIR)
 		{
-			m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
-			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
+			m_tBlockPoint[TAIL].x = ptMouse.x;
+			m_tBlockPoint[TAIL].y = ptMouse.y;
 
-			float fDistH = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-			float fDistV = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
+			float fDistH = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
+			float fDistV = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
 
 			if (fDistH > m_fBlockSize)
 			{
@@ -67,13 +74,13 @@ int CBlockMgr::Update()
 
 		if (m_eDrawDir == HORIZONTAL)
 		{
-			m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
-			m_tBlockPoint[TAIL].fY = m_tBlockPoint[HEAD].fY;
+			m_tBlockPoint[TAIL].x = ptMouse.x;
+			m_tBlockPoint[TAIL].y = m_tBlockPoint[HEAD].y;
 		}
 		else if (m_eDrawDir == VERTICAL)
 		{
-			m_tBlockPoint[TAIL].fX = m_tBlockPoint[HEAD].fX;
-			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
+			m_tBlockPoint[TAIL].x = m_tBlockPoint[HEAD].x;
+			m_tBlockPoint[TAIL].y = ptMouse.y;
 		}
 	}
 
@@ -84,17 +91,19 @@ int CBlockMgr::Update()
 
 		if (m_eDrawDir == HORIZONTAL)
 		{
-			fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-			bPlus = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+			fDist = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
+			bPlus = m_tBlockPoint[HEAD].x < m_tBlockPoint[TAIL].x;
 		}
 		else if (m_eDrawDir == VERTICAL)
 		{
-			fDist = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
-			bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
+			fDist = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
+			bPlus = m_tBlockPoint[HEAD].y < m_tBlockPoint[TAIL].y;
 		}
 
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
-		int iBoxCount = int(fDist / m_fBlockSize);
+		const int iBoxCount = int(fDist / m_fBlockSize);
+		m_iUndo_Stack.push_back(iBoxCount);
+
 		//HEAD부터 TAIL까지 박스들 생성
 		for (int i = 0; i < iBoxCount; ++i)
 		{
@@ -105,23 +114,23 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + i * m_fBlockSize,
-						m_tBlockPoint[HEAD].fY,
+						float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5 + i * m_fBlockSize),
+						float(m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5),
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX,
-						m_tBlockPoint[HEAD].fY + m_fBlockSize * 0.5f + i * m_fBlockSize,
+						float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f),
+						float(m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f + i * m_fBlockSize),
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}
 			}
 			else
@@ -130,26 +139,45 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f - i * m_fBlockSize,
-						m_tBlockPoint[HEAD].fY,
+						float(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f - i * m_fBlockSize),
+						(float)m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f,
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX,
-						m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f - i * m_fBlockSize,
+						(float)m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f,
+						float(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f - i * m_fBlockSize),
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}		
 			}
-			m_BlockList.push_back(pBlock);
+
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
+			//m_ObjList.push_back(pBlock);
+		}
+
+		//하나도 만들 수 없는 길이면 그 때는 그 칸만 생성
+		if (iBoxCount == 0)
+		{
+			CObj* pBlock(nullptr);
+			INFO tInfo
+			{
+				float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f),
+				(float)m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f,
+				m_fBlockSize,
+				m_fBlockSize
+			};
+			pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
+			//m_ObjList.push_back(pBlock);
 		}
 
 		ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
@@ -181,6 +209,19 @@ int CBlockMgr::Update()
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 		CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
 
+	/*if (CKeyMgr::Get_Instance()->Key_Down('Z'))
+	{
+		if (!m_iUndo_Stack.empty() && CKeyMgr::Get_Instance()->Key_Pressing(VK_LCONTROL))
+		{
+			for (int i = 0; i < m_iUndo_Stack.back(); ++i)
+			{
+				Safe_Delete<CObj*>(m_ObjList.back());
+				m_ObjList.pop_back();
+			}
+			m_iUndo_Stack.pop_back();
+		}
+	}*/
+
 	return 0;
 }
 
@@ -190,31 +231,44 @@ void CBlockMgr::Late_Update()
 
 void CBlockMgr::Render(HDC hDC)
 {
-	for (auto& pLine : m_BlockList)
-		pLine->Render(hDC);
+	//스크롤
+	float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
+	float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	float fScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	float fScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	//그리드 그리기
+	for (int i = 0; i < m_iWidth; ++i)
+	{
+		MoveToEx(hDC, int(i * m_fBlockSize + fScrollX) , int(0 + fScrollY), nullptr);
+		LineTo(hDC, int(i * m_fBlockSize + fScrollX), int(m_iHeight * m_fBlockSize + fScrollY));
+	}
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		MoveToEx(hDC, int(0 + fScrollX), int(i * m_fBlockSize + fScrollY), nullptr);
+		LineTo(hDC, int(m_iWidth * m_fBlockSize + fScrollX), int(i * m_fBlockSize + fScrollY));
+	}
 
-	MoveToEx(hDC, (int)m_tBlockPoint[HEAD].fX + fScrollX, (int)m_tBlockPoint[HEAD].fY + fScrollY, nullptr);
-	LineTo(hDC, (int)m_tBlockPoint[TAIL].fX + fScrollX, (int)m_tBlockPoint[TAIL].fY + fScrollY);
+	//박스 인스턴스 출력
+	//for (auto& pLine : m_ObjList)
+		//pLine->Render(hDC);
 
-	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
-
+	//선 그리기
+	//MoveToEx(hDC, int(m_tBlockPoint[HEAD].x + fScrollX), int(m_tBlockPoint[HEAD].y + fScrollY), nullptr);
+	//LineTo(hDC, int(m_tBlockPoint[TAIL].x + fScrollX), int(m_tBlockPoint[TAIL].y + fScrollY));
 
 	float fDist(0.f);
 	bool bPlus(false);
 
 	if (m_eDrawDir == HORIZONTAL)
 	{
-		fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-		bPlus = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+		fDist = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
+		bPlus = m_tBlockPoint[HEAD].x < m_tBlockPoint[TAIL].x;
 	}
 	else if(m_eDrawDir == VERTICAL)
 	{
-		fDist = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
-		bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
+		fDist = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
+		bPlus = m_tBlockPoint[HEAD].y < m_tBlockPoint[TAIL].y;
 	}
+	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 	int iBoxCount = int(fDist / m_fBlockSize);
 
 	//HEAD부터 TAIL까지 박스들 출력
@@ -225,18 +279,18 @@ void CBlockMgr::Render(HDC hDC)
 			if (m_eDrawDir == HORIZONTAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX + i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f + fScrollY),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize + i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
+					int(m_tBlockPoint[HEAD].x + i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + fScrollY),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize + i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize + fScrollY));
 			}
 			else if(m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + i * m_fBlockSize + fScrollY),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize + i * m_fBlockSize + fScrollY));
+					int(m_tBlockPoint[HEAD].x + fScrollX),
+					int(m_tBlockPoint[HEAD].y + i * m_fBlockSize + fScrollY),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize + i * m_fBlockSize + fScrollY));
 			}
 
 		}
@@ -245,18 +299,18 @@ void CBlockMgr::Render(HDC hDC)
 			if (m_eDrawDir == HORIZONTAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize - i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f + fScrollY),
-					int(m_tBlockPoint[HEAD].fX - i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
+					int(m_tBlockPoint[HEAD].x - m_fBlockSize - i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + fScrollY),
+					int(m_tBlockPoint[HEAD].x - i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize + fScrollY));
 			}
 			else if (m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - i * m_fBlockSize + fScrollY),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize - i * m_fBlockSize + fScrollY));
+					int(m_tBlockPoint[HEAD].x + fScrollX),
+					int(m_tBlockPoint[HEAD].y - i * m_fBlockSize + fScrollY),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y - m_fBlockSize - i * m_fBlockSize + fScrollY));
 			}
 
 		}
@@ -266,13 +320,13 @@ void CBlockMgr::Render(HDC hDC)
 
 void CBlockMgr::Release()
 {
-	for_each(m_BlockList.begin(), m_BlockList.end(), Safe_Delete<CObj*>);
-	m_BlockList.clear();
+	//for_each(m_ObjList.begin(), m_ObjList.end(), Safe_Delete<CObj*>);
+	//m_ObjList.clear();
 }
 
 void CBlockMgr::Save_Block()
 {
-	HANDLE		hFile = CreateFile(L"../Data/Block_Hong.dat", // 파일 경로와 이름을 명시
+	HANDLE		hFile = CreateFile(L"../Data/Block.dat", // 파일 경로와 이름을 명시
 		GENERIC_WRITE,		// 파일 접근 모드(GENERIC_READ)
 		NULL,				// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈 할 때 허용할 것인가
 		NULL,				// 보안 속성, NULL인 경우 기본 보안 상태
@@ -288,9 +342,17 @@ void CBlockMgr::Save_Block()
 
 	DWORD	dwByte(0);
 
-	for (auto& pBlock : m_BlockList)
+	//Obj 종류 별로 저장해야한다.
+	for (size_t i = 0; i < OBJ_END; ++i)
 	{
-		WriteFile(hFile, pBlock, sizeof(CBlock), &dwByte, nullptr);
+		//각 각 오브젝트 리스트 마다 객체의 CObj를 저장한다.
+		for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
+		{
+			WriteFile(hFile,
+				pObj,
+				sizeof(CObj),
+				&dwByte, nullptr);
+		}
 	}
 
 	CloseHandle(hFile);
@@ -302,7 +364,7 @@ void CBlockMgr::Load_Block()
 {
 	Release();
 
-	HANDLE		hFile = CreateFile(L".../Data/Block_Hong.dat", // 파일 경로와 이름을 명시
+	HANDLE		hFile = CreateFile(L"../Data/Block.dat", // 파일 경로와 이름을 명시
 		GENERIC_READ,		// 파일 접근 모드(GENERIC_READ)
 		NULL,				// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈 할 때 허용할 것인가
 		NULL,				// 보안 속성, NULL인 경우 기본 보안 상태
@@ -317,17 +379,60 @@ void CBlockMgr::Load_Block()
 	}
 
 	DWORD	dwByte(0);
-	CBlock	Block;
-
+	char pBuffer[sizeof(CObj)];
+	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
+	//해당 리스트에 넣어줘야한다.
 	while (true)
 	{
-		bool bResult = ReadFile(hFile, &Block, sizeof(CBlock), &dwByte, nullptr);
-
+		//오브젝트 하나를 가져온다.
+		bool bResult = ReadFile(hFile,
+								pBuffer,
+								sizeof(CObj),
+								&dwByte, nullptr);
+		//읽어온게 없으면 끝
 		if (0 == dwByte)
 			break;
 
-		m_BlockList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));
-		//m_BlockList.push_back(new CBlock(Block));
+		//버퍼에 넣은 오브젝트를 형변환하여
+		CObj* pObj = (CObj*)&pBuffer;
+		//오브젝트 아이디 확인
+		OBJID eOBJID = pObj->Get_OBJID();
+
+		//오브젝트 아이디 확인하여 사이즈 정하기
+		size_t ObjSize(0); //오브젝트 사이즈
+		CObj* pNewObj(nullptr); //만들어진 오브젝트
+		switch (eOBJID)
+		{
+		case OBJ_PLAYER:
+			break;
+		case OBJ_BULLET:
+			break;
+		case OBJ_MONSTER:
+			break;
+		case OBJ_MOUSE:
+			break;
+		case OBJ_SHIELD:
+			break;
+		case OBJ_BUTTON:
+			break;
+		case OBJ_BLOCK:
+		{
+			//오브젝트 사이즈 결정
+			ObjSize = sizeof(CBlock);
+			//Info값 저장
+			INFO tInfo = pObj->Get_Info();
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
+			break;
+		}
+
+		case OBJ_END:
+			break;
+		default:
+			break;
+		}
 	}
 
 	CloseHandle(hFile);

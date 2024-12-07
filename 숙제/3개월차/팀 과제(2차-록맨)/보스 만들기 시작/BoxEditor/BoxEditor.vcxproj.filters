@@ -40,6 +40,12 @@
     <Filter Include="BmpMgr">
       <UniqueIdentifier>{8611e782-1d6f-4a5a-b3ef-88d61b3f4723}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Obj\Monster">
+      <UniqueIdentifier>{bbb63c29-486f-446b-8ebe-75c961a95f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjMgr">
+      <UniqueIdentifier>{1ed778b7-48eb-4556-899b-25c2acf03fb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -87,6 +93,12 @@
     <ClInclude Include="CMyBmp.h">
       <Filter>MyBmp</Filter>
     </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Obj\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjMgr.h">
+      <Filter>ObjMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoxEditor.cpp">
@@ -118,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="CMyBmp.cpp">
       <Filter>MyBmp</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Obj\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjMgr.cpp">
+      <Filter>ObjMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
