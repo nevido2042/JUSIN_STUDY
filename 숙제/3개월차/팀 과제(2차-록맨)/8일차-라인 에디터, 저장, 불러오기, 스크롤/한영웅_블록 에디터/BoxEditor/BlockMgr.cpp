@@ -232,13 +232,13 @@ void CBlockMgr::Render(HDC hDC)
 	//그리드 그리기
 	for (int i = 0; i < m_iWidth; ++i)
 	{
-		MoveToEx(hDC, i * m_fBlockSize + fScrollX , 0 + fScrollY, nullptr);
-		LineTo(hDC, i * m_fBlockSize + fScrollX, m_iHeight * m_fBlockSize + fScrollY);
+		MoveToEx(hDC, int(i * m_fBlockSize + fScrollX) , int(0 + fScrollY), nullptr);
+		LineTo(hDC, int(i * m_fBlockSize + fScrollX), int(m_iHeight * m_fBlockSize + fScrollY));
 	}
 	for (int i = 0; i < m_iHeight; ++i)
 	{
-		MoveToEx(hDC, 0 + fScrollX, i * m_fBlockSize + fScrollY, nullptr);
-		LineTo(hDC, m_iWidth * m_fBlockSize + fScrollX, i * m_fBlockSize + fScrollY);
+		MoveToEx(hDC, int(0 + fScrollX), int(i * m_fBlockSize + fScrollY), nullptr);
+		LineTo(hDC, int(m_iWidth * m_fBlockSize + fScrollX), int(i * m_fBlockSize + fScrollY));
 	}
 
 	//박스 인스턴스 출력
