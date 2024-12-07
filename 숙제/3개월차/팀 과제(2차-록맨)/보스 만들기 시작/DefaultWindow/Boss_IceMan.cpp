@@ -4,6 +4,7 @@
 #include "Ice_Slasher.h"
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
+#include "CBmpMgr.h"
 
 CBoss_IceMan::CBoss_IceMan()
 	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ m_bJump(false),
@@ -28,6 +29,8 @@ void CBoss_IceMan::Initialize()
 	m_fJumpSpeed = 15.f;
 	m_ullJumpTimer = GetTickCount64();
 	m_ullFireTimer = GetTickCount64();
+
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../megaman1 sprite/boss_ice_all.bmp", L"BossIceAll");
 }
 
 int CBoss_IceMan::Update()
@@ -50,7 +53,7 @@ void CBoss_IceMan::Late_Update()
 		m_bJump = true;
 	}
 
-	if (m_ullFireTimer + 100.f < GetTickCount64())
+	if (m_ullFireTimer + 500.f < GetTickCount64())
 	{
 		m_ullFireTimer = GetTickCount64();
 		Fire();
@@ -64,20 +67,19 @@ void CBoss_IceMan::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	// 빨간색 브러시 생성
-	HBRUSH hRedBrush = CreateSolidBrush(RGB(255, 0, 0)); // 빨간색 브러시 생성
-	HBRUSH hOldBrush = (HBRUSH)SelectObject(hDC, hRedBrush); // 기존 브러시 저장 및 새 브러시 선택
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"BossIceAll");
 
-	// 사각형 그리기
-	Rectangle(hDC,
-		m_tRect.left + iScrollX,
+	GdiTransparentBlt(hDC,            // 복사 받을 DC
+		m_tRect.left + iScrollX,    // 복사 받을 위치 좌표 X, Y    
 		m_tRect.top + iScrollY,
-		m_tRect.right + iScrollX,
-		m_tRect.bottom + iScrollY);
-
-	// 이전 브러시 복원
-	SelectObject(hDC, hOldBrush);
-	DeleteObject(hRedBrush); // 사용한 브러시 삭제
+		(int)m_tInfo.fCX,            // 복사 받을 이미지의 가로, 세로    라이트 - 레프트 해서 길이를 넣어줘야하니까
+		(int)m_tInfo.fCY,
+		hMemDC,                        // 복사할 이미지 DC    
+		7,                            // 비트맵 출력 시작 좌표(Left, top)
+		14,
+		(int)m_tInfo.fCX,            // 복사할 이미지의 가로, 세로
+		(int)m_tInfo.fCY,
+		RGB(128, 0, 128));            // 제거할 색상
 }
 
 void CBoss_IceMan::Release()
