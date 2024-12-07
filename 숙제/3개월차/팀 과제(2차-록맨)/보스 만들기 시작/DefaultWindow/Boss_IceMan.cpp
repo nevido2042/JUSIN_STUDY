@@ -3,6 +3,7 @@
 #include "CScrollMgr.h"
 
 CBoss_IceMan::CBoss_IceMan()
+	: m_fAccel(0.f), m_fGravity(0.f)
 {
 }
 
@@ -16,6 +17,9 @@ void CBoss_IceMan::Initialize()
 	m_tInfo.fCX = 50.f;
 	m_tInfo.fCY = 50.f;
 	m_fSpeed = 3.f;
+
+	m_fAccel = 0.1f;
+	m_fGravity = 9.8f;
 }
 
 int CBoss_IceMan::Update()
@@ -23,8 +27,7 @@ int CBoss_IceMan::Update()
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	Set_PosY(5.f);
-
+	Fall();
 
 	__super::Update_Rect();
 
@@ -57,5 +60,19 @@ void CBoss_IceMan::Render(HDC hDC)
 }
 
 void CBoss_IceMan::Release()
+{
+}
+
+void CBoss_IceMan::Fall()
+{
+	m_fGravity += m_fAccel;
+	Set_PosY(m_fGravity);
+}
+
+void CBoss_IceMan::Jump()
+{
+}
+
+void CBoss_IceMan::Fire()
 {
 }

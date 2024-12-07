@@ -34,6 +34,9 @@ public:
 	void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
 	bool		Get_Dead() { return m_bDead; }
 
+	bool		Get_Ground() { return m_bGround; }
+	void		Set_Ground(bool _b) { m_bGround = _b; }
+
 public:
 	virtual void		Initialize()PURE;
 	virtual int			Update()PURE;
@@ -56,5 +59,7 @@ protected:
 	DIRECTION	m_eDir;
 
 	CObj*		m_pTarget;
+
+	bool		m_bGround;
 };
 

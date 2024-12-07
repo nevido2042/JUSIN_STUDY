@@ -15,7 +15,16 @@ public:
 	void Render(HDC hDC) override;
 	void Release() override;
 private:
+	//중력
+	void Fall();
+
+private:
+	//보스 패턴
 	void Jump();
 	void Fire();
+
+private:
+	float m_fAccel;
+	float m_fGravity;
 };
 
