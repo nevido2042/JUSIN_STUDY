@@ -380,17 +380,18 @@ void CBlockMgr::Load_Block()
 
 	DWORD	dwTotalByte(0);
 	DWORD	dwByte(0);
-	char cBuffer[4096];
 
+	//이게 맞나...
+	size_t ReadSize = 1024 * 1024;
+	char* pBuffer = new char[ReadSize];
 	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
 	//해당 리스트에 넣어줘야한다.
-
 	while (true)
 	{
 
 		bool bResult = ReadFile(hFile,
-								cBuffer,
-								sizeof(cBuffer),
+								pBuffer,
+								ReadSize,
 								&dwByte, nullptr);
 
 		dwTotalByte += dwByte;
@@ -420,7 +421,7 @@ void CBlockMgr::Load_Block()
 
 	while (iCurIndex != dwTotalByte)
 	{
-		CObj* pObj = (CObj*)&cBuffer[iCurIndex];
+		CObj* pObj = (CObj*)&pBuffer[iCurIndex];
 		OBJID eOBJID = pObj->Get_OBJID();
 		size_t ObjSize(0);
 		CObj* pNewObj(nullptr);
@@ -453,8 +454,11 @@ void CBlockMgr::Load_Block()
 			break;
 		}
 
-		iCurIndex += ObjSize;
+		iCurIndex += (int)ObjSize;
 	}
+
+	delete[] pBuffer;
+	pBuffer = nullptr;
 
 	CloseHandle(hFile);
 
