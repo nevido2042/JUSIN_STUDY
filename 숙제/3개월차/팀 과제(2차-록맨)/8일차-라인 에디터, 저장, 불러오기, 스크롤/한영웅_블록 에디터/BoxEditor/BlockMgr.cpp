@@ -391,7 +391,7 @@ void CBlockMgr::Load_Block()
 
 		bool bResult = ReadFile(hFile,
 								pBuffer,
-								ReadSize,
+								(DWORD)ReadSize,
 								&dwByte, nullptr);
 
 		dwTotalByte += dwByte;
