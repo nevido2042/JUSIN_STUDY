@@ -36,10 +36,10 @@ int CBlockMgr::Update()
 
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 	{
-		if ((!m_tBlockPoint[HEAD].fX) && (!m_tBlockPoint[HEAD].fY))
+		if ((!m_tBlockPoint[HEAD].x) && (!m_tBlockPoint[HEAD].y))
 		{
-			m_tBlockPoint[HEAD].fX = (float)ptMouse.x;
-			m_tBlockPoint[HEAD].fY = (float)ptMouse.y;
+			m_tBlockPoint[HEAD].x = ptMouse.x;
+			m_tBlockPoint[HEAD].y = ptMouse.y;
 		}
 	}
 
@@ -47,11 +47,11 @@ int CBlockMgr::Update()
 	{
 		if (m_eDrawDir == NO_DIR)
 		{
-			m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
-			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
+			m_tBlockPoint[TAIL].x = ptMouse.x;
+			m_tBlockPoint[TAIL].y = ptMouse.y;
 
-			float fDistH = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-			float fDistV = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
+			float fDistH = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
+			float fDistV = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
 
 			if (fDistH > m_fBlockSize)
 			{
@@ -67,13 +67,13 @@ int CBlockMgr::Update()
 
 		if (m_eDrawDir == HORIZONTAL)
 		{
-			m_tBlockPoint[TAIL].fX = (float)ptMouse.x;
-			m_tBlockPoint[TAIL].fY = m_tBlockPoint[HEAD].fY;
+			m_tBlockPoint[TAIL].x = ptMouse.x;
+			m_tBlockPoint[TAIL].y = m_tBlockPoint[HEAD].y;
 		}
 		else if (m_eDrawDir == VERTICAL)
 		{
-			m_tBlockPoint[TAIL].fX = m_tBlockPoint[HEAD].fX;
-			m_tBlockPoint[TAIL].fY = (float)ptMouse.y;
+			m_tBlockPoint[TAIL].x = m_tBlockPoint[HEAD].x;
+			m_tBlockPoint[TAIL].y = ptMouse.y;
 		}
 	}
 
@@ -84,13 +84,13 @@ int CBlockMgr::Update()
 
 		if (m_eDrawDir == HORIZONTAL)
 		{
-			fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-			bPlus = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+			fDist = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
+			bPlus = m_tBlockPoint[HEAD].x < m_tBlockPoint[TAIL].x;
 		}
 		else if (m_eDrawDir == VERTICAL)
 		{
-			fDist = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
-			bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
+			fDist = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
+			bPlus = m_tBlockPoint[HEAD].y < m_tBlockPoint[TAIL].y;
 		}
 
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
@@ -105,8 +105,8 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + i * m_fBlockSize,
-						m_tBlockPoint[HEAD].fY,
+						float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f + i * m_fBlockSize),
+						float(m_tBlockPoint[HEAD].y),
 						m_fBlockSize,
 						m_fBlockSize
 					};
@@ -116,8 +116,8 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX,
-						m_tBlockPoint[HEAD].fY + m_fBlockSize * 0.5f + i * m_fBlockSize,
+						float(m_tBlockPoint[HEAD].x),
+						float(m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f + i * m_fBlockSize),
 						m_fBlockSize,
 						m_fBlockSize
 					};
@@ -130,8 +130,8 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f - i * m_fBlockSize,
-						m_tBlockPoint[HEAD].fY,
+						float(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f - i * m_fBlockSize),
+						(float)m_tBlockPoint[HEAD].y,
 						m_fBlockSize,
 						m_fBlockSize
 					};
@@ -141,8 +141,8 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						m_tBlockPoint[HEAD].fX,
-						m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f - i * m_fBlockSize,
+						(float)m_tBlockPoint[HEAD].x,
+						float(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f - i * m_fBlockSize),
 						m_fBlockSize,
 						m_fBlockSize
 					};
@@ -193,28 +193,26 @@ void CBlockMgr::Render(HDC hDC)
 	for (auto& pLine : m_BlockList)
 		pLine->Render(hDC);
 
-	float fScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	float fScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
+	float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	MoveToEx(hDC, (int)m_tBlockPoint[HEAD].fX + fScrollX, (int)m_tBlockPoint[HEAD].fY + fScrollY, nullptr);
-	LineTo(hDC, (int)m_tBlockPoint[TAIL].fX + fScrollX, (int)m_tBlockPoint[TAIL].fY + fScrollY);
-
-	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
-
+	MoveToEx(hDC, int(m_tBlockPoint[HEAD].x + fScrollX), int(m_tBlockPoint[HEAD].y + fScrollY), nullptr);
+	LineTo(hDC, int(m_tBlockPoint[TAIL].x + fScrollX), int(m_tBlockPoint[TAIL].y + fScrollY));
 
 	float fDist(0.f);
 	bool bPlus(false);
 
 	if (m_eDrawDir == HORIZONTAL)
 	{
-		fDist = abs(m_tBlockPoint[HEAD].fX - m_tBlockPoint[TAIL].fX);
-		bPlus = m_tBlockPoint[HEAD].fX < m_tBlockPoint[TAIL].fX;
+		fDist = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
+		bPlus = m_tBlockPoint[HEAD].x < m_tBlockPoint[TAIL].x;
 	}
 	else if(m_eDrawDir == VERTICAL)
 	{
-		fDist = abs(m_tBlockPoint[HEAD].fY - m_tBlockPoint[TAIL].fY);
-		bPlus = m_tBlockPoint[HEAD].fY < m_tBlockPoint[TAIL].fY;
+		fDist = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
+		bPlus = m_tBlockPoint[HEAD].y < m_tBlockPoint[TAIL].y;
 	}
+	//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 	int iBoxCount = int(fDist / m_fBlockSize);
 
 	//HEAD부터 TAIL까지 박스들 출력
@@ -225,18 +223,18 @@ void CBlockMgr::Render(HDC hDC)
 			if (m_eDrawDir == HORIZONTAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX + i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f + fScrollY),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize + i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
+					int(m_tBlockPoint[HEAD].x + i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f + fScrollY),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize + i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
 			}
 			else if(m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + i * m_fBlockSize + fScrollY),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize + i * m_fBlockSize + fScrollY));
+					int(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].y + i * m_fBlockSize + fScrollY),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize + i * m_fBlockSize + fScrollY));
 			}
 
 		}
@@ -245,18 +243,18 @@ void CBlockMgr::Render(HDC hDC)
 			if (m_eDrawDir == HORIZONTAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize - i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize * 0.5f + fScrollY),
-					int(m_tBlockPoint[HEAD].fX - i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].fY + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
+					int(m_tBlockPoint[HEAD].x - m_fBlockSize - i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f + fScrollY),
+					int(m_tBlockPoint[HEAD].x - i * m_fBlockSize + fScrollX),
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
 			}
 			else if (m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].fX - m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - i * m_fBlockSize + fScrollY),
-					int(m_tBlockPoint[HEAD].fX + m_fBlockSize * 0.5f + fScrollX),
-					int(m_tBlockPoint[HEAD].fY - m_fBlockSize - i * m_fBlockSize + fScrollY));
+					int(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].y - i * m_fBlockSize + fScrollY),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].y - m_fBlockSize - i * m_fBlockSize + fScrollY));
 			}
 
 		}
