@@ -3,6 +3,7 @@
 #include "CScrollMgr.h"
 #include "CKeyMgr.h"
 #include "CAbstractFactory.h"
+#include "CObjMgr.h"
 
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
@@ -30,8 +31,8 @@ void CBlockMgr::Initialize()
 
 int CBlockMgr::Update()
 {
-	for (auto& pObj : m_ObjList)
-		pObj->Update();
+	/*for (auto& pObj : ObjMgr)
+		pObj->Update();*/
 
 	POINT	ptMouse{};
 	GetCursorPos(&ptMouse);
@@ -118,7 +119,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -129,7 +130,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}
 			}
 			else
@@ -143,7 +144,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -154,11 +155,12 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
+					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
 				}		
 			}
 
-			m_ObjList.push_back(pBlock);
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
+			//m_ObjList.push_back(pBlock);
 		}
 
 		//하나도 만들 수 없는 길이면 그 때는 그 칸만 생성
@@ -172,8 +174,10 @@ int CBlockMgr::Update()
 				m_fBlockSize,
 				m_fBlockSize
 			};
-			pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
-			m_ObjList.push_back(pBlock);
+			pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
+			//m_ObjList.push_back(pBlock);
 		}
 
 		ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
@@ -205,7 +209,7 @@ int CBlockMgr::Update()
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 		CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
 
-	if (CKeyMgr::Get_Instance()->Key_Down('Z'))
+	/*if (CKeyMgr::Get_Instance()->Key_Down('Z'))
 	{
 		if (!m_iUndo_Stack.empty() && CKeyMgr::Get_Instance()->Key_Pressing(VK_LCONTROL))
 		{
@@ -216,7 +220,7 @@ int CBlockMgr::Update()
 			}
 			m_iUndo_Stack.pop_back();
 		}
-	}
+	}*/
 
 	return 0;
 }
@@ -244,8 +248,8 @@ void CBlockMgr::Render(HDC hDC)
 	}
 
 	//박스 인스턴스 출력
-	for (auto& pLine : m_ObjList)
-		pLine->Render(hDC);
+	//for (auto& pLine : m_ObjList)
+		//pLine->Render(hDC);
 
 	//선 그리기
 	//MoveToEx(hDC, int(m_tBlockPoint[HEAD].x + fScrollX), int(m_tBlockPoint[HEAD].y + fScrollY), nullptr);
@@ -316,8 +320,8 @@ void CBlockMgr::Render(HDC hDC)
 
 void CBlockMgr::Release()
 {
-	for_each(m_ObjList.begin(), m_ObjList.end(), Safe_Delete<CObj*>);
-	m_ObjList.clear();
+	//for_each(m_ObjList.begin(), m_ObjList.end(), Safe_Delete<CObj*>);
+	//m_ObjList.clear();
 }
 
 void CBlockMgr::Save_Block()
@@ -338,9 +342,17 @@ void CBlockMgr::Save_Block()
 
 	DWORD	dwByte(0);
 
-	for (auto& pBlock : m_ObjList)
+	//Obj 종류 별로 저장해야한다.
+	for (size_t i = 0; i < OBJ_END; ++i)
 	{
-		WriteFile(hFile, pBlock, sizeof(CBlock), &dwByte, nullptr);
+
+		for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
+		{
+			WriteFile(hFile,
+				pObj,
+				sizeof(CObj),
+				&dwByte, nullptr);
+		}
 	}
 
 	CloseHandle(hFile);
@@ -366,18 +378,82 @@ void CBlockMgr::Load_Block()
 		return;
 	}
 
+	DWORD	dwTotalByte(0);
 	DWORD	dwByte(0);
-	CBlock	Block;
+	char cBuffer[4096];
+
+	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
+	//해당 리스트에 넣어줘야한다.
 
 	while (true)
 	{
-		bool bResult = ReadFile(hFile, &Block, sizeof(CBlock), &dwByte, nullptr);
+
+		bool bResult = ReadFile(hFile,
+								cBuffer,
+								sizeof(cBuffer),
+								&dwByte, nullptr);
+
+		dwTotalByte += dwByte;
 
 		if (0 == dwByte)
 			break;
 
-		m_ObjList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));
+		//Obj 종류 별로 로드해야한다.
+		/*for (size_t i = 0; i < OBJ_END; ++i)
+		{
+			for (auto& pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
+			{
+				WriteFile(hFile,
+					pObj,
+					sizeof(CObjMgr::Get_Instance()->Get_ObjList()[i]),
+					&dwByte, nullptr);
+			}
+		}
+		m_ObjList.push_back(CAbstractFactory<CBlock>::Create(Block.Get_Info()));*/
 		//m_BlockList.push_back(new CBlock(Block));
+	}
+
+	//int iCurIndex; 를 기준으로 CObj 형변환해서, 오브젝트 종류와 크기를 알아낸후
+	//그만큼 리스트에 추가하고, iCurIndex를 증가시키고, iCurIndex == dwByte -1 이면 파일 로드 끝
+	//cBuffer에 담겨 있는 오브젝트들중
+	int iCurIndex(0);
+
+	while (iCurIndex != dwTotalByte)
+	{
+		CObj* pObj = (CObj*)&cBuffer[iCurIndex];
+		OBJID eOBJID = pObj->Get_OBJID();
+		size_t ObjSize(0);
+		CObj* pNewObj(nullptr);
+		switch (eOBJID)
+		{
+		case OBJ_PLAYER:
+			break;
+		case OBJ_BULLET:
+			break;
+		case OBJ_MONSTER:
+			break;
+		case OBJ_MOUSE:
+			break;
+		case OBJ_SHIELD:
+			break;
+		case OBJ_BUTTON:
+			break;
+		case OBJ_BLOCK:
+		{
+			ObjSize = sizeof(CBlock);
+			INFO tInfo = pObj->Get_Info();
+			pNewObj = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
+			break;
+		}
+			
+		case OBJ_END:
+			break;
+		default:
+			break;
+		}
+
+		iCurIndex += ObjSize;
 	}
 
 	CloseHandle(hFile);
