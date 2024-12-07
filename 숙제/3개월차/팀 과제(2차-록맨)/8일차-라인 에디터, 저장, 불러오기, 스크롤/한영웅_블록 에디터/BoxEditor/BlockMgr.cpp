@@ -7,7 +7,8 @@
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
-	:m_fBlockSize(0), m_eDrawDir(NO_DIR)
+	:m_fBlockSize(0), m_eDrawDir(NO_DIR),
+	m_iWidth(0), m_iHeight(0)
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
@@ -20,6 +21,9 @@ CBlockMgr::~CBlockMgr()
 void CBlockMgr::Initialize()
 {
 	m_fBlockSize = 50.f;
+
+	m_iWidth = 50;
+	m_iHeight = 50;
 }
 
 int CBlockMgr::Update()
@@ -107,8 +111,8 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f + i * m_fBlockSize),
-						float(m_tBlockPoint[HEAD].y),
+						float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5 + i * m_fBlockSize),
+						float(m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5),
 						m_fBlockSize,
 						m_fBlockSize
 					};
@@ -118,7 +122,7 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						float(m_tBlockPoint[HEAD].x),
+						float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f),
 						float(m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f + i * m_fBlockSize),
 						m_fBlockSize,
 						m_fBlockSize
@@ -133,7 +137,7 @@ int CBlockMgr::Update()
 					INFO tInfo
 					{
 						float(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f - i * m_fBlockSize),
-						(float)m_tBlockPoint[HEAD].y,
+						(float)m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f,
 						m_fBlockSize,
 						m_fBlockSize
 					};
@@ -143,7 +147,7 @@ int CBlockMgr::Update()
 				{
 					INFO tInfo
 					{
-						(float)m_tBlockPoint[HEAD].x,
+						(float)m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f,
 						float(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f - i * m_fBlockSize),
 						m_fBlockSize,
 						m_fBlockSize
@@ -205,12 +209,27 @@ void CBlockMgr::Late_Update()
 
 void CBlockMgr::Render(HDC hDC)
 {
-	for (auto& pLine : m_BlockList)
-		pLine->Render(hDC);
-
+	//스크롤
 	float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
 	float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
 
+	//그리드 그리기
+	for (int i = 0; i < m_iWidth; ++i)
+	{
+		MoveToEx(hDC, i * m_fBlockSize + fScrollX , 0 + fScrollY, nullptr);
+		LineTo(hDC, i * m_fBlockSize + fScrollX, m_iHeight * m_fBlockSize + fScrollY);
+	}
+	for (int i = 0; i < m_iHeight; ++i)
+	{
+		MoveToEx(hDC, 0 + fScrollX, i * m_fBlockSize + fScrollY, nullptr);
+		LineTo(hDC, m_iWidth * m_fBlockSize + fScrollX, i * m_fBlockSize + fScrollY);
+	}
+
+	//박스 인스턴스 출력
+	for (auto& pLine : m_BlockList)
+		pLine->Render(hDC);
+
+	//선 그리기
 	MoveToEx(hDC, int(m_tBlockPoint[HEAD].x + fScrollX), int(m_tBlockPoint[HEAD].y + fScrollY), nullptr);
 	LineTo(hDC, int(m_tBlockPoint[TAIL].x + fScrollX), int(m_tBlockPoint[TAIL].y + fScrollY));
 
@@ -239,16 +258,16 @@ void CBlockMgr::Render(HDC hDC)
 			{
 				Rectangle(hDC,
 					int(m_tBlockPoint[HEAD].x + i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f + fScrollY),
+					int(m_tBlockPoint[HEAD].y + fScrollY),
 					int(m_tBlockPoint[HEAD].x + m_fBlockSize + i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].y + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize + fScrollY));
 			}
 			else if(m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].x + fScrollX),
 					int(m_tBlockPoint[HEAD].y + i * m_fBlockSize + fScrollY),
-					int(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize + fScrollX),
 					int(m_tBlockPoint[HEAD].y + m_fBlockSize + i * m_fBlockSize + fScrollY));
 			}
 
@@ -259,16 +278,16 @@ void CBlockMgr::Render(HDC hDC)
 			{
 				Rectangle(hDC,
 					int(m_tBlockPoint[HEAD].x - m_fBlockSize - i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].y - m_fBlockSize * 0.5f + fScrollY),
+					int(m_tBlockPoint[HEAD].y + fScrollY),
 					int(m_tBlockPoint[HEAD].x - i * m_fBlockSize + fScrollX),
-					int(m_tBlockPoint[HEAD].y + m_fBlockSize - m_fBlockSize * 0.5f + fScrollY));
+					int(m_tBlockPoint[HEAD].y + m_fBlockSize + fScrollY));
 			}
 			else if (m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
-					int(m_tBlockPoint[HEAD].x - m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].x + fScrollX),
 					int(m_tBlockPoint[HEAD].y - i * m_fBlockSize + fScrollY),
-					int(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f + fScrollX),
+					int(m_tBlockPoint[HEAD].x + m_fBlockSize + fScrollX),
 					int(m_tBlockPoint[HEAD].y - m_fBlockSize - i * m_fBlockSize + fScrollY));
 			}
 
