@@ -105,9 +105,10 @@ void CCollisionMgr::Collision_RectEx_Base(list<CObj*> _Dst, list<CObj*> _Src)
 						Dst->Set_PosX(fX);
 					}
 				}
+				Dst->Set_Ground(true);
+				Dst->Update_Rect();
 			}
 		}
-		Dst->Update_Rect();
 	}
 }
 // 
@@ -133,7 +134,6 @@ void CCollisionMgr::Collision_RectEx(list<CObj*> _Dst, list<CObj*> _Src)
 				{
 					Dst->Set_PosX(fX); // x축 위치 조정
 				}
-				Dst->Set_Ground(true);
 				Dst->Update_Rect(); 
 			}
 		}
