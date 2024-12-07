@@ -38,8 +38,8 @@ int CBlockMgr::Update()
 	{
 		if ((!m_tBlockPoint[HEAD].x) && (!m_tBlockPoint[HEAD].y))
 		{
-			m_tBlockPoint[HEAD].x = ptMouse.x;
-			m_tBlockPoint[HEAD].y = ptMouse.y;
+			m_tBlockPoint[HEAD].x = ptMouse.x - (ptMouse.x % long(m_fBlockSize));
+			m_tBlockPoint[HEAD].y = ptMouse.y - (ptMouse.y % long(m_fBlockSize));
 		}
 	}
 
@@ -47,8 +47,8 @@ int CBlockMgr::Update()
 	{
 		if (m_eDrawDir == NO_DIR)
 		{
-			m_tBlockPoint[TAIL].x = ptMouse.x;
-			m_tBlockPoint[TAIL].y = ptMouse.y;
+			m_tBlockPoint[TAIL].x = ptMouse.x;// - (ptMouse.x % long(m_fBlockSize));
+			m_tBlockPoint[TAIL].y = ptMouse.y;// - (ptMouse.y % long(m_fBlockSize));
 
 			float fDistH = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
 			float fDistV = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
@@ -95,6 +95,8 @@ int CBlockMgr::Update()
 
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 		int iBoxCount = int(fDist / m_fBlockSize);
+		m_iUndo_Stack.push_back(iBoxCount);
+
 		//HEAD부터 TAIL까지 박스들 생성
 		for (int i = 0; i < iBoxCount; ++i)
 		{
@@ -180,6 +182,19 @@ int CBlockMgr::Update()
 
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 		CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
+
+	if (CKeyMgr::Get_Instance()->Key_Down('Z'))
+	{
+		if (!m_iUndo_Stack.empty() && CKeyMgr::Get_Instance()->Key_Pressing(VK_LCONTROL))
+		{
+			for (int i = 0; i < m_iUndo_Stack.back(); ++i)
+			{
+				Safe_Delete<CObj*>(m_BlockList.back());
+				m_BlockList.pop_back();
+			}
+			m_iUndo_Stack.pop_back();
+		}
+	}
 
 	return 0;
 }

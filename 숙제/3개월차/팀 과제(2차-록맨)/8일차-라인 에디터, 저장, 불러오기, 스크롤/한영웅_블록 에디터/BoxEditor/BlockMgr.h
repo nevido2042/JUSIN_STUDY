@@ -43,10 +43,9 @@ public:
 private:
 	static CBlockMgr*		m_pInstance;
 	list<CObj*>			m_BlockList;
-	//LINEPOINT			m_tLinePoint[DIR_END];
 	POINT				m_tBlockPoint[DRAWPOINT_END];
 	float				m_fBlockSize;
 	DRAWDIR				m_eDrawDir;
-
+	list<int>			m_iUndo_Stack;
 };
 
