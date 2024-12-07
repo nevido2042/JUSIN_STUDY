@@ -105,7 +105,7 @@ void CCollisionMgr::Collision_RectEx_Base(list<CObj*> _Dst, list<CObj*> _Src)
 						Dst->Set_PosX(fX);
 					}
 				}
-				Dst->Set_Ground(true);
+				//Dst->Set_Ground(true);
 				Dst->Update_Rect();
 			}
 		}

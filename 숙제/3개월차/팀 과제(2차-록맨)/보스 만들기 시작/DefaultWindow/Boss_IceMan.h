@@ -20,14 +20,13 @@ private:
 
 private:
 	//보스 패턴
-	//void Jump();
 	void Jumping();
 	void Fire();
 
 private:
-	float m_fAccel;
+	//float m_fAccel;
 	float m_fGravity;
-	float m_fFallSpeed;
+	//float m_fFallSpeed;
 	float m_fJumpSpeed;
 	bool  m_bJump;
 	float  m_fTime;
