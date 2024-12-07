@@ -51,8 +51,8 @@ int CBlockMgr::Update()
 	{
 		if (m_eDrawDir == NO_DIR)
 		{
-			m_tBlockPoint[TAIL].x = ptMouse.x;// - (ptMouse.x % long(m_fBlockSize));
-			m_tBlockPoint[TAIL].y = ptMouse.y;// - (ptMouse.y % long(m_fBlockSize));
+			m_tBlockPoint[TAIL].x = ptMouse.x;
+			m_tBlockPoint[TAIL].y = ptMouse.y;
 
 			float fDistH = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
 			float fDistV = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
@@ -98,7 +98,7 @@ int CBlockMgr::Update()
 		}
 
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
-		int iBoxCount = int(fDist / m_fBlockSize);
+		const int iBoxCount = int(fDist / m_fBlockSize);
 		m_iUndo_Stack.push_back(iBoxCount);
 
 		//HEAD부터 TAIL까지 박스들 생성
@@ -155,6 +155,22 @@ int CBlockMgr::Update()
 					pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
 				}		
 			}
+
+			m_BlockList.push_back(pBlock);
+		}
+
+		//하나도 만들 수 없는 길이면 그 때는 그 칸만 생성
+		if (iBoxCount == 0)
+		{
+			CObj* pBlock(nullptr);
+			INFO tInfo
+			{
+				float(m_tBlockPoint[HEAD].x + m_fBlockSize * 0.5f),
+				(float)m_tBlockPoint[HEAD].y + m_fBlockSize * 0.5f,
+				m_fBlockSize,
+				m_fBlockSize
+			};
+			pBlock = CAbstractFactory<CBlock>::Create(&tInfo);
 			m_BlockList.push_back(pBlock);
 		}
 
@@ -230,8 +246,8 @@ void CBlockMgr::Render(HDC hDC)
 		pLine->Render(hDC);
 
 	//선 그리기
-	MoveToEx(hDC, int(m_tBlockPoint[HEAD].x + fScrollX), int(m_tBlockPoint[HEAD].y + fScrollY), nullptr);
-	LineTo(hDC, int(m_tBlockPoint[TAIL].x + fScrollX), int(m_tBlockPoint[TAIL].y + fScrollY));
+	//MoveToEx(hDC, int(m_tBlockPoint[HEAD].x + fScrollX), int(m_tBlockPoint[HEAD].y + fScrollY), nullptr);
+	//LineTo(hDC, int(m_tBlockPoint[TAIL].x + fScrollX), int(m_tBlockPoint[TAIL].y + fScrollY));
 
 	float fDist(0.f);
 	bool bPlus(false);
