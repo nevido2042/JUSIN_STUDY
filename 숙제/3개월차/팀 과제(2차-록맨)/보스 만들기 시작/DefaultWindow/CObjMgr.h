@@ -17,6 +17,8 @@ public:
 
 	CObj* Get_Target(OBJID eID, CObj* pDst);
 
+	list<CObj*>* Get_List() { return m_ObjList; }
+
 public:
 	void		Add_Object(OBJID eID, CObj* pObj);
 	int			Update();

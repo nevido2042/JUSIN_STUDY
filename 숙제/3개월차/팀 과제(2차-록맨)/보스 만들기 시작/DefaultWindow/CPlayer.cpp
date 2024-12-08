@@ -6,6 +6,7 @@
 #include "CLineMgr.h"
 #include "CKeyMgr.h"
 #include "CScrollMgr.h"
+#include "CBmpMgr.h"
 
 CPlayer::CPlayer()
 	: m_bJump(false), m_fJumpPower(0.f), m_fTime(0.f)
@@ -36,6 +37,9 @@ void CPlayer::Initialize()
 	m_iHp = 100; // 플레이어 HP(은성)
 	m_iBullet_Cooltime = 200; // 총알 발사주기 ( 은성 )
 	m_eDir = DIR_RIGHT; // 보고있는방향 ( 은성 )
+
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../megaman1 sprite/player_all_1x.bmp", L"PlayerAll");
+
 }
 
 int CPlayer::Update()
@@ -94,21 +98,24 @@ void CPlayer::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	Rectangle(hDC,
-		m_tRect.left + iScrollX,
-		m_tRect.top,
-		m_tRect.right + iScrollX,
-		m_tRect.bottom);
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"PlayerAll");
+
 
 	if (m_bDamaged)
 	{
 		if (m_bBlink)
 		{
-			Rectangle(hDC,
-				m_tRect.left + iScrollX,
+			GdiTransparentBlt(hDC,            // 복사 받을 DC
+				m_tRect.left + iScrollX,    // 복사 받을 위치 좌표 X, Y    
 				m_tRect.top + iScrollY,
-				m_tRect.right + iScrollX,
-				m_tRect.bottom + iScrollY);
+				(int)m_tInfo.fCX,            // 복사 받을 이미지의 가로, 세로    라이트 - 레프트 해서 길이를 넣어줘야하니까
+				(int)m_tInfo.fCY,
+				hMemDC,                        // 복사할 이미지 DC    
+				13,                            // 비트맵 출력 시작 좌표(Left, top)
+				43,
+				(int)m_tInfo.fCX,            // 복사할 이미지의 가로, 세로
+				(int)m_tInfo.fCY,
+				RGB(128, 0, 128));            // 제거할 색상
 		}
 
 		if (m_ullBlink + 50 < GetTickCount64())
@@ -119,11 +126,17 @@ void CPlayer::Render(HDC hDC)
 	}
 	else
 	{
-		Rectangle(hDC,
-			m_tRect.left + iScrollX,
+		GdiTransparentBlt(hDC,            // 복사 받을 DC
+			m_tRect.left + iScrollX,    // 복사 받을 위치 좌표 X, Y    
 			m_tRect.top + iScrollY,
-			m_tRect.right + iScrollX,
-			m_tRect.bottom + iScrollY);
+			(int)m_tInfo.fCX,            // 복사 받을 이미지의 가로, 세로    라이트 - 레프트 해서 길이를 넣어줘야하니까
+			(int)m_tInfo.fCY,
+			hMemDC,                        // 복사할 이미지 DC    
+			13,                            // 비트맵 출력 시작 좌표(Left, top)
+			43,
+			(int)m_tInfo.fCX,            // 복사할 이미지의 가로, 세로
+			(int)m_tInfo.fCY,
+			RGB(128, 0, 128));            // 제거할 색상
 	}
 
 	TCHAR szBuf[32] = {};

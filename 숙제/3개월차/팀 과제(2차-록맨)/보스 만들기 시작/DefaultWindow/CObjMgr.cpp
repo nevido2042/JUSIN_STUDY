@@ -101,6 +101,7 @@ void CObjMgr::Late_Update()
 	CCollisionMgr::Collision_Box(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
 
 	CCollisionMgr::Collision_RectEx_Base(m_ObjList[OBJ_BOSS], m_ObjList[OBJ_BLOCK]);
+	CCollisionMgr::Collision_RectEx_Base(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BOSSBULLET]);
 
 
 

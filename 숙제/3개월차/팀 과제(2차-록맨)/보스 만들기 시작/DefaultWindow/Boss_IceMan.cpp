@@ -137,5 +137,18 @@ void CBoss_IceMan::Jumping()
 
 void CBoss_IceMan::Fire()
 {
-	CObjMgr::Get_Instance()->Add_Object(OBJ_BOSSBULLET, CAbstractFactory<CIce_Slasher>::Create(m_tInfo.fX, m_tInfo.fY, DIR_LEFT));
+	if (m_pPlayer->Get_Info().fX < Get_Info().fX)
+	{
+		CObjMgr::Get_Instance()->Add_Object(
+			OBJ_BOSSBULLET,
+			CAbstractFactory<CIce_Slasher>::Create(m_tInfo.fX, m_tInfo.fY, DIR_LEFT));
+	}
+	else
+	{
+		CObjMgr::Get_Instance()->Add_Object(
+			OBJ_BOSSBULLET,
+			CAbstractFactory<CIce_Slasher>::Create(m_tInfo.fX, m_tInfo.fY, DIR_RIGHT));
+	}
+
+
 }

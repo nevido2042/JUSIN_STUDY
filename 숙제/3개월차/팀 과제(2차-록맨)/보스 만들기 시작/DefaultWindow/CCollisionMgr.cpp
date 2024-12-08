@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CCollisionMgr.h"
 #include "CPlayer.h"  
-
+#include "CObjMgr.h"
 
 
 
@@ -66,13 +66,14 @@ bool CCollisionMgr::Check_Circle(CObj* _Dst, CObj* _Src)
 
 //사각형 충돌처리
 // - 충돌 발생 시 객체의 위치를 밀어내는 방식으로 처리
-void CCollisionMgr::Collision_RectEx_Base(list<CObj*> _Dst, list<CObj*> _Src)
+void CCollisionMgr::Collision_RectEx_Base(OBJID _Dst, OBJID _Src)
 {
+	
 	float	fX(0.f), fY(0.f);// ?
 
-	for (auto& Dst : _Dst)
+	for (auto& Dst : CObjMgr::Get_Instance()->Get_List()[_Dst])
 	{
-		for (auto& Src : _Src)
+		for (auto& Src : CObjMgr::Get_Instance()->Get_List()[_Src])
 		{
 			if (Check_Rect(Dst, Src, &fX, &fY)) 
 			{
@@ -106,7 +107,9 @@ void CCollisionMgr::Collision_RectEx_Base(list<CObj*> _Dst, list<CObj*> _Src)
 					}
 				}
 				//Dst->Set_Ground(true);
-				Dst->Update_Rect();
+				//Dst->Update_Rect();
+				Dst->OnCollision();
+				Src->OnCollision();
 			}
 		}
 	}

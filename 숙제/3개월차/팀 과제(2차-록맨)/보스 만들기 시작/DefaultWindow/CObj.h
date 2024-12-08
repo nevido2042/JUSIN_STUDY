@@ -43,6 +43,7 @@ public:
 	virtual void		Late_Update()PURE;
 	virtual void		Render(HDC hDC)PURE;
 	virtual void		Release()PURE;
+	virtual void		OnCollision(OBJID _eOther);//부딫혔을 때 실행 할 것
 
 public:
 	void		Update_Rect();
