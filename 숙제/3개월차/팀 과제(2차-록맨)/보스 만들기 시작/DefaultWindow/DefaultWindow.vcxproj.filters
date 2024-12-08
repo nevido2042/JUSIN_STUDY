@@ -115,6 +115,9 @@
     <Filter Include="01. Obj\08. Boss">
       <UniqueIdentifier>{94b23540-b1c4-42bd-8804-4d2c51b00bec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\Penguin">
+      <UniqueIdentifier>{7c9883cc-8eeb-47e9-b4fb-9b217c8b95e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -228,6 +231,9 @@
     <ClInclude Include="Ice_Slasher.h">
       <Filter>01. Obj\01. Bullet\03_Boss_Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Penguin.h">
+      <Filter>01. Obj\02. Monster\Penguin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -325,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="Ice_Slasher.cpp">
       <Filter>01. Obj\01. Bullet\03_Boss_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Penguin.cpp">
+      <Filter>01. Obj\02. Monster\Penguin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
