@@ -43,6 +43,8 @@ int CPenguin::Update()
 
 	Set_PosX(-5.f);
 
+	Set_Pos(Get_Info().fX, 50.f * sinf(Get_Info().fX * PI / 180.f) + 500.f);
+
 	if (Get_Info().fX < -iScrollX)
 	{
 		Set_Pos(WINCX - iScrollX, Get_Info().fY);
