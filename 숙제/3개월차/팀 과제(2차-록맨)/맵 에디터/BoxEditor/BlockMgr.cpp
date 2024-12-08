@@ -86,6 +86,9 @@ int CBlockMgr::Update()
 
 	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 	{
+		//되돌리기 리스트 생성
+		list<CObj*> UndoList;
+
 		float fDist(0.f);
 		bool bPlus(false);
 
@@ -102,7 +105,6 @@ int CBlockMgr::Update()
 
 		//HEAD와TAIL의 거리 / 박스 크기 = 박스 갯수
 		const int iBoxCount = int(fDist / m_fBlockSize);
-		m_iUndo_Stack.push_back(iBoxCount);
 
 		//HEAD부터 TAIL까지 박스들 생성
 		for (int i = 0; i < iBoxCount; ++i)
@@ -161,7 +163,15 @@ int CBlockMgr::Update()
 
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
 			//m_ObjList.push_back(pBlock);
+
+			//되돌릴 리스트에 추가
+			//m_UndoList.push_back(pBlock);
+
+			
+			UndoList.push_back(pBlock);
 		}
+
+		
 
 		//하나도 만들 수 없는 길이면 그 때는 그 칸만 생성
 		if (iBoxCount == 0)
@@ -178,7 +188,13 @@ int CBlockMgr::Update()
 
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
 			//m_ObjList.push_back(pBlock);
+
+			//되돌릴 리스트에 추가
+			UndoList.push_back(pBlock);
 		}
+
+		//생성된 리스트를 되돌리기 스택에 푸시
+		m_UndoStack.push(UndoList);
 
 		ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 
@@ -197,6 +213,7 @@ int CBlockMgr::Update()
 		return 0;
 	}
 
+	//화면 움직이기
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT))
 		CScrollMgr::Get_Instance()->Set_ScrollX(5.f);
 
@@ -209,18 +226,22 @@ int CBlockMgr::Update()
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 		CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
 
-	/*if (CKeyMgr::Get_Instance()->Key_Down('Z'))
+	//되돌리기 Ctrl+Z
+	if (CKeyMgr::Get_Instance()->Key_Down('Z'))
 	{
-		if (!m_iUndo_Stack.empty() && CKeyMgr::Get_Instance()->Key_Pressing(VK_LCONTROL))
+
+		if (!m_UndoStack.empty() && CKeyMgr::Get_Instance()->Key_Pressing(VK_LCONTROL))
 		{
-			for (int i = 0; i < m_iUndo_Stack.back(); ++i)
+			
+			
+			for (auto i : m_UndoStack.top())
 			{
-				Safe_Delete<CObj*>(m_ObjList.back());
-				m_ObjList.pop_back();
+				i->Set_Dead();
 			}
-			m_iUndo_Stack.pop_back();
+
+			m_UndoStack.pop();
 		}
-	}*/
+	}
 
 	return 0;
 }

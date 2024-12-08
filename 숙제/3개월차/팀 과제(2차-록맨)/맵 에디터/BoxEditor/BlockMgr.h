@@ -43,11 +43,12 @@ public:
 private:
 	static CBlockMgr*		m_pInstance;
 private:
-	//list<CObj*>				m_ObjList;
+
 	POINT					m_tBlockPoint[DRAWPOINT_END];
 	float					m_fBlockSize;
 	DRAWDIR					m_eDrawDir;
-	list<int>				m_iUndo_Stack;
+
+	stack<list<CObj*>>		m_UndoStack;
 	int						m_iWidth;
 	int						m_iHeight;
 	OBJID					m_eCurrentObj;
