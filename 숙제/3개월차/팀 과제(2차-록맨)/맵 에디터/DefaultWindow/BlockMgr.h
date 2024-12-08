@@ -1,6 +1,6 @@
 #pragma once
-//#include "Box.h" // 안 쓸 예정
-#include "Block.h"
+#include "Define.h"
+#include "CObj.h"
 
 class CBlockMgr
 {
@@ -42,10 +42,15 @@ public:
 
 private:
 	static CBlockMgr*		m_pInstance;
-	list<CObj*>			m_ObjList;
-	//LINEPOINT			m_tLinePoint[DIR_END];
-	LINEPOINT			m_tBlockPoint[DRAWPOINT_END];
-	float				m_fBlockSize;
+private:
 
+	POINT					m_tBlockPoint[DRAWPOINT_END];
+	float					m_fBlockSize;
+	DRAWDIR					m_eDrawDir;
+
+	stack<list<CObj*>>		m_UndoStack;
+	int						m_iWidth;
+	int						m_iHeight;
+	OBJID					m_eCurrentObj;
 };
 

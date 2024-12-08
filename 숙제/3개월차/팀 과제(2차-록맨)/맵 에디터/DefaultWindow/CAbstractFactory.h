@@ -27,12 +27,13 @@ public:
 		return pObj;
 	}
 
-	static CObj* Create(INFO* _tInfo)
+	static CObj* Create(OBJID _eOBJID, INFO* _tInfo)
 	{
 		CObj* pObj = new T;
 		pObj->Initialize();
 		pObj->Set_Pos(_tInfo->fX, _tInfo->fY);
 		pObj->Set_Size(_tInfo->fCX, _tInfo->fCY);
+		pObj->Set_OBJID(_eOBJID);
 
 		return pObj;
 	}

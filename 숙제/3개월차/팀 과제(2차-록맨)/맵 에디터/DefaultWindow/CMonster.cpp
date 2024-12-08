@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CMonster.h"
+#include "CScrollMgr.h"
 
 CMonster::CMonster()
 {
@@ -24,8 +25,8 @@ int CMonster::Update()
 
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
-    fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
-    fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
+    //fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
+    //fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
 
     fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
 
@@ -57,11 +58,23 @@ void CMonster::Late_Update()
 
 void CMonster::Render(HDC hDC)
 {
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    // 빨간색 브러시 생성
+    HBRUSH hRedBrush = CreateSolidBrush(RGB(255, 0, 0)); // 빨간색 브러시 생성
+    HBRUSH hOldBrush = (HBRUSH)SelectObject(hDC, hRedBrush); // 기존 브러시 저장 및 새 브러시 선택
+
+    // 사각형 그리기
     Rectangle(hDC,
-        m_tRect.left,
-        m_tRect.top,
-        m_tRect.right,
-        m_tRect.bottom);
+        m_tRect.left + iScrollX,
+        m_tRect.top + iScrollY,
+        m_tRect.right + iScrollX,
+        m_tRect.bottom + iScrollY);
+
+    // 이전 브러시 복원
+    SelectObject(hDC, hOldBrush);
+    DeleteObject(hRedBrush); // 사용한 브러시 삭제
 }
 
 void CMonster::Release()

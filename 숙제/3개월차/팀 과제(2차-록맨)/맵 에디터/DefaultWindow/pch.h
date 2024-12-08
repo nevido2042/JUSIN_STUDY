@@ -13,6 +13,8 @@
 #include <list>
 #include <algorithm>
 #include <map>
+#include <vector>
+#include <stack>
 
 #ifdef _DEBUG
 
