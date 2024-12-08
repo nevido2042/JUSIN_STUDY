@@ -24,15 +24,28 @@ private:
 	void Fire();
 
 private:
-	//float m_fAccel;
+	//낙하 속도
 	float m_fGravity;
-	//float m_fFallSpeed;
+
+	//점프 속도
 	float m_fJumpSpeed;
+
+	//점프 중인가?
 	bool  m_bJump;
+
+	//점프 포물선 계산 용도 타임
 	float  m_fTime;
-	ULONGLONG  m_ullJumpTimer;
-	ULONGLONG  m_ullFireTimer;
+
+	//마지막 점프 시간
+	ULONGLONG  m_ullJumpTime;
+
+	//마지막 발사 시간
+	ULONGLONG  m_ullFireTime;
+	
+	//이전 프레임의 Y좌표
 	float m_fPrevY;
 
+	//플레이어
+	CObj* m_pPlayer;
 };
 

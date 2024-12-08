@@ -8,7 +8,8 @@
 
 CBoss_IceMan::CBoss_IceMan()
 	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ m_bJump(false),
-	m_fJumpSpeed(0.f), m_fTime(0.f), m_ullJumpTimer(0.f), m_fPrevY(0.f)
+	m_fJumpSpeed(0.f), m_fTime(0.f), m_ullJumpTime(0), m_fPrevY(0.f),
+	m_ullFireTime(0), m_pPlayer(nullptr)
 {
 }
 
@@ -27,10 +28,12 @@ void CBoss_IceMan::Initialize()
 	m_fGravity = 2.f;
 	//m_fFallSpeed = m_fGravity;
 	m_fJumpSpeed = 15.f;
-	m_ullJumpTimer = GetTickCount64();
-	m_ullFireTimer = GetTickCount64();
+	m_ullJumpTime = GetTickCount64();
+	m_ullFireTime = GetTickCount64();
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../megaman1 sprite/boss_ice_all.bmp", L"BossIceAll");
+
+	m_pPlayer = CObjMgr::Get_Instance()->Get_Player();
 }
 
 int CBoss_IceMan::Update()
@@ -47,15 +50,15 @@ int CBoss_IceMan::Update()
 
 void CBoss_IceMan::Late_Update()
 {
-	if (m_ullJumpTimer + 100.f < GetTickCount64())
+	if (m_ullJumpTime + 100.f < GetTickCount64())
 	{
-		m_ullJumpTimer = GetTickCount64();
+		m_ullJumpTime = GetTickCount64();
 		m_bJump = true;
 	}
 
-	if (m_ullFireTimer + 500.f < GetTickCount64())
+	if (m_ullFireTime + 500.f < GetTickCount64())
 	{
-		m_ullFireTimer = GetTickCount64();
+		m_ullFireTime = GetTickCount64();
 		Fire();
 	}
 
@@ -105,7 +108,17 @@ void CBoss_IceMan::Jumping()
 {
 	if (m_bJump)
 	{
-		m_tInfo.fX -= cosf(45.f) * m_fTime;
+		//플레이어의 위치를 확인해서 좌로 갈지 우로 갈지 판단
+		if (m_pPlayer->Get_Info().fX < Get_Info().fX)
+		{
+			m_tInfo.fX -= cosf(45.f * PI / 180.f) * m_fTime;
+		}
+		else
+		{
+			m_tInfo.fX += cosf(45.f * PI / 180.f) * m_fTime;
+		}
+
+		
 		m_tInfo.fY -= (m_fJumpSpeed * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
 		m_fTime += 0.1f;
 
