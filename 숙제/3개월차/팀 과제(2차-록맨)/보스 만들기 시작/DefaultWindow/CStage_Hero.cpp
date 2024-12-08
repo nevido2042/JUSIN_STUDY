@@ -11,6 +11,7 @@
 #include "CScrollMgr.h"
 #include "Boss_IceMan.h"
 #include "Penguin.h"
+#include "JumpingMonster.h"
 
 CStage_Hero::CStage_Hero()
 {
@@ -41,6 +42,14 @@ void CStage_Hero::Initialize()
 	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(
 		CObjMgr::Get_Instance()->Get_Player()
 	);
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(500.f, 200.f, DIR_END));
+	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(
+		CObjMgr::Get_Instance()->Get_Player()
+	);
+
+	
 }
 
 void CStage_Hero::Update()

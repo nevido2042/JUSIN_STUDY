@@ -169,6 +169,7 @@
     <ClInclude Include="DummyMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Ice_Slasher.h" />
+    <ClInclude Include="JumpingMonster.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Penguin.h" />
     <ClInclude Include="Resource.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="DefaultWindow.cpp" />
     <ClCompile Include="DummyMgr.cpp" />
     <ClCompile Include="Ice_Slasher.cpp" />
+    <ClCompile Include="JumpingMonster.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
