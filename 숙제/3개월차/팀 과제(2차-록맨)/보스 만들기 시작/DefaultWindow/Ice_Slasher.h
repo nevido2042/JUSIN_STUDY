@@ -5,5 +5,6 @@ class CIce_Slasher :
 {
     void Initialize() override;
     void Render(HDC hDC) override;
+    void OnCollision(CObj* _pOther, OBJID _eOtherID) override;
 };
 

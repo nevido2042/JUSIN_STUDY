@@ -108,8 +108,8 @@ void CCollisionMgr::Collision_RectEx_Base(OBJID _Dst, OBJID _Src)
 				}
 				//Dst->Set_Ground(true);
 				//Dst->Update_Rect();
-				Dst->OnCollision();
-				Src->OnCollision();
+				Dst->OnCollision(Src, _Src);
+				Src->OnCollision(Dst, _Dst);
 			}
 		}
 	}

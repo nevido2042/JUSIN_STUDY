@@ -89,6 +89,15 @@ void CBoss_IceMan::Release()
 {
 }
 
+void CBoss_IceMan::OnCollision(CObj* _pOther, OBJID _eOtherID)
+{
+	if (_eOtherID == OBJ_BLOCK)
+	{
+		Update_Rect();
+	}
+
+}
+
 void CBoss_IceMan::Fall()
 {
 	if (!m_bJump)

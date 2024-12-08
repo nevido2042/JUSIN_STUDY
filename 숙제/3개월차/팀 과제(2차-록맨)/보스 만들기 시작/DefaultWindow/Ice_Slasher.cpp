@@ -35,3 +35,11 @@ void CIce_Slasher::Render(HDC hDC)
 		(int)m_tInfo.fCY,
 		RGB(128, 0, 128));            // 제거할 색상
 }
+
+void CIce_Slasher::OnCollision(CObj* _pOther, OBJID _eOtherID)
+{
+	if (_eOtherID == OBJ_PLAYER)
+	{
+		//_pOther->Set_
+	}
+}

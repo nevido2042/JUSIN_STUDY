@@ -14,6 +14,7 @@ public:
 	void Late_Update() override;
 	void Render(HDC hDC) override;
 	void Release() override;
+	void OnCollision(CObj* _pOther, OBJID _eOtherID) override;
 private:
 	//ม฿ทย
 	void Fall();

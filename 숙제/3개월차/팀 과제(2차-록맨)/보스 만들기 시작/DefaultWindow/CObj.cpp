@@ -12,7 +12,7 @@ CObj::~CObj()
 {
 }
 
-void CObj::OnCollision(OBJID _eOther)
+void CObj::OnCollision(CObj* _pOther, OBJID _eOtherID)
 {
 }
 
