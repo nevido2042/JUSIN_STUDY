@@ -10,8 +10,10 @@ public:
 
 public:
 	INFO			Get_Info() { return m_tInfo; }
-	const RECT*		Get_Rect() { return &m_tRect; }
+	INFO* Get_pInfo() { return &m_tInfo; }
+	const RECT* Get_Rect() { return &m_tRect; }
 
+	const POINT		Get_Point() { return { (long)m_tInfo.fX, (long)m_tInfo.fY }; }
 	void		Set_Pos(float _fX, float _fY)
 	{
 		m_tInfo.fX = _fX;
@@ -34,12 +36,16 @@ public:
 	void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
 	bool		Get_Dead() { return m_bDead; }
 
+
+
 public:
 	virtual void		Initialize()PURE;
 	virtual int			Update()PURE;
 	virtual void		Late_Update()PURE;
 	virtual void		Render(HDC hDC)PURE;
 	virtual void		Release()PURE;
+	//virtual void		OnCollision(CObj* _pOther, OBJID _eOtherID);//ºÎ‹HÇûÀ» ¶§ ½ÇÇà ÇÒ °Í
+
 
 public:
 	void		Update_Rect();
@@ -55,6 +61,8 @@ protected:
 	bool		m_bDead;
 	DIRECTION	m_eDir;
 
-	CObj*		m_pTarget;
+	CObj* m_pTarget;
+
+	bool		m_bGround;//¿µ¿õ
 };
 

@@ -195,12 +195,6 @@
     <ClInclude Include="DummyMgr.h">
       <Filter>04. Design\DummyMgr</Filter>
     </ClInclude>
-    <ClInclude Include="BlockMgr.h">
-      <Filter>04. Design\BlockMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>01. Obj\05. Block</Filter>
-    </ClInclude>
     <ClInclude Include="CBmpMgr.h">
       <Filter>04. Design\BmpMgr</Filter>
     </ClInclude>
@@ -270,6 +264,12 @@
     <ClInclude Include="Ice_Slasher.h">
       <Filter>01. Obj\08. Boss\Hero</Filter>
     </ClInclude>
+    <ClInclude Include="BlockMgr.h">
+      <Filter>04. Design\BlockMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>01. Obj\05. Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -316,12 +316,6 @@
     </ClCompile>
     <ClCompile Include="DummyMgr.cpp">
       <Filter>04. Design\DummyMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="BlockMgr.cpp">
-      <Filter>04. Design\BlockMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>01. Obj\05. Block</Filter>
     </ClCompile>
     <ClCompile Include="CBmpMgr.cpp">
       <Filter>04. Design\BmpMgr</Filter>
@@ -391,6 +385,12 @@
     </ClCompile>
     <ClCompile Include="Boss_IceMan.cpp">
       <Filter>01. Obj\08. Boss\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockMgr.cpp">
+      <Filter>04. Design\BlockMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>01. Obj\05. Block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
