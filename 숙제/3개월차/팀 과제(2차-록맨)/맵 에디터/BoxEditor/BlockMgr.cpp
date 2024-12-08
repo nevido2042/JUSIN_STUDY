@@ -124,7 +124,33 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+
+					//더럽다.
+					switch (m_eCurrentObj)
+					{
+					case OBJ_PLAYER:
+						break;
+					case OBJ_BULLET:
+						break;
+					case OBJ_MONSTER:
+						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+						break;
+					case OBJ_MOUSE:
+						break;
+					case OBJ_SHIELD:
+						break;
+					case OBJ_BUTTON:
+						break;
+					case OBJ_BLOCK:
+						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case OBJ_END:
+						break;
+					default:
+						break;
+					}
+
+					
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -135,7 +161,30 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+					//더럽다.
+					switch (m_eCurrentObj)
+					{
+					case OBJ_PLAYER:
+						break;
+					case OBJ_BULLET:
+						break;
+					case OBJ_MONSTER:
+						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+						break;
+					case OBJ_MOUSE:
+						break;
+					case OBJ_SHIELD:
+						break;
+					case OBJ_BUTTON:
+						break;
+					case OBJ_BLOCK:
+						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case OBJ_END:
+						break;
+					default:
+						break;
+					}
 				}
 			}
 			else
@@ -149,7 +198,30 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+					//더럽다.
+					switch (m_eCurrentObj)
+					{
+					case OBJ_PLAYER:
+						break;
+					case OBJ_BULLET:
+						break;
+					case OBJ_MONSTER:
+						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+						break;
+					case OBJ_MOUSE:
+						break;
+					case OBJ_SHIELD:
+						break;
+					case OBJ_BUTTON:
+						break;
+					case OBJ_BLOCK:
+						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case OBJ_END:
+						break;
+					default:
+						break;
+					}
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -160,7 +232,30 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+					//더럽다.
+					switch (m_eCurrentObj)
+					{
+					case OBJ_PLAYER:
+						break;
+					case OBJ_BULLET:
+						break;
+					case OBJ_MONSTER:
+						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+						break;
+					case OBJ_MOUSE:
+						break;
+					case OBJ_SHIELD:
+						break;
+					case OBJ_BUTTON:
+						break;
+					case OBJ_BLOCK:
+						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case OBJ_END:
+						break;
+					default:
+						break;
+					}
 				}		
 			}
 
@@ -187,7 +282,30 @@ int CBlockMgr::Update()
 				m_fBlockSize,
 				m_fBlockSize
 			};
-			pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+			//더럽다.
+			switch (m_eCurrentObj)
+			{
+			case OBJ_PLAYER:
+				break;
+			case OBJ_BULLET:
+				break;
+			case OBJ_MONSTER:
+				pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+				break;
+			case OBJ_MOUSE:
+				break;
+			case OBJ_SHIELD:
+				break;
+			case OBJ_BUTTON:
+				break;
+			case OBJ_BLOCK:
+				pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+				break;
+			case OBJ_END:
+				break;
+			default:
+				break;
+			}
 
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
 			//m_ObjList.push_back(pBlock);
@@ -214,6 +332,15 @@ int CBlockMgr::Update()
 	{
 		Load_Block();
 		return 0;
+	}
+	//블럭 선택
+	if (CKeyMgr::Get_Instance()->Key_Down('1'))
+	{
+		m_eCurrentObj = OBJ_BLOCK;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down('2'))
+	{
+		m_eCurrentObj = OBJ_MONSTER;
 	}
 
 	//화면 움직이기
