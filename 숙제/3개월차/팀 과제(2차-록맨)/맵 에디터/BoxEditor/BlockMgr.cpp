@@ -5,6 +5,9 @@
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
 
+#include "Block.h"
+#include "Monster.h"
+
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
@@ -121,7 +124,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -132,7 +135,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
 				}
 			}
 			else
@@ -146,7 +149,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -157,7 +160,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
 				}		
 			}
 
@@ -184,7 +187,7 @@ int CBlockMgr::Update()
 				m_fBlockSize,
 				m_fBlockSize
 			};
-			pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+			pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
 
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
 			//m_ObjList.push_back(pBlock);
@@ -429,7 +432,17 @@ void CBlockMgr::Load_Block()
 		case OBJ_BULLET:
 			break;
 		case OBJ_MONSTER:
+		{
+			//오브젝트 사이즈 결정
+			ObjSize = sizeof(CMonster);
+			//Info값 저장
+			INFO tInfo = pObj->Get_Info();
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
 			break;
+		}
 		case OBJ_MOUSE:
 			break;
 		case OBJ_SHIELD:
@@ -443,7 +456,7 @@ void CBlockMgr::Load_Block()
 			//Info값 저장
 			INFO tInfo = pObj->Get_Info();
 			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
+			pNewObj = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
 			//해당 리스트에 오브젝트 추가
 			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
 			break;
