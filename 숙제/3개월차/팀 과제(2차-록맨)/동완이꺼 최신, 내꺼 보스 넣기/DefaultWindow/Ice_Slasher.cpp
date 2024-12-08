@@ -13,7 +13,7 @@ void CIce_Slasher::Initialize()
 	if (m_eDir == DIR_LEFT)
 		m_fSpeed *= -1;
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../megaman1 sprite/boss_ice_all.bmp", L"BossIceAll");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/boss_ice_all.bmp", L"BossIceAll");
 }
 
 void CIce_Slasher::Render(HDC hDC)

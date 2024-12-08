@@ -31,7 +31,7 @@ void CBoss_IceMan::Initialize()
 	m_ullJumpTime = GetTickCount64();
 	m_ullFireTime = GetTickCount64();
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../megaman1 sprite/boss_ice_all.bmp", L"BossIceAll");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/boss_ice_all.bmp", L"BossIceAll");
 
 	m_pPlayer = CObjMgr::Get_Instance()->Get_Player();
 }
