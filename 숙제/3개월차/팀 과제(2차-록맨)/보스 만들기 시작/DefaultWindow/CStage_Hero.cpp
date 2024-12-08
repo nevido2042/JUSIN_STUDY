@@ -37,7 +37,7 @@ void CStage_Hero::Initialize()
 	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(500.f, 100.f, DIR_END));
 
 	CObjMgr::Get_Instance()->Add_Object
-	(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(500.f, 100.f, DIR_END));
+	(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(500.f, 400.f, DIR_END));
 	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(
 		CObjMgr::Get_Instance()->Get_Player()
 	);

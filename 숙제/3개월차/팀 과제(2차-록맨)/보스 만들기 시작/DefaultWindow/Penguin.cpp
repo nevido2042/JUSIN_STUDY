@@ -2,6 +2,7 @@
 #include "Penguin.h"
 #include "CScrollMgr.h"
 #include "CBmpMgr.h"
+#include "CScrollMgr.h"
 
 void CPenguin::Initialize()
 {
@@ -30,4 +31,32 @@ void CPenguin::Render(HDC hDC)
 		(int)m_tInfo.fCX,            // 복사할 이미지의 가로, 세로
 		(int)m_tInfo.fCY,
 		RGB(128, 0, 128));
+}
+
+int CPenguin::Update()
+{
+    if (m_bDead)
+        return OBJ_DEAD;
+
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	Set_PosX(-5.f);
+
+	if (Get_Info().fX < -iScrollX)
+	{
+		Set_Pos(WINCX - iScrollX, Get_Info().fY);
+	}
+
+    __super::Update_Rect();
+
+    return OBJ_NOEVENT;
+}
+
+void CPenguin::Late_Update()
+{
+}
+
+void CPenguin::Release()
+{
 }

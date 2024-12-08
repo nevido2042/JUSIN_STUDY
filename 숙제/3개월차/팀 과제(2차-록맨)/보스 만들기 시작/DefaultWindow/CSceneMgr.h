@@ -27,6 +27,7 @@ public:
 	void Set_Scene(SCENE_TYPE eType);  // 씬 전환
 	void Initialize(); // 초기화
 	void Update(); // 업데이트
+	void LateUpdate();
 	void Render(HDC hDC); // 렌더
 
 private:
