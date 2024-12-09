@@ -34,6 +34,9 @@ public:
 	void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
 	bool		Get_Dead() { return m_bDead; }
 
+	void		Set_OBJID(OBJID eOBJID) { m_eOBJID = eOBJID; }
+	OBJID		Get_OBJID() { return m_eOBJID; }
+
 public:
 	virtual void		Initialize()PURE;
 	virtual int			Update()PURE;
@@ -56,5 +59,8 @@ protected:
 	DIRECTION	m_eDir;
 
 	CObj*		m_pTarget;
+
+	//파일 로드할 때 어떤 오브젝트인지 판단 할 수 있도록
+	OBJID		m_eOBJID;
 };
 

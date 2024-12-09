@@ -13,17 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="KeyMgr">
-      <UniqueIdentifier>{f5f61b2e-64bd-43f4-b7f9-b974fd9b0187}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame">
       <UniqueIdentifier>{5215c4bd-6529-422d-8ab2-e74cb61e38c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ScrollMgr">
-      <UniqueIdentifier>{d97934c9-d486-43b5-9d94-30220a08a35d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AbstractFactory">
-      <UniqueIdentifier>{e36c8853-b04b-471b-b2bc-5c2409a9005e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Obj">
       <UniqueIdentifier>{22dadb02-9a75-4827-bf91-59c110a15fc9}</UniqueIdentifier>
@@ -31,14 +22,47 @@
     <Filter Include="Obj\Block">
       <UniqueIdentifier>{c781a7fd-9056-4f03-90f2-d0068c0f319a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BlockMgr">
-      <UniqueIdentifier>{334c6510-2ccf-43bf-b823-7d5f9b9351a0}</UniqueIdentifier>
+    <Filter Include="Obj\Monster">
+      <UniqueIdentifier>{bbb63c29-486f-446b-8ebe-75c961a95f5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyBmp">
+    <Filter Include="Design">
+      <UniqueIdentifier>{bf1fe0ad-a2cd-4f4d-ba0f-d085b3dd9922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design\MyBmp">
       <UniqueIdentifier>{22692b87-f01e-4f8d-82b4-6a6118a37110}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BmpMgr">
+    <Filter Include="Design\KeyMgr">
+      <UniqueIdentifier>{f5f61b2e-64bd-43f4-b7f9-b974fd9b0187}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design\BmpMgr">
       <UniqueIdentifier>{8611e782-1d6f-4a5a-b3ef-88d61b3f4723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design\BlockMgr">
+      <UniqueIdentifier>{334c6510-2ccf-43bf-b823-7d5f9b9351a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design\ObjMgr">
+      <UniqueIdentifier>{1ed778b7-48eb-4556-899b-25c2acf03fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design\ScrollMgr">
+      <UniqueIdentifier>{d97934c9-d486-43b5-9d94-30220a08a35d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design\AbstractFactory">
+      <UniqueIdentifier>{e36c8853-b04b-471b-b2bc-5c2409a9005e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\01.Block_Fire">
+      <UniqueIdentifier>{d21e59f6-c59b-4e67-b12e-b5be2d65f376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\02.Block_Elec">
+      <UniqueIdentifier>{a3fd4990-cd11-4724-a4ad-7827a49d52a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\00.Block_Ice">
+      <UniqueIdentifier>{29b19784-7312-42c8-8f2f-82413041e6cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\03.Block_Cut">
+      <UniqueIdentifier>{fc8238be-47af-417e-858d-0f00f612680c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\04.Block_Gut">
+      <UniqueIdentifier>{b7834424-92b5-4ebc-b3c5-f0b443302555}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,16 +85,16 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="CKeyMgr.h">
-      <Filter>KeyMgr</Filter>
+      <Filter>Design\KeyMgr</Filter>
     </ClInclude>
     <ClInclude Include="CScrollMgr.h">
-      <Filter>ScrollMgr</Filter>
+      <Filter>Design\ScrollMgr</Filter>
     </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CAbstractFactory.h">
-      <Filter>AbstractFactory</Filter>
+      <Filter>Design\AbstractFactory</Filter>
     </ClInclude>
     <ClInclude Include="CObj.h">
       <Filter>Obj</Filter>
@@ -79,13 +103,34 @@
       <Filter>Obj\Block</Filter>
     </ClInclude>
     <ClInclude Include="BlockMgr.h">
-      <Filter>BlockMgr</Filter>
+      <Filter>Design\BlockMgr</Filter>
     </ClInclude>
     <ClInclude Include="CBmpMgr.h">
-      <Filter>BmpMgr</Filter>
+      <Filter>Design\BmpMgr</Filter>
     </ClInclude>
     <ClInclude Include="CMyBmp.h">
-      <Filter>MyBmp</Filter>
+      <Filter>Design\MyBmp</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Obj\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjMgr.h">
+      <Filter>Design\ObjMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Ice.h">
+      <Filter>Obj\Block\00.Block_Ice</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Fire.h">
+      <Filter>Obj\Block\01.Block_Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Elec.h">
+      <Filter>Obj\Block\02.Block_Elec</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Cut.h">
+      <Filter>Obj\Block\03.Block_Cut</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Gut.h">
+      <Filter>Obj\Block\04.Block_Gut</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,10 +144,10 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
-      <Filter>KeyMgr</Filter>
+      <Filter>Design\KeyMgr</Filter>
     </ClCompile>
     <ClCompile Include="CScrollMgr.cpp">
-      <Filter>ScrollMgr</Filter>
+      <Filter>Design\ScrollMgr</Filter>
     </ClCompile>
     <ClCompile Include="CObj.cpp">
       <Filter>Obj</Filter>
@@ -111,13 +156,34 @@
       <Filter>Obj\Block</Filter>
     </ClCompile>
     <ClCompile Include="BlockMgr.cpp">
-      <Filter>BlockMgr</Filter>
+      <Filter>Design\BlockMgr</Filter>
     </ClCompile>
     <ClCompile Include="CBmpMgr.cpp">
-      <Filter>BmpMgr</Filter>
+      <Filter>Design\BmpMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMyBmp.cpp">
-      <Filter>MyBmp</Filter>
+      <Filter>Design\MyBmp</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Obj\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjMgr.cpp">
+      <Filter>Design\ObjMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Ice.cpp">
+      <Filter>Obj\Block\00.Block_Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Fire.cpp">
+      <Filter>Obj\Block\01.Block_Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Elec.cpp">
+      <Filter>Obj\Block\02.Block_Elec</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Cut.cpp">
+      <Filter>Obj\Block\03.Block_Cut</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Gut.cpp">
+      <Filter>Obj\Block\04.Block_Gut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

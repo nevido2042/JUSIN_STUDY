@@ -4,6 +4,7 @@
 #include "CKeyMgr.h"
 #include "CScrollMgr.h"
 #include "CBmpMgr.h"
+#include "CObjMgr.h"
 
 CMainGame::CMainGame()
 	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
@@ -34,6 +35,7 @@ void CMainGame::Initialize()
 void CMainGame::Update()
 {
 	CBlockMgr::Get_Instance()->Update();
+	CObjMgr::Get_Instance()->Update();
 }
 
 void CMainGame::Late_Update()
@@ -41,6 +43,7 @@ void CMainGame::Late_Update()
 	CKeyMgr::Get_Instance()->Update();
 
 	CBlockMgr::Get_Instance()->Late_Update();
+	CObjMgr::Get_Instance()->Late_Update();
 
 }
 
@@ -66,8 +69,7 @@ void CMainGame::Render()
 
 	BitBlt(hMemDC, 0, 0, WINCX, WINCY, hGroundDC, 0, 0, SRCCOPY);
 
-	//Rectangle(m_hDC, 0, 0, WINCX, WINCY);
-
+	CObjMgr::Get_Instance()->Render(hMemDC);
 	CBlockMgr::Get_Instance()->Render(hMemDC);
 
 	BitBlt(m_hDC,
@@ -84,6 +86,7 @@ void CMainGame::Release()
 	CKeyMgr::Destroy_Instance();
 	CBlockMgr::Destroy_Instance();
 	CBmpMgr::Destroy_Instance();
+	CObjMgr::DestroyInstance();
 
 	ReleaseDC(g_hWnd, m_hDC);
 }

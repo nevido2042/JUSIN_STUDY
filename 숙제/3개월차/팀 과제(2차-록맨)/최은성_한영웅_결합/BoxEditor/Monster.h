@@ -1,14 +1,14 @@
 #pragma once
 #include "CObj.h"
-class CBlock :
+class CMonster :
     public CObj
 {
 public:
-    CBlock();
-    CBlock(float _fX, float _fY, float _fSize);
-    virtual ~CBlock();
+    CMonster();
+    CMonster(float _fX, float _fY, float _fSize);
+    virtual ~CMonster();
 public:
-    INFO*			Get_Info() { return &m_tInfo; }
+    INFO* Get_Info() { return &m_tInfo; }
 
 public:
     // CObj을(를) 통해 상속됨
@@ -17,10 +17,5 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
-public:
-    BLOCKTYPE Get_BlockType() { return m_eBlockType; }
-
-protected:
-    BLOCKTYPE m_eBlockType;
 };
 
