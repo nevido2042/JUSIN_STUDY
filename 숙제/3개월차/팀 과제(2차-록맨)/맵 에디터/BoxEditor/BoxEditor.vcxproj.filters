@@ -49,11 +49,14 @@
     <Filter Include="Design\AbstractFactory">
       <UniqueIdentifier>{e36c8853-b04b-471b-b2bc-5c2409a9005e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Obj\Block\Block_Ice">
+    <Filter Include="Obj\Block\00.Block_Ice">
       <UniqueIdentifier>{29b19784-7312-42c8-8f2f-82413041e6cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Obj\Block\Block_Fire">
+    <Filter Include="Obj\Block\01.Block_Fire">
       <UniqueIdentifier>{d21e59f6-c59b-4e67-b12e-b5be2d65f376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\02.Block_Elec">
+      <UniqueIdentifier>{a3fd4990-cd11-4724-a4ad-7827a49d52a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,10 +112,10 @@
       <Filter>Design\ObjMgr</Filter>
     </ClInclude>
     <ClInclude Include="Block_Ice.h">
-      <Filter>Obj\Block\Block_Ice</Filter>
+      <Filter>Obj\Block\00.Block_Ice</Filter>
     </ClInclude>
     <ClInclude Include="Block_Fire.h">
-      <Filter>Obj\Block\Block_Fire</Filter>
+      <Filter>Obj\Block\01.Block_Fire</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,10 +156,10 @@
       <Filter>Design\ObjMgr</Filter>
     </ClCompile>
     <ClCompile Include="Block_Ice.cpp">
-      <Filter>Obj\Block\Block_Ice</Filter>
+      <Filter>Obj\Block\00.Block_Ice</Filter>
     </ClCompile>
     <ClCompile Include="Block_Fire.cpp">
-      <Filter>Obj\Block\Block_Fire</Filter>
+      <Filter>Obj\Block\01.Block_Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
