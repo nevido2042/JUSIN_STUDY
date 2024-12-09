@@ -17,18 +17,19 @@ public:
 private:
 	void Fall();
 	void Jumping();
+	void Jump_Pattern();
 private:
 	//낙하 속도
 	float m_fGravity;
 
 	//점프 속도
-	float m_fJumpSpeed;
+	//float m_fJumpSpeed;
 
 	//점프 중인가?
-	bool  m_bJump;
+	//bool  m_bJump;
 
 	//점프 포물선 계산 용도 타임
-	float  m_fTime;
+	//float  m_fTime;
 
 	//마지막 점프 시간
 	ULONGLONG  m_ullJumpTime;

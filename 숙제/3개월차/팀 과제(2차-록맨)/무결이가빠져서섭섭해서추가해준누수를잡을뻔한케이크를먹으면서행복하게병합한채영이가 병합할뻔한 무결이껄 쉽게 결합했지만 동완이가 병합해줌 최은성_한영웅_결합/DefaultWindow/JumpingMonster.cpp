@@ -6,8 +6,8 @@
 #include "CObjMgr.h"
 
 CJumpingMonster::CJumpingMonster()
-	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ m_bJump(false),
-	m_fJumpSpeed(0.f), m_fTime(0.f), m_ullJumpTime(0), m_fPrevY(0.f),
+	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ /*m_bJump(false),*/
+	/*m_fJumpSpeed(0.f), m_fTime(0.f),*/ m_ullJumpTime(0), m_fPrevY(0.f),
 	m_pPlayer(nullptr)
 {
 }
@@ -26,7 +26,8 @@ void CJumpingMonster::Initialize()
 	//m_fAccel = 0.1f;
 	m_fGravity = 9.f;
 	//m_fFallSpeed = m_fGravity;
-	m_fJumpSpeed = 15.f;
+	//m_fJumpSpeed = 15.f;
+
 	m_ullJumpTime = GetTickCount64();
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/boss_ice_all.bmp", L"EnemyAll");
@@ -58,7 +59,8 @@ int CJumpingMonster::Update()
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	Fall();
+	__super::Jumping();
+	//Fall();
 
 	__super::Update_Rect();
 
@@ -67,13 +69,15 @@ int CJumpingMonster::Update()
 
 void CJumpingMonster::Late_Update()
 {
-	if (m_ullJumpTime + 100.f < GetTickCount64())
+	if (m_ullJumpTime + 1000.f < GetTickCount64())
 	{
 		m_ullJumpTime = GetTickCount64();
 		m_bJump = true;
+
+		m_fJumpPower = 15.f;
 	}
 
-	Jumping();
+	//Jumping();
 }
 
 void CJumpingMonster::Release()
@@ -104,31 +108,49 @@ void CJumpingMonster::Fall()
 
 void CJumpingMonster::Jumping()
 {
-	if (m_bJump)
+	//if (m_bJump)
+	//{
+	//	//플레이어의 위치를 확인해서 좌로 갈지 우로 갈지 판단
+	//	if (m_pPlayer->Get_Info().fX < Get_Info().fX)
+	//	{
+	//		m_tInfo.fX -= cosf(45.f * PI / 180.f) * m_fTime;
+	//	}
+	//	else
+	//	{
+	//		m_tInfo.fX += cosf(45.f * PI / 180.f) * m_fTime;
+	//	}
+
+
+	//	m_tInfo.fY -= (m_k* sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
+	//	m_fTime += 0.1f;
+
+	//	//전 프레임의 높이와 현재 높이를 비교
+	//	//떨어지고 있으면 점프 종료
+	//	if (m_fPrevY < m_tInfo.fY)
+	//	{
+	//		m_bJump = false;
+	//		m_fTime = 0.f;
+	//	}
+
+	//	m_fPrevY = m_tInfo.fY;
+	//	Update_Rect();
+	//}
+}
+
+void CJumpingMonster::Jump_Pattern()
+{
+	//플레이어의 위치를 확인해서 좌로 갈지 우로 갈지 판단
+	if (m_pPlayer->Get_Info().fX < Get_Info().fX)
 	{
-		//플레이어의 위치를 확인해서 좌로 갈지 우로 갈지 판단
-		if (m_pPlayer->Get_Info().fX < Get_Info().fX)
-		{
-			m_tInfo.fX -= cosf(45.f * PI / 180.f) * m_fTime;
-		}
-		else
-		{
-			m_tInfo.fX += cosf(45.f * PI / 180.f) * m_fTime;
-		}
-
-
-		m_tInfo.fY -= (m_fJumpSpeed * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
-		m_fTime += 0.1f;
-
-		//전 프레임의 높이와 현재 높이를 비교
-		//떨어지고 있으면 점프 종료
-		if (m_fPrevY < m_tInfo.fY)
-		{
-			m_bJump = false;
-			m_fTime = 0.f;
-		}
-
-		m_fPrevY = m_tInfo.fY;
-		Update_Rect();
+		m_tInfo.fX -= cosf(45.f * PI / 180.f) * m_fTime;
 	}
+	else
+	{
+		m_tInfo.fX += cosf(45.f * PI / 180.f) * m_fTime;
+	}
+
+	m_fPrevY = m_tInfo.fY;
+	m_tInfo.fY -= (m_fJumpPower * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
+	m_fTime += 0.1f;
+
 }
