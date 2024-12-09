@@ -49,14 +49,20 @@
     <Filter Include="Design\AbstractFactory">
       <UniqueIdentifier>{e36c8853-b04b-471b-b2bc-5c2409a9005e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Obj\Block\00.Block_Ice">
-      <UniqueIdentifier>{29b19784-7312-42c8-8f2f-82413041e6cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Obj\Block\01.Block_Fire">
       <UniqueIdentifier>{d21e59f6-c59b-4e67-b12e-b5be2d65f376}</UniqueIdentifier>
     </Filter>
     <Filter Include="Obj\Block\02.Block_Elec">
       <UniqueIdentifier>{a3fd4990-cd11-4724-a4ad-7827a49d52a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\00.Block_Ice">
+      <UniqueIdentifier>{29b19784-7312-42c8-8f2f-82413041e6cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\03.Block_Cut">
+      <UniqueIdentifier>{fc8238be-47af-417e-858d-0f00f612680c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Obj\Block\04.Block_Gut">
+      <UniqueIdentifier>{b7834424-92b5-4ebc-b3c5-f0b443302555}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +123,15 @@
     <ClInclude Include="Block_Fire.h">
       <Filter>Obj\Block\01.Block_Fire</Filter>
     </ClInclude>
+    <ClInclude Include="Block_Elec.h">
+      <Filter>Obj\Block\02.Block_Elec</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Cut.h">
+      <Filter>Obj\Block\03.Block_Cut</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Gut.h">
+      <Filter>Obj\Block\04.Block_Gut</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoxEditor.cpp">
@@ -160,6 +175,15 @@
     </ClCompile>
     <ClCompile Include="Block_Fire.cpp">
       <Filter>Obj\Block\01.Block_Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Elec.cpp">
+      <Filter>Obj\Block\02.Block_Elec</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Cut.cpp">
+      <Filter>Obj\Block\03.Block_Cut</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Gut.cpp">
+      <Filter>Obj\Block\04.Block_Gut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

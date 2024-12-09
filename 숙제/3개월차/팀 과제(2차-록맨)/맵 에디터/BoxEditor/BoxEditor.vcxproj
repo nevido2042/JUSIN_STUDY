@@ -136,7 +136,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Block_Cut.h" />
+    <ClInclude Include="Block_Elec.h" />
     <ClInclude Include="Block_Fire.h" />
+    <ClInclude Include="Block_Gut.h" />
     <ClInclude Include="Block_Ice.h" />
     <ClInclude Include="BoxEditor.h" />
     <ClInclude Include="BlockMgr.h" />
@@ -157,7 +160,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Block_Cut.cpp" />
+    <ClCompile Include="Block_Elec.cpp" />
     <ClCompile Include="Block_Fire.cpp" />
+    <ClCompile Include="Block_Gut.cpp" />
     <ClCompile Include="Block_Ice.cpp" />
     <ClCompile Include="BoxEditor.cpp" />
     <ClCompile Include="BlockMgr.cpp" />

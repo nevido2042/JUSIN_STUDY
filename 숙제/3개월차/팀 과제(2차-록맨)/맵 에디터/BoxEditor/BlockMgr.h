@@ -21,6 +21,8 @@ public:
 	void	Save_Block();
 	void	Load_Block();
 
+	CObj*	Create_Block(INFO* _tInfo);
+
 public:
 	static CBlockMgr* Get_Instance()
 	{

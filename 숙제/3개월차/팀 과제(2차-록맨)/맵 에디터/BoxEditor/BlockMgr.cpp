@@ -11,6 +11,9 @@
 
 #include "Block_Ice.h"
 #include "Block_Fire.h"
+#include "Block_Elec.h"
+#include "Block_Cut.h"
+#include "Block_Gut.h"
 
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
@@ -141,18 +144,7 @@ int CBlockMgr::Update()
 						m_fBlockSize
 					};
 
-					//더럽다.
-					switch (m_eBlockType)
-					{
-					case BLOCK_ICE:
-						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case BLOCK_FIRE:
-						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					}
-
-
+					pBlock = Create_Block(&tInfo);
 
 				}
 				else if (m_eDrawDir == VERTICAL)
@@ -164,16 +156,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					//더럽다.
-					switch (m_eBlockType)
-					{
-					case BLOCK_ICE:
-						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case BLOCK_FIRE:
-						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					}
+					pBlock = Create_Block(&tInfo);
 				}
 			}
 			else
@@ -187,16 +170,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					//더럽다.
-					switch (m_eBlockType)
-					{
-					case BLOCK_ICE:
-						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case BLOCK_FIRE:
-						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					}
+					pBlock = Create_Block(&tInfo);
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -207,16 +181,7 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					//더럽다.
-					switch (m_eBlockType)
-					{
-					case BLOCK_ICE:
-						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case BLOCK_FIRE:
-						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					}
+					pBlock = Create_Block(&tInfo);
 				}
 			}
 
@@ -243,17 +208,8 @@ int CBlockMgr::Update()
 				m_fBlockSize,
 				m_fBlockSize
 			};
-			//더럽다.
-			switch (m_eBlockType)
-			{
-			case BLOCK_ICE:
-				pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
-				break;
-			case BLOCK_FIRE:
-				pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
-				break;
-			}
 
+			pBlock = Create_Block(&tInfo);
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
 			//m_ObjList.push_back(pBlock);
 
@@ -584,13 +540,31 @@ void CBlockMgr::Load_Block()
 		{
 		case BLOCK_ICE:
 			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CBlock_Ice>::Create(OBJ_MONSTER, Block.Get_Info());
+			pNewObj = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, Block.Get_Info());
 			//해당 리스트에 오브젝트 추가
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
 		case BLOCK_FIRE:
 			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CBlock_Fire>::Create(OBJ_MONSTER, Block.Get_Info());
+			pNewObj = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_ELEC:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Elec>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_CUT:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Cut>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_GUT:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Gut>::Create(OBJ_BLOCK, Block.Get_Info());
 			//해당 리스트에 오브젝트 추가
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
@@ -600,4 +574,29 @@ void CBlockMgr::Load_Block()
 	CloseHandle(hFile);
 
 	MessageBox(g_hWnd, _T("Load 완료"), L"성공", MB_OK);
+}
+
+CObj* CBlockMgr::Create_Block(INFO* _tInfo)
+{
+	CObj* pObj(nullptr);
+	switch (m_eBlockType)
+	{
+	case BLOCK_ICE:
+		pObj = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, _tInfo);
+		break;
+	case BLOCK_FIRE:
+		pObj = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, _tInfo);
+		break;
+	case BLOCK_ELEC:
+		pObj = CAbstractFactory<CBlock_Elec>::Create(OBJ_BLOCK, _tInfo);
+		break;
+	case BLOCK_CUT:
+		pObj = CAbstractFactory<CBlock_Cut>::Create(OBJ_BLOCK, _tInfo);
+		break;
+	case BLOCK_GUT:
+		pObj = CAbstractFactory<CBlock_Gut>::Create(OBJ_BLOCK, _tInfo);
+		break;
+	}
+
+	return pObj;
 }

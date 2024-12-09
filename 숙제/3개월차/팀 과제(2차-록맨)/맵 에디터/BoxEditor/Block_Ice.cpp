@@ -31,11 +31,4 @@ void CBlock_Ice::Render(HDC hDC)
 		163,
 		SRCCOPY);					// 출력 효과 설정(그대로 출력)
 
-	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-
-	/*Rectangle(hDC,
-		m_tRect.left + iScrollX,
-		m_tRect.top,
-		m_tRect.right + iScrollX,
-		m_tRect.bottom);*/
 }
