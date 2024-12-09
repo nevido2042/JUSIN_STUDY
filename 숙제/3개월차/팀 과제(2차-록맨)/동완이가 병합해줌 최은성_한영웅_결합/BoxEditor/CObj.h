@@ -11,9 +11,9 @@ public:
 public:
 	INFO			Get_Info() { return m_tInfo; }
 	INFO* Get_pInfo() { return &m_tInfo; }
-	const RECT*		Get_Rect() { return &m_tRect; }
+	const RECT* Get_Rect() { return &m_tRect; }
 
-	const POINT&		Get_Point() { return { (long)m_tInfo.fX, (long)m_tInfo.fY }; }
+	const POINT& Get_Point() { return { (long)m_tInfo.fX, (long)m_tInfo.fY }; }
 	void		Set_Pos(float _fX, float _fY)
 	{
 		m_tInfo.fX = _fX;
@@ -45,11 +45,17 @@ public:
 	virtual void		Late_Update()PURE;
 	virtual void		Render(HDC hDC)PURE;
 	virtual void		Release()PURE;
+	virtual void OnCollision(CObj* _pOther, OBJID _eOtherID) {}
 
 public:
 	void		Update_Rect();
+	void Set_LineY(const float& _fY) { m_fLineY = _fY; }
+	void Set_CellingY(const float& _fY) { m_fCellingY = _fY; }
 
 protected:
+	void		Jumping();
+
+
 	INFO		m_tInfo;
 	RECT		m_tRect;
 
@@ -60,7 +66,7 @@ protected:
 	bool		m_bDead;
 	DIRECTION	m_eDir;
 
-	CObj*		m_pTarget;
+	CObj* m_pTarget;
 
 	//파일 로드할 때 어떤 오브젝트인지 판단 할 수 있도록
 	OBJID		m_eOBJID;
@@ -70,5 +76,7 @@ protected:
 	bool                m_bJump;
 	float               m_fJumpPower;
 	float               m_fTime;
+
+	bool		m_bGround;
 };
 
