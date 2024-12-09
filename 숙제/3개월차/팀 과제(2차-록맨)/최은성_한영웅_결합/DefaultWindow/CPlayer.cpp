@@ -263,7 +263,14 @@ void CPlayer::Jumping()
 		m_tInfo.fY -= (m_fJumpPower * m_fTime) - (G_FORCE * SQUARE(m_fTime)) * 0.5f;
 		m_fTime += 0.2f;
 
-		if (m_fLineY && (m_fLineY < m_tInfo.fY))
+		if (m_fCellingY != 0 && (m_fCellingY > m_tInfo.fY))
+		{
+			m_tInfo.fY = m_fCellingY;
+			m_fJumpPower = 0.f;
+			m_fTime *= 0.5f;
+		}
+
+		if (m_fLineY != 0 && (m_fLineY < m_tInfo.fY))
 		{
 			m_bJump = false;
 			m_fTime = 0.f;

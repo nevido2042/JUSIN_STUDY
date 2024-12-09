@@ -110,8 +110,8 @@ void CObjMgr::Late_Update()
 	// 여기까지
 	// 이 아래는 은성 테스트 중인 코드
 
-
 	CCollisionMgr::Collision_Floor(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
+	CCollisionMgr::Collision_Celling(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
 	CCollisionMgr::Collision_Box(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
 }
 

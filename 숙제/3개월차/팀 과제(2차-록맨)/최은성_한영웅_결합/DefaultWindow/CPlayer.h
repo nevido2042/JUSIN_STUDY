@@ -59,6 +59,7 @@ public:
     bool GetJump() { return m_bJump; }//무결, 점프상태반환
     void Set_BulId(const BULLET_ID& _ID) { m_eBullet_ID = _ID; }
     void Set_LineY(const float& _fY) { m_fLineY = _fY; }
+    void Set_CellingY(const float& _fY) { m_fCellingY = _fY; }
 
 private:
     POINT               m_tPosin;
@@ -94,5 +95,6 @@ private:
 
     int                 m_iBulletCount[BUL_END];
     
-    float               m_fLineY;
+    float               m_fLineY; // 바닥충돌용 Y좌표
+    float               m_fCellingY; // 천장충돌용 Y 좌표
 };

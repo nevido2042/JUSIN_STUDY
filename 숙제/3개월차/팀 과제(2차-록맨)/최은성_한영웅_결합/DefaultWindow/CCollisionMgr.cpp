@@ -177,6 +177,33 @@ void CCollisionMgr::Collision_Box(CObj* _Player, list<CObj*> _Src)
 		}
 	}
 }
+void CCollisionMgr::Collision_Celling(CObj* _pPlayer, list<CObj*> _Src)
+{
+	float Head = _pPlayer->Get_Info().fY - _pPlayer->Get_Info().fCY * 0.5f;
+	float CerrentY(0), ReturnY(0);
+	float fDis(0), fMinDis(WINCY);
+
+	for (auto Block : _Src)
+	{
+		if ((_pPlayer->Get_Info().fX >= Block->Get_Rect()->left - 10 &&
+			_pPlayer->Get_Info().fX < Block->Get_Rect()->right + 10))
+		{
+			CerrentY = Block->Get_Rect()->bottom;
+			fDis = fabsf(CerrentY - Head);
+			if (CerrentY <= Head && fMinDis > fDis)
+			{
+				fMinDis = fDis;
+				ReturnY = CerrentY;
+			}
+		}
+	}
+
+	if (ReturnY == 0.f)
+		static_cast<CPlayer*>(_pPlayer)->Set_CellingY(0.f);
+	else
+		static_cast<CPlayer*>(_pPlayer)->Set_CellingY(ReturnY + _pPlayer->Get_Info().fCY * 0.5f);
+
+}
 //보스 전용 // 내일 손볼예정
 void CCollisionMgr::Collision_Boss_Box(CObj* _Boss, list<CObj*> _Src)
 {
@@ -253,8 +280,8 @@ void CCollisionMgr::Collision_Floor(CObj* _pPlayer, list<CObj*> _Src)
 
 	for (auto Block : _Src)
 	{
-		if (_pPlayer->Get_Info().fX >= Block->Get_Rect()->left &&
-			_pPlayer->Get_Info().fX < Block->Get_Rect()->right)
+		if ((_pPlayer->Get_Info().fX >= Block->Get_Rect()->left - 10 &&
+			_pPlayer->Get_Info().fX < Block->Get_Rect()->right + 10))
 		{
 			CerrentY = Block->Get_Rect()->top;
 			fDis = fabsf(CerrentY - Foot);
