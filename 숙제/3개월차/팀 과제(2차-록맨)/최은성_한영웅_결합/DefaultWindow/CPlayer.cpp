@@ -319,16 +319,16 @@ void CPlayer::Offset()
 		//CScrollMgr::Get_Instance()->Set_ScrollX(-m_fSpeed); // 화면 오른쪽 이동
 
 
-	if (0 > m_tInfo.fX + m_tInfo.fCX + iScrollX)
+	if (0 > m_tInfo.fX + m_tInfo.fCX*0.5f + iScrollX)
 		CScrollMgr::Get_Instance()->SET_DIR(DIR_RIGHT);
 
-	if (WINCX < m_tInfo.fX - m_tInfo.fCX + iScrollX)
+	if (WINCX < m_tInfo.fX - m_tInfo.fCX * 0.5f + iScrollX)
 		CScrollMgr::Get_Instance()->SET_DIR(DIR_LEFT);
 
-	if (0 > m_tInfo.fY + m_tInfo.fCY + iScrollY)
+	if (0 > m_tInfo.fY + m_tInfo.fCY * 0.5f + iScrollY)
 		CScrollMgr::Get_Instance()->SET_DIR(DIR_DOWN);
 
-	if (WINCY < m_tInfo.fY - m_tInfo.fCY + iScrollY)
+	if (WINCY < m_tInfo.fY - m_tInfo.fCY * 0.5f + iScrollY)
 		CScrollMgr::Get_Instance()->SET_DIR(DIR_UP);
 
 }
