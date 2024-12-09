@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockMgr.h" />
+    <ClInclude Include="Block_Ice.h" />
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CBmpMgr.h" />
     <ClInclude Include="CBullet.h" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockMgr.cpp" />
+    <ClCompile Include="Block_Ice.cpp" />
     <ClCompile Include="CBmpMgr.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />

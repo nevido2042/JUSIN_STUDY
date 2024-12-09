@@ -17,5 +17,8 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
+
+protected:
+    BLOCKTYPE m_eBlockType;
 };
 

@@ -4,10 +4,12 @@
 #include "CBmpMgr.h"
 
 CBlock::CBlock()
+    :m_eBlockType((BLOCKTYPE)0)//이게 맞나..?
 {
 }
 
 CBlock::CBlock(float _fX, float _fY, float _fSize)
+    :m_eBlockType((BLOCKTYPE)0)
 {
     Set_Pos(_fX, _fX);
     Set_Size(_fSize, _fSize);

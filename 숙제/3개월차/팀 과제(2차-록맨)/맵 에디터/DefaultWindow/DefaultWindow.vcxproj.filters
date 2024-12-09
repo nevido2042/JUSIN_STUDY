@@ -79,6 +79,9 @@
     <Filter Include="02. Design\BlockMgr">
       <UniqueIdentifier>{ce2a3d32-b948-4e07-b91b-05aced22c1b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\05. Block\Block_Ice">
+      <UniqueIdentifier>{e5038a48-412b-48fc-978f-d440c9df8825}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -162,6 +165,9 @@
     <ClInclude Include="CMyBmp.h">
       <Filter>02. Design\BmpMgr\MyBmp</Filter>
     </ClInclude>
+    <ClInclude Include="Block_Ice.h">
+      <Filter>01. Obj\05. Block\Block_Ice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -229,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="CMyBmp.cpp">
       <Filter>02. Design\BmpMgr\MyBmp</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Ice.cpp">
+      <Filter>01. Obj\05. Block\Block_Ice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

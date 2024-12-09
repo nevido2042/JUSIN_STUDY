@@ -6,13 +6,15 @@
 #include "CObjMgr.h"
 
 #include "Block.h"
-#include "Monster.h"
+//#include "Monster.h"
+
+#include "Block_Ice.h"
 
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
 	:m_fBlockSize(0), m_eDrawDir(NO_DIR),
-	m_iWidth(0), m_iHeight(0), m_eCurrentObj(OBJ_END)
+	m_iWidth(0), m_iHeight(0), m_eBlockType(BLOCKTYPE_END)//(2)이게 맞나?
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
@@ -29,7 +31,7 @@ void CBlockMgr::Initialize()
 	m_iWidth = 50;
 	m_iHeight = 50;
 
-	m_eCurrentObj = OBJ_BLOCK;
+	m_eBlockType = BLOCK_ICE;
 }
 
 int CBlockMgr::Update()
@@ -126,29 +128,16 @@ int CBlockMgr::Update()
 					};
 
 					//더럽다.
-					switch (m_eCurrentObj)
+					switch (m_eBlockType)
 					{
-					case OBJ_PLAYER:
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
-					case OBJ_BULLET:
-						break;
-					case OBJ_MONSTER:
-						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
-						break;
-					case OBJ_MOUSE:
-						break;
-					case OBJ_SHIELD:
-						break;
-					case OBJ_BUTTON:
-						break;
-					case OBJ_BLOCK:
-						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case OBJ_END:
-						break;
-					default:
+					case BLOCK_FIRE:
+
 						break;
 					}
+
 
 					
 				}
@@ -162,27 +151,13 @@ int CBlockMgr::Update()
 						m_fBlockSize
 					};
 					//더럽다.
-					switch (m_eCurrentObj)
+					switch (m_eBlockType)
 					{
-					case OBJ_PLAYER:
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
-					case OBJ_BULLET:
-						break;
-					case OBJ_MONSTER:
-						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
-						break;
-					case OBJ_MOUSE:
-						break;
-					case OBJ_SHIELD:
-						break;
-					case OBJ_BUTTON:
-						break;
-					case OBJ_BLOCK:
-						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case OBJ_END:
-						break;
-					default:
+					case BLOCK_FIRE:
+
 						break;
 					}
 				}
@@ -199,27 +174,13 @@ int CBlockMgr::Update()
 						m_fBlockSize
 					};
 					//더럽다.
-					switch (m_eCurrentObj)
+					switch (m_eBlockType)
 					{
-					case OBJ_PLAYER:
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
-					case OBJ_BULLET:
-						break;
-					case OBJ_MONSTER:
-						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
-						break;
-					case OBJ_MOUSE:
-						break;
-					case OBJ_SHIELD:
-						break;
-					case OBJ_BUTTON:
-						break;
-					case OBJ_BLOCK:
-						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case OBJ_END:
-						break;
-					default:
+					case BLOCK_FIRE:
+
 						break;
 					}
 				}
@@ -233,27 +194,13 @@ int CBlockMgr::Update()
 						m_fBlockSize
 					};
 					//더럽다.
-					switch (m_eCurrentObj)
+					switch (m_eBlockType)
 					{
-					case OBJ_PLAYER:
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
-					case OBJ_BULLET:
-						break;
-					case OBJ_MONSTER:
-						pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
-						break;
-					case OBJ_MOUSE:
-						break;
-					case OBJ_SHIELD:
-						break;
-					case OBJ_BUTTON:
-						break;
-					case OBJ_BLOCK:
-						pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
-						break;
-					case OBJ_END:
-						break;
-					default:
+					case BLOCK_FIRE:
+
 						break;
 					}
 				}		
@@ -283,27 +230,13 @@ int CBlockMgr::Update()
 				m_fBlockSize
 			};
 			//더럽다.
-			switch (m_eCurrentObj)
+			switch (m_eBlockType)
 			{
-			case OBJ_PLAYER:
+			case BLOCK_ICE:
+				pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 				break;
-			case OBJ_BULLET:
-				break;
-			case OBJ_MONSTER:
-				pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
-				break;
-			case OBJ_MOUSE:
-				break;
-			case OBJ_SHIELD:
-				break;
-			case OBJ_BUTTON:
-				break;
-			case OBJ_BLOCK:
-				pBlock = CAbstractFactory<CBlock>::Create(OBJ_BLOCK, &tInfo);
-				break;
-			case OBJ_END:
-				break;
-			default:
+			case BLOCK_FIRE:
+
 				break;
 			}
 
@@ -336,11 +269,11 @@ int CBlockMgr::Update()
 	//블럭 선택
 	if (CKeyMgr::Get_Instance()->Key_Down('1'))
 	{
-		m_eCurrentObj = OBJ_BLOCK;
+		m_eBlockType = BLOCK_ICE;
 	}
 	if (CKeyMgr::Get_Instance()->Key_Down('2'))
 	{
-		m_eCurrentObj = OBJ_MONSTER;
+		m_eBlockType = BLOCK_FIRE;
 	}
 
 	//화면 움직이기
@@ -530,68 +463,31 @@ void CBlockMgr::Load_Block()
 	}
 
 	DWORD	dwByte(0);
-	char pBuffer[sizeof(CObj)];
+	CBlock  Block;
 	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
 	//해당 리스트에 넣어줘야한다.
 	while (true)
 	{
-		//오브젝트 하나를 가져온다.
+		//블럭 하나를 가져온다.
 		bool bResult = ReadFile(hFile,
-								pBuffer,
-								sizeof(CObj),
+								&Block,
+								sizeof(CBlock),
 								&dwByte, nullptr);
 		//읽어온게 없으면 끝
 		if (0 == dwByte)
 			break;
 
-		//버퍼에 넣은 오브젝트를 형변환하여
-		CObj* pObj = (CObj*)&pBuffer;
-		//오브젝트 아이디 확인
-		OBJID eOBJID = pObj->Get_OBJID();
-
-		//오브젝트 아이디 확인하여 사이즈 정하기
-		size_t ObjSize(0); //오브젝트 사이즈
-		CObj* pNewObj(nullptr); //만들어진 오브젝트
-		switch (eOBJID)
+		CObj* pNewObj(nullptr);
+		//블럭 타입 확인
+		switch (Block.Get_BlockType())
 		{
-		case OBJ_PLAYER:
-			break;
-		case OBJ_BULLET:
-			break;
-		case OBJ_MONSTER:
-		{
-			//오브젝트 사이즈 결정
-			ObjSize = sizeof(CMonster);
-			//Info값 저장
-			INFO tInfo = pObj->Get_Info();
+		case BLOCK_ICE:
 			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+			pNewObj = CAbstractFactory<CBlock_Ice>::Create(OBJ_MONSTER, Block.Get_Info());
 			//해당 리스트에 오브젝트 추가
-			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
-		}
-		case OBJ_MOUSE:
-			break;
-		case OBJ_SHIELD:
-			break;
-		case OBJ_BUTTON:
-			break;
-		case OBJ_BLOCK:
-		{
-			//오브젝트 사이즈 결정
-			ObjSize = sizeof(CBlock);
-			//Info값 저장
-			INFO tInfo = pObj->Get_Info();
-			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
-			//해당 리스트에 오브젝트 추가
-			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
-			break;
-		}
-
-		case OBJ_END:
-			break;
-		default:
+		case BLOCK_FIRE:
 			break;
 		}
 	}
