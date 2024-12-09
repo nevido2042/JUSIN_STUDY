@@ -51,6 +51,7 @@ private:
 	stack<list<CObj*>>		m_UndoStack;
 	int						m_iWidth;
 	int						m_iHeight;
-	OBJID					m_eCurrentObj;
+	//OBJID					m_eCurrentObj;
+	BLOCKTYPE				m_eBlockType;
 };
 

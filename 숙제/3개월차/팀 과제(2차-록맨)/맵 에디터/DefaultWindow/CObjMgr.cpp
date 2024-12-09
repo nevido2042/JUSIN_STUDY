@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CObjMgr.h"
-//#include "CCollisionMgr.h"
+#include "CCollisionMgr.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
@@ -85,7 +85,7 @@ void CObjMgr::Late_Update()
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
 
 	//블럭과 플레이어 충돌(플레이어가 밀려나감)
-	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BLOCK]);
+	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_BLOCK]);
 
 	//충돌 후 렉트 수정
 	for (size_t i = 0; i < OBJ_END; ++i)

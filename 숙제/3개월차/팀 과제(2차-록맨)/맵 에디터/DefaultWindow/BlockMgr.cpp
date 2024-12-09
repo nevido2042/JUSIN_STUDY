@@ -6,13 +6,16 @@
 #include "CObjMgr.h"
 
 #include "Block.h"
-#include "CMonster.h"
+//#include "Monster.h"
+
+#include "Block_Ice.h"
+#include "Block_Fire.h"
 
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
 	:m_fBlockSize(0), m_eDrawDir(NO_DIR),
-	m_iWidth(0), m_iHeight(0), m_eCurrentObj(OBJ_END)
+	m_iWidth(0), m_iHeight(0), m_eBlockType(BLOCKTYPE_END)//(2)이게 맞나?
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
@@ -29,7 +32,7 @@ void CBlockMgr::Initialize()
 	m_iWidth = 50;
 	m_iHeight = 50;
 
-	m_eCurrentObj = OBJ_BLOCK;
+	m_eBlockType = BLOCK_ICE;
 
 	Load_Block();
 }
@@ -126,7 +129,20 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+
+					//더럽다.
+					switch (m_eBlockType)
+					{
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case BLOCK_FIRE:
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					}
+
+
+					
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -137,7 +153,16 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+					//더럽다.
+					switch (m_eBlockType)
+					{
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case BLOCK_FIRE:
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					}
 				}
 			}
 			else
@@ -151,7 +176,16 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+					//더럽다.
+					switch (m_eBlockType)
+					{
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case BLOCK_FIRE:
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					}
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -162,7 +196,16 @@ int CBlockMgr::Update()
 						m_fBlockSize,
 						m_fBlockSize
 					};
-					pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+					//더럽다.
+					switch (m_eBlockType)
+					{
+					case BLOCK_ICE:
+						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					case BLOCK_FIRE:
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
+						break;
+					}
 				}		
 			}
 
@@ -189,7 +232,16 @@ int CBlockMgr::Update()
 				m_fBlockSize,
 				m_fBlockSize
 			};
-			pBlock = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+			//더럽다.
+			switch (m_eBlockType)
+			{
+			case BLOCK_ICE:
+				pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
+				break;
+			case BLOCK_FIRE:
+				pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
+				break;
+			}
 
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
 			//m_ObjList.push_back(pBlock);
@@ -216,6 +268,15 @@ int CBlockMgr::Update()
 	{
 		Load_Block();
 		return 0;
+	}
+	//블럭 선택
+	if (CKeyMgr::Get_Instance()->Key_Down('1'))
+	{
+		m_eBlockType = BLOCK_ICE;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down('2'))
+	{
+		m_eBlockType = BLOCK_FIRE;
 	}
 
 	//화면 움직이기
@@ -368,18 +429,15 @@ void CBlockMgr::Save_Block()
 
 	DWORD	dwByte(0);
 
-	//Obj 종류 별로 저장해야한다.
-	for (size_t i = 0; i < OBJ_END; ++i)
+	//각 각 오브젝트 리스트 마다 객체의 CObj를 저장한다.
+	for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[OBJ_BLOCK])
 	{
-		//각 각 오브젝트 리스트 마다 객체의 CObj를 저장한다.
-		for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
-		{
-			WriteFile(hFile,
-				pObj,
-				sizeof(CObj),
-				&dwByte, nullptr);
-		}
+		WriteFile(hFile,
+			pObj,
+			sizeof(CBlock),
+			&dwByte, nullptr);
 	}
+	
 
 	CloseHandle(hFile);
 
@@ -405,68 +463,35 @@ void CBlockMgr::Load_Block()
 	}
 
 	DWORD	dwByte(0);
-	char pBuffer[sizeof(CObj)];
+	CBlock  Block;
 	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
 	//해당 리스트에 넣어줘야한다.
 	while (true)
 	{
-		//오브젝트 하나를 가져온다.
+		//블럭 하나를 가져온다.
 		bool bResult = ReadFile(hFile,
-								pBuffer,
-								sizeof(CObj),
+								&Block,
+								sizeof(CBlock),
 								&dwByte, nullptr);
 		//읽어온게 없으면 끝
 		if (0 == dwByte)
 			break;
 
-		//버퍼에 넣은 오브젝트를 형변환하여
-		CObj* pObj = (CObj*)&pBuffer;
-		//오브젝트 아이디 확인
-		OBJID eOBJID = pObj->Get_OBJID();
-
-		//오브젝트 아이디 확인하여 사이즈 정하기
-		size_t ObjSize(0); //오브젝트 사이즈
-		CObj* pNewObj(nullptr); //만들어진 오브젝트
-		switch (eOBJID)
+		CObj* pNewObj(nullptr);
+		//블럭 타입 확인
+		switch (Block.Get_BlockType())
 		{
-		case OBJ_PLAYER:
-			break;
-		case OBJ_BULLET:
-			break;
-		case OBJ_MONSTER:
-		{
-			//오브젝트 사이즈 결정
-			ObjSize = sizeof(CMonster);
-			//Info값 저장
-			INFO tInfo = pObj->Get_Info();
+		case BLOCK_ICE:
 			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+			pNewObj = CAbstractFactory<CBlock_Ice>::Create(OBJ_MONSTER, Block.Get_Info());
 			//해당 리스트에 오브젝트 추가
-			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
-		}
-		case OBJ_MOUSE:
-			break;
-		case OBJ_SHIELD:
-			break;
-		case OBJ_BUTTON:
-			break;
-		case OBJ_BLOCK:
-		{
-			//오브젝트 사이즈 결정
-			ObjSize = sizeof(CBlock);
-			//Info값 저장
-			INFO tInfo = pObj->Get_Info();
+		case BLOCK_FIRE:
 			//Info값 대로 블럭 생성
-			pNewObj = CAbstractFactory<CMonster>::Create(OBJ_MONSTER, &tInfo);
+			pNewObj = CAbstractFactory<CBlock_Fire>::Create(OBJ_MONSTER, Block.Get_Info());
 			//해당 리스트에 오브젝트 추가
-			CObjMgr::Get_Instance()->Add_Object(eOBJID, pNewObj);
-			break;
-		}
-
-		case OBJ_END:
-			break;
-		default:
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
 		}
 	}

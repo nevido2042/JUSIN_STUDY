@@ -82,6 +82,9 @@
     <Filter Include="01. Obj\05. Block\Block_Ice">
       <UniqueIdentifier>{e5038a48-412b-48fc-978f-d440c9df8825}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\05. Block\Block_Fire">
+      <UniqueIdentifier>{410491a4-a8a5-4063-82da-dfac353b1b35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -168,6 +171,9 @@
     <ClInclude Include="Block_Ice.h">
       <Filter>01. Obj\05. Block\Block_Ice</Filter>
     </ClInclude>
+    <ClInclude Include="Block_Fire.h">
+      <Filter>01. Obj\05. Block\Block_Fire</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -238,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="Block_Ice.cpp">
       <Filter>01. Obj\05. Block\Block_Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Fire.cpp">
+      <Filter>01. Obj\05. Block\Block_Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
