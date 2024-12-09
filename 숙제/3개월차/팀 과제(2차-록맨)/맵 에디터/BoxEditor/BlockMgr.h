@@ -53,5 +53,6 @@ private:
 	int						m_iHeight;
 	//OBJID					m_eCurrentObj;
 	BLOCKTYPE				m_eBlockType;
+	float					m_fSpeed;
 };
 

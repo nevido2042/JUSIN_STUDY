@@ -27,8 +27,8 @@ void CBlock_Fire::Render(HDC hDC)
 		(int)m_tInfo.fCX,			// 복사 받을 이미지의 가로, 세로
 		(int)m_tInfo.fCY,
 		hMemDC,						// 복사할 이미지 DC
-		100,							// 비트맵 출력 시작 좌표(Left, top)
-		100,
+		206,							// 비트맵 출력 시작 좌표(Left, top)
+		3,
 		SRCCOPY);					// 출력 효과 설정(그대로 출력)
 
 	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();

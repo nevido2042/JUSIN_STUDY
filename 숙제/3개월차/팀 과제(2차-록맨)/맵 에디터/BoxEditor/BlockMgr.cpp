@@ -4,6 +4,7 @@
 #include "CKeyMgr.h"
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
+#include "CBmpMgr.h"
 
 #include "Block.h"
 //#include "Monster.h"
@@ -15,7 +16,8 @@ CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
 CBlockMgr::CBlockMgr()
 	:m_fBlockSize(0), m_eDrawDir(NO_DIR),
-	m_iWidth(0), m_iHeight(0), m_eBlockType(BLOCKTYPE_END)//(2)이게 맞나?
+	m_iWidth(0), m_iHeight(0), m_eBlockType(BLOCKTYPE_END),//(2)이게 맞나?
+	m_fSpeed(0.f)
 {
 	ZeroMemory(&m_tBlockPoint, sizeof(m_tBlockPoint));
 }
@@ -33,6 +35,13 @@ void CBlockMgr::Initialize()
 	m_iHeight = 50;
 
 	m_eBlockType = BLOCK_ICE;
+
+	m_fSpeed = 10.f;
+
+	//Load_Block();
+
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_ice.bmp", L"Tile_Ice");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_fire.bmp", L"Tile_Fire");
 }
 
 int CBlockMgr::Update()
@@ -140,7 +149,7 @@ int CBlockMgr::Update()
 					}
 
 
-					
+
 				}
 				else if (m_eDrawDir == VERTICAL)
 				{
@@ -204,7 +213,7 @@ int CBlockMgr::Update()
 						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					}
-				}		
+				}
 			}
 
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pBlock);
@@ -213,11 +222,11 @@ int CBlockMgr::Update()
 			//되돌릴 리스트에 추가
 			//m_UndoList.push_back(pBlock);
 
-			
+
 			UndoList.push_back(pBlock);
 		}
 
-		
+
 
 		//하나도 만들 수 없는 길이면 그 때는 그 칸만 생성
 		if (iBoxCount == 0)
@@ -279,16 +288,16 @@ int CBlockMgr::Update()
 
 	//화면 움직이기
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT))
-		CScrollMgr::Get_Instance()->Set_ScrollX(5.f);
+		CScrollMgr::Get_Instance()->Set_ScrollX(m_fSpeed);
 
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT))
-		CScrollMgr::Get_Instance()->Set_ScrollX(-5.f);
+		CScrollMgr::Get_Instance()->Set_ScrollX(-m_fSpeed);
 
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_UP))
-		CScrollMgr::Get_Instance()->Set_ScrollY(5.f);
+		CScrollMgr::Get_Instance()->Set_ScrollY(m_fSpeed);
 
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
-		CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
+		CScrollMgr::Get_Instance()->Set_ScrollY(-m_fSpeed);
 
 	//되돌리기 Ctrl+Z
 	if (CKeyMgr::Get_Instance()->Key_Down('Z'))
@@ -296,8 +305,8 @@ int CBlockMgr::Update()
 
 		if (!m_UndoStack.empty() && CKeyMgr::Get_Instance()->Key_Pressing(VK_LCONTROL))
 		{
-			
-			
+
+
 			for (auto i : m_UndoStack.top())
 			{
 				i->Set_Dead();
@@ -323,7 +332,7 @@ void CBlockMgr::Render(HDC hDC)
 	//그리드 그리기
 	for (int i = 0; i < m_iWidth; ++i)
 	{
-		MoveToEx(hDC, int(i * m_fBlockSize + fScrollX) , int(0 + fScrollY), nullptr);
+		MoveToEx(hDC, int(i * m_fBlockSize + fScrollX), int(0 + fScrollY), nullptr);
 		LineTo(hDC, int(i * m_fBlockSize + fScrollX), int(m_iHeight * m_fBlockSize + fScrollY));
 	}
 	for (int i = 0; i < m_iHeight; ++i)
@@ -331,6 +340,44 @@ void CBlockMgr::Render(HDC hDC)
 		MoveToEx(hDC, int(0 + fScrollX), int(i * m_fBlockSize + fScrollY), nullptr);
 		LineTo(hDC, int(m_iWidth * m_fBlockSize + fScrollX), int(i * m_fBlockSize + fScrollY));
 	}
+
+	Rectangle(hDC,
+		0,
+		0,
+		WINCX,
+		m_fBlockSize * 1.5f);
+
+	HDC		hMemDC;
+	switch (m_eBlockType)
+	{
+	case BLOCK_ICE:
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Tile_Ice");
+
+		BitBlt(hDC,						// 복사 받을 DC
+			0,	// 복사 받을 위치 좌표 X, Y	
+			0,
+			(int)m_fBlockSize,			// 복사 받을 이미지의 가로, 세로
+			(int)m_fBlockSize,
+			hMemDC,						// 복사할 이미지 DC
+			35,							// 비트맵 출력 시작 좌표(Left, top)
+			163,
+			SRCCOPY);
+		break;
+	case BLOCK_FIRE:
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Tile_Fire");
+
+		BitBlt(hDC,						// 복사 받을 DC
+			0,	// 복사 받을 위치 좌표 X, Y	
+			0,
+			(int)m_fBlockSize,			// 복사 받을 이미지의 가로, 세로
+			(int)m_fBlockSize,
+			hMemDC,						// 복사할 이미지 DC
+			206,							// 비트맵 출력 시작 좌표(Left, top)
+			3,
+			SRCCOPY);
+		break;
+	}
+
 
 	//박스 인스턴스 출력
 	//for (auto& pLine : m_ObjList)
@@ -348,7 +395,7 @@ void CBlockMgr::Render(HDC hDC)
 		fDist = (float)abs(m_tBlockPoint[HEAD].x - m_tBlockPoint[TAIL].x);
 		bPlus = m_tBlockPoint[HEAD].x < m_tBlockPoint[TAIL].x;
 	}
-	else if(m_eDrawDir == VERTICAL)
+	else if (m_eDrawDir == VERTICAL)
 	{
 		fDist = (float)abs(m_tBlockPoint[HEAD].y - m_tBlockPoint[TAIL].y);
 		bPlus = m_tBlockPoint[HEAD].y < m_tBlockPoint[TAIL].y;
@@ -357,7 +404,7 @@ void CBlockMgr::Render(HDC hDC)
 	int iBoxCount = int(fDist / m_fBlockSize);
 
 	//HEAD부터 TAIL까지 박스들 출력
-	for (int i = 0; i < iBoxCount ; ++i)
+	for (int i = 0; i < iBoxCount; ++i)
 	{
 		if (bPlus)
 		{
@@ -369,7 +416,7 @@ void CBlockMgr::Render(HDC hDC)
 					int(m_tBlockPoint[HEAD].x + m_fBlockSize + i * m_fBlockSize + fScrollX),
 					int(m_tBlockPoint[HEAD].y + m_fBlockSize + fScrollY));
 			}
-			else if(m_eDrawDir == VERTICAL)
+			else if (m_eDrawDir == VERTICAL)
 			{
 				Rectangle(hDC,
 					int(m_tBlockPoint[HEAD].x + fScrollX),
@@ -435,7 +482,7 @@ void CBlockMgr::Save_Block()
 			sizeof(CBlock),
 			&dwByte, nullptr);
 	}
-	
+
 
 	CloseHandle(hFile);
 
@@ -468,9 +515,9 @@ void CBlockMgr::Load_Block()
 	{
 		//블럭 하나를 가져온다.
 		bool bResult = ReadFile(hFile,
-								&Block,
-								sizeof(CBlock),
-								&dwByte, nullptr);
+			&Block,
+			sizeof(CBlock),
+			&dwByte, nullptr);
 		//읽어온게 없으면 끝
 		if (0 == dwByte)
 			break;

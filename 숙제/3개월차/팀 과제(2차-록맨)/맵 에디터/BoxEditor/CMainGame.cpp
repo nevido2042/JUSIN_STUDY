@@ -69,10 +69,8 @@ void CMainGame::Render()
 
 	BitBlt(hMemDC, 0, 0, WINCX, WINCY, hGroundDC, 0, 0, SRCCOPY);
 
-	//Rectangle(m_hDC, 0, 0, WINCX, WINCY);
-
-	CBlockMgr::Get_Instance()->Render(hMemDC);
 	CObjMgr::Get_Instance()->Render(hMemDC);
+	CBlockMgr::Get_Instance()->Render(hMemDC);
 
 	BitBlt(m_hDC,
 		0, 0, WINCX, WINCY,
