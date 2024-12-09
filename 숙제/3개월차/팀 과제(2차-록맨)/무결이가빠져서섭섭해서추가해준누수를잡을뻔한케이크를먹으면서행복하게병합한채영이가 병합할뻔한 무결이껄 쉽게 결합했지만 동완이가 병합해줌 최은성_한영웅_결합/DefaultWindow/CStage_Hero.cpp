@@ -9,7 +9,10 @@
 #include "BlockMgr.h"
 #include "CWall.h"
 #include "CScrollMgr.h"
+
 #include "Boss_IceMan.h"
+#include "JumpingMonster.h"
+#include "Penguin.h"
 
 CStage_Hero::CStage_Hero()
 {
@@ -30,6 +33,12 @@ void CStage_Hero::Initialize()
 	
 	CObjMgr::Get_Instance()->Add_Object
 	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(500.f, 400.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(500.f, 400.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(500.f, 400.f, DIR_END));
 }
 
 void CStage_Hero::Update()
