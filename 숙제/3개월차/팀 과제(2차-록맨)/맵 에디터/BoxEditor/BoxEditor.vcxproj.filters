@@ -52,6 +52,9 @@
     <Filter Include="Obj\Block\Block_Ice">
       <UniqueIdentifier>{29b19784-7312-42c8-8f2f-82413041e6cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Obj\Block\Block_Fire">
+      <UniqueIdentifier>{d21e59f6-c59b-4e67-b12e-b5be2d65f376}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="Block_Ice.h">
       <Filter>Obj\Block\Block_Ice</Filter>
     </ClInclude>
+    <ClInclude Include="Block_Fire.h">
+      <Filter>Obj\Block\Block_Fire</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoxEditor.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="Block_Ice.cpp">
       <Filter>Obj\Block\Block_Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Fire.cpp">
+      <Filter>Obj\Block\Block_Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

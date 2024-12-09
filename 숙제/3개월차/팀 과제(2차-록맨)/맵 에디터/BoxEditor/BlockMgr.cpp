@@ -9,6 +9,7 @@
 //#include "Monster.h"
 
 #include "Block_Ice.h"
+#include "Block_Fire.h"
 
 CBlockMgr* CBlockMgr::m_pInstance = nullptr;
 
@@ -134,7 +135,7 @@ int CBlockMgr::Update()
 						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					case BLOCK_FIRE:
-
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					}
 
@@ -157,7 +158,7 @@ int CBlockMgr::Update()
 						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					case BLOCK_FIRE:
-
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					}
 				}
@@ -180,7 +181,7 @@ int CBlockMgr::Update()
 						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					case BLOCK_FIRE:
-
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					}
 				}
@@ -200,7 +201,7 @@ int CBlockMgr::Update()
 						pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					case BLOCK_FIRE:
-
+						pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
 						break;
 					}
 				}		
@@ -236,7 +237,7 @@ int CBlockMgr::Update()
 				pBlock = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, &tInfo);
 				break;
 			case BLOCK_FIRE:
-
+				pBlock = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, &tInfo);
 				break;
 			}
 
@@ -426,18 +427,15 @@ void CBlockMgr::Save_Block()
 
 	DWORD	dwByte(0);
 
-	//Obj 종류 별로 저장해야한다.
-	for (size_t i = 0; i < OBJ_END; ++i)
+	//각 각 오브젝트 리스트 마다 객체의 CObj를 저장한다.
+	for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[OBJ_BLOCK])
 	{
-		//각 각 오브젝트 리스트 마다 객체의 CObj를 저장한다.
-		for (auto pObj : CObjMgr::Get_Instance()->Get_ObjList()[i])
-		{
-			WriteFile(hFile,
-				pObj,
-				sizeof(CObj),
-				&dwByte, nullptr);
-		}
+		WriteFile(hFile,
+			pObj,
+			sizeof(CBlock),
+			&dwByte, nullptr);
 	}
+	
 
 	CloseHandle(hFile);
 
@@ -488,6 +486,10 @@ void CBlockMgr::Load_Block()
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
 		case BLOCK_FIRE:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Fire>::Create(OBJ_MONSTER, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
 			break;
 		}
 	}

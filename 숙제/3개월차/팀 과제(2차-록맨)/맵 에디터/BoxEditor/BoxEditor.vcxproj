@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Block_Fire.h" />
     <ClInclude Include="Block_Ice.h" />
     <ClInclude Include="BoxEditor.h" />
     <ClInclude Include="BlockMgr.h" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Block_Fire.cpp" />
     <ClCompile Include="Block_Ice.cpp" />
     <ClCompile Include="BoxEditor.cpp" />
     <ClCompile Include="BlockMgr.cpp" />
