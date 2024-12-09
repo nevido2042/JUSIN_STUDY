@@ -16,6 +16,8 @@
 
 #include <string>
 #include <map>
+#include <stack>
+
 using std::string;
 using std::wstring;
 

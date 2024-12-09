@@ -10,8 +10,10 @@ public:
 
 public:
 	INFO			Get_Info() { return m_tInfo; }
+	INFO* Get_pInfo() { return &m_tInfo; }
 	const RECT*		Get_Rect() { return &m_tRect; }
 
+	const POINT&		Get_Point() { return { (long)m_tInfo.fX, (long)m_tInfo.fY }; }
 	void		Set_Pos(float _fX, float _fY)
 	{
 		m_tInfo.fX = _fX;
