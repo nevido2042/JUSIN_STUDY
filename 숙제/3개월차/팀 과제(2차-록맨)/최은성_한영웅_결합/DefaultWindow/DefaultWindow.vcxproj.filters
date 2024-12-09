@@ -154,6 +154,15 @@
     <Filter Include="01. Obj\05. Block\04.Block_Gut">
       <UniqueIdentifier>{bef963bf-a0f5-436c-b01e-280c069ebf55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\Hero">
+      <UniqueIdentifier>{84bf6370-e0fc-4f24-8425-bf930649d153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\Hero\JumpingMonster">
+      <UniqueIdentifier>{af526047-e0b6-4c8c-83f6-01ba4c8bd8a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\Hero\Penguin">
+      <UniqueIdentifier>{21001cb5-0f74-4761-86f8-be00c0de5c76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -309,6 +318,12 @@
     <ClInclude Include="Block_Cut.h">
       <Filter>01. Obj\05. Block\03.Block_Cut</Filter>
     </ClInclude>
+    <ClInclude Include="JumpingMonster.h">
+      <Filter>01. Obj\02. Monster\Hero\JumpingMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Penguin.h">
+      <Filter>01. Obj\02. Monster\Hero\Penguin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -448,6 +463,12 @@
     </ClCompile>
     <ClCompile Include="Block_Cut.cpp">
       <Filter>01. Obj\05. Block\03.Block_Cut</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpingMonster.cpp">
+      <Filter>01. Obj\02. Monster\Hero\JumpingMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Penguin.cpp">
+      <Filter>01. Obj\02. Monster\Hero\Penguin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

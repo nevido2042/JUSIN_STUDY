@@ -9,6 +9,9 @@
 #include "BlockMgr.h"
 #include "CWall.h"
 #include "CScrollMgr.h"
+#include "Boss_IceMan.h"
+#include "Penguin.h"
+#include "JumpingMonster.h"
 
 CStage_Hero::CStage_Hero()
 {
@@ -26,6 +29,26 @@ void CStage_Hero::Initialize()
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
+	for (int i = 0; i < 4; ++i)
+	{
+		CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, CAbstractFactory<CWall>::Create(float(50), float(i * 100), 0.f));
+	}
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(500.f, 100.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(500.f, 400.f, DIR_END));
+	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(
+		CObjMgr::Get_Instance()->Get_Player()
+	);
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(500.f, 200.f, DIR_END));
+	CObjMgr::Get_Instance()->Get_LastMonster()->Set_Target(
+		CObjMgr::Get_Instance()->Get_Player()
+	);
+
 	
 }
 
@@ -79,3 +102,6 @@ void CStage_Hero::Render(HDC _hDC)
 		SRCCOPY);
 }
 
+//void CStage_Hero::Exit()
+//{
+//}

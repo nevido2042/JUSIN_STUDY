@@ -45,6 +45,7 @@ public:
 	virtual void		Late_Update()PURE;
 	virtual void		Render(HDC hDC)PURE;
 	virtual void		Release()PURE;
+	virtual void		OnCollision(CObj* _pOther, OBJID _eOtherID);
 
 public:
 	void		Update_Rect();
@@ -64,5 +65,7 @@ protected:
 
 	//파일 로드할 때 어떤 오브젝트인지 판단 할 수 있도록
 	OBJID		m_eOBJID;
+
+	bool		m_bGround;
 };
 
