@@ -79,11 +79,20 @@
     <Filter Include="02. Design\BlockMgr">
       <UniqueIdentifier>{ce2a3d32-b948-4e07-b91b-05aced22c1b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\05. Block\Block_Ice">
+    <Filter Include="01. Obj\05. Block\00.Block_Ice">
       <UniqueIdentifier>{e5038a48-412b-48fc-978f-d440c9df8825}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\05. Block\Block_Fire">
+    <Filter Include="01. Obj\05. Block\01.Block_Fire">
       <UniqueIdentifier>{410491a4-a8a5-4063-82da-dfac353b1b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\02.Block_Elec">
+      <UniqueIdentifier>{0169be15-919c-44ea-bacf-6ae1c7c6ce30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\03.Block_Cut">
+      <UniqueIdentifier>{150600f6-bd54-4a3e-90d6-d753c2e4752f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\04.Block_Gut">
+      <UniqueIdentifier>{5aad70d7-a58c-4e91-bc75-4f9e79baad68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -169,10 +178,19 @@
       <Filter>02. Design\BmpMgr\MyBmp</Filter>
     </ClInclude>
     <ClInclude Include="Block_Ice.h">
-      <Filter>01. Obj\05. Block\Block_Ice</Filter>
+      <Filter>01. Obj\05. Block\00.Block_Ice</Filter>
     </ClInclude>
     <ClInclude Include="Block_Fire.h">
-      <Filter>01. Obj\05. Block\Block_Fire</Filter>
+      <Filter>01. Obj\05. Block\01.Block_Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Cut.h">
+      <Filter>01. Obj\05. Block\03.Block_Cut</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Elec.h">
+      <Filter>01. Obj\05. Block\02.Block_Elec</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Gut.h">
+      <Filter>01. Obj\05. Block\04.Block_Gut</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,10 +261,19 @@
       <Filter>02. Design\BmpMgr\MyBmp</Filter>
     </ClCompile>
     <ClCompile Include="Block_Ice.cpp">
-      <Filter>01. Obj\05. Block\Block_Ice</Filter>
+      <Filter>01. Obj\05. Block\00.Block_Ice</Filter>
     </ClCompile>
     <ClCompile Include="Block_Fire.cpp">
-      <Filter>01. Obj\05. Block\Block_Fire</Filter>
+      <Filter>01. Obj\05. Block\01.Block_Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Cut.cpp">
+      <Filter>01. Obj\05. Block\03.Block_Cut</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Elec.cpp">
+      <Filter>01. Obj\05. Block\02.Block_Elec</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Gut.cpp">
+      <Filter>01. Obj\05. Block\04.Block_Gut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

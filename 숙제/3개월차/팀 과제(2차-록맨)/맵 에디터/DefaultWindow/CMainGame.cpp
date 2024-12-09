@@ -77,7 +77,7 @@ void CMainGame::Render()
 	BitBlt(hMemDC, 0, 0, WINCX, WINCY, hGroundDC, 0, 0, SRCCOPY);
 
 	//CLineMgr::Get_Instance()->Render(m_hDC);
-	CBlockMgr::Get_Instance()->Render(hMemDC);
+	//CBlockMgr::Get_Instance()->Render(hMemDC);
 
 	CObjMgr::Get_Instance()->Render(hMemDC);
 

@@ -21,6 +21,8 @@ public:
 	void	Save_Block();
 	void	Load_Block();
 
+	CObj*	Create_Block(INFO* _tInfo);
+
 public:
 	static CBlockMgr* Get_Instance()
 	{
@@ -53,5 +55,6 @@ private:
 	int						m_iHeight;
 	//OBJID					m_eCurrentObj;
 	BLOCKTYPE				m_eBlockType;
+	float					m_fSpeed;
 };
 
