@@ -576,6 +576,81 @@ void CBlockMgr::Load_Block()
 	MessageBox(g_hWnd, _T("Load 완료"), L"성공", MB_OK);
 }
 
+void CBlockMgr::Load_Block(LPCWSTR _FilePath)
+{
+	Release();
+
+	HANDLE		hFile = CreateFile(_FilePath, // 파일 경로와 이름을 명시
+		GENERIC_READ,		// 파일 접근 모드(GENERIC_READ)
+		NULL,				// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈 할 때 허용할 것인가
+		NULL,				// 보안 속성, NULL인 경우 기본 보안 상태
+		OPEN_EXISTING,		// 생성 방식(CREATE_ALWAYS : 파일어 없으면 생성, 있으면 덮어 쓰기, OPEN_EXISTING : 파일 있을 경우에만 열기)
+		FILE_ATTRIBUTE_NORMAL, // 파일 속성, 아무런 속성이 없는 일반 파일의 형식으로 생성
+		NULL);				// 생성될 파일의 속성을 제공할 템플릿 파일(안쓰니 NULL)
+
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		MessageBox(g_hWnd, _T("Load File"), L"Fail", MB_OK);
+		return;
+	}
+
+	DWORD	dwByte(0);
+	CBlock  Block;
+	//ReadFile해서 어떤 오브젝트인지 판단한다음(CObj에 타입 멤버변수를 둬서 판단해야 겠다.)
+	//해당 리스트에 넣어줘야한다.
+	while (true)
+	{
+		//블럭 하나를 가져온다.
+		bool bResult = ReadFile(hFile,
+			&Block,
+			sizeof(CBlock),
+			&dwByte, nullptr);
+		//읽어온게 없으면 끝
+		if (0 == dwByte)
+			break;
+
+		CObj* pNewObj(nullptr);
+		//블럭 타입 확인
+		switch (Block.Get_BlockType())
+		{
+		case BLOCK_ICE:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Ice>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_FIRE:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Fire>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_ELEC:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Elec>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_CUT:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Cut>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		case BLOCK_GUT:
+			//Info값 대로 블럭 생성
+			pNewObj = CAbstractFactory<CBlock_Gut>::Create(OBJ_BLOCK, Block.Get_Info());
+			//해당 리스트에 오브젝트 추가
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BLOCK, pNewObj);
+			break;
+		}
+	}
+
+	CloseHandle(hFile);
+
+	MessageBox(g_hWnd, _T("Load 완료"), L"성공", MB_OK);
+}
+
 CObj* CBlockMgr::Create_Block(INFO* _tInfo)
 {
 	CObj* pObj(nullptr);

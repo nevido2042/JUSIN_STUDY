@@ -16,6 +16,8 @@ public:
 	CObj* Get_LastMonster() { return m_ObjList[OBJ_MONSTER].back(); }
 
 	CObj* Get_Target(OBJID eID, CObj* pDst);
+	list<CObj*>* Get_ObjList() { return m_ObjList; }
+
 
 public:
 	void		Add_Object(OBJID eID, CObj* pObj);
