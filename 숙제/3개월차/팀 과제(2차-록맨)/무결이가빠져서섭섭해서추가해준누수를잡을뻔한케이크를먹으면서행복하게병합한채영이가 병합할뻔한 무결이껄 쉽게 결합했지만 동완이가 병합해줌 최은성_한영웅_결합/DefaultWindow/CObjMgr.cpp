@@ -113,6 +113,21 @@ void CObjMgr::Late_Update()
 	CCollisionMgr::Collision_Floor(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
 	CCollisionMgr::Collision_Celling(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
 	CCollisionMgr::Collision_Box(m_ObjList[OBJ_PLAYER].front(), m_ObjList[OBJ_BLOCK]);
+
+	for (auto Boss : m_ObjList[OBJ_BOSS])
+	{
+		CCollisionMgr::Collision_Floor(Boss, m_ObjList[OBJ_BLOCK]);
+		CCollisionMgr::Collision_Celling(Boss, m_ObjList[OBJ_BLOCK]);
+		CCollisionMgr::Collision_Box(Boss, m_ObjList[OBJ_BLOCK]);
+	}
+
+	for (auto Monster : m_ObjList[OBJ_MONSTER])
+
+	{
+		CCollisionMgr::Collision_Floor(Monster, m_ObjList[OBJ_BLOCK]);
+		CCollisionMgr::Collision_Celling(Monster, m_ObjList[OBJ_BLOCK]);
+		CCollisionMgr::Collision_Box(Monster, m_ObjList[OBJ_BLOCK]);
+	}
 }
 
 void CObjMgr::Render(HDC hDC)

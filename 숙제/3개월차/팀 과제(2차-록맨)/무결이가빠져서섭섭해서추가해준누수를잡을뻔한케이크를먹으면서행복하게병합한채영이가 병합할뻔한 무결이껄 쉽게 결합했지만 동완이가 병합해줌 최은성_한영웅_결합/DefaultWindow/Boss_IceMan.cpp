@@ -7,8 +7,8 @@
 #include "CBmpMgr.h"
 
 CBoss_IceMan::CBoss_IceMan()
-	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ m_bJump(false),
-	m_fJumpSpeed(0.f), m_fTime(0.f), m_ullJumpTime(0), m_fPrevY(0.f),
+	: /*m_fAccel(0.f),*/ m_fGravity(0.f), /*m_fFallSpeed(0.f),*/ /*m_bJump(false),*/
+	/*m_fJumpSpeed(0.f), m_fTime(0.f)*/m_ullJumpTime(0), m_fPrevY(0.f),
 	m_ullFireTime(0), m_pPlayer(nullptr)
 {
 }
@@ -27,7 +27,8 @@ void CBoss_IceMan::Initialize()
 	//m_fAccel = 0.1f;
 	m_fGravity = 2.f;
 	//m_fFallSpeed = m_fGravity;
-	m_fJumpSpeed = 15.f;
+	//m_fJumpSpeed = 15.f;
+	m_fJumpPower = 0.f;
 	m_ullJumpTime = GetTickCount64();
 	m_ullFireTime = GetTickCount64();
 
@@ -41,7 +42,8 @@ int CBoss_IceMan::Update()
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	Fall();
+	__super::Jumping();
+	//Fall();
 
 	__super::Update_Rect();
 
@@ -50,10 +52,12 @@ int CBoss_IceMan::Update()
 
 void CBoss_IceMan::Late_Update()
 {
-	if (m_ullJumpTime + 100.f < GetTickCount64())
+	if (m_ullJumpTime + 3000.f < GetTickCount64())
 	{
 		m_ullJumpTime = GetTickCount64();
 		m_bJump = true;
+
+		m_fJumpPower = 15.f;
 	}
 
 	if (m_ullFireTime + 500.f < GetTickCount64())
@@ -62,7 +66,7 @@ void CBoss_IceMan::Late_Update()
 		Fire();
 	}
 
-	Jumping();
+	//Jumping();
 }
 
 void CBoss_IceMan::Render(HDC hDC)
@@ -128,7 +132,7 @@ void CBoss_IceMan::Jumping()
 		}
 
 		
-		m_tInfo.fY -= (m_fJumpSpeed * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
+		m_tInfo.fY -= (m_fJumpPower * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
 		m_fTime += 0.1f;
 
 		//전 프레임의 높이와 현재 높이를 비교
@@ -160,4 +164,32 @@ void CBoss_IceMan::Fire()
 	}
 
 
+}
+
+void CBoss_IceMan::Jump_Pattern()
+{
+	//플레이어의 위치를 확인해서 좌로 갈지 우로 갈지 판단
+	if (m_pPlayer->Get_Info().fX < Get_Info().fX)
+	{
+		m_tInfo.fX -= cosf(45.f * PI / 180.f) * m_fTime;
+	}
+	else
+	{
+		m_tInfo.fX += cosf(45.f * PI / 180.f) * m_fTime;
+	}
+
+	m_fPrevY = m_tInfo.fY;
+	m_tInfo.fY -= (m_fJumpPower * sinf(90.f) * m_fTime) - (9.8f * m_fTime * m_fTime) * 0.5f;
+	
+
+	//전 프레임의 높이와 현재 높이를 비교
+	//떨어지고 있으면 점프 종료
+	if (m_fPrevY < m_tInfo.fY)
+	{
+		m_fTime += 0.002f;
+	}
+	else
+	{
+		m_fTime += 0.1f;
+	}
 }

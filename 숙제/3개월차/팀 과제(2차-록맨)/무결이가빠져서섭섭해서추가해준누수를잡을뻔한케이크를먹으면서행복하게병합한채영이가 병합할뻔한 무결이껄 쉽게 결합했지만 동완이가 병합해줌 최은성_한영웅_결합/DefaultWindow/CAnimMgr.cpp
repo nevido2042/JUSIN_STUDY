@@ -62,12 +62,11 @@ void CAnimMgr::Insert_Animation(const TCHAR* pImgKey, CAnimation* _pAnim)
 	{
 		m_mapAnim.insert({ pImgKey, _pAnim });
 	}
-	//else if (iter->second != _pAnim)
-	//{
-	//	m_mapAnim.erase(iter);
-	//	m_mapAnim.insert({ pImgKey, _pAnim });
-
-	//}
+	else if (iter->second != _pAnim)
+	{
+		delete _pAnim;
+		_pAnim = nullptr;
+	}
 }
 // 찾을 이미지 키값, LT좌표, 이미지 크기(가로 세로), 수정할 프레임 인덱스 번호(0부터)
 void CAnimMgr::Edit_Animation(const TCHAR* pImgKey, FPOINT _ImgLT, FPOINT _ImgSize, int _FrameIdx)
