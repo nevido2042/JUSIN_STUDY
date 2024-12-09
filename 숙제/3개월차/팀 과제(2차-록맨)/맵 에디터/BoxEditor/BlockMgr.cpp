@@ -42,6 +42,10 @@ void CBlockMgr::Initialize()
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_ice.bmp", L"Tile_Ice");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_fire.bmp", L"Tile_Fire");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_elec.bmp", L"Tile_Elec");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_cut.bmp", L"Tile_Cut");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Rock_Man/tile_gut.bmp", L"Tile_Gut");
+
 }
 
 int CBlockMgr::Update()
@@ -285,6 +289,18 @@ int CBlockMgr::Update()
 	{
 		m_eBlockType = BLOCK_FIRE;
 	}
+	if (CKeyMgr::Get_Instance()->Key_Down('3'))
+	{
+		m_eBlockType = BLOCK_ELEC;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down('4'))
+	{
+		m_eBlockType = BLOCK_CUT;
+	}
+	if (CKeyMgr::Get_Instance()->Key_Down('5'))
+	{
+		m_eBlockType = BLOCK_GUT;
+	}
 
 	//화면 움직이기
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT))
@@ -373,6 +389,46 @@ void CBlockMgr::Render(HDC hDC)
 			(int)m_fBlockSize,
 			hMemDC,						// 복사할 이미지 DC
 			206,							// 비트맵 출력 시작 좌표(Left, top)
+			3,
+			SRCCOPY);
+		break;
+
+	case BLOCK_ELEC:
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Tile_Elec");
+
+		BitBlt(hDC,						// 복사 받을 DC
+			0,	// 복사 받을 위치 좌표 X, Y	
+			0,
+			(int)m_fBlockSize,			// 복사 받을 이미지의 가로, 세로
+			(int)m_fBlockSize,
+			hMemDC,						// 복사할 이미지 DC
+			206,							// 비트맵 출력 시작 좌표(Left, top)
+			3,
+			SRCCOPY);
+		break;
+	case BLOCK_CUT:
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Tile_Cut");
+
+		BitBlt(hDC,						// 복사 받을 DC
+			0,	// 복사 받을 위치 좌표 X, Y	
+			0,
+			(int)m_fBlockSize,			// 복사 받을 이미지의 가로, 세로
+			(int)m_fBlockSize,
+			hMemDC,						// 복사할 이미지 DC
+			206,							// 비트맵 출력 시작 좌표(Left, top)
+			3,
+			SRCCOPY);
+		break;
+	case BLOCK_GUT:
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Tile_Gut");
+
+		BitBlt(hDC,						// 복사 받을 DC
+			0,	// 복사 받을 위치 좌표 X, Y	
+			0,
+			(int)m_fBlockSize,			// 복사 받을 이미지의 가로, 세로
+			(int)m_fBlockSize,
+			hMemDC,						// 복사할 이미지 DC
+			2,							// 비트맵 출력 시작 좌표(Left, top)
 			3,
 			SRCCOPY);
 		break;
