@@ -60,7 +60,7 @@ void CBoss_IceMan::Late_Update()
 		m_fJumpPower = 15.f;
 	}
 
-	if (m_ullFireTime + 500.f < GetTickCount64())
+	if (m_ullFireTime + 1000.f < GetTickCount64())
 	{
 		m_ullFireTime = GetTickCount64();
 		Fire();
@@ -153,13 +153,13 @@ void CBoss_IceMan::Fire()
 	if (m_pPlayer->Get_Info().fX < Get_Info().fX)
 	{
 		CObjMgr::Get_Instance()->Add_Object(
-			OBJ_BOSSBULLET,
+			OBJ_MONSTER,
 			CAbstractFactory<CIce_Slasher>::Create(m_tInfo.fX, m_tInfo.fY, DIR_LEFT));
 	}
 	else
 	{
 		CObjMgr::Get_Instance()->Add_Object(
-			OBJ_BOSSBULLET,
+			OBJ_MONSTER,
 			CAbstractFactory<CIce_Slasher>::Create(m_tInfo.fX, m_tInfo.fY, DIR_RIGHT));
 	}
 

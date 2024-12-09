@@ -43,7 +43,7 @@ void CIce_Slasher::OnCollision(CObj* _pOther, OBJID _eOtherID)
 {
 	if (_eOtherID == OBJ_PLAYER)
 	{
-		//_pOther->Set_
+		_pOther->Set_Dead();
 	}
 }
 

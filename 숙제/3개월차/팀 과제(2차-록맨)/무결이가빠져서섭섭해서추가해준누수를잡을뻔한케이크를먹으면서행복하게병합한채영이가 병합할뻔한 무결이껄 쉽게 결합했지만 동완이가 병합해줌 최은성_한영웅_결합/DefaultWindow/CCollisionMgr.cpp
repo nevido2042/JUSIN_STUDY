@@ -2,7 +2,7 @@
 #include "CCollisionMgr.h"
 #include "CPlayer.h"  
 #include "Boss_FireMan.h"
-
+#include "CObjMgr.h"
 
 
 
@@ -203,6 +203,53 @@ void CCollisionMgr::Collision_Celling(CObj* _pPlayer, list<CObj*> _Src)
 	else
 		_pPlayer->Set_CellingY(ReturnY + _pPlayer->Get_Info().fCY * 0.5f);
 
+}
+void CCollisionMgr::Collision_RectEx_Base(OBJID _Dst, OBJID _Src)
+{
+	float	fX(0.f), fY(0.f);// ?
+
+	for (auto& Dst : CObjMgr::Get_Instance()->Get_List()[_Dst])
+	{
+		for (auto& Src : CObjMgr::Get_Instance()->Get_List()[_Src])
+		{
+			if (Check_Rect(Dst, Src, &fX, &fY))
+			{
+				// 상 하 충돌
+				if (fX > fY)
+				{
+					// 상 충돌
+					if (Dst->Get_Info().fY < Src->Get_Info().fY)
+					{
+						Dst->Set_PosY(-fY);
+					}
+					// 하 충돌
+					else
+					{
+						Dst->Set_PosY(+fY);
+					}
+				}
+
+				// 좌 우 충돌
+				else
+				{
+					// 좌 충돌
+					if (Dst->Get_Info().fX < Src->Get_Info().fX)
+					{
+						Dst->Set_PosX(-fX);
+					}
+					// 우 충돌
+					else
+					{
+						Dst->Set_PosX(fX);
+					}
+				}
+				//Dst->Set_Ground(true);
+				//Dst->Update_Rect();
+				Dst->OnCollision(Src, _Src);
+				Src->OnCollision(Dst, _Dst);
+			}
+		}
+	}
 }
 //보스 전용 // 내일 손볼예정
 void CCollisionMgr::Collision_Boss_Box(CObj* _Boss, list<CObj*> _Src)

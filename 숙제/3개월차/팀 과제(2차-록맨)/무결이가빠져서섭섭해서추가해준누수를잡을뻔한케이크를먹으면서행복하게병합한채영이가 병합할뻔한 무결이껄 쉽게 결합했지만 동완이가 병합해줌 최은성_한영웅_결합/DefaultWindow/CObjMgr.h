@@ -44,6 +44,8 @@ public:
 		}
 	}
 	list<CObj*>* Get_List(OBJID eID) { return &m_ObjList[OBJ_BOSSBULLET]; } // 무결이코드 
+	list<CObj*>* Get_List() { return m_ObjList; } // 무결이코드 
+	// 
 	// 
 private:
 	list<CObj*>		m_ObjList[OBJ_END];

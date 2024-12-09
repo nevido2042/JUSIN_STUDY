@@ -32,13 +32,22 @@ void CStage_Hero::Initialize()
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
 	
 	CObjMgr::Get_Instance()->Add_Object
-	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(500.f, 400.f, DIR_END));
+	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(4500.f, 800.f, DIR_END));
 
 	CObjMgr::Get_Instance()->Add_Object
 	(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(500.f, 400.f, DIR_END));
 
+	//CObjMgr::Get_Instance()->Add_Object
+	//(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(200.f, 100.f, DIR_END));
+
 	CObjMgr::Get_Instance()->Add_Object
 	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(500.f, 400.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(1000.f, 400.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(1500.f, 400.f, DIR_END));
 }
 
 void CStage_Hero::Update()

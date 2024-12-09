@@ -35,5 +35,8 @@ public:
     static void Collision_Floor(CObj* _pPlayer, list<CObj*> _Src);
     static void Collision_Box(CObj* _Player, list<CObj*> _Src);
     static void Collision_Celling(CObj* _pPlayer, list<CObj*> _Src);
+
+    //¼±»ý´Ô ÄÚµå
+    static void Collision_RectEx_Base(OBJID _Dst, OBJID _Src);
 };
 
