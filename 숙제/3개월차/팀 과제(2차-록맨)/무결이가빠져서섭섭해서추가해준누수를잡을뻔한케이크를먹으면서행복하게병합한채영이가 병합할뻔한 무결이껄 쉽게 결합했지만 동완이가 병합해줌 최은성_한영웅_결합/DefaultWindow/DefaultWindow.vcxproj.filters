@@ -1,0 +1,649 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="00. MainGame">
+      <UniqueIdentifier>{13828fb6-a723-4d86-ab6f-9809b1211c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj">
+      <UniqueIdentifier>{e2af40d7-7336-426a-b430-c284427d1e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\00. Player">
+      <UniqueIdentifier>{0d160408-139b-4b41-a75d-ed72a58c3568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet">
+      <UniqueIdentifier>{e788f02c-0521-4a42-9119-079a06b76f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster">
+      <UniqueIdentifier>{28dd5fd8-800c-41f8-8d4f-b441f0804b18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. Mouse">
+      <UniqueIdentifier>{d6dccbdc-b8ff-4078-9255-600f278d61ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\04. Shield">
+      <UniqueIdentifier>{5b2963b1-e43d-46e2-b309-87a87b104392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block">
+      <UniqueIdentifier>{9518156e-dd56-45a0-9e56-bac028973e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\07. Wall">
+      <UniqueIdentifier>{edf2431b-74cd-429d-a6fe-d0e5d645a6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet\01_Player_Bullet">
+      <UniqueIdentifier>{c6d37ab7-8611-41e3-acec-ee5234587767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss">
+      <UniqueIdentifier>{94b23540-b1c4-42bd-8804-4d2c51b00bec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design">
+      <UniqueIdentifier>{fc3aca44-edbd-446a-8d69-20db269dcfd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\AbstractFactory">
+      <UniqueIdentifier>{0277a2de-5106-4547-8fa3-84fa68f69371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\CollisionMgr">
+      <UniqueIdentifier>{f433f92d-d342-4dea-b2ac-76108aae2cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\ObjMgr">
+      <UniqueIdentifier>{f3eeee71-f450-4ceb-ad88-f37da494e3af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\LineMgr">
+      <UniqueIdentifier>{3f637332-18dd-4a28-ad78-9e2077461dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\LineMgr\Line">
+      <UniqueIdentifier>{328d590e-a613-4617-8155-0ed506d73f79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\KeyMgr">
+      <UniqueIdentifier>{35d39457-7602-4ce2-86e7-f6c882bdb56b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\ScrollMgr">
+      <UniqueIdentifier>{f51fd9c2-99b7-40b4-b3b8-741b940b5b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\DummyMgr">
+      <UniqueIdentifier>{752777b1-8f1c-4b46-9b5a-868e17f85e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\BmpMgr">
+      <UniqueIdentifier>{d00107c6-15b7-4c49-9775-ca6489a8c4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\BmpMgr\MyBmp">
+      <UniqueIdentifier>{5a3ba895-245c-4be1-be73-c0eda20ee662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\BlockMgr">
+      <UniqueIdentifier>{ce2a3d32-b948-4e07-b91b-05aced22c1b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\SceneMgr">
+      <UniqueIdentifier>{c7a7d4da-d389-4c11-b435-e353aabbcbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\AnimationMgr">
+      <UniqueIdentifier>{48e336ad-b1be-4d99-86a7-a6faaeceee0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene">
+      <UniqueIdentifier>{807b5c8f-afed-4387-8463-32a5aff97b71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene\CScene">
+      <UniqueIdentifier>{e43b8431-690b-4e97-b8ab-e2423c070e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene\CScene_Start">
+      <UniqueIdentifier>{7c655547-a1b4-4716-9548-0761970cb3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Stage">
+      <UniqueIdentifier>{d3b52efc-effd-455e-983f-7355611d1d1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Stage\01_Stage_Hong">
+      <UniqueIdentifier>{692db49f-4fcc-4339-802a-b9a16f5adc75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Stage\02_Stage_Silver">
+      <UniqueIdentifier>{0c061824-f78e-43ab-946b-924a97860a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Stage\03_Stage_Hero">
+      <UniqueIdentifier>{e4af3a60-68bd-4f27-b2bc-e17ed2791e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Stage\04_Stage_Chae">
+      <UniqueIdentifier>{c52252d0-63fa-4067-ac3b-80ea176eb383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Stage\05_Stage_Moo">
+      <UniqueIdentifier>{00ac27e5-d6c5-408e-bf4f-c28312d5651d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Hong">
+      <UniqueIdentifier>{776d41e8-8055-4d55-ab8c-c3048f5b30a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Moo">
+      <UniqueIdentifier>{180f7757-47b3-4861-bc8b-a247282c2831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Moo\Boss">
+      <UniqueIdentifier>{278cc48b-97c4-49ec-a50f-db5417139f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Moo\Boss_Bullet">
+      <UniqueIdentifier>{41c8ac64-6003-4c6d-a5fd-78be3ecb236e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\SilverMob2">
+      <UniqueIdentifier>{98f9c99a-6516-4e2d-b0a7-e93a49240520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\SilverMob1">
+      <UniqueIdentifier>{726dedee-bbc5-47f0-ae71-eb0d100427ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\WeaponsMenuMgr">
+      <UniqueIdentifier>{94d77766-3e0c-43a0-a3f6-68827dff1b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\00.Block_Ice">
+      <UniqueIdentifier>{7d653f14-5702-4b83-b6eb-afb6edfcaf96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\01.Block_Fire">
+      <UniqueIdentifier>{d5d2e9f5-8e0e-42e1-8073-1e08b7bae6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\02.Block_Elec">
+      <UniqueIdentifier>{de4ea36c-a46f-4b4c-83bb-091d8e86e2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\03.Block_Cut">
+      <UniqueIdentifier>{c0911d48-f132-423a-b8cb-2a532163bd97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\05. Block\04.Block_Gut">
+      <UniqueIdentifier>{bef963bf-a0f5-436c-b01e-280c069ebf55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Silver">
+      <UniqueIdentifier>{b86e079a-fba6-4b93-b61b-8c60f1859aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Hero">
+      <UniqueIdentifier>{789092a3-68dc-48eb-9e44-42090820a1da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Chae">
+      <UniqueIdentifier>{f2f99e06-38cc-4750-8b47-b43516b84227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet\02_Fire_Bullet">
+      <UniqueIdentifier>{2837a3a1-d46b-4041-8c16-aa24ca399fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\HongMonster">
+      <UniqueIdentifier>{a61a050a-58e6-4dff-86ff-605f30121711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Hong\Boss">
+      <UniqueIdentifier>{b1ea31d1-fc28-4979-84aa-7014f22c1dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Hong\Bullet">
+      <UniqueIdentifier>{b428cada-78a6-400f-925c-f544fc402b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet\03_Elec_Bullet">
+      <UniqueIdentifier>{b1ef4e93-abb4-4506-994c-d77e825965c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\MooMonster">
+      <UniqueIdentifier>{4b207392-aa5a-4473-8f7b-e70a7546b461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_UI">
+      <UniqueIdentifier>{cbb05b24-cfc1-4b18-be34-0ea08d1ffba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chae">
+      <UniqueIdentifier>{91a8c1aa-9430-4e5a-805f-d2417b87bfdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\ChaeMonster">
+      <UniqueIdentifier>{bebf8761-baa9-4245-8810-f3d5ec85e817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\ChaeMonster\Monster_2">
+      <UniqueIdentifier>{7eb52a2c-a80d-40e8-be62-4890dd3c8906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\ChaeMonster\Monster_1">
+      <UniqueIdentifier>{c94823fc-cfe2-4000-83ae-e6f71b0138e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Chae\Boss">
+      <UniqueIdentifier>{34c171a9-288b-4a2b-80f9-ba2939758d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\08. Boss\Chae\Boss_Bullet">
+      <UniqueIdentifier>{dadc1bbd-b5b8-4c2b-9a9c-bf5a7dded92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\ChaeMonster\Monster_3">
+      <UniqueIdentifier>{d6d7c1aa-ddf2-4adc-aeb3-aa94c1b916ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\02. Monster\HeroMonster">
+      <UniqueIdentifier>{4b4edaab-56dd-40f3-af4e-fc83c4e0445e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultWindow.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainGame.h">
+      <Filter>00. MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CObj.h">
+      <Filter>01. Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>01. Obj\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>01. Obj\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CAbstractFactory.h">
+      <Filter>04. Design\AbstractFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>04. Design\CollisionMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouse.h">
+      <Filter>01. Obj\03. Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="CShield.h">
+      <Filter>01. Obj\04. Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjMgr.h">
+      <Filter>04. Design\ObjMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CLine.h">
+      <Filter>04. Design\LineMgr\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="CLineMgr.h">
+      <Filter>04. Design\LineMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>04. Design\KeyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CScrollMgr.h">
+      <Filter>04. Design\ScrollMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="DummyMgr.h">
+      <Filter>04. Design\DummyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockMgr.h">
+      <Filter>04. Design\BlockMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>01. Obj\05. Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBmpMgr.h">
+      <Filter>04. Design\BmpMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CMyBmp.h">
+      <Filter>04. Design\BmpMgr\MyBmp</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>02. Scene\CScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Start.h">
+      <Filter>02. Scene\CScene_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneMgr.h">
+      <Filter>04. Design\SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Chae.h">
+      <Filter>03_Stage\04_Stage_Chae</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Hero.h">
+      <Filter>03_Stage\03_Stage_Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Moo.h">
+      <Filter>03_Stage\05_Stage_Moo</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Hong.h">
+      <Filter>03_Stage\01_Stage_Hong</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Silver.h">
+      <Filter>03_Stage\02_Stage_Silver</Filter>
+    </ClInclude>
+    <ClInclude Include="CWall.h">
+      <Filter>01. Obj\07. Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>01. Obj\01. Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>04. Design\AnimationMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimMgr.h">
+      <Filter>04. Design\AnimationMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_ElecMan.h">
+      <Filter>01. Obj\08. Boss\Moo\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet_Elec.h">
+      <Filter>01. Obj\08. Boss\Moo\Boss_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet_Normal.h">
+      <Filter>01. Obj\01. Bullet\01_Player_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CRolling_Cutter.h">
+      <Filter>01. Obj\08. Boss\Silver</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_CutMan.h">
+      <Filter>01. Obj\08. Boss\Silver</Filter>
+    </ClInclude>
+    <ClInclude Include="CRolling_Cutter_P.h">
+      <Filter>01. Obj\08. Boss\Silver</Filter>
+    </ClInclude>
+    <ClInclude Include="CSilver_Mob1.h">
+      <Filter>01. Obj\02. Monster\SilverMob1</Filter>
+    </ClInclude>
+    <ClInclude Include="CSilver_Mob2.h">
+      <Filter>01. Obj\02. Monster\SilverMob2</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponsMenuMgr.h">
+      <Filter>04. Design\WeaponsMenuMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Ice.h">
+      <Filter>01. Obj\05. Block\00.Block_Ice</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Gut.h">
+      <Filter>01. Obj\05. Block\04.Block_Gut</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Fire.h">
+      <Filter>01. Obj\05. Block\01.Block_Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Elec.h">
+      <Filter>01. Obj\05. Block\02.Block_Elec</Filter>
+    </ClInclude>
+    <ClInclude Include="Block_Cut.h">
+      <Filter>01. Obj\05. Block\03.Block_Cut</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_IceMan.h">
+      <Filter>01. Obj\08. Boss\Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="CIce_Slasher.h">
+      <Filter>01. Obj\08. Boss\Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="CFire_Player_Bullet.h">
+      <Filter>01. Obj\01. Bullet\02_Fire_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster_1.h">
+      <Filter>01. Obj\02. Monster\HongMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster_2.h">
+      <Filter>01. Obj\02. Monster\HongMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_FireMan.h">
+      <Filter>01. Obj\08. Boss\Hong\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CFire_Storm.h">
+      <Filter>01. Obj\08. Boss\Hong\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet_Monter_Elec.h">
+      <Filter>01. Obj\01. Bullet\03_Elec_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CEggMonster.h">
+      <Filter>01. Obj\02. Monster\MooMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="CRepeat_Monster.h">
+      <Filter>01. Obj\02. Monster\MooMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossHpBar.h">
+      <Filter>05_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CHpBar.h">
+      <Filter>05_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>05_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIMgr.h">
+      <Filter>05_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_GutsMan.h">
+      <Filter>01. Obj\08. Boss\Chae\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CSuper_Arm.h">
+      <Filter>01. Obj\08. Boss\Chae\Boss_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CGut_M1_Bullet.h">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_1</Filter>
+    </ClInclude>
+    <ClInclude Include="CGut_Monster1.h">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_1</Filter>
+    </ClInclude>
+    <ClInclude Include="CFireWall.h">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_3</Filter>
+    </ClInclude>
+    <ClInclude Include="CGut_M2_Bullet.h">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_2</Filter>
+    </ClInclude>
+    <ClInclude Include="CGut_Monster2.h">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_2</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpingMonster.h">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Penguin.h">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DefaultWindow.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainGame.cpp">
+      <Filter>00. MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj.cpp">
+      <Filter>01. Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>01. Obj\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>01. Obj\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>04. Design\CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouse.cpp">
+      <Filter>01. Obj\03. Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="CShield.cpp">
+      <Filter>01. Obj\04. Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjMgr.cpp">
+      <Filter>04. Design\ObjMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLine.cpp">
+      <Filter>04. Design\LineMgr\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="CLineMgr.cpp">
+      <Filter>04. Design\LineMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>04. Design\KeyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScrollMgr.cpp">
+      <Filter>04. Design\ScrollMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyMgr.cpp">
+      <Filter>04. Design\DummyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockMgr.cpp">
+      <Filter>04. Design\BlockMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>01. Obj\05. Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CBmpMgr.cpp">
+      <Filter>04. Design\BmpMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMyBmp.cpp">
+      <Filter>04. Design\BmpMgr\MyBmp</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>02. Scene\CScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Start.cpp">
+      <Filter>02. Scene\CScene_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneMgr.cpp">
+      <Filter>04. Design\SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Chae.cpp">
+      <Filter>03_Stage\04_Stage_Chae</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Hero.cpp">
+      <Filter>03_Stage\03_Stage_Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Moo.cpp">
+      <Filter>03_Stage\05_Stage_Moo</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Hong.cpp">
+      <Filter>03_Stage\01_Stage_Hong</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Silver.cpp">
+      <Filter>03_Stage\02_Stage_Silver</Filter>
+    </ClCompile>
+    <ClCompile Include="CWall.cpp">
+      <Filter>01. Obj\07. Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>01. Obj\01. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>04. Design\AnimationMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimMgr.cpp">
+      <Filter>04. Design\AnimationMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss_ElecMan.cpp">
+      <Filter>01. Obj\08. Boss\Moo\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet_Elec.cpp">
+      <Filter>01. Obj\08. Boss\Moo\Boss_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet_Normal.cpp">
+      <Filter>01. Obj\01. Bullet\01_Player_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CRolling_Cutter.cpp">
+      <Filter>01. Obj\08. Boss\Silver</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss_CutMan.cpp">
+      <Filter>01. Obj\08. Boss\Silver</Filter>
+    </ClCompile>
+    <ClCompile Include="CRolling_Cutter_P.cpp">
+      <Filter>01. Obj\08. Boss\Silver</Filter>
+    </ClCompile>
+    <ClCompile Include="CSilver_Mob1.cpp">
+      <Filter>01. Obj\02. Monster\SilverMob1</Filter>
+    </ClCompile>
+    <ClCompile Include="CSilver_Mob2.cpp">
+      <Filter>01. Obj\02. Monster\SilverMob2</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponsMenuMgr.cpp">
+      <Filter>04. Design\WeaponsMenuMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Ice.cpp">
+      <Filter>01. Obj\05. Block\00.Block_Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Gut.cpp">
+      <Filter>01. Obj\05. Block\04.Block_Gut</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Fire.cpp">
+      <Filter>01. Obj\05. Block\01.Block_Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Elec.cpp">
+      <Filter>01. Obj\05. Block\02.Block_Elec</Filter>
+    </ClCompile>
+    <ClCompile Include="Block_Cut.cpp">
+      <Filter>01. Obj\05. Block\03.Block_Cut</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss_IceMan.cpp">
+      <Filter>01. Obj\08. Boss\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="CIce_Slasher.cpp">
+      <Filter>01. Obj\08. Boss\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="CFire_Player_Bullet.cpp">
+      <Filter>01. Obj\01. Bullet\02_Fire_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster_1.cpp">
+      <Filter>01. Obj\02. Monster\HongMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster_2.cpp">
+      <Filter>01. Obj\02. Monster\HongMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss_FireMan.h.cpp">
+      <Filter>01. Obj\08. Boss\Hong\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CFire_Storm.cpp">
+      <Filter>01. Obj\08. Boss\Hong\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet_Monter_Elec.cpp">
+      <Filter>01. Obj\01. Bullet\03_Elec_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CEggMonster.cpp">
+      <Filter>01. Obj\02. Monster\MooMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="CRepeat_Monster.cpp">
+      <Filter>01. Obj\02. Monster\MooMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHpBar.cpp">
+      <Filter>05_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CHpBar.cpp">
+      <Filter>05_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>05_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMgr.cpp">
+      <Filter>05_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss_GutsMan.cpp">
+      <Filter>01. Obj\08. Boss\Chae\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CSuper_Arm.cpp">
+      <Filter>01. Obj\08. Boss\Chae\Boss_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CGut_M1_Bullet.cpp">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_1</Filter>
+    </ClCompile>
+    <ClCompile Include="CGut_Monster1.cpp">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_1</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireWall.cpp">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_3</Filter>
+    </ClCompile>
+    <ClCompile Include="CGut_M2_Bullet.cpp">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_2</Filter>
+    </ClCompile>
+    <ClCompile Include="CGut_Monster2.cpp">
+      <Filter>01. Obj\02. Monster\ChaeMonster\Monster_2</Filter>
+    </ClCompile>
+    <ClCompile Include="Penguin.cpp">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpingMonster.cpp">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DefaultWindow.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="DefaultWindow.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
