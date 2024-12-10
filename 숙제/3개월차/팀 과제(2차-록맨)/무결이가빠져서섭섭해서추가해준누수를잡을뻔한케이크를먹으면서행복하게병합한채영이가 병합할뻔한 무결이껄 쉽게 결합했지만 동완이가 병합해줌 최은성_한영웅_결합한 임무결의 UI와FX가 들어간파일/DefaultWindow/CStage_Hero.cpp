@@ -7,8 +7,13 @@
 #include "CKeyMgr.h"
 #include "CBmpMgr.h"
 #include "BlockMgr.h"
+//#include "CWall.h"
 #include "CScrollMgr.h"
+
 #include "Boss_IceMan.h"
+#include "JumpingMonster.h"
+#include "Penguin.h"
+
 #include "CUIMgr.h"
 #include "CHpBar.h"
 
@@ -22,6 +27,9 @@ CStage_Hero::~CStage_Hero()
 
 void CStage_Hero::Initialize()
 {
+	// UI_Player
+	CUIMgr::Get_Instance()->Add_UI(UI_HP_PLAYER, CAbstractFactory<CHpBar>::CreateUI());
+
 	//모든 매니저들 불러서 모든것들 다 이니셜라이즈
 	//CLineMgr::Get_Instance()->Initialize();
 	//CBlockMgr::Get_Instance()->Initialize();
@@ -30,10 +38,22 @@ void CStage_Hero::Initialize()
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
 	
 	CObjMgr::Get_Instance()->Add_Object
-	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(500.f, 100.f, DIR_END));
+	(OBJ_BOSS, CAbstractFactory<CBoss_IceMan>::Create(4500.f, 800.f, DIR_END));
 
-	// UI_Player
-	CUIMgr::Get_Instance()->Add_UI(UI_HP_PLAYER, CAbstractFactory<CHpBar>::CreateUI());
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(500.f, 400.f, DIR_END));
+
+	//CObjMgr::Get_Instance()->Add_Object
+	//(OBJ_MONSTER, CAbstractFactory<CPenguin>::Create(200.f, 100.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(500.f, 400.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(1000.f, 400.f, DIR_END));
+
+	CObjMgr::Get_Instance()->Add_Object
+	(OBJ_MONSTER, CAbstractFactory<CJumpingMonster>::Create(1500.f, 400.f, DIR_END));
 }
 
 void CStage_Hero::Update()
@@ -43,7 +63,6 @@ void CStage_Hero::Update()
 
 	// 모든 오브젝트들을 순회하면서 업데이트
 	CObjMgr::Get_Instance()->Update();
-	CUIMgr::Get_Instance()->Update();
 }
 
 void CStage_Hero::LateUpdate()
@@ -52,7 +71,6 @@ void CStage_Hero::LateUpdate()
 		return;
 	CObjMgr::Get_Instance()->Late_Update();
 	CKeyMgr::Get_Instance()->Update();
-	CUIMgr::Get_Instance()->Late_Update();
 }
 
 void CStage_Hero::Release()
@@ -80,6 +98,7 @@ void CStage_Hero::Render(HDC _hDC)
 
 	CObjMgr::Get_Instance()->Render(hMemDC);
 	CUIMgr::Get_Instance()->Render(hMemDC);
+
 
 	BitBlt(_hDC,
 		0, 0, WINCX, WINCY,

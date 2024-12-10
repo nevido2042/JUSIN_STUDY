@@ -202,6 +202,9 @@
     <Filter Include="01. Obj\07. Effect">
       <UniqueIdentifier>{edf2431b-74cd-429d-a6fe-d0e5d645a6a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Monster\HeroMonster">
+      <UniqueIdentifier>{98ce7c76-f7cd-4e27-9ba5-6938975a068c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -417,6 +420,12 @@
     <ClInclude Include="CEffect.h">
       <Filter>01. Obj\07. Effect</Filter>
     </ClInclude>
+    <ClInclude Include="JumpingMonster.h">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Penguin.h">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -616,6 +625,12 @@
     </ClCompile>
     <ClCompile Include="CEffect.cpp">
       <Filter>01. Obj\07. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpingMonster.cpp">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Penguin.cpp">
+      <Filter>01. Obj\02. Monster\HeroMonster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
