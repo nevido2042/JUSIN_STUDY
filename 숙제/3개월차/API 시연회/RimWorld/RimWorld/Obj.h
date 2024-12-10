@@ -18,8 +18,8 @@ public:
 		m_tInfo.fY = _fY;
 	}
 
-	void		Set_PosX(float _fX) { m_tInfo.fX += _fX; }
-	void		Set_PosY(float _fY) { m_tInfo.fY += _fY; }
+	void		Move_PosX(float _fX) { m_tInfo.fX += _fX; }
+	void		Move_PosY(float _fY) { m_tInfo.fY += _fY; }
 
 	void		Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
 	void		Set_Dead() { m_bDead = true; }

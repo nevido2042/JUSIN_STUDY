@@ -64,12 +64,12 @@ void CCollisionMgr::Collision_RectEx(list<CObj*> _Dst, list<CObj*> _Src)
 					// 상 충돌
 					if (Dst->Get_Info().fY < Src->Get_Info().fY)
 					{
-						Dst->Set_PosY(-fY);
+						Dst->Move_PosY(-fY);
 					}
 					// 하 충돌
 					else
 					{
-						Dst->Set_PosY(+fY);
+						Dst->Move_PosY(+fY);
 					}
 				}
 				
@@ -79,12 +79,12 @@ void CCollisionMgr::Collision_RectEx(list<CObj*> _Dst, list<CObj*> _Src)
 					// 좌 충돌
 					if (Dst->Get_Info().fX < Src->Get_Info().fX)
 					{
-						Dst->Set_PosX(-fX);
+						Dst->Move_PosX(-fX);
 					}
 					// 우 충돌
 					else
 					{
-						Dst->Set_PosX(fX);
+						Dst->Move_PosX(fX);
 					}
 				}
 			}

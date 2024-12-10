@@ -43,7 +43,7 @@ void CMyButton::Late_Update()
 			m_iDrawID = 2;
 
 			if (!lstrcmp(L"Start", m_pImgKey))
-				CSceneMgr::Get_Instance()->Set_Scene(SC_STAGE);
+				CSceneMgr::Get_Instance()->Set_Scene(SC_COLONY);
 
 			else if (!lstrcmp(L"Edit", m_pImgKey))
 				CSceneMgr::Get_Instance()->Set_Scene(SC_EDIT);

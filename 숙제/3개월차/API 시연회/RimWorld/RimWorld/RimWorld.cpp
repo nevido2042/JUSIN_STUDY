@@ -132,6 +132,9 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     // 마우스 커서 지정
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+    // 리소스에서 커서를 로드
+    wcex.hCursor = LoadCursor(hInstance, MAKEINTRESOURCE(IDC_CUSTOM_CURSOR));
+
     
     // 배경 색을 설정
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);

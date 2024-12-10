@@ -31,6 +31,10 @@ void CSceneMgr::Set_Scene(SCENEID eID)
 			m_pScene = new CMyMenu;
 			break;
 
+		case SC_COLONY:
+			m_pScene = new CColony;
+			break;
+
 		case SC_EDIT:
 			//m_pScene = new CLogo;
 			break;
