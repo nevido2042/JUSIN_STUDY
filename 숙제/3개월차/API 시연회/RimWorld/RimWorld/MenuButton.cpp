@@ -1,35 +1,37 @@
 #include "pch.h"
-#include "MyButton.h"
+#include "MenuButton.h"
 #include "BmpMgr.h"
-#include "SceneMgr.h"
 #include "KeyMgr.h"
 
-CMyButton::CMyButton()
+CMenuButton::CMenuButton()
 {
 }
 
-CMyButton::~CMyButton()
+CMenuButton::~CMenuButton()
 {
 	Release();
 }
 
-void CMyButton::Initialize()
+void CMenuButton::Initialize()
 {
-	m_tInfo.fCX = 128.f;
-	m_tInfo.fCY = 64.f;	
+	Set_ImgKey(L"ButtonSubtleAtlas_Menu");
 
+	m_tInfo.fCX = 64.f;
+	m_tInfo.fCY = 32.f;
+
+	m_tInfo.fX = WINCX - m_tInfo.fCX * 0.5f;
+	m_tInfo.fY = WINCY - m_tInfo.fCY * 0.5f;
 }
 
-int CMyButton::Update()
+int CMenuButton::Update()
 {
-
 	__super::Update_Rect();
 
 
 	return OBJ_NOEVENT;
 }
 
-void CMyButton::Late_Update()
+void CMenuButton::Late_Update()
 {
 	POINT	ptMouse{};
 
@@ -42,15 +44,6 @@ void CMyButton::Late_Update()
 		{
 			m_iDrawID = 2;
 
-			if (!lstrcmp(L"Start", m_pImgKey))
-				CSceneMgr::Get_Instance()->Set_Scene(SC_COLONY);
-
-			else if (!lstrcmp(L"Edit", m_pImgKey))
-				CSceneMgr::Get_Instance()->Set_Scene(SC_EDIT);
-
-			else if (!lstrcmp(L"Exit", m_pImgKey))
-				DestroyWindow(g_hWnd);
-
 			return;
 		}
 
@@ -61,10 +54,10 @@ void CMyButton::Late_Update()
 		m_iDrawID = 0;
 }
 
-void CMyButton::Render(HDC hDC)
+void CMenuButton::Render(HDC hDC)
 {
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
-	
+
 	BitBlt(hDC,
 		m_tRect.left,
 		m_tRect.top,
@@ -76,6 +69,6 @@ void CMyButton::Render(HDC hDC)
 		SRCCOPY);
 }
 
-void CMyButton::Release()
+void CMenuButton::Release()
 {
 }

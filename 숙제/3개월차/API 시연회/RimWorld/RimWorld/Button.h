@@ -1,14 +1,11 @@
 #pragma once
-#include "Scene.h"
-
-#include "MenuButton.h"
-
-class CColony :
-    public CScene
+#include "Obj.h"
+class CButton :
+    public CObj
 {
 public:
-    CColony();
-    virtual ~CColony();
+    CButton();
+    virtual ~CButton();
 
 public:
     void Initialize() override;
@@ -16,5 +13,7 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
+protected:
+    int		        m_iDrawID;
 };
 

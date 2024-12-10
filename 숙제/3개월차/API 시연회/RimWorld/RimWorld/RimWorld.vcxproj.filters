@@ -56,7 +56,7 @@
       <Filter>01.Obj\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
-      <Filter>01.Obj\MyButton</Filter>
+      <Filter>01.Obj\Button\MyButton</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>01.Obj\Player</Filter>
@@ -78,6 +78,12 @@
     </ClCompile>
     <ClCompile Include="Colony.cpp">
       <Filter>02.Scene\Colony</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>01.Obj\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuButton.cpp">
+      <Filter>01.Obj\Button\MenuButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,7 +157,7 @@
       <Filter>01.Obj\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="MyButton.h">
-      <Filter>01.Obj\MyButton</Filter>
+      <Filter>01.Obj\Button\MyButton</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>01.Obj\Player</Filter>
@@ -173,6 +179,12 @@
     </ClInclude>
     <ClInclude Include="Colony.h">
       <Filter>02.Scene\Colony</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>01.Obj\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuButton.h">
+      <Filter>01.Obj\Button\MenuButton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -247,9 +259,6 @@
     <Filter Include="01.Obj\Mouse">
       <UniqueIdentifier>{5c3426ff-7b1e-46aa-a5d6-ab2a264a72ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\MyButton">
-      <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\Player">
       <UniqueIdentifier>{e4c99484-d04e-4586-b288-bf2193dff14f}</UniqueIdentifier>
     </Filter>
@@ -270,6 +279,15 @@
     </Filter>
     <Filter Include="02.Scene\Colony">
       <UniqueIdentifier>{c1c15429-f3e0-49b6-8bea-d69470e02730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Button">
+      <UniqueIdentifier>{6d34e72b-89e9-4b5d-a206-6311ca8c64ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Button\MyButton">
+      <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Button\MenuButton">
+      <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

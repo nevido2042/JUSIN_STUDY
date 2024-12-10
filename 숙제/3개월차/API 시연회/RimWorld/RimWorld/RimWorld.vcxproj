@@ -138,6 +138,7 @@
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="BmpMgr.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
     <ClInclude Include="GuideBullet.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="LineMgr.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MenuButton.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MyBmp.h" />
@@ -170,6 +172,7 @@
   <ItemGroup>
     <ClCompile Include="BmpMgr.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
@@ -178,6 +181,7 @@
     <ClCompile Include="LineMgr.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MyBmp.cpp" />

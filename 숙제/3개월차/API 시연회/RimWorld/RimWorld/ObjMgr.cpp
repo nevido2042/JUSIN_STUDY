@@ -114,4 +114,7 @@ void CObjMgr::Delete_ID(OBJID eID)
 		Safe_Delete(pObj);
 
 	m_ObjList[eID].clear();
+
+	/*for (auto& pObj : m_ObjList[eID])
+		pObj->Set_Dead();*/
 }
