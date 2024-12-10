@@ -1,4 +1,4 @@
-﻿// DefaultWindow.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// RimWorld.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "pch.h"
@@ -34,7 +34,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_DEFAULTWINDOW, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_RIMWORLD, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -43,7 +43,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DEFAULTWINDOW));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_RIMWORLD));
 
     MSG msg;
     msg.message = WM_NULL;
@@ -128,7 +128,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hInstance      = hInstance;
 
     // 윈도우가 사용할 아이콘 지정
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DEFAULTWINDOW));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_RIMWORLD));
 
     // 마우스 커서 지정
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
@@ -140,7 +140,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
 
     // 창의 메뉴바
-    wcex.lpszMenuName = NULL;//MAKEINTRESOURCEW(IDC_DEFAULTWINDOW);
+    wcex.lpszMenuName = NULL;//MAKEINTRESOURCEW(IDC_RIMWORLD);
    
     // 실행 파일의 이름(프로젝트 이름과 일치시켜 작성)
     wcex.lpszClassName  = szWindowClass;
