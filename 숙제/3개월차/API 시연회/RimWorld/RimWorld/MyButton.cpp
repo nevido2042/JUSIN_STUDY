@@ -15,8 +15,8 @@ CMyButton::~CMyButton()
 
 void CMyButton::Initialize()
 {
-	m_tInfo.fCX = 150.f;
-	m_tInfo.fCY = 150.f;	
+	m_tInfo.fCX = 128.f;
+	m_tInfo.fCY = 64.f;	
 
 }
 
@@ -40,6 +40,8 @@ void CMyButton::Late_Update()
 	{
 		if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 		{
+			m_iDrawID = 2;
+
 			if (!lstrcmp(L"Start", m_pImgKey))
 				CSceneMgr::Get_Instance()->Set_Scene(SC_STAGE);
 
@@ -63,7 +65,17 @@ void CMyButton::Render(HDC hDC)
 {
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 	
-	GdiTransparentBlt(hDC,			
+	BitBlt(hDC,
+		m_tRect.left,
+		m_tRect.top,
+		(int)m_tInfo.fCX,
+		(int)m_tInfo.fCY,
+		hMemDC,
+		m_iDrawID * (int)m_tInfo.fCX,
+		0,
+		SRCCOPY);
+
+	/*GdiTransparentBlt(hDC,			
 						m_tRect.left,	
 						m_tRect.top,
 						(int)m_tInfo.fCX,	
@@ -73,7 +85,7 @@ void CMyButton::Render(HDC hDC)
 						0,
 						(int)m_tInfo.fCX,	
 						(int)m_tInfo.fCY,
-						RGB(255, 255, 255));
+						RGB(255, 255, 255));*/
 }
 
 void CMyButton::Release()

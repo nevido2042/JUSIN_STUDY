@@ -18,19 +18,14 @@ void CMyMenu::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Menu/Menu.bmp", L"Menu");
 
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Start.bmp", L"Start");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Edit.bmp", L"Edit");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Exit.bmp", L"Exit");
 
 
-    CObj* pButton = CAbstractFactory<CMyButton>::Create(200.f, 400.f);
+    CObj* pButton = CAbstractFactory<CMyButton>::Create(650.f, 300.f);
     pButton->Set_ImgKey(L"Start");
     CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
 
-    pButton = CAbstractFactory<CMyButton>::Create(400.f, 400.f);
-    pButton->Set_ImgKey(L"Edit");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
-
-    pButton = CAbstractFactory<CMyButton>::Create(600.f, 400.f);
+    pButton = CAbstractFactory<CMyButton>::Create(650.f, 400.f);
     pButton->Set_ImgKey(L"Exit");
     CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
 }
@@ -49,8 +44,15 @@ void CMyMenu::Late_Update()
 
 void CMyMenu::Render(HDC hDC)
 {
-    HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
+    //검은색 뒷배경
+    HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
+    HBRUSH oldBrush = (HBRUSH)SelectObject(hDC, myBrush);
+    Rectangle(hDC, 0, 0, WINCX, WINCY);
+    SelectObject(hDC, oldBrush);
+    DeleteObject(myBrush);
 
+    //우주 배경
+    HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
     BitBlt(hDC,
         0, 50, WINCX, WINCY,
         hMemDC,
