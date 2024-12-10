@@ -12,7 +12,7 @@
 #include "SceneMgr.h"
 
 CMainGame::CMainGame()
-	: m_ullTime(GetTickCount64()), m_iFPS(0)
+	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
 {
 	ZeroMemory(m_szFPS, sizeof(m_szFPS));
 }
@@ -64,7 +64,6 @@ void CMainGame::Render()
 #pragma endregion
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Back");
 	
-
 	CSceneMgr::Get_Instance()->Render(hMemDC);
 
 	BitBlt(m_hDC,

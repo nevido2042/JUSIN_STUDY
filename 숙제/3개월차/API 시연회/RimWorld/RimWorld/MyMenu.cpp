@@ -15,6 +15,7 @@ CMyMenu::~CMyMenu()
 
 void CMyMenu::Initialize()
 {
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Black.bmp", L"Black");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Menu/Menu.bmp", L"Menu");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Start.bmp", L"Start");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Exit.bmp", L"Exit");
@@ -43,44 +44,24 @@ void CMyMenu::Late_Update()
 
 void CMyMenu::Render(HDC hDC)
 {
-    //검은색 뒷배경
-    HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
-    HBRUSH oldBrush = (HBRUSH)SelectObject(hDC, myBrush);
-    Rectangle(hDC, 0, 0, WINCX, WINCY);
-    SelectObject(hDC, oldBrush);
-    DeleteObject(myBrush);
+    // 검은 배경
+    HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
 
-    HDC		hMemDC;
-    //우주 배경
-    hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
-    BitBlt(hDC,
-        0, 50, WINCX, WINCY,
-        hMemDC,
-        0,
-        0,
-        SRCCOPY);
+    // 배경 이미지 (우주 배경)
+    HDC hBackgroundDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
+    BitBlt(hMemDC, 0, 50, WINCX, WINCY, hBackgroundDC, 0, 0, SRCCOPY);
 
-    //게임 타이틀
-    int iLeft(350), iTop(200);
-    /*hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"GameTitle");
-    BitBlt(hDC,
-        iLeft, iTop, iLeft + 400, iTop + 57,
-        hMemDC,
-        0,
-        0,
-        SRCCOPY);*/
-    hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"GameTitle");
-    GdiTransparentBlt(hDC,                      // 복사 받을 DC
-        iLeft, iTop,                            // 복사 받을 위치 좌표 X, Y
-        400, 57,                                // 복사 받을 이미지의 가로, 세로
-        hMemDC,                                 // 복사할 이미지 DC	
-        0,                                      // 비트맵 출력 시작 좌표(Left, top)
-        0,
-        400,                                    // 복사할 이미지의 가로, 세로
-        57,
-        RGB(255, 255, 255));                    // 제거할 색상
+    // 게임 타이틀 이미지 (투명 배경 사용)
+    int iLeft = 350, iTop = 200;
+    HDC hGameTitleDC = CBmpMgr::Get_Instance()->Find_Image(L"GameTitle");
+    GdiTransparentBlt(hMemDC, iLeft, iTop, 400, 57, hGameTitleDC, 0, 0, 400, 57, RGB(255, 255, 255));
 
-    CObjMgr::Get_Instance()->Render(hDC);
+    // 객체 매니저 렌더링
+    CObjMgr::Get_Instance()->Render(hMemDC);
+
+    // 메모리 DC의 내용을 실제 화면에 출력 (더블 버퍼링)
+    BitBlt(hDC, 0, 0, WINCX, WINCY, hMemDC, 0, 0, SRCCOPY);
+
 }
 
 void CMyMenu::Release()

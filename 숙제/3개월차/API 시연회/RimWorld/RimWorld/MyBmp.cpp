@@ -2,6 +2,7 @@
 #include "MyBmp.h"
 
 CMyBmp::CMyBmp()
+	:m_hBitmap(nullptr), m_hMemDC(nullptr), m_hOldmap(nullptr)
 {
 }
 
