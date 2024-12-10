@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "RimWorld.h"
-#include "CMainGame.h"
+#include "MainGame.h"
 
 #define MAX_LOADSTRING 100
 
