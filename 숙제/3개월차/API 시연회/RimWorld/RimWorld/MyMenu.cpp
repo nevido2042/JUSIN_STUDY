@@ -44,23 +44,21 @@ void CMyMenu::Late_Update()
 
 void CMyMenu::Render(HDC hDC)
 {
-    // 검은 배경
-    HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
+    // 검은 배경 이미지 (Black 이미지를 hDC에 그리기)
+    HDC hBlackDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
+    BitBlt(hDC, 0, 0, WINCX, WINCY, hBlackDC, 0, 0, SRCCOPY);
 
     // 배경 이미지 (우주 배경)
     HDC hBackgroundDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
-    BitBlt(hMemDC, 0, 50, WINCX, WINCY, hBackgroundDC, 0, 0, SRCCOPY);
+    BitBlt(hDC, 0, 50, WINCX, WINCY, hBackgroundDC, 0, 0, SRCCOPY);
 
     // 게임 타이틀 이미지 (투명 배경 사용)
     int iLeft = 350, iTop = 200;
     HDC hGameTitleDC = CBmpMgr::Get_Instance()->Find_Image(L"GameTitle");
-    GdiTransparentBlt(hMemDC, iLeft, iTop, 400, 57, hGameTitleDC, 0, 0, 400, 57, RGB(255, 255, 255));
+    GdiTransparentBlt(hDC, iLeft, iTop, 400, 57, hGameTitleDC, 0, 0, 400, 57, RGB(255, 255, 255));
 
     // 객체 매니저 렌더링
-    CObjMgr::Get_Instance()->Render(hMemDC);
-
-    // 메모리 DC의 내용을 실제 화면에 출력 (더블 버퍼링)
-    BitBlt(hDC, 0, 0, WINCX, WINCY, hMemDC, 0, 0, SRCCOPY);
+    CObjMgr::Get_Instance()->Render(hDC);
 
 }
 

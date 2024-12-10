@@ -28,29 +28,17 @@ void CColony::Late_Update()
 
 void CColony::Render(HDC hDC)
 {
-    // 검은 배경
-    HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
+    // 검은 배경 (Black 이미지를 바로 hDC에 그리기)
+    HDC hBlackDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
+    BitBlt(hDC, 0, 0, WINCX, WINCY, hBlackDC, 0, 0, SRCCOPY);  // 검은 배경 그리기
 
-    //눈 타일 테스트
+    // 눈 타일 테스트 (Ice 이미지)
     HDC hSnowDC = CBmpMgr::Get_Instance()->Find_Image(L"Ice");
-    BitBlt(hMemDC,
-        WINCX * 0.5, WINCY * 0.5f, 16, 16,
-        hSnowDC,
-        0,
-        0,
-        SRCCOPY);
+    BitBlt(hDC, WINCX * 0.5, WINCY * 0.5f, 16, 16, hSnowDC, 0, 0, SRCCOPY);
 
-    //구상 버튼 테스트
+    // 구상 버튼 테스트 (ButtonSubtleAtlas_Architect 이미지)
     HDC hArcDC = CBmpMgr::Get_Instance()->Find_Image(L"ButtonSubtleAtlas_Architect");
-    BitBlt(hMemDC,
-        0, WINCY-32, 128, 32,
-        hArcDC,
-        0,
-        0,
-        SRCCOPY);
-
-    // 메모리 DC의 내용을 실제 화면에 출력 (더블 버퍼링)
-    BitBlt(hDC, 0, 0, WINCX, WINCY, hMemDC, 0, 0, SRCCOPY);
+    BitBlt(hDC, 0, WINCY - 32, 128, 32, hArcDC, 0, 0, SRCCOPY);
 }
 
 void CColony::Release()
