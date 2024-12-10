@@ -52,7 +52,7 @@ void CMyMenu::Render(HDC hDC)
     HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
 
     BitBlt(hDC,
-        0, 0, WINCX, WINCY,
+        0, 50, WINCX, WINCY,
         hMemDC,
         0,
         0,
