@@ -13,6 +13,11 @@ CSceneMgr::~CSceneMgr()
 	Release();
 }
 
+//Set Scene을 레이트업데이트에서 하니까
+//맵이 바뀌면서 오브젝트리스트가 사라졌다가
+//오브젝트가 추가 되면서 이터레이터가 깨진다.
+//Initialize말고 Start라는 애를 새로 넣어서...
+//Start에서 오브젝트를 생성하게 할까?
 void CSceneMgr::Set_Scene(SCENEID eID)
 {
 	m_eCurScene = eID;
