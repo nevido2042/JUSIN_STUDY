@@ -6,24 +6,27 @@
 #define	PURE		= 0
 #define PI			3.141592f
 
+//오브젝트 관련
 #define OBJ_NOEVENT			0
 #define OBJ_DEAD			1
 
+//키 입력
 #define VK_MAX				0xff
 
-#define TILE_SIZE		64
+//림 이미지 오프셋
+#define HEAD_OFFSET			24
+#define IMAGE_OFFSET_X		32
+#define IMG_OFFSET_Y		64
 
-#define TILEMAP_SIZE	10
-
-#define HEAD_OFFSET		24
-
+//투명 필터
 #define RGB_PURPLE		RGB(163, 73, 164)
 
+//타일 관련
 #define	TILECX				64
 #define	TILECY				64
-
 #define TILEX				30
 #define TILEY				20
+#define TILE_SIZE		64
 
 extern HWND		g_hWnd;
 
