@@ -39,7 +39,7 @@ void CLogo::Render(HDC hDC)
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Logo");
 
 	BitBlt(hDC,
-		0, 0, WINCX, WINCY,
+		(WINCX - 800) * 0.5f, (WINCY - 600) * 0.5f, WINCX, WINCY,
 		hMemDC,
 		0,
 		0,
