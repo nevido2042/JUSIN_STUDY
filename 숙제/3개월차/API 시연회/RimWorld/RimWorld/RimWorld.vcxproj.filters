@@ -85,6 +85,15 @@
     <ClCompile Include="MenuButton.cpp">
       <Filter>01.Obj\Button\MenuButton</Filter>
     </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>01.Obj\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="ColonyMgr.cpp">
+      <Filter>03.Design\ColonyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMgr.cpp">
+      <Filter>03.Design\TileMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -185,6 +194,15 @@
     </ClInclude>
     <ClInclude Include="MenuButton.h">
       <Filter>01.Obj\Button\MenuButton</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>01.Obj\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="ColonyMgr.h">
+      <Filter>03.Design\ColonyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMgr.h">
+      <Filter>03.Design\TileMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +306,15 @@
     </Filter>
     <Filter Include="01.Obj\Button\MenuButton">
       <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Tile">
+      <UniqueIdentifier>{b8f46b05-cda0-475c-b24d-e3521a80d60f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\ColonyMgr">
+      <UniqueIdentifier>{78414958-b0c8-4389-8970-bd0fbffa6e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\TileMgr">
+      <UniqueIdentifier>{06736d4e-7686-4144-9722-2b4bbca49a3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

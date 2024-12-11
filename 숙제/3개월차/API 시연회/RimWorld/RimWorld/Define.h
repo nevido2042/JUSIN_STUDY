@@ -11,6 +11,10 @@
 
 #define VK_MAX				0xff
 
+#define TILE_SIZE		16
+
+#define TILEMAP_SIZE	10
+
 extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };

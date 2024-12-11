@@ -13,6 +13,7 @@
 #include <list>
 #include <algorithm>
 #include <map>
+#include <array>
 
 #ifdef _DEBUG
 

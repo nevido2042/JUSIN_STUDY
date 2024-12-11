@@ -1,17 +1,12 @@
 #pragma once
-#include "Scene.h"
-
-#include "MenuButton.h"
-#include "Tile.h"
-//#include "ColonyMgr.h" 필요 없나?
-
-class CColony :
-    public CScene
+#include "Obj.h"
+//타일은 타일매니저를 통해서만 생성하자
+class CTile :
+    public CObj
 {
 public:
-    CColony();
-    virtual ~CColony();
-
+    CTile();
+    virtual ~CTile();
 public:
     void Initialize() override;
     int Update() override;
