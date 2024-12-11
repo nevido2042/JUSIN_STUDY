@@ -34,6 +34,9 @@ void CPlayer::Initialize()
 
 int CPlayer::Update()
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	Key_Input();
 
 	__super::Update_Rect();

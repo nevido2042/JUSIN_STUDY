@@ -77,9 +77,11 @@ int CObjMgr::Late_Update()
 	{
 		for (auto& pObj : m_ObjList[i])
 		{
-			if (OBJ_SETSCENE == pObj->Late_Update())
-				break;
-			
+			/*if (OBJ_SETSCENE == pObj->Late_Update())
+				break;*/
+
+			pObj->Late_Update();
+
 			if (m_ObjList[i].empty())
 				break;
 		}
@@ -112,11 +114,11 @@ void CObjMgr::Release()
 
 void CObjMgr::Delete_ID(OBJID eID)
 {
-	for (auto& pObj : m_ObjList[eID])
+	/*for (auto& pObj : m_ObjList[eID])
 		Safe_Delete(pObj);
 
-	m_ObjList[eID].clear();
+	m_ObjList[eID].clear();*/
 
-	/*for (auto& pObj : m_ObjList[eID])
-		pObj->Set_Dead();*/
+	for (auto& pObj : m_ObjList[eID])
+		pObj->Set_Dead();
 }

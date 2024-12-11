@@ -22,6 +22,8 @@ void CMyButton::Initialize()
 
 int CMyButton::Update()
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 
 	__super::Update_Rect();
 
@@ -59,6 +61,8 @@ int CMyButton::Late_Update()
 
 	else
 		m_iDrawID = 0;
+
+	return OBJ_NOEVENT;
 }
 
 void CMyButton::Render(HDC hDC)
