@@ -16,7 +16,7 @@ CMyMenu::~CMyMenu()
 void CMyMenu::Initialize()
 {
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Black.bmp", L"Black");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Menu/Menu.bmp", L"Menu");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/BGPlanet.bmp", L"BGPlanet");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Start.bmp", L"Start");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Exit.bmp", L"Exit");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GameTitle.bmp", L"GameTitle");
@@ -49,8 +49,8 @@ void CMyMenu::Render(HDC hDC)
     BitBlt(hDC, 0, 0, WINCX, WINCY, hBlackDC, 0, 0, SRCCOPY);
 
     // 배경 이미지 (우주 배경)
-    HDC hBackgroundDC = CBmpMgr::Get_Instance()->Find_Image(L"Menu");
-    BitBlt(hDC, 0, 50, WINCX, WINCY, hBackgroundDC, 0, 0, SRCCOPY);
+    HDC hBackgroundDC = CBmpMgr::Get_Instance()->Find_Image(L"BGPlanet");
+    BitBlt(hDC, 0, 0, WINCX, WINCY, hBackgroundDC, 0, 0, SRCCOPY);
 
     // 게임 타이틀 이미지 (투명 배경 사용)
     int iLeft = 350, iTop = 200;

@@ -5,6 +5,7 @@
 #include "Logo.h"
 #include "MyMenu.h"
 #include "Stage.h"
+#include "Customize.h"
 #include "Colony.h"
 
 class CSceneMgr

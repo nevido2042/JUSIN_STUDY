@@ -1,7 +1,7 @@
 #pragma once
 
-#define WINCX		800
-#define WINCY		600
+#define WINCX		1720
+#define WINCY		800
 
 #define	PURE		= 0
 #define PI			3.141592f
@@ -15,13 +15,15 @@
 
 #define TILEMAP_SIZE	10
 
+#define HEAD_OFFSET		24
+
 extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 
 enum OBJID { OBJ_PLAYER, OBJ_BULLET, OBJ_MONSTER, OBJ_MOUSE, OBJ_SHIELD, OBJ_BUTTON, OBJ_END };
 
-enum SCENEID { SC_LOGO, SC_MENU, SC_EDIT, SC_STAGE, SC_COLONY, SC_END };
+enum SCENEID { SC_LOGO, SC_MENU, SC_EDIT, SC_STAGE, SC_CUSTOMIZE, SC_COLONY, SC_END };
 
 typedef struct tagInfo
 {
