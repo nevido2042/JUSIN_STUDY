@@ -43,10 +43,6 @@ void CSceneMgr::Set_Scene(SCENEID eID)
 		case SC_COLONY:
 			m_pScene = new CColony;
 			break;
-		
-		case SC_EDIT:
-			//m_pScene = new CLogo;
-			break;
 		}
 
 		m_pScene->Initialize();

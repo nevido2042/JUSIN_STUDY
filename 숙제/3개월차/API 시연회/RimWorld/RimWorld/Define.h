@@ -1,10 +1,10 @@
 #pragma once
 
-#define WINCX		1280
-#define WINCY		720
+#define WINCX				1280
+#define WINCY				720
 
-#define	PURE		= 0
-#define PI			3.141592f
+#define	PURE				= 0
+#define PI					3.141592f
 
 //오브젝트 관련
 #define OBJ_NOEVENT			0
@@ -19,22 +19,22 @@
 #define IMG_OFFSET_Y		64
 
 //투명 필터
-#define RGB_PURPLE		RGB(163, 73, 164)
+#define RGB_PURPLE			RGB(163, 73, 164)
 
 //타일 관련
 #define	TILECX				64
 #define	TILECY				64
 #define TILEX				30
 #define TILEY				20
-#define TILE_SIZE		64
+#define TILE_SIZE			64
 
 extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 
-enum OBJID { OBJ_PLAYER, OBJ_BULLET, OBJ_MONSTER, OBJ_MOUSE, OBJ_SHIELD, OBJ_BUTTON, OBJ_RIM, OBJ_END };
+enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_BUTTON, OBJ_RIM, OBJ_END };
 
-enum SCENEID { SC_LOGO, SC_MENU, SC_EDIT, SC_STAGE, SC_CUSTOMIZE, SC_COLONY, SC_END };
+enum SCENEID { SC_LOGO, SC_MENU, SC_CUSTOMIZE, SC_COLONY, SC_END };
 
 typedef struct tagInfo
 {

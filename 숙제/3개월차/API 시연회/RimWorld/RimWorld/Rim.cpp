@@ -47,14 +47,16 @@ void CRim::Render(HDC hDC)
     HDC hTestDC;
     hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Naked_Male_south");
 
-    // GdiTransparentBlt 사용하여 투명 처리 및 크기 축소
+    // 몸통
     GdiTransparentBlt(hDC,
         m_tRect.left + iScrollX - IMAGE_OFFSET_X
         , m_tRect.top + iScrollY - IMG_OFFSET_Y,
-        128, 128,  //크기
-        hTestDC, 0, 0, 128, 128,  // 원본 이미지 영역
-        RGB_PURPLE);  // 투명 색상
+        128, 128,
+        hTestDC, 0, 0, 128, 128,  
+        RGB_PURPLE);
 
+
+    //얼굴
     hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_south");
     GdiTransparentBlt(hDC,
         m_tRect.left + iScrollX - IMAGE_OFFSET_X,
@@ -63,7 +65,7 @@ void CRim::Render(HDC hDC)
         hTestDC, 0, 0, 128, 128,
         RGB_PURPLE);
 
-    // 아프리카 머리 이미지
+    // 머리
     hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_south");
     GdiTransparentBlt(hDC,
         m_tRect.left + iScrollX - IMAGE_OFFSET_X,
