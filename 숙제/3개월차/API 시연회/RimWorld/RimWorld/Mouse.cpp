@@ -36,9 +36,9 @@ int CMouse::Update()
     return OBJ_NOEVENT;
 }
 
-int CMouse::Late_Update()
+void CMouse::Late_Update()
 {
-    return OBJ_NOEVENT;
+
 }
 
 void CMouse::Render(HDC hDC)

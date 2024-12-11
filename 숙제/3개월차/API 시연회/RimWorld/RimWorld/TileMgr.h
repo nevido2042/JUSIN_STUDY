@@ -9,11 +9,11 @@ private:
 	~CTileMgr();
 
 public:
-	void Initialize() ;
-	int Update() ;
-	void Late_Update() ;
-	void Render(HDC hDC) ;
-	void Release() ;
+	void	Initialize() ;
+	int		Update() ;
+	void	Late_Update() ;
+	void	Render(HDC hDC) ;
+	void	Release() ;
 
 	void		Picking_Tile(POINT pt, int iDrawID, int iOption);
 

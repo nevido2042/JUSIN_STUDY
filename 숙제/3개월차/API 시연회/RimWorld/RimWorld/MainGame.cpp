@@ -5,7 +5,6 @@
 
 #include "CollisionMgr.h"
 
-#include "LineMgr.h"
 #include "KeyMgr.h"
 #include "ScrollMgr.h"
 #include "BmpMgr.h"
@@ -38,13 +37,11 @@ void CMainGame::Update()
 	CSceneMgr::Get_Instance()->Update();
 }
 
-int CMainGame::Late_Update()
+void CMainGame::Late_Update()
 {
 	CSceneMgr::Get_Instance()->Late_Update();
 
 	CKeyMgr::Get_Instance()->Update();
-
-	return OBJ_NOEVENT;
 }
 
 
@@ -81,7 +78,6 @@ void CMainGame::Release()
 	CBmpMgr::Destroy_Instance();
 	CScrollMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
-	CLineMgr::Destroy_Instance();
 	CSceneMgr::Destroy_Instance();
 	CObjMgr::DestroyInstance();
 	ReleaseDC(g_hWnd, m_hDC);

@@ -19,9 +19,6 @@
     <ClCompile Include="KeyMgr.cpp">
       <Filter>03.Design\KeyMgr</Filter>
     </ClCompile>
-    <ClCompile Include="LineMgr.cpp">
-      <Filter>03.Design\LineMgr</Filter>
-    </ClCompile>
     <ClCompile Include="ObjMgr.cpp">
       <Filter>03.Design\ObjMgr</Filter>
     </ClCompile>
@@ -30,9 +27,6 @@
     </ClCompile>
     <ClCompile Include="ScrollMgr.cpp">
       <Filter>03.Design\ScrollMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Line.cpp">
-      <Filter>03.Design\LineMgr\Line</Filter>
     </ClCompile>
     <ClCompile Include="MyBmp.cpp">
       <Filter>03.Design\BmpMgr\MyBmp</Filter>
@@ -43,38 +37,17 @@
     <ClCompile Include="RimWorld.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>01.Obj\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="GuideBullet.cpp">
-      <Filter>01.Obj\GuideBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>01.Obj\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="Mouse.cpp">
       <Filter>01.Obj\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
       <Filter>01.Obj\Button\MyButton</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>01.Obj\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="ScrewBullet.cpp">
-      <Filter>01.Obj\ScrewBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Shield.cpp">
-      <Filter>01.Obj\Shield</Filter>
-    </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>02.Scene\Logo</Filter>
     </ClCompile>
     <ClCompile Include="MyMenu.cpp">
       <Filter>02.Scene\MyMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>02.Scene\Stage</Filter>
     </ClCompile>
     <ClCompile Include="Colony.cpp">
       <Filter>02.Scene\Colony</Filter>
@@ -123,9 +96,6 @@
     <ClInclude Include="KeyMgr.h">
       <Filter>03.Design\KeyMgr</Filter>
     </ClInclude>
-    <ClInclude Include="LineMgr.h">
-      <Filter>03.Design\LineMgr</Filter>
-    </ClInclude>
     <ClInclude Include="ObjMgr.h">
       <Filter>03.Design\ObjMgr</Filter>
     </ClInclude>
@@ -134,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="ScrollMgr.h">
       <Filter>03.Design\ScrollMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>03.Design\LineMgr\Line</Filter>
     </ClInclude>
     <ClInclude Include="MyBmp.h">
       <Filter>03.Design\BmpMgr\MyBmp</Filter>
@@ -159,38 +126,17 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>01.Obj\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="GuideBullet.h">
-      <Filter>01.Obj\GuideBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>01.Obj\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="Mouse.h">
       <Filter>01.Obj\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="MyButton.h">
       <Filter>01.Obj\Button\MyButton</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>01.Obj\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="ScrewBullet.h">
-      <Filter>01.Obj\ScrewBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Shield.h">
-      <Filter>01.Obj\Shield</Filter>
-    </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>02.Scene\Logo</Filter>
     </ClInclude>
     <ClInclude Include="MyMenu.h">
       <Filter>02.Scene\MyMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>02.Scene\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Colony.h">
       <Filter>02.Scene\Colony</Filter>
@@ -250,9 +196,6 @@
     <Filter Include="03.Design\KeyMgr">
       <UniqueIdentifier>{455c9ccd-a86d-4128-bd76-bc5c434c76a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Design\LineMgr">
-      <UniqueIdentifier>{a8f09685-5af4-4b1c-bf7c-28a6070d52a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Design\ObjMgr">
       <UniqueIdentifier>{efe6d496-ce5f-4a23-8e1b-65fa1228d0bd}</UniqueIdentifier>
     </Filter>
@@ -261,9 +204,6 @@
     </Filter>
     <Filter Include="03.Design\ScrollMgr">
       <UniqueIdentifier>{bddb71d4-e2f3-4d73-a2a8-f02b75cfd6f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Design\LineMgr\Line">
-      <UniqueIdentifier>{f868e981-c1e8-46ce-b389-ef22a61746d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.Design\BmpMgr\MyBmp">
       <UniqueIdentifier>{c958230a-4c2d-4089-84a3-78bf1903ecf9}</UniqueIdentifier>
@@ -277,35 +217,14 @@
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{5e4d4094-45b8-4ca3-936d-d3300f2799c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Bullet">
-      <UniqueIdentifier>{97568f88-0c46-4a33-b913-addd257748f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\GuideBullet">
-      <UniqueIdentifier>{d6513929-f1ac-4fa6-95d4-e0841662cb71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Monster">
-      <UniqueIdentifier>{70443e11-ba4e-4808-b865-b74c9bcd579d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\Mouse">
       <UniqueIdentifier>{5c3426ff-7b1e-46aa-a5d6-ab2a264a72ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Player">
-      <UniqueIdentifier>{e4c99484-d04e-4586-b288-bf2193dff14f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\ScrewBullet">
-      <UniqueIdentifier>{bb01ba1f-1569-487c-9725-d6a0d8e8e71e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Shield">
-      <UniqueIdentifier>{9107b114-4ab8-4110-acb5-d44c3880e0d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Scene\Logo">
       <UniqueIdentifier>{7341af8b-a420-4ba7-a11c-e8908cda5bf5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Scene\MyMenu">
       <UniqueIdentifier>{ee9e4ef1-fe86-4a6e-85ad-78c166ae179c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.Scene\Stage">
-      <UniqueIdentifier>{1de9091b-3811-43a0-9a53-f30aafe3946b}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Scene\Colony">
       <UniqueIdentifier>{c1c15429-f3e0-49b6-8bea-d69470e02730}</UniqueIdentifier>

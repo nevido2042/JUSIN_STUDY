@@ -31,7 +31,7 @@ int CMyButton::Update()
 	return OBJ_NOEVENT;
 }
 
-int CMyButton::Late_Update()
+void CMyButton::Late_Update()
 {
 	POINT	ptMouse{};
 
@@ -53,7 +53,7 @@ int CMyButton::Late_Update()
 			else if (!lstrcmp(L"Exit", m_pImgKey))
 				DestroyWindow(g_hWnd);
 
-			return OBJ_SETSCENE;
+			return;
 		}
 
 		m_iDrawID = 1;
@@ -61,8 +61,6 @@ int CMyButton::Late_Update()
 
 	else
 		m_iDrawID = 0;
-
-	return OBJ_NOEVENT;
 }
 
 void CMyButton::Render(HDC hDC)

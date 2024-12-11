@@ -31,9 +31,9 @@ int CLogo::Update()
 	return OBJ_NOEVENT;
 }
 
-int CLogo::Late_Update()
+void CLogo::Late_Update()
 {
-	return OBJ_NOEVENT;
+
 }
 
 void CLogo::Render(HDC hDC)

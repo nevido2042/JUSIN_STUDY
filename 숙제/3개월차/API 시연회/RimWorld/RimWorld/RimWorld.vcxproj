@@ -137,7 +137,6 @@
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="BmpMgr.h" />
-    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
@@ -145,28 +144,20 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMgr.h" />
     <ClInclude Include="Customize.h" />
-    <ClInclude Include="GuideBullet.h" />
     <ClInclude Include="KeyMgr.h" />
-    <ClInclude Include="Line.h" />
-    <ClInclude Include="LineMgr.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MenuButton.h" />
-    <ClInclude Include="Monster.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MyBmp.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyMenu.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="ObjMgr.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Rim.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
-    <ClInclude Include="ScrewBullet.h" />
     <ClInclude Include="ScrollMgr.h" />
-    <ClInclude Include="Shield.h" />
-    <ClInclude Include="Stage.h" />
     <ClInclude Include="RimWorld.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
@@ -176,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BmpMgr.cpp" />
-    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
@@ -184,28 +174,20 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMgr.cpp" />
     <ClCompile Include="Customize.cpp" />
-    <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
-    <ClCompile Include="Line.cpp" />
-    <ClCompile Include="LineMgr.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MenuButton.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MyBmp.cpp" />
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyMenu.cpp" />
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="ObjMgr.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rim.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
-    <ClCompile Include="ScrewBullet.cpp" />
     <ClCompile Include="ScrollMgr.cpp" />
-    <ClCompile Include="Shield.cpp" />
-    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="RimWorld.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

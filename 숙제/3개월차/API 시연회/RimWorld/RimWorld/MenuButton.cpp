@@ -34,7 +34,7 @@ int CMenuButton::Update()
 	return OBJ_NOEVENT;
 }
 
-int CMenuButton::Late_Update()
+void CMenuButton::Late_Update()
 {
 	POINT	ptMouse{};
 
@@ -47,7 +47,7 @@ int CMenuButton::Late_Update()
 		{
 			m_iDrawID = 2;
 
-			return OBJ_NOEVENT;
+			return;
 		}
 
 		m_iDrawID = 1;
@@ -56,7 +56,6 @@ int CMenuButton::Late_Update()
 	else
 		m_iDrawID = 0;
 
-	return OBJ_NOEVENT;
 }
 
 void CMenuButton::Render(HDC hDC)

@@ -4,7 +4,6 @@
 
 #include "Logo.h"
 #include "MyMenu.h"
-#include "Stage.h"
 #include "Customize.h"
 #include "Colony.h"
 
@@ -17,7 +16,7 @@ private:
 public:
 	void		Set_Scene(SCENEID eID);
 	int			Update();
-	int		Late_Update();
+	void		Late_Update();
 	void		Render(HDC hDC);
 	void		Release();
 

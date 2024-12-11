@@ -71,7 +71,7 @@ int CObjMgr::Update()
 	return OBJ_NOEVENT;
 }
 
-int CObjMgr::Late_Update()
+void CObjMgr::Late_Update()
 {
 	for (size_t i = 0; i < OBJ_END; ++i)
 	{
@@ -91,7 +91,7 @@ int CObjMgr::Late_Update()
 	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
-	return OBJ_NOEVENT;
+
 }
 
 void CObjMgr::Render(HDC hDC)

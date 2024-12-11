@@ -28,9 +28,9 @@ int CRim::Update()
     return OBJ_NOEVENT;
 }
 
-int CRim::Late_Update()
+void CRim::Late_Update()
 {
-    return OBJ_NOEVENT;
+
 }
 
 void CRim::Render(HDC hDC)

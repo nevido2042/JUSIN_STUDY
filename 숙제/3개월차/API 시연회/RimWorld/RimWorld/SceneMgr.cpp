@@ -47,10 +47,6 @@ void CSceneMgr::Set_Scene(SCENEID eID)
 		case SC_EDIT:
 			//m_pScene = new CLogo;
 			break;
-
-		case SC_STAGE:
-			m_pScene = new CStage;
-			break;
 		}
 
 		m_pScene->Initialize();
@@ -66,10 +62,9 @@ int CSceneMgr::Update()
 	return OBJ_NOEVENT;
 }
 
-int CSceneMgr::Late_Update()
+void CSceneMgr::Late_Update()
 {
 	m_pScene->Late_Update();
-	return OBJ_NOEVENT;
 }
 
 void CSceneMgr::Render(HDC hDC)

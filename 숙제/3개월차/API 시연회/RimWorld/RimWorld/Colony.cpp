@@ -48,13 +48,12 @@ int CColony::Update()
     return OBJ_NOEVENT;
 }
 
-int CColony::Late_Update()
+void CColony::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
 
     CTileMgr::Get_Instance()->Late_Update();
 
-    return OBJ_NOEVENT;
 }
 
 void CColony::Render(HDC hDC)

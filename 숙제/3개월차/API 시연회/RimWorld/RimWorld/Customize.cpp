@@ -23,9 +23,9 @@ int CCustomize::Update()
 	return OBJ_NOEVENT;
 }
 
-int CCustomize::Late_Update()
+void CCustomize::Late_Update()
 {
-    return OBJ_NOEVENT;
+
 }
 
 void CCustomize::Render(HDC hDC)
