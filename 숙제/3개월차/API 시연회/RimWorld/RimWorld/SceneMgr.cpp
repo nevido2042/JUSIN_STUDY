@@ -66,9 +66,10 @@ int CSceneMgr::Update()
 	return 0;
 }
 
-void CSceneMgr::Late_Update()
+int CSceneMgr::Late_Update()
 {
 	m_pScene->Late_Update();
+	return 0;
 }
 
 void CSceneMgr::Render(HDC hDC)

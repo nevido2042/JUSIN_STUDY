@@ -37,9 +37,10 @@ int CMyMenu::Update()
     return 0;
 }
 
-void CMyMenu::Late_Update()
+int CMyMenu::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
+    return 0;
 }
 
 void CMyMenu::Render(HDC hDC)

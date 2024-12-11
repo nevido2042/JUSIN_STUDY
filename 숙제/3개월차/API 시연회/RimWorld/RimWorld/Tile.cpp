@@ -28,9 +28,10 @@ int CTile::Update()
     return OBJ_NOEVENT;
 }
 
-void CTile::Late_Update()
+int CTile::Late_Update()
 {
     
+	return 0;
 }
 
 void CTile::Render(HDC hDC)

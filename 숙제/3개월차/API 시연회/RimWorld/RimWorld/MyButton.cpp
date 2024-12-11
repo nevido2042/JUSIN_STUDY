@@ -29,7 +29,7 @@ int CMyButton::Update()
 	return OBJ_NOEVENT;
 }
 
-void CMyButton::Late_Update()
+int CMyButton::Late_Update()
 {
 	POINT	ptMouse{};
 
@@ -38,12 +38,12 @@ void CMyButton::Late_Update()
 
 	if (PtInRect(&m_tRect, ptMouse))
 	{
-		if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
+		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 		{
 			m_iDrawID = 2;
 
 			if (!lstrcmp(L"Start", m_pImgKey))
-				CSceneMgr::Get_Instance()->Set_Scene(SC_CUSTOMIZE);
+				CSceneMgr::Get_Instance()->Set_Scene(SC_COLONY);
 
 			else if (!lstrcmp(L"Edit", m_pImgKey))
 				CSceneMgr::Get_Instance()->Set_Scene(SC_EDIT);
@@ -51,7 +51,7 @@ void CMyButton::Late_Update()
 			else if (!lstrcmp(L"Exit", m_pImgKey))
 				DestroyWindow(g_hWnd);
 
-			return;
+			return OBJ_SETSCENE;
 		}
 
 		m_iDrawID = 1;

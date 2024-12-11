@@ -20,7 +20,8 @@ void CLogo::Initialize()
 
 int CLogo::Update()
 {
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_RETURN))
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_RETURN)||
+		CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 	{
 		CSceneMgr::Get_Instance()->Set_Scene(SC_MENU);
 		return 0;
@@ -30,8 +31,9 @@ int CLogo::Update()
 	return 0;
 }
 
-void CLogo::Late_Update()
+int CLogo::Late_Update()
 {
+	return 0;
 }
 
 void CLogo::Render(HDC hDC)

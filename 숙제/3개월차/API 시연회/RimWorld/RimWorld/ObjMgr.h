@@ -20,7 +20,7 @@ public:
 public:
 	void		Add_Object(OBJID eID, CObj* pObj);
 	int			Update();
-	void		Late_Update();
+	int		Late_Update();
 	void		Render(HDC hDC);
 	void		Release();
 

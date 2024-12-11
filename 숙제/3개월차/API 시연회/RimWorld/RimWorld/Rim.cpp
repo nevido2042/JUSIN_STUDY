@@ -19,8 +19,9 @@ int CRim::Update()
     return 0;
 }
 
-void CRim::Late_Update()
+int CRim::Late_Update()
 {
+    return 0;
 }
 
 void CRim::Render(HDC hDC)

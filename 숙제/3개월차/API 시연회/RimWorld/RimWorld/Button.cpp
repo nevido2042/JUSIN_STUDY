@@ -20,8 +20,9 @@ int CButton::Update()
 	return 0;
 }
 
-void CButton::Late_Update()
+int CButton::Late_Update()
 {
+	return 0;
 }
 
 void CButton::Render(HDC hDC)

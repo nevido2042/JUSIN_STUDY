@@ -38,12 +38,13 @@ void CMainGame::Update()
 	CSceneMgr::Get_Instance()->Update();
 }
 
-void CMainGame::Late_Update()
+int CMainGame::Late_Update()
 {
 	CSceneMgr::Get_Instance()->Late_Update();
 
 	CKeyMgr::Get_Instance()->Update();
 
+	return 0;
 }
 
 

@@ -43,7 +43,7 @@ CObj* CObjMgr::Get_Target(OBJID eID, CObj* pDst)
 
 void CObjMgr::Add_Object(OBJID eID, CObj* pObj)
 {
-	if (OBJ_END <= eID || nullptr == pObj)
+	if (eID < 0 || OBJ_END <= eID || nullptr == pObj)
 		return;
 
 	m_ObjList[eID].push_back(pObj);
@@ -71,23 +71,25 @@ int CObjMgr::Update()
 	return 0;
 }
 
-void CObjMgr::Late_Update()
+int CObjMgr::Late_Update()
 {
 	for (size_t i = 0; i < OBJ_END; ++i)
 	{
 		for (auto& pObj : m_ObjList[i])
 		{
-			pObj->Late_Update();
-
+			if (OBJ_SETSCENE == pObj->Late_Update())
+				break;
+			
 			if (m_ObjList[i].empty())
 				break;
 		}
 	}
 
 	//CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
-	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
-	CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
-	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
+	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
+	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
+	return 0;
 }
 
 void CObjMgr::Render(HDC hDC)

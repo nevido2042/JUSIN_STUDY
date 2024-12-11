@@ -40,10 +40,11 @@ int CPlayer::Update()
 
 	return OBJ_NOEVENT;
 }
-void CPlayer::Late_Update()
+int CPlayer::Late_Update()
 {
 	Jumping();
 	Offset();	
+	return 0;
 }
 
 

@@ -12,7 +12,7 @@ public:
 public:
 	void		Initialize();
 	void		Update();
-	void		Late_Update();
+	int			Late_Update();
 	void		Render();
 	void		Release();
 

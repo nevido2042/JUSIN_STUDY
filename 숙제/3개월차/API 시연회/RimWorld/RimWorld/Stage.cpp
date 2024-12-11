@@ -36,9 +36,10 @@ int CStage::Update()
 	return 0;
 }
 
-void CStage::Late_Update()
+int CStage::Late_Update()
 {
 	CObjMgr::Get_Instance()->Late_Update();
+	return 0;
 }
 
 void CStage::Render(HDC hDC)

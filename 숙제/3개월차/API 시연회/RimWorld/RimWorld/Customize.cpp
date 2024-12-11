@@ -23,8 +23,9 @@ int CCustomize::Update()
 	return 0;
 }
 
-void CCustomize::Late_Update()
+int CCustomize::Late_Update()
 {
+    return 0;
 }
 
 void CCustomize::Render(HDC hDC)

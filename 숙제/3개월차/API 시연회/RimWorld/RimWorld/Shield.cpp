@@ -34,8 +34,9 @@ int CShield::Update()
 	return OBJ_NOEVENT;
 }
 
-void CShield::Late_Update()
+int CShield::Late_Update()
 {
+	return 0;
 }
 
 void CShield::Render(HDC hDC)

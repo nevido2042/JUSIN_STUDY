@@ -48,8 +48,9 @@ int CScrewBullet::Update()
 	return OBJ_NOEVENT;
 }
 
-void CScrewBullet::Late_Update()
+int CScrewBullet::Late_Update()
 {
+	return 0;
 }
 
 void CScrewBullet::Render(HDC hDC)

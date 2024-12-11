@@ -7,7 +7,8 @@
 #define PI			3.141592f
 
 #define OBJ_NOEVENT			0
-#define OBJ_DEAD			1	
+#define OBJ_DEAD			1
+#define OBJ_SETSCENE		2
 
 #define VK_MAX				0xff
 

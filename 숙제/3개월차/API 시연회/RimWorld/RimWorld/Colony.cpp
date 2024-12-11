@@ -23,8 +23,8 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
 
     //SetScene 문제로 잠시 보류
-    /*CObj* pButton = CAbstractFactory<CMenuButton>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);*/
+    CObj* pButton = CAbstractFactory<CMenuButton>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
     CTileMgr::Get_Instance()->Create_TileMap();
 
     /*CObj* pTile = CAbstractFactory<CTile>::Create();
@@ -55,9 +55,10 @@ int CColony::Update()
     return 0;
 }
 
-void CColony::Late_Update()
+int CColony::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
+    return 0;
 }
 
 void CColony::Render(HDC hDC)

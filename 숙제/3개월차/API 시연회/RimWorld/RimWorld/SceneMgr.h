@@ -17,7 +17,7 @@ private:
 public:
 	void		Set_Scene(SCENEID eID);
 	int			Update();
-	void		Late_Update();
+	int		Late_Update();
 	void		Render(HDC hDC);
 	void		Release();
 
