@@ -2,7 +2,6 @@
 #include "Tile.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
-#include "ZoomMgr.h"
 
 CTile::CTile() : m_iDrawID(0), m_iOption(0)
 {
@@ -42,13 +41,11 @@ void CTile::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	float	fZoom = CZoomMgr::Get_Instance()->Get_Zoom();
-
 	BitBlt(hDC,
 		m_tRect.left + iScrollX,
 		m_tRect.top + iScrollY,
-		TILECX * fZoom,
-		TILECY * fZoom,
+		TILECX,
+		TILECY,
 		hMemDC,
 		TILECX * m_iDrawID,
 		0,

@@ -2,7 +2,6 @@
 #include "Rim.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
-#include "ZoomMgr.h"
 
 CRim::CRim()
 {
@@ -39,15 +38,13 @@ void CRim::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    float     fZoom = CZoomMgr::Get_Instance()->Get_Zoom();
-
     // 림 몸통, 얼굴, 머리 순 테스트
     HDC hTestDC;
     hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Naked_Male_south");
 
     // 크기를 절반으로 줄임
-    int newWidth = 128 * fZoom;  // 128의 절반
-    int newHeight = 128 * fZoom; // 128의 절반
+    int newWidth = 128;  // 128의 절반
+    int newHeight = 128; // 128의 절반
 
     // GdiTransparentBlt 사용하여 투명 처리 및 크기 축소
     GdiTransparentBlt(hDC,
@@ -57,14 +54,14 @@ void CRim::Render(HDC hDC)
 
     hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_south");
     GdiTransparentBlt(hDC,
-        m_tRect.left + iScrollX, m_tRect.top + iScrollY - HEAD_OFFSET* fZoom, newWidth, newHeight,
+        m_tRect.left + iScrollX, m_tRect.top + iScrollY - HEAD_OFFSET, newWidth, newHeight,
         hTestDC, 0, 0, 128, 128,
         RGB_PURPLE);
 
     // 아프리카 머리 이미지
     hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_south");
     GdiTransparentBlt(hDC,
-        m_tRect.left + iScrollX, m_tRect.top + iScrollY - HEAD_OFFSET* fZoom, newWidth, newHeight,
+        m_tRect.left + iScrollX, m_tRect.top + iScrollY - HEAD_OFFSET, newWidth, newHeight,
         hTestDC, 0, 0, 128, 128,
         RGB_PURPLE);
 }

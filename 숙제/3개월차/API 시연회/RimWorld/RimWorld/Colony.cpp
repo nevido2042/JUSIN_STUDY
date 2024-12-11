@@ -6,7 +6,6 @@
 #include "ScrollMgr.h"
 #include "KeyMgr.h"
 #include "TileMgr.h"
-#include "ZoomMgr.h"
 
 CColony::CColony()
 {
@@ -74,7 +73,6 @@ void CColony::Release()
 {
     CObjMgr::Get_Instance()->Delete_ID(OBJ_BUTTON);
     CTileMgr::Destroy_Instance();
-    CZoomMgr::Destroy_Instance();
 }
 
 void CColony::Input_Key()

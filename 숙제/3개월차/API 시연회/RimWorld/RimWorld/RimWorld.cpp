@@ -5,7 +5,6 @@
 #include "framework.h"
 #include "RimWorld.h"
 #include "MainGame.h"
-#include "ZoomMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -222,23 +221,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_MOUSEWHEEL:
-    {
-        // WPARAM의 상위 16비트는 휠 회전 값
-        short wheelDelta = HIWORD(wParam);  // 휠의 회전 정도 (양수: 휠 업, 음수: 휠 다운)
-
-        if (wheelDelta > 0)
-        {
-            // 휠 업 (줌 인)
-            CZoomMgr::Get_Instance()->Set_Zoom(0.1f);
-        }
-        else if (wheelDelta < 0)
-        {
-            // 휠 다운 (줌 아웃)
-            CZoomMgr::Get_Instance()->Set_Zoom(-0.1f);
-        }
-    }
-        break;
    // case WM_CREATE:
    //
    //     SetTimer(hWnd, 0, 0, 0);
