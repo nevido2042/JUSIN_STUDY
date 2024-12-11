@@ -2,6 +2,7 @@
 #include "Tile.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
+#include "ZoomMgr.h"
 
 CTile::CTile()
 {
@@ -41,11 +42,17 @@ void CTile::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+	float     fZoom = CZoomMgr::Get_Instance()->Get_Zoom();
+
+	// 크기를 절반으로 줄임
+	int newWidth = TILE_SIZE * fZoom;  // 128의 절반
+	int newHeight = TILE_SIZE * fZoom; // 128의 절반
+
 	BitBlt(hDC,
 		m_tRect.left + iScrollX,
 		m_tRect.top + iScrollY,
-		(int)m_tInfo.fCX,
-		(int)m_tInfo.fCY,
+		newWidth,
+		newWidth,
 		hMemDC,
 		0,
 		0,

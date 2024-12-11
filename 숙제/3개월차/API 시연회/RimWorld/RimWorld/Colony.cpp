@@ -6,6 +6,7 @@
 #include "ScrollMgr.h"
 #include "KeyMgr.h"
 #include "TileMgr.h"
+#include "ZoomMgr.h"
 
 CColony::CColony()
 {
@@ -38,24 +39,9 @@ void CColony::Initialize()
 
 int CColony::Update()
 {
-    CObjMgr::Get_Instance()->Update();
+    Input_Key();
 
-    if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
-    {
-        CScrollMgr::Get_Instance()->Set_ScrollX(5.f);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('D'))
-    {
-        CScrollMgr::Get_Instance()->Set_ScrollX(-5.f);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
-    {
-        CScrollMgr::Get_Instance()->Set_ScrollY(5.f);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
-    {
-        CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
-    }
+    CObjMgr::Get_Instance()->Update();
 
     return OBJ_NOEVENT;
 }
@@ -88,4 +74,45 @@ void CColony::Release()
 {
     CObjMgr::Get_Instance()->Delete_ID(OBJ_BUTTON);
     CTileMgr::Destroy_Instance();
+    CZoomMgr::Destroy_Instance();
+}
+
+void CColony::Input_Key()
+{
+    //È­¸é ÁÜ¾Æ¿ô
+    //short wheelDelta = HIWORD(g_wParam);
+    //float zoomFactor(0.f);
+
+    //if(wheelDelta < 0)
+    //{
+    //    // ÈÙ ´Ù¿î (ÁÜ ¾Æ¿ô)
+    //    zoomFactor -= 0.05f;  // ÈÙ ÇÑ ¹ø ³»¸± ¶§¸¶´Ù 0.05¸¸Å­ ÁÜ ¾Æ¿ô
+
+    //    CZoomMgr::Get_Instance()->Set_Zoom(zoomFactor);
+    //}
+    //else if (wheelDelta > 0)
+    //{
+    //    // ÈÙ ¾÷ (ÁÜ ÀÎ)
+    //    zoomFactor += 0.05f;  // ÈÙ ÇÑ ¹ø ¿Ã¸± ¶§¸¶´Ù 0.05¸¸Å­ ÁÜ ÀÎ
+
+    //    CZoomMgr::Get_Instance()->Set_Zoom(zoomFactor);
+    //}
+
+    //È­¸é ½ºÅ©·Ñ
+    if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
+    {
+        CScrollMgr::Get_Instance()->Set_ScrollX(5.f);
+    }
+    if (CKeyMgr::Get_Instance()->Key_Pressing('D'))
+    {
+        CScrollMgr::Get_Instance()->Set_ScrollX(-5.f);
+    }
+    if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
+    {
+        CScrollMgr::Get_Instance()->Set_ScrollY(5.f);
+    }
+    if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
+    {
+        CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
+    }
 }

@@ -2,6 +2,7 @@
 #include "TileMgr.h"
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
+#include "ZoomMgr.h"
 
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 

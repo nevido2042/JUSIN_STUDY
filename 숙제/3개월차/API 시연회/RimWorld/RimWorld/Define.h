@@ -12,7 +12,7 @@
 
 #define VK_MAX				0xff
 
-#define TILE_SIZE		16
+#define TILE_SIZE		64
 
 #define TILEMAP_SIZE	10
 
@@ -21,6 +21,7 @@
 #define RGB_PURPLE	RGB(163, 73, 164)
 
 extern HWND		g_hWnd;
+extern WPARAM	g_wParam;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 

@@ -19,5 +19,7 @@ public:
     int Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
+private:
+    void Input_Key();
 };
 

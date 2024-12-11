@@ -2,6 +2,7 @@
 #include "Rim.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
+#include "ZoomMgr.h"
 
 CRim::CRim()
 {
@@ -14,8 +15,8 @@ CRim::~CRim()
 
 void CRim::Initialize()
 {
-    m_tInfo.fCX = 50.f;
-    m_tInfo.fCY = 50.f;
+    m_tInfo.fCX = 64.f;
+    m_tInfo.fCY = 64.f;
 }
 
 int CRim::Update()
@@ -38,7 +39,7 @@ void CRim::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    float     fZoom(0.5f);
+    float     fZoom = CZoomMgr::Get_Instance()->Get_Zoom();
 
     // 림 몸통, 얼굴, 머리 순 테스트
     HDC hTestDC;
