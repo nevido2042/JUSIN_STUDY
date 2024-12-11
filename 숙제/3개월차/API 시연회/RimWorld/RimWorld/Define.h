@@ -17,6 +17,8 @@
 
 #define HEAD_OFFSET		24
 
+#define RGB_PURPLE	RGB(163, 73, 164)
+
 extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
