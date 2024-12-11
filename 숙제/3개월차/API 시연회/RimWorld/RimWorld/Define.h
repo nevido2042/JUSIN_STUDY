@@ -1,7 +1,7 @@
 #pragma once
 
-#define WINCX		800
-#define WINCY		600
+#define WINCX		1720
+#define WINCY		800
 
 #define	PURE		= 0
 #define PI			3.141592f
