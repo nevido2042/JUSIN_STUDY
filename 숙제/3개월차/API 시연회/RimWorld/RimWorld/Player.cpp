@@ -44,7 +44,7 @@ int CPlayer::Late_Update()
 {
 	Jumping();
 	Offset();	
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 

@@ -24,16 +24,16 @@ int CLogo::Update()
 		CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 	{
 		CSceneMgr::Get_Instance()->Set_Scene(SC_MENU);
-		return 0;
+		return OBJ_NOEVENT;
 	}
 
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 int CLogo::Late_Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CLogo::Render(HDC hDC)

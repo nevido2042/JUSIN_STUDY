@@ -20,12 +20,12 @@ void CCustomize::Initialize()
 
 int CCustomize::Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 int CCustomize::Late_Update()
 {
-    return 0;
+    return OBJ_NOEVENT;
 }
 
 void CCustomize::Render(HDC hDC)

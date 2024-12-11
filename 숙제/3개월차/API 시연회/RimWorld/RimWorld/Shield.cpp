@@ -36,7 +36,7 @@ int CShield::Update()
 
 int CShield::Late_Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CShield::Render(HDC hDC)

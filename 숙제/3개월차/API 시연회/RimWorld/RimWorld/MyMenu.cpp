@@ -34,13 +34,13 @@ int CMyMenu::Update()
 {
     CObjMgr::Get_Instance()->Update();
 
-    return 0;
+    return OBJ_NOEVENT;
 }
 
 int CMyMenu::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
-    return 0;
+    return OBJ_NOEVENT;
 }
 
 void CMyMenu::Render(HDC hDC)

@@ -44,7 +44,7 @@ int CMenuButton::Late_Update()
 		{
 			m_iDrawID = 2;
 
-			return 0;
+			return OBJ_NOEVENT;
 		}
 
 		m_iDrawID = 1;
@@ -53,7 +53,7 @@ int CMenuButton::Late_Update()
 	else
 		m_iDrawID = 0;
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CMenuButton::Render(HDC hDC)

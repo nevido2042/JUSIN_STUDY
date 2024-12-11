@@ -33,13 +33,13 @@ int CStage::Update()
 {
 	CObjMgr::Get_Instance()->Update();
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 int CStage::Late_Update()
 {
 	CObjMgr::Get_Instance()->Late_Update();
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CStage::Render(HDC hDC)

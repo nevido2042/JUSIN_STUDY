@@ -3,6 +3,7 @@
 
 #include "MenuButton.h"
 #include "Tile.h"
+#include "Rim.h"
 //#include "ColonyMgr.h" 필요 없나?
 
 class CColony :

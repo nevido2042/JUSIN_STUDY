@@ -54,7 +54,7 @@ int CGuideBullet::Update()
 
 int CGuideBullet::Late_Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CGuideBullet::Render(HDC hDC)

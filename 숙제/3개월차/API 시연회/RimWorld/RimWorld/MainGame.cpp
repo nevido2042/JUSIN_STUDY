@@ -44,7 +44,7 @@ int CMainGame::Late_Update()
 
 	CKeyMgr::Get_Instance()->Update();
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 

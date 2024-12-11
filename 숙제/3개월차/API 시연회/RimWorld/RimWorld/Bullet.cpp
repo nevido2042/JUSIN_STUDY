@@ -32,7 +32,7 @@ int CBullet::Update()
 }
 int CBullet::Late_Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CBullet::Render(HDC hDC)

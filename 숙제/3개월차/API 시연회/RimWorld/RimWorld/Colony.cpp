@@ -18,17 +18,22 @@ CColony::~CColony()
 
 void CColony::Initialize()
 {
+    //UI
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Ice.bmp", L"Ice");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
+    //Rim
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Head/Male_Average_Normal_south.bmp", L"Male_Average_Normal_south");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Body/Naked_Male_south.bmp", L"Naked_Male_south");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_south.bmp", L"Afro_south");
 
-    //SetScene 문제로 잠시 보류
     CObj* pButton = CAbstractFactory<CMenuButton>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
+
     CTileMgr::Get_Instance()->Create_TileMap();
 
-    /*CObj* pTile = CAbstractFactory<CTile>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, pTile);*/
+    CObj* pRim = CAbstractFactory<CRim>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pRim);
 }
 
 int CColony::Update()
@@ -52,13 +57,13 @@ int CColony::Update()
         CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
     }
 
-    return 0;
+    return OBJ_NOEVENT;
 }
 
 int CColony::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
-    return 0;
+    return OBJ_NOEVENT;
 }
 
 void CColony::Render(HDC hDC)

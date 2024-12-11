@@ -68,7 +68,7 @@ int CObjMgr::Update()
 		}
 	}
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 int CObjMgr::Late_Update()
@@ -89,7 +89,7 @@ int CObjMgr::Late_Update()
 	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
 	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CObjMgr::Render(HDC hDC)

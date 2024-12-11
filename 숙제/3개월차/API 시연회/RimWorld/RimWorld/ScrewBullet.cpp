@@ -50,7 +50,7 @@ int CScrewBullet::Update()
 
 int CScrewBullet::Late_Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CScrewBullet::Render(HDC hDC)

@@ -278,7 +278,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
-    return 0;
+    return OBJ_NOEVENT;
 }
 
 // 숙제 1. 그림을 그려와라.

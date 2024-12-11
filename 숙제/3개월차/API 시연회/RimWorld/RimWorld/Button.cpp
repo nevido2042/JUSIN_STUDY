@@ -17,12 +17,12 @@ void CButton::Initialize()
 
 int CButton::Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 int CButton::Late_Update()
 {
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CButton::Render(HDC hDC)

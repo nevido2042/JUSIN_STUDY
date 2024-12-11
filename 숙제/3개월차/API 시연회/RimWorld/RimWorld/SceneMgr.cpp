@@ -63,13 +63,13 @@ int CSceneMgr::Update()
 {
 	m_pScene->Update();
 
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 int CSceneMgr::Late_Update()
 {
 	m_pScene->Late_Update();
-	return 0;
+	return OBJ_NOEVENT;
 }
 
 void CSceneMgr::Render(HDC hDC)
