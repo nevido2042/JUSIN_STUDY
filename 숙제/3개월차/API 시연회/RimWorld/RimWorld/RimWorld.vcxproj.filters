@@ -94,6 +94,12 @@
     <ClCompile Include="TileMgr.cpp">
       <Filter>03.Design\TileMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Rim.cpp">
+      <Filter>01.Obj\Rim</Filter>
+    </ClCompile>
+    <ClCompile Include="Customize.cpp">
+      <Filter>02.Scene\Customize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -203,6 +209,12 @@
     </ClInclude>
     <ClInclude Include="TileMgr.h">
       <Filter>03.Design\TileMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Rim.h">
+      <Filter>01.Obj\Rim</Filter>
+    </ClInclude>
+    <ClInclude Include="Customize.h">
+      <Filter>02.Scene\Customize</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +327,12 @@
     </Filter>
     <Filter Include="03.Design\TileMgr">
       <UniqueIdentifier>{06736d4e-7686-4144-9722-2b4bbca49a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\Customize">
+      <UniqueIdentifier>{bd8303d1-f563-4791-8b7d-457efa3ac5b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Rim">
+      <UniqueIdentifier>{d4ea857e-f0ba-4769-b9b6-de797cf0301a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
