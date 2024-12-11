@@ -65,7 +65,7 @@ void CMyButton::Render(HDC hDC)
 {
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 	
-	BitBlt(hDC,
+		BitBlt(hDC,
 		m_tRect.left,
 		m_tRect.top,
 		(int)m_tInfo.fCX,
