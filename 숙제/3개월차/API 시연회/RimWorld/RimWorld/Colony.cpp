@@ -31,7 +31,8 @@ void CColony::Initialize()
     CObj* pButton = CAbstractFactory<CMenuButton>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
 
-    CTileMgr::Get_Instance()->Create_TileMap();
+    CTileMgr::Get_Instance()->Initialize();
+    //CTileMgr::Get_Instance()->Create_TileMap();
 
     CObj* pRim = CAbstractFactory<CRim>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pRim);
@@ -43,12 +44,17 @@ int CColony::Update()
 
     CObjMgr::Get_Instance()->Update();
 
+    CTileMgr::Get_Instance()->Update();
+
     return OBJ_NOEVENT;
 }
 
 int CColony::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
+
+    CTileMgr::Get_Instance()->Late_Update();
+
     return OBJ_NOEVENT;
 }
 
@@ -58,13 +64,7 @@ void CColony::Render(HDC hDC)
     HDC hBlackDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
     BitBlt(hDC, 0, 0, WINCX, WINCY, hBlackDC, 0, 0, SRCCOPY);  // 검은 배경 그리기
 
-    //// 눈 타일 테스트 (Ice 이미지)
-    //HDC hSnowDC = CBmpMgr::Get_Instance()->Find_Image(L"Ice");
-    //BitBlt(hDC, WINCX * 0.5, WINCY * 0.5f, 16, 16, hSnowDC, 0, 0, SRCCOPY);
-
-    //// 구상 버튼 테스트 (ButtonSubtleAtlas_Architect 이미지)
-    //HDC hArcDC = CBmpMgr::Get_Instance()->Find_Image(L"ButtonSubtleAtlas_Architect");
-    //BitBlt(hDC, 0, WINCY - 32, 128, 32, hArcDC, 0, 0, SRCCOPY);
+    CTileMgr::Get_Instance()->Render(hDC);
 
     // 객체 매니저 렌더링
     CObjMgr::Get_Instance()->Render(hDC);
@@ -79,24 +79,7 @@ void CColony::Release()
 
 void CColony::Input_Key()
 {
-    //화면 줌아웃
-    //short wheelDelta = HIWORD(g_wParam);
-    //float zoomFactor(0.f);
-
-    //if(wheelDelta < 0)
-    //{
-    //    // 휠 다운 (줌 아웃)
-    //    zoomFactor -= 0.05f;  // 휠 한 번 내릴 때마다 0.05만큼 줌 아웃
-
-    //    CZoomMgr::Get_Instance()->Set_Zoom(zoomFactor);
-    //}
-    //else if (wheelDelta > 0)
-    //{
-    //    // 휠 업 (줌 인)
-    //    zoomFactor += 0.05f;  // 휠 한 번 올릴 때마다 0.05만큼 줌 인
-
-    //    CZoomMgr::Get_Instance()->Set_Zoom(zoomFactor);
-    //}
+    //화면 줌아웃(RimWorld.cpp 이벤트 부분에 있음)
 
     //화면 스크롤
     if (CKeyMgr::Get_Instance()->Key_Pressing('A'))

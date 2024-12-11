@@ -1,17 +1,26 @@
 #pragma once
+
 #include "Obj.h"
-//타일은 타일매니저를 통해서만 생성하자
-class CTile :
-    public CObj
+
+class CTile :   public CObj
 {
 public:
-    CTile();
-    virtual ~CTile();
+	CTile();
+	virtual ~CTile();
+
 public:
-    void Initialize() override;
-    int Update() override;
-    int Late_Update() override;
-    void Render(HDC hDC) override;
-    void Release() override;
+	void		Set_DrawID(int _iDrawID) { m_iDrawID = _iDrawID;  }
+	void		Set_Option(int _iOption) { m_iOption = _iOption; }
+
+public:
+	void Initialize() override;
+	int Update() override;
+	int Late_Update() override;
+	void Render(HDC hDC) override;
+	void Release() override;
+
+private:
+	int		m_iDrawID;
+	int		m_iOption;
 };
 

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Tile.h"
 
 class CTileMgr
@@ -8,7 +9,13 @@ private:
 	~CTileMgr();
 
 public:
-	void Create_TileMap();
+	void Initialize() ;
+	int Update() ;
+	void Late_Update() ;
+	void Render(HDC hDC) ;
+	void Release() ;
+
+	void		Picking_Tile(POINT pt, int iDrawID, int iOption);
 
 public:
 	static CTileMgr* Get_Instance()
@@ -30,5 +37,8 @@ public:
 
 private:
 	static CTileMgr* m_pInstance;
-	array<array<CObj*, 100>, 100> m_arrTile;
+
+	array<CObj*, TILEX* TILEY>	m_arrTile;
+
 };
+
