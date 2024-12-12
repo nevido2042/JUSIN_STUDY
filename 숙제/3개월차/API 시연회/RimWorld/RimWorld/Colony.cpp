@@ -41,9 +41,9 @@ void CColony::Initialize()
     CTileMgr::Get_Instance()->Initialize();
 
     //오브젝트
-    pObj = CAbstractFactory<CRim>::Create();
+    pObj = CAbstractFactory<CRim>::Create(WINCX * 0.5f, WINCY * 0.5f);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
-    pObj = CAbstractFactory<CRock>::Create(64.f, 64.f);
+    pObj = CAbstractFactory<CRock>::Create(WINCX * 0.5f, WINCY * 0.5f);
     CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
 }
 
@@ -64,6 +64,7 @@ void CColony::Late_Update()
 
     CTileMgr::Get_Instance()->Late_Update();
 
+    CScrollMgr::Get_Instance()->Scroll_Lock();
 }
 
 void CColony::Render(HDC hDC)
@@ -92,18 +93,18 @@ void CColony::Input_Key()
     float fSpeed(10.f);
     if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollX(fSpeed);
+        CScrollMgr::Get_Instance()->Move_ScrollX(fSpeed);
     }
     if (CKeyMgr::Get_Instance()->Key_Pressing('D'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollX(-fSpeed);
+        CScrollMgr::Get_Instance()->Move_ScrollX(-fSpeed);
     }
     if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollY(fSpeed);
+        CScrollMgr::Get_Instance()->Move_ScrollY(fSpeed);
     }
     if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollY(-fSpeed);
+        CScrollMgr::Get_Instance()->Move_ScrollY(-fSpeed);
     }
 }

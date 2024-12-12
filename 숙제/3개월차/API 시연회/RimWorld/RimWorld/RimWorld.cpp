@@ -89,8 +89,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
                 dwTime = GetTickCount64();
             }          
 
-            //MainGame.Update();
-            //MainGame.Render();
+            /*MainGame.Update();
+            MainGame.Late_Update();
+            MainGame.Render();*/
         }      
     }
 

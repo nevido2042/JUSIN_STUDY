@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TileMgr.h"
 #include "AbstractFactory.h"
+#include "ScrollMgr.h"
 
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
@@ -46,8 +47,27 @@ void CTileMgr::Late_Update()
 
 void CTileMgr::Render(HDC hDC)
 {
-	for (auto& pTile : m_arrTile)
-		pTile->Render(hDC);
+	 /*for (auto& pTile : m_arrTile)
+	 	pTile->Render(hDC);*/
+
+	int		iScrollX = abs((int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX);
+	int		iScrollY = abs((int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY);
+
+	int		iMaxX = iScrollX + WINCX / TILECX + 2;
+	int		iMaxY = iScrollY + WINCY / TILECY + 2;
+
+	for (int i = iScrollY; i < iMaxY; ++i)
+	{
+		for (int j = iScrollX; j < iMaxX; ++j)
+		{
+			int		iIndex = i * TILEX + j;
+
+			if (0 > iIndex || m_arrTile.size() <= (size_t)iIndex)
+				continue;
+
+			m_arrTile[iIndex]->Render(hDC);
+		}
+	}
 }
 
 void CTileMgr::Release()

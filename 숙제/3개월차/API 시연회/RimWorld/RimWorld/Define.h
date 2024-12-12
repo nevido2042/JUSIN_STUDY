@@ -24,8 +24,10 @@
 //타일 관련
 #define	TILECX				64
 #define	TILECY				64
+
 #define TILEX				30
 #define TILEY				20
+
 #define TILE_SIZE			64
 
 extern HWND		g_hWnd;

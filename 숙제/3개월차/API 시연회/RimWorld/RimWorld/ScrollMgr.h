@@ -9,11 +9,14 @@ private:
 	~CScrollMgr();
 
 public:
+	void Scroll_Lock();
+
+public:
 	float			Get_ScrollX() { return m_fScrollX; }
 	float			Get_ScrollY() { return m_fScrollY; }
 
-	void			Set_ScrollX(float _fX) { m_fScrollX += _fX; }
-	void			Set_ScrollY(float _fY) { m_fScrollY += _fY; }
+	void			Move_ScrollX(float _fX) { m_fScrollX += _fX; }
+	void			Move_ScrollY(float _fY) { m_fScrollY += _fY; }
 
 public:
 	static CScrollMgr* Get_Instance()
