@@ -3,8 +3,6 @@
 #include "BmpMgr.h"
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
-#include "ScrollMgr.h"
-#include "KeyMgr.h"
 #include "TileMgr.h"
 
 CColony::CColony()
@@ -41,19 +39,23 @@ void CColony::Initialize()
     CTileMgr::Get_Instance()->Initialize();
 
     //오브젝트
-    pObj = CAbstractFactory<CRim>::Create(WINCX * 0.5f, WINCY * 0.5f);
+    pObj = CAbstractFactory<CRim>::Create(32, 32);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
-    pObj = CAbstractFactory<CRock>::Create(WINCX * 0.5f, WINCY * 0.5f);
+
+    pObj = CAbstractFactory<CRock>::Create(64 + 32, 64 + 32);
     CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
+    CTileMgr::Get_Instance()->Set_TileOption(64, 64, OPT_BLOCKED);
 }
 
 int CColony::Update()
 {
-    Input_Key();
+    CColonyMgr::Get_Instance()->Update();
 
     CObjMgr::Get_Instance()->Update();
 
     CTileMgr::Get_Instance()->Update();
+
+   
 
     return OBJ_NOEVENT;
 }
@@ -64,7 +66,7 @@ void CColony::Late_Update()
 
     CTileMgr::Get_Instance()->Late_Update();
 
-    CScrollMgr::Get_Instance()->Scroll_Lock();
+    CColonyMgr::Get_Instance()->Late_Update();
 }
 
 void CColony::Render(HDC hDC)
@@ -83,28 +85,5 @@ void CColony::Release()
 {
     CObjMgr::Get_Instance()->Delete_ID(OBJ_BUTTON);
     CTileMgr::Destroy_Instance();
-}
-
-void CColony::Input_Key()
-{
-    //화면 줌아웃(RimWorld.cpp 이벤트 부분에 있음)
-
-    //화면 스크롤
-    float fSpeed(10.f);
-    if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollX(fSpeed);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('D'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollX(-fSpeed);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollY(fSpeed);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollY(-fSpeed);
-    }
+    CColonyMgr::Destroy_Instance();
 }

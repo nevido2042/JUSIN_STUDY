@@ -6,7 +6,7 @@
 #include "Rim.h"
 #include "ArcitectBtn.h"
 #include "Rock.h"
-//#include "ColonyMgr.h" 필요 없나?
+#include "ColonyMgr.h"
 
 class CColony :
     public CScene
@@ -21,7 +21,5 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
-private:
-    void Input_Key();
 };
 

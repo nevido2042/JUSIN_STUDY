@@ -9,13 +9,15 @@ private:
 	~CTileMgr();
 
 public:
+	void	Set_TileOption(float _fX, float _fY, TILEOPT _eOpt);
+	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
+
+public:
 	void	Initialize() ;
 	int		Update() ;
 	void	Late_Update() ;
 	void	Render(HDC hDC) ;
 	void	Release() ;
-
-	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 
 public:
 	static CTileMgr* Get_Instance()

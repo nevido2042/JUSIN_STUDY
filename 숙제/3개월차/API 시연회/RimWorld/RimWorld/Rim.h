@@ -6,6 +6,8 @@ class CRim :
 public:
     CRim();
     virtual ~CRim();
+public:
+    void Move_To(float _fX, float _fY);
 
 public:
     void Initialize() override;

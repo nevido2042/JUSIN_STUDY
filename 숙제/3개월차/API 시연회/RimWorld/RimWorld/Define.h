@@ -28,8 +28,6 @@
 #define TILEX				30
 #define TILEY				20
 
-#define TILE_SIZE			64
-
 extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };

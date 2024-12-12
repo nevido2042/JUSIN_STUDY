@@ -75,6 +75,12 @@ void CTileMgr::Release()
 	for_each(m_arrTile.begin(), m_arrTile.end(), Safe_Delete<CObj*>);
 }
 
+void CTileMgr::Set_TileOption(float _fX, float _fY, TILEOPT _eOpt)
+{
+	int _iIdx = _fX / TILECX + _fY / TILECY * TILEX;
+	static_cast<CTile*>(m_arrTile.at(_iIdx))->Set_Option(_eOpt);
+}
+
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)
 {
 	int		x = pt.x / TILECX;

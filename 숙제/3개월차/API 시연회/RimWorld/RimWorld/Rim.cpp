@@ -2,6 +2,8 @@
 #include "Rim.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
+#include "KeyMgr.h"
+#include "ColonyMgr.h"
 
 CRim::CRim()
 {
@@ -10,6 +12,11 @@ CRim::CRim()
 CRim::~CRim()
 {
     Release();
+}
+
+void CRim::Move_To(float _fX, float _fY)
+{
+    //길찾기
 }
 
 void CRim::Initialize()
@@ -34,7 +41,20 @@ int CRim::Update()
 
 void CRim::Late_Update()
 {
+    //마우스 클릭 했을 때 타겟으로 설정
+    POINT	ptMouse{};
 
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    if (PtInRect(&m_tRect, ptMouse))
+    {
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+            CColonyMgr::Get_Instance()->Set_Target(this);
+            return;
+        }
+    }
 }
 
 void CRim::Render(HDC hDC)
@@ -42,7 +62,7 @@ void CRim::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, 
+    Ellipse(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, 
         m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);
 
     // 림 몸통, 얼굴, 머리 순 테스트
