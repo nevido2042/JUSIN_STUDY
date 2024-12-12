@@ -4,6 +4,7 @@
 #include "ScrollMgr.h"
 #include "KeyMgr.h"
 #include "ColonyMgr.h"
+#include "PathFinder.h"
 
 CRim::CRim()
 {
@@ -14,15 +15,20 @@ CRim::~CRim()
     Release();
 }
 
-void CRim::Move_To(float _fX, float _fY)
+void CRim::Move_To(POS _Pos)
 {
-    //길찾기
+    //이동 할 타일의 idx를 계산해서 확인한다. Blocked이면 return;
+
+    //갈 수 있으면 길찾기를 수행한다.(Astar/JPS)
+
+    //길찾기 매니저를 따로
+    //ex) CPathFinder::GetInstance()->Find_Path(Start, End); 타일 리스트를 반환하게 할까?
+    CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX,m_tInfo.fY }, _Pos);
+    
 }
 
 void CRim::Initialize()
 {
-    //m_tInfo.fCX = 128.f;
-    //m_tInfo.fCY = 152.f;
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
 

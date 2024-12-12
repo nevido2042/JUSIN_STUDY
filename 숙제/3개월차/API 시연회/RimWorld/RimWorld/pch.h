@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <map>
 #include <array>
+#include <math.h>
 
 #ifdef _DEBUG
 

@@ -4,6 +4,7 @@
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
 #include "TileMgr.h"
+#include "PathFinder.h"
 
 CColony::CColony()
 {
@@ -86,4 +87,5 @@ void CColony::Release()
     CObjMgr::Get_Instance()->Delete_ID(OBJ_BUTTON);
     CTileMgr::Destroy_Instance();
     CColonyMgr::Destroy_Instance();
+    CPathFinder::Destroy_Instance();
 }

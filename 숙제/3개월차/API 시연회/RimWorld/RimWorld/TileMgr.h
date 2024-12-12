@@ -11,7 +11,8 @@ private:
 public:
 	void	Set_TileOption(float _fX, float _fY, TILEOPT _eOpt);
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
-
+	
+	const array<CObj*, TILEX* TILEY>& Get_TileArray() { return m_arrTile; }
 public:
 	void	Initialize() ;
 	int		Update() ;

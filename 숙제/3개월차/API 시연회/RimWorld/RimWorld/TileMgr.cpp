@@ -77,7 +77,7 @@ void CTileMgr::Release()
 
 void CTileMgr::Set_TileOption(float _fX, float _fY, TILEOPT _eOpt)
 {
-	int _iIdx = _fX / TILECX + _fY / TILECY * TILEX;
+	int _iIdx = int(_fX / TILECX) + int(_fY / TILECY * TILEX);
 	static_cast<CTile*>(m_arrTile.at(_iIdx))->Set_Option(_eOpt);
 }
 

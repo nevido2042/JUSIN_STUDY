@@ -30,8 +30,6 @@
 
 extern HWND		g_hWnd;
 
-enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
-
 enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_BUTTON, OBJ_WALL, OBJ_RIM, OBJ_END };
 
 enum TILEOPT { OPT_REACHABLE, OPT_BLOCKED, OPT_END };
@@ -39,6 +37,8 @@ enum TILEOPT { OPT_REACHABLE, OPT_BLOCKED, OPT_END };
 enum RENDERID { RENDER_BACKGROUND, RENDER_GAMEOBJECT, RENDER_UI, RENDER_EFFECT, RENDER_END };
 
 enum SCENEID { SC_LOGO, SC_MENU, SC_CUSTOMIZE, SC_COLONY, SC_END };
+
+enum DIRECTION { OO, UU, RU, RR, RD, DD, LD, LL, LU, DIR_END }; //12시 ~ 1시 방향 순
 
 typedef struct tagInfo
 {
@@ -119,3 +119,65 @@ public:
 		}
 	}
 };
+
+typedef struct tagPosition
+{
+public:
+    float fX;
+    float fY;
+    tagPosition() :fX(0.f), fY(0.f) {};
+    tagPosition(float _fX, float _fY)
+        :fX(_fX), fY(_fY)
+    {
+
+    }
+
+    bool operator==(const tagPosition& _Pos)
+    {
+        if (fX == _Pos.fX && fY == _Pos.fY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool operator==(const tagPosition& _Pos) const
+    {
+        if (fX == _Pos.fX && fY == _Pos.fY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool operator!=(const tagPosition& _Pos)
+    {
+        if (fX != _Pos.fX && fY != _Pos.fY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool operator!=(const tagPosition& _Pos) const
+    {
+        if (fX != _Pos.fX && fY != _Pos.fY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+}POS;

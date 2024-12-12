@@ -7,7 +7,7 @@ public:
     CRim();
     virtual ~CRim();
 public:
-    void Move_To(float _fX, float _fY);
+    void Move_To(POS _Pos);
 
 public:
     void Initialize() override;

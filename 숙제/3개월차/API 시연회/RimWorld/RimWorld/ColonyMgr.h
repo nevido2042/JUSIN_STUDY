@@ -3,7 +3,7 @@
 
 class CColonyMgr
 {
-public:
+private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
 	
