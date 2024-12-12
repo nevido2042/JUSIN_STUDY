@@ -18,6 +18,8 @@ public:
 		m_tInfo.fY = _fY;
 	}
 
+	const RENDERID Get_GroupID() const { return m_eRender; }
+
 	void		Move_PosX(float _fX) { m_tInfo.fX += _fX; }
 	void		Move_PosY(float _fY) { m_tInfo.fY += _fY; }
 
@@ -52,6 +54,7 @@ protected:
 
 	bool		m_bDead;
 	DIRECTION	m_eDir;
+	RENDERID	m_eRender;
 
 	CObj*		m_pTarget;
 

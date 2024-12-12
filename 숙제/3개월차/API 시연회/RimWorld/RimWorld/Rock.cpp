@@ -70,17 +70,20 @@ void CRock::Initialize()
 	Set_ImgKey(L"Rock_Atlas");
 	//m_pImgKey = L"Rock_Atlas";
 
-    m_tInfo.fCX = 64.f;
-    m_tInfo.fCY = 64.f;
+	m_tInfo.fCX = 80.f; //나중에 오프셋 64(충돌범위)+16(렌더) 이런식으로 줘야할듯
+    m_tInfo.fCY = 80.f;
 
 	m_eCurState = IDLE;
 	m_ePreState = IDLE;
 
 	m_tFrame.iFrameStart = 0;
 	m_tFrame.iFrameEnd = 3;
-	m_tFrame.iMotion = 0;
-	m_tFrame.ullSpeed = 200;
+	m_tFrame.iMotion = 3;
+	m_tFrame.ullSpeed = 500
+		;
 	m_tFrame.ullTime = GetTickCount64();
+
+	m_eRender = RENDER_GAMEOBJECT;
 }
 
 int CRock::Update()
@@ -105,17 +108,17 @@ void CRock::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
+	/*Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
 		m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);
 
-	/*BitBlt(hDC,
-		m_tRect.left,
-		m_tRect.top,
-		(int)m_tInfo.fCX,
+	BitBlt(hDC,
+		m_tRect.left + iScrollX,
+		m_tRect.top + iScrollY,
+		(int)m_tInfo.fCX,		
 		(int)m_tInfo.fCY,
-		hMemDC,
-		m_iDrawID * (int)m_tInfo.fCX,
-		0,
+		hMemDC,					
+		(int)m_tInfo.fCX * m_tFrame.iFrameStart,
+		(int)m_tInfo.fCY * m_tFrame.iMotion,
 		SRCCOPY);*/
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC

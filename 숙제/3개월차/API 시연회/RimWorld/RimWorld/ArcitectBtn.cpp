@@ -19,4 +19,6 @@ void CArcitectBtn::Initialize()
 	
 	m_tInfo.fX = m_tInfo.fCX * 0.5f;
 	m_tInfo.fY = WINCY - m_tInfo.fCY * 0.5f;
+
+	m_eRender = RENDER_UI;
 }

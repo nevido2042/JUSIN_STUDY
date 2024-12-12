@@ -43,8 +43,8 @@ public:
 
 private:
 	list<CObj*>		m_ObjList[OBJ_END];
+	list<CObj*>		m_RenderList[RENDER_END];
+
 	static CObjMgr* m_pInstance;
-
-
 };
 

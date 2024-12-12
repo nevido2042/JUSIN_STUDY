@@ -21,4 +21,6 @@ void CMenuBtn::Initialize()
 
 	m_tInfo.fX = WINCX - m_tInfo.fCX * 0.5f;
 	m_tInfo.fY = WINCY - m_tInfo.fCY * 0.5f;
+
+	m_eRender = RENDER_UI;
 }

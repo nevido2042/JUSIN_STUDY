@@ -18,6 +18,8 @@ void CRim::Initialize()
     //m_tInfo.fCY = 152.f;
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
+
+    m_eRender = RENDER_GAMEOBJECT;
 }
 
 int CRim::Update()
