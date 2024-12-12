@@ -34,9 +34,5 @@ public:
 
 private:
 	static CPathFinder* m_pInstance;
-
-private:
-	list<CNode*> m_OpenList;
-	list<CNode*> m_CloseList;
 };
 

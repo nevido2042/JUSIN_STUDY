@@ -17,14 +17,17 @@ CRim::~CRim()
 
 void CRim::Move_To(POS _Pos)
 {
+    for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+    m_NodeList.clear();
+
     //이동 할 타일의 idx를 계산해서 확인한다. Blocked이면 return;
 
     //갈 수 있으면 길찾기를 수행한다.(Astar/JPS)
 
     //길찾기 매니저를 따로
     //ex) CPathFinder::GetInstance()->Find_Path(Start, End); 타일 리스트를 반환하게 할까?
-    CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX,m_tInfo.fY }, _Pos);
-    
+
+    m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
 }
 
 void CRim::Initialize()

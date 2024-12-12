@@ -1,5 +1,7 @@
 #pragma once
 #include "Obj.h"
+#include "Node.h"
+
 class CRim :
     public CObj
 {
@@ -15,5 +17,7 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
+private:
+    list<CNode*> m_NodeList;
 };
 
