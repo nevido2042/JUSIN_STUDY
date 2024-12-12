@@ -4,7 +4,6 @@
 #include "BmpMgr.h"
 
 CButton::CButton()
-	:m_iDrawID(0)
 {
 }
 

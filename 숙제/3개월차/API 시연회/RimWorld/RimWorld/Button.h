@@ -13,8 +13,5 @@ public:
     void Late_Update() override;
     void Render(HDC hDC);
     void Release() override;
-    
-protected:
-    int		        m_iDrawID;
 };
 

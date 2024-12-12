@@ -54,5 +54,6 @@ protected:
 	CObj*		m_pTarget;
 
 	const TCHAR*		m_pImgKey;
+	int					m_iDrawID;
 };
 
