@@ -43,9 +43,14 @@ void CColony::Initialize()
     pObj = CAbstractFactory<CRim>::Create(32, 32);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
 
-    pObj = CAbstractFactory<CRock>::Create(64 + 32, 64 + 32);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
-    CTileMgr::Get_Instance()->Set_TileOption(64, 64, OPT_BLOCKED);
+    for (int i = 3; i < 10; ++i)
+    {
+        pObj = CAbstractFactory<CRock>::Create(64 * i + 32, 64 * 5 + 32);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
+        CTileMgr::Get_Instance()->Set_TileOption(64 * i + 32, 64 * 5 + 32, OPT_BLOCKED);
+    }
+
+
 }
 
 int CColony::Update()

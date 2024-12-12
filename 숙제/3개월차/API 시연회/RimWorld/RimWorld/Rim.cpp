@@ -25,9 +25,6 @@ void CRim::Move_To(POS _Pos)
 
     //갈 수 있으면 길찾기를 수행한다.(Astar/JPS)
 
-    //길찾기 매니저를 따로
-    //ex) CPathFinder::GetInstance()->Find_Path(Start, End); 타일 리스트를 반환하게 할까?
-
     m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
 
     if (!m_NodeList.empty())
@@ -44,19 +41,14 @@ void CRim::Navigate()
     //다음 노드를 뽑아서 추적
     //다음 노드가 없으면 종료
 
-    CNode* pTargetNode(nullptr);
+    CNode* pTargetNode = nullptr;
 
     if (!m_NodeList.empty())
     {
         pTargetNode = m_NodeList.front();
     }
 
-    if (!pTargetNode)
-    {
-        return;
-    }
-
-    if (CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
+    if (pTargetNode && CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
     {
         Safe_Delete<CNode*>(pTargetNode);
         m_NodeList.pop_front();
@@ -65,12 +57,17 @@ void CRim::Navigate()
         {
             pTargetNode = m_NodeList.front();
         }
+        else
+        {
+            pTargetNode = nullptr;
+        }
     }
-    
-    if (!pTargetNode) 
+
+    if (!pTargetNode)
     {
         return;
     }
+
 
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 

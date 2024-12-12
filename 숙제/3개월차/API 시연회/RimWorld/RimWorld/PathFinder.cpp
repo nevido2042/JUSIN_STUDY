@@ -31,7 +31,7 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 		CloseList.push_back(pPopNode);
 
 		//도착 지점인지 확인한다.
-		if (CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
+		if (CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
 
 			for_each(OpenList.begin(), OpenList.end(), Safe_Delete<CNode*>);
@@ -68,7 +68,7 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 			CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
 				Get_TileArray().at(iIdx));
 
-			if (!pTile || pTile->Get_Option() == OPT_BLOCKED)
+			if (pTile->Get_Option() == OPT_BLOCKED)
 			{
 				continue;
 			}
