@@ -32,7 +32,7 @@ extern HWND		g_hWnd;
 
 enum DIRECTION { DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_LU, DIR_RU, DIR_END };
 
-enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_BUTTON, OBJ_RIM, OBJ_END };
+enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_BUTTON, OBJ_WALL, OBJ_RIM, OBJ_END };
 
 enum SCENEID { SC_LOGO, SC_MENU, SC_CUSTOMIZE, SC_COLONY, SC_END };
 
@@ -64,6 +64,16 @@ typedef struct tagLine
 		: tLPoint(_tLPoint), tRPoint(_tRPoint) {	}
 
 }LINE;
+
+typedef struct tagFrame
+{
+	int		iFrameStart;
+	int		iFrameEnd;
+	int		iMotion;
+	DWORD	dwSpeed;
+	DWORD	dwTime;
+
+}FRAME;
 
 
 template<typename T>

@@ -76,6 +76,9 @@
     <ClCompile Include="ArcitectBtn.cpp">
       <Filter>01.Obj\Button\ArcitectBtn</Filter>
     </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>01.Obj\Rock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="ArcitectBtn.h">
       <Filter>01.Obj\Button\ArcitectBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>01.Obj\Rock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +267,9 @@
     </Filter>
     <Filter Include="01.Obj\Button\MenuBtn">
       <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Rock">
+      <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@
 #include "Tile.h"
 #include "Rim.h"
 #include "ArcitectBtn.h"
+#include "Rock.h"
 //#include "ColonyMgr.h" 필요 없나?
 
 class CColony :

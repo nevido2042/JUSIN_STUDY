@@ -6,6 +6,7 @@ class CRim :
 public:
     CRim();
     virtual ~CRim();
+
 public:
     void Initialize() override;
     int Update() override;

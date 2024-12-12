@@ -43,6 +43,7 @@ public:
 protected:
 	INFO		m_tInfo;
 	RECT		m_tRect;
+	FRAME		m_tFrame;
 
 	float		m_fSpeed;
 	float		m_fAngle;

@@ -26,20 +26,25 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Head/Male_Average_Normal_south.bmp", L"Male_Average_Normal_south");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Body/Naked_Male_south.bmp", L"Naked_Male_south");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_south.bmp", L"Afro_south");
+    //OBJ
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Rock_Atlas.png", L"Rock_Atlas");
+
 
     CObj* pObj(nullptr);
-
+    //UI
     pObj = CAbstractFactory<CMenuBtn>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pObj);
-
     pObj = CAbstractFactory<CArcitectBtn>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pObj);
 
+    //∏ 
     CTileMgr::Get_Instance()->Initialize();
-    //CTileMgr::Get_Instance()->Create_TileMap();
 
+    //ø¿∫Í¡ß∆Æ
     pObj = CAbstractFactory<CRim>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
+    pObj = CAbstractFactory<CRock>::Create(64.f, 64.f);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
 }
 
 int CColony::Update()
