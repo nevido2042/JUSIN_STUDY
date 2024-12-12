@@ -1,6 +1,6 @@
 #pragma once
 #include "Obj.h"
-class CButton :
+class CButton abstract:
     public CObj
 {
 public:
@@ -8,11 +8,12 @@ public:
     virtual ~CButton();
 
 public:
-    void Initialize() override;
+    void Initialize() PURE;
     int Update() override;
     void Late_Update() override;
-    void Render(HDC hDC) override;
+    void Render(HDC hDC);
     void Release() override;
+    
 protected:
     int		        m_iDrawID;
 };

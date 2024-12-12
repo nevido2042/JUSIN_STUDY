@@ -1,9 +1,10 @@
 #pragma once
 #include "Scene.h"
 
-#include "MenuButton.h"
+#include "MenuBtn.h"
 #include "Tile.h"
 #include "Rim.h"
+#include "ArcitectBtn.h"
 //#include "ColonyMgr.h" 필요 없나?
 
 class CColony :

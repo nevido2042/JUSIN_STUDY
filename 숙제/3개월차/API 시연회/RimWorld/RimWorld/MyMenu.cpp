@@ -17,8 +17,8 @@ void CMyMenu::Initialize()
 {
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Black.bmp", L"Black");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/BGPlanet.bmp", L"BGPlanet");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Button/Start.bmp", L"Start");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Button/Exit.bmp", L"Exit");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Start.bmp", L"Start");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Exit.bmp", L"Exit");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GameTitle.bmp", L"GameTitle");
 
     CObj* pButton = CAbstractFactory<CMyButton>::Create(WINCX - 200.f, 325.f);
@@ -54,7 +54,7 @@ void CMyMenu::Render(HDC hDC)
 
     // 게임 타이틀 이미지 (투명 배경 사용)
     int iCX(1024), iCY(145);
-    int iLeft = (WINCX - iCX) * 0.5f, iTop = iCY;
+    int iLeft = int((WINCX - iCX) * 0.5f), iTop = iCY;
     HDC hGameTitleDC = CBmpMgr::Get_Instance()->Find_Image(L"GameTitle");
     GdiTransparentBlt(hDC, iLeft, iTop, iCX, iCY, hGameTitleDC, 0, 0, iCX, iCY, RGB_PURPLE);
 

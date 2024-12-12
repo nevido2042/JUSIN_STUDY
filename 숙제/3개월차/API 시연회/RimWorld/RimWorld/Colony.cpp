@@ -27,14 +27,19 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Body/Naked_Male_south.bmp", L"Naked_Male_south");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_south.bmp", L"Afro_south");
 
-    CObj* pButton = CAbstractFactory<CMenuButton>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
+    CObj* pObj(nullptr);
+
+    pObj = CAbstractFactory<CMenuBtn>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pObj);
+
+    pObj = CAbstractFactory<CArcitectBtn>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pObj);
 
     CTileMgr::Get_Instance()->Initialize();
     //CTileMgr::Get_Instance()->Create_TileMap();
 
-    CObj* pRim = CAbstractFactory<CRim>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pRim);
+    pObj = CAbstractFactory<CRim>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
 }
 
 int CColony::Update()

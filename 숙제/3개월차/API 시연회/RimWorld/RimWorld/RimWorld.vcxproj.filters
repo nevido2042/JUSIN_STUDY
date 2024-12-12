@@ -55,8 +55,8 @@
     <ClCompile Include="Button.cpp">
       <Filter>01.Obj\Button</Filter>
     </ClCompile>
-    <ClCompile Include="MenuButton.cpp">
-      <Filter>01.Obj\Button\MenuButton</Filter>
+    <ClCompile Include="MenuBtn.cpp">
+      <Filter>01.Obj\Button\MenuBtn</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>01.Obj\Tile</Filter>
@@ -72,6 +72,9 @@
     </ClCompile>
     <ClCompile Include="Customize.cpp">
       <Filter>02.Scene\Customize</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcitectBtn.cpp">
+      <Filter>01.Obj\Button\ArcitectBtn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,8 +147,8 @@
     <ClInclude Include="Button.h">
       <Filter>01.Obj\Button</Filter>
     </ClInclude>
-    <ClInclude Include="MenuButton.h">
-      <Filter>01.Obj\Button\MenuButton</Filter>
+    <ClInclude Include="MenuBtn.h">
+      <Filter>01.Obj\Button\MenuBtn</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>01.Obj\Tile</Filter>
@@ -161,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="Customize.h">
       <Filter>02.Scene\Customize</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcitectBtn.h">
+      <Filter>01.Obj\Button\ArcitectBtn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +241,6 @@
     <Filter Include="01.Obj\Button\MyButton">
       <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Button\MenuButton">
-      <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\Tile">
       <UniqueIdentifier>{b8f46b05-cda0-475c-b24d-e3521a80d60f}</UniqueIdentifier>
     </Filter>
@@ -252,6 +255,12 @@
     </Filter>
     <Filter Include="01.Obj\Rim">
       <UniqueIdentifier>{d4ea857e-f0ba-4769-b9b6-de797cf0301a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Button\ArcitectBtn">
+      <UniqueIdentifier>{e5903405-023b-4a12-98cf-971a068a1339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Button\MenuBtn">
+      <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

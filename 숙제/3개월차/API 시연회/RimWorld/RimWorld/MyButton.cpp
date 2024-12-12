@@ -42,8 +42,6 @@ void CMyButton::Late_Update()
 	{
 		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 		{
-			m_iDrawID = 2;
-
 			if (!lstrcmp(L"Start", m_pImgKey))
 				CSceneMgr::Get_Instance()->Set_Scene(SC_COLONY);
 
