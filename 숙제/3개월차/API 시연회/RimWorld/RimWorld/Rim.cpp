@@ -7,6 +7,7 @@
 #include "PathFinder.h"
 
 CRim::CRim()
+    :m_bNavigating(false)
 {
 }
 
@@ -28,12 +29,73 @@ void CRim::Move_To(POS _Pos)
     //ex) CPathFinder::GetInstance()->Find_Path(Start, End); 타일 리스트를 반환하게 할까?
 
     m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
+
+    if (!m_NodeList.empty())
+    {
+        m_bNavigating = true;
+    }
+}
+
+void CRim::Navigate()
+{
+    //리스트에서 점하나를 뽑아서
+    //해당 점으로 가까워질 때까지 접근(두점 사이 각도 구해서 이동)
+    //거의 가까워지면 노드 해제하고
+    //다음 노드를 뽑아서 추적
+    //다음 노드가 없으면 종료
+
+    CNode* pTargetNode(nullptr);
+
+    if (!m_NodeList.empty())
+    {
+        pTargetNode = m_NodeList.front();
+    }
+
+    if (!pTargetNode)
+    {
+        return;
+    }
+
+    if (CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
+    {
+        Safe_Delete<CNode*>(pTargetNode);
+        m_NodeList.pop_front();
+
+        if (!m_NodeList.empty())
+        {
+            pTargetNode = m_NodeList.front();
+        }
+    }
+    
+    if (!pTargetNode) 
+    {
+        return;
+    }
+
+    float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
+
+    fWidth = pTargetNode->Get_Pos().fX - m_tInfo.fX;
+    fHeight = pTargetNode->Get_Pos().fY - m_tInfo.fY;
+
+    fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+    fRadian = acosf(fWidth / fDiagonal);
+
+    if (pTargetNode->Get_Pos().fY > m_tInfo.fY)
+        fRadian = (2.f * PI) - fRadian;
+
+    //m_fAngle = fRadian * (180.f / PI);
+
+    m_tInfo.fX += m_fSpeed * cosf(fRadian);
+    m_tInfo.fY -= m_fSpeed * sinf(fRadian);
 }
 
 void CRim::Initialize()
 {
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
+
+    m_fSpeed = 10.f;
 
     m_eRenderID = RENDER_GAMEOBJECT;
 }
@@ -42,6 +104,11 @@ int CRim::Update()
 {
     if (m_bDead)
         return OBJ_DEAD;
+
+    if (m_bNavigating)
+    {
+        Navigate();
+    }
 
     __super::Update_Rect();
 
@@ -108,4 +175,6 @@ void CRim::Render(HDC hDC)
 
 void CRim::Release()
 {
+    for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+    m_NodeList.clear();
 }
