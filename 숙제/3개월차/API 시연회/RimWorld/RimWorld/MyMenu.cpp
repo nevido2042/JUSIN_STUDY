@@ -17,8 +17,8 @@ void CMyMenu::Initialize()
 {
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Black.bmp", L"Black");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/BGPlanet.bmp", L"BGPlanet");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Start.bmp", L"Start");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Button/Exit.bmp", L"Exit");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Button/Start.bmp", L"Start");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Button/Exit.bmp", L"Exit");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GameTitle.bmp", L"GameTitle");
 
     CObj* pButton = CAbstractFactory<CMyButton>::Create(WINCX - 200.f, 325.f);

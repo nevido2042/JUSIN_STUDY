@@ -79,20 +79,21 @@ void CColony::Input_Key()
     //화면 줌아웃(RimWorld.cpp 이벤트 부분에 있음)
 
     //화면 스크롤
+    float fSpeed(10.f);
     if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollX(5.f);
+        CScrollMgr::Get_Instance()->Set_ScrollX(fSpeed);
     }
     if (CKeyMgr::Get_Instance()->Key_Pressing('D'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollX(-5.f);
+        CScrollMgr::Get_Instance()->Set_ScrollX(-fSpeed);
     }
     if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollY(5.f);
+        CScrollMgr::Get_Instance()->Set_ScrollY(fSpeed);
     }
     if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
     {
-        CScrollMgr::Get_Instance()->Set_ScrollY(-5.f);
+        CScrollMgr::Get_Instance()->Set_ScrollY(-fSpeed);
     }
 }
