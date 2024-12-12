@@ -4,6 +4,7 @@
 #include "ScrollMgr.h"
 
 CRock::CRock()
+	:m_eCurState(END), m_ePreState(END)
 {
 }
 
@@ -18,44 +19,44 @@ void CRock::Change_Image()
 	{
 		switch (m_eCurState)
 		{
-		case CPlayer::IDLE:
+		case CRock::IDLE:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 3;
 			m_tFrame.iMotion = 0;
-			m_tFrame.dwSpeed = 200;
-			m_tFrame.dwTime = GetTickCount();
+			m_tFrame.ullSpeed = 200;
+			m_tFrame.ullTime = GetTickCount64();
 			break;
 
-		case CPlayer::WALK:
+		case CRock::WALK:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 5;
 			m_tFrame.iMotion = 1;
-			m_tFrame.dwSpeed = 200;
-			m_tFrame.dwTime = GetTickCount();
+			m_tFrame.ullSpeed = 200;
+			m_tFrame.ullTime = GetTickCount64();
 			break;
 
-		case CPlayer::ATTACK:
+		case CRock::ATTACK:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 5;
 			m_tFrame.iMotion = 2;
-			m_tFrame.dwSpeed = 200;
-			m_tFrame.dwTime = GetTickCount();
+			m_tFrame.ullSpeed = 200;
+			m_tFrame.ullTime = GetTickCount64();
 			break;
 
-		case CPlayer::HIT:
+		case CRock::HIT:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 1;
 			m_tFrame.iMotion = 3;
-			m_tFrame.dwSpeed = 200;
-			m_tFrame.dwTime = GetTickCount();
+			m_tFrame.ullSpeed = 200;
+			m_tFrame.ullTime = GetTickCount64();
 			break;
 
-		case CPlayer::DEAD:
+		case CRock::DEAD:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 3;
 			m_tFrame.iMotion = 4;
-			m_tFrame.dwSpeed = 200;
-			m_tFrame.dwTime = GetTickCount();
+			m_tFrame.ullSpeed = 200;
+			m_tFrame.ullTime = GetTickCount64();
 			break;
 		}
 
@@ -66,10 +67,20 @@ void CRock::Change_Image()
 
 void CRock::Initialize()
 {
-	m_pImgKey = L"Rock_Atlas";
+	Set_ImgKey(L"Rock_Atlas");
+	//m_pImgKey = L"Rock_Atlas";
 
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
+
+	m_eCurState = IDLE;
+	m_ePreState = IDLE;
+
+	m_tFrame.iFrameStart = 0;
+	m_tFrame.iFrameEnd = 3;
+	m_tFrame.iMotion = 0;
+	m_tFrame.ullSpeed = 200;
+	m_tFrame.ullTime = GetTickCount64();
 }
 
 int CRock::Update()
@@ -84,6 +95,7 @@ int CRock::Update()
 
 void CRock::Late_Update()
 {
+	__super::Move_Frame();
 }
 
 void CRock::Render(HDC hDC)
@@ -92,6 +104,9 @@ void CRock::Render(HDC hDC)
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
+		m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);
 
 	/*BitBlt(hDC,
 		m_tRect.left,
@@ -103,19 +118,17 @@ void CRock::Render(HDC hDC)
 		0,
 		SRCCOPY);*/
 
-    Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
-        m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);
-
-    GdiTransparentBlt(hDC,
-        m_tRect.left + iScrollX,
-        m_tRect.top + iScrollY,
-        (int)m_tInfo.fCX,
-        (int)m_tInfo.fCY,
-        hMemDC,
-        0, 0, 
-        (int)m_tInfo.fCX, 
-        (int)m_tInfo.fCY,
-        RGB_PURPLE);
+	GdiTransparentBlt(hDC,			// 복사 받을 DC
+		m_tRect.left + iScrollX,	// 복사 받을 위치 좌표 X, Y	
+		m_tRect.top + iScrollY,
+		(int)m_tInfo.fCX,			// 복사 받을 이미지의 가로, 세로
+		(int)m_tInfo.fCY,
+		hMemDC,						// 복사할 이미지 DC	
+		(int)m_tInfo.fCX * m_tFrame.iFrameStart,// 비트맵 출력 시작 좌표(Left, top)
+		(int)m_tInfo.fCY * m_tFrame.iMotion,
+		(int)m_tInfo.fCX,			// 복사할 이미지의 가로, 세로
+		(int)m_tInfo.fCY,
+		RGB_PURPLE);		// 제거할 색상
 }
 
 void CRock::Release()

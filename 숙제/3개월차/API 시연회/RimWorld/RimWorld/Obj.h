@@ -39,6 +39,7 @@ public:
 
 public:
 	void		Update_Rect();
+	void		Move_Frame();
 
 protected:
 	INFO		m_tInfo;

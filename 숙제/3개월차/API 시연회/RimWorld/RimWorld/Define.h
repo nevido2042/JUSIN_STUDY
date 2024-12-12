@@ -67,11 +67,11 @@ typedef struct tagLine
 
 typedef struct tagFrame
 {
-	int		iFrameStart;
-	int		iFrameEnd;
-	int		iMotion;
-	DWORD	dwSpeed;
-	DWORD	dwTime;
+	int			iFrameStart;
+	int			iFrameEnd;
+	int			iMotion;
+	ULONGLONG	ullSpeed;
+	ULONGLONG	ullTime;
 
 }FRAME;
 
