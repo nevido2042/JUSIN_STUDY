@@ -85,7 +85,7 @@ void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)
 	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
 		return;
 
-	dynamic_cast<CTile*>(m_arrTile[iIndex])->Set_DrawID(iDrawID);
-	dynamic_cast<CTile*>(m_arrTile[iIndex])->Set_Option(iOption);
+	/*dynamic_cast<CTile*>(m_arrTile[iIndex])->Set_DrawID(iDrawID);
+	dynamic_cast<CTile*>(m_arrTile[iIndex])->Set_Option(iOption);*/
 
 }

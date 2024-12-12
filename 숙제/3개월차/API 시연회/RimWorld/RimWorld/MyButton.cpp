@@ -18,7 +18,7 @@ void CMyButton::Initialize()
 	m_tInfo.fCX = 128.f;
 	m_tInfo.fCY = 64.f;
 
-	m_eRender = RENDER_UI;
+	m_eRenderID = RENDER_UI;
 }
 
 int CMyButton::Update()

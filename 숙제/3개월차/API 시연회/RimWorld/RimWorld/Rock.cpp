@@ -83,7 +83,7 @@ void CRock::Initialize()
 		;
 	m_tFrame.ullTime = GetTickCount64();
 
-	m_eRender = RENDER_GAMEOBJECT;
+	m_eRenderID = RENDER_GAMEOBJECT;
 }
 
 int CRock::Update()

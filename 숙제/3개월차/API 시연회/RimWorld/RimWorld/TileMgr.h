@@ -15,7 +15,7 @@ public:
 	void	Render(HDC hDC) ;
 	void	Release() ;
 
-	void		Picking_Tile(POINT pt, int iDrawID, int iOption);
+	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 
 public:
 	static CTileMgr* Get_Instance()

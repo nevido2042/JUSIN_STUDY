@@ -9,8 +9,10 @@ public:
 	virtual ~CTile();
 
 public:
-	void		Set_DrawID(int _iDrawID) { m_iDrawID = _iDrawID;  }
-	void		Set_Option(int _iOption) { m_iOption = _iOption; }
+	const TILEOPT	Get_Option() { return m_eOption; }
+
+	void			Set_DrawID(int _iDrawID) { m_iDrawID = _iDrawID;  }
+	void			Set_Option(TILEOPT _eOption) { m_eOption = _eOption; }
 
 public:
 	void Initialize() override;
@@ -20,6 +22,6 @@ public:
 	void Release() override;
 
 private:
-	int		m_iOption;
+	TILEOPT		m_eOption;
 };
 

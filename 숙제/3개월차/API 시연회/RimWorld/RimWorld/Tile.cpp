@@ -3,7 +3,7 @@
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 
-CTile::CTile() : m_iOption(0)
+CTile::CTile() : m_eOption(OPT_END)
 {
 }
 
@@ -19,6 +19,7 @@ void CTile::Initialize()
 
 	m_pImgKey = L"Ice";
 
+	m_eOption = OPT_REACHABLE;
 }
 
 int CTile::Update()
