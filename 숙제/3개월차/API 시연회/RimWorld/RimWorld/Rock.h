@@ -9,7 +9,8 @@ public:
         SOLO, HORIZONTAL, VERTICAL,
         END_LEFT, END_RIGHT,END_TOP, END_BOTTOM,
         RIGHT_BOTTOM, LEFT_BOTTOM, RIGHT_TOP, LEFT_TOP,
-        T12, T3, T6, T9, 
+        T12, T3, T6, T9,
+        CROSS,
         END 
     };
 public:

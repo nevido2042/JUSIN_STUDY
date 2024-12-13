@@ -86,6 +86,11 @@ void CRock::Change_Image()
 			m_iRenderX = 3;
 			m_iRenderY = 2;
 			break;
+
+		case CRock::CROSS:
+			m_iRenderX = 3;
+			m_iRenderY = 0;
+			break;
 		}
 
 		m_ePreState = m_eCurState;
@@ -168,12 +173,22 @@ void CRock::Release()
 
 void CRock::Check_Neighbor()
 {
-	//solo 주변에 아무 것도 없다.
 
 	POS tTopPos{ m_tInfo.fX, m_tInfo.fY - TILECY };
 	POS tBottomPos{ m_tInfo.fX, m_tInfo.fY + TILECY };
 	POS tLeftPos{ m_tInfo.fX - TILECX, m_tInfo.fY };
 	POS tRightPos{ m_tInfo.fX + TILECX, m_tInfo.fY};
+
+	//4개짜리 십자가
+	if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tRightPos)&&
+		CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
+	{
+		m_eCurState = CROSS;
+		Change_Image();
+		return;
+	}
 
 	//3개 짜리 T 시리즈
 	//T12
@@ -216,6 +231,7 @@ void CRock::Check_Neighbor()
 		return;
 	}
 
+	//3개 이하------------------------------------------
 
 	//1.왼쪽 이웃
 	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
