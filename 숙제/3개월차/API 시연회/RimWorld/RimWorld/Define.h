@@ -20,6 +20,7 @@
 
 //투명 필터
 #define RGB_PURPLE			RGB(163, 73, 164)
+#define RGB_WHITE			RGB(0, 0, 0)
 
 
 //타일 관련
