@@ -12,6 +12,10 @@ public:
 	list<CNode*> Find_Path(POS _tStart, POS _tEnd);
 
 private:
+	list<CNode*> Astar(POS _tStart, POS _tEnd);
+	list<CNode*> JPS(POS _tStart, POS _tEnd);
+
+private:
 	static bool LessF(const CNode* _First, const CNode* _Second);
 
 	void Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos);

@@ -15,6 +15,17 @@ CPathFinder::~CPathFinder()
 
 list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 {
+	return JPS(_tStart, _tEnd);
+}
+
+list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
+{
+	list<CNode*> CloseList;
+	return CloseList;
+}
+
+list<CNode*> CPathFinder::JPS(POS _tStart, POS _tEnd)
+{
 	list<CNode*> OpenList;
 	list<CNode*> CloseList;
 
