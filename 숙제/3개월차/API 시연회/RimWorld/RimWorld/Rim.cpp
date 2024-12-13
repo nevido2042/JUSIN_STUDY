@@ -18,6 +18,11 @@ CRim::~CRim()
 
 void CRim::Move_To(POS _Pos)
 {
+    if (m_bNavigating)
+    {
+        return;
+    }
+
     for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
     m_NodeList.clear();
 
@@ -68,6 +73,7 @@ void CRim::Navigate()
 
     if (!pTargetNode)
     {
+        m_bNavigating = false;
         return;
     }
 
