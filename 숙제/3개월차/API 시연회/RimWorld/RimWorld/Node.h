@@ -35,7 +35,7 @@ public:
 	{
 		return m_F;
 	}
-	DIRECTION Get_Direction()
+	const DIRECTION Get_Direction() const
 	{
 		return m_Direction;
 	}

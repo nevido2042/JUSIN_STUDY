@@ -49,7 +49,7 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 		//부모의 방향으로 탐색(첫 노드는 8방탐색)
 		// - 직진탐색, 대각선 탐색
 		//코너를 찾아 오픈 리스트에 넣는다.
-		Search_Corner(*PopNode, &OpenList);
+		Search_Corner(*PopNode, &OpenList, &CloseList, _tEnd);
 
 		//정렬한다.
 		OpenList.sort(LessF);
@@ -69,22 +69,22 @@ bool CPathFinder::LessF(const CNode* _First, const CNode* _Second)
 	return _First->Get_F() < _Second->Get_F();
 }
 
-void CPathFinder::Search_Corner(CNode& _Node, list<CNode*>* pOpenList)
+void CPathFinder::Search_Corner(const CNode& _Node, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
 {
 	switch (_Node.Get_Direction())
 	{
 	case OO:
-		Search_Linear(_Node, UU, pOpenList);
+		Search_Linear(_Node, UU, pOpenList, pCloseList, _tEndPos);
 		Search_Diagonal(_Node, RU, pOpenList);
-		Search_Linear(_Node, RR, pOpenList);
+		Search_Linear(_Node, RR, pOpenList, pCloseList, _tEndPos);
 		Search_Diagonal(_Node, RD, pOpenList);
-		Search_Linear(_Node, DD, pOpenList);
+		Search_Linear(_Node, DD, pOpenList, pCloseList, _tEndPos);
 		Search_Diagonal(_Node, LD, pOpenList);
-		Search_Linear(_Node, LL, pOpenList);
+		Search_Linear(_Node, LL, pOpenList, pCloseList, _tEndPos);
 		Search_Diagonal(_Node, LU, pOpenList);
 		break;
 	case UU:
-		Search_Linear(_Node, UU, pOpenList);
+		Search_Linear(_Node, UU, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case RU:
@@ -95,7 +95,7 @@ void CPathFinder::Search_Corner(CNode& _Node, list<CNode*>* pOpenList)
 
 		break;
 	case RR:
-		Search_Linear(_Node, RR, pOpenList);
+		Search_Linear(_Node, RR, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case RD:
@@ -106,7 +106,7 @@ void CPathFinder::Search_Corner(CNode& _Node, list<CNode*>* pOpenList)
 
 		break;
 	case DD:
-		Search_Linear(_Node, DD, pOpenList);
+		Search_Linear(_Node, DD, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case LD:
@@ -116,7 +116,7 @@ void CPathFinder::Search_Corner(CNode& _Node, list<CNode*>* pOpenList)
 		Search_Diagonal(_Node, RD, pOpenList);
 		break;
 	case LL:
-		Search_Linear(_Node, LL, pOpenList);
+		Search_Linear(_Node, LL, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case LU:
@@ -130,33 +130,33 @@ void CPathFinder::Search_Corner(CNode& _Node, list<CNode*>* pOpenList)
 	}
 }
 
-void CPathFinder::Search_Linear(CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpenList)
+void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
 {
 	switch (_Dir)
 	{
 	case UU:
-		Search_Direction(_Node, UU, pOpenList);
+		Search_Direction(_Node, UU, pOpenList, pCloseList, _tEndPos);
 
 		Search_Diagonal(_Node, RU, pOpenList);
 		Search_Diagonal(_Node, LU, pOpenList);
 		break;
 
 	case RR:
-		Search_Direction(_Node, RR, pOpenList);
+		Search_Direction(_Node, RR, pOpenList, pCloseList, _tEndPos);
 
 		Search_Diagonal(_Node, RU, pOpenList);
 		Search_Diagonal(_Node, RD, pOpenList);
 		break;
 
 	case DD:
-		Search_Direction(_Node, DD, pOpenList);
+		Search_Direction(_Node, DD, pOpenList, pCloseList, _tEndPos);
 
 		Search_Diagonal(_Node, RD, pOpenList);
 		Search_Diagonal(_Node, LD, pOpenList);
 		break;
 
 	case LL:
-		Search_Direction(_Node, LL, pOpenList);
+		Search_Direction(_Node, LL, pOpenList, pCloseList, _tEndPos);
 
 		Search_Diagonal(_Node, LD, pOpenList);
 		Search_Diagonal(_Node, LU, pOpenList);
@@ -167,7 +167,7 @@ void CPathFinder::Search_Linear(CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpe
 	}
 }
 
-void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpenList, const POS _Pos)
+void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList,  const list<CNode*>* pCloseList,  const POS _tEnd, const POS _Pos)
 {
 	POS Dir;
 	POS Wall1_Dir;
@@ -178,39 +178,39 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, list<CNod
 	switch (_Dir)
 	{
 	case UU:
-		Dir = POS(0, -1);
+		Dir = POS(0, -1) * TILECX;
 
-		Wall1_Dir = POS(-1, 0);
-		Road1_Dir = POS(-1, -1);
-		Wall2_Dir = POS(1, 0);
-		Road2_Dir = POS(1, -1);
+		Wall1_Dir = POS(-1, 0) * TILECX;
+		Road1_Dir = POS(-1, -1) * TILECX;
+		Wall2_Dir = POS(1, 0) * TILECX;
+		Road2_Dir = POS(1, -1) * TILECX;
 		break;
 
 	case RR:
-		Dir = POS(1, 0);
+		Dir = POS(1, 0) * TILECX;
 
-		Wall1_Dir = POS(0, -1);
-		Road1_Dir = POS(1, -1);
-		Wall2_Dir = POS(1, 0);
-		Road2_Dir = POS(1, -1);
+		Wall1_Dir = POS(0, -1) * TILECX;
+		Road1_Dir = POS(1, -1) * TILECX;
+		Wall2_Dir = POS(1, 0) * TILECX;
+		Road2_Dir = POS(1, -1) * TILECX;
 		break;
 
 	case DD:
-		Dir = POS(0, 1);
+		Dir = POS(0, 1) * TILECX;
 
-		Wall1_Dir = POS(1, 0);
-		Road1_Dir = POS(1, 1);
-		Wall2_Dir = POS(-1, 0);
-		Road2_Dir = POS(-1, 1);
+		Wall1_Dir = POS(1, 0) * TILECX;
+		Road1_Dir = POS(1, 1) * TILECX;
+		Wall2_Dir = POS(-1, 0) * TILECX;
+		Road2_Dir = POS(-1, 1) * TILECX;
 		break;
 
 	case LL:
-		Dir = POS(-1, 0);
+		Dir = POS(-1, 0) * TILECX;
 
-		Wall1_Dir = POS(0, 1);
-		Road1_Dir = POS(-1, 1);
-		Wall2_Dir = POS(0, -1);
-		Road2_Dir = POS(-1, -1);
+		Wall1_Dir = POS(0, 1) * TILECX;
+		Road1_Dir = POS(-1, 1) * TILECX;
+		Wall2_Dir = POS(0, -1) * TILECX;
+		Road2_Dir = POS(-1, -1) * TILECX;
 
 		break;
 
@@ -244,16 +244,16 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, list<CNod
 		POS Wall2(CheckPos.fX + Wall2_Dir.fX, CheckPos.fY + Wall2_Dir.fY);
 		POS Road2(CheckPos.fX + Road2_Dir.fX, CheckPos.fY + Road2_Dir.fY);
 
-		//맵 밖인지 체크
-		if (!Is_Position_InMap(CheckPos))
+		//맵 밖인가?
+		if (CheckPos.fX < 0 || CheckPos.fY < 0 || TILECX * TILEX < CheckPos.fX || TILECY * TILEY < CheckPos.fY)
 		{
-			break;
+			continue;
 		}
 
 		//체크하는 위치가 도착점 인지 확인
-		if (m_pMap->Get_Tile_Type(CheckPos) == END)
+		if (CNode::Distance(_tEnd, CheckPos) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
-			if (Check_Visit(CheckPos))
+			if (Check_Visit(CheckPos, pOpenList, pCloseList))
 			{
 				break;
 			}
@@ -341,7 +341,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, DIRECTION _Dir, list<CNod
 	}
 }
 
-void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpenList)
+void CPathFinder::Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList)
 {
 	POS Dir;
 	POS Wall1_Dir;
@@ -356,12 +356,12 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir, list<CNode*>* pO
 	{
 
 	case RU:
-		Dir = POS(1, -1);
+		Dir = POS(1, -1) * TILECX;
 
-		Wall1_Dir = POS(-1, 0);
-		Road1_Dir = POS(-1, -1);
-		Wall2_Dir = POS(0, 1);
-		Road2_Dir = POS(1, 1);
+		Wall1_Dir = POS(-1, 0) * TILECX;
+		Road1_Dir = POS(-1, -1) * TILECX;
+		Wall2_Dir = POS(0, 1) * TILECX;
+		Road2_Dir = POS(1, 1) * TILECX;
 
 		Sub_Search1 = RR;
 		Sub_Search2 = UU;
@@ -369,12 +369,12 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir, list<CNode*>* pO
 		break;
 
 	case RD:
-		Dir = POS(1, 1);
+		Dir = POS(1, 1) * TILECX;
 
-		Wall1_Dir = POS(0, -1);
-		Road1_Dir = POS(1, -1);
-		Wall2_Dir = POS(-1, 0);
-		Road2_Dir = POS(-1, 1);
+		Wall1_Dir = POS(0, -1) * TILECX;
+		Road1_Dir = POS(1, -1) * TILECX;
+		Wall2_Dir = POS(-1, 0) * TILECX;
+		Road2_Dir = POS(-1, 1) * TILECX;
 
 		Sub_Search1 = RR;
 		Sub_Search2 = DD;
@@ -382,24 +382,24 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir, list<CNode*>* pO
 		break;
 
 	case LD:
-		Dir = POS(-1, 1);
+		Dir = POS(-1, 1) * TILECX;
 
-		Wall1_Dir = POS(1, 0);
-		Road1_Dir = POS(1, 1);
-		Wall2_Dir = POS(0, -1);
-		Road2_Dir = POS(-1, -1);
+		Wall1_Dir = POS(1, 0) * TILECX;
+		Road1_Dir = POS(1, 1) * TILECX;
+		Wall2_Dir = POS(0, -1) * TILECX;
+		Road2_Dir = POS(-1, -1) * TILECX;
 
 		Sub_Search1 = LL;
 		Sub_Search2 = DD;
 		break;
 
 	case LU:
-		Dir = POS(-1, -1);
+		Dir = POS(-1, -1) * TILECX;
 
-		Wall1_Dir = POS(0, 1);
-		Road1_Dir = POS(-1, 1);
-		Wall2_Dir = POS(1, 0);
-		Road2_Dir = POS(1, -1);
+		Wall1_Dir = POS(0, 1) * TILECX;
+		Road1_Dir = POS(-1, 1) * TILECX;
+		Wall2_Dir = POS(1, 0) * TILECX;
+		Road2_Dir = POS(1, -1) * TILECX;
 
 		Sub_Search1 = LL;
 		Sub_Search2 = UU;
@@ -500,18 +500,19 @@ void CPathFinder::Search_Diagonal(CNode& _Node, DIRECTION _Dir, list<CNode*>* pO
 
 }
 
-bool CPathFinder::Check_Visit(POS& _Pos, list<CNode*>* pOpenList, list<CNode*>* pCloseList)
+bool CPathFinder::Check_Visit(const POS& _Pos, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList)
 {
-	for (list<CNode*>::iterator iter = pOpenList->begin(); iter != pOpenList->end(); ++iter)
+	for (CNode* pNode : *pOpenList)
 	{
-		if (_Pos == (*iter)->Get_Pos())
+		if (_Pos == pNode->Get_Pos())
 		{
 			return true;
 		}
 	}
-	for (list<CNode*>::iterator iter = pCloseList->begin(); iter != pCloseList->end(); ++iter)
+
+	for (CNode* pNode : *pCloseList)
 	{
-		if (_Pos == (*iter)->Get_Pos())
+		if (_Pos == pNode->Get_Pos())
 		{
 			return true;
 		}

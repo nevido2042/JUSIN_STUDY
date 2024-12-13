@@ -180,4 +180,12 @@ public:
         }
     }
 
+    POS operator*(const int _int)
+    {
+        fX *= _int;
+        fY *= _int;
+
+        return POS{ fX, fY };
+    }
+
 }POS;
