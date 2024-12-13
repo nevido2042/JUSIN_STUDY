@@ -290,7 +290,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 
 		if (pTile->Get_Option() == OPT_BLOCKED)
 		{
-			break; //continue
+			break;// continue; // break; //continue
 		}
 
 

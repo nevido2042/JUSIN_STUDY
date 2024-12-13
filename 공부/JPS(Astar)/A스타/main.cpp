@@ -33,13 +33,15 @@ int main()
     CMap Map(iMapSize, iMapSize);
     Map.Initialize();
 
-    /*srand((time(NULL)));
-    for (int i = 0; i < iMapSize; ++i)
+    srand((time(NULL)));
+    for (int i = 0; i < iMapSize*20; ++i)
     {
         Map.Change_Tile(POS(rand() % iMapSize, rand() % iMapSize), WALL);
-    }*/
+    }
+    Map.Change_Tile(POS(0, 0), START);
+    Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
     
-    for (int i = 0; i < 8; ++i)
+    /*for (int i = 0; i < 8; ++i)
     {
         Map.Change_Tile(POS(4, i), WALL);
     }
@@ -70,15 +72,15 @@ int main()
     }
 
     Map.Change_Tile(POS(0, 0), START);
-    //Map.Change_Tile(POS(iMapSize - 1, iMapSize - 1), END);
-    Map.Change_Tile(POS(5, 6), END);
+    
+    Map.Change_Tile(POS(5, 6), END);*/
 
     CPathFinder PathFinder;
     PathFinder.Initialize(Map);
 
     ULONGLONG		dwTime = GetTickCount64();
 
-    Map.Set_PrintPathOnly(true);
+    Map.Set_PrintPathOnly(false);
     //PathFinder.Start_A_Star();
     PathFinder.Start_JPS();
 
