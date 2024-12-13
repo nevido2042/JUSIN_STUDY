@@ -168,6 +168,14 @@ void CRim::Render(HDC hDC)
         128, 128,
         hTestDC, 0, 0, 128, 128,
         RGB_PURPLE);
+
+    for (CNode* pNode : m_NodeList)
+    {
+        Ellipse(hDC, pNode->Get_Pos().fX + iScrollX, pNode->Get_Pos().fY + iScrollY,
+            pNode->Get_Pos().fX + 10.f + iScrollX, pNode->Get_Pos().fY + 10.f + iScrollY);
+    }
+
+
 }
 
 void CRim::Release()

@@ -62,7 +62,13 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 			POS NewPos(fX, fY);
 
 			//fx fy로 인덱스 계산
-			int iIdx = int(fX / TILECX) + int((fY / TILECY) * TILEX);
+			int iIdx = int(fX / TILECX) + int(fY / TILECY) * TILEX;
+
+			//if (TILEX * TILEY <= iIdx)
+			//{
+			//	continue;
+			//	//가끔 타일 벗어난 값이들어옴 왜지? ex 600 611
+			//}
 
 			//벽인가?
 			CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
