@@ -30,8 +30,8 @@ void CRim::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    Ellipse(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
-        m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);
+    /*Ellipse(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
+        m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);*/
 
     // ¸² ¸öÅë, ¾ó±¼, ¸Ó¸® ¼ø
     HDC hTestDC(nullptr);
@@ -42,7 +42,7 @@ void CRim::Render(HDC hDC)
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMG_OFFSET_Y,
+            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -50,7 +50,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_north");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -58,7 +58,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_north");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -69,7 +69,7 @@ void CRim::Render(HDC hDC)
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMG_OFFSET_Y,
+            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -77,7 +77,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_east");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -85,7 +85,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_east");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -96,7 +96,7 @@ void CRim::Render(HDC hDC)
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMG_OFFSET_Y,
+            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -104,7 +104,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_south");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -112,7 +112,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_south");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -123,7 +123,7 @@ void CRim::Render(HDC hDC)
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMG_OFFSET_Y,
+            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -131,7 +131,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_west");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
@@ -139,7 +139,7 @@ void CRim::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_west");
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMG_OFFSET_Y,
+            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
             128, 128,
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);

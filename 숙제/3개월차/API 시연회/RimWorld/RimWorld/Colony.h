@@ -1,12 +1,14 @@
 #pragma once
 #include "Scene.h"
 
+#include "ColonyMgr.h"
+
 #include "MenuBtn.h"
 #include "Tile.h"
 #include "Rim.h"
 #include "ArcitectBtn.h"
 #include "Rock.h"
-#include "ColonyMgr.h"
+#include "Centipede.h"
 
 class CColony :
     public CScene

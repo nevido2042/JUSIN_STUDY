@@ -68,7 +68,7 @@
       <Filter>03.Design\TileMgr</Filter>
     </ClCompile>
     <ClCompile Include="Rim.cpp">
-      <Filter>01.Obj\Rim</Filter>
+      <Filter>01.Obj\00.Pawn\Rim</Filter>
     </ClCompile>
     <ClCompile Include="Customize.cpp">
       <Filter>02.Scene\Customize</Filter>
@@ -87,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="Pawn.cpp">
       <Filter>01.Obj\00.Pawn</Filter>
+    </ClCompile>
+    <ClCompile Include="Centipede.cpp">
+      <Filter>01.Obj\00.Pawn\Centipede</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +175,7 @@
       <Filter>03.Design\TileMgr</Filter>
     </ClInclude>
     <ClInclude Include="Rim.h">
-      <Filter>01.Obj\Rim</Filter>
+      <Filter>01.Obj\00.Pawn\Rim</Filter>
     </ClInclude>
     <ClInclude Include="Customize.h">
       <Filter>02.Scene\Customize</Filter>
@@ -191,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="Pawn.h">
       <Filter>01.Obj\00.Pawn</Filter>
+    </ClInclude>
+    <ClInclude Include="Centipede.h">
+      <Filter>01.Obj\00.Pawn\Centipede</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -277,9 +283,6 @@
     <Filter Include="02.Scene\Customize">
       <UniqueIdentifier>{bd8303d1-f563-4791-8b7d-457efa3ac5b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Rim">
-      <UniqueIdentifier>{d4ea857e-f0ba-4769-b9b6-de797cf0301a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\Button\ArcitectBtn">
       <UniqueIdentifier>{e5903405-023b-4a12-98cf-971a068a1339}</UniqueIdentifier>
     </Filter>
@@ -297,6 +300,12 @@
     </Filter>
     <Filter Include="01.Obj\00.Pawn">
       <UniqueIdentifier>{4ba68a15-9b40-4e20-a4b8-453deb8da410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Rim">
+      <UniqueIdentifier>{d4ea857e-f0ba-4769-b9b6-de797cf0301a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Centipede">
+      <UniqueIdentifier>{27c56788-e35a-4a59-894d-f4ae0642d58c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

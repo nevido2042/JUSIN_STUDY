@@ -15,10 +15,10 @@ protected:
     void Navigate();
     void Calculate_MoveDir();
 public:
-    void Initialize() override;
+    void Initialize() PURE;
     int Update() override;
     void Late_Update() override;
-    void Render(HDC hDC) override;
+    void Render(HDC hDC) PURE;
     void Release() override;
 
 protected:

@@ -36,7 +36,12 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_east.bmp", L"Afro_east");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_north.bmp", L"Afro_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_west.bmp", L"Afro_west");
-
+    
+    //Centipede
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_east.bmp", L"Centipede_east");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_north.bmp", L"Centipede_north");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_south.bmp", L"Centipede_south");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_west.bmp", L"Centipede_west");
 
     //OBJ
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Ice.bmp", L"Ice");
@@ -53,8 +58,12 @@ void CColony::Initialize()
     //맵
     CTileMgr::Get_Instance()->Initialize();
 
-    //오브젝트
+    //림
     pObj = CAbstractFactory<CRim>::Create(32, 32);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
+
+    //지네
+    pObj = CAbstractFactory<CCentipede>::Create(32, 32);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
 
     bool bVisitArray[TILEX * TILEY];

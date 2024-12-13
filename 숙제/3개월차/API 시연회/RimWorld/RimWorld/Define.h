@@ -16,11 +16,11 @@
 //림 이미지 오프셋
 #define HEAD_OFFSET			24
 #define IMAGE_OFFSET_X		32
-#define IMG_OFFSET_Y		64
+#define IMAGE_OFFSET_Y		32
 
 //투명 필터
 #define RGB_PURPLE			RGB(163, 73, 164)
-#define RGB_WHITE			RGB(0, 0, 0)
+#define RGB_WHITE			RGB(255, 255, 255)
 
 
 //타일 관련
