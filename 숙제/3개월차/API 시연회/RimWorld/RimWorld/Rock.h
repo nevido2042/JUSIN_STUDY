@@ -16,7 +16,9 @@ public:
     CRock();
     virtual ~CRock();
 public:
+    void    Set_CheckNeighbor(bool _b) { m_bCheckNeighbor = _b; }
     void    Change_Image();
+
 public:
     void    Initialize() override;
     int     Update() override;

@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 #include "TileMgr.h"
+#include "ObjMgr.h"
 
 CRock::CRock()
 	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false)
@@ -90,6 +91,14 @@ void CRock::Initialize()
 
 	m_bCheckNeighbor = true;
 
+	//생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
+	list<CObj*> pWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
+	for (CObj* pObj : pWallList)
+	{
+		CRock* pRock = static_cast<CRock*>(pObj);
+		pRock->Set_CheckNeighbor(true);
+	}
+
 }
 
 int CRock::Update()
@@ -149,13 +158,15 @@ void CRock::Check_Neighbor()
 	//왼쪽 이웃
 	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
 	{
+		//위아래 다 이읏
 		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos) && CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
 		{
-
+			m_eCurState = T3;
+			Change_Image();
+			return;
 		}
-
 		//위쪽도 이웃
-		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
+		else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
 		{
 			m_eCurState = RIGHT_BOTTOM;
 			Change_Image();
@@ -189,8 +200,15 @@ void CRock::Check_Neighbor()
 	//오른 쪽 이웃
 	else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
 	{
+		//위아래 다 이읏
+		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos) && CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
+		{
+			m_eCurState = T9;
+			Change_Image();
+			return;
+		}
 		//위쪽도 이웃
-		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
+		else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
 		{
 			m_eCurState = LEFT_BOTTOM;
 			Change_Image();
