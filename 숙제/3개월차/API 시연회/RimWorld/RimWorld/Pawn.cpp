@@ -1,31 +1,169 @@
 #include "pch.h"
-#include "Rim.h"
+#include "Pawn.h"
+#include "PathFinder.h"
+#include "KeyMgr.h"
 #include "BmpMgr.h"
+#include "ColonyMgr.h"
 #include "ScrollMgr.h"
 
-
-CRim::CRim()
+CPawn::CPawn()
+    :m_bNavigating(false)
 {
-
+    ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
 
-CRim::~CRim()
+CPawn::~CPawn()
 {
-    Release();
 }
 
-void CRim::Initialize()
+void CPawn::Move_To(POS _Pos)
 {
-    m_tInfo.fCX = 64.f;
-    m_tInfo.fCY = 64.f;
+    if (m_bNavigating)
+    {
+        return;
+    }
 
-    m_fSpeed = 10.f;
+    for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+    m_NodeList.clear();
 
-    m_eRenderID = RENDER_GAMEOBJECT;
+    //이동 할 타일의 idx를 계산해서 확인한다. Blocked이면 return;
+
+    //갈 수 있으면 길찾기를 수행한다.(Astar/JPS)
+
+    m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
+
+    if (!m_NodeList.empty())
+    {
+        m_bNavigating = true;
+    }
 }
 
+void CPawn::Navigate()
+{
+    //리스트에서 점하나를 뽑아서
+    //해당 점으로 가까워질 때까지 접근(두점 사이 각도 구해서 이동)
+    //거의 가까워지면 노드 해제하고
+    //다음 노드를 뽑아서 추적
+    //다음 노드가 없으면 종료
 
-void CRim::Render(HDC hDC)
+    CNode* pTargetNode = nullptr;
+
+    if (!m_NodeList.empty())
+    {
+        pTargetNode = m_NodeList.front();
+    }
+
+    if (pTargetNode && CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
+    {
+        m_tInfo.fX = pTargetNode->Get_Pos().fX;
+        m_tInfo.fY = pTargetNode->Get_Pos().fY;
+
+        Safe_Delete<CNode*>(pTargetNode);
+        m_NodeList.pop_front();
+
+        if (!m_NodeList.empty())
+        {
+            pTargetNode = m_NodeList.front();
+        }
+        else
+        {
+            pTargetNode = nullptr;
+        }
+    }
+
+    if (!pTargetNode)
+    {
+        m_bNavigating = false;
+        return;
+    }
+
+
+    float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
+
+    fWidth = pTargetNode->Get_Pos().fX - m_tInfo.fX;
+    fHeight = pTargetNode->Get_Pos().fY - m_tInfo.fY;
+
+    fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+    fRadian = acosf(fWidth / fDiagonal);
+
+    if (pTargetNode->Get_Pos().fY > m_tInfo.fY)
+        fRadian = (2.f * PI) - fRadian;
+
+    //m_fAngle = fRadian * (180.f / PI);
+
+    m_tInfo.fX += m_fSpeed * cosf(fRadian);
+    m_tInfo.fY -= m_fSpeed * sinf(fRadian);
+}
+
+void CPawn::Calculate_MoveDir()
+{
+    //왼쪽
+    if (m_tInfo.fX < m_tPrevPos.fX)
+    {
+        m_eDir = LL;
+    }
+    //오른쪽
+    else if (m_tInfo.fX > m_tPrevPos.fX)
+    {
+        m_eDir = RR;
+    }
+    //위쪽
+    else if (m_tInfo.fY < m_tPrevPos.fY)
+    {
+        m_eDir = UU;
+    }
+    //아래쪽
+    else if (m_tInfo.fY > m_tPrevPos.fY)
+    {
+        m_eDir = DD;
+    }
+
+    //이전 프레임 위치 저장
+    m_tPrevPos.fX = m_tInfo.fX;
+    m_tPrevPos.fY = m_tInfo.fY;
+}
+
+void CPawn::Initialize()
+{
+}
+
+int CPawn::Update()
+{
+    if (m_bDead)
+        return OBJ_DEAD;
+
+    if (m_bNavigating)
+    {
+        Navigate();
+    }
+
+    __super::Update_Rect();
+
+    return OBJ_NOEVENT;
+}
+
+void CPawn::Late_Update()
+{
+    Calculate_MoveDir();
+
+    //마우스 클릭 했을 때 타겟으로 설정
+    POINT	ptMouse{};
+
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    if (PtInRect(&m_tRect, ptMouse))
+    {
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+            CColonyMgr::Get_Instance()->Set_Target(this);
+            return;
+        }
+    }
+}
+
+void CPawn::Render(HDC hDC)
 {
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
@@ -147,7 +285,7 @@ void CRim::Render(HDC hDC)
     default:
         break;
     }
-    
+
 
     //길 찾기 노드 출력
     for (CNode* pNode : m_NodeList)
@@ -155,7 +293,10 @@ void CRim::Render(HDC hDC)
         Ellipse(hDC, int(pNode->Get_Pos().fX + iScrollX - 10.f), int(pNode->Get_Pos().fY + iScrollY - 10.f),
             int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
     }
-
-
 }
 
+void CPawn::Release()
+{
+    for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+    m_NodeList.clear();
+}

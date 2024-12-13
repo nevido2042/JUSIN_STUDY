@@ -144,6 +144,7 @@
     <ClInclude Include="ColonyMgr.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PathFinder.h" />
+    <ClInclude Include="Pawn.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMgr.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="ColonyMgr.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PathFinder.cpp" />
+    <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMgr.cpp" />

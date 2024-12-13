@@ -85,6 +85,9 @@
     <ClCompile Include="Node.cpp">
       <Filter>03.Design\PathFinder\Node</Filter>
     </ClCompile>
+    <ClCompile Include="Pawn.cpp">
+      <Filter>01.Obj\00.Pawn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -185,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>03.Design\PathFinder\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Pawn.h">
+      <Filter>01.Obj\00.Pawn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +294,9 @@
     </Filter>
     <Filter Include="03.Design\PathFinder\Node">
       <UniqueIdentifier>{d35e6017-3088-4762-aa80-8761740ae3f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn">
+      <UniqueIdentifier>{4ba68a15-9b40-4e20-a4b8-453deb8da410}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
