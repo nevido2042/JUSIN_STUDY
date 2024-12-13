@@ -154,7 +154,6 @@
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MenuBtn.h" />
-    <ClInclude Include="Mouse.h" />
     <ClInclude Include="MyBmp.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyMenu.h" />
@@ -190,7 +189,6 @@
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MenuBtn.cpp" />
-    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MyBmp.cpp" />
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyMenu.cpp" />

@@ -37,11 +37,8 @@
     <ClCompile Include="RimWorld.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>01.Obj\Mouse</Filter>
-    </ClCompile>
     <ClCompile Include="MyButton.cpp">
-      <Filter>01.Obj\Button\MyButton</Filter>
+      <Filter>01.Obj\01.UI\Button\MyButton</Filter>
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>02.Scene\Logo</Filter>
@@ -53,10 +50,10 @@
       <Filter>02.Scene\Colony</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>01.Obj\Button</Filter>
+      <Filter>01.Obj\01.UI\Button</Filter>
     </ClCompile>
     <ClCompile Include="MenuBtn.cpp">
-      <Filter>01.Obj\Button\MenuBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\MenuBtn</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>01.Obj\Tile</Filter>
@@ -74,7 +71,7 @@
       <Filter>02.Scene\Customize</Filter>
     </ClCompile>
     <ClCompile Include="ArcitectBtn.cpp">
-      <Filter>01.Obj\Button\ArcitectBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn</Filter>
     </ClCompile>
     <ClCompile Include="Rock.cpp">
       <Filter>01.Obj\Rock</Filter>
@@ -144,11 +141,8 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>01.Obj\Mouse</Filter>
-    </ClInclude>
     <ClInclude Include="MyButton.h">
-      <Filter>01.Obj\Button\MyButton</Filter>
+      <Filter>01.Obj\01.UI\Button\MyButton</Filter>
     </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>02.Scene\Logo</Filter>
@@ -160,10 +154,10 @@
       <Filter>02.Scene\Colony</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>01.Obj\Button</Filter>
+      <Filter>01.Obj\01.UI\Button</Filter>
     </ClInclude>
     <ClInclude Include="MenuBtn.h">
-      <Filter>01.Obj\Button\MenuBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\MenuBtn</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>01.Obj\Tile</Filter>
@@ -181,7 +175,7 @@
       <Filter>02.Scene\Customize</Filter>
     </ClInclude>
     <ClInclude Include="ArcitectBtn.h">
-      <Filter>01.Obj\Button\ArcitectBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn</Filter>
     </ClInclude>
     <ClInclude Include="Rock.h">
       <Filter>01.Obj\Rock</Filter>
@@ -253,9 +247,6 @@
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{5e4d4094-45b8-4ca3-936d-d3300f2799c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Mouse">
-      <UniqueIdentifier>{5c3426ff-7b1e-46aa-a5d6-ab2a264a72ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Scene\Logo">
       <UniqueIdentifier>{7341af8b-a420-4ba7-a11c-e8908cda5bf5}</UniqueIdentifier>
     </Filter>
@@ -264,12 +255,6 @@
     </Filter>
     <Filter Include="02.Scene\Colony">
       <UniqueIdentifier>{c1c15429-f3e0-49b6-8bea-d69470e02730}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Button">
-      <UniqueIdentifier>{6d34e72b-89e9-4b5d-a206-6311ca8c64ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Button\MyButton">
-      <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Obj\Tile">
       <UniqueIdentifier>{b8f46b05-cda0-475c-b24d-e3521a80d60f}</UniqueIdentifier>
@@ -282,12 +267,6 @@
     </Filter>
     <Filter Include="02.Scene\Customize">
       <UniqueIdentifier>{bd8303d1-f563-4791-8b7d-457efa3ac5b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Button\ArcitectBtn">
-      <UniqueIdentifier>{e5903405-023b-4a12-98cf-971a068a1339}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\Button\MenuBtn">
-      <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Obj\Rock">
       <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
@@ -306,6 +285,24 @@
     </Filter>
     <Filter Include="01.Obj\00.Pawn\Centipede">
       <UniqueIdentifier>{27c56788-e35a-4a59-894d-f4ae0642d58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI">
+      <UniqueIdentifier>{8d93dc45-cbf6-4d02-9cc8-a59bf388d4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button">
+      <UniqueIdentifier>{6d34e72b-89e9-4b5d-a206-6311ca8c64ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\MyButton">
+      <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\ArcitectBtn">
+      <UniqueIdentifier>{e5903405-023b-4a12-98cf-971a068a1339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\MenuBtn">
+      <UniqueIdentifier>{0a7bfb76-481b-422b-8201-bec10a16baad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\HealthBar">
+      <UniqueIdentifier>{ac112617-bf4e-4c4c-84ce-c59f924f80c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

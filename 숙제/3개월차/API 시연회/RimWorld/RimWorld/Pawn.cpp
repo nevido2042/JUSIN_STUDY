@@ -149,8 +149,16 @@ void CPawn::Late_Update()
     GetCursorPos(&ptMouse);
     ScreenToClient(g_hWnd, &ptMouse);
 
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    ptMouse.x -= iScrollX;
+    ptMouse.y -= iScrollY;
+
     if (PtInRect(&m_tRect, ptMouse))
     {
+
+
         if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
         {
             CColonyMgr::Get_Instance()->Set_Target(this);
