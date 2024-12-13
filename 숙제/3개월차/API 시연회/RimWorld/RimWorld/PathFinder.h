@@ -14,6 +14,16 @@ public:
 private:
 	static bool LessF(const CNode* _First, const CNode* _Second);
 
+	void Search_Corner(CNode& _Node, list<CNode*>* pOpenList);
+
+	void Search_Linear(CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpenList);
+
+	void Search_Direction(const CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpenList, const POS _Pos = POS(-999, -999));
+
+	void Search_Diagonal(CNode& _Node, DIRECTION _Dir, list<CNode*>* pOpenList);
+
+	bool Check_Visit(POS& _Pos, list<CNode*>* pOpenList, list<CNode*>* pCloseList);
+
 public:
 	static CPathFinder* Get_Instance()
 	{
