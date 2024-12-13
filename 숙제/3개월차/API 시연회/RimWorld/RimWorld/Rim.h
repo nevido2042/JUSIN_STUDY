@@ -10,7 +10,7 @@ public:
     virtual ~CRim();
 public:
     void Move_To(POS _Pos);
-
+    void Navigate();
 public:
     void Initialize() override;
     int Update() override;
@@ -18,6 +18,7 @@ public:
     void Render(HDC hDC) override;
     void Release() override;
 private:
-    list<CNode*> m_NodeList;
+    list<CNode*>    m_NodeList;
+    bool            m_bNavigating;
 };
 

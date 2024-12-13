@@ -16,8 +16,8 @@ class CNode
 public:
 	CNode();
 	CNode(POS _Pos);
-	CNode(POS _Pos, const CNode* _pParent, POS _EndPos);
-	CNode(POS _Pos, const CNode* _pParent, POS _EndPos, DIRECTION _Dir);
+	CNode(POS _Pos, const CNode* _pParent, POS _tEndPos);
+	CNode(POS _Pos, const CNode* _pParent, POS _tEndPos, DIRECTION _Dir);
 public:
 	POS Get_Pos() const
 	{

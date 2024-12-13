@@ -59,13 +59,29 @@ void CColonyMgr::Late_Update()
         int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
         //마우스 입력
+        SetCapture(g_hWnd);
         POINT	ptMouse{};
-
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
-        static_cast<CRim*>(m_pTarget)->
-            Move_To(POS{ float(ptMouse.x - iScrollX), float(ptMouse.y - iScrollY) });
+        RECT tClientRect;
+        GetClientRect(g_hWnd, &tClientRect);
+
+        if (PtInRect(&tClientRect, ptMouse))
+        {
+            //마우스 좌표를 잘 깎아서 넣어야 한다.
+
+            float fX = float(ptMouse.x - iScrollX);
+            float fY = float(ptMouse.y - iScrollY);
+
+            fX = float(fX -(int)fX % TILECX + TILECX * 0.5f);
+            fY = float(fY -(int)fY % TILECY + TILECY * 0.5f);
+
+            static_cast<CRim*>(m_pTarget)->
+                Move_To(POS{ fX, fY });
+        }
+
+        ReleaseCapture();
     }
 }
 

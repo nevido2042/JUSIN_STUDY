@@ -27,9 +27,13 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 		CNode* pPopNode = OpenList.front();
 		OpenList.pop_front();
 
+		//클로즈 리스트에 넣는다.
+		CloseList.push_back(pPopNode);
+
 		//도착 지점인지 확인한다.
-		if (CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
+		if (CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
+
 			for_each(OpenList.begin(), OpenList.end(), Safe_Delete<CNode*>);
 			OpenList.clear();
 
@@ -37,9 +41,6 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 
 			return CloseList;
 		}
-
-		//클로즈 리스트에 넣는다.
-		CloseList.push_back(pPopNode);
 
 		//8방향 탐색한다.
 		int iDX[8]{ 0, 1, 1, 1,	0, -1, -1, -1 };
@@ -67,7 +68,7 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 			CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
 				Get_TileArray().at(iIdx));
 
-			if (!pTile || pTile->Get_Option() == OPT_BLOCKED)
+			if (pTile->Get_Option() == OPT_BLOCKED)
 			{
 				continue;
 			}
@@ -92,8 +93,8 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 			}
 			if (bIsNewPos)
 			{
-				CNode* NewNode = new CNode(NewPos, pPopNode, _tEnd);
-				OpenList.push_back(NewNode);
+				CNode* pNewNode = new CNode(NewPos, pPopNode, _tEnd);
+				OpenList.push_back(pNewNode);
 			}
 		}
 
