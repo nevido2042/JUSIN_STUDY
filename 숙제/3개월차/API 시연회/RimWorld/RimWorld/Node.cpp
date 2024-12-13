@@ -18,7 +18,7 @@ CNode::CNode(POS _tPos)
 	
 }
 
-CNode::CNode(POS _tPos, const CNode* _pParent, POS _tEndPos)
+CNode::CNode(POS _tPos, CNode* _pParent, POS _tEndPos)
 	:m_Pos(_tPos), m_pParent(_pParent),
 	m_Direction(OO)
 {
@@ -28,7 +28,7 @@ CNode::CNode(POS _tPos, const CNode* _pParent, POS _tEndPos)
 	m_F = m_G + m_H;
 }
 
-CNode::CNode(POS _tPos, const CNode* _pParent, POS _tEndPos, DIRECTION _Dir)
+CNode::CNode(POS _tPos, CNode* _pParent, POS _tEndPos, DIRECTION _Dir)
 	:m_Pos(_tPos), m_pParent(_pParent),
 	m_Direction(_Dir)
 {

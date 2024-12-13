@@ -11,19 +11,19 @@ class CNode
 
 	DIRECTION m_Direction;
 
-	const CNode* m_pParent;
+	CNode* m_pParent;
 
 public:
 	CNode();
 	CNode(POS _Pos);
-	CNode(POS _Pos, const CNode* _pParent, POS _tEndPos);
-	CNode(POS _Pos, const CNode* _pParent, POS _tEndPos, DIRECTION _Dir);
+	CNode(POS _Pos, CNode* _pParent, POS _tEndPos);
+	CNode(POS _Pos, CNode* _pParent, POS _tEndPos, DIRECTION _Dir);
 public:
 	POS Get_Pos() const
 	{
 		return m_Pos;
 	}
-	const CNode* Get_Parent() const
+	CNode* Get_Parent()
 	{
 		return m_pParent;
 	}

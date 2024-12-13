@@ -21,39 +21,63 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 
 list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 {
-	list<CNode*> OpenList;
-	list<CNode*> CloseList;
-
 	CNode* StartNode = new CNode(_tStart);
-	OpenList.push_back(StartNode);
+	m_OpenList.push_back(StartNode);
 
-	while (!OpenList.empty())
+	while (!m_OpenList.empty())
 	{
 		//하나 뽑는다.
-		CNode* pPopNode = OpenList.front();
-		OpenList.pop_front();
+		CNode* pPopNode = m_OpenList.front();
+		m_OpenList.pop_front();
 
 		//클로즈 리스트에 넣는다.
-		CloseList.push_back(pPopNode);
+		m_CloseList.push_back(pPopNode);
 
 		//도착 지점인지 확인한다.
 		if (CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
 
-			for_each(OpenList.begin(), OpenList.end(), Safe_Delete<CNode*>);
-			OpenList.clear();
+			for_each(m_OpenList.begin(), m_OpenList.end(), Safe_Delete<CNode*>);
+			m_OpenList.clear();
+
+			//종착점 부터 시작점까지 부모를 이어서 PathList에 푸시 프론트
+			list<CNode*> PathList;
+			CNode* pNode = m_CloseList.back();
+			while (true)
+			{
+				PathList.push_front(pNode);
+
+				pNode = pNode->Get_Parent();
+
+				if (!pNode)
+				{
+					break;
+				}
+			}
+
+			for (CNode* pNode : m_CloseList) {
+				if (std::find(PathList.begin(), PathList.end(), pNode) == PathList.end())
+				{
+					Safe_Delete<CNode*>(pNode);// 경로에 없는 노드 메모리 해제
+				}
+			}
+			m_CloseList.clear();  // 클로즈 리스트 비우기
 
 			//클로즈리스트를 반환 해야할까? 리스트를 넘겨줘야할까?
+			//클로즈 리스트를 반환하는게 아니라... 부모라인 값을 넘겨야지 바보야
 
-			return CloseList;
+			return PathList;
 		}
 
-		//8방향 탐색한다.
-		int iDX[8]{ 0, 1, 1, 1,	0, -1, -1, -1 };
-		int iDY[8]{ -1,	-1, 0, 1, 1, 1,	0, -1 };
-		//  12   1  3  4  6   7   9  11
+		//4방향 탐색한다.
+		int iDX[4]{ 0, 1 ,0, -1 };
+		int iDY[4]{ -1, 0 , 1,0 };
 
-		for (int i = 0; i < 8; ++i)
+		//8방향 탐색한다.
+		//int iDX[8]{ 0, 1, 1, 1,	0, -1, -1, -1 };
+		//int iDY[8]{ -1,	-1, 0, 1, 1, 1,	0, -1 };
+
+		for (int i = 0; i < 4; ++i)
 		{
 			//CTileMgr::Get_Instance()->Get_TileArray().at(1);
 			float fX = float(pPopNode->Get_Pos().fX + iDX[i] * TILECX);
@@ -87,7 +111,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 
 			//클로즈 리스트 또는 오픈리스트에 존재 하는가?
 			bool bIsNewPos = true;
-			for (list<CNode*>::iterator iter = OpenList.begin(); iter != OpenList.end(); ++iter)
+			for (list<CNode*>::iterator iter = m_OpenList.begin(); iter != m_OpenList.end(); ++iter)
 			{
 				if (NewPos == (*iter)->Get_Pos())
 				{
@@ -95,7 +119,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 					break;
 				}
 			}
-			for (list<CNode*>::iterator iter = CloseList.begin(); iter != CloseList.end(); ++iter)
+			for (list<CNode*>::iterator iter = m_CloseList.begin(); iter != m_CloseList.end(); ++iter)
 			{
 				if (NewPos == (*iter)->Get_Pos())
 				{
@@ -106,23 +130,23 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 			if (bIsNewPos)
 			{
 				CNode* pNewNode = new CNode(NewPos, pPopNode, _tEnd);
-				OpenList.push_back(pNewNode);
+				m_OpenList.push_back(pNewNode);
 			}
 		}
 
 		//오픈 리스트 정렬
-		OpenList.sort(LessF);
+		m_OpenList.sort(LessF);
 
 		//m_pMap->Update();
 	}
 
-	for_each(OpenList.begin(), OpenList.end(), Safe_Delete<CNode*>);
-	OpenList.clear();
+	for_each(m_OpenList.begin(), m_OpenList.end(), Safe_Delete<CNode*>);
+	m_OpenList.clear();
 
-	for_each(CloseList.begin(), CloseList.end(), Safe_Delete<CNode*>);
-	CloseList.clear();
+	for_each(m_CloseList.begin(), m_CloseList.end(), Safe_Delete<CNode*>);
+	m_CloseList.clear();
 
-	return CloseList;//실패
+	return m_CloseList;//실패
 }
 
 list<CNode*> CPathFinder::JPS(POS _tStart, POS _tEnd)
@@ -146,7 +170,7 @@ list<CNode*> CPathFinder::JPS(POS _tStart, POS _tEnd)
 		if (CNode::Distance(_tEnd, PopNode->Get_Pos()) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
 			// 부모를 이어서 길을 만든다.
-			const CNode* pParent = PopNode;
+			CNode* pParent = PopNode;
 			while (pParent = pParent->Get_Parent())
 			{
 				//시작지점은 색칠하지 않도록
@@ -183,7 +207,7 @@ bool CPathFinder::LessF(const CNode* _First, const CNode* _Second)
 	return _First->Get_F() < _Second->Get_F();
 }
 
-void CPathFinder::Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
+void CPathFinder::Search_Corner(CNode& _Node, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
 {
 	switch (_Node.Get_Direction())
 	{
@@ -244,7 +268,7 @@ void CPathFinder::Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, con
 	}
 }
 
-void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
+void CPathFinder::Search_Linear(CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
 {
 	switch (_Dir)
 	{
@@ -281,7 +305,7 @@ void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, list<C
 	}
 }
 
-void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList,  const list<CNode*>* pCloseList,  const POS _tEnd, const POS _Pos)
+void CPathFinder::Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList,  const list<CNode*>* pCloseList,  const POS _tEnd, const POS _Pos)
 {
 	POS Dir;
 	POS Wall1_Dir;
@@ -466,7 +490,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 	}
 }
 
-void CPathFinder::Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd)
+void CPathFinder::Search_Diagonal(CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd)
 {
 	POS Dir;
 	POS Wall1_Dir;

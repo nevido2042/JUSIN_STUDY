@@ -50,6 +50,9 @@ void CRim::Navigate()
 
     if (pTargetNode && CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
     {
+        m_tInfo.fX = pTargetNode->Get_Pos().fX;
+        m_tInfo.fY = pTargetNode->Get_Pos().fY;
+
         Safe_Delete<CNode*>(pTargetNode);
         m_NodeList.pop_front();
 

@@ -18,13 +18,13 @@ private:
 private:
 	static bool LessF(const CNode* _First, const CNode* _Second);
 
-	void Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos);
+	void Search_Corner(CNode& _Node, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos);
 
-	void Search_Linear(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos);
+	void Search_Linear(CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos);
 
-	void Search_Direction(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd, const POS _Pos = POS(-999, -999));
+	void Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd, const POS _Pos = POS(-999, -999));
 
-	void Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd);
+	void Search_Diagonal(CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd);
 
 	bool Check_Visit(const POS& _Pos, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList);
 
@@ -48,5 +48,8 @@ public:
 
 private:
 	static CPathFinder* m_pInstance;
+
+	list<CNode*> m_OpenList;
+	list<CNode*> m_CloseList;
 };
 
