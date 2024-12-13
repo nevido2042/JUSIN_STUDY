@@ -20,7 +20,7 @@ private:
 
 	void Search_Direction(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd, const POS _Pos = POS(-999, -999));
 
-	void Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList);
+	void Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd);
 
 	bool Check_Visit(const POS& _Pos, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList);
 

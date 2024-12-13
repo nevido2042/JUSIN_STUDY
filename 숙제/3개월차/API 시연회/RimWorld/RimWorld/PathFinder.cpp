@@ -43,7 +43,8 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 			}
 
 			Safe_Delete(PopNode);
-			return;
+
+			return CloseList;
 		}
 
 		//부모의 방향으로 탐색(첫 노드는 8방탐색)
@@ -75,23 +76,23 @@ void CPathFinder::Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, con
 	{
 	case OO:
 		Search_Linear(_Node, UU, pOpenList, pCloseList, _tEndPos);
-		Search_Diagonal(_Node, RU, pOpenList);
+		Search_Diagonal(_Node, RU, pOpenList, pCloseList, _tEndPos);
 		Search_Linear(_Node, RR, pOpenList, pCloseList, _tEndPos);
-		Search_Diagonal(_Node, RD, pOpenList);
+		Search_Diagonal(_Node, RD, pOpenList, pCloseList, _tEndPos);
 		Search_Linear(_Node, DD, pOpenList, pCloseList, _tEndPos);
-		Search_Diagonal(_Node, LD, pOpenList);
+		Search_Diagonal(_Node, LD, pOpenList, pCloseList, _tEndPos);
 		Search_Linear(_Node, LL, pOpenList, pCloseList, _tEndPos);
-		Search_Diagonal(_Node, LU, pOpenList);
+		Search_Diagonal(_Node, LU, pOpenList, pCloseList, _tEndPos);
 		break;
 	case UU:
 		Search_Linear(_Node, UU, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case RU:
-		Search_Diagonal(_Node, RU, pOpenList);
+		Search_Diagonal(_Node, RU, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, RD, pOpenList);
-		Search_Diagonal(_Node, LU, pOpenList);
+		Search_Diagonal(_Node, RD, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, LU, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case RR:
@@ -99,10 +100,10 @@ void CPathFinder::Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, con
 
 		break;
 	case RD:
-		Search_Diagonal(_Node, RD, pOpenList);
+		Search_Diagonal(_Node, RD, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, RU, pOpenList);
-		Search_Diagonal(_Node, LD, pOpenList);
+		Search_Diagonal(_Node, RU, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, LD, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case DD:
@@ -110,20 +111,20 @@ void CPathFinder::Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, con
 
 		break;
 	case LD:
-		Search_Diagonal(_Node, LD, pOpenList);
+		Search_Diagonal(_Node, LD, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, LU, pOpenList);
-		Search_Diagonal(_Node, RD, pOpenList);
+		Search_Diagonal(_Node, LU, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, RD, pOpenList, pCloseList, _tEndPos);
 		break;
 	case LL:
 		Search_Linear(_Node, LL, pOpenList, pCloseList, _tEndPos);
 
 		break;
 	case LU:
-		Search_Diagonal(_Node, LU, pOpenList);
+		Search_Diagonal(_Node, LU, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, RU, pOpenList);
-		Search_Diagonal(_Node, LD, pOpenList);
+		Search_Diagonal(_Node, RU, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, LD, pOpenList, pCloseList, _tEndPos);
 		break;
 	default:
 		break;
@@ -137,29 +138,29 @@ void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, list<C
 	case UU:
 		Search_Direction(_Node, UU, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, RU, pOpenList);
-		Search_Diagonal(_Node, LU, pOpenList);
+		Search_Diagonal(_Node, RU, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, LU, pOpenList, pCloseList, _tEndPos);
 		break;
 
 	case RR:
 		Search_Direction(_Node, RR, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, RU, pOpenList);
-		Search_Diagonal(_Node, RD, pOpenList);
+		Search_Diagonal(_Node, RU, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, RD, pOpenList, pCloseList, _tEndPos);
 		break;
 
 	case DD:
 		Search_Direction(_Node, DD, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, RD, pOpenList);
-		Search_Diagonal(_Node, LD, pOpenList);
+		Search_Diagonal(_Node, RD, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, LD, pOpenList, pCloseList, _tEndPos);
 		break;
 
 	case LL:
 		Search_Direction(_Node, LL, pOpenList, pCloseList, _tEndPos);
 
-		Search_Diagonal(_Node, LD, pOpenList);
-		Search_Diagonal(_Node, LU, pOpenList);
+		Search_Diagonal(_Node, LD, pOpenList, pCloseList, _tEndPos);
+		Search_Diagonal(_Node, LU, pOpenList, pCloseList, _tEndPos);
 		break;
 
 	default:
@@ -273,10 +274,22 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 			break;
 		}
 
-		//체크하는 위치가 벽인지 확인
-		if (m_pMap->Get_Tile_Type(CheckPos) == WALL)
+		//fx fy로 인덱스 계산
+		int iIdx = int(CheckPos.fX / TILECX) + int(CheckPos.fY / TILECY) * TILEX;
+
+		//if (TILEX * TILEY <= iIdx)
+		//{
+		//	continue;
+		//	//가끔 타일 벗어난 값이들어옴 왜지? ex 600 611
+		//}
+
+		//벽인가?
+		CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
+			Get_TileArray().at(iIdx));
+
+		if (pTile->Get_Option() == OPT_BLOCKED)
 		{
-			break;
+			continue;
 		}
 
 
@@ -291,26 +304,26 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 		}
 
 		//오픈리스트 또는 클로즈 리스트에 이미 있는 지점인지 확인
-		if (Check_Visit(New_Node_Pos))
+		if (Check_Visit(New_Node_Pos, pOpenList, pCloseList))
 		{
 			break;
 		}
 
 		//주변에 코너가 있는지 체크
 		bool bIsNewNode(false);
-		if (Is_Position_InMap(Wall1) && Is_Position_InMap(Road1))
+		if (CTileMgr::Get_Instance()->IsValidTile(Wall1) && CTileMgr::Get_Instance()->IsValidTile(Road1))
 		{
-			if (m_pMap->Get_Tile_Type(Wall1) == WALL && m_pMap->Get_Tile_Type(Road1) == ROAD)
+			if (CTileMgr::Get_Instance()->Get_TileOption(Wall1) == OPT_BLOCKED && CTileMgr::Get_Instance()->Get_TileOption(Road1) == OPT_REACHABLE)
 			{
-				pOpenList->push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
+				pOpenList->push_back(new CNode(New_Node_Pos, &_Node, _tEnd, _Dir));
 
 				bIsNewNode = true;
 			}
 		}
 
-		if (Is_Position_InMap(Wall2) && Is_Position_InMap(Road2))
+		if (CTileMgr::Get_Instance()->IsValidTile(Wall2) && CTileMgr::Get_Instance()->IsValidTile(Road2))
 		{
-			if (m_pMap->Get_Tile_Type(Wall2) == WALL && m_pMap->Get_Tile_Type(Road2) == ROAD)
+			if (CTileMgr::Get_Instance()->Get_TileOption(Wall2) == OPT_BLOCKED && CTileMgr::Get_Instance()->Get_TileOption(Road2) == OPT_REACHABLE)
 			{
 				POS New_Node_Pos;
 				if (bIsSub_Search)
@@ -322,7 +335,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 					New_Node_Pos = CheckPos;
 				}
 
-				pOpenList->push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
+				pOpenList->push_back(new CNode(New_Node_Pos, &_Node, _tEnd, _Dir));
 
 				bIsNewNode = true;
 			}
@@ -334,15 +347,13 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 			break;
 		}
 
-		m_pMap->Change_Tile_Check(CheckPos);
-
 		//전진
 		CheckPos.fX += Dir.fX;
 		CheckPos.fY += Dir.fY;
 	}
 }
 
-void CPathFinder::Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList)
+void CPathFinder::Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEnd)
 {
 	POS Dir;
 	POS Wall1_Dir;
@@ -425,63 +436,64 @@ void CPathFinder::Search_Diagonal(const CNode& _Node, const DIRECTION _Dir, cons
 
 		//보조 탐색
 
-		if (Is_Position_InMap(CheckPos))//보조 탐색 범위가 맵 안에 있는지 확인
+		if (CTileMgr::Get_Instance()->IsValidTile(CheckPos))//보조 탐색 범위가 맵 안에 있는지 확인
 		{
-			if (m_pMap->Get_Tile_Type(CheckPos) != WALL)//체크하는 위치가 벽인지 확인
+			if (CTileMgr::Get_Instance()->Get_TileOption(CheckPos) != OPT_BLOCKED)//체크하는 위치가 벽인지 확인
 			{
-				Search_Direction(_Node, Sub_Search1, CheckPos);
-				Search_Direction(_Node, Sub_Search2, CheckPos);
+				Search_Direction(_Node, Sub_Search1, pOpenList, pCloseList, _tEnd, CheckPos);
+				Search_Direction(_Node, Sub_Search2, pOpenList, pCloseList, _tEnd, CheckPos);
 			}
 		}
 
 		//맵 밖인지 체크
-		if (!Is_Position_InMap(CheckPos))
+		if (!CTileMgr::Get_Instance()->IsValidTile(CheckPos))
 		{
 			break;
 		}
 
+
 		//체크하는 위치가 도착점 인지 확인
-		if (m_pMap->Get_Tile_Type(CheckPos) == END)
+		if (CNode::Distance(_tEnd, CheckPos) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
-			if (Check_Visit(CheckPos))
+			if (Check_Visit(CheckPos, pOpenList, pCloseList))
 			{
 				break;
 			}
 
-			pOpenList->push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
+			pOpenList->push_back(new CNode(CheckPos, &_Node, _tEnd, _Dir));
 
 			break;
 		}
 
 		//체크하는 위치가 벽인지 확인
-		if (m_pMap->Get_Tile_Type(CheckPos) == WALL)
+		if (CTileMgr::Get_Instance()->Get_TileOption(CheckPos) == OPT_BLOCKED)
 		{
 			break;
 		}
 
 		//오픈리스트 또는 클로즈 리스트에 이미 있는 지점인지 확인
-		if (Check_Visit(CheckPos))
+		if (Check_Visit(CheckPos, pOpenList, pCloseList))
 		{
 			break;
 		}
 
 		//주변에 코너가 있는지 체크
 		bool bIsNewNode(false);
-		if (Is_Position_InMap(Wall1) && Is_Position_InMap(Road1))
+		if (CTileMgr::Get_Instance()->IsValidTile(Wall1) && CTileMgr::Get_Instance()->IsValidTile(Road1))
 		{
-			if (m_pMap->Get_Tile_Type(Wall1) == WALL && m_pMap->Get_Tile_Type(Road1) == ROAD)
+			if (CTileMgr::Get_Instance()->Get_TileOption(Wall1) == OPT_BLOCKED && CTileMgr::Get_Instance()->Get_TileOption(Road1) == OPT_REACHABLE)
 			{
-				pOpenList->push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
+				pOpenList->push_back(new CNode(CheckPos, &_Node, _tEnd, _Dir));
 
 				bIsNewNode = true;
 			}
 		}
 
-		if (Is_Position_InMap(Wall2) && Is_Position_InMap(Road2))
+		if (CTileMgr::Get_Instance()->IsValidTile(Wall2) && CTileMgr::Get_Instance()->IsValidTile(Road2))
 		{
-			if (m_pMap->Get_Tile_Type(Wall2) == WALL && m_pMap->Get_Tile_Type(Road2) == ROAD)
+			if (CTileMgr::Get_Instance()->Get_TileOption(Wall2) == OPT_BLOCKED && CTileMgr::Get_Instance()->Get_TileOption(Road2) == OPT_REACHABLE)
 			{
-				pOpenList->push_back(new CNode(CheckPos, &_Node, m_EndPos, _Dir));
+				pOpenList->push_back(new CNode(CheckPos, &_Node, _tEnd, _Dir));
 
 				bIsNewNode = true;
 			}

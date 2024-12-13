@@ -16,6 +16,18 @@ CTileMgr::~CTileMgr()
 	Release();
 }
 
+bool CTileMgr::IsValidTile(const POS _tPos)
+{
+	if (TILECX * TILEX < _tPos.fX || 0.f >_tPos.fX || TILECY * TILEY < _tPos.fY || 0.f > _tPos.fY)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 void CTileMgr::Initialize()
 {
 	for (int i = 0; i < TILEY; ++i)
@@ -79,6 +91,12 @@ void CTileMgr::Set_TileOption(float _fX, float _fY, TILEOPT _eOpt)
 {
 	int iIdx = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
 	static_cast<CTile*>(m_arrTile.at(iIdx))->Set_Option(_eOpt);
+}
+
+TILEOPT CTileMgr::Get_TileOption(POS _tPos)
+{
+	int iIdx = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+	return static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Option();
 }
 
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)

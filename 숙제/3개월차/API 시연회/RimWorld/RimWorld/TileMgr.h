@@ -10,9 +10,12 @@ private:
 
 public:
 	void	Set_TileOption(float _fX, float _fY, TILEOPT _eOpt);
+	TILEOPT	Get_TileOption(POS _tPos);
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 	
 	const array<CObj*, TILEX* TILEY>& Get_TileArray() { return m_arrTile; }
+
+	bool IsValidTile(const POS _tPos);
 public:
 	void	Initialize() ;
 	int		Update() ;
