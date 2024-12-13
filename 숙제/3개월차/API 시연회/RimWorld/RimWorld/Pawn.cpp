@@ -14,6 +14,7 @@ CPawn::CPawn()
 
 CPawn::~CPawn()
 {
+    Release();
 }
 
 void CPawn::Move_To(POS _Pos)

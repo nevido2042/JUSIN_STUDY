@@ -88,6 +88,9 @@
     <ClCompile Include="Centipede.cpp">
       <Filter>01.Obj\00.Pawn\Centipede</Filter>
     </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>01.Obj\01.UI\HealthBar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -191,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="Centipede.h">
       <Filter>01.Obj\00.Pawn\Centipede</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBar.h">
+      <Filter>01.Obj\01.UI\HealthBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
