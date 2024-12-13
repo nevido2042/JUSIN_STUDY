@@ -69,7 +69,7 @@ bool CPathFinder::LessF(const CNode* _First, const CNode* _Second)
 	return _First->Get_F() < _Second->Get_F();
 }
 
-void CPathFinder::Search_Corner(const CNode& _Node, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
+void CPathFinder::Search_Corner(const CNode& _Node, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
 {
 	switch (_Node.Get_Direction())
 	{
@@ -130,7 +130,7 @@ void CPathFinder::Search_Corner(const CNode& _Node, const list<CNode*>* pOpenLis
 	}
 }
 
-void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
+void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList, const list<CNode*>* pCloseList, const POS _tEndPos)
 {
 	switch (_Dir)
 	{
@@ -167,7 +167,7 @@ void CPathFinder::Search_Linear(const CNode& _Node, const DIRECTION _Dir, const 
 	}
 }
 
-void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, const list<CNode*>* pOpenList,  const list<CNode*>* pCloseList,  const POS _tEnd, const POS _Pos)
+void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, list<CNode*>* pOpenList,  const list<CNode*>* pCloseList,  const POS _tEnd, const POS _Pos)
 {
 	POS Dir;
 	POS Wall1_Dir;
@@ -268,7 +268,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, con
 				New_Node_Pos = CheckPos;
 			}
 
-			pOpenList->push_back(new CNode(New_Node_Pos, &_Node, m_EndPos, _Dir));
+			pOpenList->push_back(new CNode(New_Node_Pos, &_Node, _tEnd, _Dir));
 
 			break;
 		}
@@ -278,6 +278,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, con
 		{
 			break;
 		}
+
 
 		POS New_Node_Pos;
 		if (bIsSub_Search)
