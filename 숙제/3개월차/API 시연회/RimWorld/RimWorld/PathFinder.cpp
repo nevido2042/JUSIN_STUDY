@@ -247,7 +247,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 		POS Road2(CheckPos.fX + Road2_Dir.fX, CheckPos.fY + Road2_Dir.fY);
 
 		//∏  π€¿Œ∞°?
-		if (CheckPos.fX < 0 || CheckPos.fY < 0 || TILECX * TILEX < CheckPos.fX || TILECY * TILEY < CheckPos.fY)
+		if (!CTileMgr::Get_Instance()->IsValidTile(CheckPos))
 		{
 			break;
 		}
@@ -290,7 +290,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 
 		if (pTile->Get_Option() == OPT_BLOCKED)
 		{
-			continue;
+			break; //continue
 		}
 
 
