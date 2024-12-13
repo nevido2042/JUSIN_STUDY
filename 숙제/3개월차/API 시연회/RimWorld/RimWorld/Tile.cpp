@@ -54,6 +54,13 @@ void CTile::Render(HDC hDC)
 		0,
 		SRCCOPY);
 
+	// 사각형 그리기
+	MoveToEx(hDC, m_tRect.left, m_tRect.top, nullptr);         // 왼쪽 위로 이동
+	LineTo(hDC, m_tRect.right, m_tRect.top);                  // 상단 선
+	LineTo(hDC, m_tRect.right, m_tRect.bottom);               // 오른쪽 선
+	LineTo(hDC, m_tRect.left, m_tRect.bottom);                // 하단 선
+	LineTo(hDC, m_tRect.left, m_tRect.top);                   // 왼쪽 선
+
 }
 
 void CTile::Release()

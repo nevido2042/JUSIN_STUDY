@@ -28,6 +28,8 @@ void CRim::Move_To(POS _Pos)
     //ex) CPathFinder::GetInstance()->Find_Path(Start, End); 타일 리스트를 반환하게 할까?
 
     m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
+
+    //얻어왔으니 차례로 이동
 }
 
 void CRim::Initialize()
