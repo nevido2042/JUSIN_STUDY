@@ -66,6 +66,26 @@ void CRock::Change_Image()
 			m_iRenderX = 2;
 			m_iRenderY = 2;
 			break;
+
+		case CRock::T12:
+			m_iRenderX = 2;
+			m_iRenderY = 0;
+			break;
+
+		case CRock::T3:
+			m_iRenderX = 1;
+			m_iRenderY = 0;
+			break;
+
+		case CRock::T6:
+			m_iRenderX = 3;
+			m_iRenderY = 1;
+			break;
+
+		case CRock::T9:
+			m_iRenderX = 3;
+			m_iRenderY = 2;
+			break;
 		}
 
 		m_ePreState = m_eCurState;
@@ -155,44 +175,74 @@ void CRock::Check_Neighbor()
 	POS tLeftPos{ m_tInfo.fX - TILECX, m_tInfo.fY };
 	POS tRightPos{ m_tInfo.fX + TILECX, m_tInfo.fY};
 
-	//왼쪽 이웃
-	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
+	//3개 짜리 T 시리즈
+	//T12
+	if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
 	{
-		//위아래 다 이읏
-		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos) && CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-		{
-			m_eCurState = T3;
-			Change_Image();
-			return;
-		}
-		//위쪽도 이웃
-		else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
+		m_eCurState = T12;
+		Change_Image();
+		return;
+	}
+
+	//T3
+	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tTopPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
+	{
+		m_eCurState = T3;
+		Change_Image();
+		return;
+	}
+
+	//T6
+	if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
+	{
+		m_eCurState = T6;
+		Change_Image();
+		return;
+	}
+
+	//T9
+	if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tTopPos) &&
+		CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
+	{
+		m_eCurState = T9;
+		Change_Image();
+		return;
+	}
+
+
+	//1.왼쪽 이웃
+	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
+	{	
+		//3.위쪽도 이웃
+		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
 		{
 			m_eCurState = RIGHT_BOTTOM;
 			Change_Image();
 			return;
 		}
-		//아래 쪽도 이웃
+		//3.아래 쪽도 이웃
 		else if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
 		{
 			m_eCurState = RIGHT_TOP;
 			Change_Image();
 			return;
 		}
+		//4.오른 쪽 끝이다.
 		else if (!CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
 		{
 			m_eCurState = END_RIGHT;
 			Change_Image();
 			return;
 		}
-		//왼쪽에 끝이다.
-		else
-		{
-			m_eCurState = END_LEFT;
-			Change_Image();
-			return;
-		}
 
+		//5.수평
 		m_eCurState = HORIZONTAL;
 		Change_Image();
 		return;
@@ -200,15 +250,9 @@ void CRock::Check_Neighbor()
 	//오른 쪽 이웃
 	else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
 	{
-		//위아래 다 이읏
-		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos) && CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-		{
-			m_eCurState = T9;
-			Change_Image();
-			return;
-		}
+		
 		//위쪽도 이웃
-		else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
+		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
 		{
 			m_eCurState = LEFT_BOTTOM;
 			Change_Image();
@@ -221,14 +265,10 @@ void CRock::Check_Neighbor()
 			Change_Image();
 			return;
 		}
-		else if (!CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-		{
-			m_eCurState = END_RIGHT;
-			Change_Image();
-			return;
-		}
-		//왼쪽에 끝이다.
-		else
+
+
+		//왼쪽에 끝이다
+		else if (!CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
 		{
 			m_eCurState = END_LEFT;
 			Change_Image();
@@ -240,28 +280,67 @@ void CRock::Check_Neighbor()
 		return;
 	}
 	
-	//vertical 수직 방향에 이웃이 있다.
-	else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos)|| CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
+	//vertical 위에 이웃
+	else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
 	{
-		//아래에 없다.
+		//3.왼쪽도 이웃
+		if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
+		{
+			m_eCurState = RIGHT_BOTTOM;
+			Change_Image();
+			return;
+		}
+		//3.오른쪽도 이웃
+		else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
+		{
+			m_eCurState = LEFT_BOTTOM;
+			Change_Image();
+			return;
+		}
+		//아래 끝이다
 		if (!CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
 		{
 			m_eCurState = END_BOTTOM;
 			Change_Image();
 			return;
 		}
-		else
+		
+
+		m_eCurState = VERTICAL;
+		Change_Image();
+		return;
+	}
+	//아래 이웃
+	else if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
+	{
+		//3.왼쪽도 이웃
+		if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
+		{
+			m_eCurState = RIGHT_TOP;
+			Change_Image();
+			return;
+		}
+		//3.오른쪽도 이웃
+		else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
+		{
+			m_eCurState = LEFT_TOP;
+			Change_Image();
+			return;
+		}
+		//위쪽에 아무도 없다.
+		else if(!CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
 		{
 			m_eCurState = END_TOP;
 			Change_Image();
 			return;
 		}
 
+		//수직
 		m_eCurState = VERTICAL;
 		Change_Image();
 		return;
 	}
-
+	//주위에 아무것도 없다.
 	else
 	{
 		m_eCurState = SOLO;

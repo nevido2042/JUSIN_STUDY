@@ -43,10 +43,22 @@ void CColony::Initialize()
     pObj = CAbstractFactory<CRim>::Create(32, 32);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
 
-    for (int i = 0; i < 100; ++i)
+    bool bVisitArray[TILEX * TILEY];
+    memset(bVisitArray, false, sizeof(bVisitArray));
+
+    for (int i = 0; i < (TILEX * TILEY) / 3; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);
+
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
+
+        bVisitArray[iX + TILEX * iY] = true;
 
         POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
 
