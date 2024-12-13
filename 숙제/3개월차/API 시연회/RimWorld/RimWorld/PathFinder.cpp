@@ -31,7 +31,7 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 		CloseList.push_back(PopNode);
 
 		//도착 지점인가?
-		if (_tEnd == PopNode->Get_Pos())
+		if (CNode::Distance(_tEnd, PopNode->Get_Pos()) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
 			// 부모를 이어서 길을 만든다.
 			const CNode* pParent = PopNode;
