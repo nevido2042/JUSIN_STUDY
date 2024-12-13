@@ -10,7 +10,13 @@ public:
     virtual ~CRim();
 public:
     void Move_To(POS _Pos);
+   
+private:
     void Navigate();
+    void Calculate_MoveDir();
+    //이미지 좌우반전
+    BOOL Flip_Image(HDC hdcDest, HDC hdcSrc, int xDest, int yDest, int width, int height);
+
 public:
     void Initialize() override;
     int Update() override;
@@ -20,5 +26,5 @@ public:
 private:
     list<CNode*>    m_NodeList;
     bool            m_bNavigating;
+    POS             m_tPrevPos;
 };
-
