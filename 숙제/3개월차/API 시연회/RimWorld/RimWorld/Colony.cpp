@@ -48,18 +48,10 @@ void CColony::Initialize()
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);
 
-        pObj = CAbstractFactory<CRock>::Create(64 * iX + 32, 64 * iY + 32);
+        pObj = CAbstractFactory<CRock>::Create(float(64 * iX + 32), float(64 * iY + 32));
         CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
-        CTileMgr::Get_Instance()->Set_TileOption(64 * iX + 32, 64 * iY + 32, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileOption(float(64 * iX + 32), float(64 * iY + 32), OPT_BLOCKED);
     }
-
-    /*for (int i = 0; i < 5; ++i)
-    {
-        pObj = CAbstractFactory<CRock>::Create(64 * i + 32, 64 * i + 32);
-        CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
-        CTileMgr::Get_Instance()->Set_TileOption(64 * i + 32, 64 * i + 32, OPT_BLOCKED);
-    }*/
-
 
 }
 

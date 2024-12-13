@@ -180,8 +180,8 @@ void CRim::Render(HDC hDC)
 
     for (CNode* pNode : m_NodeList)
     {
-        Ellipse(hDC, pNode->Get_Pos().fX + iScrollX, pNode->Get_Pos().fY + iScrollY,
-            pNode->Get_Pos().fX + 10.f + iScrollX, pNode->Get_Pos().fY + 10.f + iScrollY);
+        Ellipse(hDC, int(pNode->Get_Pos().fX + iScrollX - 10.f), int(pNode->Get_Pos().fY + iScrollY - 10.f),
+            int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
     }
 
 
