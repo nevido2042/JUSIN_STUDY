@@ -9,8 +9,13 @@ private:
 	~CTileMgr();
 
 public:
-	void	Set_TileOption(float _fX, float _fY, TILEOPT _eOpt);
+	void	Set_TileOption(POS _tPos, TILEOPT _eOpt);
+	void	Set_TileObj(POS _tPos, CObj* _pObj);
+
 	TILEOPT	Get_TileOption(POS _tPos);
+	const CObj*	Get_TileObj(POS _tPos);
+
+
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 	
 	const array<CObj*, TILEX* TILEY>& Get_TileArray() { return m_arrTile; }

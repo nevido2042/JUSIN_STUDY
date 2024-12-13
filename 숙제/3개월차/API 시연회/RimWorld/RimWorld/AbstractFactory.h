@@ -25,5 +25,14 @@ public:
 
 		return pObj;
 	}
+
+	static CObj* Create(POS _tPos)
+	{
+		CObj* pObj = new T;
+		pObj->Initialize();
+		pObj->Set_Pos(_tPos.fX, _tPos.fY);
+
+		return pObj;
+	}
 };
 

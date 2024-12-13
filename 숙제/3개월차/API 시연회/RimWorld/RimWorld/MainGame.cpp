@@ -23,6 +23,8 @@ CMainGame::~CMainGame()
 
 void CMainGame::Initialize()
 {
+	srand(static_cast<unsigned int>(time(0)));
+
 	m_hDC = GetDC(g_hWnd);
 	
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back.bmp", L"Back");

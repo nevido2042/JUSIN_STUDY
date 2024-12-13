@@ -3,7 +3,7 @@
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 
-CTile::CTile() : m_eOption(OPT_END)
+CTile::CTile() : m_eOption(OPT_END), m_pObj(nullptr)
 {
 }
 
