@@ -42,7 +42,8 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 					break;
 			}
 
-			Safe_Delete(PopNode);
+			for_each(OpenList.begin(), OpenList.end(), Safe_Delete<CNode*>);
+			OpenList.clear();
 
 			return CloseList;
 		}
@@ -248,7 +249,7 @@ void CPathFinder::Search_Direction(const CNode& _Node, const DIRECTION _Dir, lis
 		//맵 밖인가?
 		if (CheckPos.fX < 0 || CheckPos.fY < 0 || TILECX * TILEX < CheckPos.fX || TILECY * TILEY < CheckPos.fY)
 		{
-			continue;
+			break;
 		}
 
 		//체크하는 위치가 도착점 인지 확인
