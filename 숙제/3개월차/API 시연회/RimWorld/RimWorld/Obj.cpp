@@ -15,6 +15,10 @@ CObj::~CObj()
 	//Release();
 }
 
+void CObj::OnCollision(OBJID _eID, CObj* _pOther)
+{
+}
+
 void CObj::Update_Rect()
 {
 	m_tRect.left	= LONG(m_tInfo.fX - (m_tInfo.fCX * 0.5f));

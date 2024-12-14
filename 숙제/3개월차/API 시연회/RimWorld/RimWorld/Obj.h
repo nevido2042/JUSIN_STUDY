@@ -42,6 +42,10 @@ public:
 	virtual void		Release()PURE;
 
 public:
+	//충돌 했을 때, 충돌한 오브젝트의, OBJID와 충돌한 객체를 가져온다
+	virtual	void		OnCollision(OBJID _eID, CObj* _pOther);
+
+public:
 	void		Update_Rect();
 	void		Move_Frame();
 
