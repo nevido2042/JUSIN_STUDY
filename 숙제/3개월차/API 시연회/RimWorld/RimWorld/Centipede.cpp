@@ -28,10 +28,6 @@ void CCentipede::Initialize()
 
 void CCentipede::Render(HDC hDC)
 {
-    if (m_bDead)
-    {
-        return;
-    }
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();

@@ -46,7 +46,7 @@ void CPawn::Take_Damage(float _fDamage)
     m_fHP -= _fDamage;
 
     //Á×À½ Ã³¸®
-    if (m_fHP < 0.f)
+    if (m_fHP <= 0.f)
     {
         m_bDead = true;
         Dead();

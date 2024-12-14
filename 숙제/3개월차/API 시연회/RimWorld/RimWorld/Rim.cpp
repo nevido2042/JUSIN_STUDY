@@ -24,6 +24,8 @@ void CRim::Initialize()
     m_fSpeed = 10.f;
 
     m_eRenderID = RENDER_GAMEOBJECT;
+
+    Take_Damage(10.f);
 }
 
 
@@ -149,6 +151,18 @@ void CRim::Render(HDC hDC)
     default:
         break;
     }
+
+    //죽었을 때 핏자국 출력
+    if (m_bDead)
+    {
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Blood");
+        GdiTransparentBlt(hDC,
+            m_tRect.left + iScrollX,
+            m_tRect.top + iScrollY,
+            64, 64,
+            hTestDC, 0, 0, 64, 64,
+            RGB_WHITE);
+    }
     
 
     //길 찾기 노드 출력
@@ -163,5 +177,6 @@ void CRim::Render(HDC hDC)
 
 void CRim::Dead()
 {
+    m_fSpeed = 0.f;
 }
 
