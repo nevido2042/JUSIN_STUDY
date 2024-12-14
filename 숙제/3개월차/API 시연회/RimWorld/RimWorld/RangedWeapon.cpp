@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "RangedWeapon.h"
+#include "TimeMgr.h"
 
 CRangedWeapon::CRangedWeapon()
-    :m_ullFireRate(0), m_pProjectile(nullptr),
-    m_ullLastFireTime(0), m_fRange(0.f)
+    :m_iFireRate(0), m_pProjectile(nullptr),
+    m_iLastFireTime(0), m_fRange(0.f)
 {
 }
 
@@ -20,16 +21,22 @@ void CRangedWeapon::Follow_Pawn()
 
 void CRangedWeapon::Fire()
 {
+
+}
+
+bool CRangedWeapon::Try_Fire()
+{
     //발사를 시도했는데
     //너무 발사속도보다 빨리 쐈다면
-    if (m_ullLastFireTime + m_ullFireRate > GetTickCount64())
+    int iCurFrame = CTimeMgr::Get_Instance()->Get_CurrentFrame();
+    if (m_iLastFireTime + m_iFireRate > iCurFrame)
     {
         //발사 취소
-        return;
+        return false;
     }
 
     //발사 했음. 발사 시간 저장
-    m_ullLastFireTime = GetTickCount64();
+    m_iLastFireTime = CTimeMgr::Get_Instance()->Get_CurrentFrame();
 
     //무기주인의 타겟과 자신의 위치의 각도를 계산
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
@@ -37,13 +44,13 @@ void CRangedWeapon::Fire()
     //타겟(무기 주인)이 없으면 리턴
     if (!m_pTarget)
     {
-        return;
+        return false;
     }
     CObj* pTarget = m_pTarget->Get_Target();
     //무기 주인의 타겟이 없으면 리턴
     if (!pTarget)
     {
-        return;
+        return false;
     }
 
     fWidth = pTarget->Get_Info().fX - m_tInfo.fX;
@@ -57,6 +64,8 @@ void CRangedWeapon::Fire()
         fRadian = (2.f * PI) - fRadian;
 
     m_fAngle = fRadian * (180.f / PI);
+
+    return true;
 }
 
 void CRangedWeapon::Initialize()
@@ -67,8 +76,8 @@ void CRangedWeapon::Initialize()
     m_eRenderID = RENDER_WEAPON;
 
     //총 발사 관련
-    m_ullFireRate = 800;
-    m_ullLastFireTime = GetTickCount64();
+    m_iFireRate = 100;
+    m_iLastFireTime = CTimeMgr::Get_Instance()->Get_CurrentFrame();
     //무기 사정거리
     m_fRange = 500.f;
 }

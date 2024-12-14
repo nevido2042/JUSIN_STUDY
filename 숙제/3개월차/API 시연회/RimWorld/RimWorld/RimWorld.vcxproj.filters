@@ -103,6 +103,9 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>01.Obj\03.Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="TimeMgr.cpp">
+      <Filter>03.Design\TimeMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -221,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="Projectile.h">
       <Filter>01.Obj\03.Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeMgr.h">
+      <Filter>03.Design\TimeMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -345,6 +351,9 @@
     </Filter>
     <Filter Include="01.Obj\03.Projectile\Charge_Small">
       <UniqueIdentifier>{7724b833-37dc-4175-8738-1edd6b00a529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\TimeMgr">
+      <UniqueIdentifier>{056b382b-24ae-44cb-a7bb-1a901a4b5c38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

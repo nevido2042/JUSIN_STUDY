@@ -9,6 +9,9 @@ public:
 
 public:
     virtual void    Fire();
+protected:
+    bool            Try_Fire();
+
 public:
     float           Get_Range() { return m_fRange; }
 protected:
@@ -21,10 +24,10 @@ public:
     void            Release() override;
 
 protected:
-    //발사 속도
-    ULONGLONG   m_ullFireRate;
-    //마지막 발사 시간
-    ULONGLONG   m_ullLastFireTime;
+    //발사 속도(프레임)
+    int   m_iFireRate;
+    //마지막 발사 시간(프레임)
+    int   m_iLastFireTime;
     //발사체
     CObj*       m_pProjectile;
     //무기 사정거리
