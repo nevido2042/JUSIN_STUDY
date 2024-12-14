@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 #include "ObjMgr.h"
+#include "AbstractFactory.h"
 
 CCentipede::CCentipede()
 {
@@ -24,6 +25,11 @@ void CCentipede::Initialize()
 
     m_eRenderID = RENDER_GAMEOBJECT;
 
+    //무기 생성
+    m_pRangedWeapon = CAbstractFactory<CChargeBlasterLight>::Create(m_tInfo.fX, m_tInfo.fY);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, m_pRangedWeapon);
+    m_pRangedWeapon->Set_Target(this);
+
     Take_Damage(50.f);
 }
 
@@ -32,18 +38,16 @@ int CCentipede::Update()
     if (m_bDestroyed)
         return OBJ_DESTROYED;
 
+    if (m_pTarget)
+    {
+        Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+    }
+
     if (m_bNavigating)
     {
         Navigate();
     }
-    else
-    {
-        if (m_pTarget)
-        {
-            Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
 
-        }
-    }
 
     __super::Update_Rect();
 
@@ -121,7 +125,6 @@ void CCentipede::Render(HDC hDC)
     default:
         break;
     }
-
 
     //길 찾기 노드 출력
     for (CNode* pNode : m_NodeList)

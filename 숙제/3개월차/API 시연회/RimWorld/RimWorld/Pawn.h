@@ -39,5 +39,8 @@ protected:
     float           m_fHP;
     float           m_fMaxHP;
     bool            m_bDead;
+
+    //원거리 무기
+    CObj*           m_pRangedWeapon;
 };
 

@@ -9,7 +9,7 @@
 #include "ObjMgr.h"
 
 CPawn::CPawn()
-    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false)
+    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_pRangedWeapon(nullptr)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }

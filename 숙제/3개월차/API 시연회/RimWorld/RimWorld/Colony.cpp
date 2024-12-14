@@ -49,7 +49,9 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Rock_Atlas.bmp", L"Rock_Atlas");
     //핏자국
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
-
+    //지네 무기
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/ChargeBlasterLight.bmp", L"ChargeBlasterLight");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Charge_Small.bmp", L"Charge_Small");
 
     CObj* pObj(nullptr);
     //UI
@@ -64,9 +66,13 @@ void CColony::Initialize()
     //림
     pObj = CAbstractFactory<CRim>::Create(TILECX * 3 + TILECX * 0.5f, TILECY * 3 + TILECY * 0.5f);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
+    pObj = CAbstractFactory<CRim>::Create(TILECX * 4 + TILECX * 0.5f, TILECY * 4 + TILECY * 0.5f);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
 
     //지네
     pObj = CAbstractFactory<CCentipede>::Create(TILECX * 8 + TILECX * 0.5f, TILECY * 8 + TILECY * 0.5f);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
+    pObj = CAbstractFactory<CCentipede>::Create(TILECX * 15 + TILECX * 0.5f, TILECY * 15 + TILECY * 0.5f);
     CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
 
     bool bVisitArray[TILEX * TILEY];

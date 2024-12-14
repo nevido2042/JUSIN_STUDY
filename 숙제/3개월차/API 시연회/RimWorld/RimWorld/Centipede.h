@@ -1,5 +1,8 @@
 #pragma once
 #include "Pawn.h"
+
+#include "ChargeBlasterLight.h"
+
 class CCentipede :
     public CPawn
 {
