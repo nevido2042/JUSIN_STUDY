@@ -46,7 +46,7 @@ void CRangedWeapon::Initialize()
     m_eRenderID = RENDER_WEAPON;
 
     //รั น฿ป็ ฐüทร
-    m_ullFireRate = 300.f;
+    m_ullFireRate = 800.f;
     m_ullLastFireTime = GetTickCount64();
 }
 

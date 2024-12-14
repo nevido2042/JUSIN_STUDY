@@ -7,6 +7,7 @@
 #include "ScrollMgr.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
+#include "Projectile.h"
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_pRangedWeapon(nullptr)
@@ -198,4 +199,13 @@ void CPawn::Release()
 {
     for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
     m_NodeList.clear();
+}
+
+void CPawn::OnCollision(OBJID _eID, CObj* _pOther)
+{
+    if (_eID == OBJ_PROJECTILE)
+    {
+        CProjectile* pProjectile = static_cast<CProjectile*>(_pOther);
+        Take_Damage(pProjectile->Get_Damage());
+    }
 }

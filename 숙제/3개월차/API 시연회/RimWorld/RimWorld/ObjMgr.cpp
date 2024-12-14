@@ -95,6 +95,8 @@ void CObjMgr::Late_Update()
 	//CCollisionMgr::Collision_Circle(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_MOUSE]);
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
 
+	CCollisionMgr::Collision_Circle(OBJ_PROJECTILE, OBJ_RIM);
+
 }
 
 void CObjMgr::Render(HDC hDC)

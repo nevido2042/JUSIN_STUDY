@@ -23,11 +23,12 @@ protected:
     void Navigate();
     void Calculate_MoveDir();
 public:
-    void Initialize() override;
-    int Update() override;
-    void Late_Update() override;
-    void Render(HDC hDC) PURE;
-    void Release() override;
+    void    Initialize() override;
+    int     Update() override;
+    void    Late_Update() override;
+    void    Render(HDC hDC) PURE;
+    void    Release() override;
+    void    OnCollision(OBJID _eID, CObj* _pOther) override;
 
 protected:
     //길찾기 관련

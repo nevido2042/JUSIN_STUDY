@@ -2,6 +2,7 @@
 #include "Projectile.h"
 
 CProjectile::CProjectile()
+    :m_fDamage(0.f)
 {
 }
 
@@ -18,6 +19,8 @@ void CProjectile::Initialize()
     m_eRenderID = RENDER_GAMEOBJECT;
 
     m_fSpeed = 10.f;
+
+    m_fDamage = 3.f;
 }
 
 int CProjectile::Update()
