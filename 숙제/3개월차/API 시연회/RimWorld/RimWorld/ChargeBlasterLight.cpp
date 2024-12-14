@@ -11,6 +11,7 @@ CChargeBlasterLight::CChargeBlasterLight()
 
 CChargeBlasterLight::~CChargeBlasterLight()
 {
+    Release();
 }
 
 void CChargeBlasterLight::Fire()

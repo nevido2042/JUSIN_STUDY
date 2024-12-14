@@ -192,7 +192,7 @@ bool CPawn::IsWithinRange()
     if (fDiagonal < fRange)
     {
         //발사 시도
-        pRangedWeapon->Fire();
+        //pRangedWeapon->Fire();
         //가까우면 true
         return true;
     }
