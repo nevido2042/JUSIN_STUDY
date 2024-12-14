@@ -20,6 +20,17 @@ void CRangedWeapon::Follow_Pawn()
 
 void CRangedWeapon::Fire()
 {
+    //발사를 시도했는데
+    //너무 발사속도보다 빨리 쐈다면
+    if (m_ullLastFireTime + m_ullFireRate > GetTickCount64())
+    {
+        //발사 취소
+        return;
+    }
+
+    //발사 했음. 발사 시간 저장
+    m_ullLastFireTime = GetTickCount64();
+
     //무기주인의 타겟과 자신의 위치의 각도를 계산
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
@@ -56,7 +67,7 @@ void CRangedWeapon::Initialize()
     m_eRenderID = RENDER_WEAPON;
 
     //총 발사 관련
-    m_ullFireRate = 800.f;
+    m_ullFireRate = 800;
     m_ullLastFireTime = GetTickCount64();
     //무기 사정거리
     m_fRange = 500.f;
@@ -74,14 +85,7 @@ int CRangedWeapon::Update()
 
 void CRangedWeapon::Late_Update()
 {
-    Follow_Pawn();
-
-    if (m_ullLastFireTime + m_ullFireRate < GetTickCount64())
-    {
-        Fire();
-        m_ullLastFireTime = GetTickCount64();
-    }
-    
+    Follow_Pawn();    
 }
 
 void CRangedWeapon::Release()

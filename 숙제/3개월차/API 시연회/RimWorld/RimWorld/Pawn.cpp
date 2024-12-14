@@ -189,8 +189,15 @@ bool CPawn::IsWithinRange()
     //타겟과의 거리
     fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
    
-    //가까우면 true
-    return fDiagonal < fRange;
+    if (fDiagonal < fRange)
+    {
+        //발사 시도
+        pRangedWeapon->Fire();
+        //가까우면 true
+        return true;
+    }
+
+    return false;
 }
 
 void CPawn::Initialize()
