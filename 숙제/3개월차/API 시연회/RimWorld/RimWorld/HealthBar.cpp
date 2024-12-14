@@ -79,10 +79,12 @@ void CHealthBar::Render(HDC hDC)
     {
         fHPRatio = 1.f;
     }
-
+    
+    //HP바의 빨간 부분의 Right를 재설정
+    int iRedRight = m_tRect.left + int((m_tRect.right - m_tRect.left) * fHPRatio);
     // 빨간색 사각형 그리기
     SelectObject(hDC, hRedBrush);
-    Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, (int)(m_tRect.right * fHPRatio) + iScrollX, m_tRect.bottom + iScrollY);
+    Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, iRedRight + iScrollX, m_tRect.bottom + iScrollY);
 
     // 원래 펜과 브러시로 복원
     SelectObject(hDC, hDefaultBrush);

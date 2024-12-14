@@ -22,10 +22,17 @@ void CCentipede::Initialize()
     m_fSpeed = 10.f;
 
     m_eRenderID = RENDER_GAMEOBJECT;
+
+    Take_Damage(50.f);
 }
 
 void CCentipede::Render(HDC hDC)
 {
+    if (m_bDead)
+    {
+        return;
+    }
+
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
