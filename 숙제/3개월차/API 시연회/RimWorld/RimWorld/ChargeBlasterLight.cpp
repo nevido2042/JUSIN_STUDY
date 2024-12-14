@@ -15,7 +15,9 @@ CChargeBlasterLight::~CChargeBlasterLight()
 
 void CChargeBlasterLight::Fire()
 {
-    CObj* pObj = CAbstractFactory<CCharge_Small>::Create(m_tInfo.fX, m_tInfo.fY);
+    CRangedWeapon::Fire();
+
+    CObj* pObj = CAbstractFactory<CCharge_Small>::Create(m_tInfo.fX, m_tInfo.fY, m_fAngle);
     CObjMgr::Get_Instance()->Add_Object(OBJ_PROJECTILE, pObj);
 }
 

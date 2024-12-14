@@ -16,6 +16,8 @@ void CProjectile::Initialize()
     m_tInfo.fCY = 64.f;
 
     m_eRenderID = RENDER_GAMEOBJECT;
+
+    m_fSpeed = 10.f;
 }
 
 int CProjectile::Update()
@@ -30,6 +32,18 @@ int CProjectile::Update()
 
 void CProjectile::Late_Update()
 {
+    //Angle방향대로 날라간다.
+    float fRadian = m_fAngle * (PI / 180.f);
+
+    if (m_fAngle > 180.f)
+    {
+        fRadian = (2.f * PI) - fRadian;
+    }
+
+    //m_fAngle = fRadian * (180.f / PI);
+
+    m_tInfo.fX += m_fSpeed * cosf(fRadian);
+    m_tInfo.fY -= m_fSpeed * sinf(fRadian);
 }
 
 void CProjectile::Release()

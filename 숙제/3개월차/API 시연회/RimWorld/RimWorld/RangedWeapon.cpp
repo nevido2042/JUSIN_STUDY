@@ -19,7 +19,23 @@ void CRangedWeapon::Follow_Pawn()
 
 void CRangedWeapon::Fire()
 {
+    //무기주인의 타겟과 자신의 위치의 각도를 계산
+    float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
+    //타겟
+    CObj* pTarget = m_pTarget->Get_Target();
+
+    fWidth = pTarget->Get_Info().fX - m_tInfo.fX;
+    fHeight = pTarget->Get_Info().fY - m_tInfo.fY;
+
+    fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+    fRadian = acosf(fWidth / fDiagonal);
+
+    if (pTarget->Get_Info().fY > m_tInfo.fY)
+        fRadian = (2.f * PI) - fRadian;
+
+    m_fAngle = fRadian * (180.f / PI);
 }
 
 void CRangedWeapon::Initialize()
@@ -51,6 +67,7 @@ void CRangedWeapon::Late_Update()
     if (m_ullLastFireTime + m_ullFireRate < GetTickCount64())
     {
         Fire();
+        m_ullLastFireTime = GetTickCount64();
     }
     
 }

@@ -105,7 +105,7 @@ void CPawn::Navigate()
     if (pTargetNode->Get_Pos().fY > m_tInfo.fY)
         fRadian = (2.f * PI) - fRadian;
 
-    //m_fAngle = fRadian * (180.f / PI);
+    m_fAngle = fRadian * (180.f / PI);
 
     m_tInfo.fX += m_fSpeed * cosf(fRadian);
     m_tInfo.fY -= m_fSpeed * sinf(fRadian);
