@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CollisionMgr.h"
+#include "ObjMgr.h"
 
 void CCollisionMgr::Collision_Rect(list<CObj*> _Dst, list<CObj*> _Src)
 {
@@ -34,6 +35,23 @@ void CCollisionMgr::Collision_Circle(list<CObj*> _Dst, list<CObj*> _Src)
 			}
 		}
 	}
+}
+
+void CCollisionMgr::Collision_Circle(OBJID _eDst, OBJID _eSrc)
+{
+	RECT rc{};
+
+	/*for (auto& Dst : CObjMgr::Get_Instance()->Get_List()[_eDst]);
+	{
+		for (CObj* Src : CObjMgr::Get_Instance()->Get_List()[_eSrc])
+		{
+			if (Check_Circle(Dst, Src))
+			{
+				Dst->Set_Destroyed();
+				Src->Set_Destroyed();
+			}
+		}
+	}*/
 }
 
 bool CCollisionMgr::Check_Circle(CObj* _Dst, CObj* _Src)
