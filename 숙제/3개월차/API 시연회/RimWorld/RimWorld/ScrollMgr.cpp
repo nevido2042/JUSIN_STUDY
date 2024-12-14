@@ -13,11 +13,11 @@ CScrollMgr::~CScrollMgr()
 
 void CScrollMgr::Scroll_Lock()
 {
-	float fMinX = 0.f;
-	float fMinY = 0.f;
+	float fMinX = TILECX * TILEX * 0.2f;
+	float fMinY = TILECY * TILEY * 0.2f;
 
-	float fMaxX = 1920.f;
-	float fMaxY = 1080.f;
+	float fMaxX = TILECX * TILEX * 1.2f;
+	float fMaxY = TILECY * TILEY * 1.2f;
 
 	if (fMinX < m_fScrollX)
 		m_fScrollX = fMinX;

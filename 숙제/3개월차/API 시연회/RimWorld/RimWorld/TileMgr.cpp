@@ -62,17 +62,47 @@ void CTileMgr::Render(HDC hDC)
 	 /*for (auto& pTile : m_arrTile)
 	 	pTile->Render(hDC);*/
 
-	int		iScrollX = abs((int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX);
-	int		iScrollY = abs((int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY);
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
 
-	int		iMaxX = iScrollX + WINCX / TILECX + 2;
-	int		iMaxY = iScrollY + WINCY / TILECY + 2;
+	int		iOffset(1);
 
-	for (int i = iScrollY; i < iMaxY; ++i)
+	int		iMaxX = (WINCX / TILECX) + iOffset;
+	int		iMaxY = (WINCY / TILECY) + iOffset;
+
+	int		iMinX = iScrollX;
+	int		iMinY = iScrollY;
+
+	//스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
+	if (iMinX > 0)
 	{
-		for (int j = iScrollX; j < iMaxX; ++j)
+		iMinX = 0;
+		iMaxX = (WINCX / TILECX) + iOffset;
+	}
+	//음수면 스크롤 ex) 
+	else
+	{
+		iMinX = abs(iMinX);
+		iMaxX = iMaxX - iScrollX;
+	}
+
+	if (iMinY > 0)
+	{
+		iMinY = 0;
+		iMaxY = (WINCY / TILECY) + iOffset;
+	}
+	else
+	{
+		iMinY = abs(iMinY);
+		iMaxY = iMaxY - iScrollY;
+	}
+
+
+	for (int i = iMinY; i < iMaxY; ++i)
+	{
+		for (int j = iMinX; j < iMaxX; ++j)
 		{
-			int		iIndex = i * TILEX + j;
+			int iIndex = i * TILEX + j;
 
 			if (0 > iIndex || m_arrTile.size() <= (size_t)iIndex)
 				continue;
