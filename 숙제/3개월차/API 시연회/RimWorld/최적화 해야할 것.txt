@@ -3,3 +3,14 @@
 공격할 타겟과 거리 재는 함수가 너무 많다.
 IsWithinRange()
 Try_Fire()
+
+Pawn에게 타겟이 있으면 타겟과의 거리를 재는 함수를 하나만들고
+거리를 fDist로 저장해서 돌려 쓰자
+
+움직임 각도와 fMoveAngle;
+타겟 각도를 따로 두자. fAngle;
+
+Calculate_TargetDist에서 각도도 구해서
+Try_fire할때 계산하지않도록
+
+Pawn에서 계산한 각도를 무기한테 넘겨주는 방식으로

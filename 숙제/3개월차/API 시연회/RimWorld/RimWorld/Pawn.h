@@ -23,6 +23,7 @@ protected:
 protected:
     void    Navigate();
     void    Calculate_MoveDir();
+    void    Calculate_TargetDist();
     bool    IsWithinRange();
 
 public:
@@ -43,8 +44,9 @@ protected:
     float           m_fHP;
     float           m_fMaxHP;
     bool            m_bDead;
-
     //원거리 무기
     CObj*           m_pRangedWeapon;
+    //타겟과의 거리
+    float           m_fDist;
 };
 

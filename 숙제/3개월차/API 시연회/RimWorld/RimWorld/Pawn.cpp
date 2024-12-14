@@ -11,7 +11,8 @@
 #include "RangedWeapon.h"
 
 CPawn::CPawn()
-    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_pRangedWeapon(nullptr)
+    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false),
+    m_pRangedWeapon(nullptr), m_fDist(0.f)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -165,6 +166,22 @@ void CPawn::Calculate_MoveDir()
     m_tPrevPos.fY = m_tInfo.fY;
 }
 
+void CPawn::Calculate_TargetDist()
+{
+    //타겟이 없으면 리턴
+    if (!m_pTarget)
+    {
+        return;
+    }
+
+    //타겟의 거리와 fRange비교
+    float   fWidth(0.f), fHeight(0.f);
+    fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
+    fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
+    //타겟과의 거리
+    m_fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
+}
+
 bool CPawn::IsWithinRange()
 {
     //타겟이 없어도 리턴
@@ -181,15 +198,8 @@ bool CPawn::IsWithinRange()
 
     CRangedWeapon* pRangedWeapon = static_cast<CRangedWeapon*>(m_pRangedWeapon);
     float fRange = pRangedWeapon->Get_Range();
-
-    //타겟의 거리와 fRange비교
-    float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f);
-    fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
-    fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
-    //타겟과의 거리
-    fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
    
-    if (fDiagonal < fRange)
+    if (m_fDist < fRange)
     {
         //발사 시도
         pRangedWeapon->Fire();
@@ -230,6 +240,7 @@ int CPawn::Update()
 void CPawn::Late_Update()
 {
     Calculate_MoveDir();
+    Calculate_TargetDist();
 
     //마우스 클릭 했을 때 타겟으로 설정
     POINT	ptMouse{};
