@@ -32,6 +32,8 @@
 //health¹Ù offset
 #define HELATHBAR_OFFSET    20
 
+#define CULLIG_OFFSET       1
+
 extern HWND		    g_hWnd;
 //extern ULONG_PTR    g_GdiplusToken;
 

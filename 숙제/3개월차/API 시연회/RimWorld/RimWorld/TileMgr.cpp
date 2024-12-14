@@ -65,10 +65,8 @@ void CTileMgr::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
 
-	int		iOffset(1);
-
-	int		iMaxX = (WINCX / TILECX) + iOffset;
-	int		iMaxY = (WINCY / TILECY) + iOffset;
+	int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	int		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
 
 	int		iMinX = iScrollX;
 	int		iMinY = iScrollY;
@@ -77,7 +75,7 @@ void CTileMgr::Render(HDC hDC)
 	if (iMinX > 0)
 	{
 		iMinX = 0;
-		iMaxX = (WINCX / TILECX) + iOffset;
+		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
 	}
 	//음수면 스크롤 ex) 
 	else
@@ -89,7 +87,7 @@ void CTileMgr::Render(HDC hDC)
 	if (iMinY > 0)
 	{
 		iMinY = 0;
-		iMaxY = (WINCY / TILECY) + iOffset;
+		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
 	}
 	else
 	{

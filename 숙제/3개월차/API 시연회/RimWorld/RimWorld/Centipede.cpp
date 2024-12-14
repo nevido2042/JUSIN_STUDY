@@ -21,7 +21,7 @@ void CCentipede::Initialize()
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
 
-    m_fSpeed = 3.f;
+    m_fSpeed = 1.f;
 
     m_eRenderID = RENDER_GAMEOBJECT;
 

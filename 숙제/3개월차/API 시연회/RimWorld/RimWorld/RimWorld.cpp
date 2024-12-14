@@ -93,9 +93,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
                 MainGame.Render();
             
                 ullTime = GetTickCount64();
-            }          
+            }
 
-            /*MainGame.Update();
+            /*CTimeMgr::Get_Instance()->Update();
+            MainGame.Update();
             MainGame.Late_Update();
             MainGame.Render();*/
         }      

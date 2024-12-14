@@ -13,34 +13,6 @@ CObjMgr::~CObjMgr()
 	Release();
 }
 
-CObj* CObjMgr::Get_Target(OBJID eID, CObj* pDst)
-{
-	if (m_ObjList[eID].empty())
-		return nullptr;
-
-	CObj*	pTarget = nullptr;
-	float	fDistance(0.f);
-
-	for (auto& Src : m_ObjList[eID])
-	{
-		if (Src->Get_Destroyed())
-			continue;
-
-		float		fWidth = abs(pDst->Get_Info().fX - Src->Get_Info().fX);
-		float		fHeight = abs(pDst->Get_Info().fY - Src->Get_Info().fY);
-
-		float		fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
-
-		if ((!pTarget) || (fDistance > fDiagonal))
-		{
-			pTarget = Src;
-			fDistance = fDiagonal;
-		}
-	}		
-
-	return pTarget;
-}
-
 void CObjMgr::Add_Object(OBJID eID, CObj* pObj)
 {
 	if (eID < 0 || OBJ_END <= eID || nullptr == pObj)
