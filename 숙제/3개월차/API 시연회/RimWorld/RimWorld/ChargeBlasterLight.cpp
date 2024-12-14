@@ -2,6 +2,8 @@
 #include "ChargeBlasterLight.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
+#include "AbstractFactory.h"
+#include "ObjMgr.h"
 
 CChargeBlasterLight::CChargeBlasterLight()
 {
@@ -9,6 +11,12 @@ CChargeBlasterLight::CChargeBlasterLight()
 
 CChargeBlasterLight::~CChargeBlasterLight()
 {
+}
+
+void CChargeBlasterLight::Fire()
+{
+    CObj* pObj = CAbstractFactory<CCharge_Small>::Create(m_tInfo.fX, m_tInfo.fY);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_PROJECTILE, pObj);
 }
 
 void CChargeBlasterLight::Render(HDC hDC)

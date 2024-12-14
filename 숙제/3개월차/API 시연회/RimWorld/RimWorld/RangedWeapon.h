@@ -7,18 +7,20 @@ public:
     CRangedWeapon();
     virtual ~CRangedWeapon();
 
-protected:
-    void Follow_Pawn();
-
 public:
-    void Initialize() override;
-    int Update() override;
-    void Late_Update() override;
-    void Render(HDC hDC) PURE;
-    void Release() override;
+    virtual void    Fire();
+protected:
+    void            Follow_Pawn();
+public:
+    void            Initialize() override;
+    int             Update() override;
+    void            Late_Update() override;
+    virtual void    Render(HDC hDC) PURE;
+    void            Release() override;
 
 protected:
     ULONGLONG   m_ullFireRate;
+    ULONGLONG   m_ullLastFireTime;
     CObj*       m_pProjectile;
 };
 

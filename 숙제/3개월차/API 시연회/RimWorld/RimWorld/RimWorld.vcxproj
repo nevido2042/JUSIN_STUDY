@@ -143,6 +143,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Centipede.h" />
     <ClInclude Include="ChargeBlasterLight.h" />
+    <ClInclude Include="Charge_Small.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
     <ClInclude Include="ColonyMgr.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="PathFinder.h" />
     <ClInclude Include="Pawn.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="Tile.h" />
@@ -181,6 +183,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Centipede.cpp" />
     <ClCompile Include="ChargeBlasterLight.cpp" />
+    <ClCompile Include="Charge_Small.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
     <ClCompile Include="ColonyMgr.cpp" />
@@ -188,6 +191,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="Pawn.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Tile.cpp" />
