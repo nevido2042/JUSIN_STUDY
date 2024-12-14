@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RangedWeapon.h"
 #include "TimeMgr.h"
+#include "Pawn.h"
 
 CRangedWeapon::CRangedWeapon()
     :m_iFireRate(0), m_pProjectile(nullptr),
@@ -38,9 +39,6 @@ bool CRangedWeapon::Try_Fire()
     //발사 했음. 발사 시간 저장
     m_iLastFireTime = CTimeMgr::Get_Instance()->Get_CurrentFrame();
 
-    //무기주인의 타겟과 자신의 위치의 각도를 계산
-    float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
-
     //타겟(무기 주인)이 없으면 리턴
     if (!m_pTarget)
     {
@@ -53,17 +51,7 @@ bool CRangedWeapon::Try_Fire()
         return false;
     }
 
-    fWidth = pTarget->Get_Info().fX - m_tInfo.fX;
-    fHeight = pTarget->Get_Info().fY - m_tInfo.fY;
-
-    fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
-
-    fRadian = acosf(fWidth / fDiagonal);
-
-    if (pTarget->Get_Info().fY > m_tInfo.fY)
-        fRadian = (2.f * PI) - fRadian;
-
-    m_fAngle = fRadian * (180.f / PI);
+    m_fAngle = static_cast<CPawn*>(m_pTarget)->Get_TargetAngle();
 
     return true;
 }

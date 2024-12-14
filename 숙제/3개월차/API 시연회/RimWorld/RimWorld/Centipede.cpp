@@ -67,6 +67,7 @@ int CCentipede::Update()
 void CCentipede::Late_Update()
 {
     Calculate_MoveDir();
+    Measure_Target();
     //FindTarget();
     //타겟이 없을 경우
     //림 오브젝트리스트에서 가장 가까운 림을 찾고 타겟으로 설정

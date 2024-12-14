@@ -2,7 +2,8 @@
 #include "Rim.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
-
+#include "ColonyMgr.h"
+#include "KeyMgr.h"
 
 CRim::CRim()
 {
@@ -26,6 +27,35 @@ void CRim::Initialize()
     m_eRenderID = RENDER_GAMEOBJECT;
 
     Take_Damage(10.f);
+}
+
+void CRim::Late_Update()
+{
+    Calculate_MoveDir();
+    Measure_Target();
+
+    //마우스 클릭 했을 때 타겟으로 설정
+    POINT	ptMouse{};
+
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    ptMouse.x -= iScrollX;
+    ptMouse.y -= iScrollY;
+
+    if (PtInRect(&m_tRect, ptMouse))
+    {
+
+
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+            CColonyMgr::Get_Instance()->Set_Target(this);
+            return;
+        }
+    }
 }
 
 

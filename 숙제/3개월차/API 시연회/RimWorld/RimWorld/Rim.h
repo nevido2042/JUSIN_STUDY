@@ -11,6 +11,7 @@ public:
 
 public:
     void Initialize() override;
+    void Late_Update() override;
     void Render(HDC hDC) override;
 
 protected:

@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "Pawn.h"
 #include "PathFinder.h"
-#include "KeyMgr.h"
 #include "BmpMgr.h"
-#include "ColonyMgr.h"
 #include "ScrollMgr.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
@@ -12,7 +10,7 @@
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false),
-    m_pRangedWeapon(nullptr), m_fDist(0.f)
+    m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -166,7 +164,7 @@ void CPawn::Calculate_MoveDir()
     m_tPrevPos.fY = m_tInfo.fY;
 }
 
-void CPawn::Calculate_TargetDist()
+void CPawn::Measure_Target()
 {
     //타겟이 없으면 리턴
     if (!m_pTarget)
@@ -175,11 +173,18 @@ void CPawn::Calculate_TargetDist()
     }
 
     //타겟의 거리와 fRange비교
-    float   fWidth(0.f), fHeight(0.f);
+    float   fWidth(0.f), fHeight(0.f), fRadian(0.f);
     fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
     fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
     //타겟과의 거리
-    m_fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
+    m_fTargetDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+    fRadian = acosf(fWidth / m_fTargetDist);
+
+    if (m_pTarget->Get_Info().fY > m_tInfo.fY)
+        fRadian = (2.f * PI) - fRadian;
+
+    m_fTargetAngle = fRadian * (180.f / PI);
 }
 
 bool CPawn::IsWithinRange()
@@ -199,7 +204,7 @@ bool CPawn::IsWithinRange()
     CRangedWeapon* pRangedWeapon = static_cast<CRangedWeapon*>(m_pRangedWeapon);
     float fRange = pRangedWeapon->Get_Range();
    
-    if (m_fDist < fRange)
+    if (m_fTargetDist < fRange)
     {
         //발사 시도
         pRangedWeapon->Fire();
@@ -239,31 +244,7 @@ int CPawn::Update()
 
 void CPawn::Late_Update()
 {
-    Calculate_MoveDir();
-    Calculate_TargetDist();
-
-    //마우스 클릭 했을 때 타겟으로 설정
-    POINT	ptMouse{};
-
-    GetCursorPos(&ptMouse);
-    ScreenToClient(g_hWnd, &ptMouse);
-
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-    ptMouse.x -= iScrollX;
-    ptMouse.y -= iScrollY;
-
-    if (PtInRect(&m_tRect, ptMouse))
-    {
-
-
-        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
-        {
-            CColonyMgr::Get_Instance()->Set_Target(this);
-            return;
-        }
-    }
+    
 }
 
 void CPawn::Release()

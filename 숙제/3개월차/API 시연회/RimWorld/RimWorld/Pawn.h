@@ -17,13 +17,14 @@ public:
     float Get_HP() { return m_fHP; }
     float Get_MaxHP() { return m_fMaxHP; }
     float Get_IsDead() { return m_bDead; }
+    float Get_TargetAngle() { return m_fTargetAngle; }
 protected:
     virtual void Dead() PURE;//죽었을 때 할 행동
 
 protected:
     void    Navigate();
     void    Calculate_MoveDir();
-    void    Calculate_TargetDist();
+    void    Measure_Target();
     bool    IsWithinRange();
 
 public:
@@ -46,7 +47,10 @@ protected:
     bool            m_bDead;
     //원거리 무기
     CObj*           m_pRangedWeapon;
+    
     //타겟과의 거리
-    float           m_fDist;
+    float           m_fTargetDist;
+    //타겟과의 각도
+    float           m_fTargetAngle;
 };
 
