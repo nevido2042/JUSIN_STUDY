@@ -49,6 +49,7 @@ int CCentipede::Update()
         }
         else
         {
+            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
             Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
         }
     }

@@ -22,6 +22,12 @@ CPawn::~CPawn()
 
 void CPawn::Move_To(POS _Pos)
 {
+    //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
+    if (IsWithinRange())
+    {
+        return;
+    }
+
     //경로 따라가는 중이면 실행 안함
     if (m_bNavigating)
     {
@@ -95,8 +101,6 @@ void CPawn::Navigate()
             return;
         }
         
-
-
         //노드가 비어있지 않다면
         if (!m_NodeList.empty())
         {
