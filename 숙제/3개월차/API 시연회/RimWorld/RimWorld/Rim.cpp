@@ -161,3 +161,7 @@ void CRim::Render(HDC hDC)
 
 }
 
+void CRim::Dead()
+{
+}
+

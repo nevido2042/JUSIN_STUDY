@@ -18,8 +18,8 @@ void CButton::Initialize()
 
 int CButton::Update()
 {
-	if (m_bDead)
-		return OBJ_DEAD;
+	if (m_bDestroyed)
+		return OBJ_DESTROYED;
 
 	__super::Update_Rect();
 

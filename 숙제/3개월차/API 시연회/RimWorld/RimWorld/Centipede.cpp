@@ -91,3 +91,7 @@ void CCentipede::Render(HDC hDC)
             int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
     }
 }
+
+void CCentipede::Dead()
+{
+}

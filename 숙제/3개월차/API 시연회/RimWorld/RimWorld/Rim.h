@@ -12,4 +12,7 @@ public:
 public:
     void Initialize() override;
     void Render(HDC hDC) override;
+
+protected:
+    void Dead() override;
 };

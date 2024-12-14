@@ -12,10 +12,12 @@ public:
     virtual ~CPawn();
 public:
     void Move_To(POS _Pos);
-
+    void Take_Damage(float _fDamage);
 public:
     float Get_HP() { return m_fHP; }
     float Get_MaxHP() { return m_fMaxHP; }
+protected:
+    virtual void Dead() PURE;//죽었을 때 할 행동
 
 protected:
     void Navigate();
@@ -36,5 +38,6 @@ protected:
     //체력 관련
     float           m_fHP;
     float           m_fMaxHP;
+    bool            m_bDead;
 };
 

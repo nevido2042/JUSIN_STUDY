@@ -22,8 +22,8 @@ void CHealthBar::Initialize()
 
 int CHealthBar::Update()
 {
-	if (m_bDead)
-		return OBJ_DEAD;
+	if (m_bDestroyed)
+		return OBJ_DESTROYED;
 
 	__super::Update_Rect();
 
@@ -82,7 +82,7 @@ void CHealthBar::Render(HDC hDC)
 
     // 빨간색 사각형 그리기
     SelectObject(hDC, hRedBrush);
-    Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, (m_tRect.right * fHPRatio) + iScrollX, m_tRect.bottom + iScrollY);
+    Rectangle(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, (int)(m_tRect.right * fHPRatio) + iScrollX, m_tRect.bottom + iScrollY);
 
     // 원래 펜과 브러시로 복원
     SelectObject(hDC, hDefaultBrush);

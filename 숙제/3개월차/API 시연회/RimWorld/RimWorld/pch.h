@@ -16,6 +16,8 @@
 #include <array>
 #include <math.h>
 #include <ctime>
+//#include <Gdiplus.h>
+//#pragma comment(lib,"gdiplus")
 
 #ifdef _DEBUG
 
@@ -32,5 +34,6 @@
 #endif
 
 using namespace std;
+//using namespace Gdiplus;
 
 #endif //PCH_H

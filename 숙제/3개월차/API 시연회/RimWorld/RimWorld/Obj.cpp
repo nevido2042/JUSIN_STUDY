@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Obj.h"
 
-CObj::CObj() : m_fSpeed(0.f), m_eDir(DIR_END), m_bDead(false),
+CObj::CObj() : m_fSpeed(0.f), m_eDir(DIR_END), m_bDestroyed(false),
 m_fAngle(0.f), m_fDistance(0.f), m_pTarget(nullptr), m_pImgKey(nullptr),
 m_iDrawID(0), m_eRenderID(RENDER_END)
 {

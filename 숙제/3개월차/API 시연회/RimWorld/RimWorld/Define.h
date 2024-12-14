@@ -8,20 +8,19 @@
 
 //오브젝트 관련
 #define OBJ_NOEVENT			0
-#define OBJ_DEAD			1
+#define OBJ_DESTROYED			1
 
 //키 입력
 #define VK_MAX				0xff
 
 //림 이미지 오프셋
-#define HEAD_OFFSET			24.f
-#define IMAGE_OFFSET_X		32.f
-#define IMAGE_OFFSET_Y		32.f
+#define HEAD_OFFSET			24
+#define IMAGE_OFFSET_X		32
+#define IMAGE_OFFSET_Y		32
 
 //투명 필터
 #define RGB_PURPLE			RGB(163, 73, 164)
 #define RGB_WHITE			RGB(255, 255, 255)
-
 
 //타일 관련
 #define	TILECX				64
@@ -31,9 +30,10 @@
 #define TILEY				20
 
 //health바 offset
-#define HELATHBAR_OFFSET    20.f
+#define HELATHBAR_OFFSET    20
 
-extern HWND		g_hWnd;
+extern HWND		    g_hWnd;
+//extern ULONG_PTR    g_GdiplusToken;
 
 enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_UI, OBJ_WALL, OBJ_RIM, OBJ_END };
 

@@ -24,11 +24,11 @@ public:
 	void		Move_PosY(float _fY) { m_tInfo.fY += _fY; }
 
 	void		Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
-	void		Set_Dead() { m_bDead = true; }
+	void		Set_Destroyed() { m_bDestroyed = true; }
 	void		Set_Angle(float _fAngle) { m_fAngle = _fAngle; }
 
 	void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
-	bool		Get_Dead() { return m_bDead; }
+	bool		Get_Destroyed() { return m_bDestroyed; }
 
 	void		Set_ImgKey(const TCHAR* pImgKey) { m_pImgKey = pImgKey; }
 
@@ -52,7 +52,7 @@ protected:
 	float		m_fAngle;
 	float		m_fDistance;
 
-	bool		m_bDead;
+	bool		m_bDestroyed;
 	DIRECTION	m_eDir;
 	RENDERID	m_eRenderID;
 

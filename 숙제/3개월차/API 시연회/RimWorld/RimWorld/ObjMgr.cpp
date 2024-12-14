@@ -23,7 +23,7 @@ CObj* CObjMgr::Get_Target(OBJID eID, CObj* pDst)
 
 	for (auto& Src : m_ObjList[eID])
 	{
-		if (Src->Get_Dead())
+		if (Src->Get_Destroyed())
 			continue;
 
 		float		fWidth = abs(pDst->Get_Info().fX - Src->Get_Info().fX);
@@ -58,7 +58,7 @@ int CObjMgr::Update()
 		{
 			int iResult = (*iter)->Update();
 
-			if (OBJ_DEAD == iResult)
+			if (OBJ_DESTROYED == iResult)
 			{
 				Safe_Delete<CObj*>(*iter);
 				iter = m_ObjList[i].erase(iter);
@@ -130,5 +130,5 @@ void CObjMgr::Delete_ID(OBJID eID)
 	m_ObjList[eID].clear();*/
 
 	for (auto& pObj : m_ObjList[eID])
-		pObj->Set_Dead();
+		pObj->Set_Destroyed();
 }

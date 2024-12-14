@@ -9,7 +9,7 @@
 #include "ObjMgr.h"
 
 CPawn::CPawn()
-    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f)
+    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -38,6 +38,18 @@ void CPawn::Move_To(POS _Pos)
     if (!m_NodeList.empty())
     {
         m_bNavigating = true;
+    }
+}
+
+void CPawn::Take_Damage(float _fDamage)
+{
+    m_fHP -= _fDamage;
+
+    //Á×À½ Ã³¸®
+    if (m_fHP < 0.f)
+    {
+        m_bDead = true;
+        Dead();
     }
 }
 
@@ -141,8 +153,8 @@ void CPawn::Initialize()
 
 int CPawn::Update()
 {
-    if (m_bDead)
-        return OBJ_DEAD;
+    if (m_bDestroyed)
+        return OBJ_DESTROYED;
 
     if (m_bNavigating)
     {

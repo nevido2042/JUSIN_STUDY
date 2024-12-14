@@ -27,6 +27,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+    //ULONG_PTR GdiplusToken;
+    //GdiplusStartupInput GdiplusStartupInput;//옵션 설정 변수
+    //if (GdiplusStartup(&GdiplusToken, &GdiplusStartupInput, NULL) != Ok) return 0;
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -94,6 +98,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
             MainGame.Render();*/
         }      
     }
+
+    //GdiplusShutdown(g_GdiplusToken);//Gdiplus 정리
 
     return (int) msg.wParam;
 }

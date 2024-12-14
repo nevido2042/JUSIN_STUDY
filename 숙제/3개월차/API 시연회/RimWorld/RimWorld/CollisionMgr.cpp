@@ -11,8 +11,8 @@ void CCollisionMgr::Collision_Rect(list<CObj*> _Dst, list<CObj*> _Src)
 		{
 			if (IntersectRect(&rc, Dst->Get_Rect(), Src->Get_Rect()))
 			{
-				Dst->Set_Dead();
-				Src->Set_Dead();
+				Dst->Set_Destroyed();
+				Src->Set_Destroyed();
 			}
 		}
 	}
@@ -29,8 +29,8 @@ void CCollisionMgr::Collision_Circle(list<CObj*> _Dst, list<CObj*> _Src)
 		{
 			if (Check_Circle(Dst, Src))
 			{
-				Dst->Set_Dead();
-				Src->Set_Dead();
+				Dst->Set_Destroyed();
+				Src->Set_Destroyed();
 			}
 		}
 	}
