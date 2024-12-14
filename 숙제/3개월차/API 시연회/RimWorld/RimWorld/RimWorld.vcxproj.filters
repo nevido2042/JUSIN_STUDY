@@ -337,11 +337,11 @@
     <Filter Include="01.Obj\02.RangedWeapon">
       <UniqueIdentifier>{7c954c9c-63ac-4914-a695-28e17dc6f636}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\03.Projectile">
-      <UniqueIdentifier>{e67c73fd-ecc0-444e-a96a-51e8606a9deb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\02.RangedWeapon\ChargeBlasterLight">
       <UniqueIdentifier>{fe588448-7d5d-4c14-a20c-aeb777816b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\03.Projectile">
+      <UniqueIdentifier>{e67c73fd-ecc0-444e-a96a-51e8606a9deb}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Obj\03.Projectile\Charge_Small">
       <UniqueIdentifier>{7724b833-37dc-4175-8738-1edd6b00a529}</UniqueIdentifier>

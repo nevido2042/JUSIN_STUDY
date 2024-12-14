@@ -22,6 +22,7 @@ CPawn::~CPawn()
 
 void CPawn::Move_To(POS _Pos)
 {
+    //경로 따라가는 중이면 실행 안함
     if (m_bNavigating)
     {
         return;
@@ -207,5 +208,6 @@ void CPawn::OnCollision(OBJID _eID, CObj* _pOther)
     {
         CProjectile* pProjectile = static_cast<CProjectile*>(_pOther);
         Take_Damage(pProjectile->Get_Damage());
+        pProjectile->Set_Destroyed();
     }
 }

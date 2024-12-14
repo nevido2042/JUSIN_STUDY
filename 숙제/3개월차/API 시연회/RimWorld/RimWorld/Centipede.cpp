@@ -38,9 +38,19 @@ int CCentipede::Update()
     if (m_bDestroyed)
         return OBJ_DESTROYED;
 
+    //타겟 있으면 따라가기
     if (m_pTarget)
     {
-        Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+        //타겟이 죽으면 타겟 없애기
+        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+        if (pTarget->Get_IsDead())
+        {
+            Set_Target(nullptr);
+        }
+        else
+        {
+            Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+        }
     }
 
     if (m_bNavigating)
@@ -142,6 +152,13 @@ void CCentipede::Find_Target()
 
     for (CObj* pObj : RimList)
     {
+        //죽은 놈이면 컨티뉴
+        CPawn* pPawn = static_cast<CPawn*>(pObj);
+        if (pPawn->Get_IsDead())
+        {
+            continue;
+        }
+
         float fWidth(0.f);
         float fHeight(0.f);
         float fDist(0.f);

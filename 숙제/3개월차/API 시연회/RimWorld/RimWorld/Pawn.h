@@ -16,6 +16,7 @@ public:
 public:
     float Get_HP() { return m_fHP; }
     float Get_MaxHP() { return m_fMaxHP; }
+    float Get_IsDead() { return m_bDead; }
 protected:
     virtual void Dead() PURE;//죽었을 때 할 행동
 

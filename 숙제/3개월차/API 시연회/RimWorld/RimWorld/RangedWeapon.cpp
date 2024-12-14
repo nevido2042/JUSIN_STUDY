@@ -22,8 +22,17 @@ void CRangedWeapon::Fire()
     //무기주인의 타겟과 자신의 위치의 각도를 계산
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
-    //타겟
+    //타겟(무기 주인이 없으면 리턴)
+    if (!m_pTarget)
+    {
+        return;
+    }
     CObj* pTarget = m_pTarget->Get_Target();
+    //무기 주인의, 타겟이 없으면 리턴
+    if (!pTarget)
+    {
+        return;
+    }
 
     fWidth = pTarget->Get_Info().fX - m_tInfo.fX;
     fHeight = pTarget->Get_Info().fY - m_tInfo.fY;
