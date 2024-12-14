@@ -7,8 +7,12 @@ public:
     CCentipede();
     virtual ~CCentipede();
 public:
-    void Initialize() override;
-    void Render(HDC hDC) override;
+    void    Initialize() override;
+    int     Update() override;
+    void    Late_Update() override;
+    void    Render(HDC hDC) override;
+private:
+    void    Find_Target();
 
 protected:
     void Dead() override;

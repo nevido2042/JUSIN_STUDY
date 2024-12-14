@@ -62,12 +62,12 @@ void CColony::Initialize()
     CTileMgr::Get_Instance()->Initialize();
 
     //¸²
-    pObj = CAbstractFactory<CRim>::Create(32, 32);
+    pObj = CAbstractFactory<CRim>::Create(TILECX * 3 + TILECX * 0.5f, TILECY * 3 + TILECY * 0.5f);
     CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
 
     //Áö³×
-    pObj = CAbstractFactory<CCentipede>::Create(32, 32);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
+    pObj = CAbstractFactory<CCentipede>::Create(TILECX * 8 + TILECX * 0.5f, TILECY * 8 + TILECY * 0.5f);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
 
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
