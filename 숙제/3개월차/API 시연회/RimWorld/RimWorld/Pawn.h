@@ -21,8 +21,10 @@ protected:
     virtual void Dead() PURE;//죽었을 때 할 행동
 
 protected:
-    void Navigate();
-    void Calculate_MoveDir();
+    void    Navigate();
+    void    Calculate_MoveDir();
+    bool    IsWithinRange();
+
 public:
     void    Initialize() override;
     int     Update() override;

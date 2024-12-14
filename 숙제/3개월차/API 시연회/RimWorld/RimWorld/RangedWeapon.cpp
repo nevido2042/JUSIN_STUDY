@@ -2,7 +2,8 @@
 #include "RangedWeapon.h"
 
 CRangedWeapon::CRangedWeapon()
-    :m_ullFireRate(0), m_pProjectile(nullptr), m_ullLastFireTime(0)
+    :m_ullFireRate(0), m_pProjectile(nullptr),
+    m_ullLastFireTime(0), m_fRange(0.f)
 {
 }
 
@@ -22,13 +23,13 @@ void CRangedWeapon::Fire()
     //무기주인의 타겟과 자신의 위치의 각도를 계산
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
-    //타겟(무기 주인이 없으면 리턴)
+    //타겟(무기 주인)이 없으면 리턴
     if (!m_pTarget)
     {
         return;
     }
     CObj* pTarget = m_pTarget->Get_Target();
-    //무기 주인의, 타겟이 없으면 리턴
+    //무기 주인의 타겟이 없으면 리턴
     if (!pTarget)
     {
         return;
@@ -57,6 +58,8 @@ void CRangedWeapon::Initialize()
     //총 발사 관련
     m_ullFireRate = 800.f;
     m_ullLastFireTime = GetTickCount64();
+    //무기 사정거리
+    m_fRange = 500.f;
 }
 
 int CRangedWeapon::Update()

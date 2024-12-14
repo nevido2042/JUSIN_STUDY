@@ -8,6 +8,7 @@
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
 #include "Projectile.h"
+#include "RangedWeapon.h"
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_pRangedWeapon(nullptr)
@@ -70,30 +71,53 @@ void CPawn::Navigate()
         pTargetNode = m_NodeList.front();
     }
 
+    //타겟 노드와 충분히 가까워지면
     if (pTargetNode && CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
     {
+        //도착으로 간주하고 타겟 노드로 위치이동
         m_tInfo.fX = pTargetNode->Get_Pos().fX;
         m_tInfo.fY = pTargetNode->Get_Pos().fY;
 
+        //도착한 노드를 삭제
         Safe_Delete<CNode*>(pTargetNode);
         m_NodeList.pop_front();
 
+        //여기서 타겟과의 거리를 체크해서 더 움직일지 고민할까?
+        //타겟이 충분히 가깝다면
+        //나머지노드들을 세이프딜리트하고
+        //네비게이팅 종료
+        if (IsWithinRange())
+        {
+            //나머지노드들을 세이프딜리트하고
+            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            m_NodeList.clear();
+            //네비게이팅 종료
+            m_bNavigating = false;
+            return;
+        }
+        
+
+
+        //노드가 비어있지 않다면
         if (!m_NodeList.empty())
         {
+            //다음 노드를 타겟 노드로 설정
             pTargetNode = m_NodeList.front();
         }
         else
         {
+            //아니면 타겟노드 없음
             pTargetNode = nullptr;
         }
     }
 
+    //타겟 노드 없으면
     if (!pTargetNode)
     {
+        //네비게이팅 종료
         m_bNavigating = false;
         return;
     }
-
 
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
@@ -139,6 +163,34 @@ void CPawn::Calculate_MoveDir()
     //이전 프레임 위치 저장
     m_tPrevPos.fX = m_tInfo.fX;
     m_tPrevPos.fY = m_tInfo.fY;
+}
+
+bool CPawn::IsWithinRange()
+{
+    //타겟이 없어도 리턴
+    if (!m_pTarget)
+    {
+        return false;
+    }
+
+    //원거리 무기가 없으면 가깝지 않다고 판단.
+    if (!m_pRangedWeapon)
+    {
+        return false;
+    }
+
+    CRangedWeapon* pRangedWeapon = static_cast<CRangedWeapon*>(m_pRangedWeapon);
+    float fRange = pRangedWeapon->Get_Range();
+
+    //타겟의 거리와 fRange비교
+    float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f);
+    fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;
+    fHeight = m_pTarget->Get_Info().fY - m_tInfo.fY;
+    //타겟과의 거리
+    fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
+   
+    //가까우면 true
+    return fDiagonal < fRange;
 }
 
 void CPawn::Initialize()
