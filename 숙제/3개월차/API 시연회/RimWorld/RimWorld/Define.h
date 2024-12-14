@@ -14,9 +14,9 @@
 #define VK_MAX				0xff
 
 //림 이미지 오프셋
-#define HEAD_OFFSET			24
-#define IMAGE_OFFSET_X		32
-#define IMAGE_OFFSET_Y		32
+#define HEAD_OFFSET			24.f
+#define IMAGE_OFFSET_X		32.f
+#define IMAGE_OFFSET_Y		32.f
 
 //투명 필터
 #define RGB_PURPLE			RGB(163, 73, 164)
@@ -30,9 +30,12 @@
 #define TILEX				30
 #define TILEY				20
 
+//health바 offset
+#define HELATHBAR_OFFSET    20.f
+
 extern HWND		g_hWnd;
 
-enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_BUTTON, OBJ_WALL, OBJ_RIM, OBJ_END };
+enum OBJID { OBJ_BULLET, OBJ_MOUSE, OBJ_UI, OBJ_WALL, OBJ_RIM, OBJ_END };
 
 enum TILEOPT { OPT_REACHABLE, OPT_BLOCKED, OPT_END };
 

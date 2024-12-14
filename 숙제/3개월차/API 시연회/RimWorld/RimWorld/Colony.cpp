@@ -51,9 +51,9 @@ void CColony::Initialize()
     CObj* pObj(nullptr);
     //UI
     pObj = CAbstractFactory<CMenuBtn>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pObj);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
     pObj = CAbstractFactory<CArcitectBtn>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pObj);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 
     //¸Ê
     CTileMgr::Get_Instance()->Initialize();
@@ -135,7 +135,7 @@ void CColony::Render(HDC hDC)
 
 void CColony::Release()
 {
-    CObjMgr::Get_Instance()->Delete_ID(OBJ_BUTTON);
+    CObjMgr::Get_Instance()->Delete_ID(OBJ_UI);
     CTileMgr::Destroy_Instance();
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();

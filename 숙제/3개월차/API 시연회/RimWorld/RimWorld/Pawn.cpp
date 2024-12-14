@@ -5,9 +5,11 @@
 #include "BmpMgr.h"
 #include "ColonyMgr.h"
 #include "ScrollMgr.h"
+#include "AbstractFactory.h"
+#include "ObjMgr.h"
 
 CPawn::CPawn()
-    :m_bNavigating(false)
+    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -123,6 +125,18 @@ void CPawn::Calculate_MoveDir()
     //이전 프레임 위치 저장
     m_tPrevPos.fX = m_tInfo.fX;
     m_tPrevPos.fY = m_tInfo.fY;
+}
+
+void CPawn::Initialize()
+{
+    //HP바 생성
+    CObj* pObj = CAbstractFactory<CHealthBar>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    //HP바의 타겟을 이 Pawn으로 설정
+    pObj->Set_Target(this);
+
+    m_fMaxHP = 100.f;
+    m_fHP = m_fMaxHP;
 }
 
 int CPawn::Update()

@@ -16,6 +16,8 @@ CRim::~CRim()
 
 void CRim::Initialize()
 {
+    CPawn::Initialize();
+
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
 

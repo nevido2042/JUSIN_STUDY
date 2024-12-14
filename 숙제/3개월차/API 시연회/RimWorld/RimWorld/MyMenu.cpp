@@ -23,11 +23,11 @@ void CMyMenu::Initialize()
 
     CObj* pButton = CAbstractFactory<CMyButton>::Create(WINCX - 200.f, 325.f);
     pButton->Set_ImgKey(L"Start");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pButton);
 
     pButton = CAbstractFactory<CMyButton>::Create(WINCX - 200.f, 400.f);
     pButton->Set_ImgKey(L"Exit");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_BUTTON, pButton);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pButton);
 }
 
 int CMyMenu::Update()
@@ -65,5 +65,5 @@ void CMyMenu::Render(HDC hDC)
 
 void CMyMenu::Release()
 {
-    CObjMgr::Get_Instance()->Delete_ID(OBJ_BUTTON);
+    CObjMgr::Get_Instance()->Delete_ID(OBJ_UI);
 }
