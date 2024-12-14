@@ -63,18 +63,6 @@ void CColony::Initialize()
     //맵
     CTileMgr::Get_Instance()->Initialize();
 
-    //림
-    pObj = CAbstractFactory<CRim>::Create(TILECX * 3 + TILECX * 0.5f, TILECY * 3 + TILECY * 0.5f);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
-    pObj = CAbstractFactory<CRim>::Create(TILECX * 4 + TILECX * 0.5f, TILECY * 4 + TILECY * 0.5f);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
-
-    //지네
-    pObj = CAbstractFactory<CCentipede>::Create(TILECX * 8 + TILECX * 0.5f, TILECY * 8 + TILECY * 0.5f);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
-    pObj = CAbstractFactory<CCentipede>::Create(TILECX * 15 + TILECX * 0.5f, TILECY * 15 + TILECY * 0.5f);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
-
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
 
@@ -100,11 +88,48 @@ void CColony::Initialize()
         CTileMgr::Get_Instance()->Set_TileObj(tPos, pObj);
     }
 
-    /*POS tPos{ float(64 * 0 + 32), float(64 * 0 + 32) };
-    pObj = CAbstractFactory<CRock>::Create(tPos);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
-    CTileMgr::Get_Instance()->Set_TileOption(tPos, OPT_BLOCKED);
-    CTileMgr::Get_Instance()->Set_TileObj(tPos, pObj);*/
+    //림 두마리
+    for (int i = 0; i < 2; ++i)
+    {
+        int iX = int(rand() % TILEX);
+        int iY = int(rand() % TILEY);
+
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
+
+        bVisitArray[iX + TILEX * iY] = true;
+
+        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+
+        pObj = CAbstractFactory<CRim>::Create(tPos);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
+    }
+
+    //림 지네로봇 두마리
+    for (int i = 0; i < 2; ++i)
+    {
+        int iX = int(rand() % TILEX);
+        int iY = int(rand() % TILEY);
+
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
+
+        bVisitArray[iX + TILEX * iY] = true;
+
+        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+
+        //지네
+        pObj = CAbstractFactory<CCentipede>::Create(tPos);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
+    }
 
 }
 
