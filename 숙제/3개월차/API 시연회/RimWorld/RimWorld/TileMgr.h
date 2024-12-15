@@ -9,11 +9,14 @@ private:
 	~CTileMgr();
 
 public:
-	void	Set_TileOption(POS _tPos, TILEOPT _eOpt);
-	void	Set_TileObj(POS _tPos, CObj* _pObj);
+	void			Set_TileOption(POS _tPos, TILEOPT _eOpt);
+	void			Set_TileObj(POS _tPos, CObj* _pObj);
 
-	TILEOPT	Get_TileOption(POS _tPos);
-	const CObj*	Get_TileObj(POS _tPos);
+	TILEOPT			Get_TileOption(POS _tPos);
+	TILEOPT			Get_TileOption(float _fX, float _fY);
+	TILEOPT			Get_TileOption(int _iIndexX, int _iIndexY);
+	const CObj*		Get_TileObj(POS _tPos);
+	int				Get_TileIndex(float _fX, float _fY);
 
 
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);

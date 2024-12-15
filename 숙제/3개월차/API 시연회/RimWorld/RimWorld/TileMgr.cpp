@@ -117,20 +117,52 @@ void CTileMgr::Release()
 
 void CTileMgr::Set_TileOption(POS _tPos, TILEOPT _eOpt)
 {
-	int iIdx = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
-	static_cast<CTile*>(m_arrTile.at(iIdx))->Set_Option(_eOpt);
+	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+
+	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+		return;
+
+	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Option(_eOpt);
 }
 
 void CTileMgr::Set_TileObj(POS _tPos, CObj* _pObj)
 {
-	int iIdx = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
-	static_cast<CTile*>(m_arrTile.at(iIdx))->Set_Obj(_pObj);
+	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+
+	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+		return;
+
+	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Obj(_pObj);
 }
 
 TILEOPT CTileMgr::Get_TileOption(POS _tPos)
 {
-	int iIdx = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
-	return static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Option();
+	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+
+	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+		return OPT_END;
+
+	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
+}
+
+TILEOPT CTileMgr::Get_TileOption(float _fX, float _fY)
+{
+	int iIndex = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
+
+	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+		return OPT_END;
+
+	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
+}
+
+TILEOPT CTileMgr::Get_TileOption(int _iIndexX, int _iIndexY)
+{
+	int iIndex = _iIndexX + _iIndexY * TILEX;
+
+	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+		return OPT_END;
+
+	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
 }
 
 const CObj* CTileMgr::Get_TileObj(POS _tPos)
@@ -144,6 +176,11 @@ const CObj* CTileMgr::Get_TileObj(POS _tPos)
 		
 	const CObj * pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
 	return pObj;
+}
+
+int CTileMgr::Get_TileIndex(float _fX, float _fY)
+{
+	return int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
 }
 
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)
