@@ -83,7 +83,7 @@ int CRangedWeapon::Update()
         return OBJ_DESTROYED;
 
     //발사 후 지난 시간 += 게임 스피드 * 장전 속도
-    m_fElapsedTimeSinceShot += GAMESPEED * m_fReloadSpeed;
+    m_fElapsedTimeSinceShot += GAMESPEED * m_fReloadSpeed; //프레임당 시간지나는거 굳이 안넣어도 되긴하네
 
     __super::Update_Rect();
 

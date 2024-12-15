@@ -38,21 +38,28 @@ void CColonyMgr::Input_Key()
     }
 
     //게임 스피드 조절
-    if (CKeyMgr::Get_Instance()->Key_Pressing('1'))
+    if (CKeyMgr::Get_Instance()->Key_Down('1'))
     {
         CTimeMgr::Get_Instance()->Set_GameSpeed(1.f);
     }
-    else if (CKeyMgr::Get_Instance()->Key_Pressing('2'))
+    else if (CKeyMgr::Get_Instance()->Key_Down('2'))
     {
         CTimeMgr::Get_Instance()->Set_GameSpeed(2.f);
     }
-    else if (CKeyMgr::Get_Instance()->Key_Pressing('3'))
+    else if (CKeyMgr::Get_Instance()->Key_Down('3'))
     {
         CTimeMgr::Get_Instance()->Set_GameSpeed(3.f);
     }
-    else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SPACE))
+    else if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
     {
-        CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
+        if (GAMESPEED == 0.f)
+        {
+            CTimeMgr::Get_Instance()->Set_GameSpeed(1.f);
+        }
+        else
+        {
+            CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
+        } 
     }
 }
 
