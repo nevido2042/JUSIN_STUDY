@@ -115,6 +115,9 @@
     <ClCompile Include="Bullet_Small.cpp">
       <Filter>01.Obj\03.Projectile\Bullet_Small</Filter>
     </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>01.Obj\Tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="Bullet_Small.h">
       <Filter>01.Obj\03.Projectile\Bullet_Small</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>01.Obj\Tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +387,9 @@
     </Filter>
     <Filter Include="01.Obj\03.Projectile\Bullet_Small">
       <UniqueIdentifier>{513b0c16-ee17-4e87-9147-979229cbc95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Tree">
+      <UniqueIdentifier>{ef080a2b-f9f8-4060-88ef-d978443772a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

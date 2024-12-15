@@ -11,6 +11,7 @@
 #include "ArcitectBtn.h"
 #include "Rock.h"
 #include "Centipede.h"
+#include "Tree.h"
 
 class CColony :
     public CScene

@@ -54,11 +54,13 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_north.bmp", L"Centipede_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_south.bmp", L"Centipede_south");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_west.bmp", L"Centipede_west");
+    //나무
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Tree/TreePoplar_LeaflessA.bmp", L"TreePoplar_LeaflessA");
 
     //타일
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Ice.bmp", L"Ice");
     //돌
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Rock_Atlas.bmp", L"Rock_Atlas");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Wall_Atlas_Smooth.bmp", L"Wall_Atlas_Smooth");
     //핏자국
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
     //지네 무기
@@ -92,7 +94,7 @@ void CColony::Initialize()
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
 
-    for (int i = 0; i < (TILEX * TILEY) / 3; ++i)
+    for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);
@@ -155,6 +157,28 @@ void CColony::Initialize()
         //지네
         pObj = CAbstractFactory<CCentipede>::Create(tPos);
         CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
+    }
+
+    //나무
+    for (int i = 0; i < 20; ++i)
+    {
+        int iX = int(rand() % TILEX);
+        int iY = int(rand() % TILEY);
+
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
+
+        bVisitArray[iX + TILEX * iY] = true;
+
+        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+
+        //지네
+        pObj = CAbstractFactory<CTree>::Create(tPos);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
     }
 
 }

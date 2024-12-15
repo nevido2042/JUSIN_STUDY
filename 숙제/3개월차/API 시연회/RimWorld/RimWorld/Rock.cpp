@@ -100,15 +100,14 @@ void CRock::Change_Image()
 
 void CRock::Initialize()
 {
-	Set_ImgKey(L"Rock_Atlas");
-	//m_pImgKey = L"Rock_Atlas";
+	Set_ImgKey(L"Wall_Atlas_Smooth");
+	//m_pImgKey = L"Wall_Atlas_Smooth";
 
 	m_tInfo.fCX = 80.f; //나중에 오프셋 64(충돌범위)+16(렌더) 이런식으로 줘야할듯
     m_tInfo.fCY = 80.f;
 
 	m_eCurState = SOLO;
 	m_ePreState = SOLO;
-
 	m_iRenderX = 0;
 	m_iRenderY = 3;
 
