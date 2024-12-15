@@ -19,8 +19,10 @@ public:
     float Get_IsDead() { return m_bDead; }
     float Get_TargetAngle() { return m_fTargetAngle; }
     bool  Get_IsAttack() { return m_bAttack; }
+    bool  Get_IsNavigating() { return m_bNavigating; }
     
     void  Set_IsAttack(bool _bAttack) { m_bAttack = _bAttack; }
+    void  RequestNavStop() { m_bNavStopRequested = true; }
 protected:
     virtual void Dead();//죽었을 때 할 행동
 
@@ -43,6 +45,7 @@ protected:
     //길찾기 관련
     list<CNode*>    m_NodeList;
     bool            m_bNavigating;
+    bool            m_bNavStopRequested;//길찾기 종료 요청이 들어 왔는가?
     //방향 결정 용(이전 프레임 위치)
     POS             m_tPrevPos;
     //체력 관련
