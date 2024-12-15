@@ -44,7 +44,11 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_east.bmp", L"Afro_east");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_north.bmp", L"Afro_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_west.bmp", L"Afro_west");
-    
+
+    //볼트액션 소총
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/BoltActionRifle.bmp", L"BoltActionRifle");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Bullet_Small.bmp", L"Bullet_Small");
+
     //Centipede
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_east.bmp", L"Centipede_east");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_north.bmp", L"Centipede_north");
@@ -88,7 +92,7 @@ void CColony::Initialize()
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
 
-    for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
+    for (int i = 0; i < (TILEX * TILEY) / 3; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);

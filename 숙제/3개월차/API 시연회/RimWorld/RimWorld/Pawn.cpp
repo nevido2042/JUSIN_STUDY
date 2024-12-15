@@ -259,11 +259,13 @@ bool CPawn::IsCanSeeTarget()
         }
 
         int iError = 2 * iErr;
-        if (iError > -iDistY) {
+        if (iError > -iDistY) 
+        {
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        if (iError < iDistX) {
+        if (iError < iDistX) 
+        {
             iErr += iDistX;
             iY1 += iDirY;
         }
