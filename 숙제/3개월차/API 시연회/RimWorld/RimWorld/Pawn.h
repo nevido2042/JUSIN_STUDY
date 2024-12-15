@@ -52,5 +52,7 @@ protected:
     float           m_fTargetDist;
     //타겟과의 각도
     float           m_fTargetAngle;
+    //공격 중 인가?
+    bool            m_bAttack;
 };
 

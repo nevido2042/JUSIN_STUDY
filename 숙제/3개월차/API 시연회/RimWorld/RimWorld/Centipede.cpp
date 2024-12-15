@@ -69,6 +69,16 @@ void CCentipede::Late_Update()
 {
     Calculate_MoveDir();
     Measure_Target();
+
+    if (IsWithinRange())
+    {
+        m_bAttack = true;
+    }
+    else
+    {
+        m_bAttack = false;
+    }
+
     //FindTarget();
     //타겟이 없을 경우
     //림 오브젝트리스트에서 가장 가까운 림을 찾고 타겟으로 설정
@@ -144,6 +154,16 @@ void CCentipede::Render(HDC hDC)
         Ellipse(hDC, int(pNode->Get_Pos().fX + iScrollX - 10.f), int(pNode->Get_Pos().fY + iScrollY - 10.f),
             int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
     }
+
+    // 변수 값을 유니코드 문자열로 변환
+    wchar_t buffer[50];
+    wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, m_tInfo.fX+ iScrollX, m_tInfo.fY + iScrollY, buffer, lstrlenW(buffer));
+    // 변수 값을 유니코드 문자열로 변환
+    wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, m_tInfo.fX + iScrollX, m_tInfo.fY + iScrollY + 20, buffer, lstrlenW(buffer));
 }
 
 void CCentipede::Find_Target()

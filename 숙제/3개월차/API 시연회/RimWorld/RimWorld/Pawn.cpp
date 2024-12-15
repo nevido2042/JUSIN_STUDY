@@ -10,7 +10,7 @@
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false),
-    m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f)
+    m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f), m_bAttack(false)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -23,7 +23,7 @@ CPawn::~CPawn()
 void CPawn::Move_To(POS _Pos)
 {
     //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-    if (IsWithinRange())
+    if (m_bAttack)
     {
         return;
     }
@@ -91,7 +91,7 @@ void CPawn::Navigate()
         //타겟이 충분히 가깝다면
         //나머지노드들을 세이프딜리트하고
         //네비게이팅 종료
-        if (IsWithinRange())
+        if (m_bAttack)
         {
             //나머지노드들을 세이프딜리트하고
             for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
@@ -248,7 +248,7 @@ int CPawn::Update()
 
 void CPawn::Late_Update()
 {
-    
+
 }
 
 void CPawn::Release()
