@@ -3,6 +3,7 @@
 #include "KeyMgr.h"
 #include "ScrollMgr.h"
 #include "Rim.h"
+#include "TimeMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -34,6 +35,24 @@ void CColonyMgr::Input_Key()
     if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
     {
         CScrollMgr::Get_Instance()->Move_ScrollY(-fSpeed);
+    }
+
+    //게임 스피드 조절
+    if (CKeyMgr::Get_Instance()->Key_Pressing('1'))
+    {
+        CTimeMgr::Get_Instance()->Set_GameSpeed(1.f);
+    }
+    else if (CKeyMgr::Get_Instance()->Key_Pressing('2'))
+    {
+        CTimeMgr::Get_Instance()->Set_GameSpeed(2.f);
+    }
+    else if (CKeyMgr::Get_Instance()->Key_Pressing('3'))
+    {
+        CTimeMgr::Get_Instance()->Set_GameSpeed(3.f);
+    }
+    else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SPACE))
+    {
+        CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
     }
 }
 

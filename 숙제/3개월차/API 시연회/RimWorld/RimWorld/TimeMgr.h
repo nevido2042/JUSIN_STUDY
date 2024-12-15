@@ -6,7 +6,9 @@ private:
 	~CTimeMgr();
 
 public:
-	int Get_CurrentFrame() { return m_iCurFrame; }
+	int		Get_CurrentFrame() { return m_iCurFrame; }
+	float	Get_GameSpeed() { return m_fGameSpeed; }
+	void	Set_GameSpeed(float _fGameSpeed) { m_fGameSpeed = _fGameSpeed; }
 
 public:
 	void Initialize();
@@ -34,6 +36,7 @@ private:
 	static CTimeMgr* m_pInstance;
 
 private:
-	int m_iCurFrame;
+	int			m_iCurFrame;
+	float		m_fGameSpeed;
 };
 

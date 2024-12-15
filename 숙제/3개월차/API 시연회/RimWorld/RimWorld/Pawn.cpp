@@ -7,6 +7,7 @@
 #include "ObjMgr.h"
 #include "Projectile.h"
 #include "RangedWeapon.h"
+#include "TimeMgr.h"
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false),
@@ -136,8 +137,8 @@ void CPawn::Navigate()
 
     m_fAngle = fRadian * (180.f / PI);
 
-    m_tInfo.fX += m_fSpeed * cosf(fRadian);
-    m_tInfo.fY -= m_fSpeed * sinf(fRadian);
+    m_tInfo.fX += m_fSpeed * cosf(fRadian) * GAMESPEED;
+    m_tInfo.fY -= m_fSpeed * sinf(fRadian) * GAMESPEED;
 }
 
 void CPawn::Calculate_MoveDir()

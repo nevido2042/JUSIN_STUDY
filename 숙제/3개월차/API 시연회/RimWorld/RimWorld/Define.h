@@ -32,7 +32,11 @@
 //health바 offset
 #define HELATHBAR_OFFSET    20
 
+// 타일 컬링 오프셋
 #define CULLIG_OFFSET       1
+
+//게임속도 얻기
+#define GAMESPEED           CTimeMgr::Get_Instance()->Get_GameSpeed()
 
 extern HWND		    g_hWnd;
 //extern ULONG_PTR    g_GdiplusToken;

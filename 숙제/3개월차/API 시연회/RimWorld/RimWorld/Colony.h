@@ -4,6 +4,8 @@
 #include "ColonyMgr.h"
 
 #include "MenuBtn.h"
+#include "GameSpeedBtn.h"
+
 #include "Tile.h"
 #include "Rim.h"
 #include "ArcitectBtn.h"

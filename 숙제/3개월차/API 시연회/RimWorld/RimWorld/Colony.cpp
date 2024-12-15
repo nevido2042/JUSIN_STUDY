@@ -18,8 +18,16 @@ CColony::~CColony()
 void CColony::Initialize()
 {
     //UI
+    //메뉴 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
+    //구상 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
+    //게임 스피드 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Normal.bmp", L"TimeSpeedButton_Normal");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Fast.bmp", L"TimeSpeedButton_Fast");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Superfast.bmp", L"TimeSpeedButton_Superfast");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Pause.bmp", L"TimeSpeedButton_Pause");
+
     //Rim
     //얼굴
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Head/Male_Average_Normal_south.bmp", L"Male_Average_Normal_south");
@@ -58,6 +66,20 @@ void CColony::Initialize()
     pObj = CAbstractFactory<CMenuBtn>::Create();
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
     pObj = CAbstractFactory<CArcitectBtn>::Create();
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+    //게임 스피드 버튼
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 224, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Pause");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 160, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Normal");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 96, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Fast");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 32, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Superfast");
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 
     //맵
