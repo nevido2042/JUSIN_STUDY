@@ -4,6 +4,8 @@
 #include "ScrollMgr.h"
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
+#include "KeyMgr.h"
+#include "ColonyMgr.h"
 
 CCentipede::CCentipede()
 {
@@ -38,6 +40,12 @@ int CCentipede::Update()
     if (m_bDestroyed)
         return OBJ_DESTROYED;
 
+    //죽었으면 리턴
+    if (m_bDead)
+    {
+        return OBJ_NOEVENT;
+    }
+
     //타겟 있으면 따라가기
     if (m_pTarget)
     {
@@ -67,10 +75,17 @@ int CCentipede::Update()
 
 void CCentipede::Late_Update()
 {
+    //죽었으면 리턴
+    if (m_bDead)
+    {
+        return;
+    }
+
     Calculate_MoveDir();
     Measure_Target();
 
-    if (IsWithinRange())
+    //사정 거리내에 있고 본인이 죽지 않았다면
+    if (IsWithinRange()&&!m_bDead)
     {
         m_bAttack = true;
     }
@@ -85,6 +100,31 @@ void CCentipede::Late_Update()
     if (!m_pTarget)
     {
         Find_Target();
+    }
+
+    //마우스 클릭 했을 때 타겟으로 설정
+    POINT	ptMouse{};
+
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    ptMouse.x -= iScrollX;
+    ptMouse.y -= iScrollY;
+
+    if (PtInRect(&m_tRect, ptMouse))
+    {
+        //우클릭은 타겟의 공격 타겟으로 설정
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
+        {
+            if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
+            {
+                pTarget->Set_Target(this);
+            }
+            return;
+        }
     }
     
 }
@@ -197,8 +237,4 @@ void CCentipede::Find_Target()
     }
 
     Set_Target(pTarget);
-}
-
-void CCentipede::Dead()
-{
 }

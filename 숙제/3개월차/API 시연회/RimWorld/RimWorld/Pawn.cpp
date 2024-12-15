@@ -5,7 +5,6 @@
 #include "ScrollMgr.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
-#include "Projectile.h"
 #include "RangedWeapon.h"
 #include "TimeMgr.h"
 #include "TileMgr.h"
@@ -61,6 +60,12 @@ void CPawn::Take_Damage(float _fDamage)
         m_bDead = true;
         Dead();
     }
+}
+
+void CPawn::Dead()
+{
+    m_fSpeed = 0.f;
+    m_bAttack = false;
 }
 
 void CPawn::Navigate()
@@ -195,6 +200,12 @@ void CPawn::Measure_Target()
 
 bool CPawn::IsWithinRange()
 {
+    //본인이 죽었으면 리턴
+    if (m_bDead)
+    {
+        return false;
+    }
+
     //타겟이 없어도 리턴
     if (!m_pTarget)
     {
@@ -230,8 +241,8 @@ bool CPawn::IsWithinRange()
 bool CPawn::IsCanSeeTarget()
 {
     // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    int iThis_Index = CTileMgr::Get_Instance()->Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    int iTarget_Index = CTileMgr::Get_Instance()->Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
+    int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 
     int iX1 = iThis_Index % TILEX;
     int iY1 = iThis_Index / TILEX;
@@ -315,10 +326,5 @@ void CPawn::Release()
 
 void CPawn::OnCollision(OBJID _eID, CObj* _pOther)
 {
-    if (_eID == OBJ_PROJECTILE)
-    {
-        CProjectile* pProjectile = static_cast<CProjectile*>(_pOther);
-        Take_Damage(pProjectile->Get_Damage());
-        pProjectile->Set_Destroyed();
-    }
+    
 }

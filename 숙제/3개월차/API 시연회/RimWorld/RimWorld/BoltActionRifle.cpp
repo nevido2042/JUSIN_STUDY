@@ -23,6 +23,7 @@ void CBoltActionRifle::Fire()
 
     CObj* pObj = CAbstractFactory<CBullet_Small>::Create(m_tInfo.fX, m_tInfo.fY, m_fAngle);
     CObjMgr::Get_Instance()->Add_Object(OBJ_PROJECTILE, pObj);
+    static_cast<CProjectile*>(pObj)->Set_Owner(m_pTarget);//총알의 주인을 총의 소유자로 설정한다.
 }
 
 void CBoltActionRifle::Render(HDC hDC)

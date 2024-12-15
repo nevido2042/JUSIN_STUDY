@@ -109,6 +109,12 @@
     <ClCompile Include="GameSpeedBtn.cpp">
       <Filter>01.Obj\01.UI\Button\GameSpeedBtn</Filter>
     </ClCompile>
+    <ClCompile Include="BoltActionRifle.cpp">
+      <Filter>01.Obj\02.RangedWeapon\BoltActionRifle</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet_Small.cpp">
+      <Filter>01.Obj\03.Projectile\Bullet_Small</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -233,6 +239,12 @@
     </ClInclude>
     <ClInclude Include="GameSpeedBtn.h">
       <Filter>01.Obj\01.UI\Button\GameSpeedBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="BoltActionRifle.h">
+      <Filter>01.Obj\02.RangedWeapon\BoltActionRifle</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet_Small.h">
+      <Filter>01.Obj\03.Projectile\Bullet_Small</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,6 +375,12 @@
     </Filter>
     <Filter Include="01.Obj\01.UI\Button\GameSpeedBtn">
       <UniqueIdentifier>{ac137ece-4ae6-4dcb-8c14-c3fe46ca1772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\02.RangedWeapon\BoltActionRifle">
+      <UniqueIdentifier>{d3d3a9b3-3a07-4cde-beac-4e397b30e57e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\03.Projectile\Bullet_Small">
+      <UniqueIdentifier>{513b0c16-ee17-4e87-9147-979229cbc95c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

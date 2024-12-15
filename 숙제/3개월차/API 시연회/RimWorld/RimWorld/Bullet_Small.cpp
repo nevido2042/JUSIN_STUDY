@@ -24,5 +24,5 @@ void CBullet_Small::Render(HDC hDC)
         m_tRect.top + iScrollY,
         64, 64,
         hTestDC, 0, 0, 64, 64,
-        RGB_WHITE);
+        RGB_PURPLE);
 }

@@ -8,9 +8,9 @@ private:
 	virtual ~CColonyMgr();
 	
 public:
-	void Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
-
-	void Input_Key();
+	void	Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
+	CObj*	Get_Target() { return m_pTarget; }
+	void	Input_Key();
 
 public:
 	void	Initialize();

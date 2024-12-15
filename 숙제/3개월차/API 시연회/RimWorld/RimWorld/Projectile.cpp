@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Projectile.h"
 #include "TimeMgr.h"
+#include "Pawn.h"
 
 CProjectile::CProjectile()
-    :m_fDamage(0.f)
+    :m_fDamage(0.f), m_pOwner(nullptr)
 {
 }
 
@@ -45,4 +46,19 @@ void CProjectile::Late_Update()
 
 void CProjectile::Release()
 {
+}
+
+void CProjectile::OnCollision(OBJID _eID, CObj* _pOther)
+{
+    //총알을 쏜 주인이 부딫히면 무시한다.
+    if (m_pOwner == _pOther)
+    {
+        return;
+    }
+    //림이거나, 메카노이드면 데미지주고 없어진다.
+    if (_eID == OBJ_RIM || _eID == OBJ_MECHANOID)
+    {
+        static_cast<CPawn*>(_pOther)->Take_Damage(m_fDamage);
+        Set_Destroyed();
+    }
 }

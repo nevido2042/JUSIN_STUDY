@@ -2,6 +2,8 @@
 #include "Pawn.h"
 #include "Node.h"
 
+#include "BoltActionRifle.h"
+
 class CRim :
     public CPawn
 {
@@ -11,9 +13,7 @@ public:
 
 public:
     void Initialize() override;
+    int  Update() override;
     void Late_Update() override;
     void Render(HDC hDC) override;
-
-protected:
-    void Dead() override;
 };

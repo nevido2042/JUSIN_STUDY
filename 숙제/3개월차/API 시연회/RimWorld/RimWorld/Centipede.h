@@ -16,8 +16,5 @@ public:
     void    Render(HDC hDC) override;
 private:
     void    Find_Target();
-
-protected:
-    void Dead() override;
 };
 

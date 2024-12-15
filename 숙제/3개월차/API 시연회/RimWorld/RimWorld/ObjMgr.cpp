@@ -68,6 +68,7 @@ void CObjMgr::Late_Update()
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_PLAYER]);
 
 	CCollisionMgr::Collision_Circle(OBJ_PROJECTILE, OBJ_RIM);
+	CCollisionMgr::Collision_Circle(OBJ_PROJECTILE, OBJ_MECHANOID);
 
 }
 

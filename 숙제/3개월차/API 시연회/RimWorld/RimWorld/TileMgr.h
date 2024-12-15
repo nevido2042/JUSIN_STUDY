@@ -16,7 +16,7 @@ public:
 	TILEOPT			Get_TileOption(float _fX, float _fY);
 	TILEOPT			Get_TileOption(int _iIndexX, int _iIndexY);
 	const CObj*		Get_TileObj(POS _tPos);
-	int				Get_TileIndex(float _fX, float _fY);
+	static int		Get_TileIndex(float _fX, float _fY);
 
 
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);

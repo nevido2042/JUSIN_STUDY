@@ -19,7 +19,7 @@ public:
     float Get_IsDead() { return m_bDead; }
     float Get_TargetAngle() { return m_fTargetAngle; }
 protected:
-    virtual void Dead() PURE;//죽었을 때 할 행동
+    virtual void Dead();//죽었을 때 할 행동
 
 protected:
     void    Navigate();

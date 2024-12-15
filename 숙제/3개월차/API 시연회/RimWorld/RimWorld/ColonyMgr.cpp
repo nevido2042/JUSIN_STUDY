@@ -14,6 +14,7 @@ CColonyMgr::CColonyMgr()
 
 CColonyMgr::~CColonyMgr()
 {
+    Release();
 }
 
 void CColonyMgr::Input_Key()
@@ -102,7 +103,9 @@ void CColonyMgr::Late_Update()
 
             fX = float(fX -(int)fX % TILECX + TILECX * 0.5f);
             fY = float(fY -(int)fY % TILECY + TILECY * 0.5f);
+            //Pawn을 클릭했으면 타겟으로 설정하고 공격명령 내려야함
 
+            //타일을 클릭햇으면 이동시키고
             static_cast<CRim*>(m_pTarget)->
                 Move_To(POS{ fX, fY });
         }

@@ -4,6 +4,8 @@
 #include "ScrollMgr.h"
 #include "ColonyMgr.h"
 #include "KeyMgr.h"
+#include "AbstractFactory.h"
+#include "ObjMgr.h"
 
 CRim::CRim()
 {
@@ -26,13 +28,74 @@ void CRim::Initialize()
 
     m_eRenderID = RENDER_GAMEOBJECT;
 
+    //무기 생성
+    m_pRangedWeapon = CAbstractFactory<CBoltActionRifle>::Create(m_tInfo.fX, m_tInfo.fY);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, m_pRangedWeapon);
+    m_pRangedWeapon->Set_Target(this);
+
     Take_Damage(10.f);
+}
+
+int CRim::Update()
+{
+    if (m_bDestroyed)
+        return OBJ_DESTROYED;
+
+    //죽었으면 리턴
+    if (m_bDead)
+    {
+        return OBJ_NOEVENT;
+    }
+
+    //타겟 있으면 따라가기
+    if (m_pTarget)
+    {
+        //타겟이 죽으면 타겟 없애기
+        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+        if (pTarget->Get_IsDead())
+        {
+            Set_Target(nullptr);
+        }
+        else
+        {
+            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
+            Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+        }
+    }
+
+    if (m_bNavigating)
+    {
+        Navigate();
+    }
+
+
+    __super::Update_Rect();
+
+    return OBJ_NOEVENT;
 }
 
 void CRim::Late_Update()
 {
+    //죽었으면 리턴
+    if (m_bDead)
+    {
+        return;
+    }
+
+    //이동방향 계산
     Calculate_MoveDir();
+    //타겟과의 거리 및 각도 계산
     Measure_Target();
+
+    //사정 거리내에 있고 본인이 죽지 않았다면
+    if (IsWithinRange())
+    {
+        m_bAttack = true;
+    }
+    else
+    {
+        m_bAttack = false;
+    }
 
     //마우스 클릭 했을 때 타겟으로 설정
     POINT	ptMouse{};
@@ -48,11 +111,19 @@ void CRim::Late_Update()
 
     if (PtInRect(&m_tRect, ptMouse))
     {
-
-
+        //좌클릭은 타겟으로 설정
         if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
         {
             CColonyMgr::Get_Instance()->Set_Target(this);
+            return;
+        }
+        //우클릭은 타겟의 공격 타겟으로 설정
+        else if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
+        {
+            if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
+            {
+                 pTarget->Set_Target(this);
+            }
             return;
         }
     }
@@ -203,10 +274,5 @@ void CRim::Render(HDC hDC)
     }
 
 
-}
-
-void CRim::Dead()
-{
-    m_fSpeed = 0.f;
 }
 
