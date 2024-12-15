@@ -24,10 +24,17 @@ public:
     void            Release() override;
 
 protected:
+
+
+    //발사 후 지난 시간
+    float       m_fElapsedTimeSinceShot;
+
+    //장전 속도
+    float       m_fReloadSpeed;
+
     //발사 속도(프레임)
-    int   m_iFireRate;
-    //마지막 발사 시간(프레임)
-    int   m_iLastFireTime;
+    float       m_fFireRate;
+
     //발사체
     CObj*       m_pProjectile;
     //무기 사정거리

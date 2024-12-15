@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Projectile.h"
+#include "TimeMgr.h"
 
 CProjectile::CProjectile()
     :m_fDamage(0.f)
@@ -38,8 +39,8 @@ void CProjectile::Late_Update()
     //Angle방향대로 날라간다.
     float fRadian = m_fAngle * (PI / 180.f);
 
-    m_tInfo.fX += m_fSpeed * cosf(fRadian);
-    m_tInfo.fY -= m_fSpeed * sinf(fRadian);
+    m_tInfo.fX += m_fSpeed * cosf(fRadian) * GAMESPEED;
+    m_tInfo.fY -= m_fSpeed * sinf(fRadian) * GAMESPEED;
 }
 
 void CProjectile::Release()
