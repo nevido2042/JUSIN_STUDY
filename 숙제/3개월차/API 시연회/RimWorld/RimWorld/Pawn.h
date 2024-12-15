@@ -18,6 +18,9 @@ public:
     float Get_MaxHP() { return m_fMaxHP; }
     float Get_IsDead() { return m_bDead; }
     float Get_TargetAngle() { return m_fTargetAngle; }
+    bool  Get_IsAttack() { return m_bAttack; }
+    
+    void  Set_IsAttack(bool _bAttack) { m_bAttack = _bAttack; }
 protected:
     virtual void Dead();//죽었을 때 할 행동
 

@@ -22,7 +22,7 @@ void CProjectile::Initialize()
 
     m_fSpeed = 10.f;
 
-    m_fDamage = 10.f;
+    m_fDamage = 7.f;
 }
 
 int CProjectile::Update()

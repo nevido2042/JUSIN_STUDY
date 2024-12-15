@@ -104,10 +104,15 @@ void CColonyMgr::Late_Update()
             fX = float(fX -(int)fX % TILECX + TILECX * 0.5f);
             fY = float(fY -(int)fY % TILECY + TILECY * 0.5f);
             //Pawn을 클릭했으면 타겟으로 설정하고 공격명령 내려야함
-
-            //타일을 클릭햇으면 이동시키고
-            static_cast<CRim*>(m_pTarget)->
-                Move_To(POS{ fX, fY });
+            //타일을 클릭햇으면 이동시키고, 공격명령 취소, 타겟 제거
+            CRim* pTargetRim = static_cast<CRim*>(m_pTarget); 
+            pTargetRim->Move_To(POS{ fX, fY });
+            //림이 공격 중이었고 타겠도 있었다면 해제
+            if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())
+            {
+                pTargetRim->Set_Target(nullptr);
+                pTargetRim->Set_IsAttack(false);
+            }   
         }
 
         ReleaseCapture();
