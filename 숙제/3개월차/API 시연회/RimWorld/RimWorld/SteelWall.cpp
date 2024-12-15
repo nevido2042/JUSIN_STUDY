@@ -1,93 +1,94 @@
 #include "pch.h"
-#include "Rock.h"
+#include "SteelWall.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 #include "TileMgr.h"
 #include "ObjMgr.h"
 
-CRock::CRock()
-	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false)
+CSteelWall::CSteelWall()
+	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false),
+	m_fDurability(0.f), m_fMaxDurability(0.f), m_bBrokendown(false)
 {
 }
 
-CRock::~CRock()
+CSteelWall::~CSteelWall()
 {
     Release();
 }
 
-void CRock::Change_Image()
+void CSteelWall::Change_Image()
 {
 	if (m_ePreState != m_eCurState)
 	{
 		switch (m_eCurState)
 		{
-		case CRock::SOLO:
+		case CSteelWall::SOLO:
 			m_iRenderX = 0;
 			m_iRenderY = 3;
 			break;
-		case CRock::HORIZONTAL:
+		case CSteelWall::HORIZONTAL:
 			m_iRenderX = 2;
 			m_iRenderY = 1;
 			break;
-		case CRock::VERTICAL:
+		case CSteelWall::VERTICAL:
 			m_iRenderX = 1;
 			m_iRenderY = 2;
 			break;
-		case CRock::END_LEFT:
+		case CSteelWall::END_LEFT:
 			m_iRenderX = 2;
 			m_iRenderY = 3;
 			break;
-		case CRock::END_RIGHT:
+		case CSteelWall::END_RIGHT:
 			m_iRenderX = 0;
 			m_iRenderY = 1;
 			break;
-		case CRock::END_TOP:
+		case CSteelWall::END_TOP:
 			m_iRenderX = 0;
 			m_iRenderY = 2;
 			break;
-		case CRock::END_BOTTOM:
+		case CSteelWall::END_BOTTOM:
 			m_iRenderX = 1;
 			m_iRenderY = 3;
 			break;
 
-		case CRock::RIGHT_BOTTOM:
+		case CSteelWall::RIGHT_BOTTOM:
 			m_iRenderX = 1;
 			m_iRenderY = 1;
 			break;
-		case CRock::LEFT_BOTTOM:
+		case CSteelWall::LEFT_BOTTOM:
 			m_iRenderX = 3;
 			m_iRenderY = 3;
 			break;
-		case CRock::RIGHT_TOP:
+		case CSteelWall::RIGHT_TOP:
 			m_iRenderX = 0;
 			m_iRenderY = 0;
 			break;
-		case CRock::LEFT_TOP:
+		case CSteelWall::LEFT_TOP:
 			m_iRenderX = 2;
 			m_iRenderY = 2;
 			break;
 
-		case CRock::T12:
+		case CSteelWall::T12:
 			m_iRenderX = 2;
 			m_iRenderY = 0;
 			break;
 
-		case CRock::T3:
+		case CSteelWall::T3:
 			m_iRenderX = 1;
 			m_iRenderY = 0;
 			break;
 
-		case CRock::T6:
+		case CSteelWall::T6:
 			m_iRenderX = 3;
 			m_iRenderY = 1;
 			break;
 
-		case CRock::T9:
+		case CSteelWall::T9:
 			m_iRenderX = 3;
 			m_iRenderY = 2;
 			break;
 
-		case CRock::CROSS:
+		case CSteelWall::CROSS:
 			m_iRenderX = 3;
 			m_iRenderY = 0;
 			break;
@@ -98,7 +99,19 @@ void CRock::Change_Image()
 
 }
 
-void CRock::Initialize()
+void CSteelWall::Take_Damage(float _fDamage)
+{
+	m_fDurability -= _fDamage;
+
+	//죽음 처리
+	if (m_fDurability <= 0.f)
+	{
+		m_bBrokendown = true;
+		//Set_Destroyed(); //바로 지우지말고 예약해야겠다.
+	}
+}
+
+void CSteelWall::Initialize()
 {
 	Set_ImgKey(L"Wall_Atlas_Smooth");
 	//m_pImgKey = L"Wall_Atlas_Smooth";
@@ -115,27 +128,35 @@ void CRock::Initialize()
 
 	m_bCheckNeighbor = true;
 
+	m_fMaxDurability = 30.f;
+	m_fDurability = m_fMaxDurability;
+
 	//생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
 	list<CObj*> pWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
 	for (CObj* pObj : pWallList)
 	{
-		CRock* pRock = static_cast<CRock*>(pObj);
+		CSteelWall* pRock = static_cast<CSteelWall*>(pObj);
 		pRock->Set_CheckNeighbor(true);
 	}
 
 }
 
-int CRock::Update()
+int CSteelWall::Update()
 {
-    if (m_bDestroyed)
-        return OBJ_DESTROYED;
+	if (m_bDestroyed)
+	{
+		//올라와 있던 타일을 통행가능하도록 만든다.
+		CTileMgr::Get_Instance()->Set_TileOption(m_tInfo.fX, m_tInfo.fY, OPT_REACHABLE);
+		return OBJ_DESTROYED;
+	}
+
 
     __super::Update_Rect();
 
     return OBJ_NOEVENT;
 }
 
-void CRock::Late_Update()
+void CSteelWall::Late_Update()
 {
 	//__super::Move_Frame();
 	if (m_bCheckNeighbor)
@@ -143,10 +164,15 @@ void CRock::Late_Update()
 		Check_Neighbor();
 		m_bCheckNeighbor = false;
 	}
+
+	if (m_bBrokendown)
+	{
+		Set_Destroyed();
+	}
 	
 }
 
-void CRock::Render(HDC hDC)
+void CSteelWall::Render(HDC hDC)
 {
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 
@@ -166,11 +192,16 @@ void CRock::Render(HDC hDC)
 		RGB_PURPLE);		// 제거할 색상
 }
 
-void CRock::Release()
+void CSteelWall::Release()
+{
+
+}
+
+void CSteelWall::OnCollision(OBJID _eID, CObj* _pOther)
 {
 }
 
-void CRock::Check_Neighbor()
+void CSteelWall::Check_Neighbor()
 {
 
 	POS tTopPos{ m_tInfo.fX, m_tInfo.fY - TILECY };

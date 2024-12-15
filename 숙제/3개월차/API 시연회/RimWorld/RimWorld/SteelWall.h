@@ -1,6 +1,6 @@
 #pragma once
 #include "Obj.h"
-class CRock :
+class CSteelWall :
     public CObj
 {
 public:
@@ -14,18 +14,22 @@ public:
         END 
     };
 public:
-    CRock();
-    virtual ~CRock();
+    CSteelWall();
+    virtual ~CSteelWall();
+public:
+    void    Change_Image();
+    void    Take_Damage(float _fDamage);
 public:
     void    Set_CheckNeighbor(bool _b) { m_bCheckNeighbor = _b; }
-    void    Change_Image();
-
+    bool    Get_IsBrokenDown() { return m_bBrokendown; }
 public:
     void    Initialize() override;
     int     Update() override;
     void    Late_Update() override;
     void    Render(HDC hDC) override;
     void    Release() override;
+    void    OnCollision(OBJID _eID, CObj* _pOther) override;
+
 private:
     void    Check_Neighbor();
 
@@ -37,6 +41,11 @@ private:
     int     m_iRenderX;
     int     m_iRenderY;
 
-    bool m_bCheckNeighbor;
+    bool    m_bCheckNeighbor;
+
+    //³»±¸µµ(HP´À³¦)
+    float   m_fDurability;
+    float   m_fMaxDurability;
+    bool    m_bBrokendown;
 };
 

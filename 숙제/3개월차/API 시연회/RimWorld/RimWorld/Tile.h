@@ -10,7 +10,7 @@ public:
 
 public:
 	const TILEOPT	Get_Option() { return m_eOption; }
-	const CObj*		Get_Obj() { return m_pObj; }
+	CObj*		Get_Obj() { return m_pObj; }
 
 	void			Set_DrawID(int _iDrawID) { m_iDrawID = _iDrawID;  }
 	void			Set_Option(TILEOPT _eOption) { m_eOption = _eOption; }

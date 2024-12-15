@@ -73,8 +73,8 @@
     <ClCompile Include="ArcitectBtn.cpp">
       <Filter>01.Obj\01.UI\Button\ArcitectBtn</Filter>
     </ClCompile>
-    <ClCompile Include="Rock.cpp">
-      <Filter>01.Obj\Rock</Filter>
+    <ClCompile Include="SteelWall.cpp">
+      <Filter>01.Obj\SteelWall</Filter>
     </ClCompile>
     <ClCompile Include="PathFinder.cpp">
       <Filter>03.Design\PathFinder</Filter>
@@ -207,8 +207,8 @@
     <ClInclude Include="ArcitectBtn.h">
       <Filter>01.Obj\01.UI\Button\ArcitectBtn</Filter>
     </ClInclude>
-    <ClInclude Include="Rock.h">
-      <Filter>01.Obj\Rock</Filter>
+    <ClInclude Include="SteelWall.h">
+      <Filter>01.Obj\SteelWall</Filter>
     </ClInclude>
     <ClInclude Include="PathFinder.h">
       <Filter>03.Design\PathFinder</Filter>
@@ -328,9 +328,6 @@
     <Filter Include="02.Scene\Customize">
       <UniqueIdentifier>{bd8303d1-f563-4791-8b7d-457efa3ac5b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Rock">
-      <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Design\PathFinder">
       <UniqueIdentifier>{51a79975-0f94-45a6-b052-e9a7dc2ec024}</UniqueIdentifier>
     </Filter>
@@ -390,6 +387,9 @@
     </Filter>
     <Filter Include="01.Obj\Tree">
       <UniqueIdentifier>{ef080a2b-f9f8-4060-88ef-d978443772a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\SteelWall">
+      <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

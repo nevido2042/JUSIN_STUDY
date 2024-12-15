@@ -2,6 +2,7 @@
 #include "Projectile.h"
 #include "TimeMgr.h"
 #include "Pawn.h"
+#include "SteelWall.h"
 
 CProjectile::CProjectile()
     :m_fDamage(0.f), m_pOwner(nullptr)
@@ -59,6 +60,11 @@ void CProjectile::OnCollision(OBJID _eID, CObj* _pOther)
     if (_eID == OBJ_RIM || _eID == OBJ_MECHANOID)
     {
         static_cast<CPawn*>(_pOther)->Take_Damage(m_fDamage);
+        Set_Destroyed();
+    }
+    else if (_eID == OBJ_WALL)
+    {
+        static_cast<CSteelWall*>(_pOther)->Take_Damage(m_fDamage);
         Set_Destroyed();
     }
 }

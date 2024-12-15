@@ -51,7 +51,7 @@ bool CRangedWeapon::Try_Fire()
     {
         return false;
     }
-    CObj* pTarget = m_pTarget->Get_Target();
+    const CObj* pTarget = m_pTarget->Get_Target();
     //무기 주인의 타겟이 없으면 리턴
     if (!pTarget)
     {

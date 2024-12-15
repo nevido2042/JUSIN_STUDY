@@ -125,6 +125,16 @@ void CTileMgr::Set_TileOption(POS _tPos, TILEOPT _eOpt)
 	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Option(_eOpt);
 }
 
+void CTileMgr::Set_TileOption(float _fX, float _fY, TILEOPT _eOpt)
+{
+	int iIndex = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
+
+	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+		return;
+
+	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Option(_eOpt);
+}
+
 void CTileMgr::Set_TileObj(POS _tPos, CObj* _pObj)
 {
 	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
@@ -165,7 +175,7 @@ TILEOPT CTileMgr::Get_TileOption(int _iIndexX, int _iIndexY)
 	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
 }
 
-const CObj* CTileMgr::Get_TileObj(POS _tPos)
+CObj* CTileMgr::Get_TileObj(POS _tPos)
 {
 	int iIdx = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
 
@@ -174,7 +184,33 @@ const CObj* CTileMgr::Get_TileObj(POS _tPos)
 		return nullptr;
 	}
 		
-	const CObj * pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
+	CObj * pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
+	return pObj;
+}
+
+CObj* CTileMgr::Get_TileObj(int _iIndexX, int _iIndexY)
+{
+	int iIdx = _iIndexX + _iIndexY * TILEX;
+
+	if (0 > iIdx || TILEX * TILEY - 1 < iIdx)
+	{
+		return nullptr;
+	}
+
+	CObj* pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
+	return pObj;
+}
+
+CObj* CTileMgr::Get_TileObj(float _fX, float _fY)
+{
+	int iIdx = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
+
+	if (0 > iIdx || TILEX * TILEY - 1 < iIdx)
+	{
+		return nullptr;
+	}
+
+	CObj* pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
 	return pObj;
 }
 

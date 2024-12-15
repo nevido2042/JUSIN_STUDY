@@ -6,6 +6,7 @@
 #include "AbstractFactory.h"
 #include "KeyMgr.h"
 #include "ColonyMgr.h"
+#include "SteelWall.h"
 
 CCentipede::CCentipede()
 {
@@ -50,16 +51,28 @@ int CCentipede::Update()
     if (m_pTarget)
     {
         //타겟이 죽으면 타겟 없애기
-        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
-        if (pTarget->Get_IsDead())
+        if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
         {
-            Set_Target(nullptr);
+            if (pPawnTarget->Get_IsDead())
+            {
+                Set_Target(nullptr);
+                return OBJ_NOEVENT;
+            }
+       
         }
-        else
+        else if (CSteelWall* pWallTarget = dynamic_cast<CSteelWall*>(m_pTarget))//타겟이 Wall이고 부서졌으면
         {
-            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-            Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+            if (pWallTarget->Get_IsBrokenDown())
+            {
+                Set_Target(nullptr);
+                return OBJ_NOEVENT;
+            }
         }
+        
+        
+        //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
+        Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+        
     }
 
     if (m_bNavigating)

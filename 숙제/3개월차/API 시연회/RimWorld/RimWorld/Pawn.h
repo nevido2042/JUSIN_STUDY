@@ -27,11 +27,12 @@ protected:
     virtual void Dead();//죽었을 때 할 행동
 
 protected:
-    void    Navigate();
-    void    Calculate_MoveDir();
-    void    Measure_Target();
-    bool    IsWithinRange();//사정거리에 있는가?
-    bool    IsCanSeeTarget();//상대가 보이는가?(타겟과 자신사이에 장애물이 있으면 안보이는 것)
+    void            Navigate();
+    void            Calculate_MoveDir();
+    void            Measure_Target();
+    bool            IsWithinRange();//사정거리에 있는가?
+    bool            IsCanSeeTarget();//상대가 보이는가?(타겟과 자신사이에 장애물이 있으면 안보이는 것)
+    CObj*           Get_ObstacleToTarget();
 
 public:
     void    Initialize() override;

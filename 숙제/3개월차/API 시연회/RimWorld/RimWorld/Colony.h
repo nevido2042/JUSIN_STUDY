@@ -9,7 +9,7 @@
 #include "Tile.h"
 #include "Rim.h"
 #include "ArcitectBtn.h"
-#include "Rock.h"
+#include "SteelWall.h"
 #include "Centipede.h"
 #include "Tree.h"
 

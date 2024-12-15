@@ -41,12 +41,28 @@ void CPawn::Move_To(POS _Pos)
     //이동 할 타일의 idx를 계산해서 확인한다. Blocked이면 return;
 
     //갈 수 있으면 길찾기를 수행한다.(Astar/JPS)
-
     m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
+    //타겟이 Wall이면 길을 못찾는다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //타겟의 근처 타일을 찾아서 가게끔 해야할듯
+
 
     if (!m_NodeList.empty())
     {
         m_bNavigating = true;
+    }
+    //길을 못찾았을 경우, 타겟방향으로 총을 날리도록/타겟방향의 벽을 부수도록
+    else if (m_NodeList.empty() && Get_Target())
+    {
+        //타겟과 자신사이에서 장애물을 찾고
+        //타겟을 그 장애물로 한다.
+        Set_Target(Get_ObstacleToTarget());
+        m_bNavigating = true;
+        ////가까워지면 그 장애물을 파괴한다.
+        //CObj* pTarget = Get_Target();
+        //if (pTarget)
+        //{
+        //    Get_Target()->Set_Destroyed();
+        //}
     }
 }
 
@@ -214,8 +230,8 @@ bool CPawn::IsWithinRange()
         return false;
     }
 
-    //상대가 보이는 가?(타겟과 자신 사이에 장애물이 없는가?)
-    if (!IsCanSeeTarget())
+    //상대가 보이는 가?(타겟과 자신 사이에 장애물이 없는가?)// 상대가 벽일 경우 이 경우 무시
+    if (strcmp(typeid(*m_pTarget).name(), "class CSteelWall") && !IsCanSeeTarget()) 
     {
         return false;
     }
@@ -286,6 +302,55 @@ bool CPawn::IsCanSeeTarget()
 
     // 경로상에 장애물이 없으면 true 반환
     return true;
+}
+
+CObj* CPawn::Get_ObstacleToTarget()
+{
+    // 브레센햄 알고리즘을 사용해 장애물 여부 판단
+    int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
+    int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+
+    int iX1 = iThis_Index % TILEX;
+    int iY1 = iThis_Index / TILEX;
+
+    int iX2 = iTarget_Index % TILEX;
+    int iY2 = iTarget_Index / TILEX;
+
+    int iDistX = abs(iX2 - iX1);
+    int iDistY = abs(iY2 - iY1);
+    int iDirX = (iX1 < iX2) ? 1 : -1;
+    int iDirY = (iY1 < iY2) ? 1 : -1;
+    int iErr = iDistX - iDistY;
+
+    while (true) {
+        // 현재 타일에 장애물이 있는지 확인
+        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_BLOCKED)
+        {
+            CObj* pObj = CTileMgr::Get_Instance()->Get_TileObj(iX1, iY1);  // 장애물이 있으면 false 반환
+            return pObj;
+        }
+
+        // 목표 지점에 도달했으면 종료
+        if (iX1 == iX2 && iY1 == iY2)
+        {
+            break;
+        }
+
+        int iError = 2 * iErr;
+        if (iError > -iDistY)
+        {
+            iErr -= iDistY;
+            iX1 += iDirX;
+        }
+        if (iError < iDistX)
+        {
+            iErr += iDistX;
+            iY1 += iDirY;
+        }
+    }
+
+    // 경로상에 장애물이 없으면 nullptr 반환
+    return nullptr;
 }
 
 void CPawn::Initialize()

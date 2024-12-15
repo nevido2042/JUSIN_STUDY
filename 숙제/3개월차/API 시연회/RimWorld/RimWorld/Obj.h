@@ -12,7 +12,7 @@ public:
 	INFO			Get_Info() { return m_tInfo; }
 	const RECT*		Get_Rect() { return &m_tRect; }
 	float			Get_Angle() { return m_fAngle; }
-	CObj*			Get_Target() { return m_pTarget; }
+	CObj*		Get_Target() { return m_pTarget; }
 
 	void		Set_Pos(float _fX, float _fY)
 	{
