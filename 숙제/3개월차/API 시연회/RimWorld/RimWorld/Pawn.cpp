@@ -353,6 +353,49 @@ CObj* CPawn::Get_ObstacleToTarget()
     return nullptr;
 }
 
+// Directions: 상, 하, 좌, 우
+const int dx[4] = { 0, 0, -1, 1 };
+const int dy[4] = { -1 * TILEX, 1 * TILEX, 0, 0 };
+
+int CPawn::Find_NearestReachableTile(int iIndexX, int iIndexY)
+{
+    queue<int> q;
+    bool visited[TILEY * TILEX] = { false };
+
+    q.push(iIndexX + TILEX * iIndexY);
+    visited[iIndexX + TILEX * iIndexY] = true;
+
+    while (!q.empty()) {
+        int iIndex = q.front();
+        q.pop();
+
+        int iX = iIndex % TILEX;
+        int iY = iIndex / TILEX;
+
+        // 접근 가능한 타일 찾음
+        if (CTileMgr::Get_Instance()->Get_TileOption(iX, iY) == OPT_REACHABLE)
+        {
+            return iIndex;
+        }
+
+        // 상하좌우 탐색
+        for (int i = 0; i < 4; ++i) {
+            int nx = iX + dx[i];
+            int ny = iY + dy[i];
+
+            // 지도 범위 내에 있고 아직 방문하지 않았다면 큐에 추가
+            if (nx >= 0 && nx < TILEX && ny >= 0 && ny < TILEY && !visited[nx + ny * TILEX]) 
+            {
+                visited[nx + ny * TILEX] = true;
+                q.push(nx + ny * TILEX);
+            }
+        }
+    }
+
+    // 실패 시 -1 반환
+    return -1;
+}
+
 void CPawn::Initialize()
 {
     //HP바 생성

@@ -128,7 +128,7 @@ void CSteelWall::Initialize()
 
 	m_bCheckNeighbor = true;
 
-	m_fMaxDurability = 30.f;
+	m_fMaxDurability = 1.f;
 	m_fDurability = m_fMaxDurability;
 
 	//생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)

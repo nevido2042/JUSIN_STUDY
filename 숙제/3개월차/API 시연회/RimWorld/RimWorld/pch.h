@@ -17,6 +17,8 @@
 #include <math.h>
 #include <ctime>
 #include <typeinfo>
+#include <queue>
+
 //#include <Gdiplus.h>
 //#pragma comment(lib,"gdiplus")
 

@@ -7,6 +7,7 @@
 #include "KeyMgr.h"
 #include "ColonyMgr.h"
 #include "SteelWall.h"
+#include "TileMgr.h"
 
 CCentipede::CCentipede()
 {
@@ -50,9 +51,12 @@ int CCentipede::Update()
     //타겟 있으면 따라가기
     if (m_pTarget)
     {
-        //타겟이 죽으면 타겟 없애기
+        POS tMoveToPos{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY };
+
+        //타겟이 Pawn이라면
         if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
         {
+            //Pawn이 죽었다면
             if (pPawnTarget->Get_IsDead())
             {
                 Set_Target(nullptr);
@@ -60,18 +64,29 @@ int CCentipede::Update()
             }
        
         }
-        else if (CSteelWall* pWallTarget = dynamic_cast<CSteelWall*>(m_pTarget))//타겟이 Wall이고 부서졌으면
+        //타겟이 벽이면
+        else if (CSteelWall* pWallTarget = dynamic_cast<CSteelWall*>(m_pTarget))
         {
+            //부서졌다면
             if (pWallTarget->Get_IsBrokenDown())
             {
+                //타겟 해제
                 Set_Target(nullptr);
                 return OBJ_NOEVENT;
             }
+
+            //만약에 타겟이 벽이라면 벽 근처의 올라갈 수 있는 타일을 선택하게해야함!!!!!!! 길을 못찾음!!!!
+            //이렇게는 잘안되네, 브레즌햄으로 타겟과 이어버린다음...그중 갈수 있는 타일 선택하는게 맞을 듯
+            int iIndex = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+            iIndex = Find_NearestReachableTile(iIndex % TILEX, iIndex / TILEX);
+
+            tMoveToPos.fX = (iIndex % TILEX) * TILEX + TILECX * 0.5f;
+            tMoveToPos.fY = (iIndex / TILEY) * TILEX + TILECY * 0.5f;
         }
         
-        
+        //만약에 타겟이 벽이라면 벽 근처의 올라갈 수 있는 타일을 선택하게해야함!!!!!!!
         //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-        Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+        Move_To(tMoveToPos);
         
     }
 
