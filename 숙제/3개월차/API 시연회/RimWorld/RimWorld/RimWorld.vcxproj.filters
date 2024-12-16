@@ -391,6 +391,9 @@
     <Filter Include="01.Obj\SteelWall">
       <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Obj\Steel">
+      <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RimWorld.rc">

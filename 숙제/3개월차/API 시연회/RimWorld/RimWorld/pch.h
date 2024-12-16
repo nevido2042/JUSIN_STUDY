@@ -19,8 +19,9 @@
 #include <typeinfo>
 #include <queue>
 
-//#include <Gdiplus.h>
-//#pragma comment(lib,"gdiplus")
+#include "ole2.h"
+#include "gdiplus.h"
+#pragma comment(lib,"gdiplus")
 
 #ifdef _DEBUG
 
@@ -37,6 +38,6 @@
 #endif
 
 using namespace std;
-//using namespace Gdiplus;
+using namespace Gdiplus;
 
 #endif //PCH_H
