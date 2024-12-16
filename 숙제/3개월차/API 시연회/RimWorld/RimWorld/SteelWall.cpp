@@ -4,6 +4,8 @@
 #include "ScrollMgr.h"
 #include "TileMgr.h"
 #include "ObjMgr.h"
+#include "KeyMgr.h"
+#include "ColonyMgr.h"
 
 CSteelWall::CSteelWall()
 	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false),
@@ -168,6 +170,34 @@ void CSteelWall::Late_Update()
 	if (m_bBrokendown)
 	{
 		Set_Destroyed();
+	}
+
+	//마우스 클릭 했을 때 타겟으로 설정
+	POINT	ptMouse{};
+
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	ptMouse.x -= iScrollX;
+	ptMouse.y -= iScrollY;
+
+	if (PtInRect(&m_tRect, ptMouse))
+	{
+		//식민지 관리자가 해체모드일 경우 해체리스트에 넣는다. 
+		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON) 
+			&& CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_DECONSTRUCT)
+		{
+			//리스트에 이미 내가 존재하면 넣지 않는다.
+			
+
+
+			CColonyMgr::Get_Instance()->Push_DeconstructSet(this);
+			return;
+		}
+
 	}
 	
 }

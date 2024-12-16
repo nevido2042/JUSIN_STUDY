@@ -10,10 +10,12 @@ private:
 	virtual ~CColonyMgr();
 public:
 	void	Change_Mode(MODE _eMode);
-	
+	void	Emplace_DeconstructSet(CObj* _pObj);
 public:
 	void	Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
 	CObj*	Get_Target() { return m_pTarget; }
+	MODE	Get_Mode() { return m_eMode; }
+private:
 	void	Input_Key();
 
 public:
@@ -48,5 +50,8 @@ private:
 private:
 	CObj*	m_pTarget;
 	MODE	m_eMode;
+
+	//해체 리스트 //맵을 쓰면? 셋?
+	set<CObj*> m_DeconstructSet;
 };
 

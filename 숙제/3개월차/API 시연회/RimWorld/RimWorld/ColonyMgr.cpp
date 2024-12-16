@@ -37,6 +37,11 @@ void CColonyMgr::Change_Mode(MODE _eMode)
     m_eMode = _eMode;
 }
 
+void CColonyMgr::Push_DeconstructSet(CObj* _pObj)
+{
+    m_DeconstructSet.emplace(_pObj);
+}
+
 void CColonyMgr::Input_Key()
 {
     //화면 스크롤
@@ -82,7 +87,9 @@ void CColonyMgr::Input_Key()
             CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
         } 
     }
-    else if (CKeyMgr::Get_Instance()->Key_Down(VK_ESCAPE))
+    
+    //esc 누를 시 선택모드로 돌아가기
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_ESCAPE))
     {
         Change_Mode(MODE_SELECT);
     }
@@ -152,13 +159,32 @@ void CColonyMgr::Late_Update()
 
 void CColonyMgr::Render(HDC hDC)
 {
+    HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
+
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    //해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
+    for (CObj* pObj : m_DeconstructSet)
+    {
+        GdiTransparentBlt(hDC,
+            (int)pObj->Get_Info().fX + iScrollX - IMAGE_OFFSET_X,
+            (int)pObj->Get_Info().fY + iScrollY - IMAGE_OFFSET_Y,
+            64,
+            64,
+            hMemDC,
+            0, 0,
+            64,
+            64,
+            RGB_WHITE);
+    }
+
+    //해체 모드일 경우 마우스에 해체 그림 표시
     if (m_eMode == MODE_DECONSTRUCT)
     {
         POINT	ptMouse{};
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
-
-        HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
 
         GdiTransparentBlt(hDC,
             ptMouse.x,
