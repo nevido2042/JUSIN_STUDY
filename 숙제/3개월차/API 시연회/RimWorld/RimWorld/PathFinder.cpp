@@ -100,6 +100,11 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 			//	//가끔 타일 벗어난 값이들어옴 왜지? ex 600 611
 			//}
 
+			if (0 > iX || TILEX <= iX || 0 > iY || TILEY <= iY)
+			{
+				continue;
+			}
+
 			//벽인가?
 			CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
 				Get_TileArray()[iY][iX]);

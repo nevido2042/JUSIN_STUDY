@@ -7,8 +7,10 @@
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
 #include "TileMgr.h"
+#include "PathFinder.h"
 
 CRim::CRim()
+    :m_eState(END)
 {
 
 }
@@ -35,6 +37,8 @@ void CRim::Initialize()
     m_pRangedWeapon->Set_Target(this);
 
     Take_Damage(10.f);
+
+    m_eState = DRAFTED; //현재는 소집됬지만 추후 기본은 자유행동으로
 }
 
 int CRim::Update()
@@ -133,8 +137,8 @@ void CRim::Late_Update()
         }
     }
 
-    //식민지 관리자에 해체할 벽들이 있는지 확인
-    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty()) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만
+    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty()&& m_eState != WORKING) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -142,14 +146,28 @@ void CRim::Late_Update()
 
         for (CObj* pWall : *CColonyMgr::Get_Instance()->Get_DeconstructSet())
         {
-            CTile* pTile = CTileMgr::Get_Instance()->Find_ReachableTiles(pWall->Get_Info().fX, pWall->Get_Info().fY);
+
+            //올라갈 수 있는 타일이 있는가?
+            CObj* pTile = CTileMgr::Get_Instance()->Find_ReachableTiles(pWall->Get_Info().fX, pWall->Get_Info().fY);
             if (!pTile)
             {
-                return;
+                continue;
+            }
+            //그 타일의 길을 찾을 수 있는가?
+            list<CNode*> NodeList = CPathFinder::Get_Instance()
+                ->Find_Path(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pTile->Get_Info().fX, pTile->Get_Info().fY });
+
+            if (NodeList.empty())
+            {
+                continue;
             }
 
             Set_Target(pWall);
-            Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
+
+            m_NodeList = move(NodeList);
+            m_bNavigating = true;
+            m_eState = WORKING;
+            //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
 
     }

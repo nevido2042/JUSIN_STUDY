@@ -247,11 +247,39 @@ int CTileMgr::Get_TileIndex(float _fX, float _fY)
 	return int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
 }
 
-CTile* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
+CObj* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
 {
-	int iCheckIndex(0);//CTileMgr::Get_TileIndex(_fX, _fY);
+	int iX = int(_fX / TILECX);
+	int iY = int(_fY / TILECY);
+
+	//8πÊ«‚
+	const int arrDir[8][2] = 
+	{
+		{0,	-1},
+		{1,	-1},
+		{1,	 0}, 
+		{1,	 1}, 
+		{0,	 1}, 
+		{-1, 1},
+		{-1, 0},
+		{-1,-1}
+	};
+
+	for (int i = 0; i < 8; ++i)
+	{
+		if (CTileMgr::Get_TileOption(iX + arrDir[i][0], iY + arrDir[i][1]) == OPT_REACHABLE)
+		{
+			return CTileMgr::Get_Tile(iX + arrDir[i][0], iY + arrDir[i][1]);
+		}
+	}
+	
 
 	return nullptr;
+}
+
+CObj* CTileMgr::Get_Tile(int _iX, int _iY)
+{
+	return m_TileMap[_iY][_iX];
 }
 
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)

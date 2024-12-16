@@ -22,7 +22,8 @@ public:
 	CObj*		Get_TileObj(float _fX, float _fY);
 
 	static int		Get_TileIndex(float _fX, float _fY);
-	CTile*			Find_ReachableTiles(float _fX, float _fY);
+	CObj*			Find_ReachableTiles(float _fX, float _fY);
+	CObj*			Get_Tile(int _iX, int _iY);
 
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 	

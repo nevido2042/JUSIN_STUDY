@@ -8,6 +8,8 @@ class CRim :
     public CPawn
 {
 public:
+    enum STATE { DRAFTED, UNDRAFTED, WORKING, END };
+public:
     CRim();
     virtual ~CRim();
 
@@ -16,4 +18,7 @@ public:
     int  Update() override;
     void Late_Update() override;
     void Render(HDC hDC) override;
+
+private:
+    STATE m_eState;
 };
