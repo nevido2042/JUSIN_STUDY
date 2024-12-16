@@ -122,7 +122,11 @@ void CRim::Late_Update()
         {
             if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
             {
-                 pTarget->Set_Target(this);
+                //자기 자신이 타겟이 될 수 없음.
+                if (pTarget != this)
+                {
+                    pTarget->Set_Target(this);
+                }
             }
             return;
         }

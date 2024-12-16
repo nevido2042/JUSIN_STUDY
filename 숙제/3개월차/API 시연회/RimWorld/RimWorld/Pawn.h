@@ -33,6 +33,7 @@ protected:
     bool            IsWithinRange();//사정거리에 있는가?
     bool            IsCanSeeTarget();//상대가 보이는가?(타겟과 자신사이에 장애물이 있으면 안보이는 것)
     CObj*           Get_ObstacleToTarget();
+    int             Get_ReachableToTarget();//타겟까지 가까워지기 위해 갈 수있는 타일 찾기
     int             Find_NearestReachableTile(int iIndexX, int iIndexY);
 public:
     void    Initialize() override;

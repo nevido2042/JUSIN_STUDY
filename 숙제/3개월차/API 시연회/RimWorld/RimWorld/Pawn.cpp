@@ -353,6 +353,63 @@ CObj* CPawn::Get_ObstacleToTarget()
     return nullptr;
 }
 
+int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
+{
+    int     iDist(0);
+    int     iIndex(0);
+
+    // 브레센햄 알고리즘을 사용해 장애물 여부 판단
+    int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
+    int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+
+    int iX1 = iThis_Index % TILEX;
+    int iY1 = iThis_Index / TILEX;
+
+    int iX2 = iTarget_Index % TILEX;
+    int iY2 = iTarget_Index / TILEX;
+
+    int iDistX = abs(iX2 - iX1);
+    int iDistY = abs(iY2 - iY1);
+    int iDirX = (iX1 < iX2) ? 1 : -1;
+    int iDirY = (iY1 < iY2) ? 1 : -1;
+    int iErr = iDistX - iDistY;
+
+    while (true) {
+        // 갈수 있는 타일 있는 지 확인() //브레즌햄이 원래 못가던곳 통과해서 그런가?
+        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_REACHABLE)
+        {
+            //타겟과 가장 가까운 거리의 타일을 저장
+            int iTempDist = abs(iX1 - iX2) + abs(iY1 - iY2);
+            if (iDist == 0 || iDist > iTempDist)//아무값도 안들어가 있으면 넣는다. 또는 거리가 더 가까우면 넣는다.
+            {
+                iDist = iTempDist;
+                iIndex = iX1 + iY1 * TILEX;
+            }
+        }
+
+        // 목표 지점에 도달했으면 종료
+        if (iX1 == iX2 && iY1 == iY2)
+        {
+            break;
+        }
+
+        int iError = 2 * iErr;
+        if (iError > -iDistY)
+        {
+            iErr -= iDistY;
+            iX1 += iDirX;
+        }
+        if (iError < iDistX)
+        {
+            iErr += iDistX;
+            iY1 += iDirY;
+        }
+    }
+
+    // 경로상에 장애물이 없으면 nullptr 반환
+    return iIndex;
+}
+
 // Directions: 상, 하, 좌, 우
 const int dx[4] = { 0, 0, -1, 1 };
 const int dy[4] = { -1 * TILEX, 1 * TILEX, 0, 0 };

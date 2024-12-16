@@ -78,7 +78,7 @@ int CCentipede::Update()
             //만약에 타겟이 벽이라면 벽 근처의 올라갈 수 있는 타일을 선택하게해야함!!!!!!! 길을 못찾음!!!!
             //이렇게는 잘안되네, 브레즌햄으로 타겟과 이어버린다음...그중 갈수 있는 타일 선택하는게 맞을 듯
             int iIndex = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-            iIndex = Find_NearestReachableTile(iIndex % TILEX, iIndex / TILEX);
+            iIndex = Get_ReachableToTarget();
 
             tMoveToPos.fX = (iIndex % TILEX) * TILEX + TILECX * 0.5f;
             tMoveToPos.fY = (iIndex / TILEY) * TILEX + TILECY * 0.5f;
@@ -221,6 +221,24 @@ void CCentipede::Render(HDC hDC)
     {
         Ellipse(hDC, int(pNode->Get_Pos().fX + iScrollX - 10.f), int(pNode->Get_Pos().fY + iScrollY - 10.f),
             int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
+    }
+
+    //타겟 출력
+    if (m_pTarget)
+    {
+        // 빨간색 펜 생성
+        HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0)); // 굵기 1, 빨간색
+        HBRUSH hOldBrush = (HBRUSH)SelectObject(hDC, hBrush);       // 기존 펜 저장 및 빨간색 펜 설정
+
+        int iX = (int)m_pTarget->Get_Info().fX;
+        int iY = (int)m_pTarget->Get_Info().fY;
+
+        Ellipse(hDC, int(iX + iScrollX - 10), int(iY + iScrollY - 10),
+            int(iX + 10 + iScrollX), int(iY + 10 + iScrollY));
+
+        // 펜 정리
+    	SelectObject(hDC, hOldBrush); // 기존 펜 복원
+    	DeleteObject(hBrush);         // 빨간색 펜 삭제
     }
 
     // 변수 값을 유니코드 문자열로 변환
