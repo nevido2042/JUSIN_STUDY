@@ -231,7 +231,7 @@ bool CPawn::IsWithinRange()
     }
 
     //상대가 보이는 가?(타겟과 자신 사이에 장애물이 없는가?)// 상대가 벽일 경우 이 경우 무시
-    if (strcmp(typeid(*m_pTarget).name(), "class CSteelWall") && !IsCanSeeTarget()) 
+    if (!IsCanSeeTarget() && strcmp(typeid(*m_pTarget).name(), "class CSteelWall"))
     {
         return false;
     }
@@ -245,7 +245,8 @@ bool CPawn::IsWithinRange()
     CRangedWeapon* pRangedWeapon = static_cast<CRangedWeapon*>(m_pRangedWeapon);
     float fRange = pRangedWeapon->Get_Range();
    
-    if (m_fTargetDist < fRange)
+    //거리가 가깝거나 or 상대가 벽일 경우 걍 쏘게 하자
+    if (m_fTargetDist < fRange || !strcmp(typeid(*m_pTarget).name(), "class CSteelWall"))
     {
         //발사 시도
         pRangedWeapon->Fire();
@@ -375,39 +376,46 @@ int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
     int iErr = iDistX - iDistY;
 
     while (true) {
-        // 갈수 있는 타일 있는 지 확인() //브레즌햄이 원래 못가던곳 통과해서 그런가?
-        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_REACHABLE)
-        {
-            //타겟과 가장 가까운 거리의 타일을 저장
+        // 갈 수 있는 타일이 있는지 확인
+        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_REACHABLE) {
+            // 타겟과 가장 가까운 거리의 타일 저장
             int iTempDist = abs(iX1 - iX2) + abs(iY1 - iY2);
-            if (iDist == 0 || iDist > iTempDist)//아무값도 안들어가 있으면 넣는다. 또는 거리가 더 가까우면 넣는다.
-            {
+            if (iDist == 0 || iDist > iTempDist) {
                 iDist = iTempDist;
                 iIndex = iX1 + iY1 * TILEX;
             }
         }
 
         // 목표 지점에 도달했으면 종료
-        if (iX1 == iX2 && iY1 == iY2)
-        {
+        if (iX1 == iX2 && iY1 == iY2) {
             break;
         }
 
         int iError = 2 * iErr;
-        if (iError > -iDistY)
-        {
+        if (iError > -iDistY) {
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        if (iError < iDistX)
-        {
+        else if (iError < iDistX) {
             iErr += iDistX;
             iY1 += iDirY;
+        }
+        else {
+            // 대각선 방지: X, Y 중 하나만 이동
+            if (abs(iErr - iDistY) < abs(iErr + iDistX)) {
+                iX1 += iDirX;
+                iErr -= iDistY;
+            }
+            else {
+                iY1 += iDirY;
+                iErr += iDistX;
+            }
         }
     }
 
     // 경로상에 장애물이 없으면 nullptr 반환
     return iIndex;
+
 }
 
 // Directions: 상, 하, 좌, 우
