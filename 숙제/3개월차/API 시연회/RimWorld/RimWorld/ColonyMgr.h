@@ -3,9 +3,13 @@
 
 class CColonyMgr
 {
+public:
+	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_END };
 private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
+public:
+	void	Change_Mode(MODE _eMode);
 	
 public:
 	void	Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
@@ -42,6 +46,7 @@ private:
 	static CColonyMgr* m_pInstance;
 
 private:
-	CObj* m_pTarget;
+	CObj*	m_pTarget;
+	MODE	m_eMode;
 };
 

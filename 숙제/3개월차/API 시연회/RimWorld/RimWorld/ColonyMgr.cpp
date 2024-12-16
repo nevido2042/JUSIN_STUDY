@@ -4,17 +4,37 @@
 #include "ScrollMgr.h"
 #include "Rim.h"
 #include "TimeMgr.h"
+#include "BmpMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
 CColonyMgr::CColonyMgr()
-	:m_pTarget(nullptr)
+	:m_pTarget(nullptr), m_eMode(MODE_END)
 {
 }
 
 CColonyMgr::~CColonyMgr()
 {
     Release();
+}
+
+void CColonyMgr::Change_Mode(MODE _eMode)
+{
+    switch (_eMode)
+    {
+    case CColonyMgr::MODE_SELECT:
+        break;
+    case CColonyMgr::MODE_DECONSTRUCT:
+        //타겟을 없애고,
+        //마우스에 해체 모양 아이콘을 띄운다.
+        //마우스가 위치하는 타일에 강조표시를 띄운다.
+        m_pTarget = nullptr;
+        break;
+    default:
+        break;
+    }
+
+    m_eMode = _eMode;
 }
 
 void CColonyMgr::Input_Key()
@@ -62,11 +82,15 @@ void CColonyMgr::Input_Key()
             CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
         } 
     }
+    else if (CKeyMgr::Get_Instance()->Key_Down(VK_ESCAPE))
+    {
+        Change_Mode(MODE_SELECT);
+    }
 }
 
 void CColonyMgr::Initialize()
 {
-    
+    m_eMode = MODE_SELECT;
 }
 
 int CColonyMgr::Update()
@@ -128,6 +152,25 @@ void CColonyMgr::Late_Update()
 
 void CColonyMgr::Render(HDC hDC)
 {
+    if (m_eMode == MODE_DECONSTRUCT)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
+
+        GdiTransparentBlt(hDC,
+            ptMouse.x,
+            ptMouse.y,
+            64,
+            64,
+            hMemDC,
+            0, 0,
+            64,
+            64,
+            RGB_WHITE);
+    }
 }
 
 void CColonyMgr::Release()

@@ -29,6 +29,8 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Fast.bmp", L"TimeSpeedButton_Fast");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Superfast.bmp", L"TimeSpeedButton_Superfast");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Pause.bmp", L"TimeSpeedButton_Pause");
+    //Designations
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
 
     //Rim
     //¾ó±¼
@@ -217,6 +219,8 @@ void CColony::Render(HDC hDC)
 
     // °´Ã¼ ¸Å´ÏÀú ·»´õ¸µ
     CObjMgr::Get_Instance()->Render(hDC);
+
+    CColonyMgr::Get_Instance()->Render(hDC);
 }
 
 void CColony::Release()

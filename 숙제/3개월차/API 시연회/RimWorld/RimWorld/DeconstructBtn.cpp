@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DeconstructBtn.h"
 #include "BmpMgr.h"
+#include "ColonyMgr.h"
 
 CDeconstructBtn::CDeconstructBtn()
 {
@@ -14,6 +15,7 @@ CDeconstructBtn::~CDeconstructBtn()
 void CDeconstructBtn::On_Click()
 {
 	//해체 모드 변경
+	CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_DECONSTRUCT);
 }
 
 void CDeconstructBtn::Initialize()
