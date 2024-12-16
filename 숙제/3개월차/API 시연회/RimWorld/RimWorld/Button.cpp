@@ -12,6 +12,10 @@ CButton::~CButton()
 	Release();
 }
 
+void CButton::On_Click()
+{
+}
+
 void CButton::Initialize()
 {
 }
@@ -38,6 +42,7 @@ void CButton::Late_Update()
 	{
 		if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 		{
+			On_Click();
 			return;
 		}
 

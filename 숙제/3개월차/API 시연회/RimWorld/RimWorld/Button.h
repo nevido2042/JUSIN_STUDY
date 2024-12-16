@@ -6,6 +6,8 @@ class CButton abstract:
 public:
     CButton();
     virtual ~CButton();
+public:
+    virtual void On_Click();
 
 public:
     void Initialize() PURE;

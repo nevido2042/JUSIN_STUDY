@@ -118,6 +118,12 @@
     <ClCompile Include="Tree.cpp">
       <Filter>01.Obj\Tree</Filter>
     </ClCompile>
+    <ClCompile Include="CommandBtn.cpp">
+      <Filter>01.Obj\01.UI\Button\CommandBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="DeconstructBtn.cpp">
+      <Filter>01.Obj\01.UI\Button\DeconstructBtn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -251,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="Tree.h">
       <Filter>01.Obj\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandBtn.h">
+      <Filter>01.Obj\01.UI\Button\CommandBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="DeconstructBtn.h">
+      <Filter>01.Obj\01.UI\Button\DeconstructBtn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +405,12 @@
     </Filter>
     <Filter Include="01.Obj\Steel">
       <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\CommandBtn">
+      <UniqueIdentifier>{4a29af16-3ab1-4eb5-acb1-1f083247c30f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\DeconstructBtn">
+      <UniqueIdentifier>{7ae420fd-9f1b-42f3-8db1-2a52cc71c3a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

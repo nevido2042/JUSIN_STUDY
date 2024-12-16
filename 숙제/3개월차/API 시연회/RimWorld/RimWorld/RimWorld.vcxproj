@@ -149,6 +149,8 @@
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
     <ClInclude Include="ColonyMgr.h" />
+    <ClInclude Include="CommandBtn.h" />
+    <ClInclude Include="DeconstructBtn.h" />
     <ClInclude Include="GameSpeedBtn.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="Node.h" />
@@ -194,6 +196,8 @@
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
     <ClCompile Include="ColonyMgr.cpp" />
+    <ClCompile Include="CommandBtn.cpp" />
+    <ClCompile Include="DeconstructBtn.cpp" />
     <ClCompile Include="GameSpeedBtn.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="Node.cpp" />
