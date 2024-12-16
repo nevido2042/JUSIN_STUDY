@@ -260,14 +260,14 @@ bool CPawn::IsWithinRange()
 bool CPawn::IsCanSeeTarget()
 {
     // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    //int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
+    //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 
-    int iX1 = iThis_Index % TILEX;
-    int iY1 = iThis_Index / TILEX;
+    int iX1 = int(m_tInfo.fX / TILECX);
+    int iY1 = int(m_tInfo.fX / TILECY);
 
-    int iX2 = iTarget_Index % TILEX;
-    int iY2 = iTarget_Index / TILEX;
+    int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
+    int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
     int iDistX = abs(iX2 - iX1);
     int iDistY = abs(iY2 - iY1);
@@ -308,14 +308,14 @@ bool CPawn::IsCanSeeTarget()
 CObj* CPawn::Get_ObstacleToTarget()
 {
     // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    //int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
+    //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 
-    int iX1 = iThis_Index % TILEX;
-    int iY1 = iThis_Index / TILEX;
+    int iX1 = int(m_tInfo.fX / TILECX);
+    int iY1 = int(m_tInfo.fX / TILECY);
 
-    int iX2 = iTarget_Index % TILEX;
-    int iY2 = iTarget_Index / TILEX;
+    int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
+    int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
     int iDistX = abs(iX2 - iX1);
     int iDistY = abs(iY2 - iY1);
@@ -374,14 +374,14 @@ int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
     int     iIndex(0);
 
     // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    //int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
+    //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 
-    int iX1 = iThis_Index % TILEX;
-    int iY1 = iThis_Index / TILEX;
+    int iX1 = int(m_tInfo.fX / TILECX);
+    int iY1 = int(m_tInfo.fX / TILECY);
 
-    int iX2 = iTarget_Index % TILEX;
-    int iY2 = iTarget_Index / TILEX;
+    int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
+    int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
     int iDistX = abs(iX2 - iX1);
     int iDistY = abs(iY2 - iY1);

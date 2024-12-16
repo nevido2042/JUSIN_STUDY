@@ -6,6 +6,7 @@
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
 CTileMgr::CTileMgr()
+	:m_TileMap({ nullptr })
 {
 	
 }
@@ -248,7 +249,7 @@ int CTileMgr::Get_TileIndex(float _fX, float _fY)
 
 CTile* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
 {
-	int iCheckIndex = CTileMgr::Get_TileIndex(_fX, _fY);
+	int iCheckIndex(0);//CTileMgr::Get_TileIndex(_fX, _fY);
 
 	return nullptr;
 }
