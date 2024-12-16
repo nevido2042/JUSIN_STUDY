@@ -484,6 +484,30 @@ int CPawn::Find_NearestReachableTile(int iIndexX, int iIndexY)
     return -1;
 }
 
+bool CPawn::Is_MouseHovered()
+{
+    //마우스 클릭 했을 때 타겟으로 설정
+    POINT	ptMouse{};
+
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    ptMouse.x -= iScrollX;
+    ptMouse.y -= iScrollY;
+
+    if (PtInRect(&m_tRect, ptMouse))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void CPawn::Initialize()
 {
     //HP바 생성

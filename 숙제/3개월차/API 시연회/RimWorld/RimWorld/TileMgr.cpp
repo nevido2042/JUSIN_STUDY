@@ -2,6 +2,7 @@
 #include "TileMgr.h"
 #include "AbstractFactory.h"
 #include "ScrollMgr.h"
+#include "PathFinder.h"
 
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
@@ -247,10 +248,10 @@ int CTileMgr::Get_TileIndex(float _fX, float _fY)
 	return int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
 }
 
-CObj* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
+list<CNode*> CTileMgr::Find_ReachableTiles(POS _tStart, POS _tEnd)
 {
-	int iX = int(_fX / TILECX);
-	int iY = int(_fY / TILECY);
+	int iX = int(_tEnd.fX / TILECX);
+	int iY = int(_tEnd.fY / TILECY);
 
 	//8방향
 	const int arrDir[8][2] = 
@@ -265,16 +266,26 @@ CObj* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
 		{-1,-1}
 	};
 
+	list<CNode*> pNodeList;
+
 	for (int i = 0; i < 8; ++i)
 	{
 		if (CTileMgr::Get_TileOption(iX + arrDir[i][0], iY + arrDir[i][1]) == OPT_REACHABLE)
 		{
-			return CTileMgr::Get_Tile(iX + arrDir[i][0], iY + arrDir[i][1]);
+			//그 타일의 길을 찾을 수 있는가?
+			pNodeList = CPathFinder::Get_Instance()
+				->Find_Path(_tStart, POS{ float((iX + arrDir[i][0]) * TILECX + TILECX * 0.5f) , float((iY + arrDir[i][1]) * TILECY + TILECY * 0.5f) });
+
+			if (pNodeList.empty())
+			{
+				continue;
+			}
+
+			return pNodeList;
 		}
 	}
 	
-
-	return nullptr;
+	return pNodeList;
 }
 
 CObj* CTileMgr::Get_Tile(int _iX, int _iY)

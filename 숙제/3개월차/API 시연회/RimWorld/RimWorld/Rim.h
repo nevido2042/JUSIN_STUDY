@@ -12,13 +12,13 @@ public:
 public:
     CRim();
     virtual ~CRim();
-
 public:
     void Initialize() override;
     int  Update() override;
     void Late_Update() override;
     void Render(HDC hDC) override;
-
+private:
+    void Deconstruct();
 private:
     STATE m_eState;
 };

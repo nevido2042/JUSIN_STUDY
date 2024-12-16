@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Tile.h"
+#include "Node.h"
 
 class CTileMgr
 {
@@ -22,7 +23,7 @@ public:
 	CObj*		Get_TileObj(float _fX, float _fY);
 
 	static int		Get_TileIndex(float _fX, float _fY);
-	CObj*			Find_ReachableTiles(float _fX, float _fY);
+	list<CNode*>	Find_ReachableTiles(POS _tStart, POS _tEnd);
 	CObj*			Get_Tile(int _iX, int _iY);
 
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);

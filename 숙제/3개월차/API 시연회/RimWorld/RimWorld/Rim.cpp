@@ -52,28 +52,6 @@ int CRim::Update()
         return OBJ_NOEVENT;
     }
 
-    //타겟 있으면 따라가기
-    if (m_pTarget)
-    {
-        //타겟이 죽으면 타겟 없애기
-        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
-        if (pTarget->Get_IsDead())
-        {
-            Set_Target(nullptr);
-        }
-        else
-        {
-            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-            Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
-        }
-    }
-
-    if (m_bNavigating)
-    {
-        Navigate();
-    }
-
-
     __super::Update_Rect();
 
     return OBJ_NOEVENT;
@@ -89,32 +67,68 @@ void CRim::Late_Update()
 
     //이동방향 계산
     Calculate_MoveDir();
-    //타겟과의 거리 및 각도 계산
-    Measure_Target();
 
-    //사정 거리내에 있고 본인이 죽지 않았다면
-    if (IsWithinRange())
+    switch (m_eState)
     {
-        m_bAttack = true;
+    case CRim::DRAFTED:
+
+        //타겟 있으면 따라가기
+        if (m_pTarget)
+        {
+            //타겟이 죽으면 타겟 없애기
+            CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+            if (pTarget->Get_IsDead())
+            {
+                Set_Target(nullptr);
+            }
+            else
+            {
+                //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
+                Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+            }
+        }
+
+        //타겟과의 거리 및 각도 계산
+        Measure_Target();
+
+        //사정 거리내에 있고 본인이 죽지 않았다면
+        if (IsWithinRange())
+        {
+            m_bAttack = true;
+        }
+        else
+        {
+            m_bAttack = false;
+        }
+        break;
+    case CRim::UNDRAFTED:
+        break;
+    case CRim::WORKING:
+        Measure_Target();
+        //타겟이 가까운지 확인
+        if (m_fTargetDist < TILECX * 1.5f)
+        {
+            RequestNavStop();
+        }
+        //타겟이 가까우면 해체 시작
+        if (!m_bNavigating)
+        {
+            Deconstruct();
+        }
+        //해체 진행중인 바 생성
+        //몇초 뒤 해체 완료
+        break;
+    default:
+        break;
     }
-    else
+
+    if (m_bNavigating)
     {
-        m_bAttack = false;
+        Navigate();
     }
 
-    //마우스 클릭 했을 때 타겟으로 설정
-    POINT	ptMouse{};
-
-    GetCursorPos(&ptMouse);
-    ScreenToClient(g_hWnd, &ptMouse);
-
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-    ptMouse.x -= iScrollX;
-    ptMouse.y -= iScrollY;
-
-    if (PtInRect(&m_tRect, ptMouse))
+    //마우스가 올라가져있는가?
+    if (Is_MouseHovered())
     {
         //좌클릭은 타겟으로 설정
         if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
@@ -144,29 +158,36 @@ void CRim::Late_Update()
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
         //길을 못찾으면 해체하지말고, 길을 찾으면 해체하러가라
 
-        for (CObj* pWall : *CColonyMgr::Get_Instance()->Get_DeconstructSet())
+
+        //Set을 vector로 복사후 정렬
+        set<CObj*>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
+        
+        vector<CObj*> vecDeconstruct(DeconstructSet.begin(), DeconstructSet.end());
+
+
+        // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
+        std::sort(vecDeconstruct.begin(), vecDeconstruct.end(), [this](CObj* _Dst, CObj* _Src) {
+            float fDistA = CObj::Calculate_Dist(this, _Dst);
+            float fDistB = CObj::Calculate_Dist(this, _Src);
+            return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
+            });
+
+        //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
+        for (CObj* pWall : vecDeconstruct)
         {
+            //이동 가능한 타일이 있으면 노드리스트 반환
+            m_NodeList = move(CTileMgr::Get_Instance()
+                ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pWall->Get_Info().fX, pWall->Get_Info().fY }));
 
-            //올라갈 수 있는 타일이 있는가?
-            CObj* pTile = CTileMgr::Get_Instance()->Find_ReachableTiles(pWall->Get_Info().fX, pWall->Get_Info().fY);
-            if (!pTile)
-            {
-                continue;
-            }
-            //그 타일의 길을 찾을 수 있는가?
-            list<CNode*> NodeList = CPathFinder::Get_Instance()
-                ->Find_Path(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pTile->Get_Info().fX, pTile->Get_Info().fY });
-
-            if (NodeList.empty())
+            if (m_NodeList.empty())
             {
                 continue;
             }
 
             Set_Target(pWall);
-
-            m_NodeList = move(NodeList);
             m_bNavigating = true;
             m_eState = WORKING;
+            break;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
 
@@ -319,5 +340,11 @@ void CRim::Render(HDC hDC)
     }
 
 
+}
+
+void CRim::Deconstruct()
+{
+    m_pTarget->Set_Destroyed();
+    m_eState = UNDRAFTED;
 }
 

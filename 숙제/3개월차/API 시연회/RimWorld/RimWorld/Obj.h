@@ -7,7 +7,8 @@ class CObj
 public:
 	CObj();
 	virtual ~CObj();
-
+public:
+	static float	Calculate_Dist(CObj* _pDst, CObj* _pSrc);
 public:
 	INFO			Get_Info() { return m_tInfo; }
 	const RECT*		Get_Rect() { return &m_tRect; }

@@ -15,6 +15,18 @@ CObj::~CObj()
 	//Release();
 }
 
+float CObj::Calculate_Dist(CObj* _pDst, CObj* _pSrc)
+{
+	float fWidth(0.f), fHeight(0.f), fDist(0.f);
+
+	fWidth = _pDst->Get_Info().fX - _pSrc->Get_Info().fX;
+	fHeight = _pDst->Get_Info().fY - _pSrc->Get_Info().fY;
+
+	fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
+
+	return fDist;
+}
+
 void CObj::OnCollision(OBJID _eID, CObj* _pOther)
 {
 }

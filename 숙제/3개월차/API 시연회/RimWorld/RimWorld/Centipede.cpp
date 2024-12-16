@@ -131,18 +131,7 @@ void CCentipede::Late_Update()
     }
 
     //마우스 클릭 했을 때 타겟으로 설정
-    POINT	ptMouse{};
-
-    GetCursorPos(&ptMouse);
-    ScreenToClient(g_hWnd, &ptMouse);
-
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-    ptMouse.x -= iScrollX;
-    ptMouse.y -= iScrollY;
-
-    if (PtInRect(&m_tRect, ptMouse))
+    if (Is_MouseHovered())
     {
         //우클릭은 타겟의 공격 타겟으로 설정
         if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
