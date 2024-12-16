@@ -37,7 +37,7 @@ void CColonyMgr::Change_Mode(MODE _eMode)
     m_eMode = _eMode;
 }
 
-void CColonyMgr::Push_DeconstructSet(CObj* _pObj)
+void CColonyMgr::Emplace_DeconstructSet(CObj* _pObj)
 {
     m_DeconstructSet.emplace(_pObj);
 }

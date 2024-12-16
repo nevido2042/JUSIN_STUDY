@@ -6,6 +6,7 @@
 #include "KeyMgr.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
+#include "TileMgr.h"
 
 CRim::CRim()
 {
@@ -131,6 +132,28 @@ void CRim::Late_Update()
             return;
         }
     }
+
+    //식민지 관리자에 해체할 벽들이 있는지 확인
+    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty()) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    {
+        //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
+        //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
+        //길을 못찾으면 해체하지말고, 길을 찾으면 해체하러가라
+
+        for (CObj* pWall : *CColonyMgr::Get_Instance()->Get_DeconstructSet())
+        {
+            CTile* pTile = CTileMgr::Get_Instance()->Find_ReachableTiles(pWall->Get_Info().fX, pWall->Get_Info().fY);
+            if (!pTile)
+            {
+                return;
+            }
+
+            Set_Target(pWall);
+            Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
+        }
+
+    }
+               
 }
 
 

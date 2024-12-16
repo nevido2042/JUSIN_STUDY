@@ -219,6 +219,13 @@ int CTileMgr::Get_TileIndex(float _fX, float _fY)
 	return int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
 }
 
+CTile* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
+{
+	int iCheckIndex = CTileMgr::Get_TileIndex(_fX, _fY);
+
+	return nullptr;
+}
+
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)
 {
 	int		x = pt.x / TILECX;

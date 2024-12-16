@@ -194,7 +194,7 @@ void CSteelWall::Late_Update()
 			
 
 
-			CColonyMgr::Get_Instance()->Push_DeconstructSet(this);
+			CColonyMgr::Get_Instance()->Emplace_DeconstructSet(this);
 			return;
 		}
 

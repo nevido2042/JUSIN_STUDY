@@ -9,12 +9,13 @@ private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
 public:
-	void	Change_Mode(MODE _eMode);
-	void	Emplace_DeconstructSet(CObj* _pObj);
+	void					Change_Mode(MODE _eMode);
+	void					Emplace_DeconstructSet(CObj* _pObj);
 public:
-	void	Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
-	CObj*	Get_Target() { return m_pTarget; }
-	MODE	Get_Mode() { return m_eMode; }
+	CObj*					Get_Target() { return m_pTarget; }
+	void					Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
+	MODE					Get_Mode() { return m_eMode; }
+	const set<CObj*>*		Get_DeconstructSet() { return &m_DeconstructSet; }
 private:
 	void	Input_Key();
 
