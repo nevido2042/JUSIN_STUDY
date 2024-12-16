@@ -343,10 +343,24 @@ CObj* CPawn::Get_ObstacleToTarget()
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        if (iError < iDistX)
+        else if (iError < iDistX)
         {
             iErr += iDistX;
             iY1 += iDirY;
+        }
+        else
+        {
+            // 대각선 방지: X, Y 중 하나만 이동
+            if (abs(iErr - iDistY) < abs(iErr + iDistX))
+            {
+                iX1 += iDirX;
+                iErr -= iDistY;
+            }
+            else
+            {
+                iY1 += iDirY;
+                iErr += iDistX;
+            }
         }
     }
 
@@ -375,38 +389,47 @@ int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
     int iDirY = (iY1 < iY2) ? 1 : -1;
     int iErr = iDistX - iDistY;
 
-    while (true) {
+    while (true) 
+    {
         // 갈 수 있는 타일이 있는지 확인
-        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_REACHABLE) {
+        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_REACHABLE) 
+        {
             // 타겟과 가장 가까운 거리의 타일 저장
             int iTempDist = abs(iX1 - iX2) + abs(iY1 - iY2);
-            if (iDist == 0 || iDist > iTempDist) {
+            if (iDist == 0 || iDist > iTempDist) 
+            {
                 iDist = iTempDist;
                 iIndex = iX1 + iY1 * TILEX;
             }
         }
 
         // 목표 지점에 도달했으면 종료
-        if (iX1 == iX2 && iY1 == iY2) {
+        if (iX1 == iX2 && iY1 == iY2) 
+        {
             break;
         }
 
         int iError = 2 * iErr;
-        if (iError > -iDistY) {
+        if (iError > -iDistY) 
+        {
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        else if (iError < iDistX) {
+        else if (iError < iDistX) 
+        {
             iErr += iDistX;
             iY1 += iDirY;
         }
-        else {
+        else 
+        {
             // 대각선 방지: X, Y 중 하나만 이동
-            if (abs(iErr - iDistY) < abs(iErr + iDistX)) {
+            if (abs(iErr - iDistY) < abs(iErr + iDistX)) 
+            {
                 iX1 += iDirX;
                 iErr -= iDistY;
             }
-            else {
+            else 
+            {
                 iY1 += iDirY;
                 iErr += iDistX;
             }
