@@ -26,7 +26,7 @@ public:
 
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 	
-	const array<CObj*, TILEX* TILEY>& Get_TileArray() { return m_arrTile; }
+	const array<array<CObj*, TILEX>, TILEY>& Get_TileArray() { return m_TileMap; }
 
 	bool IsValidTile(const POS _tPos);
 public:
@@ -57,7 +57,8 @@ public:
 private:
 	static CTileMgr* m_pInstance;
 
-	array<CObj*, TILEX* TILEY>	m_arrTile;
+	//array<CObj*, TILEX* TILEY>	m_arrTile;
+	array<array<CObj*, TILEX>, TILEY>	m_TileMap;
 
 };
 

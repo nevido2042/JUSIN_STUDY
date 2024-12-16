@@ -121,7 +121,7 @@ void CColony::Initialize()
     }
 
     //림 두마리
-    for (int i = 0; i < 1; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);
@@ -141,49 +141,49 @@ void CColony::Initialize()
         CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
     }
 
-    ////림 지네로봇 두마리
-    //for (int i = 0; i < 1; ++i)
-    //{
-    //    int iX = int(rand() % TILEX);
-    //    int iY = int(rand() % TILEY);
+    //림 지네로봇 두마리
+    for (int i = 0; i < 2; ++i)
+    {
+        int iX = int(rand() % TILEX);
+        int iY = int(rand() % TILEY);
 
-    //    //안 나왔던 놈이 나올 때까지 뽑는다.
-    //    while (bVisitArray[iX + TILEX * iY])
-    //    {
-    //        iX = int(rand() % TILEX);
-    //        iY = int(rand() % TILEY);
-    //    }
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
 
-    //    bVisitArray[iX + TILEX * iY] = true;
+        bVisitArray[iX + TILEX * iY] = true;
 
-    //    POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
 
-    //    //지네
-    //    pObj = CAbstractFactory<CCentipede>::Create(tPos);
-    //    CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
-    //}
+        //지네
+        pObj = CAbstractFactory<CCentipede>::Create(tPos);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
+    }
 
-    ////나무
-    //for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
-    //{
-    //    int iX = int(rand() % TILEX);
-    //    int iY = int(rand() % TILEY);
+    //나무
+    for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
+    {
+        int iX = int(rand() % TILEX);
+        int iY = int(rand() % TILEY);
 
-    //    //안 나왔던 놈이 나올 때까지 뽑는다.
-    //    while (bVisitArray[iX + TILEX * iY])
-    //    {
-    //        iX = int(rand() % TILEX);
-    //        iY = int(rand() % TILEY);
-    //    }
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
 
-    //    bVisitArray[iX + TILEX * iY] = true;
+        bVisitArray[iX + TILEX * iY] = true;
 
-    //    POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
 
-    //    //지네
-    //    pObj = CAbstractFactory<CTree>::Create(tPos);
-    //    CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
-    //}
+        //지네
+        pObj = CAbstractFactory<CTree>::Create(tPos);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
+    }
 
 }
 

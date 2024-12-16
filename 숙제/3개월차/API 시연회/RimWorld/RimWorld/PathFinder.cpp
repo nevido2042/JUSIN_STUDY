@@ -92,8 +92,8 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 			POS NewPos(fX, fY);
 
 			//fx fy로 인덱스 계산
-			int iIdx = int(fX / TILECX) + int(fY / TILECY) * TILEX;
-
+			int iX = int(fX / TILECX);
+			int iY = int(fY / TILECY);
 			//if (TILEX * TILEY <= iIdx)
 			//{
 			//	continue;
@@ -102,7 +102,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 
 			//벽인가?
 			CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
-				Get_TileArray().at(iIdx));
+				Get_TileArray()[iY][iX]);
 
 			if (pTile->Get_Option() == OPT_BLOCKED)
 			{
@@ -412,8 +412,9 @@ void CPathFinder::Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNod
 		}
 
 		//fx fy로 인덱스 계산
-		int iIdx = int(CheckPos.fX / TILECX) + int(CheckPos.fY / TILECY) * TILEX;
-
+		//int iIdx = int(CheckPos.fX / TILECX) + int(CheckPos.fY / TILECY) * TILEX;
+		int iX = int(CheckPos.fX / TILECX);
+		int iY = int(CheckPos.fY / TILECY);
 		//if (TILEX * TILEY <= iIdx)
 		//{
 		//	continue;
@@ -422,7 +423,7 @@ void CPathFinder::Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNod
 
 		//벽인가?
 		CTile* pTile = dynamic_cast<CTile*>(CTileMgr::Get_Instance()->
-			Get_TileArray().at(iIdx));
+			Get_TileArray()[iY][iX]);
 
 		if (pTile->Get_Option() == OPT_BLOCKED)
 		{

@@ -6,7 +6,6 @@
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
 CTileMgr::CTileMgr()
-	:m_arrTile{nullptr}
 {
 	
 }
@@ -30,31 +29,41 @@ bool CTileMgr::IsValidTile(const POS _tPos)
 
 void CTileMgr::Initialize()
 {
-	for (int i = 0; i < TILEY; ++i)
+	for (int iRow = 0; iRow < TILEY; ++iRow)
 	{
-		for (int j = 0; j < TILEX; ++j)
+		for (int iCol = 0; iCol < TILEX; ++iCol)
 		{
-			float fX = (float)(j * TILECX) + (TILECX >> 1);
-			float fY = (float)(i * TILECY) + (TILECY >> 1);
+			float fX = (float)(iCol * TILECX) + (TILECX >> 1);
+			float fY = (float)(iRow * TILECY) + (TILECY >> 1);
 
 			CObj* pTile = CAbstractFactory<CTile>::Create(fX, fY);
-			m_arrTile[i * TILEX + j] = pTile;
+			m_TileMap[iRow][iCol] = pTile;
 		}
 	}
 }
 
 int CTileMgr::Update()
 {
-	for (auto& pTile : m_arrTile)
-		pTile->Update();
+	for (int iRow = 0; iRow < TILEY; ++iRow) 
+	{
+		for (int iCol = 0; iCol < TILEX; ++iCol) 
+		{
+			m_TileMap[iRow][iCol]->Update();
+		}
+	}
 
 	return 0;
 }
 
 void CTileMgr::Late_Update()
 {
-	for (auto& pTile : m_arrTile)
-		pTile->Late_Update();
+	for (int iRow = 0; iRow < TILEY; ++iRow)
+	{
+		for (int iCol = 0; iCol < TILEX; ++iCol)
+		{
+			m_TileMap[iRow][iCol]->Late_Update();
+		}
+	}
 }
 
 void CTileMgr::Render(HDC hDC)
@@ -100,117 +109,135 @@ void CTileMgr::Render(HDC hDC)
 	{
 		for (int j = iMinX; j < iMaxX; ++j)
 		{
-			int iIndex = i * TILEX + j;
-
-			if (0 > iIndex || m_arrTile.size() <= (size_t)iIndex)
+			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
+			{
 				continue;
+			}
 
-			m_arrTile[iIndex]->Render(hDC);
+			m_TileMap[i][j]->Render(hDC);
 		}
 	}
 }
 
 void CTileMgr::Release()
 {
-	for_each(m_arrTile.begin(), m_arrTile.end(), Safe_Delete<CObj*>);
+	for_each(m_TileMap.begin(), m_TileMap.end(), [](auto& row) 
+		{
+			for_each(row.begin(), row.end(), Safe_Delete<CObj*>);
+		});
 }
 
 void CTileMgr::Set_TileOption(POS _tPos, TILEOPT _eOpt)
 {
-	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+	int iX = int(_tPos.fX / TILECX);
+	int iY = int(_tPos.fY / TILECY);
 
-	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
+	{
 		return;
+	}
 
-	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Option(_eOpt);
+	static_cast<CTile*>(m_TileMap[iY][iX])->Set_Option(_eOpt);
 }
 
 void CTileMgr::Set_TileOption(float _fX, float _fY, TILEOPT _eOpt)
 {
-	int iIndex = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
+	int iX = int(_fX / TILECX);
+	int iY = int(_fY / TILECY);
 
-	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
+	{
 		return;
+	}
 
-	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Option(_eOpt);
+	static_cast<CTile*>(m_TileMap[iY][iX])->Set_Option(_eOpt);
 }
 
 void CTileMgr::Set_TileObj(POS _tPos, CObj* _pObj)
 {
-	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+	int iX = int(_tPos.fX / TILECX);
+	int iY = int(_tPos.fY / TILECY);
 
-	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
+	{
 		return;
+	}
 
-	static_cast<CTile*>(m_arrTile.at(iIndex))->Set_Obj(_pObj);
+	static_cast<CTile*>(m_TileMap[iY][iX])->Set_Obj(_pObj);
 }
 
 TILEOPT CTileMgr::Get_TileOption(POS _tPos)
 {
-	int iIndex = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+	int iX = int(_tPos.fX / TILECX);
+	int iY = int(_tPos.fY / TILECY);
 
-	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
-		return OPT_END;
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
+	{
+		return  OPT_END;
+	}
 
-	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
+	return static_cast<CTile*>(m_TileMap[iY][iX])->Get_Option();
 }
 
 TILEOPT CTileMgr::Get_TileOption(float _fX, float _fY)
 {
-	int iIndex = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
+	int iX = int(_fX / TILECX);
+	int iY = int(_fY / TILECY);
 
-	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
-		return OPT_END;
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
+	{
+		return  OPT_END;
+	}
 
-	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
+	return static_cast<CTile*>(m_TileMap[iY][iX])->Get_Option();
 }
 
 TILEOPT CTileMgr::Get_TileOption(int _iIndexX, int _iIndexY)
 {
-	int iIndex = _iIndexX + _iIndexY * TILEX;
+	if (0 > _iIndexY || TILEY <= _iIndexY || 0 > _iIndexX || TILEX <= _iIndexX)
+	{
+		return  OPT_END;
+	}
 
-	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
-		return OPT_END;
-
-	return static_cast<CTile*>(m_arrTile.at(iIndex))->Get_Option();
+	return static_cast<CTile*>(m_TileMap[_iIndexY][_iIndexX])->Get_Option();
 }
 
 CObj* CTileMgr::Get_TileObj(POS _tPos)
 {
-	int iIdx = int(_tPos.fX / TILECX) + int(_tPos.fY / TILECY) * TILEX;
+	int iX = int(_tPos.fX / TILECX);
+	int iY = int(_tPos.fY / TILECY);
 
-	if (0 > iIdx || TILEX * TILEY - 1 < iIdx)
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
 	{
-		return nullptr;
+		return  nullptr;
 	}
 		
-	CObj * pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
+	CObj* pObj = static_cast<CTile*>(m_TileMap[iY][iX])->Get_Obj();
 	return pObj;
 }
 
 CObj* CTileMgr::Get_TileObj(int _iIndexX, int _iIndexY)
 {
-	int iIdx = _iIndexX + _iIndexY * TILEX;
-
-	if (0 > iIdx || TILEX * TILEY - 1 < iIdx)
+	if (0 > _iIndexY || TILEY <= _iIndexY || 0 > _iIndexX || TILEX <= _iIndexX)
 	{
-		return nullptr;
+		return  nullptr;
 	}
 
-	CObj* pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
+	CObj* pObj = static_cast<CTile*>(m_TileMap[_iIndexY][_iIndexX])->Get_Obj();
 	return pObj;
 }
 
 CObj* CTileMgr::Get_TileObj(float _fX, float _fY)
 {
-	int iIdx = int(_fX / TILECX) + int(_fY / TILECY) * TILEX;
+	int iX = int(_fX / TILECX);
+	int iY = int(_fY / TILECY);
 
-	if (0 > iIdx || TILEX * TILEY - 1 < iIdx)
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
 	{
-		return nullptr;
+		return  nullptr;
 	}
 
-	CObj* pObj = static_cast<CTile*>(m_arrTile.at(iIdx))->Get_Obj();
+	CObj* pObj = static_cast<CTile*>(m_TileMap[iY][iX])->Get_Obj();
 	return pObj;
 }
 
@@ -228,13 +255,13 @@ CTile* CTileMgr::Find_ReachableTiles(float _fX, float _fY)
 
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)
 {
-	int		x = pt.x / TILECX;
+	/*int		x = pt.x / TILECX;
 	int		y = pt.y / TILECY;
 
 	int	iIndex = y * TILEX + x;
 
 	if (0 > iIndex || (size_t)iIndex >= m_arrTile.size())
-		return;
+		return;*/
 
 	/*dynamic_cast<CTile*>(m_arrTile[iIndex])->Set_DrawID(iDrawID);
 	dynamic_cast<CTile*>(m_arrTile[iIndex])->Set_Option(iOption);*/
