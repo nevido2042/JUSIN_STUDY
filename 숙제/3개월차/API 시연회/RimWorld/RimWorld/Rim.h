@@ -21,13 +21,16 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
 private:
-    void Deconstruct();
     //소집된 상태일 때
     void Drafed();
     //소집 안된 상태 일 때
     void Undrafed();
     //일하는 중 일때
     void Work();
+
+private:
+    void Check_DeconstructWork();
+    void Check_ConstructWork();
 private:
     STATE   m_eState;
     bool    m_bFindingTask;

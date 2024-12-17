@@ -146,7 +146,8 @@ void CColonyMgr::Late_Update()
     Control_Target();
 
     //이거 Late_Update 호출 순서에 따라 달라질수 있음(ObjMgr보다 늦게 호출되어야함)
-    //새로운 작업이 들어왔는지 나타내는 불변수
+    //새로운 작업이 들어왔는지 나타내는 불변수                     //개선 필요함 이상함 매우 불안한 코드
+    //림이 주기적으로 할일 이 있는지 확인하게하는게 맞을듯?
     if (m_bNewTaskAdded)
     {
         m_bNewTaskAdded = false;

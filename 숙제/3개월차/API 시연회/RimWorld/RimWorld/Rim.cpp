@@ -285,12 +285,6 @@ void CRim::Render(HDC hDC)
 
 }
 
-void CRim::Deconstruct()
-{
-    m_pTarget->Set_Destroyed();
-    m_eState = UNDRAFTED;
-}
-
 void CRim::Drafed()
 {
     //사정 거리내에 있고 본인이 죽지 않았다면
@@ -331,13 +325,42 @@ void CRim::Undrafed()
         m_bFindingTask = true;
     }
 
+    //Check_DeconstructWork();
+    Check_ConstructWork();
+}
+
+void CRim::Work()
+{
+    //타겟이 가까운지 확인
+    if (m_fTargetDist < TILECX * 1.1f)
+    {
+        RequestNavStop();
+        
+    }
+    //타겟이 가까우면 해체 시작 //이거 뭔가 이상함~~~~~~~~~~~~~개선 필요
+    if (!m_bNavigating)
+    {
+        //건설하는거
+
+
+        //해체 하는거
+        /*CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+        pWall->Set_IsBrokenDown();
+        m_eState = UNDRAFTED;*/
+    }
+
+    //해체 진행중인 바 생성
+    //몇초 뒤 해체 완료
+}
+
+void CRim::Check_DeconstructWork()
+{
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
     if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty() && m_eState == UNDRAFTED && m_bFindingTask) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
         //길을 못찾으면 해체하지말고, 길을 찾으면 해체하러가라
-
 
         //Set을 vector로 복사후 정렬
         set<CObj*>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
@@ -373,25 +396,52 @@ void CRim::Undrafed()
 
         //작업 할수 있는 벽을 못찾음.
         m_bFindingTask = false;
-
     }
 }
 
-void CRim::Work()
+void CRim::Check_ConstructWork()
 {
-    //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.5f)
+    //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
+    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && m_eState == UNDRAFTED && m_bFindingTask) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
-        RequestNavStop();
-        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
-        pWall->Set_IsBrokenDown();
+        //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
+        //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
+        //길을 못찾으면 해체하지말고, 길을 찾으면 해체하러가라
+
+        //Set을 vector로 복사후 정렬
+        set<CObj*>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
+
+        vector<CObj*> vecConstruct(ConstructSet.begin(), ConstructSet.end());
+
+
+        // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
+        std::sort(vecConstruct.begin(), vecConstruct.end(), [this](CObj* _Dst, CObj* _Src) {
+            float fDistA = CObj::Calculate_Dist(this, _Dst);
+            float fDistB = CObj::Calculate_Dist(this, _Src);
+            return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
+            });
+
+        //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
+        for (CObj* pTile : vecConstruct)
+        {
+            //이동 가능한 타일이 있으면 노드리스트 반환
+            m_NodeList = move(CTileMgr::Get_Instance()
+                ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pTile->Get_Info().fX, pTile->Get_Info().fY }));
+
+            if (m_NodeList.empty())
+            {
+                continue;
+            }
+
+            Set_Target(pTile);
+            m_bNavigating = true;
+            m_eState = WORKING;
+            return;
+            //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
+        }
+
+        //작업 할수 있는 벽을 못찾음.
+        m_bFindingTask = false;
     }
-    //타겟이 가까우면 해체 시작
-    if (!m_bNavigating)
-    {
-        Deconstruct();
-    }
-    //해체 진행중인 바 생성
-    //몇초 뒤 해체 완료
 }
 

@@ -26,7 +26,7 @@ public:
 		return &m_ConstructSet;
 	}
 
-	bool					Get_NewTaskAdded() { return m_bNewTaskAdded; }
+	bool	Get_NewTaskAdded() { return m_bNewTaskAdded; }
 private:
 	void	Input_Key();
 
