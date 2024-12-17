@@ -15,6 +15,7 @@ CSteelWallBtn::~CSteelWallBtn()
 void CSteelWallBtn::On_Click()
 {
 	//건축 모드 변경
+	CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_CONSTRUCT);
 }
 
 void CSteelWallBtn::Initialize()

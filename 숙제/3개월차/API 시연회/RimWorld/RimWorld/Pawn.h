@@ -35,7 +35,7 @@ protected:
     CObj*           Get_ObstacleToTarget();
     int             Get_ReachableToTarget();//타겟까지 가까워지기 위해 갈 수있는 타일 찾기
     int             Find_NearestReachableTile(int iIndexX, int iIndexY);
-    bool            Is_MouseHovered();
+
 public:
     void    Initialize() override;
     int     Update() override;

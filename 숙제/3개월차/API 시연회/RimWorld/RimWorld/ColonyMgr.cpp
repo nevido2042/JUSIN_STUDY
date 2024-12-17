@@ -30,6 +30,12 @@ void CColonyMgr::Change_Mode(MODE _eMode)
         //마우스가 위치하는 타일에 강조표시를 띄운다.
         m_pTarget = nullptr;
         break;
+    case CColonyMgr::MODE_CONSTRUCT:
+        //타겟을 없애고,
+        //마우스에 철벽 모양 아이콘을 띄운다.
+        //마우스가 위치하는 타일에 강조표시를 띄운다.
+        m_pTarget = nullptr;
+        break;
     default:
         break;
     }
@@ -40,6 +46,12 @@ void CColonyMgr::Change_Mode(MODE _eMode)
 void CColonyMgr::Emplace_DeconstructSet(CObj* _pObj)
 {
     m_DeconstructSet.emplace(_pObj);
+    m_bNewTaskAdded = true;
+}
+
+void CColonyMgr::Emplace_ConstructSet(CObj* _pObj)
+{
+    m_ConstructSet.emplace(_pObj);
     m_bNewTaskAdded = true;
 }
 
@@ -143,7 +155,8 @@ void CColonyMgr::Late_Update()
 
 void CColonyMgr::Render(HDC hDC)
 {
-    HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
+    HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
+    HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
@@ -156,11 +169,23 @@ void CColonyMgr::Render(HDC hDC)
             (int)pObj->Get_Info().fY + iScrollY - IMAGE_OFFSET_Y,
             64,
             64,
-            hMemDC,
+            hDeconstructDC,
             0, 0,
             64,
             64,
             RGB_WHITE);
+    }
+    //건설할 벽들 표시
+    for (CObj* pObj : m_ConstructSet)
+    {
+        BitBlt(hDC,
+            (int)pObj->Get_Info().fX + iScrollX - 8,
+            (int)pObj->Get_Info().fY + iScrollY - 16,
+            32,
+            32,
+            hSteelWallDC,
+            0, 0,
+            SRCCOPY);
     }
 
     //해체 모드일 경우 마우스에 해체 그림 표시
@@ -175,11 +200,26 @@ void CColonyMgr::Render(HDC hDC)
             ptMouse.y,
             64,
             64,
-            hMemDC,
+            hDeconstructDC,
             0, 0,
             64,
             64,
             RGB_WHITE);
+    }
+    else if (m_eMode == MODE_CONSTRUCT)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        BitBlt(hDC,
+            ptMouse.x,
+            ptMouse.y,
+            64,
+            64,
+            hSteelWallDC,
+            0, 0,
+            SRCCOPY);
     }
 }
 

@@ -4,13 +4,14 @@
 class CColonyMgr
 {
 public:
-	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_END };
+	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_CONSTRUCT, MODE_END };
 private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
 public:
 	void					Change_Mode(MODE _eMode);
 	void					Emplace_DeconstructSet(CObj* _pObj);
+	void					Emplace_ConstructSet(CObj* _pObj);
 public:
 	CObj*					Get_Target() { return m_pTarget; }
 	void					Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
@@ -19,6 +20,10 @@ public:
 	set<CObj*>*				Get_DeconstructSet() 
 	{ 
 		return &m_DeconstructSet; 
+	}
+	set<CObj*>* Get_ConstructSet()
+	{
+		return &m_ConstructSet;
 	}
 
 	bool					Get_NewTaskAdded() { return m_bNewTaskAdded; }
@@ -61,6 +66,7 @@ private:
 
 	//해체 리스트 //맵을 쓰면? 셋?
 	set<CObj*>	m_DeconstructSet;
+	set<CObj*>	m_ConstructSet;
 	bool		m_bNewTaskAdded;
 };
 

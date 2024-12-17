@@ -2,6 +2,8 @@
 #include "Tile.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
+#include "ColonyMgr.h"
+#include "KeyMgr.h"
 
 CTile::CTile() : m_eOption(OPT_END), m_pObj(nullptr)
 {
@@ -34,7 +36,15 @@ int CTile::Update()
 
 void CTile::Late_Update()
 {
-
+	if (Is_MouseHovered() && 
+		CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_CONSTRUCT&&
+		!m_pObj)//타일위에 벽이 없을때
+	{
+		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
+		{
+			CColonyMgr::Get_Instance()->Emplace_ConstructSet(this);//건설 목록에 추가
+		}
+	}
 }
 
 void CTile::Render(HDC hDC)

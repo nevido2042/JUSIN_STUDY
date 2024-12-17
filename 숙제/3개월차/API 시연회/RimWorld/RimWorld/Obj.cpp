@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Obj.h"
+#include "ScrollMgr.h"
 
 CObj::CObj() : m_fSpeed(0.f), m_eDir(DIR_END), m_bDestroyed(false),
 m_fAngle(0.f), m_fDistance(0.f), m_pTarget(nullptr), m_pImgKey(nullptr),
@@ -25,6 +26,30 @@ float CObj::Calculate_Dist(CObj* _pDst, CObj* _pSrc)
 	fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
 
 	return fDist;
+}
+
+bool CObj::Is_MouseHovered()
+{
+	//마우스 클릭 했을 때 타겟으로 설정
+	POINT	ptMouse{};
+
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	ptMouse.x -= iScrollX;
+	ptMouse.y -= iScrollY;
+
+	if (PtInRect(&m_tRect, ptMouse))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void CObj::OnCollision(OBJID _eID, CObj* _pOther)
