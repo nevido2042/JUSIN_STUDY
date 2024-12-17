@@ -8,7 +8,7 @@ class CRim :
     public CPawn
 {
 public:
-    enum STATE { DRAFTED, UNDRAFTED, WORKING, END };
+    enum STATE { DRAFTED, UNDRAFTED, DECONSTRUCTING, CONSTRUCTING, END };
 public:
     CRim();
     virtual ~CRim();
@@ -25,8 +25,11 @@ private:
     void Drafed();
     //소집 안된 상태 일 때
     void Undrafed();
-    //일하는 중 일때
-    void Work();
+    //해체 중일때
+    void Deconstruct();
+    //건설 중일때
+    void Construct();
+
 
 private:
     void Check_DeconstructWork();

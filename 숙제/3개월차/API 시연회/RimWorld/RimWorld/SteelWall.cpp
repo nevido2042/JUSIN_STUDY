@@ -149,6 +149,9 @@ int CSteelWall::Update()
 	{
 		//올라와 있던 타일을 통행가능하도록 만든다.
 		CTileMgr::Get_Instance()->Set_TileOption(m_tInfo.fX, m_tInfo.fY, OPT_REACHABLE);
+		//해당 타일위에 있는 Obj를  nullptr로 만든다.
+		CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, nullptr);
+
 		return OBJ_DESTROYED;
 	}
 
@@ -208,8 +211,9 @@ void CSteelWall::Render(HDC hDC)
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
-		m_tRect.left + iScrollX,	// 복사 받을 위치 좌표 X, Y	
-		m_tRect.top + iScrollY,
+		m_tRect.left + iScrollX -8
+		,	// 복사 받을 위치 좌표 X, Y	
+		m_tRect.top + iScrollY -8,
 		80,			// 복사 받을 이미지의 가로, 세로
 		80,
 		hMemDC,						// 복사할 이미지 DC	

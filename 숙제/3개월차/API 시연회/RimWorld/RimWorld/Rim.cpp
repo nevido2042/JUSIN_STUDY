@@ -48,7 +48,7 @@ void CRim::Initialize()
 
     m_eState = UNDRAFTED; //현재는 소집됬지만 추후 기본은 자유행동으로
 
-    m_fTaskCheckInterval = 1.f;
+    m_fTaskCheckInterval = 100.f;
 }
 
 int CRim::Update()
@@ -96,8 +96,11 @@ void CRim::Late_Update()
     case CRim::UNDRAFTED:
         Undrafed();
         break;
-    case CRim::WORKING:
-        Work();
+    case CRim::DECONSTRUCTING:
+        Deconstruct();
+        break;
+    case CRim::CONSTRUCTING:
+        Construct();
         break;
     default:
         break;
@@ -289,6 +292,28 @@ void CRim::Render(HDC hDC)
     // 문자열 출력 (유니코드)
     TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 
+    switch (m_eState)
+    {
+    case CRim::DRAFTED:
+        wsprintf(buffer, L"m_eState: %s", L"DRAFTED");
+        break;
+    case CRim::UNDRAFTED:
+        wsprintf(buffer, L"m_eState: %s", L"UNDRAFTED");
+        break;
+    case CRim::CONSTRUCTING:
+        wsprintf(buffer, L"m_eState: %s", L"CONSTRUCTING");
+        break;
+    case CRim::DECONSTRUCTING:
+        wsprintf(buffer, L"m_eState: %s", L"DECONSTRUCTING");
+        break;
+    case CRim::END:
+        break;
+    default:
+        break;
+    }
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 40), buffer, lstrlenW(buffer));
+
 }
 
 void CRim::Drafed()
@@ -324,21 +349,53 @@ void CRim::Drafed()
 
 void CRim::Undrafed()
 {
-    //작업을 체크할 시간이 됬다면
+    //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
+    //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
+    // 
+    //####콜로니 매니저에서 작업리스트 바뀌었다고 알려주면?<이게 맞는듯?>
+    //####콜로니 매니저에서 작업이 바뀌었을 때(추가, 삭제) 모든 림에게, 작업 확인하라 지시
+
+    //작업을 체크할 시간이 됬다면(이거 빼버리고)
     if (m_fElapsedTimeCheck > m_fTaskCheckInterval)
     {
         Check_ConstructWork();
-        //Check_DeconstructWork();
-    }
-
-
-    
+        Check_DeconstructWork();
+        m_fElapsedTimeCheck = 0.f;
+    } 
 }
 
-void CRim::Work()
+void CRim::Deconstruct()
 {
     //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.1f)
+    if (m_fTargetDist < TILECX * 1.5f)
+    {
+        RequestNavStop();
+
+    }
+    //타겟이 가까우면 해체 시작 //네비게이션 멈출때 마다 타겟 벽돌 다 삭제하는 버그~~~~~~~~~~~~~개선 필요
+    //####옆 타일에 있는지 체크해야하나?
+    //왜 타겟이 중간에 쓰레기값 되지?
+    if (!m_bNavigating)
+    {
+        if (!m_pTarget)
+        {
+            return;
+        }
+
+        //해체 하는거
+        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+        pWall->Set_IsBrokenDown();
+        m_eState = UNDRAFTED;
+    }
+
+    //해체 진행중인 바 생성
+    //몇초 뒤 해체 완료
+}
+
+void CRim::Construct()
+{
+    //타겟이 가까운지 확인
+    if (m_fTargetDist < TILECX * 1.5f)
     {
         RequestNavStop();
         
@@ -360,23 +417,16 @@ void CRim::Work()
             m_eState = UNDRAFTED;
             return;
         }
-        // 
         //건설하는거
         CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
         CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
         CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
         CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
-        m_eState = UNDRAFTED;
+
         //작업삭제    
+        m_eState = UNDRAFTED;
         CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
         m_pTarget = nullptr;
-
-
-
-        //해체 하는거
-        //CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
-        //pWall->Set_IsBrokenDown();
-        //m_eState = UNDRAFTED;
     }
 
     //해체 진행중인 바 생성
@@ -419,7 +469,7 @@ void CRim::Check_DeconstructWork()
 
             Set_Target(pWall);
             m_bNavigating = true;
-            m_eState = WORKING;
+            m_eState = DECONSTRUCTING;
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
@@ -462,7 +512,7 @@ void CRim::Check_ConstructWork()
 
             Set_Target(pTile);
             m_bNavigating = true;
-            m_eState = WORKING;
+            m_eState = CONSTRUCTING;
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
