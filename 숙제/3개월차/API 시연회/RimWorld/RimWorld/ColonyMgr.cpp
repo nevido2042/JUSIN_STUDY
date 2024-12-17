@@ -98,11 +98,11 @@ void CColonyMgr::Input_Key()
             {
                 if (pTargetRim->Get_State() == CRim::DRAFTED)
                 {
-                    pTargetRim->Set_State(CRim::UNDRAFTED);
+                    pTargetRim->Change_State(CRim::UNDRAFTED);
                 }
                 else
                 {
-                    pTargetRim->Set_State(CRim::DRAFTED);
+                    pTargetRim->Change_State(CRim::DRAFTED);
                 }  
             }
         }
@@ -211,8 +211,6 @@ void CColonyMgr::Control_Target()
             {
                 return;
             }
-
-
             //마우스 좌표를 잘 깎아서 넣어야 한다.
 
             float fX = float(ptMouse.x - iScrollX);
