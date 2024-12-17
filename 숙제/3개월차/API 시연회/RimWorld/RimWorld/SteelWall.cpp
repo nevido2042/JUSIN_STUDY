@@ -190,9 +190,6 @@ void CSteelWall::Late_Update()
 		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON) 
 			&& CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_DECONSTRUCT)
 		{
-			//리스트에 이미 내가 존재하면 넣지 않는다.
-			
-
 
 			CColonyMgr::Get_Instance()->Emplace_DeconstructSet(this);
 			return;

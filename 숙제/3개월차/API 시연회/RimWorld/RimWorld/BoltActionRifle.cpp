@@ -4,6 +4,7 @@
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
 #include "ScrollMgr.h"
+#include "Rim.h"
 
 CBoltActionRifle::CBoltActionRifle()
 {
@@ -28,6 +29,18 @@ void CBoltActionRifle::Fire()
 
 void CBoltActionRifle::Render(HDC hDC)
 {
+    //림이 소집상태가 아니면 무기 출력 하지 않도록
+    if (m_pTarget)
+    {
+        if (CRim* pTargetRim = dynamic_cast<CRim*>(m_pTarget))
+        {
+            if (pTargetRim->Get_State() != CRim::DRAFTED)
+            {
+                return;
+            }
+        }
+    }
+
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 

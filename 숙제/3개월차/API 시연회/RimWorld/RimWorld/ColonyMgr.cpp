@@ -9,7 +9,7 @@
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
 CColonyMgr::CColonyMgr()
-	:m_pTarget(nullptr), m_eMode(MODE_END)
+	:m_pTarget(nullptr), m_eMode(MODE_END), m_bNewTaskAdded(false)
 {
 }
 
@@ -40,6 +40,7 @@ void CColonyMgr::Change_Mode(MODE _eMode)
 void CColonyMgr::Emplace_DeconstructSet(CObj* _pObj)
 {
     m_DeconstructSet.emplace(_pObj);
+    m_bNewTaskAdded = true;
 }
 
 void CColonyMgr::Input_Key()
@@ -88,6 +89,25 @@ void CColonyMgr::Input_Key()
         } 
     }
     
+    //R 누를 시 림 소집/비소집 상태 변경
+    if (CKeyMgr::Get_Instance()->Key_Down('R'))
+    {
+        if (m_pTarget)
+        {
+            if (CRim* pTargetRim = dynamic_cast<CRim*>(m_pTarget))
+            {
+                if (pTargetRim->Get_State() == CRim::DRAFTED)
+                {
+                    pTargetRim->Set_State(CRim::UNDRAFTED);
+                }
+                else
+                {
+                    pTargetRim->Set_State(CRim::DRAFTED);
+                }  
+            }
+        }
+    }
+
     //esc 누를 시 선택모드로 돌아가기
     if (CKeyMgr::Get_Instance()->Key_Down(VK_ESCAPE))
     {
@@ -111,49 +131,13 @@ void CColonyMgr::Late_Update()
 {
     CScrollMgr::Get_Instance()->Scroll_Lock();
 
-    if (CKeyMgr::Get_Instance()->Key_Down(VK_RBUTTON) && m_pTarget)
+    Control_Target();
+
+    //이거 Late_Update 호출 순서에 따라 달라질수 있음(ObjMgr보다 늦게 호출되어야함)
+    //새로운 작업이 들어왔는지 나타내는 불변수
+    if (m_bNewTaskAdded)
     {
-        int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-        int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-        //마우스 입력
-        SetCapture(g_hWnd);
-        POINT	ptMouse{};
-        GetCursorPos(&ptMouse);
-        ScreenToClient(g_hWnd, &ptMouse);
-
-        RECT tClientRect;
-        GetClientRect(g_hWnd, &tClientRect);
-
-        if (PtInRect(&tClientRect, ptMouse))
-        {
-            //마우스 좌표를 잘 깎아서 넣어야 한다.
-
-            float fX = float(ptMouse.x - iScrollX);
-            float fY = float(ptMouse.y - iScrollY);
-
-            fX = float(fX -(int)fX % TILECX + TILECX * 0.5f);
-            fY = float(fY -(int)fY % TILECY + TILECY * 0.5f);
-            //Pawn을 클릭했으면 타겟으로 설정하고 공격명령 내려야함
-            //타일을 클릭햇으면 이동시키고, 공격명령 취소, 타겟 제거
-            CRim* pTargetRim = static_cast<CRim*>(m_pTarget);
-            
-            //네비게이팅 중이었으면
-            if (pTargetRim->Get_IsNavigating())
-            {
-                //네비게이팅 종료 요청을 보낸다.
-                pTargetRim->RequestNavStop();
-            }
-            pTargetRim->Move_To(POS{ fX, fY });
-            //림이 공격 중이었고 타겠도 있었다면 해제
-            if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())
-            {
-                pTargetRim->Set_Target(nullptr);
-                pTargetRim->Set_IsAttack(false);
-            }   
-        }
-
-        ReleaseCapture();
+        m_bNewTaskAdded = false;
     }
 }
 
@@ -201,4 +185,60 @@ void CColonyMgr::Render(HDC hDC)
 
 void CColonyMgr::Release()
 {
+}
+
+void CColonyMgr::Control_Target()
+{
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_RBUTTON) && m_pTarget)
+    {
+        int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+        int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+        //마우스 입력
+        SetCapture(g_hWnd);
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        RECT tClientRect;
+        GetClientRect(g_hWnd, &tClientRect);
+
+        if (PtInRect(&tClientRect, ptMouse))
+        {
+            CRim* pTargetRim = static_cast<CRim*>(m_pTarget);
+            //만약 Rim이 소집상태가 아니라면 임의적으로 움직이지 못하도록
+            if (pTargetRim->Get_State() != CRim::DRAFTED)
+            {
+                return;
+            }
+
+
+            //마우스 좌표를 잘 깎아서 넣어야 한다.
+
+            float fX = float(ptMouse.x - iScrollX);
+            float fY = float(ptMouse.y - iScrollY);
+
+            fX = float(fX - (int)fX % TILECX + TILECX * 0.5f);
+            fY = float(fY - (int)fY % TILECY + TILECY * 0.5f);
+            //Pawn을 클릭했으면 타겟으로 설정하고 공격명령 내려야함
+            //타일을 클릭햇으면 이동시키고, 공격명령 취소, 타겟 제거
+
+
+            //네비게이팅 중이었으면
+            if (pTargetRim->Get_IsNavigating())
+            {
+                //네비게이팅 종료 요청을 보낸다.
+                pTargetRim->RequestNavStop();
+            }
+            pTargetRim->Move_To(POS{ fX, fY });
+            //림이 공격 중이었고 타겠도 있었다면 해제
+            if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())
+            {
+                pTargetRim->Set_Target(nullptr);
+                pTargetRim->Set_IsAttack(false);
+            }
+        }
+
+        ReleaseCapture();
+    }
 }
