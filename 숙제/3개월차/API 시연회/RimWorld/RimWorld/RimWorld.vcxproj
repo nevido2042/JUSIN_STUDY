@@ -159,6 +159,8 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="SteelWall.h" />
+    <ClInclude Include="SteelWallBtn.h" />
+    <ClInclude Include="StructureBtn.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMgr.h" />
     <ClInclude Include="Customize.h" />
@@ -206,6 +208,8 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="SteelWall.cpp" />
+    <ClCompile Include="SteelWallBtn.cpp" />
+    <ClCompile Include="StructureBtn.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMgr.cpp" />
     <ClCompile Include="Customize.cpp" />

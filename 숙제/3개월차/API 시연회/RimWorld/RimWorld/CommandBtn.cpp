@@ -2,6 +2,7 @@
 #include "CommandBtn.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
+#include "ArcitectBtn.h"
 
 CCommandBtn::CCommandBtn()
 	:m_bActivate(false), m_pDeconstructBtn(nullptr)
@@ -32,6 +33,15 @@ void CCommandBtn::Destroy_DeconstructBtn()
 	}
 }
 
+void CCommandBtn::Set_Activate(bool _bActivate)
+{
+	if (_bActivate == false)
+	{
+		m_bActivate = _bActivate;
+		Destroy_DeconstructBtn();
+	}
+}
+
 void CCommandBtn::On_Click()
 {
 	if (m_bActivate)
@@ -41,6 +51,9 @@ void CCommandBtn::On_Click()
 	}
 	else
 	{
+		CArcitectBtn* pArcitectBtn = static_cast<CArcitectBtn*>(m_pParent);
+		static_cast<CButton*>(pArcitectBtn->m_pStructureBtn)->Set_Activate(false);
+
 		m_bActivate = true;
 		Create_DeconstructBtn();
 	}

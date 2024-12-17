@@ -1,25 +1,25 @@
 #pragma once
 #include "Button.h"
 
-#include "DeconstructBtn.h"
+#include "SteelWallBtn.h"
 
-class CCommandBtn :
+class CStructureBtn :
     public CButton
 {
 public:
-    CCommandBtn();
-    virtual ~CCommandBtn();
+    CStructureBtn();
+    virtual ~CStructureBtn();
 public:
-    void Create_DeconstructBtn();
-    void Destroy_DeconstructBtn();
-    void Set_Activate(bool _bActivate);
+    void Create_SteelWallBtn();
+    void Destroy_SteelWallBtn();
 public:
     void Initialize() override;
     void On_Click() override;
     void Release() override;
+    void Set_Activate(bool _bActivate) override;
     //해체버튼을 만들지 말지 확인하는 것
     bool    m_bActivate;
 
-    CObj*   m_pDeconstructBtn;
+    CObj*   m_pSteelBtn;
 };
 

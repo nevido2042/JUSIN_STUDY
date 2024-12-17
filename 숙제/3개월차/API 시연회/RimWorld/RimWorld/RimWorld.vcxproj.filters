@@ -119,10 +119,16 @@
       <Filter>01.Obj\Tree</Filter>
     </ClCompile>
     <ClCompile Include="CommandBtn.cpp">
-      <Filter>01.Obj\01.UI\Button\CommandBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\CommandBtn</Filter>
     </ClCompile>
     <ClCompile Include="DeconstructBtn.cpp">
-      <Filter>01.Obj\01.UI\Button\DeconstructBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\CommandBtn\DeconstructBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="StructureBtn.cpp">
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="SteelWallBtn.cpp">
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,10 +265,16 @@
       <Filter>01.Obj\Tree</Filter>
     </ClInclude>
     <ClInclude Include="CommandBtn.h">
-      <Filter>01.Obj\01.UI\Button\CommandBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\CommandBtn</Filter>
     </ClInclude>
     <ClInclude Include="DeconstructBtn.h">
-      <Filter>01.Obj\01.UI\Button\DeconstructBtn</Filter>
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\CommandBtn\DeconstructBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="StructureBtn.h">
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="SteelWallBtn.h">
+      <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,11 +418,17 @@
     <Filter Include="01.Obj\Steel">
       <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\01.UI\Button\CommandBtn">
+    <Filter Include="01.Obj\01.UI\Button\ArcitectBtn\CommandBtn">
       <UniqueIdentifier>{4a29af16-3ab1-4eb5-acb1-1f083247c30f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\01.UI\Button\DeconstructBtn">
+    <Filter Include="01.Obj\01.UI\Button\ArcitectBtn\StructureBtn">
+      <UniqueIdentifier>{9ab83834-3205-452a-96c1-014eb34b1632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\ArcitectBtn\CommandBtn\DeconstructBtn">
       <UniqueIdentifier>{7ae420fd-9f1b-42f3-8db1-2a52cc71c3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn">
+      <UniqueIdentifier>{c99194f9-642c-4e4f-ad51-3bdf10173d91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

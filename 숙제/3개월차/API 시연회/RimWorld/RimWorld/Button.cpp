@@ -4,6 +4,7 @@
 #include "BmpMgr.h"
 
 CButton::CButton()
+	:m_pParent(nullptr)
 {
 }
 
@@ -13,6 +14,10 @@ CButton::~CButton()
 }
 
 void CButton::On_Click()
+{
+}
+
+void CButton::Set_Activate(bool _bActivate)
 {
 }
 
