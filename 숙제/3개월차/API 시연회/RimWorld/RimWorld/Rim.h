@@ -33,5 +33,10 @@ private:
     void Check_ConstructWork();
 private:
     STATE   m_eState;
-    bool    m_bFindingTask;
+
+    //작업 찾는 시간 간격
+    float   m_fTaskCheckInterval;
+
+    //경과시간 시간 체크
+    float   m_fElapsedTimeCheck;
 };

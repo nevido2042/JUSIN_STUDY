@@ -26,7 +26,6 @@ public:
 		return &m_ConstructSet;
 	}
 
-	bool	Get_NewTaskAdded() { return m_bNewTaskAdded; }
 private:
 	void	Input_Key();
 
@@ -67,6 +66,6 @@ private:
 	//해체 리스트 //맵을 쓰면? 셋?
 	set<CObj*>	m_DeconstructSet;
 	set<CObj*>	m_ConstructSet;
-	bool		m_bNewTaskAdded;
+
 };
 

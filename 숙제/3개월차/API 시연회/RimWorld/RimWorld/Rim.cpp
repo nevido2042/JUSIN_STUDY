@@ -9,9 +9,10 @@
 #include "TileMgr.h"
 #include "PathFinder.h"
 #include "SteelWall.h"
+#include "TimeMgr.h"
 
 CRim::CRim()
-    :m_eState(END), m_bFindingTask(false)
+    :m_eState(END), m_fElapsedTimeCheck(0.f), m_fTaskCheckInterval(0.f)
 {
 
 }
@@ -25,7 +26,6 @@ void CRim::Change_State(STATE _eState)
 {
     m_eState = _eState;  
     m_pTarget = nullptr; 
-    m_bFindingTask = true;
 }
 
 void CRim::Initialize()
@@ -47,6 +47,8 @@ void CRim::Initialize()
     Take_Damage(10.f);
 
     m_eState = UNDRAFTED; //현재는 소집됬지만 추후 기본은 자유행동으로
+
+    m_fTaskCheckInterval = 1.f;
 }
 
 int CRim::Update()
@@ -59,6 +61,10 @@ int CRim::Update()
     {
         return OBJ_NOEVENT;
     }
+
+    //발사 후 지난 시간 += 게임 스피드 * 장전 속도
+    m_fElapsedTimeCheck += GAMESPEED; //프레임당 시간지나는거 굳이 안넣어도 되긴하네
+
 
     __super::Update_Rect();
 
@@ -318,15 +324,14 @@ void CRim::Drafed()
 
 void CRim::Undrafed()
 {
-    //새로운 작업이 추가 됬다면
-    if (CColonyMgr::Get_Instance()->Get_NewTaskAdded())
+    //작업을 체크할 시간이 됬다면
+    if (m_fElapsedTimeCheck > m_fTaskCheckInterval)
     {
-        //작업을 찾아라
-        m_bFindingTask = true;
+        Check_DeconstructWork();
     }
 
-    //Check_DeconstructWork();
-    Check_ConstructWork();
+
+    //Check_ConstructWork();
 }
 
 void CRim::Work()
@@ -337,16 +342,16 @@ void CRim::Work()
         RequestNavStop();
         
     }
-    //타겟이 가까우면 해체 시작 //이거 뭔가 이상함~~~~~~~~~~~~~개선 필요
+    //타겟이 가까우면 해체 시작 //네비게이션 멈출때 마다 타겟 벽돌 다 삭제하는 버그~~~~~~~~~~~~~개선 필요
     if (!m_bNavigating)
     {
         //건설하는거
 
 
         //해체 하는거
-        /*CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
         pWall->Set_IsBrokenDown();
-        m_eState = UNDRAFTED;*/
+        m_eState = UNDRAFTED;
     }
 
     //해체 진행중인 바 생성
@@ -356,7 +361,7 @@ void CRim::Work()
 void CRim::Check_DeconstructWork()
 {
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
-    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty() && m_eState == UNDRAFTED && m_bFindingTask) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty() && m_eState == UNDRAFTED) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -393,16 +398,13 @@ void CRim::Check_DeconstructWork()
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
-
-        //작업 할수 있는 벽을 못찾음.
-        m_bFindingTask = false;
     }
 }
 
 void CRim::Check_ConstructWork()
 {
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
-    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && m_eState == UNDRAFTED && m_bFindingTask) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && m_eState == UNDRAFTED) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -439,9 +441,6 @@ void CRim::Check_ConstructWork()
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
-
-        //작업 할수 있는 벽을 못찾음.
-        m_bFindingTask = false;
     }
 }
 
