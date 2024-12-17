@@ -168,6 +168,19 @@ void CTileMgr::Set_TileObj(POS _tPos, CObj* _pObj)
 	static_cast<CTile*>(m_TileMap[iY][iX])->Set_Obj(_pObj);
 }
 
+void CTileMgr::Set_TileObj(float _fX, float _fY, CObj* _pObj)
+{
+	int iX = int(_fX / TILECX);
+	int iY = int(_fY / TILECY);
+
+	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
+	{
+		return;
+	}
+
+	static_cast<CTile*>(m_TileMap[iY][iX])->Set_Obj(_pObj);
+}
+
 TILEOPT CTileMgr::Get_TileOption(POS _tPos)
 {
 	int iX = int(_tPos.fX / TILECX);

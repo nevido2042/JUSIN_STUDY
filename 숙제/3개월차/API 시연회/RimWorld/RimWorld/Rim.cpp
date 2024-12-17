@@ -327,11 +327,12 @@ void CRim::Undrafed()
     //작업을 체크할 시간이 됬다면
     if (m_fElapsedTimeCheck > m_fTaskCheckInterval)
     {
-        Check_DeconstructWork();
+        Check_ConstructWork();
+        //Check_DeconstructWork();
     }
 
 
-    //Check_ConstructWork();
+    
 }
 
 void CRim::Work()
@@ -345,13 +346,37 @@ void CRim::Work()
     //타겟이 가까우면 해체 시작 //네비게이션 멈출때 마다 타겟 벽돌 다 삭제하는 버그~~~~~~~~~~~~~개선 필요
     if (!m_bNavigating)
     {
+        if (!m_pTarget)
+        {
+            return;
+        }
+
+        //해당타일에 이미 벽이 있으면 취소
+        if (CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY))
+        {
+            //작업삭제
+            CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
+            m_pTarget = nullptr;
+            m_eState = UNDRAFTED;
+            return;
+        }
+        // 
         //건설하는거
+        CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
+        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
+        m_eState = UNDRAFTED;
+        //작업삭제    
+        CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
+        m_pTarget = nullptr;
+
 
 
         //해체 하는거
-        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
-        pWall->Set_IsBrokenDown();
-        m_eState = UNDRAFTED;
+        //CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+        //pWall->Set_IsBrokenDown();
+        //m_eState = UNDRAFTED;
     }
 
     //해체 진행중인 바 생성

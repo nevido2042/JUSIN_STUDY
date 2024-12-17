@@ -102,7 +102,7 @@ void CColony::Initialize()
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
 
-    for (int i = 0; i < (TILEX * TILEY) / 2; ++i)
+    for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);

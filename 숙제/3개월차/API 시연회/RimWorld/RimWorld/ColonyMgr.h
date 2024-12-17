@@ -64,6 +64,8 @@ private:
 	MODE	m_eMode;
 
 	//해체 리스트 //맵을 쓰면? 셋?
+	//왜 컨테이너로 받은 주소값이 릴리즈할때 에러나지?
+	//여기서 저절로 딜리트해주나?
 	set<CObj*>	m_DeconstructSet;
 	set<CObj*>	m_ConstructSet;
 

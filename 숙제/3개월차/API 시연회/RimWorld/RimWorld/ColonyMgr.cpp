@@ -220,6 +220,7 @@ void CColonyMgr::Render(HDC hDC)
 
 void CColonyMgr::Release()
 {
+    m_ConstructSet.clear();
 }
 
 void CColonyMgr::Control_Target()

@@ -13,6 +13,7 @@ public:
 	void			Set_TileOption(POS _tPos, TILEOPT _eOpt);
 	void			Set_TileOption(float _fX, float _fY, TILEOPT _eOpt);
 	void			Set_TileObj(POS _tPos, CObj* _pObj);
+	void			Set_TileObj(float _fX, float _fY, CObj* _pObj);
 
 	TILEOPT			Get_TileOption(POS _tPos);
 	TILEOPT			Get_TileOption(float _fX, float _fY);
