@@ -14,7 +14,7 @@ public:
     virtual ~CRim();
 public:
     STATE   Get_State() { return m_eState; }
-    void    Change_State(STATE _eState) { m_eState = _eState;  m_pTarget = nullptr; }
+    void    Change_State(STATE _eState);
 public:
     void Initialize() override;
     int  Update() override;

@@ -8,6 +8,7 @@
 #include "ObjMgr.h"
 #include "TileMgr.h"
 #include "PathFinder.h"
+#include "SteelWall.h"
 
 CRim::CRim()
     :m_eState(END), m_bFindingTask(false)
@@ -18,6 +19,13 @@ CRim::CRim()
 CRim::~CRim()
 {
     Release();
+}
+
+void CRim::Change_State(STATE _eState)
+{
+    m_eState = _eState;  
+    m_pTarget = nullptr; 
+    m_bFindingTask = true;
 }
 
 void CRim::Initialize()
@@ -68,6 +76,12 @@ void CRim::Late_Update()
     //이동방향 계산
     Calculate_MoveDir();
 
+    if (m_pTarget)
+    {
+        //타겟과의 거리 및 각도 계산
+        Measure_Target();
+    }
+
     switch (m_eState)
     {
     case CRim::DRAFTED:
@@ -115,7 +129,6 @@ void CRim::Late_Update()
     
                
 }
-
 
 void CRim::Render(HDC hDC)
 {
@@ -260,6 +273,15 @@ void CRim::Render(HDC hDC)
             int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
     }
 
+    // 변수 값을 유니코드 문자열로 변환
+    wchar_t buffer[50];
+    wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
+    // 변수 값을 유니코드 문자열로 변환
+    wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 
 }
 
@@ -271,6 +293,17 @@ void CRim::Deconstruct()
 
 void CRim::Drafed()
 {
+    //사정 거리내에 있고 본인이 죽지 않았다면
+    if (IsWithinRange())
+    {
+        //RequestNavStop();
+        m_bAttack = true;
+    }
+    else
+    {
+        m_bAttack = false;
+    }
+
     //타겟 있으면 따라가기
     if (m_pTarget)
     {
@@ -287,18 +320,6 @@ void CRim::Drafed()
         }
     }
 
-    //타겟과의 거리 및 각도 계산
-    Measure_Target();
-
-    //사정 거리내에 있고 본인이 죽지 않았다면
-    if (IsWithinRange())
-    {
-        m_bAttack = true;
-    }
-    else
-    {
-        m_bAttack = false;
-    }
 }
 
 void CRim::Undrafed()
@@ -358,11 +379,12 @@ void CRim::Undrafed()
 
 void CRim::Work()
 {
-    Measure_Target();
     //타겟이 가까운지 확인
     if (m_fTargetDist < TILECX * 1.5f)
     {
         RequestNavStop();
+        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+        pWall->Set_IsBrokenDown();
     }
     //타겟이 가까우면 해체 시작
     if (!m_bNavigating)

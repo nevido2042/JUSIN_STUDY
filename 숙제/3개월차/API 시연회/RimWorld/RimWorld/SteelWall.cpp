@@ -118,8 +118,8 @@ void CSteelWall::Initialize()
 	Set_ImgKey(L"Wall_Atlas_Smooth");
 	//m_pImgKey = L"Wall_Atlas_Smooth";
 
-	m_tInfo.fCX = 80.f; //나중에 오프셋 64(충돌범위)+16(렌더) 이런식으로 줘야할듯
-    m_tInfo.fCY = 80.f;
+	m_tInfo.fCX = 64.f; //나중에 오프셋 64(충돌범위)+16(렌더) 이런식으로 줘야할듯
+    m_tInfo.fCY = 64.f;
 
 	m_eCurState = SOLO;
 	m_ePreState = SOLO;
@@ -152,6 +152,11 @@ int CSteelWall::Update()
 		return OBJ_DESTROYED;
 	}
 
+	if (m_bBrokendown)
+	{
+		Set_Destroyed();
+		CColonyMgr::Get_Instance()->Get_DeconstructSet()->erase(this);
+	}
 
     __super::Update_Rect();
 
@@ -167,10 +172,6 @@ void CSteelWall::Late_Update()
 		m_bCheckNeighbor = false;
 	}
 
-	if (m_bBrokendown)
-	{
-		Set_Destroyed();
-	}
 
 	//마우스 클릭 했을 때 타겟으로 설정
 	POINT	ptMouse{};
@@ -209,19 +210,25 @@ void CSteelWall::Render(HDC hDC)
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
 		m_tRect.left + iScrollX,	// 복사 받을 위치 좌표 X, Y	
 		m_tRect.top + iScrollY,
-		(int)m_tInfo.fCX,			// 복사 받을 이미지의 가로, 세로
-		(int)m_tInfo.fCY,
+		80,			// 복사 받을 이미지의 가로, 세로
+		80,
 		hMemDC,						// 복사할 이미지 DC	
-		(int)m_tInfo.fCX * m_iRenderX,// 비트맵 출력 시작 좌표(Left, top)
-		(int)m_tInfo.fCY * m_iRenderY,
-		(int)m_tInfo.fCX,			// 복사할 이미지의 가로, 세로
-		(int)m_tInfo.fCY,
+		80 * m_iRenderX,// 비트맵 출력 시작 좌표(Left, top)
+		80 * m_iRenderY,
+		80,			// 복사할 이미지의 가로, 세로
+		80,
 		RGB_PURPLE);		// 제거할 색상
 }
 
 void CSteelWall::Release()
 {
-
+	////생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
+	//list<CObj*> pWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
+	//for (CObj* pObj : pWallList)
+	//{
+	//	CSteelWall* pRock = static_cast<CSteelWall*>(pObj);
+	//	pRock->Set_CheckNeighbor(true);
+	//}
 }
 
 void CSteelWall::OnCollision(OBJID _eID, CObj* _pOther)

@@ -22,6 +22,7 @@ public:
 public:
     void    Set_CheckNeighbor(bool _b) { m_bCheckNeighbor = _b; }
     bool    Get_IsBrokenDown() { return m_bBrokendown; }
+    void    Set_IsBrokenDown() { m_bBrokendown = true; }
 public:
     void    Initialize() override;
     int     Update() override;

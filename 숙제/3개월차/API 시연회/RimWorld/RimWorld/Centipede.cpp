@@ -115,6 +115,7 @@ void CCentipede::Late_Update()
     //사정 거리내에 있고 본인이 죽지 않았다면
     if (IsWithinRange()&&!m_bDead)
     {
+        //RequestNavStop();
         m_bAttack = true;
     }
     else

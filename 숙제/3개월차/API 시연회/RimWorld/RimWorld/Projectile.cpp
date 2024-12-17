@@ -16,8 +16,8 @@ CProjectile::~CProjectile()
 
 void CProjectile::Initialize()
 {
-    m_tInfo.fCX = 64.f;
-    m_tInfo.fCY = 64.f;
+    m_tInfo.fCX = 10.f;
+    m_tInfo.fCY = 10.f;
 
     m_eRenderID = RENDER_GAMEOBJECT;
 
