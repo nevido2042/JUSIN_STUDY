@@ -210,7 +210,7 @@ int CColony::Update()
     {
 
         ////지네로봇 두마리
-        for (int i = 0; i < 2; ++i)
+        for (int i = 0; i < 1; ++i)
         {
             int iX = int(rand() % TILEX);
             int iY = int(rand() % TILEY);

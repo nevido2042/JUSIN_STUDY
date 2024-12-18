@@ -311,10 +311,10 @@ void CRim::Render(HDC hDC)
 
 void CRim::Drafed()
 {
-    //사정 거리내에 있고 본인이 죽지 않았다면
-    if (IsWithinRange())
+    //사정거리에 있고 적이 보인다면
+    if (IsWithinRange() && IsCanSeeTarget())
     {
-        //RequestNavStop();
+        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
         m_bAttack = true;
     }
     else

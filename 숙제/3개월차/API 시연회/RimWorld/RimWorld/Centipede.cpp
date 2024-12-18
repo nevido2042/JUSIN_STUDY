@@ -48,54 +48,6 @@ int CCentipede::Update()
         return OBJ_NOEVENT;
     }
 
-    //타겟 있으면 따라가기
-    if (m_pTarget)
-    {
-        POS tMoveToPos{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY };
-
-        //타겟이 Pawn이라면
-        if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
-        {
-            //Pawn이 죽었다면
-            if (pPawnTarget->Get_IsDead())
-            {
-                Set_Target(nullptr);
-                return OBJ_NOEVENT;
-            }
-       
-        }
-        //타겟이 벽이면
-        else if (CSteelWall* pWallTarget = dynamic_cast<CSteelWall*>(m_pTarget))
-        {
-            //부서졌다면
-            if (pWallTarget->Get_IsBrokenDown())
-            {
-                //타겟 해제
-                Set_Target(nullptr);
-                return OBJ_NOEVENT;
-            }
-
-            //만약에 타겟이 벽이라면 벽 근처의 올라갈 수 있는 타일을 선택하게해야함!!!!!!! 길을 못찾음!!!!
-            //이렇게는 잘안되네, 브레즌햄으로 타겟과 이어버린다음...그중 갈수 있는 타일 선택하는게 맞을 듯
-            int iIndex = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-            iIndex = Get_ReachableToTarget();
-
-            tMoveToPos.fX = (iIndex % TILEX) * TILEX + TILECX * 0.5f;
-            tMoveToPos.fY = (iIndex / TILEY) * TILEX + TILECY * 0.5f;
-        }
-        
-        //만약에 타겟이 벽이라면 벽 근처의 올라갈 수 있는 타일을 선택하게해야함!!!!!!!
-        //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-        Move_To(tMoveToPos);
-        
-    }
-
-    if (m_bNavigating)
-    {
-        Navigate();
-    }
-
-
     __super::Update_Rect();
 
     return OBJ_NOEVENT;
@@ -110,17 +62,45 @@ void CCentipede::Late_Update()
     }
 
     Calculate_MoveDir();
-    Measure_Target();
 
-    //사정 거리내에 있고 본인이 죽지 않았다면
-    if (IsWithinRange()&&!m_bDead)
+    //타겟 있으면 따라가기
+    if (m_pTarget)
     {
-        //RequestNavStop();
+        Measure_Target();
+
+        POS tMoveToPos{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY };
+
+        //타겟이 Pawn이라면
+        if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
+        {
+            //Pawn이 죽었다면
+            if (pPawnTarget->Get_IsDead())
+            {
+                Set_Target(nullptr);
+                RequestNavStop();
+            }
+
+        }
+
+        Move_To(tMoveToPos);
+
+    }
+
+    //사정거리 내에 있고, 적이 보여야함
+    if (IsWithinRange() && IsCanSeeTarget())
+    {
+        RequestNavStop();
+        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
         m_bAttack = true;
     }
     else
     {
         m_bAttack = false;
+    }
+
+    if (m_bNavigating)
+    {
+        Navigate();
     }
 
     //FindTarget();

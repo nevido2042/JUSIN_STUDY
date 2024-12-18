@@ -230,12 +230,6 @@ bool CPawn::IsWithinRange()
         return false;
     }
 
-    //상대가 보이는 가?(타겟과 자신 사이에 장애물이 없는가?)// 상대가 벽일 경우 이 경우 무시
-    if (!IsCanSeeTarget() && strcmp(typeid(*m_pTarget).name(), "class CSteelWall"))
-    {
-        return false;
-    }
-
     //원거리 무기가 없으면 가깝지 않다고 판단.
     if (!m_pRangedWeapon)
     {
@@ -248,9 +242,6 @@ bool CPawn::IsWithinRange()
     //거리가 가깝거나 or 상대가 벽일 경우 걍 쏘게 하자
     if (m_fTargetDist < fRange || !strcmp(typeid(*m_pTarget).name(), "class CSteelWall"))
     {
-        //발사 시도
-        pRangedWeapon->Fire();
-        //가까우면 true
         return true;
     }
 
@@ -259,42 +250,37 @@ bool CPawn::IsWithinRange()
 
 bool CPawn::IsCanSeeTarget()
 {
-    // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    //int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-
+    // 두 좌표를 타일 인덱스 단위로 변환
     int iX1 = int(m_tInfo.fX / TILECX);
-    int iY1 = int(m_tInfo.fX / TILECY);
+    int iY1 = int(m_tInfo.fY / TILECY);
 
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
     int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
+    // 거리와 방향 계산
     int iDistX = abs(iX2 - iX1);
     int iDistY = abs(iY2 - iY1);
     int iDirX = (iX1 < iX2) ? 1 : -1;
     int iDirY = (iY1 < iY2) ? 1 : -1;
     int iErr = iDistX - iDistY;
 
-    while (true) {
-        // 현재 타일에 장애물이 있는지 확인
+    // 브레젠햄 알고리즘 경로 추적
+    while (iX1 != iX2 || iY1 != iY2)
+    {
+        // 현재 타일의 상태 확인 (장애물 여부)
         if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_BLOCKED)
         {
-            return false;  // 장애물이 있으면 false 반환
+            return false;  // 경로상에 장애물이 있으면 false
         }
 
-        // 목표 지점에 도달했으면 종료
-        if (iX1 == iX2 && iY1 == iY2)
-        {
-            break;
-        }
-
+        // 다음 타일 결정
         int iError = 2 * iErr;
-        if (iError > -iDistY) 
+        if (iError > -iDistY)
         {
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        if (iError < iDistX) 
+        if (iError < iDistX)
         {
             iErr += iDistX;
             iY1 += iDirY;
@@ -312,7 +298,7 @@ CObj* CPawn::Get_ObstacleToTarget()
     //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 
     int iX1 = int(m_tInfo.fX / TILECX);
-    int iY1 = int(m_tInfo.fX / TILECY);
+    int iY1 = int(m_tInfo.fY / TILECY);
 
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
     int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
@@ -337,30 +323,17 @@ CObj* CPawn::Get_ObstacleToTarget()
             break;
         }
 
+        // 다음 타일 결정
         int iError = 2 * iErr;
         if (iError > -iDistY)
         {
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        else if (iError < iDistX)
+        if (iError < iDistX)
         {
             iErr += iDistX;
             iY1 += iDirY;
-        }
-        else
-        {
-            // 대각선 방지: X, Y 중 하나만 이동
-            if (abs(iErr - iDistY) < abs(iErr + iDistX))
-            {
-                iX1 += iDirX;
-                iErr -= iDistY;
-            }
-            else
-            {
-                iY1 += iDirY;
-                iErr += iDistX;
-            }
         }
     }
 
@@ -378,7 +351,7 @@ int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
     //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 
     int iX1 = int(m_tInfo.fX / TILECX);
-    int iY1 = int(m_tInfo.fX / TILECY);
+    int iY1 = int(m_tInfo.fY / TILECY);
 
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
     int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
@@ -409,30 +382,17 @@ int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
             break;
         }
 
+        // 다음 타일 결정
         int iError = 2 * iErr;
-        if (iError > -iDistY) 
+        if (iError > -iDistY)
         {
             iErr -= iDistY;
             iX1 += iDirX;
         }
-        else if (iError < iDistX) 
+        if (iError < iDistX)
         {
             iErr += iDistX;
             iY1 += iDirY;
-        }
-        else 
-        {
-            // 대각선 방지: X, Y 중 하나만 이동
-            if (abs(iErr - iDistY) < abs(iErr + iDistX)) 
-            {
-                iX1 += iDirX;
-                iErr -= iDistY;
-            }
-            else 
-            {
-                iY1 += iDirY;
-                iErr += iDistX;
-            }
         }
     }
 
