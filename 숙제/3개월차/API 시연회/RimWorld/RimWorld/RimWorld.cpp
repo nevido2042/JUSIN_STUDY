@@ -5,7 +5,6 @@
 #include "framework.h"
 #include "RimWorld.h"
 #include "MainGame.h"
-#include "TimeMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -59,7 +58,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
 
     CMainGame       MainGame;
     MainGame.Initialize();
-    CTimeMgr::Get_Instance()->Initialize();
 
     ULONGLONG ullTime = GetTickCount64();
 
@@ -91,7 +89,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
         {
             if (ullTime + 10 < GetTickCount64())
             {
-                CTimeMgr::Get_Instance()->Update();
                 MainGame.Update();
                 MainGame.Late_Update();
                 MainGame.Render();
@@ -107,7 +104,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,         // 현재 프로그램�
     }
     GdiplusShutdown(gdiplusToken);
     //GdiplusShutdown(g_GdiplusToken);//Gdiplus 정리
-    CTimeMgr::Destroy_Instance();
 
     return (int) msg.wParam;
 }

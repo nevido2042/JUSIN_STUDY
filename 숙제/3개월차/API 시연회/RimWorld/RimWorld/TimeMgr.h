@@ -13,6 +13,7 @@ public:
 public:
 	void Initialize();
 	void Update();
+	void Render(HDC hDC);
 
 public:
 	static CTimeMgr* Get_Instance()
@@ -38,5 +39,6 @@ private:
 private:
 	int			m_iCurFrame;
 	float		m_fGameSpeed;
+	float		m_fElapsedTime;
 };
 

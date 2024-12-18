@@ -1,7 +1,7 @@
 #pragma once
 
-#define WINCX				1280
-#define WINCY				720
+#define WINCX				800//1280
+#define WINCY				600//720
 
 #define	PURE				= 0
 #define PI					3.141592f
@@ -26,15 +26,15 @@
 #define	TILECX				64
 #define	TILECY				64
 
-#define TILEX				15
-#define TILEY				10
+#define TILEX				30
+#define TILEY				20
 
 
 //health바 offset
 #define HELATHBAR_OFFSET    20
 
 // 타일 컬링 오프셋
-#define CULLIG_OFFSET       1
+#define CULLIG_OFFSET       2
 
 //게임속도 얻기
 #define GAMESPEED           CTimeMgr::Get_Instance()->Get_GameSpeed()

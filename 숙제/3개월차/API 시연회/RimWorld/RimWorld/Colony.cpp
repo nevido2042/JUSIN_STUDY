@@ -5,6 +5,7 @@
 #include "AbstractFactory.h"
 #include "TileMgr.h"
 #include "PathFinder.h"
+#include "TimeMgr.h"
 
 CColony::CColony()
 {
@@ -17,6 +18,8 @@ CColony::~CColony()
 
 void CColony::Initialize()
 {
+    CTimeMgr::Get_Instance()->Initialize();
+
     //UI
     //메뉴 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
@@ -125,7 +128,7 @@ void CColony::Initialize()
     }
 
     //림 두마리
-    for (int i = 0; i < 1; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);
@@ -199,7 +202,8 @@ int CColony::Update()
 
     CTileMgr::Get_Instance()->Update();
 
-   
+    CTimeMgr::Get_Instance()->Update();
+
 
     return OBJ_NOEVENT;
 }
@@ -225,6 +229,8 @@ void CColony::Render(HDC hDC)
     CObjMgr::Get_Instance()->Render(hDC);
 
     CColonyMgr::Get_Instance()->Render(hDC);
+
+    CTimeMgr::Get_Instance()->Render(hDC);
 }
 
 void CColony::Release()
@@ -233,4 +239,5 @@ void CColony::Release()
     CTileMgr::Destroy_Instance();
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();
+    CTimeMgr::Destroy_Instance();
 }
