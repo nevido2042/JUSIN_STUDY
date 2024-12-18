@@ -6,6 +6,7 @@
 #include "ObjMgr.h"
 #include "KeyMgr.h"
 #include "ColonyMgr.h"
+#include "Pawn.h"
 
 CSteelWall::CSteelWall()
 	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false),
@@ -130,7 +131,7 @@ void CSteelWall::Initialize()
 
 	m_bCheckNeighbor = true;
 
-	m_fMaxDurability = 1.f;
+	m_fMaxDurability = 100.f;
 	m_fDurability = m_fMaxDurability;
 
 	//생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
@@ -141,7 +142,16 @@ void CSteelWall::Initialize()
 		pRock->Set_CheckNeighbor(true);
 	}
 
+	//작업 변경사항을 림에게 알린다.
 	CColonyMgr::Get_Instance()->Notify_TaskChange();
+
+	//적들에게 길이 바뀌었을 수도 있음을 알리며, 네비게이션 종료
+	for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_MECHANOID])
+	{
+		static_cast<CPawn*>(pObj)->RequestNavStop();
+	}
+
+
 }
 
 int CSteelWall::Update()

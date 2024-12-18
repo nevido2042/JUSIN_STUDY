@@ -22,7 +22,7 @@ void CTimeMgr::Initialize()
 void CTimeMgr::Update()
 {
 	++m_iCurFrame;
-	m_fElapsedTime += Get_GameSpeed();
+	m_fElapsedTime += Get_GameSpeed() * 0.01f;
 }
 
 void CTimeMgr::Render(HDC hDC)

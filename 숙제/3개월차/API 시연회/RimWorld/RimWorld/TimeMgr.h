@@ -9,6 +9,7 @@ public:
 	int		Get_CurrentFrame() { return m_iCurFrame; }
 	float	Get_GameSpeed() { return m_fGameSpeed; }
 	void	Set_GameSpeed(float _fGameSpeed) { m_fGameSpeed = _fGameSpeed; }
+	float	Get_ElapsedTime() { return m_fElapsedTime; }
 
 public:
 	void Initialize();

@@ -8,6 +8,7 @@
 #include "TimeMgr.h"
 
 CColony::CColony()
+    :m_bEnemySpawned(false)
 {
 }
 
@@ -203,6 +204,26 @@ int CColony::Update()
     CTileMgr::Get_Instance()->Update();
 
     CTimeMgr::Get_Instance()->Update();
+
+    //몇 초 후 적 생성
+    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 5.f )
+    {
+
+        ////지네로봇 두마리
+        for (int i = 0; i < 2; ++i)
+        {
+            int iX = int(rand() % TILEX);
+            int iY = int(rand() % TILEY);
+
+            POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+
+            //지네
+            CObj* pObj = CAbstractFactory<CCentipede>::Create(tPos);
+            CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
+        }
+
+        m_bEnemySpawned = true;
+    }
 
 
     return OBJ_NOEVENT;
