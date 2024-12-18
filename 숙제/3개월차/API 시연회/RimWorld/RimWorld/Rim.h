@@ -27,10 +27,17 @@ private:
     //소집 안된 상태 일 때
     void Undrafed();
     //해체 중일때
-    void Deconstruct();
+    void Deconstructing();
     //건설 중일때
-    void Construct();
+    void Constructing();
 
+private:
+    //작업 목표물에 도달했는지 체크
+    void Check_CloseTask();
+    //해체
+    void Deconstruct();
+    //건설
+    void Construct();
 
 private:
     void Check_DeconstructWork();

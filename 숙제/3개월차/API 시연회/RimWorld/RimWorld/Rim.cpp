@@ -90,10 +90,10 @@ void CRim::Late_Update()
         Undrafed();
         break;
     case CRim::DECONSTRUCTING:
-        Deconstruct();
+        Deconstructing();
         break;
     case CRim::CONSTRUCTING:
-        Construct();
+        Constructing();
         break;
     default:
         break;
@@ -358,73 +358,95 @@ void CRim::Undrafed()
     } 
 }
 
-void CRim::Deconstruct()
+void CRim::Deconstructing()
 {
     //Å¸°ÙÀÌ °¡±î¿îÁö È®ÀÎ
     if (m_fTargetDist < TILECX * 1.5f)
     {
+        //°¡±î¿ì¸é ¸ØÃá´Ù.
         RequestNavStop();
-
     }
-    //Å¸°ÙÀÌ °¡±î¿ì¸é ÇØÃ¼ ½ÃÀÛ //³×ºñ°ÔÀÌ¼Ç ¸ØÃâ¶§ ¸¶´Ù Å¸°Ù º®µ¹ ´Ù »èÁ¦ÇÏ´Â ¹ö±×~~~~~~~~~~~~~°³¼± ÇÊ¿ä
-    //####¿· Å¸ÀÏ¿¡ ÀÖ´ÂÁö Ã¼Å©ÇØ¾ßÇÏ³ª?
-    //¿Ö Å¸°ÙÀÌ Áß°£¿¡ ¾²·¹±â°ª µÇÁö?
+    //¸Ø­Ÿ´Âµ¥
     if (!m_bNavigating)
     {
+        //Å¸°ÙÀÌ ¾ø´Ù.
         if (!m_pTarget)
         {
             return;
         }
-
+        //Å¸°ÙÀÌ ¸Ö´Ù
+        if (m_fTargetDist > TILECX * 1.5f)
+        {
+            //´Ù¸¥ ÀÛ¾÷ Ã¼Å©
+            m_bTaskCheck = true;
+            m_eState = UNDRAFTED;
+            return;
+        }
         //ÇØÃ¼ ÇÏ´Â°Å
-        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
-        pWall->Set_IsBrokenDown();
-        m_eState = UNDRAFTED;
+        Deconstruct();
     }
 
     //ÇØÃ¼ ÁøÇàÁßÀÎ ¹Ù »ý¼º
     //¸îÃÊ µÚ ÇØÃ¼ ¿Ï·á
 }
 
-void CRim::Construct()
+void CRim::Constructing()
 {
     //Å¸°ÙÀÌ °¡±î¿îÁö È®ÀÎ
     if (m_fTargetDist < TILECX * 1.5f)
     {
+        //°¡±î¿ì¸é ¸ØÃá´Ù.
         RequestNavStop();
-        
     }
-    //Å¸°ÙÀÌ °¡±î¿ì¸é ÇØÃ¼ ½ÃÀÛ //³×ºñ°ÔÀÌ¼Ç ¸ØÃâ¶§ ¸¶´Ù Å¸°Ù º®µ¹ ´Ù »èÁ¦ÇÏ´Â ¹ö±×~~~~~~~~~~~~~°³¼± ÇÊ¿ä
+    //¸Ø­Ÿ´Âµ¥
     if (!m_bNavigating)
     {
+        //Å¸°ÙÀÌ ¾ø´Ù.
         if (!m_pTarget)
         {
             return;
         }
-
-        //ÇØ´çÅ¸ÀÏ¿¡ ÀÌ¹Ì º®ÀÌ ÀÖÀ¸¸é Ãë¼Ò
-        if (CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY))
+        //Å¸°ÙÀÌ ¸Ö´Ù
+        if (m_fTargetDist > TILECX * 1.5f)
         {
-            //ÀÛ¾÷»èÁ¦
-            CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
+            //´Ù¸¥ ÀÛ¾÷ Ã¼Å©
+            m_bTaskCheck = true;
             m_pTarget = nullptr;
             m_eState = UNDRAFTED;
             return;
         }
-        //°Ç¼³ÇÏ´Â°Å
-        CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-        CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
-        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
-        CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
-
-        //ÀÛ¾÷»èÁ¦    
-        m_eState = UNDRAFTED;
-        CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
-        m_pTarget = nullptr;
+        //°Ç¼³
+        Construct();
     }
+
+
 
     //ÇØÃ¼ ÁøÇàÁßÀÎ ¹Ù »ý¼º
     //¸îÃÊ µÚ ÇØÃ¼ ¿Ï·á
+}
+
+void CRim::Check_CloseTask()
+{
+}
+
+void CRim::Deconstruct()
+{
+    CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+    pWall->Set_IsBrokenDown();
+    m_eState = UNDRAFTED;
+}
+
+void CRim::Construct()
+{
+    CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
+    CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
+    CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
+
+    //ÀÛ¾÷»èÁ¦
+    CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
+    m_pTarget = nullptr;
+    m_eState = UNDRAFTED;
 }
 
 void CRim::Check_DeconstructWork()
