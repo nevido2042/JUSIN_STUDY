@@ -141,6 +141,7 @@ void CSteelWall::Initialize()
 		pRock->Set_CheckNeighbor(true);
 	}
 
+	CColonyMgr::Get_Instance()->Notify_TaskChange();
 }
 
 int CSteelWall::Update()
@@ -226,6 +227,8 @@ void CSteelWall::Render(HDC hDC)
 
 void CSteelWall::Release()
 {
+	CColonyMgr::Get_Instance()->Notify_TaskChange();
+
 	////생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
 	//list<CObj*> pWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
 	//for (CObj* pObj : pWallList)

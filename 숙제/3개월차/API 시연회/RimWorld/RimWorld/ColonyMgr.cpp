@@ -5,6 +5,7 @@
 #include "Rim.h"
 #include "TimeMgr.h"
 #include "BmpMgr.h"
+#include "ObjMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -46,11 +47,24 @@ void CColonyMgr::Change_Mode(MODE _eMode)
 void CColonyMgr::Emplace_DeconstructSet(CObj* _pObj)
 {
     m_DeconstructSet.emplace(_pObj);
+
+    Notify_TaskChange();
 }
 
 void CColonyMgr::Emplace_ConstructSet(CObj* _pObj)
 {
     m_ConstructSet.emplace(_pObj);
+
+    Notify_TaskChange();
+}
+
+void CColonyMgr::Notify_TaskChange()
+{
+    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_RIM])
+    {
+        CRim* pRim = static_cast<CRim*>(pObj);
+        pRim->Set_TaskCheck();
+    }
 }
 
 void CColonyMgr::Input_Key()

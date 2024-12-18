@@ -82,5 +82,6 @@ void CMainGame::Release()
 	CKeyMgr::Destroy_Instance();
 	CSceneMgr::Destroy_Instance();
 	CObjMgr::DestroyInstance();
+	CColonyMgr::Destroy_Instance();
 	ReleaseDC(g_hWnd, m_hDC);
 }

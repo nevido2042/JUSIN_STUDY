@@ -12,7 +12,7 @@
 #include "TimeMgr.h"
 
 CRim::CRim()
-    :m_eState(END), m_fElapsedTimeCheck(0.f), m_fTaskCheckInterval(0.f)
+    :m_eState(END), m_bTaskCheck(false)
 {
 
 }
@@ -47,8 +47,6 @@ void CRim::Initialize()
     Take_Damage(10.f);
 
     m_eState = UNDRAFTED; //현재는 소집됬지만 추후 기본은 자유행동으로
-
-    m_fTaskCheckInterval = 100.f;
 }
 
 int CRim::Update()
@@ -61,11 +59,6 @@ int CRim::Update()
     {
         return OBJ_NOEVENT;
     }
-
-    //발사 후 지난 시간 += 게임 스피드 * 장전 속도
-    m_fElapsedTimeCheck += GAMESPEED; //프레임당 시간지나는거 굳이 안넣어도 되긴하네
-
-
     __super::Update_Rect();
 
     return OBJ_NOEVENT;
@@ -356,11 +349,12 @@ void CRim::Undrafed()
     //####콜로니 매니저에서 작업이 바뀌었을 때(추가, 삭제) 모든 림에게, 작업 확인하라 지시
 
     //작업을 체크할 시간이 됬다면(이거 빼버리고)
-    if (m_fElapsedTimeCheck > m_fTaskCheckInterval)
+    if (m_bTaskCheck)
     {
         Check_ConstructWork();
         Check_DeconstructWork();
-        m_fElapsedTimeCheck = 0.f;
+        //m_fElapsedTimeCheck = 0.f;
+        m_bTaskCheck = false;
     } 
 }
 

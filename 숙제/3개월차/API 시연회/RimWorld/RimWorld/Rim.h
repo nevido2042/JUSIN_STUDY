@@ -15,6 +15,7 @@ public:
 public:
     STATE   Get_State() { return m_eState; }
     void    Change_State(STATE _eState);
+    void    Set_TaskCheck() { m_bTaskCheck = true; }
 public:
     void Initialize() override;
     int  Update() override;
@@ -37,9 +38,5 @@ private:
 private:
     STATE   m_eState;
 
-    //작업 찾는 시간 간격
-    float   m_fTaskCheckInterval;
-
-    //경과시간 시간 체크
-    float   m_fElapsedTimeCheck;
+    bool    m_bTaskCheck;
 };

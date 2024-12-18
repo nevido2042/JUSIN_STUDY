@@ -12,6 +12,7 @@ public:
 	void					Change_Mode(MODE _eMode);
 	void					Emplace_DeconstructSet(CObj* _pObj);
 	void					Emplace_ConstructSet(CObj* _pObj);
+	void					Notify_TaskChange();
 public:
 	CObj*					Get_Target() { return m_pTarget; }
 	void					Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
