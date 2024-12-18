@@ -12,7 +12,7 @@
 #include "TimeMgr.h"
 
 CRim::CRim()
-    :m_eState(END), m_bTaskCheck(false)
+    :m_bTaskCheck(false)
 {
 
 }
@@ -20,12 +20,6 @@ CRim::CRim()
 CRim::~CRim()
 {
     Release();
-}
-
-void CRim::Change_State(STATE _eState)
-{
-    m_eState = _eState;  
-    m_pTarget = nullptr; 
 }
 
 void CRim::Initialize()

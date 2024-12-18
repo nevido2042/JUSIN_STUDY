@@ -7,14 +7,11 @@
 class CRim :
     public CPawn
 {
-public:
-    enum STATE { DRAFTED, UNDRAFTED, DECONSTRUCTING, CONSTRUCTING, END };
+
 public:
     CRim();
     virtual ~CRim();
 public:
-    STATE   Get_State() { return m_eState; }
-    void    Change_State(STATE _eState);
     void    Set_TaskCheck() { m_bTaskCheck = true; }
 public:
     void Initialize() override;
@@ -42,8 +39,6 @@ private:
 private:
     void Check_DeconstructWork();
     void Check_ConstructWork();
-private:
-    STATE   m_eState;
 
     bool    m_bTaskCheck;
 };

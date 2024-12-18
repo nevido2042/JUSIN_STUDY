@@ -201,3 +201,40 @@ public:
     }
 
 }POS;
+
+template <typename Func>
+void Bresenham(int iX1, int iY1, int iX2, int iY2, Func callback)
+{
+    int iDistX = abs(iX2 - iX1);
+    int iDistY = abs(iY2 - iY1);
+    int iDirX = (iX1 < iX2) ? 1 : -1;
+    int iDirY = (iY1 < iY2) ? 1 : -1;
+    int iErr = iDistX - iDistY;
+
+    while (true)
+    {
+        // 콜백 함수 호출: 현재 좌표를 전달
+        if (!callback(iX1, iY1))
+        {
+            break;  // 콜백 함수에서 false를 반환하면 경로 계산 중단
+        }
+
+        // 목표 지점에 도달했으면 종료
+        if (iX1 == iX2 && iY1 == iY2)
+        {
+            break;
+        }
+
+        int iError = 2 * iErr;
+        if (iError > -iDistY)
+        {
+            iErr -= iDistY;
+            iX1 += iDirX;
+        }
+        if (iError < iDistX)
+        {
+            iErr += iDistX;
+            iY1 += iDirY;
+        }
+    }
+}

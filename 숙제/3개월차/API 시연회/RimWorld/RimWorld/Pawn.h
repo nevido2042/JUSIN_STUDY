@@ -8,11 +8,15 @@ class CPawn :
     public CObj
 {
 public:
+    enum STATE { DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, END };
+public:
     CPawn();
     virtual ~CPawn();
 public:
     void Move_To(POS _Pos);
     void Take_Damage(float _fDamage);
+    STATE   Get_State() { return m_eState; }
+    void    Change_State(STATE _eState);
 public:
     float Get_HP() { return m_fHP; }
     float Get_MaxHP() { return m_fMaxHP; }
@@ -64,4 +68,6 @@ protected:
     float           m_fTargetAngle;
     //공격 중 인가?
     bool            m_bAttack;
+
+    STATE           m_eState;
 };

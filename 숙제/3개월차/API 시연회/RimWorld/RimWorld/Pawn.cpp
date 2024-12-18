@@ -8,9 +8,10 @@
 #include "RangedWeapon.h"
 #include "TimeMgr.h"
 #include "TileMgr.h"
+#include "SteelWall.h"
 
 CPawn::CPawn()
-    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false),
+    :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_eState(END),
     m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f), m_bAttack(false), m_bNavStopRequested(false)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
@@ -23,11 +24,11 @@ CPawn::~CPawn()
 
 void CPawn::Move_To(POS _Pos)
 {
-    //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-    if (m_bAttack)
-    {
-        return;
-    }
+    ////멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
+    //if (m_bAttack)
+    //{
+    //    return;
+    //}
 
     //경로 따라가는 중이면 실행 안함
     if (m_bNavigating)
@@ -50,19 +51,13 @@ void CPawn::Move_To(POS _Pos)
     {
         m_bNavigating = true;
     }
-    //길을 못찾았을 경우, 타겟방향으로 총을 날리도록/타겟방향의 벽을 부수도록
+    //길을 못찾았을 경우
     else if (m_NodeList.empty() && Get_Target())
     {
+        Change_State(DECONSTRUCTING);
         //타겟과 자신사이에서 장애물을 찾고
         //타겟을 그 장애물로 한다.
         Set_Target(Get_ObstacleToTarget());
-        m_bNavigating = true;
-        ////가까워지면 그 장애물을 파괴한다.
-        //CObj* pTarget = Get_Target();
-        //if (pTarget)
-        //{
-        //    Get_Target()->Set_Destroyed();
-        //}
     }
 }
 
@@ -76,6 +71,12 @@ void CPawn::Take_Damage(float _fDamage)
         m_bDead = true;
         Dead();
     }
+}
+
+void CPawn::Change_State(STATE _eState)
+{
+    m_eState = _eState;
+    //m_pTarget = nullptr;
 }
 
 void CPawn::Dead()
@@ -239,8 +240,8 @@ bool CPawn::IsWithinRange()
     CRangedWeapon* pRangedWeapon = static_cast<CRangedWeapon*>(m_pRangedWeapon);
     float fRange = pRangedWeapon->Get_Range();
    
-    //거리가 가깝거나 or 상대가 벽일 경우 걍 쏘게 하자
-    if (m_fTargetDist < fRange || !strcmp(typeid(*m_pTarget).name(), "class CSteelWall"))
+    //거리가 가깝거나
+    if (m_fTargetDist < fRange)
     {
         return true;
     }
@@ -250,163 +251,79 @@ bool CPawn::IsWithinRange()
 
 bool CPawn::IsCanSeeTarget()
 {
-    // 두 좌표를 타일 인덱스 단위로 변환
     int iX1 = int(m_tInfo.fX / TILECX);
     int iY1 = int(m_tInfo.fY / TILECY);
-
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
     int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
-    // 거리와 방향 계산
-    int iDistX = abs(iX2 - iX1);
-    int iDistY = abs(iY2 - iY1);
-    int iDirX = (iX1 < iX2) ? 1 : -1;
-    int iDirY = (iY1 < iY2) ? 1 : -1;
-    int iErr = iDistX - iDistY;
-
-    // 브레젠햄 알고리즘 경로 추적
-    while (iX1 != iX2 || iY1 != iY2)
-    {
-        // 현재 타일의 상태 확인 (장애물 여부)
-        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_BLOCKED)
+    bool bCanSee = true;
+    Bresenham(iX1, iY1, iX2, iY2, [&](int x, int y) {
+        if (CTileMgr::Get_Instance()->Get_TileOption(x, y) == OPT_BLOCKED)
         {
-            return false;  // 경로상에 장애물이 있으면 false
+            bCanSee = false;
+            return false;  // 장애물이 있으면 탐색 종료
         }
+        return true;  // 계속 탐색
+        });
 
-        // 다음 타일 결정
-        int iError = 2 * iErr;
-        if (iError > -iDistY)
-        {
-            iErr -= iDistY;
-            iX1 += iDirX;
-        }
-        if (iError < iDistX)
-        {
-            iErr += iDistX;
-            iY1 += iDirY;
-        }
-    }
-
-    // 경로상에 장애물이 없으면 true 반환
-    return true;
+    return bCanSee;
 }
+
 
 CObj* CPawn::Get_ObstacleToTarget()
 {
-    // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    //int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-
     int iX1 = int(m_tInfo.fX / TILECX);
     int iY1 = int(m_tInfo.fY / TILECY);
-
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
     int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
-    int iDistX = abs(iX2 - iX1);
-    int iDistY = abs(iY2 - iY1);
-    int iDirX = (iX1 < iX2) ? 1 : -1;
-    int iDirY = (iY1 < iY2) ? 1 : -1;
-    int iErr = iDistX - iDistY;
-
-    while (true) {
-        // 현재 타일에 장애물이 있는지 확인
-        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_BLOCKED)
+    CObj* pObstacle = nullptr;
+    Bresenham(iX1, iY1, iX2, iY2, [&](int x, int y) {
+        if (CTileMgr::Get_Instance()->Get_TileOption(x, y) == OPT_BLOCKED)
         {
-            CObj* pObj = CTileMgr::Get_Instance()->Get_TileObj(iX1, iY1);  // 장애물이 있으면 false 반환
-            return pObj;
+            pObstacle = CTileMgr::Get_Instance()->Get_TileObj(x, y);
+            return false;  // 장애물을 찾으면 탐색 종료
         }
+        return true;  // 계속 탐색
+        });
 
-        // 목표 지점에 도달했으면 종료
-        if (iX1 == iX2 && iY1 == iY2)
-        {
-            break;
-        }
-
-        // 다음 타일 결정
-        int iError = 2 * iErr;
-        if (iError > -iDistY)
-        {
-            iErr -= iDistY;
-            iX1 += iDirX;
-        }
-        if (iError < iDistX)
-        {
-            iErr += iDistX;
-            iY1 += iDirY;
-        }
-    }
-
-    // 경로상에 장애물이 없으면 nullptr 반환
-    return nullptr;
+    return pObstacle;
 }
 
-int CPawn::Get_ReachableToTarget()//갈 수 있는 타일 중 가장 먼거 선택
+
+int CPawn::Get_ReachableToTarget()
 {
-    int     iDist(0);
-    int     iIndex(0);
-
-    // 브레센햄 알고리즘을 사용해 장애물 여부 판단
-    //int iThis_Index = CTileMgr::Get_TileIndex(m_tInfo.fX, m_tInfo.fY);
-    //int iTarget_Index = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-
     int iX1 = int(m_tInfo.fX / TILECX);
     int iY1 = int(m_tInfo.fY / TILECY);
-
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);
     int iY2 = int(m_pTarget->Get_Info().fY / TILECY);
 
-    int iDistX = abs(iX2 - iX1);
-    int iDistY = abs(iY2 - iY1);
-    int iDirX = (iX1 < iX2) ? 1 : -1;
-    int iDirY = (iY1 < iY2) ? 1 : -1;
-    int iErr = iDistX - iDistY;
+    int iClosestDist = INT_MAX;
+    int iClosestIndex = -1;
 
-    while (true) 
-    {
-        // 갈 수 있는 타일이 있는지 확인
-        if (CTileMgr::Get_Instance()->Get_TileOption(iX1, iY1) == OPT_REACHABLE) 
+    Bresenham(iX1, iY1, iX2, iY2, [&](int x, int y) {
+        if (CTileMgr::Get_Instance()->Get_TileOption(x, y) == OPT_REACHABLE)
         {
-            // 타겟과 가장 가까운 거리의 타일 저장
-            int iTempDist = abs(iX1 - iX2) + abs(iY1 - iY2);
-            if (iDist == 0 || iDist > iTempDist) 
+            int iDist = abs(x - iX2) + abs(y - iY2);
+            if (iDist < iClosestDist)
             {
-                iDist = iTempDist;
-                iIndex = iX1 + iY1 * TILEX;
+                iClosestDist = iDist;
+                iClosestIndex = x + y * TILEX;
             }
         }
+        return true;  // 계속 탐색
+        });
 
-        // 목표 지점에 도달했으면 종료
-        if (iX1 == iX2 && iY1 == iY2) 
-        {
-            break;
-        }
-
-        // 다음 타일 결정
-        int iError = 2 * iErr;
-        if (iError > -iDistY)
-        {
-            iErr -= iDistY;
-            iX1 += iDirX;
-        }
-        if (iError < iDistX)
-        {
-            iErr += iDistX;
-            iY1 += iDirY;
-        }
-    }
-
-    // 경로상에 장애물이 없으면 nullptr 반환
-    return iIndex;
-
+    return iClosestIndex;
 }
 
-// Directions: 상, 하, 좌, 우
-const int dx[4] = { 0, 0, -1, 1 };
-const int dy[4] = { -1 * TILEX, 1 * TILEX, 0, 0 };
 
 int CPawn::Find_NearestReachableTile(int iIndexX, int iIndexY)
 {
+    // Directions: 상, 하, 좌, 우
+    const int dx[4] = { 0, 0, -1, 1 };
+    const int dy[4] = { -1 * TILEX, 1 * TILEX, 0, 0 };
+
     queue<int> q;
     bool visited[TILEY * TILEX] = { false };
 

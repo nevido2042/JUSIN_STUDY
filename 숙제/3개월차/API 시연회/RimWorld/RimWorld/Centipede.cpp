@@ -35,6 +35,8 @@ void CCentipede::Initialize()
     m_pRangedWeapon->Set_Target(this);
 
     Take_Damage(50.f);
+
+    //Find_Target();
 }
 
 int CCentipede::Update()
@@ -63,28 +65,86 @@ void CCentipede::Late_Update()
 
     Calculate_MoveDir();
 
-    //타겟 있으면 따라가기
     if (m_pTarget)
     {
         Measure_Target();
+    }
 
-        POS tMoveToPos{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY };
-
-        //타겟이 Pawn이라면
-        if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
+    switch (m_eState)
+    {
+    case CHASING:
+        //타겟 있으면 따라가기
+        if (m_pTarget)
         {
-            //Pawn이 죽었다면
-            if (pPawnTarget->Get_IsDead())
+            POS tMoveToPos{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY };
+
+            //타겟이 Pawn이라면
+            if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
             {
-                Set_Target(nullptr);
-                RequestNavStop();
+                //Pawn이 죽었다면
+                if (pPawnTarget->Get_IsDead())
+                {
+                    Set_Target(nullptr);
+                    RequestNavStop();
+                }
+
             }
 
+            Move_To(tMoveToPos);
+
+        }
+        break;
+
+    case DECONSTRUCTING:
+
+        if (!Get_Target())
+        {
+            break;
         }
 
-        Move_To(tMoveToPos);
+        //그 장애물근처 올라갈 수 있는 타일이 있는지 확인한다.
+        //확인 후 길을 찾을 수 있는지 확인한다.
+        //길을 찾으면 따라가다가 가까워지면 부순다.
+        //이동 가능한 타일이 있으면 노드리스트 반환
 
+        if (!m_bNavigating)
+        {
+            m_NodeList = move(CTileMgr::Get_Instance()
+                ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY },
+                    POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY }));
+
+            if (!m_NodeList.empty())
+            {
+                m_bNavigating = true;
+            }
+        }
+
+        //타겟이 가까운지 확인
+        if (m_fTargetDist < TILECX * 1.5f)
+        {
+            //가까우면 멈춘다.
+            RequestNavStop();
+
+            //타겟이 없다.
+            if (!m_pTarget)
+            {
+                break;
+            }
+            //벽을 부수고
+            CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+            pWall->Set_IsBrokenDown();
+            //타겟을 찾는다.
+            Find_Target();
+            //추적 상태로 만든다.
+            Change_State(CHASING);
+        }
+        break;
+
+    default:
+        break;
     }
+
+    
 
     //사정거리 내에 있고, 적이 보여야함
     if (IsWithinRange() && IsCanSeeTarget())
@@ -108,6 +168,7 @@ void CCentipede::Late_Update()
     //림 오브젝트리스트에서 가장 가까운 림을 찾고 타겟으로 설정
     if (!m_pTarget)
     {
+        Change_State(CHASING);
         Find_Target();
     }
 
@@ -217,7 +278,7 @@ void CCentipede::Render(HDC hDC)
     // 문자열 출력 (유니코드)
     TextOutW(hDC, int(m_tInfo.fX+ iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
     // 변수 값을 유니코드 문자열로 변환
-    wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
+    wsprintf(buffer, L"m_pTarget: %p (%d, %d)", m_pTarget, (int)m_pTarget->Get_Info().fX/TILECX, (int)m_pTarget->Get_Info().fY / TILECY);
     // 문자열 출력 (유니코드)
     TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 }

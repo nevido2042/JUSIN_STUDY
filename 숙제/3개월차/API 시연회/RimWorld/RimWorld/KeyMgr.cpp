@@ -10,6 +10,7 @@ CKeyMgr::CKeyMgr()
 
 CKeyMgr::~CKeyMgr()
 {
+	
 }
 
 bool CKeyMgr::Key_Pressing(int _iKey)
