@@ -39,6 +39,7 @@ private:
 private:
     void Check_DeconstructWork();
     void Check_ConstructWork();
+    void Find_Enemy();
 
     bool    m_bTaskCheck;
 };

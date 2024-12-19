@@ -21,7 +21,7 @@ void CProjectile::Initialize()
 
     m_eRenderID = RENDER_GAMEOBJECT;
 
-    m_fSpeed = 10.f;
+    m_fSpeed = 20.f;
 
     m_fDamage = 1.f;
 }

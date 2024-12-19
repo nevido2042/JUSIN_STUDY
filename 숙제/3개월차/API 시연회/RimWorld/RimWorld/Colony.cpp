@@ -71,6 +71,7 @@ void CColony::Initialize()
 
     //타일
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Ice.bmp", L"Ice");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Gravel.bmp", L"Gravel");
     //돌
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Wall_Atlas_Smooth.bmp", L"Wall_Atlas_Smooth");
     //핏자국
@@ -206,14 +207,14 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //몇 초 후 적 생성
-    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 5.f )
+    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 60.f )
     {
 
         ////지네로봇 두마리
         for (int i = 0; i < 1; ++i)
         {
             int iX = int(rand() % TILEX);
-            int iY = int(rand() % TILEY);
+            int iY = 0;
 
             POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
 

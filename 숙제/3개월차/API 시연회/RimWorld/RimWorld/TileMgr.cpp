@@ -3,6 +3,7 @@
 #include "AbstractFactory.h"
 #include "ScrollMgr.h"
 #include "PathFinder.h"
+#include "BmpMgr.h"
 
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
@@ -73,52 +74,60 @@ void CTileMgr::Render(HDC hDC)
 	 /*for (auto& pTile : m_arrTile)
 	 	pTile->Render(hDC);*/
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();// / TILECX;
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();// / TILECY;
 
-	int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
-	int		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
 
-	int		iMinX = iScrollX;
-	int		iMinY = iScrollY;
-
-	//스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
-	if (iMinX > 0)
-	{
-		iMinX = 0;
-		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
-	}
-	//음수면 스크롤 ex) 
-	else
-	{
-		iMinX = abs(iMinX);
-		iMaxX = iMaxX - iScrollX;
-	}
-
-	if (iMinY > 0)
-	{
-		iMinY = 0;
-		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
-	}
-	else
-	{
-		iMinY = abs(iMinY);
-		iMaxY = iMaxY - iScrollY;
-	}
+	BitBlt(hDC,
+		iScrollX, iScrollY,
+		int(TILEX * TILECX), int(TILEY * TILECY),
+		hMemDC, 0, 0, SRCCOPY);
 
 
-	for (int i = iMinY; i < iMaxY; ++i)
-	{
-		for (int j = iMinX; j < iMaxX; ++j)
-		{
-			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
-			{
-				continue;
-			}
+	//int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	//int		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
 
-			m_TileMap[i][j]->Render(hDC);
-		}
-	}
+	//int		iMinX = iScrollX;
+	//int		iMinY = iScrollY;
+
+	////스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
+	//if (iMinX > 0)
+	//{
+	//	iMinX = 0;
+	//	iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	//}
+	////음수면 스크롤 ex) 
+	//else
+	//{
+	//	iMinX = abs(iMinX);
+	//	iMaxX = iMaxX - iScrollX;
+	//}
+
+	//if (iMinY > 0)
+	//{
+	//	iMinY = 0;
+	//	iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+	//}
+	//else
+	//{
+	//	iMinY = abs(iMinY);
+	//	iMaxY = iMaxY - iScrollY;
+	//}
+
+
+	//for (int i = iMinY; i < iMaxY; ++i)
+	//{
+	//	for (int j = iMinX; j < iMaxX; ++j)
+	//	{
+	//		if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
+	//		{
+	//			continue;
+	//		}
+
+	//		m_TileMap[i][j]->Render(hDC);
+	//	}
+	//}
 }
 
 void CTileMgr::Release()

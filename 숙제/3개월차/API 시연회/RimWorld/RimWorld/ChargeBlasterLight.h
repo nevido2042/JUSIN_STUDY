@@ -9,6 +9,7 @@ public:
     CChargeBlasterLight();
     virtual ~CChargeBlasterLight();
 public:
+    void Initialize() override;
     void Fire()  override;
 public:
     void Render(HDC hDC) override;

@@ -305,6 +305,37 @@ void CRim::Render(HDC hDC)
 
 void CRim::Drafed()
 {
+    //어떠한 명령이 없으면 움직이지 않고
+    //제자리에서 방어한다.
+    Find_Enemy();
+
+    if (m_bNavigating)
+    {
+        return;
+    }
+
+    //적들을 순회하면서 찾는다.
+    //그중 사정거리에 있으면 타겟으로 세팅한다.
+    
+
+    //타겟 있으면 따라가기
+    if (m_pTarget)
+    {
+        //타겟이 죽으면 타겟 없애기
+        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+        if (pTarget->Get_IsDead())
+        {
+            Set_Target(nullptr);
+            //적이 죽었으면 다른 적을 찾는다.
+            //Find_Enemy();
+        }
+        else
+        {
+            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
+            //Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
+        }
+    }
+
     //사정거리에 있고 적이 보인다면
     if (IsWithinRange() && IsCanSeeTarget())
     {
@@ -316,21 +347,7 @@ void CRim::Drafed()
         m_bAttack = false;
     }
 
-    //타겟 있으면 따라가기
-    if (m_pTarget)
-    {
-        //타겟이 죽으면 타겟 없애기
-        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
-        if (pTarget->Get_IsDead())
-        {
-            Set_Target(nullptr);
-        }
-        else
-        {
-            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-            Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
-        }
-    }
+
 
 }
 
@@ -500,7 +517,6 @@ void CRim::Check_ConstructWork()
 
         vector<CObj*> vecConstruct(ConstructSet.begin(), ConstructSet.end());
 
-
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
         std::sort(vecConstruct.begin(), vecConstruct.end(), [this](CObj* _Dst, CObj* _Src) {
             float fDistA = CObj::Calculate_Dist(this, _Dst);
@@ -525,6 +541,23 @@ void CRim::Check_ConstructWork()
             m_eState = CONSTRUCTING;
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
+        }
+    }
+}
+
+void CRim::Find_Enemy()
+{
+    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_MECHANOID])
+    {
+        Set_Target(pObj);
+        Measure_Target();
+        if (IsWithinRange())
+        {
+            break;
+        }
+        else
+        {
+            Set_Target(nullptr);
         }
     }
 }
