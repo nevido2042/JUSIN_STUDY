@@ -21,7 +21,7 @@ CColony::~CColony()
 void CColony::Initialize()
 {
     CSoundMgr::Get_Instance()->Initialize();
-    CSoundMgr::Get_Instance()->PlayBGM(L"Alpaca.wav", 0.5f);
+    CSoundMgr::Get_Instance()->PlayBGM(L"Alpaca.wav", 0.3f);
 
     CTimeMgr::Get_Instance()->Initialize();
 
