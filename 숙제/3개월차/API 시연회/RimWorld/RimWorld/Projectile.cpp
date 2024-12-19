@@ -56,6 +56,11 @@ void CProjectile::OnCollision(OBJID _eID, CObj* _pOther)
     {
         return;
     }
+    //이미 죽은 애면 무시한다.
+    if (static_cast<CPawn*>(_pOther)->Get_IsDead())
+    {
+        return;
+    }
     //림이거나, 메카노이드면 데미지주고 없어진다.
     if (_eID == OBJ_RIM || _eID == OBJ_ENEMY)
     {

@@ -8,7 +8,7 @@ class CPawn :
     public CObj
 {
 public:
-    enum STATE { DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, END };
+    enum STATE { WANDERING, DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, END };
 public:
     CPawn();
     virtual ~CPawn();
