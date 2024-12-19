@@ -22,12 +22,7 @@ void CCentipede::Initialize()
 {
     CPawn::Initialize();
 
-    m_tInfo.fCX = 64.f;
-    m_tInfo.fCY = 64.f;
-
     m_fSpeed = 1.f;
-
-    m_eRenderID = RENDER_GAMEOBJECT;
 
     //무기 생성
     m_pRangedWeapon = CAbstractFactory<CChargeBlasterLight>::Create(m_tInfo.fX, m_tInfo.fY);
@@ -36,63 +31,17 @@ void CCentipede::Initialize()
 
     Take_Damage(50.f);
 
-    //Find_Target();
+    Change_State(WANDERING);
 }
 
 int CCentipede::Update()
 {
-    if (m_bDestroyed)
-        return OBJ_DESTROYED;
-
-    //죽었으면 리턴
-    if (m_bDead)
-    {
-        return OBJ_NOEVENT;
-    }
-
-    __super::Update_Rect();
-
-    return OBJ_NOEVENT;
+    return CPawn::Update();
 }
 
 void CCentipede::Late_Update()
 {
     CPawn::Late_Update();
-
-    //사정거리 내에 있고, 적이 보여야함
-    if (IsWithinRange() && IsCanSeeTarget())
-    {
-        RequestNavStop();
-        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
-        m_bAttack = true;
-    }
-    else
-    {
-        m_bAttack = false;
-    }
-    //FindTarget();
-    //타겟이 없을 경우
-    //림 오브젝트리스트에서 가장 가까운 림을 찾고 타겟으로 설정
-    if (!m_pTarget)
-    {
-        Change_State(CHASING);
-        Find_Target();
-    }
-
-    //마우스 클릭 했을 때 타겟으로 설정
-    if (Is_MouseHovered())
-    {
-        //우클릭은 타겟의 공격 타겟으로 설정
-        if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
-        {
-            if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
-            {
-                pTarget->Set_Target(this);
-            }
-            return;
-        }
-    }
-    
 }
 
 void CCentipede::Render(HDC hDC)
@@ -200,10 +149,21 @@ void CCentipede::Render(HDC hDC)
 
 void CCentipede::Handle_Wandering()
 {
+    Find_Target();
+
+    if (m_pTarget)
+    {
+        Change_State(CHASING);
+    }
 }
 
 void CCentipede::Handle_Chasing()
 {
+    if (!m_pTarget)
+    {
+        Change_State(WANDERING);
+    }
+
     //타겟 있으면 따라가기
     if (m_pTarget)
     {
@@ -220,9 +180,20 @@ void CCentipede::Handle_Chasing()
             }
 
         }
-
         Move_To(tMoveToPos);
 
+    }
+
+    //사정거리 내에 있고, 적이 보여야함
+    if (IsWithinRange() && IsCanSeeTarget())
+    {
+        RequestNavStop();
+        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
+        m_bAttack = true;
+    }
+    else
+    {
+        m_bAttack = false;
     }
 }
 

@@ -26,12 +26,7 @@ void CRim::Initialize()
 {
     CPawn::Initialize();
 
-    m_tInfo.fCX = 64.f;
-    m_tInfo.fCY = 64.f;
-
     m_fSpeed = 2.f;
-
-    m_eRenderID = RENDER_GAMEOBJECT;
 
     //무기 생성
     m_pRangedWeapon = CAbstractFactory<CBoltActionRifle>::Create(m_tInfo.fX, m_tInfo.fY);
@@ -40,22 +35,12 @@ void CRim::Initialize()
 
     Take_Damage(10.f);
 
-    m_eState = UNDRAFTED; //현재는 소집됬지만 추후 기본은 자유행동으로
+    Change_State(WANDERING);
 }
 
 int CRim::Update()
 {
-    if (m_bDestroyed)
-        return OBJ_DESTROYED;
-
-    //죽었으면 리턴
-    if (m_bDead)
-    {
-        return OBJ_NOEVENT;
-    }
-    __super::Update_Rect();
-
-    return OBJ_NOEVENT;
+    return CPawn::Update();
 }
 
 void CRim::Late_Update()
@@ -71,23 +56,7 @@ void CRim::Late_Update()
             CColonyMgr::Get_Instance()->Set_Target(this);
             return;
         }
-        //우클릭은 타겟의 공격 타겟으로 설정
-        else if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
-        {
-            if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
-            {
-                //자기 자신이 타겟이 될 수 없음.
-                if (pTarget != this)
-                {
-                    pTarget->Set_Target(this);
-                }
-            }
-            return;
-        }
-    }
-
-    
-               
+    }            
 }
 
 void CRim::Render(HDC hDC)
@@ -243,8 +212,11 @@ void CRim::Render(HDC hDC)
     // 문자열 출력 (유니코드)
     TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 
-    switch (m_eState)
+    switch (Get_State())
     {
+    case CRim::WANDERING:
+        wsprintf(buffer, L"m_eState: %s", L"WANDERING");
+        break;
     case CRim::DRAFTED:
         wsprintf(buffer, L"m_eState: %s", L"DRAFTED");
         break;
@@ -269,6 +241,42 @@ void CRim::Render(HDC hDC)
 
 void CRim::Handle_Wandering()
 {
+    //배회 하자
+    //네비게이션 중이 아니면
+    if (!m_bNavigating)
+    {
+        //갈 수 있는 곳 랜덤 위치 하나 정해서 움직인다.
+        //갈 수 있는 타일을 타일매니저가 리스트로 하나 가지고 있다가. 건네주는 방식이 좋겠다.########
+        POS tRandomPos;
+        while (true)
+        {
+            tRandomPos.fX = m_tInfo.fX + (5 - rand() % 11) * TILEX;
+            tRandomPos.fY = m_tInfo.fY + (5 - rand() % 11) * TILEY;
+            if (CTileMgr::Get_Instance()->Get_TileOption(tRandomPos) == OPT_REACHABLE)
+            {
+                break;
+            }
+        }
+        Move_To(tRandomPos);
+    }
+
+
+
+
+    //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
+    //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
+    // 
+    //####콜로니 매니저에서 작업리스트 바뀌었다고 알려주면?<이게 맞는듯?>
+    //####콜로니 매니저에서 작업이 바뀌었을 때(추가, 삭제) 모든 림에게, 작업 확인하라 지시
+    
+    //작업을 체크할 시간이 됬다면(이거 빼버리고)
+    if (m_bTaskCheck)
+    {
+        Check_ConstructWork();
+        Check_DeconstructWork();
+        //m_fElapsedTimeCheck = 0.f;
+        m_bTaskCheck = false;
+    }
 }
 
 void CRim::Handle_Drafted()
@@ -318,20 +326,7 @@ void CRim::Handle_Drafted()
 
 void CRim::Handle_Undrafted()
 {
-    //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
-    //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
-    // 
-    //####콜로니 매니저에서 작업리스트 바뀌었다고 알려주면?<이게 맞는듯?>
-    //####콜로니 매니저에서 작업이 바뀌었을 때(추가, 삭제) 모든 림에게, 작업 확인하라 지시
 
-    //작업을 체크할 시간이 됬다면(이거 빼버리고)
-    if (m_bTaskCheck)
-    {
-        Check_ConstructWork();
-        Check_DeconstructWork();
-        //m_fElapsedTimeCheck = 0.f;
-        m_bTaskCheck = false;
-    }
 }
 
 void CRim::Handle_Deconstructing()
@@ -355,7 +350,7 @@ void CRim::Handle_Deconstructing()
         {
             //다른 작업 체크
             m_bTaskCheck = true;
-            m_eState = UNDRAFTED;
+            Change_State(WANDERING);
             return;
         }
         //해체 하는거
@@ -388,7 +383,7 @@ void CRim::Handle_Constructing()
             //다른 작업 체크
             m_bTaskCheck = true;
             m_pTarget = nullptr;
-            m_eState = UNDRAFTED;
+            Change_State(WANDERING);
             return;
         }
         //건설
@@ -409,7 +404,7 @@ void CRim::Deconstruct()
 {
     CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
     pWall->Set_IsBrokenDown();
-    m_eState = UNDRAFTED;
+    Change_State(WANDERING);
 }
 
 void CRim::Construct()
@@ -422,13 +417,13 @@ void CRim::Construct()
     //작업삭제
     CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
     m_pTarget = nullptr;
-    m_eState = UNDRAFTED;
+    Change_State(WANDERING);
 }
 
 void CRim::Check_DeconstructWork()
 {
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
-    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty() && m_eState == UNDRAFTED) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    if (!CColonyMgr::Get_Instance()->Get_DeconstructSet()->empty() && Get_State() == WANDERING) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -461,7 +456,7 @@ void CRim::Check_DeconstructWork()
 
             Set_Target(pWall);
             m_bNavigating = true;
-            m_eState = DECONSTRUCTING;
+            Change_State(DECONSTRUCTING);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
@@ -471,7 +466,7 @@ void CRim::Check_DeconstructWork()
 void CRim::Check_ConstructWork()
 {
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
-    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && m_eState == UNDRAFTED) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && Get_State() == WANDERING) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -503,7 +498,7 @@ void CRim::Check_ConstructWork()
 
             Set_Target(pTile);
             m_bNavigating = true;
-            m_eState = CONSTRUCTING;
+            Change_State(CONSTRUCTING);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }

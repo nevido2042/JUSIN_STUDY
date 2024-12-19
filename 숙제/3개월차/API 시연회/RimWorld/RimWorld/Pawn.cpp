@@ -9,6 +9,8 @@
 #include "TimeMgr.h"
 #include "TileMgr.h"
 #include "SteelWall.h"
+#include "KeyMgr.h"
+#include "ColonyMgr.h"
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_eState(END),
@@ -80,6 +82,11 @@ void CPawn::Take_Damage(float _fDamage)
 
 void CPawn::Change_State(STATE _eState)
 {
+    if (m_eState == _eState)
+    {
+        return;
+    }
+
     m_eState = _eState;
     //m_pTarget = nullptr;
 }
@@ -409,6 +416,13 @@ void CPawn::Initialize()
 
     m_fMaxHP = 100.f;
     m_fHP = m_fMaxHP;
+
+    m_tInfo.fCX = 64.f;
+    m_tInfo.fCY = 64.f;
+
+    m_eRenderID = RENDER_GAMEOBJECT;
+
+    Change_State(WANDERING);
 }
 
 int CPawn::Update()
@@ -416,9 +430,10 @@ int CPawn::Update()
     if (m_bDestroyed)
         return OBJ_DESTROYED;
 
-    if (m_bNavigating)
+    //죽었으면 리턴
+    if (m_bDead)
     {
-        Navigate();
+        return OBJ_NOEVENT;
     }
 
     __super::Update_Rect();
@@ -472,6 +487,24 @@ void CPawn::Late_Update()
         break;
     default:
         break;
+    }
+
+    //마우스 클릭 했을 때 타겟으로 설정
+    if (Is_MouseHovered())
+    {
+        //우클릭은 타겟의 공격 타겟으로 설정
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
+        {
+            if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
+            {
+                //자기 자신이 타겟이 될 수 없음.
+                if (pTarget != this)
+                {
+                    pTarget->Set_Target(this);
+                }
+            }
+            return;
+        }
     }
 }
 

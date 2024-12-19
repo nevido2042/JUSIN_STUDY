@@ -80,5 +80,6 @@ protected:
     //공격 중 인가?
     bool            m_bAttack;
 
+private:
     STATE           m_eState;
 };

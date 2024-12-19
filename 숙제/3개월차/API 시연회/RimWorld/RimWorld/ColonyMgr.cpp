@@ -122,7 +122,7 @@ void CColonyMgr::Input_Key()
             {
                 if (pTargetRim->Get_State() == CRim::DRAFTED)
                 {
-                    pTargetRim->Change_State(CRim::UNDRAFTED);
+                    pTargetRim->Change_State(CRim::WANDERING);
                 }
                 else
                 {
