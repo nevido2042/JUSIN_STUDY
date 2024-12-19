@@ -48,6 +48,17 @@ public:
     void    Release() override;
     void    OnCollision(OBJID _eID, CObj* _pOther) override;
 
+
+//Pawn 상태
+//enum STATE { WANDERING, DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, END };
+protected:
+    virtual void Handle_Wandering();
+    virtual void Handle_Drafted();
+    virtual void Handle_Undrafted();
+    virtual void Handle_Chasing();
+    virtual void Handle_Deconstructing();
+    virtual void Handle_Constructing();
+
 protected:
     //길찾기 관련
     list<CNode*>    m_NodeList;

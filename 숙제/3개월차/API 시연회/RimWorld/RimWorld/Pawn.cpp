@@ -428,7 +428,51 @@ int CPawn::Update()
 
 void CPawn::Late_Update()
 {
+    //죽었으면 리턴
+    if (m_bDead)
+    {
+        return;
+    }
 
+    //이동방향 계산
+    Calculate_MoveDir();
+
+    if (m_pTarget)
+    {
+        //타겟과의 거리 및 각도 계산
+        Measure_Target();
+    }
+
+    if (m_bNavigating)
+    {
+        Navigate();
+    }
+
+    switch (m_eState)
+    {
+    case CPawn::WANDERING:
+        Handle_Wandering();
+        break;
+    case CPawn::DRAFTED:
+        Handle_Drafted();
+        break;
+    case CPawn::UNDRAFTED:
+        Handle_Undrafted();
+        break;
+    case CPawn::CHASING:
+        Handle_Chasing();
+        break;
+    case CPawn::DECONSTRUCTING:
+        Handle_Deconstructing();
+        break;
+    case CPawn::CONSTRUCTING:
+        Handle_Constructing();
+        break;
+    case CPawn::END:
+        break;
+    default:
+        break;
+    }
 }
 
 void CPawn::Release()
@@ -440,4 +484,28 @@ void CPawn::Release()
 void CPawn::OnCollision(OBJID _eID, CObj* _pOther)
 {
     
+}
+
+void CPawn::Handle_Wandering()
+{
+}
+
+void CPawn::Handle_Drafted()
+{
+}
+
+void CPawn::Handle_Undrafted()
+{
+}
+
+void CPawn::Handle_Chasing()
+{
+}
+
+void CPawn::Handle_Deconstructing()
+{
+}
+
+void CPawn::Handle_Constructing()
+{
 }

@@ -18,16 +18,12 @@ public:
     int  Update() override;
     void Late_Update() override;
     void Render(HDC hDC) override;
-private:
-    //소집된 상태일 때
-    void Drafed();
-    //소집 안된 상태 일 때
-    void Undrafed();
-    //해체 중일때
-    void Deconstructing();
-    //건설 중일때
-    void Constructing();
-
+protected:
+    void Handle_Wandering() override;
+    void Handle_Drafted() override;
+    void Handle_Undrafted() override;
+    void Handle_Deconstructing() override;
+    void Handle_Constructing() override;
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();

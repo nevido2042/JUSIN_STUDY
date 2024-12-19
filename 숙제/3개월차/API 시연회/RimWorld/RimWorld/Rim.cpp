@@ -60,43 +60,7 @@ int CRim::Update()
 
 void CRim::Late_Update()
 {
-    //죽었으면 리턴
-    if (m_bDead)
-    {
-        return;
-    }
-
-    //이동방향 계산
-    Calculate_MoveDir();
-
-    if (m_pTarget)
-    {
-        //타겟과의 거리 및 각도 계산
-        Measure_Target();
-    }
-
-    switch (m_eState)
-    {
-    case CRim::DRAFTED:
-        Drafed();
-        break;
-    case CRim::UNDRAFTED:
-        Undrafed();
-        break;
-    case CRim::DECONSTRUCTING:
-        Deconstructing();
-        break;
-    case CRim::CONSTRUCTING:
-        Constructing();
-        break;
-    default:
-        break;
-    }
-
-    if (m_bNavigating)
-    {
-        Navigate();
-    }
+    CPawn::Late_Update();
 
     //마우스가 올라가져있는가?
     if (Is_MouseHovered())
@@ -303,9 +267,12 @@ void CRim::Render(HDC hDC)
 
 }
 
-void CRim::Drafed()
+void CRim::Handle_Wandering()
 {
-    //어떠한 명령이 없으면 움직이지 않고
+}
+
+void CRim::Handle_Drafted()
+{    //어떠한 명령이 없으면 움직이지 않고
     //제자리에서 방어한다.
     Find_Enemy();
 
@@ -316,7 +283,7 @@ void CRim::Drafed()
 
     //적들을 순회하면서 찾는다.
     //그중 사정거리에 있으면 타겟으로 세팅한다.
-    
+
 
     //타겟 있으면 따라가기
     if (m_pTarget)
@@ -347,11 +314,9 @@ void CRim::Drafed()
         m_bAttack = false;
     }
 
-
-
 }
 
-void CRim::Undrafed()
+void CRim::Handle_Undrafted()
 {
     //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
     //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
@@ -366,10 +331,10 @@ void CRim::Undrafed()
         Check_DeconstructWork();
         //m_fElapsedTimeCheck = 0.f;
         m_bTaskCheck = false;
-    } 
+    }
 }
 
-void CRim::Deconstructing()
+void CRim::Handle_Deconstructing()
 {
     //타겟이 가까운지 확인
     if (m_fTargetDist < TILECX * 1.5f)
@@ -401,7 +366,7 @@ void CRim::Deconstructing()
     //몇초 뒤 해체 완료
 }
 
-void CRim::Constructing()
+void CRim::Handle_Constructing()
 {
     //타겟이 가까운지 확인
     if (m_fTargetDist < TILECX * 1.5f)
