@@ -19,6 +19,7 @@
 #include <typeinfo>
 #include <queue>
 #include <set>
+#include <cmath>
 
 #include "ole2.h"
 #include "gdiplus.h"

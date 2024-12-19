@@ -39,5 +39,8 @@ protected:
     CObj*       m_pProjectile;
     //무기 사정거리
     float       m_fRange;
+
+    //image
+    Gdiplus::Image* m_pImage;
 };
 

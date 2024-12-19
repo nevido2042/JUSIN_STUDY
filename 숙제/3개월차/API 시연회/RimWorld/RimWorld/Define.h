@@ -1,14 +1,14 @@
 #pragma once
 
-#define WINCX				800//1280
-#define WINCY				600//720
+#define WINCX				1280
+#define WINCY				720
 
 #define	PURE				= 0
 #define PI					3.141592f
 
 //오브젝트 관련
 #define OBJ_NOEVENT			0
-#define OBJ_DESTROYED			1
+#define OBJ_DESTROYED		1
 
 //키 입력
 #define VK_MAX				0xff

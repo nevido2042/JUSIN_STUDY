@@ -27,6 +27,8 @@ void CChargeBlasterLight::Initialize()
     m_fReloadSpeed = 1.f;
     //무기 사정거리
     m_fRange = 500.f;
+
+    m_pImage = Gdiplus::Image::FromFile(L"../Image/Things/Weapon/ChargeBlasterLight.png");
 }
 
 void CChargeBlasterLight::Fire()
@@ -37,7 +39,7 @@ void CChargeBlasterLight::Fire()
     }
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-    CSoundMgr::Get_Instance()->PlaySound(L"ChargeShotA.wav", SOUND_EFFECT, 0.3f);
+    CSoundMgr::Get_Instance()->PlaySound(L"ChargeShotA.wav", SOUND_EFFECT, 0.2f);
 
     //각도 랜덤
     int iRand = (rand() % 21) - 10; //-10 ~ 10
@@ -53,7 +55,7 @@ void CChargeBlasterLight::Render(HDC hDC)
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     // image.png 파일을 이용하여 Image 객체를 생성합니다.
-    Gdiplus::Image* image = Gdiplus::Image::FromFile(L"../Image/Things/Weapon/ChargeBlasterLight.png");
+
     Graphics Grapics(hDC);
 
     // 회전의 중심점 설정 (이미지의 중심)
@@ -65,7 +67,7 @@ void CChargeBlasterLight::Render(HDC hDC)
     Grapics.RotateTransform(-m_fAngle);        // 회전 각도 적용
     Grapics.TranslateTransform((REAL)-centerX, (REAL)-centerY); // 원래 위치로 이동
 
-    Grapics.DrawImage(image, m_tRect.left + iScrollX, m_tRect.top + iScrollY, 64, 64);
+    Grapics.DrawImage(m_pImage, m_tRect.left + iScrollX, m_tRect.top + iScrollY, 64, 64);
 
 
     //무기 출력

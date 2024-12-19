@@ -192,6 +192,31 @@ void CPawn::Calculate_MoveDir()
     //이전 프레임 위치 저장
     m_tPrevPos.fX = m_tInfo.fX;
     m_tPrevPos.fY = m_tInfo.fY;
+
+    //공격 중이고, 타겟이 있을 때만 타겟 바라보기
+    if (m_bAttack && m_pTarget)
+    {
+        //x축이 거의 같을 때만 y축 비교
+        if (fabs(m_pTarget->Get_Info().fX - m_tInfo.fX) < FLT_EPSILON)
+        {
+            if (m_pTarget->Get_Info().fY > m_tInfo.fY)
+            {
+                m_eDir = DD;
+            }
+            else
+            {
+                m_eDir = UU;
+            }
+        }
+        else if (m_pTarget->Get_Info().fX > m_tInfo.fX)
+        {
+            m_eDir = RR;
+        }
+        else
+        {
+            m_eDir = LL;
+        }
+    }
 }
 
 void CPawn::Measure_Target()

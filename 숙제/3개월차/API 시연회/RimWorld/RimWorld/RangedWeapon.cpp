@@ -4,7 +4,7 @@
 #include "Pawn.h"
 
 CRangedWeapon::CRangedWeapon()
-    :m_fFireRate(0), m_pProjectile(nullptr),
+    :m_fFireRate(0), m_pProjectile(nullptr), m_pImage(nullptr),
     m_fRange(0.f),m_fElapsedTimeSinceShot(0.f), m_fReloadSpeed(0.f)
 {
 }
