@@ -133,6 +133,9 @@
     <ClCompile Include="SoundMgr.cpp">
       <Filter>03.Design\SoundMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Boomrat.cpp">
+      <Filter>01.Obj\00.Pawn\Boomrat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -281,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="SoundMgr.h">
       <Filter>03.Design\SoundMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Boomrat.h">
+      <Filter>01.Obj\00.Pawn\Boomrat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -438,6 +444,9 @@
     </Filter>
     <Filter Include="03.Design\SoundMgr">
       <UniqueIdentifier>{8155e0b7-8f3f-4b09-9987-662520816d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Boomrat">
+      <UniqueIdentifier>{e67c7cbf-ec5f-4f4d-8ea9-61f54cc47e65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

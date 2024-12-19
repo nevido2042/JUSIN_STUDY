@@ -73,6 +73,11 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_north.bmp", L"Centipede_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_south.bmp", L"Centipede_south");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_west.bmp", L"Centipede_west");
+    //Boomrat
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_east.bmp", L"Boomrat_east");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_north.bmp", L"Boomrat_north");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_south.bmp", L"Boomrat_south");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_west.bmp", L"Boomrat_west");
     //나무
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Tree/TreePoplar_LeaflessA.bmp", L"TreePoplar_LeaflessA");
 
@@ -212,10 +217,10 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //몇 초 후 적 생성
-    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 60.f )
+    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 10.f )
     {
 
-        ////지네로봇 두마리
+        ////지네로봇
         for (int i = 0; i < 1; ++i)
         {
             int iX = int(rand() % TILEX);
@@ -225,7 +230,19 @@ int CColony::Update()
 
             //지네
             CObj* pObj = CAbstractFactory<CCentipede>::Create(tPos);
-            CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
+            CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
+        }
+
+        ////폭탄쥐
+        for (int i = 0; i < 10; ++i)
+        {
+            int iX = int(rand() % TILEX);
+            int iY = 0;
+
+            POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+
+            CObj* pObj = CAbstractFactory<CBoomrat>::Create(tPos);
+            CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
         }
 
         m_bEnemySpawned = true;

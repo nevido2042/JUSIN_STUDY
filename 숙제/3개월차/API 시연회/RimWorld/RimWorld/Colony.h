@@ -12,6 +12,7 @@
 #include "SteelWall.h"
 #include "Centipede.h"
 #include "Tree.h"
+#include "Boomrat.h"
 
 class CColony :
     public CScene

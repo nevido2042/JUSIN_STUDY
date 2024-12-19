@@ -63,6 +63,11 @@ void CPawn::Move_To(POS _Pos)
 
 void CPawn::Take_Damage(float _fDamage)
 {
+    if (m_bDead)
+    {
+        return;
+    }
+
     m_fHP -= _fDamage;
 
     //죽음 처리
@@ -256,9 +261,17 @@ bool CPawn::IsWithinRange()
         return false;
     }
 
-    //원거리 무기가 없으면 가깝지 않다고 판단.
+    //원거리 무기가 없으면
     if (!m_pRangedWeapon)
     {
+        //타일 1칸 거리로 판단.
+
+        if (m_fTargetDist < TILECX)
+        {
+            return true;
+        }
+
+
         return false;
     }
 

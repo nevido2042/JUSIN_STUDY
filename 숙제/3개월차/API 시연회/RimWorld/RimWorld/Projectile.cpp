@@ -57,7 +57,7 @@ void CProjectile::OnCollision(OBJID _eID, CObj* _pOther)
         return;
     }
     //림이거나, 메카노이드면 데미지주고 없어진다.
-    if (_eID == OBJ_RIM || _eID == OBJ_MECHANOID)
+    if (_eID == OBJ_RIM || _eID == OBJ_ENEMY)
     {
         static_cast<CPawn*>(_pOther)->Take_Damage(m_fDamage);
         Set_Destroyed();

@@ -141,6 +141,7 @@
     <ClInclude Include="ArcitectBtn.h" />
     <ClInclude Include="BmpMgr.h" />
     <ClInclude Include="BoltActionRifle.h" />
+    <ClInclude Include="Boomrat.h" />
     <ClInclude Include="Bullet_Small.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Centipede.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="ArcitectBtn.cpp" />
     <ClCompile Include="BmpMgr.cpp" />
     <ClCompile Include="BoltActionRifle.cpp" />
+    <ClCompile Include="Boomrat.cpp" />
     <ClCompile Include="Bullet_Small.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Centipede.cpp" />

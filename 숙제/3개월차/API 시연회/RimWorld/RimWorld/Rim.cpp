@@ -547,7 +547,7 @@ void CRim::Check_ConstructWork()
 
 void CRim::Find_Enemy()
 {
-    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_MECHANOID])
+    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ENEMY])
     {
         Set_Target(pObj);
         Measure_Target();
