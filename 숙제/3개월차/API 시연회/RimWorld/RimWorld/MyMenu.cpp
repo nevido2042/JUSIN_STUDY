@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
+#include "SoundMgr.h"
 
 CMyMenu::CMyMenu()
 {
@@ -15,6 +16,8 @@ CMyMenu::~CMyMenu()
 
 void CMyMenu::Initialize()
 {
+    CSoundMgr::Get_Instance()->PlayBGM(L"Entry_Ambience_Full.wav", 0.5f);
+
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Black.bmp", L"Black");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/BGPlanet.bmp", L"BGPlanet");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Start.bmp", L"Start");
@@ -66,4 +69,5 @@ void CMyMenu::Render(HDC hDC)
 void CMyMenu::Release()
 {
     CObjMgr::Get_Instance()->Delete_ID(OBJ_UI);
+    CSoundMgr::Get_Instance()->StopAll();
 }

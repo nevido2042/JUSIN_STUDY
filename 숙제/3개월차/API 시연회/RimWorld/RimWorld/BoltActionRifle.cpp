@@ -5,6 +5,8 @@
 #include "ObjMgr.h"
 #include "ScrollMgr.h"
 #include "Rim.h"
+#include "SoundMgr.h"
+#include <gdiplus.h>
 
 CBoltActionRifle::CBoltActionRifle()
 {
@@ -21,6 +23,9 @@ void CBoltActionRifle::Fire()
     {
         return;
     }
+
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->PlaySound(L"GunShotA.wav", SOUND_EFFECT, 0.3f);
 
     CObj* pObj = CAbstractFactory<CBullet_Small>::Create(m_tInfo.fX, m_tInfo.fY, m_fAngle);
     CObjMgr::Get_Instance()->Add_Object(OBJ_PROJECTILE, pObj);
@@ -44,12 +49,32 @@ void CBoltActionRifle::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+
+
+
+    // image.png 파일을 이용하여 Image 객체를 생성합니다.
+    Gdiplus::Image* image = Gdiplus::Image::FromFile(L"../Image/Things/Weapon/BoltActionRifle.png");
+    Graphics Grapics(hDC);
+
+    // 회전의 중심점 설정 (이미지의 중심)
+    int centerX = int(m_tRect.left + iScrollX + 64 * 0.5f);
+    int centerY = int(m_tRect.top + iScrollY + 64 * 0.5f);
+
+    // 회전 변환 적용
+    Grapics.TranslateTransform((REAL)centerX, (REAL)centerY);  // 회전 중심으로 이동
+    Grapics.RotateTransform(-m_fAngle);        // 회전 각도 적용
+    Grapics.TranslateTransform((REAL)-centerX, (REAL)-centerY); // 원래 위치로 이동
+
+    Grapics.DrawImage(image, m_tRect.left + iScrollX, m_tRect.top + iScrollY, 64, 64);
+
+        
+
     //무기 출력
-    HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"BoltActionRifle");
+    /*HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"BoltActionRifle");
     GdiTransparentBlt(hDC,
         m_tRect.left + iScrollX,
         m_tRect.top + iScrollY,
         64, 64,
         hTestDC, 0, 0, 64, 64,
-        RGB_WHITE);
+        RGB_WHITE);*/
 }

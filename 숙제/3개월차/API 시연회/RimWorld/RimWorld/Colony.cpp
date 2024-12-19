@@ -6,7 +6,7 @@
 #include "TileMgr.h"
 #include "PathFinder.h"
 #include "TimeMgr.h"
-#include "CSoundMgr.h"
+#include "SoundMgr.h"
 
 CColony::CColony()
     :m_bEnemySpawned(false)
@@ -20,7 +20,6 @@ CColony::~CColony()
 
 void CColony::Initialize()
 {
-    CSoundMgr::Get_Instance()->Initialize();
     CSoundMgr::Get_Instance()->PlayBGM(L"Alpaca.wav", 0.3f);
 
     CTimeMgr::Get_Instance()->Initialize();
@@ -62,8 +61,12 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Rim/Hair/Afro_west.bmp", L"Afro_west");
 
     //볼트액션 소총
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/BoltActionRifle.bmp", L"BoltActionRifle");
+    //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/BoltActionRifle.bmp", L"BoltActionRifle");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Bullet_Small.bmp", L"Bullet_Small");
+
+    //지네 무기
+    //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/ChargeBlasterLight.bmp", L"ChargeBlasterLight");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Charge_Small.bmp", L"Charge_Small");
 
     //Centipede
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_east.bmp", L"Centipede_east");
@@ -80,9 +83,7 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Wall_Atlas_Smooth.bmp", L"Wall_Atlas_Smooth");
     //핏자국
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
-    //지네 무기
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/ChargeBlasterLight.bmp", L"ChargeBlasterLight");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Charge_Small.bmp", L"Charge_Small");
+
 
     CObj* pObj(nullptr);
     //UI
@@ -266,5 +267,4 @@ void CColony::Release()
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();
     CTimeMgr::Destroy_Instance();
-    CSoundMgr::Destroy_Instance();
 }

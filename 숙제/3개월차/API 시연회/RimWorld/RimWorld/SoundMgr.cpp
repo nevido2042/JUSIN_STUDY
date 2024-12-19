@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "CSoundMgr.h"
+#include "SoundMgr.h"
 
 
 CSoundMgr* CSoundMgr::m_pInstance = nullptr;

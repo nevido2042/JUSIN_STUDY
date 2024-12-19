@@ -16,6 +16,8 @@ CLogo::~CLogo()
 void CLogo::Initialize()
 {
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Logo/Logo.bmp", L"Logo");
+
+
 }
 
 int CLogo::Update()
@@ -50,4 +52,5 @@ void CLogo::Render(HDC hDC)
 
 void CLogo::Release()
 {
+
 }

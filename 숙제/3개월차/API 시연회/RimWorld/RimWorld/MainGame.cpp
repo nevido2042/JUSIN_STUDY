@@ -9,6 +9,7 @@
 #include "ScrollMgr.h"
 #include "BmpMgr.h"
 #include "SceneMgr.h"
+#include "SoundMgr.h"
 
 CMainGame::CMainGame()
 	: m_ullTime(GetTickCount64()), m_iFPS(0), m_hDC(nullptr)
@@ -23,6 +24,8 @@ CMainGame::~CMainGame()
 
 void CMainGame::Initialize()
 {
+	CSoundMgr::Get_Instance()->Initialize();
+
 	srand(static_cast<unsigned int>(time(0)));
 
 	m_hDC = GetDC(g_hWnd);
@@ -83,5 +86,6 @@ void CMainGame::Release()
 	CSceneMgr::Destroy_Instance();
 	CObjMgr::DestroyInstance();
 	CColonyMgr::Destroy_Instance();
+	CSoundMgr::Destroy_Instance();
 	ReleaseDC(g_hWnd, m_hDC);
 }

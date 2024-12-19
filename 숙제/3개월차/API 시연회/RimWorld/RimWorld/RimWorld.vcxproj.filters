@@ -130,7 +130,7 @@
     <ClCompile Include="SteelWallBtn.cpp">
       <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn</Filter>
     </ClCompile>
-    <ClCompile Include="CSoundMgr.cpp">
+    <ClCompile Include="SoundMgr.cpp">
       <Filter>03.Design\SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
@@ -279,7 +279,7 @@
     <ClInclude Include="SteelWallBtn.h">
       <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn</Filter>
     </ClInclude>
-    <ClInclude Include="CSoundMgr.h">
+    <ClInclude Include="SoundMgr.h">
       <Filter>03.Design\SoundMgr</Filter>
     </ClInclude>
   </ItemGroup>

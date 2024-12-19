@@ -40,7 +40,7 @@
 #define GAMESPEED           CTimeMgr::Get_Instance()->Get_GameSpeed()
 
 extern HWND		    g_hWnd;
-//extern ULONG_PTR    g_GdiplusToken;
+//extern ULONG_PTR g_GdiplusToken;
 
 enum OBJID { OBJ_PROJECTILE, OBJ_MOUSE, OBJ_UI, OBJ_WALL, OBJ_TREE, OBJ_RIM, OBJ_MECHANOID, OBJ_WEAPON, OBJ_END };
 

@@ -2,6 +2,7 @@
 
 #include "Obj.h"
 
+
 template<typename T>
 class CAbstractFactory
 {
@@ -10,6 +11,7 @@ public:
 	~CAbstractFactory() {};
 
 public:
+
 	static CObj* Create()
 	{
 		CObj* pObj = new T;
