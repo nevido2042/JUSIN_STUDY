@@ -52,6 +52,9 @@ enum SCENEID { SC_LOGO, SC_MENU, SC_CUSTOMIZE, SC_COLONY, SC_END };
 
 enum DIRECTION { OO, UU, RU, RR, RD, DD, LD, LL, LU, DIR_END }; //12시 ~ 1시 방향 순
 
+enum CHANNELID { SOUND_EFFECT, SOUND_BGM, SOUND_END };
+
+
 typedef struct tagInfo
 {
 	float		fX, fY;

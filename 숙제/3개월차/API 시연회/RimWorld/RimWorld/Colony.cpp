@@ -6,6 +6,7 @@
 #include "TileMgr.h"
 #include "PathFinder.h"
 #include "TimeMgr.h"
+#include "CSoundMgr.h"
 
 CColony::CColony()
     :m_bEnemySpawned(false)
@@ -19,6 +20,9 @@ CColony::~CColony()
 
 void CColony::Initialize()
 {
+    CSoundMgr::Get_Instance()->Initialize();
+    CSoundMgr::Get_Instance()->PlayBGM(L"Alpaca.wav", 0.5f);
+
     CTimeMgr::Get_Instance()->Initialize();
 
     //UI
@@ -262,4 +266,5 @@ void CColony::Release()
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();
     CTimeMgr::Destroy_Instance();
+    CSoundMgr::Destroy_Instance();
 }

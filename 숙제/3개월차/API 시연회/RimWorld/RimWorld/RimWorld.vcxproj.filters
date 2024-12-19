@@ -130,6 +130,9 @@
     <ClCompile Include="SteelWallBtn.cpp">
       <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn</Filter>
     </ClCompile>
+    <ClCompile Include="CSoundMgr.cpp">
+      <Filter>03.Design\SoundMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -275,6 +278,9 @@
     </ClInclude>
     <ClInclude Include="SteelWallBtn.h">
       <Filter>01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundMgr.h">
+      <Filter>03.Design\SoundMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +435,9 @@
     </Filter>
     <Filter Include="01.Obj\01.UI\Button\ArcitectBtn\StructureBtn\SteelWallBtn">
       <UniqueIdentifier>{c99194f9-642c-4e4f-ad51-3bdf10173d91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\SoundMgr">
+      <UniqueIdentifier>{8155e0b7-8f3f-4b09-9987-662520816d83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,11 @@
 #include "gdiplus.h"
 #pragma comment(lib,"gdiplus")
 
+#include <io.h>
+#include "fmod.h"
+#include "fmod.hpp"
+#pragma comment(lib, "fmodex_vc.lib")
+
 #ifdef _DEBUG
 
 #define _CRTDBG_MAP_ALLOC
