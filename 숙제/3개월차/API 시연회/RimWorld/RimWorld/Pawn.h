@@ -60,6 +60,9 @@ protected:
     virtual void Handle_Constructing();
 
 protected:
+    void        Wander();
+
+protected:
     //길찾기 관련
     list<CNode*>    m_NodeList;
     bool            m_bNavigating;

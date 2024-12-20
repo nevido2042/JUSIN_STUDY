@@ -242,27 +242,7 @@ void CRim::Render(HDC hDC)
 void CRim::Handle_Wandering()
 {
     //배회 하자
-    //네비게이션 중이 아니면
-    if (!m_bNavigating)
-    {
-        //갈 수 있는 곳 랜덤 위치 하나 정해서 움직인다.
-        //갈 수 있는 타일을 타일매니저가 리스트로 하나 가지고 있다가. 건네주는 방식이 좋겠다.########
-        POS tRandomPos;
-        while (true)
-        {
-            tRandomPos.fX = m_tInfo.fX + (5 - rand() % 11) * TILEX;
-            tRandomPos.fY = m_tInfo.fY + (5 - rand() % 11) * TILEY;
-            if (CTileMgr::Get_Instance()->Get_TileOption(tRandomPos) == OPT_REACHABLE)
-            {
-                break;
-            }
-        }
-        Move_To(tRandomPos);
-    }
-
-
-
-
+    Wander();
     //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
     //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
     // 

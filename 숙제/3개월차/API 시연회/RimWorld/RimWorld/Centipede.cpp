@@ -149,6 +149,8 @@ void CCentipede::Render(HDC hDC)
 
 void CCentipede::Handle_Wandering()
 {
+    Wander();
+
     Find_Target();
 
     if (m_pTarget)

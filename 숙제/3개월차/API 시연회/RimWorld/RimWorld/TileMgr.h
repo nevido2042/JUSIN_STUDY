@@ -26,6 +26,7 @@ public:
 	static int		Get_TileIndex(float _fX, float _fY);
 	list<CNode*>	Find_ReachableTiles(POS _tStart, POS _tEnd);
 	CObj*			Get_Tile(int _iX, int _iY);
+	CObj*			Get_Tile(float _fX, float _fY);
 
 	void	Picking_Tile(POINT pt, int iDrawID, int iOption);
 	
@@ -62,6 +63,9 @@ private:
 
 	//array<CObj*, TILEX* TILEY>	m_arrTile;
 	array<array<CObj*, TILEX>, TILEY>	m_TileMap;
+
+	//올라 갈 수 있는 ...
+	//set<CObj*>	m_ReachableTileSet;
 
 };
 

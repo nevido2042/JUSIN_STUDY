@@ -151,6 +151,7 @@ void CBoomrat::Dead()
 
 void CBoomrat::Handle_Wandering()
 {
+    Wander();
     //FindTarget();
     //타겟이 없을 경우
     //림 오브젝트리스트에서 가장 가까운 림을 찾고 타겟으로 설정

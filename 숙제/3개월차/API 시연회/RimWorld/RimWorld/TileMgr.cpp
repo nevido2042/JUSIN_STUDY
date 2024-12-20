@@ -315,6 +315,14 @@ CObj* CTileMgr::Get_Tile(int _iX, int _iY)
 	return m_TileMap[_iY][_iX];
 }
 
+CObj* CTileMgr::Get_Tile(float _fX, float _fY)
+{
+	int iX = int(_fX / TILECX);
+	int iY = int(_fY / TILECY);
+
+	return m_TileMap[iY][iX];
+}
+
 void CTileMgr::Picking_Tile(POINT pt, int iDrawID, int iOption)
 {
 	/*int		x = pt.x / TILECX;

@@ -542,3 +542,40 @@ void CPawn::Handle_Deconstructing()
 void CPawn::Handle_Constructing()
 {
 }
+
+void CPawn::Wander()
+{
+    if (!m_bNavigating)
+    {
+        //갈 수 있는 곳 랜덤 위치 하나 정해서 움직인다.
+        //갈 수 있는 타일을 타일매니저가 리스트로 하나 가지고 있다가. 건네주는 방식이 좋겠다.########
+
+        //한 칸씩 길찾게하자
+        //시계방향으로 탐색, 갈 수 있는 타일이 있으면 벡터에 넣는다.
+        //넣고 랜덤 뽑기
+        int iDX[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        int iDY[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        vector<CObj*> vecReachableTile;
+        vecReachableTile.reserve(8);
+        for (int i = 0; i < 8; ++i)
+        {
+            float fX = m_tInfo.fX + (iDX[i] * TILECX);
+            float fY = m_tInfo.fY + (iDY[i] * TILECY);
+
+            if (CTileMgr::Get_Instance()->Get_TileOption(fX, fY) == OPT_REACHABLE)
+            {
+                CObj* pObj = CTileMgr::Get_Instance()->Get_Tile(fX, fY);
+                vecReachableTile.push_back(pObj);
+            }
+        }
+        CObj* pRandTile = vecReachableTile.at(rand() % vecReachableTile.size());
+
+        POS tPos
+        {
+            pRandTile->Get_Info().fX,
+            pRandTile->Get_Info().fY
+        };
+
+        Move_To(tPos);
+    }
+}
