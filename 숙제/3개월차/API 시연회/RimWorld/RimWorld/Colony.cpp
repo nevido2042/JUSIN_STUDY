@@ -217,7 +217,7 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //몇 초 후 적 생성
-    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 10.f )
+    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 60.f )
     {
 
         ////지네로봇
