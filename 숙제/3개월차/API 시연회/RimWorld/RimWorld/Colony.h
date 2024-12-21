@@ -9,6 +9,7 @@
 #include "Tree.h"
 #include "Boomrat.h"
 #include "MyButton.h"
+#include "GameSpeedBtn.h"
 
 class CColony :
     public CScene

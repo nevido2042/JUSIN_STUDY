@@ -1,7 +1,7 @@
 #pragma once
-#include "Button.h"
+#include "Obj.h"
 class CGameSpeedBtn :
-    public CButton
+    public CObj
 {
 public:
     CGameSpeedBtn();
@@ -11,5 +11,6 @@ public:
     void Late_Update()	override;
     void Render(HDC hDC) override;
     void Release()		override;
+    int Update() override;
 };
 

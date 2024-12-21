@@ -28,7 +28,7 @@ float CObj::Calculate_Dist(CObj* _pDst, CObj* _pSrc)
 	return fDist;
 }
 
-bool CObj::Is_MouseHovered()
+bool CObj::Is_MouseHovered_Scrolled()
 {
 	//마우스 클릭 했을 때 타겟으로 설정
 	POINT	ptMouse{};
@@ -41,6 +41,24 @@ bool CObj::Is_MouseHovered()
 
 	ptMouse.x -= iScrollX;
 	ptMouse.y -= iScrollY;
+
+	if (PtInRect(&m_tRect, ptMouse))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool CObj::Is_MouseHovered()
+{
+	//마우스 클릭 했을 때 타겟으로 설정
+	POINT	ptMouse{};
+
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
 
 	if (PtInRect(&m_tRect, ptMouse))
 	{

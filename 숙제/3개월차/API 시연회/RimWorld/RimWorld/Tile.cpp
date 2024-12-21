@@ -36,7 +36,7 @@ int CTile::Update()
 
 void CTile::Late_Update()
 {
-	if (Is_MouseHovered() && 
+	if (Is_MouseHovered_Scrolled() && 
 		CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_CONSTRUCT&&
 		!m_pObj)//타일위에 벽이 없을때
 	{

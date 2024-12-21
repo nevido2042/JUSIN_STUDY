@@ -142,6 +142,14 @@ void CMyButton::Late_Update()
 					}
 				}
 			}
+			else if (!lstrcmp(L"Deconstruct", m_pImgKey))
+			{
+				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_DECONSTRUCT);
+			}
+			else if (!lstrcmp(L"Construct", m_pImgKey))
+			{
+				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_CONSTRUCT);
+			}
 		}
 	}
 	else

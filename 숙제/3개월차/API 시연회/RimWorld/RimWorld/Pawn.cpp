@@ -490,7 +490,7 @@ void CPawn::Late_Update()
     }
 
     //마우스 클릭 했을 때 타겟으로 설정
-    if (Is_MouseHovered())
+    if (Is_MouseHovered_Scrolled())
     {
         //우클릭은 타겟의 공격 타겟으로 설정
         if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
@@ -568,6 +568,12 @@ void CPawn::Wander()
                 vecReachableTile.push_back(pObj);
             }
         }
+
+        if (vecReachableTile.empty())
+        {
+            return;
+        }
+
         CObj* pRandTile = vecReachableTile.at(rand() % vecReachableTile.size());
 
         POS tPos

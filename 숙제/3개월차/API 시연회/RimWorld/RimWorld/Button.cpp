@@ -36,7 +36,7 @@ int CButton::Update()
 		return OBJ_NOEVENT;
 	}
 
-	if (Is_MouseHovered())
+	if (Is_MouseHovered_Scrolled())
 	{
 
 		if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))

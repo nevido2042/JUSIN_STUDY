@@ -10,6 +10,7 @@ public:
 public:
 	static float	Calculate_Dist(CObj* _pDst, CObj* _pSrc);
 public:
+	bool            Is_MouseHovered_Scrolled();
 	bool            Is_MouseHovered();
 public:
 	INFO			Get_Info() { return m_tInfo; }

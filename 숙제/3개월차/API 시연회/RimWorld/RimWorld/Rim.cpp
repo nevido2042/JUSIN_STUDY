@@ -48,7 +48,7 @@ void CRim::Late_Update()
     CPawn::Late_Update();
 
     //마우스가 올라가져있는가?
-    if (Is_MouseHovered())
+    if (Is_MouseHovered_Scrolled())
     {
         //좌클릭은 타겟으로 설정
         if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))

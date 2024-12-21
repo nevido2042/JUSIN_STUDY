@@ -74,26 +74,6 @@ void CColony::Initialize()
     //핏자국
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
 
-    //UI
-    //pObj = CAbstractFactory<CMenuBtn>::Create();
-    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-    //pObj = CAbstractFactory<CArcitectBtn>::Create();
-    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-
-    //게임 스피드 버튼
-    /*pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 224, WINCY - 80);
-    pObj->Set_ImgKey(L"TimeSpeedButton_Pause");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 160, WINCY - 80);
-    pObj->Set_ImgKey(L"TimeSpeedButton_Normal");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 96, WINCY - 80);
-    pObj->Set_ImgKey(L"TimeSpeedButton_Fast");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 32, WINCY - 80);
-    pObj->Set_ImgKey(L"TimeSpeedButton_Superfast");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);*/
-
     //맵
     CTileMgr::Get_Instance()->Initialize();
 
@@ -272,7 +252,7 @@ void CColony::Release()
 void CColony::Create_UI()
 {
     //UI
-//메뉴 버튼
+    //메뉴 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
     //구상 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
@@ -337,4 +317,25 @@ void CColony::Create_UI()
     pConstruct->Set_ImgKey(L"Construct");
     pStructureBtn->Get_ChildList()->push_back(pConstruct);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pConstruct);
+
+    //게임 스피드 버튼
+    CObj* pObj(nullptr);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 224, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Pause");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 160, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Normal");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 96, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Fast");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 32, WINCY - 80);
+    pObj->Set_ImgKey(L"TimeSpeedButton_Superfast");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+    //UI
+    //pObj = CAbstractFactory<CMenuBtn>::Create();
+    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    //pObj = CAbstractFactory<CArcitectBtn>::Create();
+    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 }
