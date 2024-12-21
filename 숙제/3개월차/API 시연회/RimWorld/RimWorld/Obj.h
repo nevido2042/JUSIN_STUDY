@@ -16,7 +16,12 @@ public:
 	const RECT*		Get_Rect() { return &m_tRect; }
 	float			Get_Angle() { return m_fAngle; }
 	CObj*			Get_Target() { return m_pTarget; }
+	list<CObj*>*	Get_ChildList() { return &m_ChildList; }
+	bool			Get_Activate() { return m_bActivate; }
+	CObj*			Get_Parent() { return m_pParent; }
 
+	void		Set_Parent(CObj* _pObj) { m_pParent = _pObj; }
+	void		Set_Activate(bool _bActivate) { m_bActivate = _bActivate; }
 	void		Set_Pos(float _fX, float _fY)
 	{
 		m_tInfo.fX = _fX;
@@ -76,6 +81,12 @@ protected:
 	const TCHAR*		m_pImgKey;
 	int					m_iDrawID;
 
-	bool  m_bActivate;
+	//활성화 여부
+	bool		m_bActivate;
+
+	//자식 오브젝트
+	list<CObj*> m_ChildList;
+	//부모 오브젝트
+	CObj*		m_pParent;
 };
 

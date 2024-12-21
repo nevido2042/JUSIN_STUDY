@@ -289,44 +289,52 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
 
-
-    CObj* pObj(nullptr);
     float fLongBtnCX = 128.f;
     float fLongBtnCY = 32.f;
     float fShortBtnCX = 64.f;
     float fShortBtnCY = 64.f;
     //구상 버튼
-    pObj = CAbstractFactory<CMyButton>::
+
+    CObj* pArchitectBtn = CAbstractFactory<CMyButton>::
         Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 0.5f);
-    pObj->Set_Size(fLongBtnCX, fLongBtnCY);
-    pObj->Set_ImgKey(L"ButtonSubtleAtlas_Architect");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pArchitectBtn->Set_Size(fLongBtnCX, fLongBtnCY);
+    pArchitectBtn->Set_Activate(true);
+    pArchitectBtn->Set_ImgKey(L"ButtonSubtleAtlas_Architect");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pArchitectBtn);
 
     //명령 버튼
-    pObj = CAbstractFactory<CMyButton>::
+    CObj* pCommandBtn = CAbstractFactory<CMyButton>::
         Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 1.5f);
-    pObj->Set_Size(fLongBtnCX, fLongBtnCY);
-    pObj->Set_ImgKey(L"ButtonSubtleAtlas_Command");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pCommandBtn->Set_Size(fLongBtnCX, fLongBtnCY);
+    pCommandBtn->Set_ImgKey(L"ButtonSubtleAtlas_Command");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pCommandBtn);
+    pArchitectBtn->Get_ChildList()->push_back(pCommandBtn);
+    pCommandBtn->Set_Parent(pArchitectBtn);
 
     //구조물 버튼
-    pObj = CAbstractFactory<CMyButton>::
+    CObj* pStructureBtn = CAbstractFactory<CMyButton>::
         Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 2.5f);
-    pObj->Set_Size(fLongBtnCX, fLongBtnCY);
-    pObj->Set_ImgKey(L"ButtonSubtleAtlas_Structure");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    pStructureBtn->Set_Size(fLongBtnCX, fLongBtnCY);
+    pStructureBtn->Set_ImgKey(L"ButtonSubtleAtlas_Structure");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pStructureBtn);
+    pArchitectBtn->Get_ChildList()->push_back(pStructureBtn);
+    pStructureBtn->Set_Parent(pArchitectBtn);
+
 
     //해체 버튼
-    pObj = CAbstractFactory<CMyButton>::
-        Create(fShortBtnCX * 2.5f, WINCY - fShortBtnCY * 0.5f);
-    pObj->Set_Size(fShortBtnCX, fShortBtnCY);
-    pObj->Set_ImgKey(L"Deconstruct");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    CObj* pDeconstructBtn = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 2.5f, WINCY - fShortBtnCY * 1.f);
+    pDeconstructBtn->Set_Size(fShortBtnCX, fShortBtnCY);
+    pDeconstructBtn->Set_ImgKey(L"Deconstruct");
+    pCommandBtn->Get_ChildList()->push_back(pDeconstructBtn);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pDeconstructBtn);
+
 
     //철벽 건설 버튼
-    pObj = CAbstractFactory<CMyButton>::
-        Create(fShortBtnCX * 2.5f, WINCY - fShortBtnCY * 0.5f);
-    pObj->Set_Size(fShortBtnCX, fShortBtnCY);
-    pObj->Set_ImgKey(L"Construct");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    CObj* pConstruct = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 2.5f, WINCY - fShortBtnCY * 1.f);
+    pConstruct->Set_Size(fShortBtnCX, fShortBtnCY);
+    pConstruct->Set_ImgKey(L"Construct");
+    pStructureBtn->Get_ChildList()->push_back(pConstruct);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pConstruct);
 }

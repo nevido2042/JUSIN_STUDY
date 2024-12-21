@@ -4,7 +4,7 @@
 
 CObj::CObj() : m_fSpeed(0.f), m_eDir(DIR_END), m_bDestroyed(false),
 m_fAngle(0.f), m_fDistance(0.f), m_pTarget(nullptr), m_pImgKey(nullptr),
-m_iDrawID(0), m_eRenderID(RENDER_END), m_bActivate(false)
+m_iDrawID(0), m_eRenderID(RENDER_END), m_bActivate(false), m_pParent(nullptr)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));
