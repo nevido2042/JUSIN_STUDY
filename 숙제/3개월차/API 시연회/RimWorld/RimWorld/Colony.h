@@ -10,6 +10,8 @@
 #include "Boomrat.h"
 #include "MyButton.h"
 #include "GameSpeedBtn.h"
+#include "RimSlotMgr.h"
+#include "DetailView.h"
 
 class CColony :
     public CScene

@@ -115,6 +115,15 @@
     <ClCompile Include="Boomrat.cpp">
       <Filter>01.Obj\00.Pawn\Boomrat</Filter>
     </ClCompile>
+    <ClCompile Include="RimSlot.cpp">
+      <Filter>01.Obj\01.UI\RimSlotMgr\RimSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="RimSlotMgr.cpp">
+      <Filter>01.Obj\01.UI\RimSlotMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="DetailView.cpp">
+      <Filter>01.Obj\01.UI\DetailView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -245,6 +254,15 @@
     </ClInclude>
     <ClInclude Include="Boomrat.h">
       <Filter>01.Obj\00.Pawn\Boomrat</Filter>
+    </ClInclude>
+    <ClInclude Include="RimSlot.h">
+      <Filter>01.Obj\01.UI\RimSlotMgr\RimSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="RimSlotMgr.h">
+      <Filter>01.Obj\01.UI\RimSlotMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="DetailView.h">
+      <Filter>01.Obj\01.UI\DetailView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +405,15 @@
     </Filter>
     <Filter Include="01.Obj\00.Pawn\Boomrat">
       <UniqueIdentifier>{e67c7cbf-ec5f-4f4d-8ea9-61f54cc47e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\RimSlotMgr">
+      <UniqueIdentifier>{36b45403-a63e-4ff5-96e6-e2e74995e46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\RimSlotMgr\RimSlot">
+      <UniqueIdentifier>{42ef5a0a-ae40-49c0-8ab5-b17331e97743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\DetailView">
+      <UniqueIdentifier>{5aa26076-ce30-4876-bb91-bb561e11b115}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

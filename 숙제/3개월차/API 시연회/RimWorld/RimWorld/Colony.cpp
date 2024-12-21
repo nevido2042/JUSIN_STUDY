@@ -24,7 +24,7 @@ void CColony::Initialize()
 
     CTimeMgr::Get_Instance()->Initialize();
 
-    Create_UI();
+
 
     CObj* pObj;
 
@@ -123,50 +123,7 @@ void CColony::Initialize()
         CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
     }
 
-    ////지네로봇 두마리
-    //for (int i = 0; i < 2; ++i)
-    //{
-    //    int iX = int(rand() % TILEX);
-    //    int iY = int(rand() % TILEY);
-
-    //    //안 나왔던 놈이 나올 때까지 뽑는다.
-    //    while (bVisitArray[iX + TILEX * iY])
-    //    {
-    //        iX = int(rand() % TILEX);
-    //        iY = int(rand() % TILEY);
-    //    }
-
-    //    bVisitArray[iX + TILEX * iY] = true;
-
-    //    POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
-
-    //    //지네
-    //    pObj = CAbstractFactory<CCentipede>::Create(tPos);
-    //    CObjMgr::Get_Instance()->Add_Object(OBJ_MECHANOID, pObj);
-    //}
-
-    ////나무
-    //for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
-    //{
-    //    int iX = int(rand() % TILEX);
-    //    int iY = int(rand() % TILEY);
-
-    //    //안 나왔던 놈이 나올 때까지 뽑는다.
-    //    while (bVisitArray[iX + TILEX * iY])
-    //    {
-    //        iX = int(rand() % TILEX);
-    //        iY = int(rand() % TILEY);
-    //    }
-
-    //    bVisitArray[iX + TILEX * iY] = true;
-
-    //    POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
-
-    //    //지네
-    //    pObj = CAbstractFactory<CTree>::Create(tPos);
-    //    CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
-    //}
-
+    Create_UI();
 }
 
 int CColony::Update()
@@ -180,7 +137,7 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //몇 초 후 적 생성
-    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 60.f )
+    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 30.f )
     {
 
         ////지네로봇
@@ -268,6 +225,18 @@ void CColony::Create_UI()
     //Designations
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
+    //림 슬롯
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DesButBG.bmp", L"DesButBG");
+    //상세정보창
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DetailViewBG.bmp", L"DetailViewBG");
+
+    //상세정보창
+    CObj* pDetailView = CAbstractFactory<CDetailView>::Create(200, WINCY - 107);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pDetailView);
+
+    //림 슬롯 매니저
+    CObj* pRimSlotMgr = CAbstractFactory<CRimSlotMgr>::Create(0, 0);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pRimSlotMgr);
 
     float fLongBtnCX = 128.f;
     float fLongBtnCY = 32.f;

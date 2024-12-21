@@ -18,6 +18,9 @@ public:
 	void			Move_ScrollX(float _fX) { m_fScrollX += _fX; }
 	void			Move_ScrollY(float _fY) { m_fScrollY += _fY; }
 
+	void			Set_ScrollX(float _fX) { m_fScrollX = _fX; }
+	void			Set_ScrollY(float _fY) { m_fScrollY = _fY; }
+
 public:
 	static CScrollMgr* Get_Instance()
 	{

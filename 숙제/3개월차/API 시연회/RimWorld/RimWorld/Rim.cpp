@@ -264,10 +264,10 @@ void CRim::Handle_Drafted()
     //제자리에서 방어한다.
     Find_Enemy();
 
-    if (m_bNavigating)
-    {
-        return;
-    }
+    //if (m_bNavigating)
+    //{
+    //    return;
+    //}
 
     //적들을 순회하면서 찾는다.
     //그중 사정거리에 있으면 타겟으로 세팅한다.

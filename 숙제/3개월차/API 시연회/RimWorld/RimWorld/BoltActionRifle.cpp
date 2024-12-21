@@ -40,7 +40,7 @@ void CBoltActionRifle::Fire()
         return;
     }
 
-    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);//총 소리 내기전에 전에 나던 총소리 꺼버리기
     CSoundMgr::Get_Instance()->PlaySound(L"GunShotA.wav", SOUND_EFFECT, 0.5f);
 
     CObj* pObj = CAbstractFactory<CBullet_Small>::Create(m_tInfo.fX, m_tInfo.fY, m_fAngle);

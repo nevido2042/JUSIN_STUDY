@@ -148,6 +148,9 @@
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
     <ClInclude Include="ColonyMgr.h" />
+    <ClInclude Include="DetailView.h" />
+    <ClInclude Include="RimSlot.h" />
+    <ClInclude Include="RimSlotMgr.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="GameSpeedBtn.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -194,6 +197,9 @@
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
     <ClCompile Include="ColonyMgr.cpp" />
+    <ClCompile Include="DetailView.cpp" />
+    <ClCompile Include="RimSlot.cpp" />
+    <ClCompile Include="RimSlotMgr.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="GameSpeedBtn.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
