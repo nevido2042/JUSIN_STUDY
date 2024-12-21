@@ -25,10 +25,12 @@ void CMyMenu::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GameTitle.bmp", L"GameTitle");
 
     CObj* pButton = CAbstractFactory<CMyButton>::Create(WINCX - 200.f, 325.f);
+    pButton->Set_Size(128.f, 64.f);
     pButton->Set_ImgKey(L"Start");
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pButton);
 
     pButton = CAbstractFactory<CMyButton>::Create(WINCX - 200.f, 400.f);
+    pButton->Set_Size(128.f, 64.f);
     pButton->Set_ImgKey(L"Exit");
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pButton);
 }

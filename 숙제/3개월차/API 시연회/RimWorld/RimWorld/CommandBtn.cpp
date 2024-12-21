@@ -52,7 +52,7 @@ void CCommandBtn::On_Click()
 	else
 	{
 		CArcitectBtn* pArcitectBtn = static_cast<CArcitectBtn*>(m_pParent);
-		static_cast<CButton*>(pArcitectBtn->m_pStructureBtn)->Set_Activate(false);
+		//static_cast<CButton*>(pArcitectBtn->m_pStructureBtn)->Set_Activate(false);
 
 		m_bActivate = true;
 		Create_DeconstructBtn();

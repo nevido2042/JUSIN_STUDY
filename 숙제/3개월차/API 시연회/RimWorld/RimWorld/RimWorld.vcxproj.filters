@@ -201,9 +201,6 @@
     <ClInclude Include="Colony.h">
       <Filter>02.Scene\Colony</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>01.Obj\01.UI\Button</Filter>
-    </ClInclude>
     <ClInclude Include="MenuBtn.h">
       <Filter>01.Obj\01.UI\Button\MenuBtn</Filter>
     </ClInclude>
@@ -287,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="Boomrat.h">
       <Filter>01.Obj\00.Pawn\Boomrat</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>01.Obj\01.UI\Button</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,5 +20,6 @@ public:
     
 protected:
     CObj* m_pParent;
+    bool  m_bActivate;
 };
 

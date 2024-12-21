@@ -2,17 +2,13 @@
 #include "Scene.h"
 
 #include "ColonyMgr.h"
-
-#include "MenuBtn.h"
-#include "GameSpeedBtn.h"
-
 #include "Tile.h"
 #include "Rim.h"
-#include "ArcitectBtn.h"
 #include "SteelWall.h"
 #include "Centipede.h"
 #include "Tree.h"
 #include "Boomrat.h"
+#include "MyButton.h"
 
 class CColony :
     public CScene
@@ -27,6 +23,8 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
+private:
+    void Create_UI();
 
     bool m_bEnemySpawned;
 };

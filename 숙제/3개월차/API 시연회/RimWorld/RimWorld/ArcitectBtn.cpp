@@ -20,7 +20,7 @@ void CArcitectBtn::Create_CommandBtn()
 		CObj* pObj = CAbstractFactory<CCommandBtn>::Create(m_tInfo.fX, m_tInfo.fY - m_tInfo.fCY);
 		CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 		m_pCommandBtn = pObj;
-		static_cast<CButton*>(m_pCommandBtn)->Set_Parent(this);
+		//static_cast<CButton*>(m_pCommandBtn)->Set_Parent(this);
 	}
 }
 
@@ -40,7 +40,7 @@ void CArcitectBtn::Create_StructureBtn()
 		CObj* pObj = CAbstractFactory<CStructureBtn>::Create(m_tInfo.fX, m_tInfo.fY - m_tInfo.fCY * 2.f);
 		CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 		m_pStructureBtn = pObj;
-		static_cast<CButton*>(m_pStructureBtn)->Set_Parent(this);
+		//static_cast<CButton*>(m_pStructureBtn)->Set_Parent(this);
 	}
 }
 

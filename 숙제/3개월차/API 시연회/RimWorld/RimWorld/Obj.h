@@ -23,6 +23,12 @@ public:
 		m_tInfo.fY = _fY;
 	}
 
+	void		Set_Size(float _fX, float _fY)
+	{
+		m_tInfo.fCX = _fX;
+		m_tInfo.fCY = _fY;
+	}
+
 	const RENDERID Get_GroupID() const { return m_eRenderID; }
 
 	void		Move_PosX(float _fX) { m_tInfo.fX += _fX; }
@@ -69,5 +75,7 @@ protected:
 
 	const TCHAR*		m_pImgKey;
 	int					m_iDrawID;
+
+	bool  m_bActivate;
 };
 

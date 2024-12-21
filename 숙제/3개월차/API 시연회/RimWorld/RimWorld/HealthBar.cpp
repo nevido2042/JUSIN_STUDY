@@ -15,7 +15,7 @@ CHealthBar::~CHealthBar()
 void CHealthBar::Initialize()
 {
 	m_tInfo.fCX = 80.f;
-	m_tInfo.fCY = 20.f;
+	m_tInfo.fCY = 10.f;
 
 	m_eRenderID = RENDER_UI;
 }

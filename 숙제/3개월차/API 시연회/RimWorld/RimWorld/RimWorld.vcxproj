@@ -138,22 +138,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
-    <ClInclude Include="ArcitectBtn.h" />
+    <ClInclude Include="ArcitectBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="BmpMgr.h" />
     <ClInclude Include="BoltActionRifle.h" />
     <ClInclude Include="Boomrat.h" />
     <ClInclude Include="Bullet_Small.h" />
-    <ClInclude Include="Button.h" />
+    <ClInclude Include="Button.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Centipede.h" />
     <ClInclude Include="ChargeBlasterLight.h" />
     <ClInclude Include="Charge_Small.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
     <ClInclude Include="ColonyMgr.h" />
-    <ClInclude Include="CommandBtn.h" />
+    <ClInclude Include="CommandBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="SoundMgr.h" />
-    <ClInclude Include="DeconstructBtn.h" />
-    <ClInclude Include="GameSpeedBtn.h" />
+    <ClInclude Include="DeconstructBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="GameSpeedBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PathFinder.h" />
@@ -161,15 +171,21 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="SteelWall.h" />
-    <ClInclude Include="SteelWallBtn.h" />
-    <ClInclude Include="StructureBtn.h" />
+    <ClInclude Include="SteelWallBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="StructureBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMgr.h" />
     <ClInclude Include="Customize.h" />
     <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="MenuBtn.h" />
+    <ClInclude Include="MenuBtn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="MyBmp.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyMenu.h" />
@@ -189,22 +205,32 @@
     <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ArcitectBtn.cpp" />
+    <ClCompile Include="ArcitectBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="BmpMgr.cpp" />
     <ClCompile Include="BoltActionRifle.cpp" />
     <ClCompile Include="Boomrat.cpp" />
     <ClCompile Include="Bullet_Small.cpp" />
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Button.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Centipede.cpp" />
     <ClCompile Include="ChargeBlasterLight.cpp" />
     <ClCompile Include="Charge_Small.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
     <ClCompile Include="ColonyMgr.cpp" />
-    <ClCompile Include="CommandBtn.cpp" />
+    <ClCompile Include="CommandBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="SoundMgr.cpp" />
-    <ClCompile Include="DeconstructBtn.cpp" />
-    <ClCompile Include="GameSpeedBtn.cpp" />
+    <ClCompile Include="DeconstructBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GameSpeedBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PathFinder.cpp" />
@@ -212,15 +238,21 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="SteelWall.cpp" />
-    <ClCompile Include="SteelWallBtn.cpp" />
-    <ClCompile Include="StructureBtn.cpp" />
+    <ClCompile Include="SteelWallBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="StructureBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMgr.cpp" />
     <ClCompile Include="Customize.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="MenuBtn.cpp" />
+    <ClCompile Include="MenuBtn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MyBmp.cpp" />
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyMenu.cpp" />

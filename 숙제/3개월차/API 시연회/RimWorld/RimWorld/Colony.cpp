@@ -24,24 +24,9 @@ void CColony::Initialize()
 
     CTimeMgr::Get_Instance()->Initialize();
 
-    //UI
-    //메뉴 버튼
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
-    //구상 버튼
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Command.bmp", L"ButtonSubtleAtlas_Command");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Deconstruct.bmp", L"Deconstruct");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Structure.bmp", L"ButtonSubtleAtlas_Structure");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon");
-    //게임 스피드 버튼
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Normal.bmp", L"TimeSpeedButton_Normal");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Fast.bmp", L"TimeSpeedButton_Fast");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Superfast.bmp", L"TimeSpeedButton_Superfast");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Pause.bmp", L"TimeSpeedButton_Pause");
-    //Designations
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
+    Create_UI();
 
+    CObj* pObj;
 
     //Rim
     //얼굴
@@ -89,16 +74,14 @@ void CColony::Initialize()
     //핏자국
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
 
-
-    CObj* pObj(nullptr);
     //UI
-    pObj = CAbstractFactory<CMenuBtn>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-    pObj = CAbstractFactory<CArcitectBtn>::Create();
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    //pObj = CAbstractFactory<CMenuBtn>::Create();
+    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    //pObj = CAbstractFactory<CArcitectBtn>::Create();
+    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 
     //게임 스피드 버튼
-    pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 224, WINCY - 80);
+    /*pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 224, WINCY - 80);
     pObj->Set_ImgKey(L"TimeSpeedButton_Pause");
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
     pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 160, WINCY - 80);
@@ -109,7 +92,7 @@ void CColony::Initialize()
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
     pObj = CAbstractFactory<CGameSpeedBtn>::Create(WINCX - 32, WINCY - 80);
     pObj->Set_ImgKey(L"TimeSpeedButton_Superfast");
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);*/
 
     //맵
     CTileMgr::Get_Instance()->Initialize();
@@ -284,4 +267,66 @@ void CColony::Release()
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();
     CTimeMgr::Destroy_Instance();
+}
+
+void CColony::Create_UI()
+{
+    //UI
+//메뉴 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
+    //구상 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Command.bmp", L"ButtonSubtleAtlas_Command");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Deconstruct.bmp", L"Deconstruct");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Structure.bmp", L"ButtonSubtleAtlas_Structure");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon");
+    //게임 스피드 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Normal.bmp", L"TimeSpeedButton_Normal");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Fast.bmp", L"TimeSpeedButton_Fast");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Superfast.bmp", L"TimeSpeedButton_Superfast");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Pause.bmp", L"TimeSpeedButton_Pause");
+    //Designations
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
+
+
+    CObj* pObj(nullptr);
+    float fLongBtnCX = 128.f;
+    float fLongBtnCY = 32.f;
+    float fShortBtnCX = 64.f;
+    float fShortBtnCY = 64.f;
+    //구상 버튼
+    pObj = CAbstractFactory<CMyButton>::
+        Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 0.5f);
+    pObj->Set_Size(fLongBtnCX, fLongBtnCY);
+    pObj->Set_ImgKey(L"ButtonSubtleAtlas_Architect");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+    //명령 버튼
+    pObj = CAbstractFactory<CMyButton>::
+        Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 1.5f);
+    pObj->Set_Size(fLongBtnCX, fLongBtnCY);
+    pObj->Set_ImgKey(L"ButtonSubtleAtlas_Command");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+    //구조물 버튼
+    pObj = CAbstractFactory<CMyButton>::
+        Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 2.5f);
+    pObj->Set_Size(fLongBtnCX, fLongBtnCY);
+    pObj->Set_ImgKey(L"ButtonSubtleAtlas_Structure");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+    //해체 버튼
+    pObj = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 2.5f, WINCY - fShortBtnCY * 0.5f);
+    pObj->Set_Size(fShortBtnCX, fShortBtnCY);
+    pObj->Set_ImgKey(L"Deconstruct");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+    //철벽 건설 버튼
+    pObj = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 1.5f, WINCY - fShortBtnCY * 0.5f);
+    pObj->Set_Size(fShortBtnCX, fShortBtnCY);
+    pObj->Set_ImgKey(L"RockSmooth_MenuIcon");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 }
