@@ -279,7 +279,7 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Command.bmp", L"ButtonSubtleAtlas_Command");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Deconstruct.bmp", L"Deconstruct");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Structure.bmp", L"ButtonSubtleAtlas_Structure");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Construct.bmp", L"Construct");
     //게임 스피드 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Normal.bmp", L"TimeSpeedButton_Normal");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Fast.bmp", L"TimeSpeedButton_Fast");
@@ -325,8 +325,8 @@ void CColony::Create_UI()
 
     //철벽 건설 버튼
     pObj = CAbstractFactory<CMyButton>::
-        Create(fShortBtnCX * 1.5f, WINCY - fShortBtnCY * 0.5f);
+        Create(fShortBtnCX * 2.5f, WINCY - fShortBtnCY * 0.5f);
     pObj->Set_Size(fShortBtnCX, fShortBtnCY);
-    pObj->Set_ImgKey(L"RockSmooth_MenuIcon");
+    pObj->Set_ImgKey(L"Construct");
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 }
