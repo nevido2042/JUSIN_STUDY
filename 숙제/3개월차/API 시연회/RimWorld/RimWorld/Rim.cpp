@@ -425,6 +425,10 @@ void CRim::Check_DeconstructWork()
         //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
         for (CObj* pWall : vecDeconstruct)
         {
+            //기존 노드 딜리트
+            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            m_NodeList.clear();
+
             //이동 가능한 타일이 있으면 노드리스트 반환
             m_NodeList = move(CTileMgr::Get_Instance()
                 ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pWall->Get_Info().fX, pWall->Get_Info().fY }));
@@ -467,6 +471,10 @@ void CRim::Check_ConstructWork()
         //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
         for (CObj* pTile : vecConstruct)
         {
+            //기존 노드 딜리트
+            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            m_NodeList.clear();
+
             //이동 가능한 타일이 있으면 노드리스트 반환
             m_NodeList = move(CTileMgr::Get_Instance()
                 ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pTile->Get_Info().fX, pTile->Get_Info().fY }));

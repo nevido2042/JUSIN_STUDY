@@ -1,6 +1,5 @@
 #pragma once
-
-#include "Button.h"
+#include "Obj.h"
 
 class CMyButton : public CObj
 {

@@ -217,6 +217,10 @@ void CBoomrat::Handle_Deconstructing()
 
     if (!m_bNavigating)
     {
+        //기존 노드 딜리트
+        for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+        m_NodeList.clear();
+
         m_NodeList = move(CTileMgr::Get_Instance()
             ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY },
                 POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY }));

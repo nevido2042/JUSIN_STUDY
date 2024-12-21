@@ -51,6 +51,8 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 
 				if (!pNode)
 				{
+					//시작 노드는 빼자
+					PathList.pop_front();
 					break;
 				}
 			}
@@ -65,6 +67,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 
 			//클로즈리스트를 반환 해야할까? 리스트를 넘겨줘야할까?
 			//클로즈 리스트를 반환하는게 아니라... 부모라인 값을 넘겨야지 바보야
+
 
 			return PathList;
 		}
