@@ -7,6 +7,8 @@
 #include "KeyMgr.h"
 #include "ColonyMgr.h"
 #include "Pawn.h"
+#include "AbstractFactory.h"
+#include "Steel.h"
 
 CSteelWall::CSteelWall()
 	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false),
@@ -164,6 +166,10 @@ int CSteelWall::Update()
 		//해당 타일위에 있는 Obj를  nullptr로 만든다.
 		CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, nullptr);
 
+		//철을 자기 위치에 생성
+		CObj* pObj = CAbstractFactory<CSteel>::Create(m_tInfo.fX, m_tInfo.fY);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_ITEM, pObj);
+
 		return OBJ_DESTROYED;
 	}
 
@@ -234,6 +240,8 @@ void CSteelWall::Render(HDC hDC)
 		80,			// 복사할 이미지의 가로, 세로
 		80,
 		RGB_PURPLE);		// 제거할 색상
+
+	//Rectangle(hDC, m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom);
 }
 
 void CSteelWall::Release()

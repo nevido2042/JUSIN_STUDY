@@ -166,16 +166,32 @@ void CColonyMgr::Render(HDC hDC)
 {
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
+    HDC		hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+    //선택한 것 강조
+    if (m_pTarget)
+    {
+        GdiTransparentBlt(hDC,
+            (int)m_pTarget->Get_Rect()->left + iScrollX,
+            (int)m_pTarget->Get_Rect()->top + iScrollY,
+            64,
+            64,
+            hSelectionBracketWholeDC,
+            0, 0,
+            64,
+            64,
+            RGB_PURPLE);
+    }
 
     //해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
     for (CObj* pObj : m_DeconstructSet)
     {
         GdiTransparentBlt(hDC,
-            (int)pObj->Get_Info().fX + iScrollX - IMAGE_OFFSET_X,
-            (int)pObj->Get_Info().fY + iScrollY - IMAGE_OFFSET_Y,
+            (int)pObj->Get_Rect()->left + iScrollX,
+            (int)pObj->Get_Rect()->top + iScrollY,
             64,
             64,
             hDeconstructDC,
@@ -188,8 +204,8 @@ void CColonyMgr::Render(HDC hDC)
     for (CObj* pObj : m_ConstructSet)
     {
         BitBlt(hDC,
-            (int)pObj->Get_Info().fX + iScrollX - 8,
-            (int)pObj->Get_Info().fY + iScrollY - 16,
+            (int)pObj->Get_Rect()->left + iScrollX + 16,
+            (int)pObj->Get_Rect()->top + iScrollY + 16,
             32,
             32,
             hSteelWallDC,

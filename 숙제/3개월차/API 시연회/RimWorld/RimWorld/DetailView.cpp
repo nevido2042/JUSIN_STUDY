@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "DetailView.h"
 #include "BmpMgr.h"
+#include "ColonyMgr.h"
+#include "Pawn.h"
 
 CDetailView::CDetailView()
 {
@@ -44,6 +46,46 @@ void CDetailView::Render(HDC hDC)
 		hMemDC,
 		0, 0,
 		SRCCOPY);
+
+	CObj* pObj = CColonyMgr::Get_Instance()->Get_Target();
+
+	// 배경을 투명하게 설정
+	SetBkMode(hDC, TRANSPARENT);
+
+	// 텍스트 색을 흰색으로 설정 (RGB(255, 255, 255))
+	SetTextColor(hDC, RGB(255, 255, 255));
+
+	if (pObj)
+	{
+		RECT rect = { m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom }; // 텍스트를 출력할 영역
+
+		CPawn::STATE eState = static_cast<CPawn*>(pObj)->Get_State();
+
+		switch (eState)
+		{
+		case CPawn::WANDERING:
+			DrawText(hDC, L"\n   상태: 떠도는 중", -1, &rect, DT_NOCLIP);
+			break;
+		case CPawn::DRAFTED:
+			DrawText(hDC, L"\n   상태: 소집 됨", -1, &rect, DT_NOCLIP);
+			break;
+		case CPawn::UNDRAFTED:
+			break;
+		case CPawn::CHASING:
+			break;
+		case CPawn::DECONSTRUCTING:
+			DrawText(hDC, L"\n   상태: 해체 중", -1, &rect, DT_NOCLIP);
+			break;
+		case CPawn::CONSTRUCTING:
+			DrawText(hDC, L"\n   상태: 건설 중", -1, &rect, DT_NOCLIP);
+			break;
+		case CPawn::END:
+			break;
+		default:
+			break;
+		}
+	}
+
 }
 
 void CDetailView::Release()

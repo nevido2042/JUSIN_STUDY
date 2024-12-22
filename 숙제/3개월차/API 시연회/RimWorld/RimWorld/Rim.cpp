@@ -245,7 +245,7 @@ void CRim::Render(HDC hDC)
 void CRim::Handle_Wandering()
 {
     //배회 하자
-    //Wander();
+    Wander();
     //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
     //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
     // 
@@ -454,6 +454,8 @@ void CRim::Check_ConstructWork()
 
         //Set을 vector로 복사후 정렬
         set<CObj*>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
+
+        //해당 타일 위에 철 아이템이 없으면 못지음.
 
         vector<CObj*> vecConstruct(ConstructSet.begin(), ConstructSet.end());
 

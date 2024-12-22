@@ -151,6 +151,7 @@
     <ClInclude Include="DetailView.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectMgr.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="RimSlot.h" />
     <ClInclude Include="RimSlotMgr.h" />
     <ClInclude Include="SoundMgr.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedWeapon.h" />
+    <ClInclude Include="Steel.h" />
     <ClInclude Include="SteelWall.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMgr.h" />
@@ -202,6 +204,7 @@
     <ClCompile Include="DetailView.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectMgr.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="RimSlot.cpp" />
     <ClCompile Include="RimSlotMgr.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
@@ -214,6 +217,7 @@
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
+    <ClCompile Include="Steel.cpp" />
     <ClCompile Include="SteelWall.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMgr.cpp" />

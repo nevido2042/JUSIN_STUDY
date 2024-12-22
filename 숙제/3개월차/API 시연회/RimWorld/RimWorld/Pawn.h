@@ -8,13 +8,13 @@ class CPawn :
     public CObj
 {
 public:
-    enum STATE { WANDERING, DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, END };
+    enum STATE { WANDERING, DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, TRANSPORTING, END };
 public:
     CPawn();
     virtual ~CPawn();
 public:
-    void Move_To(POS _Pos);
-    void Take_Damage(float _fDamage);
+    void    Move_To(POS _Pos);
+    void    Take_Damage(const float _fDamage);
     STATE   Get_State() { return m_eState; }
     void    Change_State(STATE _eState);
 public:
@@ -59,6 +59,7 @@ protected:
     virtual void Handle_Chasing();
     virtual void Handle_Deconstructing();
     virtual void Handle_Constructing();
+    virtual void Handle_Transporting();
 
 protected:
     void        Wander();

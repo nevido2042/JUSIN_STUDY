@@ -130,6 +130,12 @@
     <ClCompile Include="Effect.cpp">
       <Filter>01.Obj\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>01.Obj\04.Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Steel.cpp">
+      <Filter>01.Obj\04.Item\Steel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -276,6 +282,12 @@
     <ClInclude Include="Effect.h">
       <Filter>01.Obj\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>01.Obj\04.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Steel.h">
+      <Filter>01.Obj\04.Item\Steel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="RimWorld.ico">
@@ -409,9 +421,6 @@
     <Filter Include="01.Obj\SteelWall">
       <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Steel">
-      <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Design\SoundMgr">
       <UniqueIdentifier>{8155e0b7-8f3f-4b09-9987-662520816d83}</UniqueIdentifier>
     </Filter>
@@ -432,6 +441,12 @@
     </Filter>
     <Filter Include="01.Obj\Effect">
       <UniqueIdentifier>{df21c5be-b87d-4a75-b389-50bc2600317e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\04.Item">
+      <UniqueIdentifier>{c8bb93a5-4ebd-4fcb-9475-73c82492206f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\04.Item\Steel">
+      <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

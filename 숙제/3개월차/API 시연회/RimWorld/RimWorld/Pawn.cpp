@@ -57,7 +57,7 @@ void CPawn::Move_To(POS _Pos)
     }
 }
 
-void CPawn::Take_Damage(float _fDamage)
+void CPawn::Take_Damage(const float _fDamage)
 {
     if (m_bDead)
     {
@@ -545,6 +545,10 @@ void CPawn::Handle_Deconstructing()
 }
 
 void CPawn::Handle_Constructing()
+{
+}
+
+void CPawn::Handle_Transporting()
 {
 }
 

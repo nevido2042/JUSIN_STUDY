@@ -342,7 +342,7 @@ void CBoomrat::Boom()
             static_cast<CPawn*>(pObj)->Take_Damage(m_fMaxHP);
         }
     }
-    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ENEMY])
+    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_WALL])
     {
         float fDist = CObj::Calculate_Dist(this, pObj);
 
