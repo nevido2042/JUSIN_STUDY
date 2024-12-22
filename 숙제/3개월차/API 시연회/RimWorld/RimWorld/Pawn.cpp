@@ -33,10 +33,10 @@ void CPawn::Move_To(POS _Pos)
     //}
 
     //경로 따라가는 중이면 실행 안함
-    if (m_bNavigating)
+    /*if (m_bNavigating)
     {
         return;
-    }
+    }*/
 
     for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
     m_NodeList.clear();

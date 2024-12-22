@@ -2,6 +2,15 @@
 #include "DetailView.h"
 #include "BmpMgr.h"
 
+CDetailView::CDetailView()
+{
+}
+
+CDetailView::~CDetailView()
+{
+	Release();
+}
+
 void CDetailView::Initialize()
 {
 	Set_Size(400.f, 150.f);

@@ -161,7 +161,7 @@ public:
 
     bool operator==(const tagPosition& _Pos) const
     {
-        if (fX == _Pos.fX && fY == _Pos.fY)
+        if (fabs(fX - _Pos.fX) < FLT_EPSILON && fabs(fY - _Pos.fY) < FLT_EPSILON)
         {
             return true;
         }

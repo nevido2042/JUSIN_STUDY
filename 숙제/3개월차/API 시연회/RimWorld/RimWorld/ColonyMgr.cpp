@@ -273,11 +273,12 @@ void CColonyMgr::Control_Target()
 
 
             //네비게이팅 중이었으면
-            if (pTargetRim->Get_IsNavigating())
-            {
-                //네비게이팅 종료 요청을 보낸다.
-                pTargetRim->RequestNavStop();
-            }
+            //if (pTargetRim->Get_IsNavigating())
+            //{
+            //    //네비게이팅 종료 요청을 보낸다.
+            //    pTargetRim->RequestNavStop();
+            //}
+
             pTargetRim->Move_To(POS{ fX, fY });
             //림이 공격 중이었고 타겠도 있었다면 해제
             if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())

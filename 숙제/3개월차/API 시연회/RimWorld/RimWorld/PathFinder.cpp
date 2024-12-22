@@ -21,6 +21,12 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 
 list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 {
+	//비교를 인덱스 기반으로 바꿔야 할듯
+	_tStart.fX = (int)(_tStart.fX / TILECX) * TILECX + TILECX * 0.5f;
+	_tStart.fY = (int)(_tStart.fY / TILECY) * TILECY + TILECY * 0.5f;
+	_tEnd.fX = (int)(_tEnd.fX / TILECX) * TILECX + TILECX * 0.5f;
+	_tEnd.fY = (int)(_tEnd.fY / TILECY) * TILECY + TILECY * 0.5f;
+
 	CNode* StartNode = new CNode(_tStart);
 	m_OpenList.push_back(StartNode);
 
@@ -34,7 +40,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 		m_CloseList.push_back(pPopNode);
 
 		//도착 지점인지 확인한다.
-		if (CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX * 0.5f)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
+		if (_tEnd == pPopNode->Get_Pos()/*CNode::Distance(_tEnd, pPopNode->Get_Pos()) < TILECX * 0.5f*/)//TILCX 보다 가까우면 도착한걸로 친다...맞나?
 		{
 
 			for_each(m_OpenList.begin(), m_OpenList.end(), Safe_Delete<CNode*>);
@@ -92,6 +98,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 				continue;
 			}
 
+			//비교를 인덱스 기반으로 바꿔야 할듯
 			POS NewPos(fX, fY);
 
 			//fx fy로 인덱스 계산
@@ -117,7 +124,7 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 				continue;
 			}
 
-			//클로즈 리스트 또는 오픈리스트에 존재 하는가?
+			//클로즈 리스트 또는 오픈리스트에 존재 하는가? //비교를 인덱스 기반으로 바꿔야 할듯
 			bool bIsNewPos = true;
 			for (list<CNode*>::iterator iter = m_OpenList.begin(); iter != m_OpenList.end(); ++iter)
 			{
