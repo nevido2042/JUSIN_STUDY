@@ -24,6 +24,9 @@ void CCentipede::Initialize()
 
     m_fSpeed = 1.f;
 
+    m_fMaxHP = 300.f;
+    m_fHP = m_fMaxHP;
+
     //무기 생성
     m_pRangedWeapon = CAbstractFactory<CChargeBlasterLight>::Create(m_tInfo.fX, m_tInfo.fY);
     CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, m_pRangedWeapon);

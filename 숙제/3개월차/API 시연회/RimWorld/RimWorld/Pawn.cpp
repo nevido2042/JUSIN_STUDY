@@ -16,7 +16,7 @@ CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_eState(END),
     m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f), m_bAttack(false)//, m_bNavStopRequested(false)
 {
-    ZeroMemory(&m_tPrevPos, sizeof(POS));
+    //ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
 
 CPawn::~CPawn()
@@ -26,17 +26,11 @@ CPawn::~CPawn()
 
 void CPawn::Move_To(POS _Pos)
 {
-    ////멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-    //if (m_bAttack)
-    //{
-    //    return;
-    //}
-
-    //경로 따라가는 중이면 실행 안함
-    /*if (m_bNavigating)
+    //가려는 곳이 막힌 부분이면 리턴
+    if (CTileMgr::Get_Instance()->Get_TileOption(_Pos) == OPT_BLOCKED)
     {
         return;
-    }*/
+    }
 
     for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
     m_NodeList.clear();
@@ -180,30 +174,41 @@ void CPawn::Navigate()
 
 void CPawn::Calculate_MoveDir()
 {
-    //왼쪽
-    if (m_tInfo.fX < m_tPrevPos.iX)
+    //마지막 노드의 방향으로 판단
+    if (m_bNavigating && !m_NodeList.empty())
     {
-        m_eDir = LL;
+        CNode* pLastNode = m_NodeList.back();
+        POS tLastPos = pLastNode->Get_Pos();
+
+        //왼쪽
+        if ((int)m_tInfo.fX > tLastPos.iX)
+        {
+            m_eDir = LL;
+        }
+        //오른쪽
+        else if ((int)m_tInfo.fX < tLastPos.iX)
+        {
+            m_eDir = RR;
+        }
+        //위쪽
+        else if ((int)m_tInfo.fY > tLastPos.iY)
+        {
+            m_eDir = UU;
+        }
+        //아래쪽
+        else if ((int)m_tInfo.fY < tLastPos.iY)
+        {
+            m_eDir = DD;
+        }
     }
-    //오른쪽
-    else if (m_tInfo.fX > m_tPrevPos.iX)
-    {
-        m_eDir = RR;
-    }
-    //위쪽
-    else if (m_tInfo.fY < m_tPrevPos.iY)
-    {
-        m_eDir = UU;
-    }
-    //아래쪽
-    else if (m_tInfo.fY > m_tPrevPos.iY)
+    else
     {
         m_eDir = DD;
     }
 
     //이전 프레임 위치 저장
-    m_tPrevPos.iX = (int)m_tInfo.fX;
-    m_tPrevPos.iY = (int)m_tInfo.fY;
+    //m_tPrevPos.iX = (int)m_tInfo.fX;
+    //m_tPrevPos.iY = (int)m_tInfo.fY;
 
     //공격 중이고, 타겟이 있을 때만 타겟 바라보기
     if (m_bAttack && m_pTarget)

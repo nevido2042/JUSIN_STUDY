@@ -69,7 +69,7 @@ protected:
     bool            m_bNavigating;
     //bool            m_bNavStopRequested;//길찾기 종료 요청이 들어 왔는가?
     //방향 결정 용(이전 프레임 위치)
-    POS             m_tPrevPos;
+    //POS             m_tPrevPos;
     //체력 관련
     float           m_fHP;
     float           m_fMaxHP;

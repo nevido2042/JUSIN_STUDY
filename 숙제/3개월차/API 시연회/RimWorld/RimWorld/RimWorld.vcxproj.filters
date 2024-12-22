@@ -124,6 +124,12 @@
     <ClCompile Include="DetailView.cpp">
       <Filter>01.Obj\01.UI\DetailView</Filter>
     </ClCompile>
+    <ClCompile Include="EffectMgr.cpp">
+      <Filter>03.Design\EffectMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>01.Obj\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -263,6 +269,12 @@
     </ClInclude>
     <ClInclude Include="DetailView.h">
       <Filter>01.Obj\01.UI\DetailView</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectMgr.h">
+      <Filter>03.Design\EffectMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>01.Obj\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -414,6 +426,12 @@
     </Filter>
     <Filter Include="01.Obj\01.UI\DetailView">
       <UniqueIdentifier>{5aa26076-ce30-4876-bb91-bb561e11b115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\EffectMgr">
+      <UniqueIdentifier>{577a8718-cbe2-4040-bf13-e86214138a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Effect">
+      <UniqueIdentifier>{df21c5be-b87d-4a75-b389-50bc2600317e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

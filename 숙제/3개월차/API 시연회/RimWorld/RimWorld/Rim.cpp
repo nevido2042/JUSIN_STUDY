@@ -28,6 +28,9 @@ void CRim::Initialize()
 
     m_fSpeed = 2.f;
 
+    m_fMaxHP = 100.f;
+    m_fHP = m_fMaxHP;
+
     //무기 생성
     m_pRangedWeapon = CAbstractFactory<CBoltActionRifle>::Create(m_tInfo.fX, m_tInfo.fY);
     CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, m_pRangedWeapon);
@@ -260,20 +263,7 @@ void CRim::Handle_Wandering()
 }
 
 void CRim::Handle_Drafted()
-{    //어떠한 명령이 없으면 움직이지 않고
-    //제자리에서 방어한다.
-    Find_Enemy();
-
-    //if (m_bNavigating)
-    //{
-    //    return;
-    //}
-
-    //적들을 순회하면서 찾는다.
-    //그중 사정거리에 있으면 타겟으로 세팅한다.
-
-
-    //타겟 있으면 따라가기
+{
     if (m_pTarget)
     {
         //타겟이 죽으면 타겟 없애기
@@ -289,6 +279,10 @@ void CRim::Handle_Drafted()
             //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
             //Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
         }
+    }
+    else
+    {
+        Find_Enemy();
     }
 
     //사정거리에 있고 적이 보인다면
@@ -499,6 +493,11 @@ void CRim::Find_Enemy()
 {
     for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ENEMY])
     {
+        if (static_cast<CPawn*>(pObj)->Get_IsDead())
+        {
+            return;
+        }
+
         Set_Target(pObj);
         Measure_Target();
         if (IsWithinRange())

@@ -9,6 +9,7 @@
 #include "SteelWall.h"
 #include "TileMgr.h"
 #include "SoundMgr.h"
+#include "EffectMgr.h"
 
 CBoomrat::CBoomrat()
 {
@@ -25,7 +26,10 @@ void CBoomrat::Initialize()
 
     m_fSpeed = 1.5f;
 
-    Take_Damage(99.f);
+    m_fMaxHP = 10.f;
+    m_fHP = m_fMaxHP;
+
+    //Take_Damage(99.f);
 
     Change_State(WANDERING);
 }
@@ -290,6 +294,17 @@ void CBoomrat::Find_Target()
 
 void CBoomrat::Boom()
 {
+    //Æø¹ß ÀÌÆåÆ®
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            POS tPos{ (int)m_tInfo.fX + j * TILECX, (int)m_tInfo.fY + i * TILECY };
+            CEffectMgr::Get_Instance()->Create_Effect(tPos, 64.f, 64.f, L"BlastFlame", 1.f);
+        }
+    }
+
+    //Æø¹ß »ç¿îµå
     CSoundMgr::Get_Instance()->StopSound(SOUND_EXPLOSION);
     CSoundMgr::Get_Instance()->PlaySound(L"GiantExplosion.wav", SOUND_EXPLOSION, 0.5f);
 

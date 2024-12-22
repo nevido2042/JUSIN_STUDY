@@ -7,6 +7,7 @@
 #include "PathFinder.h"
 #include "TimeMgr.h"
 #include "SoundMgr.h"
+#include "EffectMgr.h"
 
 CColony::CColony()
     :m_bEnemySpawned(false)
@@ -73,6 +74,8 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Wall_Atlas_Smooth.bmp", L"Wall_Atlas_Smooth");
     //ÇÍÀÚ±¹
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
+    //Æø¹ß
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/BlastFlame.bmp", L"BlastFlame");
 
     //¸Ê
     CTileMgr::Get_Instance()->Initialize();
@@ -204,6 +207,7 @@ void CColony::Release()
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();
     CTimeMgr::Destroy_Instance();
+    CEffectMgr::Destroy_Instance();
 }
 
 void CColony::Create_UI()
