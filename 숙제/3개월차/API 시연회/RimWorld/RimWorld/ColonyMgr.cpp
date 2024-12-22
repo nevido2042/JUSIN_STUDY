@@ -279,7 +279,7 @@ void CColonyMgr::Control_Target()
             //    pTargetRim->RequestNavStop();
             //}
 
-            pTargetRim->Move_To(POS{ fX, fY });
+            pTargetRim->Move_To(POS{ (int)fX, (int)fY });
             //림이 공격 중이었고 타겠도 있었다면 해제
             if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())
             {

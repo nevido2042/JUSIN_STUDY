@@ -94,7 +94,7 @@ void CColony::Initialize()
 
         bVisitArray[iX + TILEX * iY] = true;
 
-        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+        POS tPos{ 64 * iX + 32, 64 * iY + 32 };
 
         pObj = CAbstractFactory<CSteelWall>::Create(tPos);
         CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
@@ -117,7 +117,7 @@ void CColony::Initialize()
 
         bVisitArray[iX + TILEX * iY] = true;
 
-        POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+        POS tPos{ 64 * iX + 32, 64 * iY + 32 };
 
         pObj = CAbstractFactory<CRim>::Create(tPos);
         CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
@@ -146,7 +146,7 @@ int CColony::Update()
             int iX = int(rand() % TILEX);
             int iY = 0;
 
-            POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+            POS tPos{ 64 * iX + 32, 64 * iY + 32 };
 
             //Áö³×
             CObj* pObj = CAbstractFactory<CCentipede>::Create(tPos);
@@ -159,7 +159,7 @@ int CColony::Update()
             int iX = int(rand() % TILEX);
             int iY = 0;
 
-            POS tPos{ float(64 * iX + 32), float(64 * iY + 32) };
+            POS tPos{ 64 * iX + 32, 64 * iY + 32 };
 
             CObj* pObj = CAbstractFactory<CBoomrat>::Create(tPos);
             CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);

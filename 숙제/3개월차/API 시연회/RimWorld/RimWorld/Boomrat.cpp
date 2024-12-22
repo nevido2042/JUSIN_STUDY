@@ -102,8 +102,8 @@ void CBoomrat::Render(HDC hDC)
     //길 찾기 노드 출력
     for (CNode* pNode : m_NodeList)
     {
-        Ellipse(hDC, int(pNode->Get_Pos().fX + iScrollX - 10.f), int(pNode->Get_Pos().fY + iScrollY - 10.f),
-            int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
+        Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
+            int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
     }
 
     //타겟 출력
@@ -173,7 +173,7 @@ void CBoomrat::Handle_Chasing()
     //타겟 있으면 따라가기
     if (m_pTarget)
     {
-        POS tMoveToPos{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY };
+        POS tMoveToPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
 
         //타겟이 Pawn이라면
         if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
@@ -224,8 +224,8 @@ void CBoomrat::Handle_Deconstructing()
         m_NodeList.clear();
 
         m_NodeList = move(CTileMgr::Get_Instance()
-            ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY },
-                POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY }));
+            ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY },
+                POS{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY }));
 
         if (!m_NodeList.empty())
         {

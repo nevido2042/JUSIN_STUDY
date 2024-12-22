@@ -20,7 +20,7 @@ CTileMgr::~CTileMgr()
 
 bool CTileMgr::IsValidTile(const POS _tPos)
 {
-	if (TILECX * TILEX < _tPos.fX || 0.f >_tPos.fX || TILECY * TILEY < _tPos.fY || 0.f > _tPos.fY)
+	if (TILECX * TILEX < _tPos.iX || 0.f >_tPos.iX || TILECY * TILEY < _tPos.iY || 0.f > _tPos.iY)
 	{
 		return false;
 	}
@@ -140,8 +140,8 @@ void CTileMgr::Release()
 
 void CTileMgr::Set_TileOption(POS _tPos, TILEOPT _eOpt)
 {
-	int iX = int(_tPos.fX / TILECX);
-	int iY = int(_tPos.fY / TILECY);
+	int iX = int(_tPos.iX / TILECX);
+	int iY = int(_tPos.iY / TILECY);
 
 	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
 	{
@@ -166,8 +166,8 @@ void CTileMgr::Set_TileOption(float _fX, float _fY, TILEOPT _eOpt)
 
 void CTileMgr::Set_TileObj(POS _tPos, CObj* _pObj)
 {
-	int iX = int(_tPos.fX / TILECX);
-	int iY = int(_tPos.fY / TILECY);
+	int iX = int(_tPos.iX / TILECX);
+	int iY = int(_tPos.iY / TILECY);
 
 	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
 	{
@@ -192,8 +192,8 @@ void CTileMgr::Set_TileObj(float _fX, float _fY, CObj* _pObj)
 
 TILEOPT CTileMgr::Get_TileOption(POS _tPos)
 {
-	int iX = int(_tPos.fX / TILECX);
-	int iY = int(_tPos.fY / TILECY);
+	int iX = int(_tPos.iX / TILECX);
+	int iY = int(_tPos.iY / TILECY);
 
 	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
 	{
@@ -228,8 +228,8 @@ TILEOPT CTileMgr::Get_TileOption(int _iIndexX, int _iIndexY)
 
 CObj* CTileMgr::Get_TileObj(POS _tPos)
 {
-	int iX = int(_tPos.fX / TILECX);
-	int iY = int(_tPos.fY / TILECY);
+	int iX = int(_tPos.iX / TILECX);
+	int iY = int(_tPos.iY / TILECY);
 
 	if (0 > iY || TILEY <= iY || 0 > iX || TILEX <= iX)
 	{
@@ -272,8 +272,8 @@ int CTileMgr::Get_TileIndex(float _fX, float _fY)
 
 list<CNode*> CTileMgr::Find_ReachableTiles(POS _tStart, POS _tEnd)
 {
-	int iX = int(_tEnd.fX / TILECX);
-	int iY = int(_tEnd.fY / TILECY);
+	int iX = int(_tEnd.iX / TILECX);
+	int iY = int(_tEnd.iY / TILECY);
 
 	//8방향
 	const int arrDir[8][2] = 
@@ -296,7 +296,7 @@ list<CNode*> CTileMgr::Find_ReachableTiles(POS _tStart, POS _tEnd)
 		{
 			//그 타일의 길을 찾을 수 있는가?
 			pNodeList = CPathFinder::Get_Instance()
-				->Find_Path(_tStart, POS{ float((iX + arrDir[i][0]) * TILECX + TILECX * 0.5f) , float((iY + arrDir[i][1]) * TILECY + TILECY * 0.5f) });
+				->Find_Path(_tStart, POS{ (iX + arrDir[i][0]) * TILECX + (int)(TILECX * 0.5f) , (iY + arrDir[i][1]) * TILECY + (int)(TILECY * 0.5f) });
 
 			if (pNodeList.empty())
 			{

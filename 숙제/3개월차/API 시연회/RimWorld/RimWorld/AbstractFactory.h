@@ -42,7 +42,7 @@ public:
 	{
 		CObj* pObj = new T;
 		pObj->Initialize();
-		pObj->Set_Pos(_tPos.fX, _tPos.fY);
+		pObj->Set_Pos((float)_tPos.iX, (float)_tPos.iY);
 
 		return pObj;
 	}

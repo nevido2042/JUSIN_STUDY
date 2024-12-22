@@ -198,8 +198,8 @@ void CRim::Render(HDC hDC)
     //길 찾기 노드 출력
     for (CNode* pNode : m_NodeList)
     {
-        Ellipse(hDC, int(pNode->Get_Pos().fX + iScrollX - 10.f), int(pNode->Get_Pos().fY + iScrollY - 10.f),
-            int(pNode->Get_Pos().fX + 10.f + iScrollX), int(pNode->Get_Pos().fY + 10.f + iScrollY));
+        Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
+            int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
     }
 
     // 변수 값을 유니코드 문자열로 변환
@@ -433,7 +433,7 @@ void CRim::Check_DeconstructWork()
 
             //이동 가능한 타일이 있으면 노드리스트 반환
             m_NodeList = move(CTileMgr::Get_Instance()
-                ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pWall->Get_Info().fX, pWall->Get_Info().fY }));
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)pWall->Get_Info().fX, (int)pWall->Get_Info().fY }));
 
             if (m_NodeList.empty())
             {
@@ -479,7 +479,7 @@ void CRim::Check_ConstructWork()
 
             //이동 가능한 타일이 있으면 노드리스트 반환
             m_NodeList = move(CTileMgr::Get_Instance()
-                ->Find_ReachableTiles(POS{ m_tInfo.fX,m_tInfo.fY }, POS{ pTile->Get_Info().fX, pTile->Get_Info().fY }));
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)pTile->Get_Info().fX, (int)pTile->Get_Info().fY }));
 
             if (m_NodeList.empty())
             {

@@ -138,18 +138,18 @@ public:
 typedef struct tagPosition
 {
 public:
-    float fX;
-    float fY;
-    tagPosition() :fX(0.f), fY(0.f) {};
-    tagPosition(float _fX, float _fY)
-        :fX(_fX), fY(_fY)
+    int iX;
+    int iY;
+    tagPosition() :iX(0), iY(0) {};
+    tagPosition(int _iX, int _iY)
+        :iX(_iX), iY(_iY)
     {
 
     }
 
     bool operator==(const tagPosition& _Pos)
     {
-        if (fX == _Pos.fX && fY == _Pos.fY)
+        if (iX == _Pos.iX && iY == _Pos.iY)
         {
             return true;
         }
@@ -161,7 +161,7 @@ public:
 
     bool operator==(const tagPosition& _Pos) const
     {
-        if (fabs(fX - _Pos.fX) < FLT_EPSILON && fabs(fY - _Pos.fY) < FLT_EPSILON)
+        if (iX == _Pos.iX && iY == _Pos.iY)
         {
             return true;
         }
@@ -173,7 +173,7 @@ public:
 
     bool operator!=(const tagPosition& _Pos)
     {
-        if (fX != _Pos.fX && fY != _Pos.fY)
+        if (iX != _Pos.iX && iY != _Pos.iY)
         {
             return true;
         }
@@ -185,7 +185,7 @@ public:
 
     bool operator!=(const tagPosition& _Pos) const
     {
-        if (fX != _Pos.fX && fY != _Pos.fY)
+        if (iX != _Pos.iX && iY != _Pos.iY)
         {
             return true;
         }
@@ -197,10 +197,10 @@ public:
 
     tagPosition operator*(const int _int)
     {
-        fX *= _int;
-        fY *= _int;
+        iX *= _int;
+        iY *= _int;
 
-        return tagPosition{ fX, fY };
+        return tagPosition{ iX, iY };
     }
 
 }POS;

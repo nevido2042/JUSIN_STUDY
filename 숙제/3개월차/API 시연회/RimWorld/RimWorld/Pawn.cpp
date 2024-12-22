@@ -44,7 +44,7 @@ void CPawn::Move_To(POS _Pos)
     //이동 할 타일의 idx를 계산해서 확인한다. Blocked이면 return;
 
     //갈 수 있으면 길찾기를 수행한다.(Astar/JPS)
-    m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ m_tInfo.fX, m_tInfo.fY }, _Pos));
+    m_NodeList = move(CPathFinder::Get_Instance()->Find_Path(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, _Pos));
     //타겟이 Wall이면 길을 못찾는다!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //타겟의 근처 타일을 찾아서 가게끔 해야할듯
 
@@ -113,11 +113,11 @@ void CPawn::Navigate()
     }
 
     //타겟 노드와 충분히 가까워지면
-    if (pTargetNode && CNode::Distance(pTargetNode->Get_Pos(), POS{ m_tInfo.fX, m_tInfo.fY }) < TILECX * 0.1f)
+    if (pTargetNode && CNode::Distance(pTargetNode->Get_Pos(), POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }) < TILECX * 0.1f)
     {
         //도착으로 간주하고 타겟 노드로 위치이동
-        m_tInfo.fX = pTargetNode->Get_Pos().fX;
-        m_tInfo.fY = pTargetNode->Get_Pos().fY;
+        m_tInfo.fX = (float)pTargetNode->Get_Pos().iX;
+        m_tInfo.fY = (float)pTargetNode->Get_Pos().iY;
 
         //도착한 노드를 삭제
         Safe_Delete<CNode*>(pTargetNode);
@@ -162,14 +162,14 @@ void CPawn::Navigate()
 
     float   fWidth(0.f), fHeight(0.f), fDiagonal(0.f), fRadian(0.f);
 
-    fWidth = pTargetNode->Get_Pos().fX - m_tInfo.fX;
-    fHeight = pTargetNode->Get_Pos().fY - m_tInfo.fY;
+    fWidth = pTargetNode->Get_Pos().iX - m_tInfo.fX;
+    fHeight = pTargetNode->Get_Pos().iY - m_tInfo.fY;
 
     fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight);
 
     fRadian = acosf(fWidth / fDiagonal);
 
-    if (pTargetNode->Get_Pos().fY > m_tInfo.fY)
+    if (pTargetNode->Get_Pos().iY > m_tInfo.fY)
         fRadian = (2.f * PI) - fRadian;
 
     m_fAngle = fRadian * (180.f / PI);
@@ -181,29 +181,29 @@ void CPawn::Navigate()
 void CPawn::Calculate_MoveDir()
 {
     //왼쪽
-    if (m_tInfo.fX < m_tPrevPos.fX)
+    if (m_tInfo.fX < m_tPrevPos.iX)
     {
         m_eDir = LL;
     }
     //오른쪽
-    else if (m_tInfo.fX > m_tPrevPos.fX)
+    else if (m_tInfo.fX > m_tPrevPos.iX)
     {
         m_eDir = RR;
     }
     //위쪽
-    else if (m_tInfo.fY < m_tPrevPos.fY)
+    else if (m_tInfo.fY < m_tPrevPos.iY)
     {
         m_eDir = UU;
     }
     //아래쪽
-    else if (m_tInfo.fY > m_tPrevPos.fY)
+    else if (m_tInfo.fY > m_tPrevPos.iY)
     {
         m_eDir = DD;
     }
 
     //이전 프레임 위치 저장
-    m_tPrevPos.fX = m_tInfo.fX;
-    m_tPrevPos.fY = m_tInfo.fY;
+    m_tPrevPos.iX = (int)m_tInfo.fX;
+    m_tPrevPos.iY = (int)m_tInfo.fY;
 
     //공격 중이고, 타겟이 있을 때만 타겟 바라보기
     if (m_bAttack && m_pTarget)
@@ -578,8 +578,8 @@ void CPawn::Wander()
 
         POS tPos
         {
-            pRandTile->Get_Info().fX,
-            pRandTile->Get_Info().fY
+            (int)pRandTile->Get_Info().fX,
+            (int)pRandTile->Get_Info().fY
         };
 
         Move_To(tPos);

@@ -256,10 +256,10 @@ void CSteelWall::OnCollision(OBJID _eID, CObj* _pOther)
 void CSteelWall::Check_Neighbor()
 {
 
-	POS tTopPos{ m_tInfo.fX, m_tInfo.fY - TILECY };
-	POS tBottomPos{ m_tInfo.fX, m_tInfo.fY + TILECY };
-	POS tLeftPos{ m_tInfo.fX - TILECX, m_tInfo.fY };
-	POS tRightPos{ m_tInfo.fX + TILECX, m_tInfo.fY};
+	POS tTopPos{ (int)m_tInfo.fX, (int)m_tInfo.fY - TILECY };
+	POS tBottomPos{ (int)m_tInfo.fX, (int)m_tInfo.fY + TILECY };
+	POS tLeftPos{ (int)m_tInfo.fX - TILECX, (int)m_tInfo.fY };
+	POS tRightPos{ (int)m_tInfo.fX + TILECX, (int)m_tInfo.fY};
 
 	//4개짜리 십자가
 	if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos) &&

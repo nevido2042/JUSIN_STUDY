@@ -40,10 +40,10 @@ CNode::CNode(POS _tPos, CNode* _pParent, POS _tEndPos, DIRECTION _Dir)
 
 float CNode::Distance(POS _tFirst, POS _tSecond)
 {
-	return 	(float)sqrt(pow(abs(_tFirst.fX - _tSecond.fX), 2) + pow(abs(_tFirst.fY - _tSecond.fY), 2));
+	return 	(float)sqrt(pow(abs(_tFirst.iX - _tSecond.iX), 2) + pow(abs(_tFirst.iY - _tSecond.iY), 2));
 }
 
 float CNode::Manhattan_Distance(POS _tFirst, POS _tSecond)
 {
-	return (float)abs(_tFirst.fX - _tSecond.fX) + abs(_tFirst.fY - _tSecond.fY);
+	return (float)abs(_tFirst.iX - _tSecond.iX) + abs(_tFirst.iY - _tSecond.iY);
 }

@@ -22,10 +22,10 @@ list<CNode*> CPathFinder::Find_Path(POS _tStart, POS _tEnd)
 list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 {
 	//비교를 인덱스 기반으로 바꿔야 할듯
-	_tStart.fX = (int)(_tStart.fX / TILECX) * TILECX + TILECX * 0.5f;
-	_tStart.fY = (int)(_tStart.fY / TILECY) * TILECY + TILECY * 0.5f;
-	_tEnd.fX = (int)(_tEnd.fX / TILECX) * TILECX + TILECX * 0.5f;
-	_tEnd.fY = (int)(_tEnd.fY / TILECY) * TILECY + TILECY * 0.5f;
+	_tStart.iX = (int)(_tStart.iX / TILECX) * TILECX + TILECX / 2;
+	_tStart.iY = (int)(_tStart.iY / TILECY) * TILECY + TILECY / 2;
+	_tEnd.iX = (int)(_tEnd.iX / TILECX) * TILECX + TILECX / 2;
+	_tEnd.iY = (int)(_tEnd.iY / TILECY) * TILECY + TILECY / 2;
 
 	CNode* StartNode = new CNode(_tStart);
 	m_OpenList.push_back(StartNode);
@@ -89,21 +89,21 @@ list<CNode*> CPathFinder::Astar(POS _tStart, POS _tEnd)
 		for (int i = 0; i < 4; ++i)
 		{
 			//CTileMgr::Get_Instance()->Get_TileArray().at(1);
-			float fX = float(pPopNode->Get_Pos().fX + iDX[i] * TILECX);
-			float fY = float(pPopNode->Get_Pos().fY + iDY[i] * TILECY);
+			int iX = pPopNode->Get_Pos().iX + iDX[i] * TILECX;
+			int iY = pPopNode->Get_Pos().iY + iDY[i] * TILECY;
 
 			//맵 밖인가?
-			if (fX < 0 || fY < 0 || TILECX * TILEX < fX || TILECY * TILEY < fY)
+			if (iX < 0 || iY < 0 || TILECX * TILEX < iX || TILECY * TILEY < iY)
 			{
 				continue;
 			}
 
 			//비교를 인덱스 기반으로 바꿔야 할듯
-			POS NewPos(fX, fY);
+			POS NewPos(iX, iY);
 
 			//fx fy로 인덱스 계산
-			int iX = int(fX / TILECX);
-			int iY = int(fY / TILECY);
+			iX = int(iX / TILECX);
+			iY = int(iY / TILECY);
 			//if (TILEX * TILEY <= iIdx)
 			//{
 			//	continue;
@@ -387,15 +387,15 @@ void CPathFinder::Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNod
 	}
 
 	//전진
-	CheckPos.fX += Dir.fX;
-	CheckPos.fY += Dir.fY;
+	CheckPos.iX += Dir.iX;
+	CheckPos.iY += Dir.iY;
 
 	while (true)
 	{
-		POS Wall1(CheckPos.fX + Wall1_Dir.fX, CheckPos.fY + Wall1_Dir.fY);
-		POS Road1(CheckPos.fX + Road1_Dir.fX, CheckPos.fY + Road1_Dir.fY);
-		POS Wall2(CheckPos.fX + Wall2_Dir.fX, CheckPos.fY + Wall2_Dir.fY);
-		POS Road2(CheckPos.fX + Road2_Dir.fX, CheckPos.fY + Road2_Dir.fY);
+		POS Wall1(CheckPos.iX + Wall1_Dir.iX, CheckPos.iY + Wall1_Dir.iY);
+		POS Road1(CheckPos.iX + Road1_Dir.iX, CheckPos.iY + Road1_Dir.iY);
+		POS Wall2(CheckPos.iX + Wall2_Dir.iX, CheckPos.iY + Wall2_Dir.iY);
+		POS Road2(CheckPos.iX + Road2_Dir.iX, CheckPos.iY + Road2_Dir.iY);
 
 		//맵 밖인가?
 		if (!CTileMgr::Get_Instance()->IsValidTile(CheckPos))
@@ -428,8 +428,8 @@ void CPathFinder::Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNod
 
 		//fx fy로 인덱스 계산
 		//int iIdx = int(CheckPos.fX / TILECX) + int(CheckPos.fY / TILECY) * TILEX;
-		int iX = int(CheckPos.fX / TILECX);
-		int iY = int(CheckPos.fY / TILECY);
+		int iX = int(CheckPos.iX / TILECX);
+		int iY = int(CheckPos.iY / TILECY);
 		//if (TILEX * TILEY <= iIdx)
 		//{
 		//	continue;
@@ -501,8 +501,8 @@ void CPathFinder::Search_Direction(CNode& _Node, const DIRECTION _Dir, list<CNod
 		}
 
 		//전진
-		CheckPos.fX += Dir.fX;
-		CheckPos.fY += Dir.fY;
+		CheckPos.iX += Dir.iX;
+		CheckPos.iY += Dir.iY;
 	}
 }
 
@@ -577,15 +577,15 @@ void CPathFinder::Search_Diagonal(CNode& _Node, const DIRECTION _Dir, list<CNode
 	POS CheckPos = _Node.Get_Pos();
 
 	//전진
-	CheckPos.fX += Dir.fX;
-	CheckPos.fY += Dir.fY;
+	CheckPos.iX += Dir.iX;
+	CheckPos.iY += Dir.iY;
 
 	while (true)
 	{
-		POS Wall1(CheckPos.fX + Wall1_Dir.fX, CheckPos.fY + Wall1_Dir.fY);
-		POS Road1(CheckPos.fX + Road1_Dir.fX, CheckPos.fY + Road1_Dir.fY);
-		POS Wall2(CheckPos.fX + Wall2_Dir.fX, CheckPos.fY + Wall2_Dir.fY);
-		POS Road2(CheckPos.fX + Road2_Dir.fX, CheckPos.fY + Road2_Dir.fY);
+		POS Wall1(CheckPos.iX + Wall1_Dir.iX, CheckPos.iY + Wall1_Dir.iY);
+		POS Road1(CheckPos.iX + Road1_Dir.iX, CheckPos.iY + Road1_Dir.iY);
+		POS Wall2(CheckPos.iX + Wall2_Dir.iX, CheckPos.iY + Wall2_Dir.iY);
+		POS Road2(CheckPos.iX + Road2_Dir.iX, CheckPos.iY + Road2_Dir.iY);
 
 		//보조 탐색
 
@@ -659,8 +659,8 @@ void CPathFinder::Search_Diagonal(CNode& _Node, const DIRECTION _Dir, list<CNode
 		}
 
 		//전진
-		CheckPos.fX += Dir.fX;
-		CheckPos.fY += Dir.fY;
+		CheckPos.iX += Dir.iX;
+		CheckPos.iY += Dir.iY;
 	}
 
 
