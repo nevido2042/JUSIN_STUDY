@@ -14,7 +14,7 @@
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_eState(END),
-    m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f), m_bAttack(false), m_bNavStopRequested(false)
+    m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f), m_bAttack(false)//, m_bNavStopRequested(false)
 {
     ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -128,14 +128,14 @@ void CPawn::Navigate()
         //타겟이 충분히 가깝다면
         //나머지노드들을 세이프딜리트하고
         //네비게이팅 종료
-        if (m_bAttack || m_bNavStopRequested)//공격 중이거나 길찾기 종료 요청이 있으면
+        if (m_bAttack /*|| m_bNavStopRequested*/)//공격 중이거나 길찾기 종료 요청이 있으면
         {
             //나머지노드들을 세이프딜리트하고
             for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
             m_NodeList.clear();
             //네비게이팅 종료
             m_bNavigating = false;
-            m_bNavStopRequested = false;
+            /*m_bNavStopRequested = false;*/
             return;
         }
         

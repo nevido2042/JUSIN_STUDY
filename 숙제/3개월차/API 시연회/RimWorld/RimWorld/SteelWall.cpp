@@ -148,7 +148,8 @@ void CSteelWall::Initialize()
 	//적들에게 길이 바뀌었을 수도 있음을 알리며, 네비게이션 종료
 	for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ENEMY])
 	{
-		static_cast<CPawn*>(pObj)->RequestNavStop();
+		//static_cast<CPawn*>(pObj)->RequestNavStop();
+		static_cast<CPawn*>(pObj)->Set_Navigating(true);
 	}
 
 

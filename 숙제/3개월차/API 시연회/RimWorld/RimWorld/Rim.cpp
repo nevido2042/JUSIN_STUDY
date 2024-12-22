@@ -315,7 +315,8 @@ void CRim::Handle_Deconstructing()
     if (m_fTargetDist < TILECX * 1.5f)
     {
         //°¡±î¿ì¸é ¸ØÃá´Ù.
-        RequestNavStop();
+        //RequestNavStop();
+        m_bNavigating = false;
     }
     //¸Ø­Ÿ´Âµ¥
     if (!m_bNavigating)
@@ -347,7 +348,8 @@ void CRim::Handle_Constructing()
     if (m_fTargetDist < TILECX * 1.5f)
     {
         //°¡±î¿ì¸é ¸ØÃá´Ù.
-        RequestNavStop();
+        //RequestNavStop();
+        m_bNavigating = false;
     }
     //¸Ø­Ÿ´Âµ¥
     if (!m_bNavigating)

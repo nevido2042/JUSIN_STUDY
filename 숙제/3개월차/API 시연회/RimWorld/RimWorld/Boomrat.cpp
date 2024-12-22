@@ -182,7 +182,8 @@ void CBoomrat::Handle_Chasing()
             if (pPawnTarget->Get_IsDead())
             {
                 Set_Target(nullptr);
-                RequestNavStop();
+                //RequestNavStop();
+                m_bNavigating = false;
             }
         }
         Move_To(tMoveToPos);
@@ -191,7 +192,8 @@ void CBoomrat::Handle_Chasing()
     //사정거리 내에 있고, 적이 보여야함
     if (IsWithinRange() && IsCanSeeTarget())
     {
-        RequestNavStop();
+        //RequestNavStop();
+        m_bNavigating = false;
         //static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
         m_bAttack = true;
         //자폭
@@ -235,7 +237,8 @@ void CBoomrat::Handle_Deconstructing()
     if (m_fTargetDist < TILECX * 1.5f)
     {
         //가까우면 멈춘다.
-        RequestNavStop();
+        //RequestNavStop();
+        m_bNavigating = false;
 
         //타겟이 없다.
         if (!m_pTarget)
