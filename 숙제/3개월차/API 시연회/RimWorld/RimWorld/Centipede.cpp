@@ -188,7 +188,10 @@ void CCentipede::Handle_Chasing()
             }
 
         }
-        Move_To(tMoveToPos);
+        if (!m_bNavigating)
+        {
+            Move_To(tMoveToPos);
+        }
 
     }
 

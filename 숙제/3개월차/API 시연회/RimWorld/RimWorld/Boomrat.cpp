@@ -190,7 +190,11 @@ void CBoomrat::Handle_Chasing()
                 m_bNavigating = false;
             }
         }
-        Move_To(tMoveToPos);
+
+        if (!m_bNavigating)
+        {
+            Move_To(tMoveToPos);
+        }
     }
 
     //사정거리 내에 있고, 적이 보여야함
