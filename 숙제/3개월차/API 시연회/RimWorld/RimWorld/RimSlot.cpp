@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "KeyMgr.h"
 #include "ScrollMgr.h"
+#include "ColonyMgr.h"
 
 CRimSlot::CRimSlot()
 {
@@ -38,6 +39,8 @@ void CRimSlot::Late_Update()
 		{
 			CScrollMgr::Get_Instance()->Set_ScrollX(-Get_Target()->Get_Info().fX + WINCX * 0.5f);
 			CScrollMgr::Get_Instance()->Set_ScrollY(-Get_Target()->Get_Info().fY + WINCY * 0.5f);
+
+			CColonyMgr::Get_Instance()->Set_Target(m_pTarget);
 		}
 	}
 }

@@ -304,7 +304,7 @@ void CBoomrat::Boom()
         for (int j = 0; j < 3; ++j)
         {
             POS tPos{ (int)m_tInfo.fX + j * TILECX, (int)m_tInfo.fY + i * TILECY };
-            CEffectMgr::Get_Instance()->Create_Effect(tPos, 64.f, 64.f, L"BlastFlame", 1.f);
+            CEffectMgr::Get_Instance()->Create_Effect(tPos, 64.f, 64.f, L"BlastFlame", 2.f);
         }
     }
 

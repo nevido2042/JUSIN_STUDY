@@ -58,7 +58,7 @@ bool CRangedWeapon::Try_Fire()
         return false;
     }
 
-    m_fAngle = static_cast<CPawn*>(m_pTarget)->Get_TargetAngle();
+    /*m_fAngle = static_cast<CPawn*>(m_pTarget)->Get_TargetAngle();*/
 
     return true;
 }
@@ -84,6 +84,9 @@ int CRangedWeapon::Update()
 
     //발사 후 지난 시간 += 게임 스피드 * 장전 속도
     m_fElapsedTimeSinceShot += GAMESPEED * m_fReloadSpeed; //프레임당 시간지나는거 굳이 안넣어도 되긴하네
+
+    //적 계속 바라보도록
+    m_fAngle = static_cast<CPawn*>(m_pTarget)->Get_TargetAngle();
 
     __super::Update_Rect();
 
