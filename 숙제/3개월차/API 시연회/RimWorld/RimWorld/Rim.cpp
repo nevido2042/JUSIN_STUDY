@@ -420,14 +420,22 @@ void CRim::Check_DeconstructWork()
 
         //Set을 vector로 복사후 정렬
         set<TASK>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
-
         vector<TASK> vecDeconstruct(DeconstructSet.begin(), DeconstructSet.end());
-
-
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
         std::sort(vecDeconstruct.begin(), vecDeconstruct.end(), 
-            [this](TASK _tTaskA, TASK _tTaskB) 
+            [this](const TASK _tTaskA, const TASK _tTaskB) 
             {
+                // 예약되지 않으면 우선순위 앞으로
+                if (!_tTaskA.pRimReserved && _tTaskB.pRimReserved)
+                {
+                    return true;  // _tTaskA가 더 앞에 오도록
+                }
+
+                if (_tTaskA.pRimReserved && !_tTaskB.pRimReserved)
+                {
+                    return false; // _tTaskB가 더 앞에 오도록
+                }
+
                 float fDistA = CObj::Calculate_Dist(this, _tTaskA.pObj);
                 float fDistB = CObj::Calculate_Dist(this, _tTaskB.pObj);
                 return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
@@ -450,6 +458,25 @@ void CRim::Check_DeconstructWork()
             }
 
             Set_Target(_tTask.pObj);
+            //작업 리스트에서 고른 작업을 예약했음을 표시
+            for (auto Iter = DeconstructSet.begin(); Iter != DeconstructSet.end();)
+            {
+                if ((*Iter).pObj == m_pTarget)
+                {
+                    //삭제 후
+                    Iter = DeconstructSet.erase(Iter);
+                    //수정해서 추가
+                    TASK tTask;
+                    tTask.pObj = m_pTarget;
+                    tTask.pRimReserved = this;
+                    DeconstructSet.emplace(tTask);
+                }
+                else
+                {
+                    ++Iter;
+                }
+            }
+
             m_bNavigating = true;
             Change_State(DECONSTRUCTING);
             return;
@@ -476,8 +503,19 @@ void CRim::Check_ConstructWork()
 
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
         std::sort(vecConstruct.begin(), vecConstruct.end(), 
-            [this](TASK _tTaskA, TASK _tTaskB) 
+            [this](const TASK _tTaskA, const TASK _tTaskB)
             {
+                // 예약되지 않으면 우선순위 앞으로
+                if (!_tTaskA.pRimReserved && _tTaskB.pRimReserved)
+                {
+                    return true;  // _tTaskA가 더 앞에 오도록
+                }
+
+                if (_tTaskA.pRimReserved && !_tTaskB.pRimReserved)
+                {
+                    return false; // _tTaskB가 더 앞에 오도록
+                }
+
                 float fDistA = CObj::Calculate_Dist(this, _tTaskA.pObj);
                 float fDistB = CObj::Calculate_Dist(this, _tTaskB.pObj);
                 return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
@@ -500,6 +538,24 @@ void CRim::Check_ConstructWork()
             }
 
             Set_Target(tTask.pObj);
+            //작업 리스트에서 고른 작업을 예약했음을 표시
+            for (auto Iter = ConstructSet.begin(); Iter != ConstructSet.end();)
+            {
+                if ((*Iter).pObj == m_pTarget)
+                {
+                    //삭제 후
+                    Iter = ConstructSet.erase(Iter);
+                    //수정해서 추가
+                    TASK tTask;
+                    tTask.pObj = m_pTarget;
+                    tTask.pRimReserved = this;
+                    ConstructSet.emplace(tTask);
+                }
+                else
+                {
+                    ++Iter;
+                }
+            }
             m_bNavigating = true;
             Change_State(CONSTRUCTING);
             return;
