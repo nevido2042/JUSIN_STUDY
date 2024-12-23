@@ -42,7 +42,9 @@ void CTile::Late_Update()
 	{
 		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
 		{
-			CColonyMgr::Get_Instance()->Emplace_ConstructSet(this);//건설 목록에 추가
+			TASK tTask;
+			tTask.pObj = this;
+			CColonyMgr::Get_Instance()->Emplace_ConstructSet(tTask);//건설 목록에 추가
 		}
 	}
 }

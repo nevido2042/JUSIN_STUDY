@@ -1,6 +1,21 @@
 #pragma once
 #include "Obj.h"
 
+typedef struct tagTask
+{
+	tagTask()
+		:pObj(nullptr), pRimReserved(nullptr) {}
+
+	CObj* pObj; //작업할 것... 건설 하기위한 타일 / 해체하기 위한 벽
+	CObj* pRimReserved;//이 작업을 누가 예약했는지
+
+	// pObj만을 기준으로 비교 연산자 정의
+	bool operator<(const tagTask& other) const
+	{
+		return pObj < other.pObj;  // pObj를 기준으로 비교
+	}
+}TASK;
+
 class CColonyMgr
 {
 public:
@@ -10,19 +25,19 @@ private:
 	virtual ~CColonyMgr();
 public:
 	void					Change_Mode(MODE _eMode);
-	void					Emplace_DeconstructSet(CObj* _pObj);
-	void					Emplace_ConstructSet(CObj* _pObj);
+	void					Emplace_DeconstructSet(TASK _tTask);
+	void					Emplace_ConstructSet(TASK _tTask);
 	void					Notify_TaskChange();
 public:
 	CObj*					Get_Target() { return m_pTarget; }
 	void					Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
 	MODE					Get_Mode() { return m_eMode; }
 
-	set<CObj*>*				Get_DeconstructSet() 
+	set<TASK>*				Get_DeconstructSet()
 	{ 
 		return &m_DeconstructSet; 
 	}
-	set<CObj*>* Get_ConstructSet()
+	set<TASK>*				Get_ConstructSet()
 	{
 		return &m_ConstructSet;
 	}
@@ -67,8 +82,8 @@ private:
 	//해체 리스트 //맵을 쓰면? 셋?
 	//왜 컨테이너로 받은 주소값이 릴리즈할때 에러나지?
 	//여기서 저절로 딜리트해주나?
-	set<CObj*>	m_DeconstructSet;
-	set<CObj*>	m_ConstructSet;
+	set<TASK>	m_DeconstructSet;
+	set<TASK>	m_ConstructSet;
 
 };
 

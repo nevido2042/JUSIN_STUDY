@@ -133,7 +133,7 @@ void CSteelWall::Initialize()
 
 	m_bCheckNeighbor = true;
 
-	m_fMaxDurability = 100.f;
+	m_fMaxDurability = 10.f;
 	m_fDurability = m_fMaxDurability;
 
 	//생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
@@ -176,7 +176,19 @@ int CSteelWall::Update()
 	if (m_bBrokendown)
 	{
 		Set_Destroyed();
-		CColonyMgr::Get_Instance()->Get_DeconstructSet()->erase(this);
+		//CColonyMgr::Get_Instance()->Get_DeconstructSet()->erase(this);
+		set<TASK>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
+		for (auto Iter = DeconstructSet.begin(); Iter != DeconstructSet.end();)
+		{
+			if ((*Iter).pObj == this)
+			{
+				Iter = DeconstructSet.erase(Iter);
+			}
+			else
+			{
+				++Iter;
+			}
+		}
 	}
 
     __super::Update_Rect();
@@ -212,8 +224,9 @@ void CSteelWall::Late_Update()
 		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON) 
 			&& CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_DECONSTRUCT)
 		{
-
-			CColonyMgr::Get_Instance()->Emplace_DeconstructSet(this);
+			TASK tTask;
+			tTask.pObj = this;
+			CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);
 			return;
 		}
 

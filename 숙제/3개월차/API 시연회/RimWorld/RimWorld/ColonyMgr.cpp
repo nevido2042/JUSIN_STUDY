@@ -44,16 +44,16 @@ void CColonyMgr::Change_Mode(MODE _eMode)
     m_eMode = _eMode;
 }
 
-void CColonyMgr::Emplace_DeconstructSet(CObj* _pObj)
+void CColonyMgr::Emplace_DeconstructSet(TASK _tTask)
 {
-    m_DeconstructSet.emplace(_pObj);
+    m_DeconstructSet.emplace(_tTask);
 
     Notify_TaskChange();
 }
 
-void CColonyMgr::Emplace_ConstructSet(CObj* _pObj)
+void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
 {
-    m_ConstructSet.emplace(_pObj);
+    m_ConstructSet.emplace(_tTask);
 
     Notify_TaskChange();
 }
@@ -187,8 +187,10 @@ void CColonyMgr::Render(HDC hDC)
     }
 
     //해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
-    for (CObj* pObj : m_DeconstructSet)
+    for (TASK tTask : m_DeconstructSet)
     {
+        CObj* pObj = tTask.pObj;
+
         GdiTransparentBlt(hDC,
             (int)pObj->Get_Rect()->left + iScrollX,
             (int)pObj->Get_Rect()->top + iScrollY,
@@ -201,8 +203,10 @@ void CColonyMgr::Render(HDC hDC)
             RGB_WHITE);
     }
     //건설할 벽들 표시
-    for (CObj* pObj : m_ConstructSet)
+    for (TASK tTask : m_ConstructSet)
     {
+        CObj* pObj = tTask.pObj;
+
         BitBlt(hDC,
             (int)pObj->Get_Rect()->left + iScrollX + 16,
             (int)pObj->Get_Rect()->top + iScrollY + 16,

@@ -391,7 +391,20 @@ void CRim::Construct()
     CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
 
     //작업삭제
-    CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
+    //CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
+    set<TASK>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
+    for (auto Iter = ConstructSet.begin(); Iter != ConstructSet.end();)
+    {
+        if ((*Iter).pObj == m_pTarget)
+        {
+            Iter = ConstructSet.erase(Iter);
+        }
+        else
+        {
+            ++Iter;
+        }
+    }
+
     m_pTarget = nullptr;
     Change_State(WANDERING);
 }
@@ -406,20 +419,22 @@ void CRim::Check_DeconstructWork()
         //길을 못찾으면 해체하지말고, 길을 찾으면 해체하러가라
 
         //Set을 vector로 복사후 정렬
-        set<CObj*>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
+        set<TASK>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
 
-        vector<CObj*> vecDeconstruct(DeconstructSet.begin(), DeconstructSet.end());
+        vector<TASK> vecDeconstruct(DeconstructSet.begin(), DeconstructSet.end());
 
 
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
-        std::sort(vecDeconstruct.begin(), vecDeconstruct.end(), [this](CObj* _Dst, CObj* _Src) {
-            float fDistA = CObj::Calculate_Dist(this, _Dst);
-            float fDistB = CObj::Calculate_Dist(this, _Src);
-            return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
+        std::sort(vecDeconstruct.begin(), vecDeconstruct.end(), 
+            [this](TASK _tTaskA, TASK _tTaskB) 
+            {
+                float fDistA = CObj::Calculate_Dist(this, _tTaskA.pObj);
+                float fDistB = CObj::Calculate_Dist(this, _tTaskB.pObj);
+                return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
             });
 
         //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
-        for (CObj* pWall : vecDeconstruct)
+        for (TASK _tTask : vecDeconstruct)
         {
             //기존 노드 딜리트
             for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
@@ -427,14 +442,14 @@ void CRim::Check_DeconstructWork()
 
             //이동 가능한 타일이 있으면 노드리스트 반환
             m_NodeList = move(CTileMgr::Get_Instance()
-                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)pWall->Get_Info().fX, (int)pWall->Get_Info().fY }));
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)_tTask.pObj->Get_Info().fX, (int)_tTask.pObj->Get_Info().fY }));
 
             if (m_NodeList.empty())
             {
                 continue;
             }
 
-            Set_Target(pWall);
+            Set_Target(_tTask.pObj);
             m_bNavigating = true;
             Change_State(DECONSTRUCTING);
             return;
@@ -453,21 +468,23 @@ void CRim::Check_ConstructWork()
         //길을 못찾으면 해체하지말고, 길을 찾으면 해체하러가라
 
         //Set을 vector로 복사후 정렬
-        set<CObj*>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
+        set<TASK>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
 
         //해당 타일 위에 철 아이템이 없으면 못지음.
 
-        vector<CObj*> vecConstruct(ConstructSet.begin(), ConstructSet.end());
+        vector<TASK> vecConstruct(ConstructSet.begin(), ConstructSet.end());
 
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
-        std::sort(vecConstruct.begin(), vecConstruct.end(), [this](CObj* _Dst, CObj* _Src) {
-            float fDistA = CObj::Calculate_Dist(this, _Dst);
-            float fDistB = CObj::Calculate_Dist(this, _Src);
-            return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
+        std::sort(vecConstruct.begin(), vecConstruct.end(), 
+            [this](TASK _tTaskA, TASK _tTaskB) 
+            {
+                float fDistA = CObj::Calculate_Dist(this, _tTaskA.pObj);
+                float fDistB = CObj::Calculate_Dist(this, _tTaskB.pObj);
+                return fDistA < fDistB; // 거리가 가까울수록 앞쪽으로 정렬
             });
 
         //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
-        for (CObj* pTile : vecConstruct)
+        for (TASK tTask : vecConstruct)
         {
             //기존 노드 딜리트
             for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
@@ -475,14 +492,14 @@ void CRim::Check_ConstructWork()
 
             //이동 가능한 타일이 있으면 노드리스트 반환
             m_NodeList = move(CTileMgr::Get_Instance()
-                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)pTile->Get_Info().fX, (int)pTile->Get_Info().fY }));
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)tTask.pObj->Get_Info().fX, (int)tTask.pObj->Get_Info().fY }));
 
             if (m_NodeList.empty())
             {
                 continue;
             }
 
-            Set_Target(pTile);
+            Set_Target(tTask.pObj);
             m_bNavigating = true;
             Change_State(CONSTRUCTING);
             return;
