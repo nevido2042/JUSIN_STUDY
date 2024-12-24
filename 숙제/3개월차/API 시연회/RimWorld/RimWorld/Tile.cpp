@@ -37,11 +37,21 @@ int CTile::Update()
 void CTile::Late_Update()
 {
 	if (Is_MouseHovered_Scrolled() && 
-		CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_CONSTRUCT&&
-		!m_pObj)//타일위에 벽이 없을때
+		CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_CONSTRUCT)//건설 모드이고
 	{
+		
 		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
 		{
+			//오브젝트가 있다.
+			if (m_pObj)
+			{
+				//벽이면 리턴
+				if (!lstrcmp(m_pObj->Get_ImgKey(), L"Wall_Atlas_Smooth"))
+				{
+					return;
+				}
+			}
+
 			TASK tTask;
 			tTask.pObj = this;
 			CColonyMgr::Get_Instance()->Emplace_ConstructSet(tTask);//건설 목록에 추가

@@ -47,7 +47,8 @@ public:
 	void		Set_Target(CObj* pTarget) { m_pTarget = pTarget; }
 	bool		Get_Destroyed() { return m_bDestroyed; }
 
-	void		Set_ImgKey(const TCHAR* pImgKey) { m_pImgKey = pImgKey; }
+	const TCHAR*	Get_ImgKey() { return m_pImgKey; }
+	void			Set_ImgKey(const TCHAR* pImgKey) { m_pImgKey = pImgKey; }
 
 public:
 	virtual void		Initialize()PURE;

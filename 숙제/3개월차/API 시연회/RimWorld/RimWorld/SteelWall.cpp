@@ -170,6 +170,9 @@ int CSteelWall::Update()
 		CObj* pObj = CAbstractFactory<CSteel>::Create(m_tInfo.fX, m_tInfo.fY);
 		CObjMgr::Get_Instance()->Add_Object(OBJ_ITEM, pObj);
 
+		//생성되었을 때 타일에게 아이템이 있음을 알림
+		CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, pObj);
+
 		return OBJ_DESTROYED;
 	}
 

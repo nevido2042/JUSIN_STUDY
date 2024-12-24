@@ -15,8 +15,7 @@ CItem::~CItem()
 
 void CItem::Initialize()
 {
-	//생성되었을 때 타일에게 아이템이 있음을 알림
-	CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, this);
+	
 }
 
 int CItem::Update()

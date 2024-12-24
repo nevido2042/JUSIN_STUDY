@@ -498,8 +498,25 @@ void CRim::Check_ConstructWork()
         set<TASK>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
 
         //해당 타일 위에 철 아이템이 없으면 못지음.
+        vector<TASK> vecConstruct;// (ConstructSet.begin(), ConstructSet.end());
 
-        vector<TASK> vecConstruct(ConstructSet.begin(), ConstructSet.end());
+        for (auto iter = ConstructSet.begin(); iter != ConstructSet.end(); ++iter)
+        {
+            //철이 있는 타일만 벡터로 집어넣음
+            CTile* pTile = static_cast<CTile*>((*iter).pObj);
+            //위에 아무것도 없으면 컨티뉴
+            CObj* pObj = pTile->Get_Obj();
+            if (!pObj)
+            {
+                continue;
+            }
+            //철 이면 작업 벡터로 넣기
+            if (pObj->Get_ImgKey() == L"Steel_b")
+            {
+                vecConstruct.push_back(*iter);
+            }
+        }
+
 
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
         std::sort(vecConstruct.begin(), vecConstruct.end(), 
