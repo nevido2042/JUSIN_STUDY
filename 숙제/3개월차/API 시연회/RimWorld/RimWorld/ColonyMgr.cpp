@@ -47,7 +47,12 @@ void CColonyMgr::Change_Mode(MODE _eMode)
 
 void CColonyMgr::Emplace_DeconstructSet(TASK _tTask)
 {
-    m_DeconstructSet.emplace(_tTask);
+    auto Result = m_DeconstructSet.emplace(_tTask);
+
+    if (!Result.second)
+    {
+        return;
+    }
 
     Notify_TaskChange();
 }
@@ -57,7 +62,13 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
     //건설 목록에 넣기전 철 아잍템이 존재하는 지 확인 후
     //철 아이템이 없으면 운반Set으로 넣기
 
-    m_ConstructSet.emplace(_tTask);
+    auto Result = m_ConstructSet.emplace(_tTask);
+    //삽입 실패하면 리턴
+    if (!Result.second)
+    {
+        return;
+    }
+
     Notify_TaskChange();
 
     if (CTile* pTile = dynamic_cast<CTile*>(_tTask.pObj))
@@ -75,7 +86,12 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
 
 void CColonyMgr::Emplace_TransportSet(TASK _tTask)
 {
-    m_TransportSet.emplace(_tTask);
+    auto Result = m_TransportSet.emplace(_tTask);
+
+    if (!Result.second)
+    {
+        return;
+    }
 
     Notify_TaskChange();
 }

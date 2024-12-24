@@ -434,6 +434,22 @@ void CRim::Handle_Transporting()
 
             //타일 위에 아이템을 올려둔다.
             PutDown_Item();
+            
+            //운반 작업목록에서 삭제한다.
+            set<TASK>& TransportSet = *CColonyMgr::Get_Instance()->Get_TransportSet();
+            
+            for (auto iter = TransportSet.begin(); iter != TransportSet.end();)
+            {
+                if ((*iter).pObj == m_pTarget)
+                {
+                    iter = TransportSet.erase(iter);
+                }
+                else
+                {
+                    ++iter;
+                }
+            }
+
         }
     }
 }
