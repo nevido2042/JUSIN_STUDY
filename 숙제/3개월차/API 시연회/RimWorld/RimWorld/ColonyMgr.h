@@ -27,6 +27,7 @@ public:
 	void					Change_Mode(MODE _eMode);
 	void					Emplace_DeconstructSet(TASK _tTask);
 	void					Emplace_ConstructSet(TASK _tTask);
+	void					Emplace_TransportSet(TASK _tTask);
 	void					Notify_TaskChange();
 public:
 	CObj*					Get_Target() { return m_pTarget; }
@@ -34,12 +35,16 @@ public:
 	MODE					Get_Mode() { return m_eMode; }
 
 	set<TASK>*				Get_DeconstructSet()
-	{ 
+	{
 		return &m_DeconstructSet; 
 	}
-	set<TASK>*				Get_ConstructSet()
+	set<TASK>*				Get_ConstructSet() 
 	{
-		return &m_ConstructSet;
+		return &m_ConstructSet; 
+	}
+	set<TASK>*				Get_TransportSet() 
+	{ 
+		return &m_TransportSet; 
 	}
 
 private:
@@ -84,6 +89,7 @@ private:
 	//여기서 저절로 딜리트해주나?
 	set<TASK>	m_DeconstructSet;
 	set<TASK>	m_ConstructSet;
+	set<TASK>	m_TransportSet;
 
 };
 

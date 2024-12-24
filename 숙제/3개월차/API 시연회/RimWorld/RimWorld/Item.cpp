@@ -15,7 +15,7 @@ CItem::~CItem()
 
 void CItem::Initialize()
 {
-	
+	m_eRenderID = RENDER_ITEM;
 }
 
 int CItem::Update()
@@ -30,6 +30,7 @@ int CItem::Update()
 
 void CItem::Late_Update()
 {
+	Follow_Pawn();
 }
 
 void CItem::Render(HDC hDC)
@@ -54,4 +55,14 @@ void CItem::Render(HDC hDC)
 
 void CItem::Release()
 {
+}
+
+void CItem::Follow_Pawn()
+{
+	if (!m_pTarget)
+	{
+		return;
+	}
+
+	Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
 }

@@ -488,6 +488,9 @@ void CPawn::Late_Update()
     case CPawn::CONSTRUCTING:
         Handle_Constructing();
         break;
+    case CPawn::TRANSPORTING:
+        Handle_Transporting();
+        break;
     case CPawn::END:
         break;
     default:

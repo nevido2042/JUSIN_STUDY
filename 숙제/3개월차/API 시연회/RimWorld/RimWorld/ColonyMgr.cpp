@@ -6,6 +6,7 @@
 #include "TimeMgr.h"
 #include "BmpMgr.h"
 #include "ObjMgr.h"
+#include "TileMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -53,7 +54,28 @@ void CColonyMgr::Emplace_DeconstructSet(TASK _tTask)
 
 void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
 {
+    //건설 목록에 넣기전 철 아잍템이 존재하는 지 확인 후
+    //철 아이템이 없으면 운반Set으로 넣기
+
     m_ConstructSet.emplace(_tTask);
+    Notify_TaskChange();
+
+    if (CTile* pTile = dynamic_cast<CTile*>(_tTask.pObj))
+    {
+        CObj* pObj = pTile->Get_Obj();
+        if (!pObj)
+        {
+            //타일 위에 아무것도 없으면 운반목록에 추가
+            Emplace_TransportSet(_tTask);
+        }
+
+    }
+
+}
+
+void CColonyMgr::Emplace_TransportSet(TASK _tTask)
+{
+    m_TransportSet.emplace(_tTask);
 
     Notify_TaskChange();
 }
@@ -127,6 +149,7 @@ void CColonyMgr::Input_Key()
                 else
                 {
                     pTargetRim->Change_State(CRim::DRAFTED);
+                    pTargetRim->PutDown_Item();
                 }  
             }
         }

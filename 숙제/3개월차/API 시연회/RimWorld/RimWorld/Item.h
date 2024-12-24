@@ -12,5 +12,7 @@ public:
     void Late_Update() override;
     void Render(HDC hDC) override;
     void Release() override;
+protected:
+    void            Follow_Pawn();
 };
 

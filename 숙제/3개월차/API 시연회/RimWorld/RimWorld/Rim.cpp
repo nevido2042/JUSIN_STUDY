@@ -12,7 +12,7 @@
 #include "TimeMgr.h"
 
 CRim::CRim()
-    :m_bTaskCheck(false)
+    :m_bTaskCheck(false), m_pTransportingItem(nullptr)
 {
 
 }
@@ -232,6 +232,9 @@ void CRim::Render(HDC hDC)
     case CRim::DECONSTRUCTING:
         wsprintf(buffer, L"m_eState: %s", L"DECONSTRUCTING");
         break;
+    case CRim::TRANSPORTING:
+        wsprintf(buffer, L"m_eState: %s", L"TRANSPORTING");
+        break;
     case CRim::END:
         break;
     default:
@@ -257,6 +260,7 @@ void CRim::Handle_Wandering()
     {
         Check_ConstructWork();
         Check_DeconstructWork();
+        Check_TransportingWork();
         //m_fElapsedTimeCheck = 0.f;
         m_bTaskCheck = false;
     }
@@ -370,6 +374,58 @@ void CRim::Handle_Constructing()
 
     //해체 진행중인 바 생성
     //몇초 뒤 해체 완료
+}
+
+void CRim::Handle_Transporting()
+{
+    //타겟 아이템이 가까워지면 아이템을 들어라
+    if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.5f)
+    {
+        PickUp_Item();
+        m_bNavigating = false;
+    }
+
+    //아이템을 들었으면 목표지점으로 옮겨라
+    if (m_pTransportingItem)
+    {
+        //옮길 지점을 찾아서 이동
+        
+        for (TASK tTask : *CColonyMgr::Get_Instance()->Get_TransportSet())
+        {
+            POS tStart{ (int)m_tInfo.fX,(int)m_tInfo.fY };
+            POS tEnd{ (int)tTask.pObj->Get_Info().fX,(int)tTask.pObj->Get_Info().fY };
+
+            list<CNode*> PathList = move(CPathFinder::Get_Instance()->Find_Path(tStart, tEnd));
+            if (PathList.empty())
+            {
+                continue;
+            }
+            else
+            {
+                for_each(PathList.begin(), PathList.end(), Safe_Delete<CNode*>);
+                PathList.clear();
+
+                Set_Target(tTask.pObj);
+                break;
+            }
+        }
+    }
+
+    //목표지점도 찾았고, 운반할 아이템이 있으면 이동하라
+    if (m_pTransportingItem && m_pTarget && !m_bNavigating)
+    {
+        POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+        Move_To(tPos);
+    }
+
+    //목표지점으로 운반하고 있는 중에 거리체크
+    if (m_pTransportingItem && m_pTarget && m_bNavigating)
+    {
+        if (m_fTargetDist < TILECX * 0.5f)
+        {
+            PutDown_Item();
+        }
+    }
 }
 
 void CRim::Check_CloseTask()
@@ -581,6 +637,27 @@ void CRim::Check_ConstructWork()
     }
 }
 
+void CRim::Check_TransportingWork()
+{
+    //운반 할 것이 있으면
+    if (!CColonyMgr::Get_Instance()->Get_TransportSet()->empty() && Get_State() == WANDERING)
+    {
+        //철 아이템을 찾아서 들어라
+        CObj* pItem = Find_Item(L"Steel_b");
+        if (!pItem)
+        {
+            return;
+        }
+        else
+        {
+            POS tItemPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
+            Move_To(tItemPos);
+            Set_Target(pItem);
+            Change_State(TRANSPORTING);
+        }
+    }
+}
+
 void CRim::Find_Enemy()
 {
     for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ENEMY])
@@ -601,5 +678,58 @@ void CRim::Find_Enemy()
             Set_Target(nullptr);
         }
     }
+}
+
+CObj* CRim::Find_Item(const TCHAR* _pImgKey)
+{
+    CObj* pItem(nullptr);
+    //아이템 리스트에서 찾고자 하는 아이템을 찾아라
+    for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ITEM])
+    {
+        if (lstrcmp(pObj->Get_ImgKey(), _pImgKey))
+        {
+            continue;
+        }
+        //찾고 그 아이템까지 도달 할 수 있는 길을 찾아라.
+        POS tStart{ (int)m_tInfo.fX, (int)m_tInfo.fY };
+        POS tEnd{ (int)pObj->Get_Info().fX, (int)pObj->Get_Info().fY };
+
+        list<CNode*> PathList = move(CPathFinder::Get_Instance()->Find_Path(tStart, tEnd));
+        if (PathList.empty())
+        {
+            //못 찾으면 컨티뉴
+            continue;
+        }
+        else
+        {
+            //노드 딜리트
+            for_each(PathList.begin(), PathList.end(), Safe_Delete<CNode*>);
+            PathList.clear();
+
+            //길을 찾았으면 그 아이템 리턴
+            pItem = pObj;
+            break;
+        }
+    }
+
+    return pItem;
+}
+
+void CRim::PickUp_Item()
+{
+    m_pTransportingItem = m_pTarget;
+    m_pTarget->Set_Target(this);
+    m_pTarget = nullptr;
+}
+
+void CRim::PutDown_Item()
+{
+    if (m_pTarget)
+    {
+        m_pTransportingItem->Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    }
+
+    m_pTransportingItem->Set_Target(nullptr);
+    m_pTransportingItem = nullptr;
 }
 
