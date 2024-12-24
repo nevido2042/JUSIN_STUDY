@@ -379,14 +379,13 @@ void CRim::Handle_Constructing()
 void CRim::Handle_Transporting()
 {
     //타겟 아이템이 가까워지면 아이템을 들어라
-    if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.5f)
+    if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
     {
         PickUp_Item();
         m_bNavigating = false;
     }
-
     //아이템을 들었으면 목표지점으로 옮겨라
-    if (m_pTransportingItem)
+    else if (m_pTransportingItem && !m_pTarget)
     {
         //옮길 지점을 찾아서 이동
         
@@ -409,20 +408,31 @@ void CRim::Handle_Transporting()
                 break;
             }
         }
+        //옮기 지점을 못찾으면 Wander로 변경
+        if (!m_pTarget)
+        {
+            PutDown_Item();
+            Change_State(WANDERING);
+        }
     }
-
     //목표지점도 찾았고, 운반할 아이템이 있으면 이동하라
-    if (m_pTransportingItem && m_pTarget && !m_bNavigating)
+    else if (m_pTransportingItem && m_pTarget && !m_bNavigating)
     {
         POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
         Move_To(tPos);
     }
-
     //목표지점으로 운반하고 있는 중에 거리체크
-    if (m_pTransportingItem && m_pTarget && m_bNavigating)
+    else if (m_pTransportingItem && m_pTarget && m_bNavigating)
     {
         if (m_fTargetDist < TILECX * 0.5f)
         {
+            //타일 위에 철이 있다고 알리고
+            POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+            CTileMgr::Get_Instance()->Set_TileObj(tPos, m_pTransportingItem);
+            //건설작업을 확인한다.
+            Check_ConstructWork();
+
+            //타일 위에 아이템을 올려둔다.
             PutDown_Item();
         }
     }
@@ -544,7 +554,7 @@ void CRim::Check_DeconstructWork()
 void CRim::Check_ConstructWork()
 {
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
-    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && Get_State() == WANDERING) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
+    if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && (Get_State() == WANDERING|| Get_State() == TRANSPORTING)) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
