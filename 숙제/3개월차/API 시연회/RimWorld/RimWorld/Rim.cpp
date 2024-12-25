@@ -467,6 +467,11 @@ void CRim::Deconstruct()
 
 void CRim::Construct()
 {
+    //철 삭제
+    CObj* pSteel =  CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    pSteel->Set_Destroyed();
+
+    //건설
     CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
     CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
     CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
@@ -743,6 +748,10 @@ CObj* CRim::Find_Item(const TCHAR* _pImgKey)
 
 void CRim::PickUp_Item()
 {
+    //해당타일에 아이템이 없어졌다고 알림
+    POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+    CTileMgr::Get_Instance()->Set_TileObj(tPos, nullptr);
+
     m_pTransportingItem = m_pTarget;
     m_pTarget->Set_Target(this);
     m_pTarget = nullptr;
