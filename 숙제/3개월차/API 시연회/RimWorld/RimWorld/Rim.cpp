@@ -378,8 +378,17 @@ void CRim::Handle_Constructing()
 
 void CRim::Handle_Transporting()
 {
+    //만약 다른 림이 가져갔다면 다른 철을 찾아라...
+    if (m_pTarget&&
+        m_pTarget->Get_Target()&&
+        m_pTarget->Get_Target() != this)
+    {
+        //Change_State(WANDERING);
+        Check_TransportingWork();
+    }
+
     //타겟 아이템이 가까워지면 아이템을 들어라
-    if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
+    else if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
     {
         PickUp_Item();
         m_bNavigating = false;
@@ -671,7 +680,7 @@ void CRim::Check_ConstructWork()
 void CRim::Check_TransportingWork()
 {
     //운반 할 것이 있으면
-    if (!CColonyMgr::Get_Instance()->Get_TransportSet()->empty() && Get_State() == WANDERING)
+    if (!CColonyMgr::Get_Instance()->Get_TransportSet()->empty() && (Get_State() == WANDERING|| Get_State() == TRANSPORTING))
     {
         //철 아이템을 찾아서 들어라
         CObj* pItem = Find_Item(L"Steel_b");
@@ -721,6 +730,13 @@ CObj* CRim::Find_Item(const TCHAR* _pImgKey)
         {
             continue;
         }
+
+        //주인이 있으면
+        if (pObj->Get_Target())
+        {
+            continue;
+        }
+
         //찾고 그 아이템까지 도달 할 수 있는 길을 찾아라.
         POS tStart{ (int)m_tInfo.fX, (int)m_tInfo.fY };
         POS tEnd{ (int)pObj->Get_Info().fX, (int)pObj->Get_Info().fY };
@@ -759,6 +775,8 @@ void CRim::PickUp_Item()
 
 void CRim::PutDown_Item()
 {
+    //if(!m_pTransportingItem)
+
     if (m_pTarget)
     {
         m_pTransportingItem->Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
