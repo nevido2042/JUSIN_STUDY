@@ -12,7 +12,7 @@ public:
     CRim();
     virtual ~CRim();
 public:
-    //void PutDown_Item();
+    void    PutDown_Item();
 public:
     void    Set_TaskCheck() { m_bTaskCheck = true; }
 public:

@@ -361,6 +361,17 @@ void CRim::Handle_Constructing()
     //    //Move_To(pItem->Get_Info.fx)
     //    return;
     //}
+
+    //건설 할때 이미 벽이 있으면 철 내려놓고 다른 일 찾아라
+    if (CTileMgr::Get_Instance()->Get_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY) == OPT_BLOCKED)
+    {
+        m_bTaskCheck = true;
+        Change_State(WANDERING);
+        PutDown_Item();
+        return;
+    }
+
+  
     //옮기는 철이 없다.
     if (!m_pTransportingItem)
     {
@@ -436,8 +447,9 @@ void CRim::Handle_Transporting()
         }
         else
         {
-            //Change_State(WANDERING);
             m_bTaskCheck = true;
+            Change_State(WANDERING);
+            PutDown_Item();
             return;
         }
     }
@@ -446,6 +458,8 @@ void CRim::Handle_Transporting()
     if (m_pTarget && !m_pTransportingItem && !m_bNavigating)
     {
         m_bTaskCheck = true;
+        Change_State(WANDERING);
+        PutDown_Item();
         return;
     }
 
@@ -458,7 +472,9 @@ void CRim::Handle_Transporting()
         //건설 할게 없으면
         if (!Check_ConstructWork())
         {
+            m_bTaskCheck = true;
             Change_State(WANDERING);
+            PutDown_Item();
         }
     }
 
@@ -669,7 +685,7 @@ void CRim::Check_DeconstructWork()
 
             m_bNavigating = true;
             Change_State(DECONSTRUCTING);
-            Set_Target(_tTask.pObj);
+            //Set_Target(_tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
@@ -784,7 +800,7 @@ bool CRim::Check_ConstructWork()
             }
             m_bNavigating = true;
             Change_State(CONSTRUCTING);
-            Set_Target(tTask.pObj);
+            //Set_Target(tTask.pObj);
             return true;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
@@ -887,16 +903,17 @@ void CRim::PickUp_Item(CObj* _pObj)
     _pObj = nullptr;
 }
 
-//void CRim::PutDown_Item()
-//{
-//    //if(!m_pTransportingItem)
-//
-//    if (m_pTarget)
-//    {
-//        m_pTransportingItem->Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-//    }
-//
-//    m_pTransportingItem->Set_Target(nullptr);
-//    m_pTransportingItem = nullptr;
-//}
+void CRim::PutDown_Item()
+{
+    if(!m_pTransportingItem)
+    {
+        return;
+    }
+    else
+    {
+        m_pTransportingItem->Set_Target(nullptr);
+        m_pTransportingItem = nullptr;
+    }
+
+}
 

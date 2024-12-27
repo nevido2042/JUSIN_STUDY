@@ -82,7 +82,7 @@ void CPawn::Change_State(STATE _eState)
     }
 
     m_eState = _eState;
-    m_pTarget = nullptr;
+    //m_pTarget = nullptr;
 }
 
 void CPawn::Dead()
