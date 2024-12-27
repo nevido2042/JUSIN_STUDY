@@ -71,30 +71,30 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
 
     Notify_TaskChange();
 
-    if (CTile* pTile = dynamic_cast<CTile*>(_tTask.pObj))
-    {
-        CObj* pObj = pTile->Get_Obj();
-        if (!pObj)
-        {
-            //타일 위에 아무것도 없으면 운반목록에 추가
-            Emplace_TransportSet(_tTask);
-        }
+    //if (CTile* pTile = dynamic_cast<CTile*>(_tTask.pObj))
+    //{
+    //    CObj* pObj = pTile->Get_Obj();
+    //    if (!pObj)
+    //    {
+    //        //타일 위에 아무것도 없으면 운반목록에 추가
+    //        Emplace_TransportSet(_tTask);
+    //    }
 
-    }
+    //}
 
 }
 
-void CColonyMgr::Emplace_TransportSet(TASK _tTask)
-{
-    auto Result = m_TransportSet.emplace(_tTask);
-
-    if (!Result.second)
-    {
-        return;
-    }
-
-    Notify_TaskChange();
-}
+//void CColonyMgr::Emplace_TransportSet(TASK _tTask)
+//{
+//    auto Result = m_TransportSet.emplace(_tTask);
+//
+//    if (!Result.second)
+//    {
+//        return;
+//    }
+//
+//    Notify_TaskChange();
+//}
 
 void CColonyMgr::Notify_TaskChange()
 {

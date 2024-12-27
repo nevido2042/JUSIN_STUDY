@@ -26,7 +26,7 @@ protected:
     void Handle_Undrafted() override;
     void Handle_Deconstructing() override;
     void Handle_Constructing() override;
-    void Handle_Transporting() override;
+    //void Handle_Transporting() override;
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();
@@ -38,7 +38,7 @@ private:
 private:
     void Check_DeconstructWork();
     void Check_ConstructWork();
-    void Check_TransportingWork();
+    //void Check_TransportingWork();
 
     void Find_Enemy();
     CObj* Find_Item(const TCHAR* _pImgKey);

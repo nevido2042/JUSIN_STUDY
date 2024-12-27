@@ -260,7 +260,7 @@ void CRim::Handle_Wandering()
     {
         Check_ConstructWork();
         Check_DeconstructWork();
-        Check_TransportingWork();
+        //Check_TransportingWork();
         //m_fElapsedTimeCheck = 0.f;
         m_bTaskCheck = false;
     }
@@ -376,92 +376,92 @@ void CRim::Handle_Constructing()
     //몇초 뒤 해체 완료
 }
 
-void CRim::Handle_Transporting()
-{
-    //만약 다른 림이 가져갔다면 다른 철을 찾아라...
-    if (m_pTarget&&
-        m_pTarget->Get_Target()&&
-        m_pTarget->Get_Target() != this)
-    {
-        //Change_State(WANDERING);
-        Check_TransportingWork();
-    }
-
-    //타겟 아이템이 가까워지면 아이템을 들어라
-    else if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
-    {
-        PickUp_Item();
-        m_bNavigating = false;
-    }
-    //아이템을 들었으면 목표지점으로 옮겨라
-    else if (m_pTransportingItem && !m_pTarget)
-    {
-        //옮길 지점을 찾아서 이동
-        
-        for (TASK tTask : *CColonyMgr::Get_Instance()->Get_TransportSet())
-        {
-            POS tStart{ (int)m_tInfo.fX,(int)m_tInfo.fY };
-            POS tEnd{ (int)tTask.pObj->Get_Info().fX,(int)tTask.pObj->Get_Info().fY };
-
-            list<CNode*> PathList = move(CPathFinder::Get_Instance()->Find_Path(tStart, tEnd));
-            if (PathList.empty())
-            {
-                continue;
-            }
-            else
-            {
-                for_each(PathList.begin(), PathList.end(), Safe_Delete<CNode*>);
-                PathList.clear();
-
-                Set_Target(tTask.pObj);
-                break;
-            }
-        }
-        //옮기 지점을 못찾으면 Wander로 변경
-        if (!m_pTarget)
-        {
-            PutDown_Item();
-            Change_State(WANDERING);
-        }
-    }
-    //목표지점도 찾았고, 운반할 아이템이 있으면 이동하라
-    else if (m_pTransportingItem && m_pTarget && !m_bNavigating)
-    {
-        POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
-        Move_To(tPos);
-    }
-    //목표지점으로 운반하고 있는 중에 거리체크
-    else if (m_pTransportingItem && m_pTarget && m_bNavigating)
-    {
-        if (m_fTargetDist < TILECX * 0.5f)
-        {
-            //타일 위에 철이 있다고 알리고
-            POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
-            CTileMgr::Get_Instance()->Set_TileObj(tPos, m_pTransportingItem);
-            //건설작업을 확인한다.
-            Check_ConstructWork();
-
-            //타일 위에 아이템을 올려둔다.
-            PutDown_Item();
-            
-            //운반 작업목록에서 삭제한다.
-            set<TASK>& TransportSet = *CColonyMgr::Get_Instance()->Get_TransportSet();
-            
-            for (auto iter = TransportSet.begin(); iter != TransportSet.end();)
-            {
-                if ((*iter).pObj == m_pTarget)
-                {
-                    iter = TransportSet.erase(iter);
-                }
-                else
-                {
-                    ++iter;
-                }
-            }
-
-        }
-    }
-}
+//void CRim::Handle_Transporting()
+//{
+//    //만약 다른 림이 가져갔다면 다른 철을 찾아라...
+//    if (m_pTarget&&
+//        m_pTarget->Get_Target()&&
+//        m_pTarget->Get_Target() != this)
+//    {
+//        //Change_State(WANDERING);
+//        Check_TransportingWork();
+//    }
+//
+//    //타겟 아이템이 가까워지면 아이템을 들어라
+//    else if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
+//    {
+//        PickUp_Item();
+//        m_bNavigating = false;
+//    }
+//    //아이템을 들었으면 목표지점으로 옮겨라
+//    else if (m_pTransportingItem && !m_pTarget)
+//    {
+//        //옮길 지점을 찾아서 이동
+//        
+//        for (TASK tTask : *CColonyMgr::Get_Instance()->Get_TransportSet())
+//        {
+//            POS tStart{ (int)m_tInfo.fX,(int)m_tInfo.fY };
+//            POS tEnd{ (int)tTask.pObj->Get_Info().fX,(int)tTask.pObj->Get_Info().fY };
+//
+//            list<CNode*> PathList = move(CPathFinder::Get_Instance()->Find_Path(tStart, tEnd));
+//            if (PathList.empty())
+//            {
+//                continue;
+//            }
+//            else
+//            {
+//                for_each(PathList.begin(), PathList.end(), Safe_Delete<CNode*>);
+//                PathList.clear();
+//
+//                Set_Target(tTask.pObj);
+//                break;
+//            }
+//        }
+//        //옮기 지점을 못찾으면 Wander로 변경
+//        if (!m_pTarget)
+//        {
+//            PutDown_Item();
+//            Change_State(WANDERING);
+//        }
+//    }
+//    //목표지점도 찾았고, 운반할 아이템이 있으면 이동하라
+//    else if (m_pTransportingItem && m_pTarget && !m_bNavigating)
+//    {
+//        POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+//        Move_To(tPos);
+//    }
+//    //목표지점으로 운반하고 있는 중에 거리체크
+//    else if (m_pTransportingItem && m_pTarget && m_bNavigating)
+//    {
+//        if (m_fTargetDist < TILECX * 0.5f)
+//        {
+//            //타일 위에 철이 있다고 알리고
+//            POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+//            CTileMgr::Get_Instance()->Set_TileObj(tPos, m_pTransportingItem);
+//            //건설작업을 확인한다.
+//            Check_ConstructWork();
+//
+//            //타일 위에 아이템을 올려둔다.
+//            PutDown_Item();
+//            
+//            //운반 작업목록에서 삭제한다.
+//            set<TASK>& TransportSet = *CColonyMgr::Get_Instance()->Get_TransportSet();
+//            
+//            for (auto iter = TransportSet.begin(); iter != TransportSet.end();)
+//            {
+//                if ((*iter).pObj == m_pTarget)
+//                {
+//                    iter = TransportSet.erase(iter);
+//                }
+//                else
+//                {
+//                    ++iter;
+//                }
+//            }
+//
+//        }
+//    }
+//}
 
 void CRim::Check_CloseTask()
 {
@@ -477,8 +477,8 @@ void CRim::Deconstruct()
 void CRim::Construct()
 {
     //철 삭제
-    CObj* pSteel =  CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-    pSteel->Set_Destroyed();
+    //CObj* pSteel =  CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    //pSteel->Set_Destroyed();
 
     //건설
     CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
@@ -592,26 +592,25 @@ void CRim::Check_ConstructWork()
 
         //Set을 vector로 복사후 정렬
         set<TASK>& ConstructSet = *CColonyMgr::Get_Instance()->Get_ConstructSet();
+        vector<TASK> vecConstruct(ConstructSet.begin(), ConstructSet.end());
 
         //해당 타일 위에 철 아이템이 없으면 못지음.
-        vector<TASK> vecConstruct;// (ConstructSet.begin(), ConstructSet.end());
-
-        for (auto iter = ConstructSet.begin(); iter != ConstructSet.end(); ++iter)
-        {
-            //철이 있는 타일만 벡터로 집어넣음
-            CTile* pTile = static_cast<CTile*>((*iter).pObj);
-            //위에 아무것도 없으면 컨티뉴
-            CObj* pObj = pTile->Get_Obj();
-            if (!pObj)
-            {
-                continue;
-            }
-            //철 이면 작업 벡터로 넣기
-            if (pObj->Get_ImgKey() == L"Steel_b")
-            {
-                vecConstruct.push_back(*iter);
-            }
-        }
+        //for (auto iter = ConstructSet.begin(); iter != ConstructSet.end(); ++iter)
+        //{
+        //    //철이 있는 타일만 벡터로 집어넣음
+        //    CTile* pTile = static_cast<CTile*>((*iter).pObj);
+        //    //위에 아무것도 없으면 컨티뉴
+        //    CObj* pObj = pTile->Get_Obj();
+        //    if (!pObj)
+        //    {
+        //        continue;
+        //    }
+        //    //철 이면 작업 벡터로 넣기
+        //    if (pObj->Get_ImgKey() == L"Steel_b")
+        //    {
+        //        vecConstruct.push_back(*iter);
+        //    }
+        //}
 
 
         // 사용자 정의 정렬: 기준점과의 거리를 계산해 정렬
@@ -677,26 +676,26 @@ void CRim::Check_ConstructWork()
     }
 }
 
-void CRim::Check_TransportingWork()
-{
-    //운반 할 것이 있으면
-    if (!CColonyMgr::Get_Instance()->Get_TransportSet()->empty() && (Get_State() == WANDERING|| Get_State() == TRANSPORTING))
-    {
-        //철 아이템을 찾아서 들어라
-        CObj* pItem = Find_Item(L"Steel_b");
-        if (!pItem)
-        {
-            return;
-        }
-        else
-        {
-            POS tItemPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
-            Move_To(tItemPos);
-            Set_Target(pItem);
-            Change_State(TRANSPORTING);
-        }
-    }
-}
+//void CRim::Check_TransportingWork()
+//{
+//    //운반 할 것이 있으면
+//    if (!CColonyMgr::Get_Instance()->Get_TransportSet()->empty() && (Get_State() == WANDERING|| Get_State() == TRANSPORTING))
+//    {
+//        //철 아이템을 찾아서 들어라
+//        CObj* pItem = Find_Item(L"Steel_b");
+//        if (!pItem)
+//        {
+//            return;
+//        }
+//        else
+//        {
+//            POS tItemPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
+//            Move_To(tItemPos);
+//            Set_Target(pItem);
+//            Change_State(TRANSPORTING);
+//        }
+//    }
+//}
 
 void CRim::Find_Enemy()
 {
