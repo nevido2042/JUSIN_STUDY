@@ -18,6 +18,10 @@ void CDetailView::Initialize()
 	Set_Size(400.f, 150.f);
 
 	m_eRenderID = RENDER_UI;
+
+	m_bActivate = false;
+
+	Set_ImgKey(L"DetailViewBG");
 }
 
 int CDetailView::Update()
@@ -36,7 +40,12 @@ void CDetailView::Late_Update()
 
 void CDetailView::Render(HDC hDC)
 {
-	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"DetailViewBG");
+	if (!m_bActivate)
+	{
+		return;
+	}
+
+	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(Get_ImgKey());
 
 	BitBlt(hDC,
 		m_tRect.left,

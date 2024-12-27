@@ -37,7 +37,7 @@ private:
 
 private:
     void Check_DeconstructWork();
-    bool Check_ConstructWork();
+    void Check_ConstructWork();
     //void Check_TransportingWork();
 
     void    Find_Enemy();

@@ -25,6 +25,7 @@ void CColonyMgr::Change_Mode(MODE _eMode)
     switch (_eMode)
     {
     case CColonyMgr::MODE_SELECT:
+        m_pTarget = nullptr;
         break;
     case CColonyMgr::MODE_DECONSTRUCT:
         //타겟을 없애고,
@@ -105,6 +106,15 @@ void CColonyMgr::Notify_TaskChange()
     }
 }
 
+void CColonyMgr::Set_Target(CObj* _pObj)
+{
+    m_pTarget = _pObj;
+
+    CObj* pDetailView = CObjMgr::Get_Instance()->Find_Obj(L"DetailViewBG", OBJ_UI);
+   
+    pDetailView->Set_Activate(true);
+}
+
 void CColonyMgr::Input_Key()
 {
     //화면 스크롤
@@ -165,7 +175,7 @@ void CColonyMgr::Input_Key()
                 else
                 {
                     pTargetRim->Change_State(CRim::DRAFTED);
-                    //pTargetRim->PutDown_Item();
+                    pTargetRim->PutDown_Item();
                 }  
             }
         }
@@ -175,6 +185,10 @@ void CColonyMgr::Input_Key()
     if (CKeyMgr::Get_Instance()->Key_Down(VK_ESCAPE))
     {
         Change_Mode(MODE_SELECT);
+
+        CObj* pDetailView = CObjMgr::Get_Instance()->Find_Obj(L"DetailViewBG", OBJ_UI);
+
+        pDetailView->Set_Activate(false);
     }
 }
 

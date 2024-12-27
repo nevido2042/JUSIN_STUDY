@@ -469,13 +469,15 @@ void CRim::Handle_Transporting()
     {
         m_pTarget = nullptr;
 
+        Check_ConstructWork();
+
         //건설 할게 없으면
-        if (!Check_ConstructWork())
+        /*if (!Check_ConstructWork())
         {
             m_bTaskCheck = true;
             Change_State(WANDERING);
             PutDown_Item();
-        }
+        }*/
     }
 
     //타겟 아이템이 가까워지면 아이템을 들어라
@@ -692,7 +694,7 @@ void CRim::Check_DeconstructWork()
     }
 }
 
-bool CRim::Check_ConstructWork()
+void CRim::Check_ConstructWork()
 {
     //식민지 관리자에 해체할 벽들이 있는지 확인         //그리고 길 따라가는 중이아니고, 작업상태중이 아닐때 만 , 새로운 작업이 생겼을 때 검사
     if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && (Get_State() == WANDERING|| Get_State() == TRANSPORTING)) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
@@ -708,11 +710,11 @@ bool CRim::Check_ConstructWork()
             if (pItem)
             {
                 Change_State(TRANSPORTING);
-                return true;
+                return;
             }
             else
             {
-                return true;
+                return;
             }
         }
 
@@ -801,7 +803,7 @@ bool CRim::Check_ConstructWork()
             m_bNavigating = true;
             Change_State(CONSTRUCTING);
             //Set_Target(tTask.pObj);
-            return true;
+            return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
     }

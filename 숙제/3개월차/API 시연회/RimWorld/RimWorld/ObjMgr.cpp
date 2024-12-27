@@ -13,6 +13,25 @@ CObjMgr::~CObjMgr()
 	Release();
 }
 
+CObj* CObjMgr::Find_Obj(const TCHAR* _pImgKey, OBJID _eOBJID)
+{
+	//같은 이미지 키를 여러게가 공유하고 있으면 가장
+	//처음 찾은 놈으로 나온다.
+	CObj* pResult(nullptr);
+
+	//이미지 키가 같은 녀석이 나오면 리턴
+	for (CObj* pObj : Get_List()[_eOBJID])
+	{
+		if (!lstrcmp(_pImgKey, pObj->Get_ImgKey()))
+		{
+			pResult = pObj;
+			break;
+		}
+	}
+
+	return pResult;
+}
+
 void CObjMgr::Add_Object(OBJID eID, CObj* pObj)
 {
 	if (eID < 0 || OBJ_END <= eID || nullptr == pObj)

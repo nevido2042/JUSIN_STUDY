@@ -10,6 +10,8 @@ private:
 	CObjMgr(const CObjMgr& rhs) = delete;
 	CObj operator =(CObj& rObj) = delete;
 	~CObjMgr();
+public:
+	CObj* Find_Obj(const TCHAR* _pImgKey, OBJID _eOBJID);
 
 public:
 	list<CObj*>*	Get_List() { return m_ObjList; }

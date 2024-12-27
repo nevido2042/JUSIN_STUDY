@@ -31,7 +31,7 @@ public:
 	void					Notify_TaskChange();
 public:
 	CObj*					Get_Target() { return m_pTarget; }
-	void					Set_Target(CObj* _pObj) { m_pTarget = _pObj; }
+	void					Set_Target(CObj* _pObj);
 	MODE					Get_Mode() { return m_eMode; }
 
 	set<TASK>*				Get_DeconstructSet()
