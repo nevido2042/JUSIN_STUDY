@@ -165,7 +165,7 @@ void CColonyMgr::Input_Key()
                 else
                 {
                     pTargetRim->Change_State(CRim::DRAFTED);
-                    pTargetRim->PutDown_Item();
+                    //pTargetRim->PutDown_Item();
                 }  
             }
         }

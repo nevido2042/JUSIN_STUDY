@@ -761,27 +761,27 @@ CObj* CRim::Find_Item(const TCHAR* _pImgKey)
     return pItem;
 }
 
-void CRim::PickUp_Item()
-{
-    //해당타일에 아이템이 없어졌다고 알림
-    POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
-    CTileMgr::Get_Instance()->Set_TileObj(tPos, nullptr);
+//void CRim::PickUp_Item()
+//{
+//    //해당타일에 아이템이 없어졌다고 알림
+//    POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+//    CTileMgr::Get_Instance()->Set_TileObj(tPos, nullptr);
+//
+//    m_pTransportingItem = m_pTarget;
+//    m_pTarget->Set_Target(this);
+//    m_pTarget = nullptr;
+//}
 
-    m_pTransportingItem = m_pTarget;
-    m_pTarget->Set_Target(this);
-    m_pTarget = nullptr;
-}
-
-void CRim::PutDown_Item()
-{
-    //if(!m_pTransportingItem)
-
-    if (m_pTarget)
-    {
-        m_pTransportingItem->Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-    }
-
-    m_pTransportingItem->Set_Target(nullptr);
-    m_pTransportingItem = nullptr;
-}
+//void CRim::PutDown_Item()
+//{
+//    //if(!m_pTransportingItem)
+//
+//    if (m_pTarget)
+//    {
+//        m_pTransportingItem->Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+//    }
+//
+//    m_pTransportingItem->Set_Target(nullptr);
+//    m_pTransportingItem = nullptr;
+//}
 

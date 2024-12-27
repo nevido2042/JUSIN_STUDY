@@ -12,7 +12,7 @@ public:
     CRim();
     virtual ~CRim();
 public:
-    void PutDown_Item();
+    //void PutDown_Item();
 public:
     void    Set_TaskCheck() { m_bTaskCheck = true; }
 public:
@@ -40,9 +40,9 @@ private:
     void Check_ConstructWork();
     //void Check_TransportingWork();
 
-    void Find_Enemy();
-    CObj* Find_Item(const TCHAR* _pImgKey);
-    void PickUp_Item();
+    void    Find_Enemy();
+    CObj*   Find_Item(const TCHAR* _pImgKey);
+    //void PickUp_Item();
 
     bool    m_bTaskCheck;
     CObj*   m_pTransportingItem;
