@@ -177,10 +177,14 @@ void CColonyMgr::Input_Key()
             {
                 if (pTargetRim->Get_State() == CRim::DRAFTED)
                 {
+                    CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+                    CSoundMgr::Get_Instance()->PlaySound(L"DraftOff.wav", SOUND_UI, .2f);
                     pTargetRim->Change_State(CRim::WANDERING);
                 }
                 else
                 {
+                    CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+                    CSoundMgr::Get_Instance()->PlaySound(L"Drafted_1a.wav", SOUND_UI, .2f);
                     pTargetRim->Change_State(CRim::DRAFTED);
                     pTargetRim->PutDown_Item();
                 }  
@@ -358,6 +362,8 @@ void CColonyMgr::Control_Target()
             //    //네비게이팅 종료 요청을 보낸다.
             //    pTargetRim->RequestNavStop();
             //}
+            CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+            CSoundMgr::Get_Instance()->PlaySound(L"TabOpen.wav", SOUND_UI, .2f);
 
             pTargetRim->Move_To(POS{ (int)fX, (int)fY });
             //림이 공격 중이었고 타겠도 있었다면 해제

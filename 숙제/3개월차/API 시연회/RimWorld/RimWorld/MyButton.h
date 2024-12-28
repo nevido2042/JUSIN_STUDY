@@ -7,7 +7,7 @@ public:
 	CMyButton();
 	virtual ~CMyButton();
 public:
-	virtual void Set_Activate(bool _bActivate) { m_bActivate = true; }
+	virtual void Set_Activate(bool _bActivate) override { m_bActivate = _bActivate; }
 public:
 	void	Initialize()	override;
 	int		Update() override;

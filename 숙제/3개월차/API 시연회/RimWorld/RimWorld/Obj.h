@@ -21,9 +21,9 @@ public:
 	bool			Get_Activate() { return m_bActivate; }
 	CObj*			Get_Parent() { return m_pParent; }
 
-	void		Set_Parent(CObj* _pObj) { m_pParent = _pObj; }
-	void		Set_Activate(bool _bActivate) { m_bActivate = _bActivate; }
-	void		Set_Pos(float _fX, float _fY)
+	void				Set_Parent(CObj* _pObj) { m_pParent = _pObj; }
+	virtual void		Set_Activate(bool _bActivate) { m_bActivate = _bActivate; }
+	void				Set_Pos(float _fX, float _fY)
 	{
 		m_tInfo.fX = _fX;
 		m_tInfo.fY = _fY;

@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "ColonyMgr.h"
 #include "Pawn.h"
+#include "SoundMgr.h"
 
 CDetailView::CDetailView()
 {
@@ -99,4 +100,20 @@ void CDetailView::Render(HDC hDC)
 
 void CDetailView::Release()
 {
+}
+
+void CDetailView::Set_Activate(bool _bActivate)
+{
+	m_bActivate = _bActivate;
+
+	if (m_bActivate)
+	{
+		CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+		CSoundMgr::Get_Instance()->PlaySound(L"TabOpen.wav", SOUND_UI, .2f);
+	}
+	else
+	{
+		CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+		CSoundMgr::Get_Instance()->PlaySound(L"TabClose.wav", SOUND_UI, .2f);
+	}
 }

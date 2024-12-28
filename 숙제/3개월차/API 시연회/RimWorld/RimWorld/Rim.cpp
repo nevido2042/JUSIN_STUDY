@@ -10,6 +10,7 @@
 #include "PathFinder.h"
 #include "SteelWall.h"
 #include "TimeMgr.h"
+#include "SoundMgr.h"
 
 CRim::CRim()
     :m_bTaskCheck(false), m_pTransportingItem(nullptr)
@@ -577,6 +578,9 @@ void CRim::Check_CloseTask()
 
 void CRim::Deconstruct()
 {
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->PlaySound(L"ShovelHitI.wav", SOUND_EFFECT, .2f);
+
     CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
     pWall->Set_IsBrokenDown();
     Change_State(WANDERING);
@@ -587,6 +591,9 @@ void CRim::Construct()
     //철 삭제
     //CObj* pSteel =  CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
     //pSteel->Set_Destroyed();
+
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->PlaySound(L"HammerA.wav", SOUND_EFFECT, .2f);
 
     //들고 있는 철을 삭제
     m_pTransportingItem->Set_Destroyed();

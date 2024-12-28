@@ -142,7 +142,8 @@ int CColony::Update()
     //몇 초 후 적 생성
     if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 60.f )
     {
-
+        CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
+        CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
         ////지네로봇
         for (int i = 0; i < 1; ++i)
         {
