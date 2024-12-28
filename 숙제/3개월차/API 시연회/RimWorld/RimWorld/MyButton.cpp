@@ -3,8 +3,10 @@
 #include "BmpMgr.h"
 #include "SceneMgr.h"
 #include "KeyMgr.h"
+#include "SoundMgr.h"
 
 CMyButton::CMyButton()
+	:m_bOnHovered(false)
 {
 }
 
@@ -37,9 +39,22 @@ void CMyButton::Late_Update()
 
 	if (Is_MouseHovered())
 	{
+
+		if (!m_bOnHovered)
+		{
+			CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+			CSoundMgr::Get_Instance()->PlaySound(L"MouseoverButtonCategory_2d.wav", SOUND_UI, .5f);
+			m_bOnHovered = true;
+		}
+
+
+
 		m_iDrawID = 1;
 		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 		{
+
+			CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+			CSoundMgr::Get_Instance()->PlaySound(L"Click.wav", SOUND_UI, .5f);
 			if (!lstrcmp(L"Start", m_pImgKey))
 			{
 				CSceneMgr::Get_Instance()->Set_Scene(SC_COLONY);
@@ -155,6 +170,7 @@ void CMyButton::Late_Update()
 	else
 	{
 		m_iDrawID = 0;
+		m_bOnHovered = false;
 	}
 }
 

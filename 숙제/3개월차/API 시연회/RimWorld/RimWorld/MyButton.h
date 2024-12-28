@@ -14,6 +14,8 @@ public:
 	void	Late_Update()	override;
 	void	Render(HDC hDC) override;
 	void	Release()		override;
+protected:
+	bool	m_bOnHovered;
 
 
 

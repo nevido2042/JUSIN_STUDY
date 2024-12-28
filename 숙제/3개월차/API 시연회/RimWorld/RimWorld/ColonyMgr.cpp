@@ -7,6 +7,7 @@
 #include "BmpMgr.h"
 #include "ObjMgr.h"
 #include "TileMgr.h"
+#include "SoundMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -55,6 +56,9 @@ void CColonyMgr::Emplace_DeconstructSet(TASK _tTask)
         return;
     }
 
+    CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+    CSoundMgr::Get_Instance()->PlaySound(L"Click2.wav", SOUND_UI, .5f);
+
     Notify_TaskChange();
 }
 
@@ -69,6 +73,9 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
     {
         return;
     }
+
+    CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+    CSoundMgr::Get_Instance()->PlaySound(L"DragBuilding.wav", SOUND_UI, .2f);
 
     Notify_TaskChange();
 
