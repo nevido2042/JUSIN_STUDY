@@ -48,17 +48,24 @@ void CColony::Initialize()
 
     //볼트액션 소총
     //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/BoltActionRifle.bmp", L"BoltActionRifle");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Bullet_Small.bmp", L"Bullet_Small");
+    //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Bullet_Small.bmp", L"Bullet_Small");
 
     //지네 무기
     //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/ChargeBlasterLight.bmp", L"ChargeBlasterLight");
-    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Charge_Small.bmp", L"Charge_Small");
+    //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Charge_Small.bmp", L"Charge_Small");
+    //랜서 무기
+    //CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Weapon/Charge_Small.bmp", L"Charge_Small");
 
     //Centipede
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_east.bmp", L"Centipede_east");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_north.bmp", L"Centipede_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_south.bmp", L"Centipede_south");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/Centipede_west.bmp", L"Centipede_west");
+    //랜서
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/lancer_east.bmp", L"lancer_east");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/lancer_north.bmp", L"lancer_north");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/lancer_south.bmp", L"lancer_south");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Mechanoid/lancer_west.bmp", L"lancer_west");
     //Boomrat
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_east.bmp", L"Boomrat_east");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_north.bmp", L"Boomrat_north");
@@ -140,12 +147,26 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //몇 초 후 적 생성
-    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 60.f )
+    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 10.f )
     {
         CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
         CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
-        ////지네로봇
-        for (int i = 0; i < 1; ++i)
+        
+        //////지네로봇
+        //for (int i = 0; i < 1; ++i)
+        //{
+        //    int iX = int(rand() % TILEX);
+        //    int iY = 0;
+
+        //    POS tPos{ 64 * iX + 32, 64 * iY + 32 };
+
+        //    //지네
+        //    CObj* pObj = CAbstractFactory<CCentipede>::Create(tPos);
+        //    CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
+        //}
+
+        ////랜서
+        for (int i = 0; i < 3; ++i)
         {
             int iX = int(rand() % TILEX);
             int iY = 0;
@@ -153,12 +174,12 @@ int CColony::Update()
             POS tPos{ 64 * iX + 32, 64 * iY + 32 };
 
             //지네
-            CObj* pObj = CAbstractFactory<CCentipede>::Create(tPos);
+            CObj* pObj = CAbstractFactory<CLancer>::Create(tPos);
             CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
         }
 
         ////폭탄쥐
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 3; ++i)
         {
             int iX = int(rand() % TILEX);
             int iY = 0;

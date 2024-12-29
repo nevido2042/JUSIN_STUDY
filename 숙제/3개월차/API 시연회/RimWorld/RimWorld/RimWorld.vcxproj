@@ -144,6 +144,7 @@
     <ClInclude Include="Bullet_Small.h" />
     <ClInclude Include="Centipede.h" />
     <ClInclude Include="ChargeBlasterLight.h" />
+    <ClInclude Include="ChargeLance.h" />
     <ClInclude Include="Charge_Small.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Colony.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectMgr.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Lancer.h" />
     <ClInclude Include="RimSlot.h" />
     <ClInclude Include="RimSlotMgr.h" />
     <ClInclude Include="SoundMgr.h" />
@@ -197,6 +199,7 @@
     <ClCompile Include="Bullet_Small.cpp" />
     <ClCompile Include="Centipede.cpp" />
     <ClCompile Include="ChargeBlasterLight.cpp" />
+    <ClCompile Include="ChargeLance.cpp" />
     <ClCompile Include="Charge_Small.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Colony.cpp" />
@@ -205,6 +208,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectMgr.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Lancer.cpp" />
     <ClCompile Include="RimSlot.cpp" />
     <ClCompile Include="RimSlotMgr.cpp" />
     <ClCompile Include="SoundMgr.cpp" />

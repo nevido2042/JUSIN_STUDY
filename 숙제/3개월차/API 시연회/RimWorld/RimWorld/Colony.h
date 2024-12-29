@@ -6,6 +6,7 @@
 #include "Rim.h"
 #include "SteelWall.h"
 #include "Centipede.h"
+#include "Lancer.h"
 #include "Tree.h"
 #include "Boomrat.h"
 #include "MyButton.h"

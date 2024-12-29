@@ -136,6 +136,12 @@
     <ClCompile Include="Steel.cpp">
       <Filter>01.Obj\04.Item\Steel</Filter>
     </ClCompile>
+    <ClCompile Include="Lancer.cpp">
+      <Filter>01.Obj\00.Pawn\Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="ChargeLance.cpp">
+      <Filter>01.Obj\02.RangedWeapon\ChargeLance</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -287,6 +293,12 @@
     </ClInclude>
     <ClInclude Include="Steel.h">
       <Filter>01.Obj\04.Item\Steel</Filter>
+    </ClInclude>
+    <ClInclude Include="Lancer.h">
+      <Filter>01.Obj\00.Pawn\Lancer</Filter>
+    </ClInclude>
+    <ClInclude Include="ChargeLance.h">
+      <Filter>01.Obj\02.RangedWeapon\ChargeLance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -447,6 +459,12 @@
     </Filter>
     <Filter Include="01.Obj\04.Item\Steel">
       <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Lancer">
+      <UniqueIdentifier>{9ad73410-2d1c-463e-a148-1668b9e47214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\02.RangedWeapon\ChargeLance">
+      <UniqueIdentifier>{33a79f87-260e-42e8-9261-77b0afb198e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
