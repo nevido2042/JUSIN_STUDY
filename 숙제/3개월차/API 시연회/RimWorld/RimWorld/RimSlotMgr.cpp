@@ -14,7 +14,9 @@ CRimSlotMgr::~CRimSlotMgr()
 
 void CRimSlotMgr::Initialize()
 {
-	m_tInfo.fX = WINCX * 0.5f;
+	size_t iSize = CObjMgr::Get_Instance()->Get_List()[OBJ_RIM].size();
+
+	m_tInfo.fX = WINCX * 0.5f - (float)(iSize * 32.f);
 	m_tInfo.fY = 0;
 
 	//필드에 있는 림의 갯수만큼. 림 슬롯을 만들어서 자식으로 넣는다.

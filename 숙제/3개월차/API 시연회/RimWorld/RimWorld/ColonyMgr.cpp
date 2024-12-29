@@ -146,24 +146,40 @@ void CColonyMgr::Input_Key()
     //게임 스피드 조절
     if (CKeyMgr::Get_Instance()->Key_Down('1'))
     {
+        CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+        CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingNormal.wav", SOUND_UI, 1.f);
+
         CTimeMgr::Get_Instance()->Set_GameSpeed(1.f);
     }
     else if (CKeyMgr::Get_Instance()->Key_Down('2'))
     {
+        CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+        CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingFast.wav", SOUND_UI, 1.f);
+
         CTimeMgr::Get_Instance()->Set_GameSpeed(2.f);
     }
     else if (CKeyMgr::Get_Instance()->Key_Down('3'))
     {
+        CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+        CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingSuperFast.wav", SOUND_UI, 1.f);
+
         CTimeMgr::Get_Instance()->Set_GameSpeed(3.f);
     }
     else if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
     {
+
         if (GAMESPEED == 0.f)
         {
+            CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+            CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingNormal.wav", SOUND_UI, 1.f);
+
             CTimeMgr::Get_Instance()->Set_GameSpeed(1.f);
         }
         else
         {
+            CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+            CSoundMgr::Get_Instance()->PlaySound(L"ClockStops.wav", SOUND_UI, 1.f);
+
             CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
         } 
     }
