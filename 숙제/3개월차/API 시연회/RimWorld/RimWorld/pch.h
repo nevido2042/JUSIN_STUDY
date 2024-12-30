@@ -20,6 +20,7 @@
 #include <queue>
 #include <set>
 #include <cmath>
+#include <string>
 
 #include "ole2.h"
 #include "gdiplus.h"

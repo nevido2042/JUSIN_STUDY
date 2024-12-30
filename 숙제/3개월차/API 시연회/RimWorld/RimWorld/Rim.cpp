@@ -40,6 +40,26 @@ void CRim::Initialize()
     Take_Damage(10.f);
 
     Change_State(WANDERING);
+
+    //Ä³¸¯ÅÍ ÀÌ¹ÌÁö ¼³Á¤
+    m_pImgKey_Body = L"Naked_Male";
+    m_pImgKey_Face = L"Male_Average_Normal";
+    m_pImgKey_Hair = L"Afro";
+
+    m_ImgKeyArr_Body[NORTH] = m_pImgKey_Body + L"_north";
+    m_ImgKeyArr_Body[EAST] = m_pImgKey_Body + L"_east";
+    m_ImgKeyArr_Body[SOUTH] = m_pImgKey_Body + L"_south";
+    m_ImgKeyArr_Body[WEST] = m_pImgKey_Body + L"_west";
+
+    m_ImgKeyArr_Face[NORTH] = m_pImgKey_Face + L"_north";
+    m_ImgKeyArr_Face[EAST] = m_pImgKey_Face + L"_east";
+    m_ImgKeyArr_Face[SOUTH] = m_pImgKey_Face + L"_south";
+    m_ImgKeyArr_Face[WEST] = m_pImgKey_Face + L"_west";
+
+    m_ImgKeyArr_Hair[NORTH] = m_pImgKey_Hair + L"_north";
+    m_ImgKeyArr_Hair[EAST] = m_pImgKey_Hair + L"_east";
+    m_ImgKeyArr_Hair[SOUTH] = m_pImgKey_Hair + L"_south";
+    m_ImgKeyArr_Hair[WEST] = m_pImgKey_Hair + L"_west";
 }
 
 int CRim::Update()
@@ -76,7 +96,7 @@ void CRim::Render(HDC hDC)
     switch (m_eDir)
     {
     case UU:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Naked_Male_north");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[NORTH].c_str());
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
@@ -85,7 +105,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_north");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[NORTH].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -93,7 +113,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_north");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[NORTH].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -103,7 +123,7 @@ void CRim::Render(HDC hDC)
         break;
 
     case RR:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Naked_Male_east");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[EAST].c_str());
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
@@ -112,7 +132,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_east");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[EAST].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -120,7 +140,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_east");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[EAST].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -130,7 +150,7 @@ void CRim::Render(HDC hDC)
         break;
 
     case DD:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Naked_Male_south");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[SOUTH].c_str());
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
@@ -139,7 +159,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_south");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[SOUTH].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -147,7 +167,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_south");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[SOUTH].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -157,7 +177,7 @@ void CRim::Render(HDC hDC)
         break;
 
     case LL:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Naked_Male_west");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[WEST].c_str());
         // ¸öÅë
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X
@@ -166,7 +186,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Male_Average_Normal_west");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[WEST].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
@@ -174,7 +194,7 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);
         // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Afro_west");
+        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[WEST].c_str());
         GdiTransparentBlt(hDC,
             m_tRect.left + iScrollX - IMAGE_OFFSET_X,
             m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,

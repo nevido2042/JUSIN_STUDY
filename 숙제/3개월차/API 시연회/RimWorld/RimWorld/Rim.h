@@ -46,4 +46,15 @@ private:
 
     bool    m_bTaskCheck;
     CObj*   m_pTransportingItem;
+
+    //¸öÅë, ¾ó±¼, ¸Ó¸®
+    wstring m_pImgKey_Body;
+    wstring m_pImgKey_Face;
+    wstring m_pImgKey_Hair;
+
+    array<wstring, 4> m_ImgKeyArr_Body;
+    array<wstring, 4> m_ImgKeyArr_Face;
+    array<wstring, 4> m_ImgKeyArr_Hair;
+    
+    enum Dir { NORTH, EAST, SOUTH, WEST };
 };
