@@ -43,7 +43,7 @@ void CRim::Initialize()
 
     //캐릭터 이미지 설정
     m_pImgKey_Body = L"Naked_Male";
-    m_pImgKey_Face = L"Male_Average_Normal";
+    m_pImgKey_Face = L"Female_Average_Normal";//L"Male_Average_Normal";
     m_pImgKey_Hair = L"Afro";
 
     m_ImgKeyArr_Body[NORTH] = m_pImgKey_Body + L"_north";
