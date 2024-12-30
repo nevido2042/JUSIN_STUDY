@@ -227,6 +227,7 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
     //림 슬롯
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DesButBG.bmp", L"DesButBG");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DeadColonist.bmp", L"DeadColonist");
     //상세정보창
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DetailViewBG.bmp", L"DetailViewBG");
     //선택한 것 강조

@@ -4,6 +4,7 @@
 #include "KeyMgr.h"
 #include "ScrollMgr.h"
 #include "ColonyMgr.h"
+#include "Pawn.h"
 
 CRimSlot::CRimSlot()
 {
@@ -57,6 +58,24 @@ void CRimSlot::Render(HDC hDC)
 		hMemDC,
 		0, 0,
 		SRCCOPY);
+
+	if (CPawn* pPawn = dynamic_cast<CPawn*>(m_pTarget))
+	{
+		//죽었으면 X자 표시
+		if (pPawn->Get_IsDead())
+		{
+			HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"DeadColonist");
+			GdiTransparentBlt(hDC,
+				m_tRect.left,
+				m_tRect.top,
+				(int)m_tInfo.fCX,
+				(int)m_tInfo.fCY,
+				hMemDC,
+				0, 0,
+				48, 48,
+				RGB_WHITE);
+		}
+	}
 }
 
 void CRimSlot::Release()
