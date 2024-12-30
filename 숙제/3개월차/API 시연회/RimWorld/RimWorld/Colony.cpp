@@ -10,7 +10,7 @@
 #include "EffectMgr.h"
 
 CColony::CColony()
-    :m_bEnemySpawned(false)
+    :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)
 {
 }
 
@@ -25,7 +25,11 @@ void CColony::Initialize()
 
     CTimeMgr::Get_Instance()->Initialize();
 
+    WaveFuncs[0] = &CColony::Spawn_Wave1;
+    WaveFuncs[1] = &CColony::Spawn_Wave2;
+    WaveFuncs[2] = &CColony::Spawn_Wave3;
 
+    m_fSpawnTime = 10.f;
 
     CObj* pObj;
 
@@ -147,50 +151,20 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //¸î ÃÊ ÈÄ Àû »ý¼º
-    if (!m_bEnemySpawned && CTimeMgr::Get_Instance()->Get_ElapsedTime() > 10.f )
+    if (/*!m_bEnemySpawned &&*/ CTimeMgr::Get_Instance()->Get_ElapsedTime() > m_fSpawnTime)
     {
         CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
         CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
         
-        //////Áö³×·Îº¿
-        //for (int i = 0; i < 1; ++i)
-        //{
-        //    int iX = int(rand() % TILEX);
-        //    int iY = 0;
-
-        //    POS tPos{ 64 * iX + 32, 64 * iY + 32 };
-
-        //    //Áö³×
-        //    CObj* pObj = CAbstractFactory<CCentipede>::Create(tPos);
-        //    CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
-        //}
-
-        ////·£¼­
-        for (int i = 0; i < 3; ++i)
+        (this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
+        
+        if (m_iWaveIndex > 2)
         {
-            int iX = int(rand() % TILEX);
-            int iY = 0;
-
-            POS tPos{ 64 * iX + 32, 64 * iY + 32 };
-
-            //Áö³×
-            CObj* pObj = CAbstractFactory<CLancer>::Create(tPos);
-            CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
+            m_iWaveIndex = 0;
         }
 
-        ////ÆøÅºÁã
-        for (int i = 0; i < 3; ++i)
-        {
-            int iX = int(rand() % TILEX);
-            int iY = 0;
-
-            POS tPos{ 64 * iX + 32, 64 * iY + 32 };
-
-            CObj* pObj = CAbstractFactory<CBoomrat>::Create(tPos);
-            CObjMgr::Get_Instance()->Add_Object(OBJ_ENEMY, pObj);
-        }
-
-        m_bEnemySpawned = true;
+        m_fSpawnTime += 10;
+        /*m_bEnemySpawned = true;*/
     }
 
 
@@ -337,4 +311,40 @@ void CColony::Create_UI()
     //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
     //pObj = CAbstractFactory<CArcitectBtn>::Create();
     //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+}
+
+void CColony::Spawn_Wave1()
+{
+    for (int i = 0; i < 1; ++i)
+    {
+        Spawn_Random<CBoomrat>();
+    }
+    for (int i = 0; i < 1; ++i)
+    {
+        Spawn_Random<CLancer>();
+    }
+}
+
+void CColony::Spawn_Wave2()
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        Spawn_Random<CBoomrat>();
+    }
+    for (int i = 0; i < 2; ++i)
+    {
+        Spawn_Random<CLancer>();
+    }
+}
+
+void CColony::Spawn_Wave3()
+{
+    for (int i = 0; i < 3; ++i)
+    {
+        Spawn_Random<CBoomrat>();
+    }
+    for (int i = 0; i < 3; ++i)
+    {
+        Spawn_Random<CLancer>();
+    }
 }
