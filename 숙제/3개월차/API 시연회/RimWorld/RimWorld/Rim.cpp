@@ -42,9 +42,39 @@ void CRim::Initialize()
     Change_State(WANDERING);
 
     //캐릭터 이미지 설정
-    m_pImgKey_Body = L"Naked_Female"; //L"Naked_Male";
-    m_pImgKey_Face = L"Female_Average_Normal";//L"Male_Average_Normal";
-    m_pImgKey_Hair = L"Decent"; //L"Afro";
+    //m_pImgKey_Body = L"Naked_Female"; //L"Naked_Male";
+    //m_pImgKey_Face = L"Female_Average_Normal";//L"Male_Average_Normal";
+    //m_pImgKey_Hair = L"Decent"; //L"Afro";
+
+    // 랜덤으로 Body 이미지 선택
+    if (rand() % 2 == 0) 
+    {
+        m_pImgKey_Body = L"Naked_Female";
+    }
+    else 
+    {
+        m_pImgKey_Body = L"Naked_Male";
+    }
+
+    // 랜덤으로 Face 이미지 선택
+    if (rand() % 2 == 0) 
+    {
+        m_pImgKey_Face = L"Female_Average_Normal";
+    }
+    else 
+    {
+        m_pImgKey_Face = L"Male_Average_Normal";
+    }
+
+    // 랜덤으로 Hair 이미지 선택
+    if (rand() % 2 == 0) 
+    {
+        m_pImgKey_Hair = L"Decent";
+    }
+    else 
+    {
+        m_pImgKey_Hair = L"Afro";
+    }
 
     m_ImgKeyArr_Body[NORTH] = m_pImgKey_Body + L"_north";
     m_ImgKeyArr_Body[EAST] = m_pImgKey_Body + L"_east";

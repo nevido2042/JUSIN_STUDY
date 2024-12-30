@@ -7,13 +7,18 @@
 class CRim :
     public CPawn
 {
-
+public:
+    enum Dir { NORTH, EAST, SOUTH, WEST };
 public:
     CRim();
     virtual ~CRim();
 public:
     void    PutDown_Item();
 public:
+    wstring* Get_ImgKeyArr_Body() { return &m_ImgKeyArr_Body[SOUTH]; }
+    wstring* Get_ImgKeyArr_Face() { return &m_ImgKeyArr_Face[SOUTH]; }
+    wstring* Get_ImgKeyArr_Hair() { return &m_ImgKeyArr_Hair[SOUTH]; }
+
     void    Set_TaskCheck() { m_bTaskCheck = true; }
 public:
     void Initialize() override;
@@ -55,6 +60,5 @@ private:
     array<wstring, 4> m_ImgKeyArr_Body;
     array<wstring, 4> m_ImgKeyArr_Face;
     array<wstring, 4> m_ImgKeyArr_Hair;
-    
-    enum Dir { NORTH, EAST, SOUTH, WEST };
+   
 };

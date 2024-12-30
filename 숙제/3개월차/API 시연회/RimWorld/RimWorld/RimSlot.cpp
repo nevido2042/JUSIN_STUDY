@@ -4,7 +4,7 @@
 #include "KeyMgr.h"
 #include "ScrollMgr.h"
 #include "ColonyMgr.h"
-#include "Pawn.h"
+#include "Rim.h"
 
 CRimSlot::CRimSlot()
 {
@@ -59,8 +59,41 @@ void CRimSlot::Render(HDC hDC)
 		0, 0,
 		SRCCOPY);
 
-	if (CPawn* pPawn = dynamic_cast<CPawn*>(m_pTarget))
+	if (CRim* pPawn = dynamic_cast<CRim*>(m_pTarget))
 	{
+		//캐릭터 그리기
+		HDC hMemDC(nullptr);
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(pPawn->Get_ImgKeyArr_Body()->c_str());
+		GdiTransparentBlt(hDC,
+			m_tRect.left,
+			m_tRect.top,
+			(int)m_tInfo.fCX,
+			(int)m_tInfo.fCY,
+			hMemDC,
+			0, 0,
+			128, 128,
+			RGB_PURPLE);
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(pPawn->Get_ImgKeyArr_Face()->c_str());
+		GdiTransparentBlt(hDC,
+			m_tRect.left,
+			m_tRect.top - HEAD_OFFSET/2,
+			(int)m_tInfo.fCX,
+			(int)m_tInfo.fCY,
+			hMemDC,
+			0, 0,
+			128, 128,
+			RGB_PURPLE);
+		hMemDC = CBmpMgr::Get_Instance()->Find_Image(pPawn->Get_ImgKeyArr_Hair()->c_str());
+		GdiTransparentBlt(hDC,
+			m_tRect.left,
+			m_tRect.top - HEAD_OFFSET/2,
+			(int)m_tInfo.fCX,
+			(int)m_tInfo.fCY,
+			hMemDC,
+			0, 0,
+			128, 128,
+			RGB_PURPLE);
+
 		//죽었으면 X자 표시
 		if (pPawn->Get_IsDead())
 		{
