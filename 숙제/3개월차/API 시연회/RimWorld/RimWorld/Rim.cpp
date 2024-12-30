@@ -311,7 +311,7 @@ void CRim::Handle_Undrafted()
 void CRim::Handle_Deconstructing()
 {
     //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.5f)
+    if (m_fTargetDist < TILECX * 1.2f)
     {
         //가까우면 멈춘다.
         //RequestNavStop();
@@ -326,7 +326,7 @@ void CRim::Handle_Deconstructing()
             return;
         }
         //타겟이 멀다
-        if (m_fTargetDist > TILECX * 1.5f)
+        if (m_fTargetDist > TILECX * 1.2f)
         {
             //다른 작업 체크
             m_bTaskCheck = true;
@@ -382,7 +382,7 @@ void CRim::Handle_Constructing()
     }
 
     //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.5f)
+    if (m_fTargetDist < TILECX * 1.2f)
     {
         //가까우면 멈춘다.
         //RequestNavStop();
@@ -397,7 +397,7 @@ void CRim::Handle_Constructing()
             return;
         }
         //타겟이 멀다
-        if (m_fTargetDist > TILECX * 1.5f)
+        if (m_fTargetDist > TILECX * 1.2f)
         {
             //다른 작업 체크
             m_bTaskCheck = true;
@@ -473,12 +473,12 @@ void CRim::Handle_Transporting()
         Check_ConstructWork();
 
         //건설 할게 없으면
-        /*if (!Check_ConstructWork())
+        if (Get_State() != CONSTRUCTING)
         {
             m_bTaskCheck = true;
             Change_State(WANDERING);
             PutDown_Item();
-        }*/
+        }
     }
 
     //타겟 아이템이 가까워지면 아이템을 들어라
