@@ -46,14 +46,20 @@ void CRim::Initialize()
     //m_pImgKey_Face = L"Female_Average_Normal";//L"Male_Average_Normal";
     //m_pImgKey_Hair = L"Decent"; //L"Afro";
 
+    int iRand(0);
+    iRand = rand() % 3;
     // 랜덤으로 Body 이미지 선택
-    if (rand() % 2 == 0) 
+    if (iRand == 0)
     {
         m_pImgKey_Body = L"Naked_Female";
     }
-    else 
+    else if(iRand == 1)
     {
         m_pImgKey_Body = L"Naked_Male";
+    }
+    else if (iRand == 2)
+    {
+        m_pImgKey_Body = L"Naked_Fat";
     }
 
     // 랜덤으로 Face 이미지 선택
@@ -67,13 +73,18 @@ void CRim::Initialize()
     }
 
     // 랜덤으로 Hair 이미지 선택
-    if (rand() % 2 == 0) 
+    iRand = rand() % 3;
+    if (iRand == 0)
     {
         m_pImgKey_Hair = L"Decent";
     }
-    else 
+    else if(iRand == 1)
     {
         m_pImgKey_Hair = L"Afro";
+    }
+    else if (iRand == 2)
+    {
+        m_pImgKey_Hair = L"Pigtails";
     }
 
     m_ImgKeyArr_Body[NORTH] = m_pImgKey_Body + L"_north";
