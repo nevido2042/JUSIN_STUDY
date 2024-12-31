@@ -142,6 +142,9 @@
     <ClCompile Include="ChargeLance.cpp">
       <Filter>01.Obj\02.RangedWeapon\ChargeLance</Filter>
     </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>01.Obj\01.UI\Panel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -299,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="ChargeLance.h">
       <Filter>01.Obj\02.RangedWeapon\ChargeLance</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>01.Obj\01.UI\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -465,6 +471,9 @@
     </Filter>
     <Filter Include="01.Obj\02.RangedWeapon\ChargeLance">
       <UniqueIdentifier>{33a79f87-260e-42e8-9261-77b0afb198e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Panel">
+      <UniqueIdentifier>{b9ead3b4-f610-4b86-bf45-9cfe8e7a8c76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

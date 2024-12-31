@@ -18,7 +18,7 @@ void CGameSpeedBtn::Initialize()
 	m_tInfo.fCX = 64.f;
 	m_tInfo.fCY = 48.f;
 
-	m_eRenderID = RENDER_UI;
+	m_eRenderID = RENDER_INUI;
 }
 
 void CGameSpeedBtn::Late_Update()

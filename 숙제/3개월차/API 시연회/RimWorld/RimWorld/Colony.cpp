@@ -238,6 +238,8 @@ void CColony::Create_UI()
     //UI
     //메뉴 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Menu.bmp", L"ButtonSubtleAtlas_Menu");
+    //주메뉴 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/GoToMain.bmp", L"GoToMain");
     //구상 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Architect.bmp", L"ButtonSubtleAtlas_Architect");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ButtonSubtleAtlas_Command.bmp", L"ButtonSubtleAtlas_Command");
@@ -274,8 +276,8 @@ void CColony::Create_UI()
     float fLongBtnCY = 32.f;
     float fShortBtnCX = 64.f;
     float fShortBtnCY = 64.f;
-    //구상 버튼
 
+    //구상 버튼
     CObj* pArchitectBtn = CAbstractFactory<CMyButton>::
         Create(fLongBtnCX * 0.5f, WINCY - fLongBtnCY * 0.5f);
     pArchitectBtn->Set_Size(fLongBtnCX, fLongBtnCY);
@@ -334,11 +336,34 @@ void CColony::Create_UI()
     pObj->Set_ImgKey(L"TimeSpeedButton_Superfast");
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 
-    //UI
-    //pObj = CAbstractFactory<CMenuBtn>::Create();
-    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
-    //pObj = CAbstractFactory<CArcitectBtn>::Create();
-    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+    //메뉴버튼
+    CObj* pMenuBtn = CAbstractFactory<CMyButton>::
+        Create(WINCX - 64 * 0.5f, WINCY - 32 * 0.5f);
+    pMenuBtn->Set_Size(64, 32);
+    pMenuBtn->Set_Activate(true);
+    pMenuBtn->Set_ImgKey(L"ButtonSubtleAtlas_Menu");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pMenuBtn);
+
+    //판넬
+    CObj* pMenuBG = CAbstractFactory<CPanel>::
+        Create(WINCX - 400 * 0.5f, WINCY - 150 * 0.5f - 32.f);
+    pMenuBG->Set_Size(400, 150);
+    pMenuBG->Set_Activate(false);
+    pMenuBG->Set_ImgKey(L"DetailViewBG");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pMenuBG);
+    pMenuBtn->Get_ChildList()->push_back(pMenuBG);
+    pMenuBG->Set_Parent(pMenuBtn);
+
+    //주메뉴버튼
+    CObj* pGoToMainBtn = CAbstractFactory<CMyButton>::
+        Create(WINCX - 325, WINCY -124);
+    pGoToMainBtn->Set_Size(128, 64);
+    pGoToMainBtn->Set_Activate(false);
+    pGoToMainBtn->Set_ImgKey(L"GoToMain");
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pGoToMainBtn);
+    pMenuBtn->Get_ChildList()->push_back(pGoToMainBtn);
+    pGoToMainBtn->Set_Parent(pMenuBtn);
+
 }
 
 void CColony::Spawn_Wave1()

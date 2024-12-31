@@ -165,6 +165,33 @@ void CMyButton::Late_Update()
 			{
 				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_CONSTRUCT);
 			}
+			else if (!lstrcmp(L"ButtonSubtleAtlas_Menu", m_pImgKey))
+			{
+				//메뉴 버튼을 누르면
+
+				//이미 자식들이 켜져있었으면 손자들까지 모두다 끄게 만들기
+				for (CObj* pChild : *Get_ChildList())
+				{
+					if (pChild->Get_Activate())
+					{
+						pChild->Set_Activate(false);
+
+						for (CObj* pGrandchild : *pChild->Get_ChildList())
+						{
+							if (pGrandchild->Get_Activate())
+							{
+								pGrandchild->Set_Activate(false);
+							}
+						}
+
+					}
+					else
+					{
+						pChild->Set_Activate(true);
+					}
+
+				}
+			}
 		}
 	}
 	else

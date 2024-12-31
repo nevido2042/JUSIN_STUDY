@@ -96,10 +96,13 @@ void CObjMgr::Render(HDC hDC)
 {
 	for (size_t i = 0; i < RENDER_END; ++i)
 	{
-		m_RenderList[i].sort([](CObj* pDst, CObj* pSrc)->bool
-			{
-				return pDst->Get_Info().fY < pSrc->Get_Info().fY;
-			});
+		if (i != RENDER_UI && i != RENDER_INUI)//UI는 Y축 정렬 없애기
+		{
+			m_RenderList[i].sort([](CObj* pDst, CObj* pSrc)->bool
+				{
+					return pDst->Get_Info().fY < pSrc->Get_Info().fY;
+				});
+		}
 
 		for (auto& pObj : m_RenderList[i])
 			pObj->Render(hDC);

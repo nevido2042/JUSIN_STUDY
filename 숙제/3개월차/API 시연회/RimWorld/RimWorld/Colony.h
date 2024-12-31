@@ -15,6 +15,7 @@
 #include "DetailView.h"
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
+#include "Panel.h"
 
 class CColony :
     public CScene
