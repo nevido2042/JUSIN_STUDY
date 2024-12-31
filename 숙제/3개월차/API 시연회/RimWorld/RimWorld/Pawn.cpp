@@ -448,6 +448,10 @@ int CPawn::Update()
 
 void CPawn::Late_Update()
 {
+    //임시 방편으로 했는데 이게 맞는지 모르겠음.
+    if (m_bDestroyed)
+        return;
+
     //죽었으면 리턴
     if (m_bDead)
     {

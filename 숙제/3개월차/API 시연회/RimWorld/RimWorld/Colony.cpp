@@ -205,11 +205,11 @@ void CColony::Late_Update()
 
     //릴리즈 후 이놈이 다시 만들어져서 말썽이다.
     //현재 씬이 콜로니씬일때만 돌리는게 맞나?
+    //싱글톤의 문제: 여기저기서 겟 인스턴스 쓰니까 삭제 이후에도 언제든지 생길 수 있다.
     if (CSceneMgr::Get_Instance()->Get_Scene() == SC_COLONY)
     {
         CTileMgr::Get_Instance()->Late_Update();
     }
-
 
     CColonyMgr::Get_Instance()->Late_Update();
 }

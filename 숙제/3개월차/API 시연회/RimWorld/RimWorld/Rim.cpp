@@ -907,7 +907,7 @@ void CRim::Find_Enemy()
     {
         if (static_cast<CPawn*>(pObj)->Get_IsDead())
         {
-            return;
+            continue;
         }
 
         Set_Target(pObj);
