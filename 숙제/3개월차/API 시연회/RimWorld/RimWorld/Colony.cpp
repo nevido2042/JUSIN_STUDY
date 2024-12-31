@@ -8,6 +8,7 @@
 #include "TimeMgr.h"
 #include "SoundMgr.h"
 #include "EffectMgr.h"
+#include "SceneMgr.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)
@@ -30,7 +31,7 @@ void CColony::Initialize()
     WaveFuncs[1] = &CColony::Spawn_Wave2;
     WaveFuncs[2] = &CColony::Spawn_Wave3;
 
-    m_fSpawnTime = 10.f;
+    m_fSpawnTime = 60.f;
 
     CObj* pObj;
 
@@ -190,7 +191,7 @@ int CColony::Update()
             m_iWaveIndex = 0;
         }
 
-        m_fSpawnTime += 10;
+        m_fSpawnTime += 60;
         /*m_bEnemySpawned = true;*/
     }
 
@@ -202,7 +203,13 @@ void CColony::Late_Update()
 {
     CObjMgr::Get_Instance()->Late_Update();
 
-    CTileMgr::Get_Instance()->Late_Update();
+    //릴리즈 후 이놈이 다시 만들어져서 말썽이다.
+    //현재 씬이 콜로니씬일때만 돌리는게 맞나?
+    if (CSceneMgr::Get_Instance()->Get_Scene() == SC_COLONY)
+    {
+        CTileMgr::Get_Instance()->Late_Update();
+    }
+
 
     CColonyMgr::Get_Instance()->Late_Update();
 }
@@ -225,7 +232,9 @@ void CColony::Render(HDC hDC)
 
 void CColony::Release()
 {
-    CObjMgr::Get_Instance()->Delete_ID(OBJ_UI);
+    CObjMgr::Get_Instance()->Delete_All();
+    CSoundMgr::Get_Instance()->StopAll();
+
     CTileMgr::Destroy_Instance();
     CColonyMgr::Destroy_Instance();
     CPathFinder::Destroy_Instance();

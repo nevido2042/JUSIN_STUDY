@@ -545,7 +545,10 @@ void CRim::Handle_Transporting()
     //타겟 아이템이 가까워지면 아이템을 들어라
     if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
     {
-        PickUp_Item(m_pTarget);
+        if (m_pTarget)
+        {
+            PickUp_Item(m_pTarget);
+        }
     }
 
     ////만약 다른 림이 가져갔다면 다른 철을 찾아라...

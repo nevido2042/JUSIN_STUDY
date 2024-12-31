@@ -130,3 +130,12 @@ void CObjMgr::Delete_ID(OBJID eID)
 	for (auto& pObj : m_ObjList[eID])
 		pObj->Set_Destroyed();
 }
+
+void CObjMgr::Delete_All()
+{
+	for (int i = 0; i < OBJ_END; ++i)
+	{
+		for (auto& pObj : m_ObjList[i])
+			pObj->Set_Destroyed();
+	}
+}

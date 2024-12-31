@@ -192,6 +192,10 @@ void CMyButton::Late_Update()
 
 				}
 			}
+			else if (!lstrcmp(L"GoToMain", m_pImgKey))
+			{
+				CSceneMgr::Get_Instance()->Set_Scene(SC_MENU);
+			}
 		}
 	}
 	else

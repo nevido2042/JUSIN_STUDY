@@ -14,6 +14,7 @@ private:
 	~CSceneMgr();
 
 public:
+	SCENEID		Get_Scene() { return m_eCurScene; }
 	void		Set_Scene(SCENEID eID);
 	int			Update();
 	void		Late_Update();

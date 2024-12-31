@@ -161,6 +161,13 @@ int CSteelWall::Update()
 {
 	if (m_bDestroyed)
 	{
+		return OBJ_DESTROYED;
+	}
+
+	if (m_bBrokendown)
+	{
+		Set_Destroyed();
+
 		//올라와 있던 타일을 통행가능하도록 만든다.
 		CTileMgr::Get_Instance()->Set_TileOption(m_tInfo.fX, m_tInfo.fY, OPT_REACHABLE);
 		//해당 타일위에 있는 Obj를  nullptr로 만든다.
@@ -173,12 +180,6 @@ int CSteelWall::Update()
 		//생성되었을 때 타일에게 아이템이 있음을 알림
 		//CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, pObj);
 
-		return OBJ_DESTROYED;
-	}
-
-	if (m_bBrokendown)
-	{
-		Set_Destroyed();
 		//CColonyMgr::Get_Instance()->Get_DeconstructSet()->erase(this);
 		set<TASK>& DeconstructSet = *CColonyMgr::Get_Instance()->Get_DeconstructSet();
 		for (auto Iter = DeconstructSet.begin(); Iter != DeconstructSet.end();)
