@@ -15,11 +15,14 @@ public:
 	float			Get_ScrollX() { return m_fScrollX; }
 	float			Get_ScrollY() { return m_fScrollY; }
 
-	void			Move_ScrollX(float _fX) { m_fScrollX += _fX; }
-	void			Move_ScrollY(float _fY) { m_fScrollY += _fY; }
+	void			Move_ScrollX(float _fX) { m_bMoveLerp = false; m_fScrollX += _fX; }
+	void			Move_ScrollY(float _fY) { m_bMoveLerp = false; m_fScrollY += _fY; }
 
 	void			Set_ScrollX(float _fX) { m_fScrollX = _fX; }
 	void			Set_ScrollY(float _fY) { m_fScrollY = _fY; }
+
+	void			Late_Update();
+	void			Move_To_Lerp(float _fX, float _fY);
 
 public:
 	static CScrollMgr* Get_Instance()
@@ -44,5 +47,9 @@ private:
 
 	float			    m_fScrollX;
 	float			    m_fScrollY;
+
+	bool				m_bMoveLerp;
+	float				m_fMoveX;
+	float				m_fMoveY;
 };
 

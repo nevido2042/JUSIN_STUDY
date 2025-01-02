@@ -38,9 +38,11 @@ void CRimSlot::Late_Update()
 	{
 		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 		{
-			CScrollMgr::Get_Instance()->Set_ScrollX(-Get_Target()->Get_Info().fX + WINCX * 0.5f);
-			CScrollMgr::Get_Instance()->Set_ScrollY(-Get_Target()->Get_Info().fY + WINCY * 0.5f);
+			/*CScrollMgr::Get_Instance()->Set_ScrollX(-Get_Target()->Get_Info().fX + WINCX * 0.5f);
+			CScrollMgr::Get_Instance()->Set_ScrollY(-Get_Target()->Get_Info().fY + WINCY * 0.5f);*/
 
+
+			CScrollMgr::Get_Instance()->Move_To_Lerp(Get_Target()->Get_Info().fX, Get_Target()->Get_Info().fY);
 			CColonyMgr::Get_Instance()->Set_Target(m_pTarget);
 		}
 	}

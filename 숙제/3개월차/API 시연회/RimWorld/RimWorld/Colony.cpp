@@ -9,6 +9,7 @@
 #include "SoundMgr.h"
 #include "EffectMgr.h"
 #include "SceneMgr.h"
+#include "ScrollMgr.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)
@@ -212,6 +213,8 @@ void CColony::Late_Update()
     }
 
     CColonyMgr::Get_Instance()->Late_Update();
+
+    CScrollMgr::Get_Instance()->Late_Update();
 }
 
 void CColony::Render(HDC hDC)
