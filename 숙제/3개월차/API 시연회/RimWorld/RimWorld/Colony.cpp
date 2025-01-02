@@ -110,12 +110,16 @@ void CColony::Initialize()
     //타일
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Ice.bmp", L"Ice");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Gravel.bmp", L"Gravel");
-    //돌
+    //철벽 아틀라스
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Wall_Atlas_Smooth.bmp", L"Wall_Atlas_Smooth");
     //핏자국
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
     //폭발
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/BlastFlame.bmp", L"BlastFlame");
+
+    //우주선
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Ship/ShipEngine_north.bmp", L"ShipEngine_north");
+
 
     //맵
     CTileMgr::Get_Instance()->Initialize();
@@ -279,6 +283,9 @@ void CColony::Create_UI()
     //소집상태 표시 칼 Draft
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Draft.bmp", L"Draft");
 
+    //우주선 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ShipBtn.bmp", L"ShipBtn");
+
     //상세정보창
     CObj* pDetailView = CAbstractFactory<CDetailView>::Create(200, WINCY - 107);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pDetailView);
@@ -335,6 +342,14 @@ void CColony::Create_UI()
     pConstruct->Set_ImgKey(L"Construct");
     pStructureBtn->Get_ChildList()->push_back(pConstruct);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pConstruct);
+
+    //우주선 건설 버튼
+    CObj* pShip = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    pShip->Set_ImgKey(L"ShipBtn");
+    pStructureBtn->Get_ChildList()->push_back(pShip);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pShip);
 
     //게임 스피드 버튼
     CObj* pObj(nullptr);
