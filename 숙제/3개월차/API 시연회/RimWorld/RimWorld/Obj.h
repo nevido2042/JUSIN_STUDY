@@ -27,6 +27,7 @@ public:
 	{
 		m_tInfo.fX = _fX;
 		m_tInfo.fY = _fY;
+		Update_Rect();
 	}
 
 	void		Set_Size(float _fX, float _fY)
