@@ -77,7 +77,7 @@
       <Filter>01.Obj\00.Pawn</Filter>
     </ClCompile>
     <ClCompile Include="Centipede.cpp">
-      <Filter>01.Obj\00.Pawn\Centipede</Filter>
+      <Filter>01.Obj\00.Pawn\Enemy\Centipede</Filter>
     </ClCompile>
     <ClCompile Include="HealthBar.cpp">
       <Filter>01.Obj\01.UI\HealthBar</Filter>
@@ -113,7 +113,7 @@
       <Filter>03.Design\SoundMgr</Filter>
     </ClCompile>
     <ClCompile Include="Boomrat.cpp">
-      <Filter>01.Obj\00.Pawn\Boomrat</Filter>
+      <Filter>01.Obj\00.Pawn\Enemy\Boomrat</Filter>
     </ClCompile>
     <ClCompile Include="RimSlot.cpp">
       <Filter>01.Obj\01.UI\RimSlotMgr\RimSlot</Filter>
@@ -137,13 +137,16 @@
       <Filter>01.Obj\04.Item\Steel</Filter>
     </ClCompile>
     <ClCompile Include="Lancer.cpp">
-      <Filter>01.Obj\00.Pawn\Lancer</Filter>
+      <Filter>01.Obj\00.Pawn\Enemy\Lancer</Filter>
     </ClCompile>
     <ClCompile Include="ChargeLance.cpp">
       <Filter>01.Obj\02.RangedWeapon\ChargeLance</Filter>
     </ClCompile>
     <ClCompile Include="Panel.cpp">
       <Filter>01.Obj\01.UI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>01.Obj\00.Pawn\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,7 +241,7 @@
       <Filter>01.Obj\00.Pawn</Filter>
     </ClInclude>
     <ClInclude Include="Centipede.h">
-      <Filter>01.Obj\00.Pawn\Centipede</Filter>
+      <Filter>01.Obj\00.Pawn\Enemy\Centipede</Filter>
     </ClInclude>
     <ClInclude Include="HealthBar.h">
       <Filter>01.Obj\01.UI\HealthBar</Filter>
@@ -274,7 +277,7 @@
       <Filter>03.Design\SoundMgr</Filter>
     </ClInclude>
     <ClInclude Include="Boomrat.h">
-      <Filter>01.Obj\00.Pawn\Boomrat</Filter>
+      <Filter>01.Obj\00.Pawn\Enemy\Boomrat</Filter>
     </ClInclude>
     <ClInclude Include="RimSlot.h">
       <Filter>01.Obj\01.UI\RimSlotMgr\RimSlot</Filter>
@@ -298,13 +301,16 @@
       <Filter>01.Obj\04.Item\Steel</Filter>
     </ClInclude>
     <ClInclude Include="Lancer.h">
-      <Filter>01.Obj\00.Pawn\Lancer</Filter>
+      <Filter>01.Obj\00.Pawn\Enemy\Lancer</Filter>
     </ClInclude>
     <ClInclude Include="ChargeLance.h">
       <Filter>01.Obj\02.RangedWeapon\ChargeLance</Filter>
     </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>01.Obj\01.UI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>01.Obj\00.Pawn\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -394,9 +400,6 @@
     <Filter Include="01.Obj\00.Pawn\Rim">
       <UniqueIdentifier>{d4ea857e-f0ba-4769-b9b6-de797cf0301a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\00.Pawn\Centipede">
-      <UniqueIdentifier>{27c56788-e35a-4a59-894d-f4ae0642d58c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\01.UI">
       <UniqueIdentifier>{8d93dc45-cbf6-4d02-9cc8-a59bf388d4ae}</UniqueIdentifier>
     </Filter>
@@ -442,9 +445,6 @@
     <Filter Include="03.Design\SoundMgr">
       <UniqueIdentifier>{8155e0b7-8f3f-4b09-9987-662520816d83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\00.Pawn\Boomrat">
-      <UniqueIdentifier>{e67c7cbf-ec5f-4f4d-8ea9-61f54cc47e65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\01.UI\RimSlotMgr">
       <UniqueIdentifier>{36b45403-a63e-4ff5-96e6-e2e74995e46b}</UniqueIdentifier>
     </Filter>
@@ -466,14 +466,23 @@
     <Filter Include="01.Obj\04.Item\Steel">
       <UniqueIdentifier>{639bd12b-3424-4a6e-80c2-dccd0172ea99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\00.Pawn\Lancer">
-      <UniqueIdentifier>{9ad73410-2d1c-463e-a148-1668b9e47214}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\02.RangedWeapon\ChargeLance">
       <UniqueIdentifier>{33a79f87-260e-42e8-9261-77b0afb198e6}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Obj\01.UI\Panel">
       <UniqueIdentifier>{b9ead3b4-f610-4b86-bf45-9cfe8e7a8c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Enemy">
+      <UniqueIdentifier>{b34123c4-a4c5-4ee0-8b55-43e5f66fec4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Enemy\Lancer">
+      <UniqueIdentifier>{9ad73410-2d1c-463e-a148-1668b9e47214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Enemy\Centipede">
+      <UniqueIdentifier>{27c56788-e35a-4a59-894d-f4ae0642d58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\00.Pawn\Enemy\Boomrat">
+      <UniqueIdentifier>{e67c7cbf-ec5f-4f4d-8ea9-61f54cc47e65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -153,20 +153,6 @@ void CBoomrat::Dead()
     Boom();
 }
 
-void CBoomrat::Handle_Wandering()
-{
-    Wander();
-    //FindTarget();
-    //타겟이 없을 경우
-    //림 오브젝트리스트에서 가장 가까운 림을 찾고 타겟으로 설정
-    Find_Target();
-
-    if (m_pTarget)
-    {
-        Change_State(CHASING, m_pTarget);
-    }
-}
-
 void CBoomrat::Handle_Chasing()
 {
     if (!m_pTarget)
@@ -211,89 +197,6 @@ void CBoomrat::Handle_Chasing()
     {
         m_bAttack = false;
     }
-}
-
-void CBoomrat::Handle_Deconstructing()
-{
-    if (!Get_Target())
-    {
-        return;
-    }
-
-    //그 장애물근처 올라갈 수 있는 타일이 있는지 확인한다.
-    //확인 후 길을 찾을 수 있는지 확인한다.
-    //길을 찾으면 따라가다가 가까워지면 부순다.
-    //이동 가능한 타일이 있으면 노드리스트 반환
-
-    if (!m_bNavigating)
-    {
-        //기존 노드 딜리트
-        for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
-        m_NodeList.clear();
-
-        m_NodeList = move(CTileMgr::Get_Instance()
-            ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY },
-                POS{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY }));
-
-        if (!m_NodeList.empty())
-        {
-            m_bNavigating = true;
-        }
-    }
-
-    //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.2f)
-    {
-        //가까우면 멈춘다.
-        //RequestNavStop();
-        m_bNavigating = false;
-
-        //타겟이 없다.
-        if (!m_pTarget)
-        {
-            return;
-        }
-        //벽을 부수고
-        CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
-        pWall->Set_IsBrokenDown();
-        //타겟을 찾는다.
-        Find_Target();
-        //추적 상태로 만든다.
-        Change_State(CHASING);
-    }
-}
-
-void CBoomrat::Find_Target()
-{
-    list<CObj*> RimList = CObjMgr::Get_Instance()->Get_List()[OBJ_RIM];
-    float fMinDist(0.f);
-    CObj* pTarget(nullptr);
-
-    for (CObj* pObj : RimList)
-    {
-        //죽은 놈이면 컨티뉴
-        CPawn* pPawn = static_cast<CPawn*>(pObj);
-        if (pPawn->Get_IsDead())
-        {
-            continue;
-        }
-
-        float fWidth(0.f);
-        float fHeight(0.f);
-        float fDist(0.f);
-        //거리 계산
-        fWidth = pObj->Get_Info().fX - Get_Info().fX;
-        fHeight = pObj->Get_Info().fY - Get_Info().fY;
-        fDist = sqrtf(fWidth * fWidth + fHeight * fHeight);
-        //타겟이 없거나, 거리가 더 가까운 애를 발견하면 타겟 변경
-        if (!pTarget || fDist < fMinDist)
-        {
-            pTarget = pObj;
-            fMinDist = fDist;
-        }
-    }
-
-    Set_Target(pTarget);
 }
 
 void CBoomrat::Boom()

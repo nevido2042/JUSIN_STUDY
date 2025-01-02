@@ -385,6 +385,10 @@ void CColony::Spawn_Wave1()
     {
         Spawn_Random<CLancer>();
     }
+    for (int i = 0; i < 1; ++i)
+    {
+        Spawn_Random<CCentipede>();
+    }
 }
 
 void CColony::Spawn_Wave2()

@@ -136,15 +136,15 @@ void CTileMgr::Render(HDC hDC)
 	 /*for (auto& pTile : m_arrTile)
 	 	pTile->Render(hDC);*/
 
-	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
-	//int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();// / TILECX;
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();// / TILECY;
 
-	///*HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
+	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
 
-	//BitBlt(hDC,
-	//	iScrollX, iScrollY,
-	//	int(TILEX * TILECX), int(TILEY * TILECY),
-	//	hMemDC, 0, 0, SRCCOPY);*/
+	BitBlt(hDC,
+		iScrollX, iScrollY,
+		int(TILEX * TILECX), int(TILEY * TILECY),
+		hMemDC, 0, 0, SRCCOPY);
 
 
 	//int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
@@ -178,7 +178,7 @@ void CTileMgr::Render(HDC hDC)
 	//}
 
 
-	for (int i = m_iMinY; i < m_iMaxY; ++i)
+	/*for (int i = m_iMinY; i < m_iMaxY; ++i)
 	{
 		for (int j = m_iMinX; j < m_iMaxX; ++j)
 		{
@@ -189,7 +189,7 @@ void CTileMgr::Render(HDC hDC)
 
 			m_TileMap[i][j]->Render(hDC);
 		}
-	}
+	}*/
 }
 
 void CTileMgr::Release()

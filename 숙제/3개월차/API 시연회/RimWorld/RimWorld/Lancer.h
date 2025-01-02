@@ -1,9 +1,9 @@
 #pragma once
-#include "Pawn.h"
+#include "Enemy.h"
 #include "ChargeLance.h"
 
 class CLancer :
-    public CPawn
+    public CEnemy
 {
 public:
     CLancer();
@@ -13,11 +13,5 @@ public:
     int     Update() override;
     void    Late_Update() override;
     void    Render(HDC hDC) override;
-protected:
-    void Handle_Wandering() override;
-    void Handle_Chasing() override;
-    void Handle_Deconstructing() override;
-private:
-    void    Find_Target();
 };
 

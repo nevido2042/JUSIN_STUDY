@@ -322,6 +322,11 @@ bool CPawn::IsCanSeeTarget()
 
 CObj* CPawn::Get_ObstacleToTarget()
 {
+    if (!m_pTarget)
+    {
+        return nullptr;
+    }
+
     int iX1 = int(m_tInfo.fX / TILECX);
     int iY1 = int(m_tInfo.fY / TILECY);
     int iX2 = int(m_pTarget->Get_Info().fX / TILECX);

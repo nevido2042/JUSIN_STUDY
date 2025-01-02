@@ -1,7 +1,7 @@
 #pragma once
-#include "Pawn.h"
+#include "Enemy.h"
 class CBoomrat :
-    public CPawn
+    public CEnemy
 {
 public:
     CBoomrat();
@@ -13,11 +13,7 @@ public:
     void    Render(HDC hDC) override;
     void    Dead() override;
 protected:
-    void Handle_Wandering() override;
     void Handle_Chasing() override;
-    void Handle_Deconstructing() override;
-private:
-    void    Find_Target();
     void    Boom();
 };
 
