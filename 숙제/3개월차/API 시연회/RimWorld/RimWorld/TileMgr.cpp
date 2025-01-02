@@ -8,7 +8,8 @@
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
 CTileMgr::CTileMgr()
-	:m_TileMap({ nullptr })
+	:m_TileMap({ nullptr }),
+	m_iMinX(0), m_iMaxX(0), m_iMinY(0), m_iMaxY(0)
 {
 	
 }
@@ -47,24 +48,85 @@ void CTileMgr::Initialize()
 
 int CTileMgr::Update()
 {
-	for (int iRow = 0; iRow < TILEY; ++iRow) 
+	/*for (int iRow = 0; iRow < TILEY; ++iRow) 
 	{
 		for (int iCol = 0; iCol < TILEX; ++iCol) 
 		{
 			m_TileMap[iRow][iCol]->Update();
 		}
+	}*/
+
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
+
+	m_iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	m_iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+
+	m_iMinX = iScrollX;
+	m_iMinY = iScrollY;
+
+	//스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
+	if (m_iMinX > 0)
+	{
+		m_iMinX = 0;
+		m_iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
 	}
+	//음수면 스크롤 ex) 
+	else
+	{
+		m_iMinX = abs(m_iMinX);
+		m_iMaxX = m_iMaxX - iScrollX;
+	}
+
+	if (m_iMinY > 0)
+	{
+		m_iMinY = 0;
+		m_iMaxX = (WINCY / TILECY) + CULLIG_OFFSET;
+	}
+	else
+	{
+		m_iMinY = abs(m_iMinY);
+		m_iMaxY = m_iMaxY - iScrollY;
+	}
+
+
+	for (int i = m_iMinY; i < m_iMaxY; ++i)
+	{
+		for (int j = m_iMinX; j < m_iMaxX; ++j)
+		{
+			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
+			{
+				continue;
+			}
+
+			m_TileMap[i][j]->Update();
+		}
+	}
+
 
 	return 0;
 }
 
 void CTileMgr::Late_Update()
 {
-	for (int iRow = 0; iRow < TILEY; ++iRow)
+	/*for (int iRow = 0; iRow < TILEY; ++iRow)
 	{
 		for (int iCol = 0; iCol < TILEX; ++iCol)
 		{
 			m_TileMap[iRow][iCol]->Late_Update();
+		}
+	}*/
+
+	for (int i = m_iMinY; i < m_iMaxY; ++i)
+	{
+		for (int j = m_iMinX; j < m_iMaxX; ++j)
+		{
+			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
+			{
+				continue;
+			}
+
+			m_TileMap[i][j]->Late_Update();
 		}
 	}
 }
@@ -74,51 +136,51 @@ void CTileMgr::Render(HDC hDC)
 	 /*for (auto& pTile : m_arrTile)
 	 	pTile->Render(hDC);*/
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
+	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
+	//int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
 
-	/*HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
+	///*HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
 
-	BitBlt(hDC,
-		iScrollX, iScrollY,
-		int(TILEX * TILECX), int(TILEY * TILECY),
-		hMemDC, 0, 0, SRCCOPY);*/
+	//BitBlt(hDC,
+	//	iScrollX, iScrollY,
+	//	int(TILEX * TILECX), int(TILEY * TILECY),
+	//	hMemDC, 0, 0, SRCCOPY);*/
 
 
-	int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
-	int		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+	//int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	//int		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
 
-	int		iMinX = iScrollX;
-	int		iMinY = iScrollY;
+	//int		iMinX = iScrollX;
+	//int		iMinY = iScrollY;
 
-	//스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
-	if (iMinX > 0)
+	////스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
+	//if (iMinX > 0)
+	//{
+	//	iMinX = 0;
+	//	iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	//}
+	////음수면 스크롤 ex) 
+	//else
+	//{
+	//	iMinX = abs(iMinX);
+	//	iMaxX = iMaxX - iScrollX;
+	//}
+
+	//if (iMinY > 0)
+	//{
+	//	iMinY = 0;
+	//	iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+	//}
+	//else
+	//{
+	//	iMinY = abs(iMinY);
+	//	iMaxY = iMaxY - iScrollY;
+	//}
+
+
+	for (int i = m_iMinY; i < m_iMaxY; ++i)
 	{
-		iMinX = 0;
-		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
-	}
-	//음수면 스크롤 ex) 
-	else
-	{
-		iMinX = abs(iMinX);
-		iMaxX = iMaxX - iScrollX;
-	}
-
-	if (iMinY > 0)
-	{
-		iMinY = 0;
-		iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
-	}
-	else
-	{
-		iMinY = abs(iMinY);
-		iMaxY = iMaxY - iScrollY;
-	}
-
-
-	for (int i = iMinY; i < iMaxY; ++i)
-	{
-		for (int j = iMinX; j < iMaxX; ++j)
+		for (int j = m_iMinX; j < m_iMaxX; ++j)
 		{
 			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
 			{

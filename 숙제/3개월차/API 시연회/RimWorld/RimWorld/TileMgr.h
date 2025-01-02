@@ -67,5 +67,10 @@ private:
 	//올라 갈 수 있는 ...
 	//set<CObj*>	m_ReachableTileSet;
 
+	int m_iMinX;
+	int m_iMaxX;
+	int m_iMinY;
+	int m_iMaxY;
+
 };
 
