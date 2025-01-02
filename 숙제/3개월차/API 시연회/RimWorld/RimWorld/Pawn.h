@@ -91,6 +91,10 @@ protected:
     // 근접 공격 경과 시간
     float           m_fMeleeElapsed; // 지금까지 대기한 시간
 
+    float           m_fConstructTime;//건설 시간
+    
+    float           m_fConstructElapsed;// 건설 경과 시간
+
 private:
     STATE           m_eState;
 };

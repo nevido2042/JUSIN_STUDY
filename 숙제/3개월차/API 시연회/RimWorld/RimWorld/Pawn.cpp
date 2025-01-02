@@ -15,7 +15,7 @@
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_eState(END),
     m_pRangedWeapon(nullptr), m_fTargetDist(0.f), m_fTargetAngle(0.f), m_bAttack(false),
-    m_fMeleeAttackSpeed(0.f), m_fMeleeElapsed(0.f)
+    m_fMeleeAttackSpeed(0.f), m_fMeleeElapsed(0.f), m_fConstructTime(0.f), m_fConstructElapsed(0.f)
 {
     //ZeroMemory(&m_tPrevPos, sizeof(POS));
 }
@@ -436,6 +436,8 @@ void CPawn::Initialize()
     Change_State(WANDERING);
 
     m_fMeleeAttackSpeed = 100.f;
+
+    m_fConstructTime = 300.f;
 }
 
 int CPawn::Update()

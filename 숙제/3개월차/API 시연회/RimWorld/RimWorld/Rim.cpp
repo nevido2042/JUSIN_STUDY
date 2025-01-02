@@ -546,8 +546,8 @@ void CRim::Deconstruct()
 
     m_fMeleeElapsed = 0.f;
 
-    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-    CSoundMgr::Get_Instance()->PlaySound(L"ShovelHitI.wav", SOUND_EFFECT, .2f);
+    CSoundMgr::Get_Instance()->StopSound(SOUND_DECONSTRUCT);
+    CSoundMgr::Get_Instance()->PlaySound(L"ShovelHitI.wav", SOUND_DECONSTRUCT, .2f);
 
     CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
     //pWall->Set_IsBrokenDown();
@@ -566,8 +566,19 @@ void CRim::Construct()
     //CObj* pSteel =  CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
     //pSteel->Set_Destroyed();
 
-    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-    CSoundMgr::Get_Instance()->PlaySound(L"HammerA.wav", SOUND_EFFECT, .2f);
+    //해체 시간 걸리게 하고 사운드 출력
+    if (m_fConstructTime > m_fConstructElapsed)
+    {
+        //드릴소리 나게
+        CSoundMgr::Get_Instance()->PlaySound(L"DrillB.wav", SOUND_CONSTRUCT, .2f);
+        m_fConstructElapsed += GAMESPEED;
+        return;
+    }
+
+    m_fConstructElapsed = 0.f;
+
+    CSoundMgr::Get_Instance()->StopSound(SOUND_CONSTRUCT);
+    CSoundMgr::Get_Instance()->PlaySound(L"HammerA.wav", SOUND_CONSTRUCT, .2f);
 
     //들고 있는 철을 삭제
     m_pTransportingItem->Set_Destroyed();
