@@ -539,12 +539,25 @@ void CRim::Check_CloseTask()
 
 void CRim::Deconstruct()
 {
+    if (m_fMeleeAttackSpeed > m_fMeleeElapsed)
+    {
+        return;
+    }
+
+    m_fMeleeElapsed = 0.f;
+
     CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
     CSoundMgr::Get_Instance()->PlaySound(L"ShovelHitI.wav", SOUND_EFFECT, .2f);
 
     CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
-    pWall->Set_IsBrokenDown();
-    Change_State(WANDERING);
+    //pWall->Set_IsBrokenDown();
+    //Change_State(WANDERING);
+
+    //해당 벽이 무너질 때 까지 공격 반복
+    //시간 공격하는 시간 정해야함
+
+    pWall->Take_Damage(1.f);
+
 }
 
 void CRim::Construct()

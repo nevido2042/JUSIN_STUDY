@@ -85,6 +85,12 @@ protected:
     //공격 중 인가?
     bool            m_bAttack;
 
+    // 근접 공격 속도
+    float           m_fMeleeAttackSpeed; // 근접 공격 속도
+
+    // 근접 공격 경과 시간
+    float           m_fMeleeElapsed; // 지금까지 대기한 시간
+
 private:
     STATE           m_eState;
 };
