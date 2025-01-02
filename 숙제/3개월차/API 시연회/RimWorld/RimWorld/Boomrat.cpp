@@ -163,7 +163,7 @@ void CBoomrat::Handle_Wandering()
 
     if (m_pTarget)
     {
-        Change_State(CHASING);
+        Change_State(CHASING, m_pTarget);
     }
 }
 

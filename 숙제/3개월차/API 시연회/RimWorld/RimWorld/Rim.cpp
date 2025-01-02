@@ -654,8 +654,8 @@ void CRim::Check_DeconstructWork()
             }
 
             m_bNavigating = true;
-            Change_State(DECONSTRUCTING);
-            Set_Target(_tTask.pObj);
+            Change_State(DECONSTRUCTING, _tTask.pObj);
+            //Set_Target(_tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }
@@ -751,8 +751,8 @@ void CRim::Check_ConstructWork()
                 }
             }
             m_bNavigating = true;
-            Change_State(CONSTRUCTING);
-            Set_Target(tTask.pObj);
+            Change_State(CONSTRUCTING, tTask.pObj);
+            //Set_Target(tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }

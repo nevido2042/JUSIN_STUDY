@@ -74,7 +74,7 @@ void CPawn::Take_Damage(const float _fDamage)
     }
 }
 
-void CPawn::Change_State(STATE _eState)
+void CPawn::Change_State(STATE _eState, CObj* _pTarget)
 {
     if (m_eState == _eState)
     {
@@ -82,7 +82,7 @@ void CPawn::Change_State(STATE _eState)
     }
 
     m_eState = _eState;
-    m_pTarget = nullptr;
+    m_pTarget = _pTarget;
 }
 
 void CPawn::Dead()

@@ -16,7 +16,7 @@ public:
     void    Move_To(POS _Pos);
     void    Take_Damage(const float _fDamage);
     STATE   Get_State() { return m_eState; }
-    void    Change_State(STATE _eState);
+    void    Change_State(STATE _eState, CObj* pTarget = nullptr);
 public:
     float Get_HP() { return m_fHP; }
     float Get_MaxHP() { return m_fMaxHP; }

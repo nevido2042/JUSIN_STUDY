@@ -31,7 +31,7 @@ void CColony::Initialize()
     WaveFuncs[1] = &CColony::Spawn_Wave2;
     WaveFuncs[2] = &CColony::Spawn_Wave3;
 
-    m_fSpawnTime = 60.f;
+    m_fSpawnTime = 10.f;
 
     CObj* pObj;
 
