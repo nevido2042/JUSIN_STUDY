@@ -110,6 +110,21 @@ void CRimSlot::Render(HDC hDC)
 				48, 48,
 				RGB_WHITE);
 		}
+
+		//소집 상태면 소집상태 표시
+		if (pPawn->Get_State() == CPawn::DRAFTED)
+		{
+			HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Draft");
+			GdiTransparentBlt(hDC,
+				(int)(m_tRect.left + m_tInfo.fCX / 2),
+				(int)(m_tRect.top + m_tInfo.fCY / 2),
+				(int)(m_tInfo.fCX / 2),
+				(int)(m_tInfo.fCY / 2),
+				hMemDC,
+				0, 0,
+				128, 128,
+				RGB_WHITE);
+		}
 	}
 }
 

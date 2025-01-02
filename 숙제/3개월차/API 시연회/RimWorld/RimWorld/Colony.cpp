@@ -276,6 +276,9 @@ void CColony::Create_UI()
     //철 아이템
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Item/Steel_b.bmp", L"Steel_b");
 
+    //소집상태 표시 칼 Draft
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Draft.bmp", L"Draft");
+
     //상세정보창
     CObj* pDetailView = CAbstractFactory<CDetailView>::Create(200, WINCY - 107);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pDetailView);

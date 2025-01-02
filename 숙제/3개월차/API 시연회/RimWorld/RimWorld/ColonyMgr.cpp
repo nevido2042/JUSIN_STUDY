@@ -191,6 +191,11 @@ void CColonyMgr::Input_Key()
         {
             if (CRim* pTargetRim = dynamic_cast<CRim*>(m_pTarget))
             {
+                if (pTargetRim->Get_IsDead())
+                {
+                    return;
+                }
+
                 if (pTargetRim->Get_State() == CRim::DRAFTED)
                 {
                     CSoundMgr::Get_Instance()->StopSound(SOUND_UI);

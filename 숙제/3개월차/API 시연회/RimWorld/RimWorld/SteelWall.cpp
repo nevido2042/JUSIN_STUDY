@@ -151,6 +151,13 @@ void CSteelWall::Initialize()
 	for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ENEMY])
 	{
 		//static_cast<CPawn*>(pObj)->RequestNavStop();
+		static_cast<CPawn*>(pObj)->Set_Navigating(false);//아닌거 같기도하고
+		static_cast<CPawn*>(pObj)->Set_Navigating(true);
+	}
+
+	for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_RIM])
+	{
+		static_cast<CPawn*>(pObj)->Set_Navigating(false);//아닌거 같기도하고
 		static_cast<CPawn*>(pObj)->Set_Navigating(true);
 	}
 
