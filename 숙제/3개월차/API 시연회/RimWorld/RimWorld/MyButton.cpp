@@ -196,6 +196,10 @@ void CMyButton::Late_Update()
 			{
 				CSceneMgr::Get_Instance()->Set_Scene(SC_MENU);
 			}
+			else if (!lstrcmp(L"ShipBtn", m_pImgKey))
+			{
+				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_SHIP);
+			}
 		}
 	}
 	else

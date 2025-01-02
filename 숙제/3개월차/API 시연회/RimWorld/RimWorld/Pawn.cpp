@@ -18,6 +18,7 @@ CPawn::CPawn()
     m_fMeleeAttackSpeed(0.f), m_fMeleeElapsed(0.f), m_fConstructTime(0.f), m_fConstructElapsed(0.f)
 {
     //ZeroMemory(&m_tPrevPos, sizeof(POS));
+    ZeroMemory(&m_eCurrentTask, sizeof(TASK));
 }
 
 CPawn::~CPawn()

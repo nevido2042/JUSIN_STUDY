@@ -1,6 +1,7 @@
 #pragma once
 #include "Obj.h"
 #include "Node.h"
+#include "ColonyMgr.h"
 
 #include "HealthBar.h"
 
@@ -94,6 +95,8 @@ protected:
     float           m_fConstructTime;//건설 시간
     
     float           m_fConstructElapsed;// 건설 경과 시간
+
+    TASK            m_eCurrentTask;//현재 작업
 
 private:
     STATE           m_eState;

@@ -148,6 +148,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>01.Obj\00.Pawn\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>01.Obj\Ship</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -312,6 +315,9 @@
     <ClInclude Include="Enemy.h">
       <Filter>01.Obj\00.Pawn\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>01.Obj\Ship</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="RimWorld.ico">
@@ -400,18 +406,6 @@
     <Filter Include="01.Obj\00.Pawn\Rim">
       <UniqueIdentifier>{d4ea857e-f0ba-4769-b9b6-de797cf0301a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\01.UI">
-      <UniqueIdentifier>{8d93dc45-cbf6-4d02-9cc8-a59bf388d4ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\01.UI\Button">
-      <UniqueIdentifier>{6d34e72b-89e9-4b5d-a206-6311ca8c64ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\01.UI\Button\MyButton">
-      <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\01.UI\HealthBar">
-      <UniqueIdentifier>{ac112617-bf4e-4c4c-84ce-c59f924f80c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\02.RangedWeapon">
       <UniqueIdentifier>{7c954c9c-63ac-4914-a695-28e17dc6f636}</UniqueIdentifier>
     </Filter>
@@ -426,9 +420,6 @@
     </Filter>
     <Filter Include="03.Design\TimeMgr">
       <UniqueIdentifier>{056b382b-24ae-44cb-a7bb-1a901a4b5c38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\01.UI\Button\GameSpeedBtn">
-      <UniqueIdentifier>{ac137ece-4ae6-4dcb-8c14-c3fe46ca1772}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Obj\02.RangedWeapon\BoltActionRifle">
       <UniqueIdentifier>{d3d3a9b3-3a07-4cde-beac-4e397b30e57e}</UniqueIdentifier>
@@ -445,15 +436,6 @@
     <Filter Include="03.Design\SoundMgr">
       <UniqueIdentifier>{8155e0b7-8f3f-4b09-9987-662520816d83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\01.UI\RimSlotMgr">
-      <UniqueIdentifier>{36b45403-a63e-4ff5-96e6-e2e74995e46b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\01.UI\RimSlotMgr\RimSlot">
-      <UniqueIdentifier>{42ef5a0a-ae40-49c0-8ab5-b17331e97743}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\01.UI\DetailView">
-      <UniqueIdentifier>{5aa26076-ce30-4876-bb91-bb561e11b115}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Design\EffectMgr">
       <UniqueIdentifier>{577a8718-cbe2-4040-bf13-e86214138a36}</UniqueIdentifier>
     </Filter>
@@ -469,9 +451,6 @@
     <Filter Include="01.Obj\02.RangedWeapon\ChargeLance">
       <UniqueIdentifier>{33a79f87-260e-42e8-9261-77b0afb198e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\01.UI\Panel">
-      <UniqueIdentifier>{b9ead3b4-f610-4b86-bf45-9cfe8e7a8c76}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Obj\00.Pawn\Enemy">
       <UniqueIdentifier>{b34123c4-a4c5-4ee0-8b55-43e5f66fec4d}</UniqueIdentifier>
     </Filter>
@@ -483,6 +462,36 @@
     </Filter>
     <Filter Include="01.Obj\00.Pawn\Enemy\Boomrat">
       <UniqueIdentifier>{e67c7cbf-ec5f-4f4d-8ea9-61f54cc47e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Ship">
+      <UniqueIdentifier>{27fbb584-7afb-4b2b-a7ee-de463d9d9f6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI">
+      <UniqueIdentifier>{8d93dc45-cbf6-4d02-9cc8-a59bf388d4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button">
+      <UniqueIdentifier>{6d34e72b-89e9-4b5d-a206-6311ca8c64ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\MyButton">
+      <UniqueIdentifier>{5f5f431e-b1c7-463b-833a-da53083134ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Button\GameSpeedBtn">
+      <UniqueIdentifier>{ac137ece-4ae6-4dcb-8c14-c3fe46ca1772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\HealthBar">
+      <UniqueIdentifier>{ac112617-bf4e-4c4c-84ce-c59f924f80c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\RimSlotMgr">
+      <UniqueIdentifier>{36b45403-a63e-4ff5-96e6-e2e74995e46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\RimSlotMgr\RimSlot">
+      <UniqueIdentifier>{42ef5a0a-ae40-49c0-8ab5-b17331e97743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\DetailView">
+      <UniqueIdentifier>{5aa26076-ce30-4876-bb91-bb561e11b115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\Panel">
+      <UniqueIdentifier>{b9ead3b4-f610-4b86-bf45-9cfe8e7a8c76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

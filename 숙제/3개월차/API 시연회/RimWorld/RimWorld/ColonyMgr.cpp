@@ -40,6 +40,12 @@ void CColonyMgr::Change_Mode(MODE _eMode)
         //마우스가 위치하는 타일에 강조표시를 띄운다.
         m_pTarget = nullptr;
         break;
+    case CColonyMgr::MODE_SHIP:
+        //타겟을 없애고,
+        //마우스에 철벽 모양 아이콘을 띄운다.
+        //마우스가 위치하는 타일에 강조표시를 띄운다.
+        m_pTarget = nullptr;
+        break;
     default:
         break;
     }
@@ -79,30 +85,7 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
 
     Notify_TaskChange();
 
-    //if (CTile* pTile = dynamic_cast<CTile*>(_tTask.pObj))
-    //{
-    //    CObj* pObj = pTile->Get_Obj();
-    //    if (!pObj)
-    //    {
-    //        //타일 위에 아무것도 없으면 운반목록에 추가
-    //        Emplace_TransportSet(_tTask);
-    //    }
-
-    //}
-
 }
-
-//void CColonyMgr::Emplace_TransportSet(TASK _tTask)
-//{
-//    auto Result = m_TransportSet.emplace(_tTask);
-//
-//    if (!Result.second)
-//    {
-//        return;
-//    }
-//
-//    Notify_TaskChange();
-//}
 
 void CColonyMgr::Notify_TaskChange()
 {
@@ -251,7 +234,8 @@ void CColonyMgr::Render(HDC hDC)
 {
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
-    HDC		hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
+    HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"ShipEngine_north");
+
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
@@ -259,6 +243,8 @@ void CColonyMgr::Render(HDC hDC)
     //선택한 것 강조
     if (m_pTarget)
     {
+        HDC		hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
+
         GdiTransparentBlt(hDC,
             (int)m_pTarget->Get_Rect()->left + iScrollX,
             (int)m_pTarget->Get_Rect()->top + iScrollY,
@@ -287,19 +273,36 @@ void CColonyMgr::Render(HDC hDC)
             64,
             RGB_WHITE);
     }
-    //건설할 벽들 표시
+    //건설할 벽들 표시, 우주선 표시
     for (TASK tTask : m_ConstructSet)
     {
         CObj* pObj = tTask.pObj;
 
-        BitBlt(hDC,
-            (int)pObj->Get_Rect()->left + iScrollX + 16,
-            (int)pObj->Get_Rect()->top + iScrollY + 16,
-            32,
-            32,
-            hSteelWallDC,
-            0, 0,
-            SRCCOPY);
+        if (tTask.eType == TASK::WALL)
+        {
+            BitBlt(hDC,
+                (int)pObj->Get_Rect()->left + iScrollX + 16,
+                (int)pObj->Get_Rect()->top + iScrollY + 16,
+                32,
+                32,
+                hSteelWallDC,
+                0, 0,
+                SRCCOPY);
+        }
+        else if (tTask.eType == TASK::SHIP)
+        {
+            GdiTransparentBlt(hDC,
+                (int)pObj->Get_Rect()->left + iScrollX,
+                (int)pObj->Get_Rect()->top + iScrollY,
+                128,
+                128,
+                hShipDC,
+                0, 0,
+                512, 512,
+                RGB_WHITE);
+        }
+
+        
     }
 
     //해체 모드일 경우 마우스에 해체 그림 표시
@@ -334,6 +337,22 @@ void CColonyMgr::Render(HDC hDC)
             hSteelWallDC,
             0, 0,
             SRCCOPY);
+    }
+    else if (m_eMode == MODE_SHIP)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        GdiTransparentBlt(hDC,
+            ptMouse.x -64,
+            ptMouse.y -64,
+            128,
+            128,
+            hShipDC,
+            0, 0,
+            512, 512,
+            RGB_WHITE);
     }
 }
 

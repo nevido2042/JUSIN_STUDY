@@ -584,11 +584,18 @@ void CRim::Construct()
     m_pTransportingItem->Set_Destroyed();
     m_pTransportingItem = nullptr;
 
-    //건설
-    CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
-    CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
-    CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
+    if (m_eCurrentTask.eType == TASK::SHIP)
+    {
+        //우주선 건설
+    }
+    else if (m_eCurrentTask.eType == TASK::WALL)
+    {
+        //벽 건설
+        CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
+        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
+    }
 
     //작업삭제
     //CColonyMgr::Get_Instance()->Get_ConstructSet()->erase(m_pTarget);
@@ -775,6 +782,7 @@ void CRim::Check_ConstructWork()
                 }
             }
             m_bNavigating = true;
+            m_eCurrentTask = tTask;
             Change_State(CONSTRUCTING, tTask.pObj);
             //Set_Target(tTask.pObj);
             return;

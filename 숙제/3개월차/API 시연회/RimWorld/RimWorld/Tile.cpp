@@ -36,11 +36,27 @@ int CTile::Update()
 
 void CTile::Late_Update()
 {
-	if (Is_MouseHovered_Scrolled() && 
-		CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_CONSTRUCT)//건설 모드이고
+	if (Is_MouseHovered_Scrolled()&& CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
 	{
-		
-		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
+		if (CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_CONSTRUCT)//건설 모드
+		{
+			//오브젝트가 있다.
+			if (m_pObj)
+			{
+				//벽이면 리턴
+				if (!lstrcmp(m_pObj->Get_ImgKey(), L"Wall_Atlas_Smooth"))
+				{
+					return;
+				}
+			}
+
+			TASK tTask;
+			tTask.eType = TASK::WALL;
+			tTask.pObj = this;
+			CColonyMgr::Get_Instance()->Emplace_ConstructSet(tTask);//건설 목록에 추가
+
+		}
+		else if (CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_SHIP)
 		{
 			//오브젝트가 있다.
 			if (m_pObj)
@@ -54,6 +70,7 @@ void CTile::Late_Update()
 
 			TASK tTask;
 			tTask.pObj = this;
+			tTask.eType = TASK::SHIP;
 			CColonyMgr::Get_Instance()->Emplace_ConstructSet(tTask);//건설 목록에 추가
 		}
 	}

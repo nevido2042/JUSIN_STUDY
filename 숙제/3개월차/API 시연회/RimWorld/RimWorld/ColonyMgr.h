@@ -3,11 +3,17 @@
 
 typedef struct tagTask
 {
+	enum TYPE { WALL, SHIP, DECONSTRUCT };
+
 	tagTask()
 		:pObj(nullptr), pRimReserved(nullptr) {}
 
 	CObj* pObj; //작업할 것... 건설 하기위한 타일 / 해체하기 위한 벽
 	CObj* pRimReserved;//이 작업을 누가 예약했는지
+	TYPE  eType;
+
+	//무엇을 건설하는가?
+	
 
 	// pObj만을 기준으로 비교 연산자 정의
 	bool operator<(const tagTask& other) const
@@ -19,7 +25,7 @@ typedef struct tagTask
 class CColonyMgr
 {
 public:
-	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_CONSTRUCT, MODE_END };
+	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_CONSTRUCT, MODE_SHIP, MODE_END };
 private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
