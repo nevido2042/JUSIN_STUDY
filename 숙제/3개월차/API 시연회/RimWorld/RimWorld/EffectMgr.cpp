@@ -18,7 +18,7 @@ void CEffectMgr::Create_Effect(POS _tPos, float _CX, float _CY, const TCHAR* _pI
 {
 	CObj* pEffect = CAbstractFactory<CEffect>::Create((float)_tPos.iX, (float)_tPos.iY);
 	pEffect->Set_Size(_CX, _CY);
-	pEffect->Set_ImgKey(L"BlastFlame");
+	pEffect->Set_ImgKey(_pImgKey);
 	static_cast<CEffect*>(pEffect)->Set_LifeTime(_fTime);
 	CObjMgr::Get_Instance()->Add_Object(OBJ_EFFECT, pEffect);
 }

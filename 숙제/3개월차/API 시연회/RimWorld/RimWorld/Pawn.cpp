@@ -11,6 +11,7 @@
 #include "SteelWall.h"
 #include "KeyMgr.h"
 #include "ColonyMgr.h"
+#include "EffectMgr.h"
 
 CPawn::CPawn()
     :m_bNavigating(false), m_fHP(0.f), m_fMaxHP(0.f), m_bDead(false), m_eState(END),
@@ -527,6 +528,8 @@ void CPawn::Late_Update()
                 if (pTarget != this)
                 {
                     pTarget->Set_Target(this);
+                    POS tPos{ (int)m_tInfo.fX, (int)m_tInfo.fY };
+                    CEffectMgr::Get_Instance()->Create_Effect(tPos, 64.f, 64.f, L"FeedbackShoot", 30.f);
                 }
             }
             return;

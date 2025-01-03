@@ -10,6 +10,7 @@
 #include "SoundMgr.h"
 #include "AbstractFactory.h"
 #include "MyButton.h"
+#include "EffectMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -286,12 +287,14 @@ void CColonyMgr::Late_Update()
         if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
         {
             ZeroMemory(&m_tSelectRect, sizeof(RECT));
+
             m_tSelectRect.left = ptMouse.x;
             m_tSelectRect.top = ptMouse.y;
         }
         if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
         {
             m_bDrawRect = true;
+
             m_tSelectRect.right = ptMouse.x;
             m_tSelectRect.bottom = ptMouse.y;
         }
@@ -449,7 +452,7 @@ void CColonyMgr::Render(HDC hDC)
         if (m_bDrawRect)
         {
             // 초록색 펜 생성 (두께 5)
-            HPEN hPen = CreatePen(PS_SOLID, 5, RGB(0, 255, 0)); // 두께 5, 색상 초록색
+            HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0)); // 두께 5, 색상 초록색
             HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
 
             // 사각형을 이루는 네 개의 선 그리기
@@ -548,7 +551,10 @@ void CColonyMgr::Control_Target()
             CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
             CSoundMgr::Get_Instance()->PlaySound(L"TabOpen.wav", SOUND_UI, .2f);
 
-            pTargetRim->Move_To(POS{ (int)fX, (int)fY });
+            POS tMovePos{ (int)fX, (int)fY };
+            pTargetRim->Move_To(tMovePos);
+            CEffectMgr::Get_Instance()->Create_Effect(tMovePos, 64.f, 64.f, L"FeedbackGoto", 30.f);
+
             //림이 공격 중이었고 타겠도 있었다면 해제
             if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())
             {

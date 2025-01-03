@@ -32,7 +32,7 @@ void CColony::Initialize()
     WaveFuncs[1] = &CColony::Spawn_Wave2;
     WaveFuncs[2] = &CColony::Spawn_Wave3;
 
-    m_fSpawnTime = 60.f;
+    m_fSpawnTime = 120.f;
 
     CObj* pObj;
 
@@ -116,6 +116,10 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
     //폭발
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/BlastFlame.bmp", L"BlastFlame");
+    //이동 위치
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/FeedbackGoto.bmp", L"FeedbackGoto");
+    //공격 타겟
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/FeedbackShoot.bmp", L"FeedbackShoot");
 
     //우주선
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Ship/ShipEngine_north.bmp", L"ShipEngine_north");
@@ -461,10 +465,7 @@ void CColony::Spawn_Wave1()
     {
         Spawn_Random<CLancer>();
     }
-    for (int i = 0; i < 1; ++i)
-    {
-        Spawn_Random<CCentipede>();
-    }
+    
 }
 
 void CColony::Spawn_Wave2()
@@ -488,5 +489,9 @@ void CColony::Spawn_Wave3()
     for (int i = 0; i < 3; ++i)
     {
         Spawn_Random<CLancer>();
+    }
+    for (int i = 0; i < 1; ++i)
+    {
+        Spawn_Random<CCentipede>();
     }
 }
