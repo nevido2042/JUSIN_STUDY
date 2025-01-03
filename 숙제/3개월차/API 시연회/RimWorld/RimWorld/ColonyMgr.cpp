@@ -281,21 +281,23 @@ void CColonyMgr::Late_Update()
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
+        m_bDrawRect = false;
+
         if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
         {
             ZeroMemory(&m_tSelectRect, sizeof(RECT));
-            m_bDrawRect = true;
             m_tSelectRect.left = ptMouse.x;
             m_tSelectRect.top = ptMouse.y;
         }
         if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
         {
+            m_bDrawRect = true;
             m_tSelectRect.right = ptMouse.x;
             m_tSelectRect.bottom = ptMouse.y;
         }
         if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
         {
-            m_bDrawRect = false;
+            
             //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
 
             int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
@@ -309,16 +311,39 @@ void CColonyMgr::Late_Update()
             list<CObj*> steelWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
             for (CObj* pObj : steelWallList)
             {
-                //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                if (iLeft < iRight)
                 {
-                    continue;
+                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                    if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                    if (iLeft < pObj->Get_Info().fX || iRight > pObj->Get_Info().fX)
+                    {
+                        continue;
+                    }
+                }
+                
+                if (iTop < iBottom)
+                {
+                    if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (iTop < pObj->Get_Info().fY || iBottom > pObj->Get_Info().fY)
+                    {
+                        continue;
+                    }
                 }
 
-                if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
-                {
-                    continue;
-                }
+                
 
                 TASK tTask;
                 tTask.pObj = pObj;
