@@ -554,7 +554,6 @@ void CRim::Handle_Boarding()
     //타겟(우주선)과 거리가 가까워지면 탑승
     if (m_fTargetDist < TILECX * 2.f)
     {
-        //Take_Damage(1000.f);
         m_bNavigating = false;
         Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
     }
