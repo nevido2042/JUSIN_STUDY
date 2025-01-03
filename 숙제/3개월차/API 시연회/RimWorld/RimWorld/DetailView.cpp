@@ -89,6 +89,9 @@ void CDetailView::Render(HDC hDC)
 		case CPawn::CONSTRUCTING:
 			DrawText(hDC, L"\n   상태: 건설 중", -1, &rect, DT_NOCLIP);
 			break;
+		case CPawn::BOARDING:
+			DrawText(hDC, L"\n   상태: 탑승 중", -1, &rect, DT_NOCLIP);
+			break;
 		case CPawn::END:
 			break;
 		default:

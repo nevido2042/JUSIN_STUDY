@@ -14,8 +14,10 @@
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
 CColonyMgr::CColonyMgr()
-	:m_pTarget(nullptr), m_eMode(MODE_END), m_bShipBtnActive(false)
+	:m_pTarget(nullptr), m_eMode(MODE_END), m_bShipBtnActive(false),
+    m_bDrawRect(false)
 {
+    ZeroMemory(&m_tSelectRect, sizeof(RECT));
 }
 
 CColonyMgr::~CColonyMgr()
@@ -271,9 +273,59 @@ void CColonyMgr::Late_Update()
 
     Control_Target();
 
-    //이거 Late_Update 호출 순서에 따라 달라질수 있음(ObjMgr보다 늦게 호출되어야함)
-    //새로운 작업이 들어왔는지 나타내는 불변수                     //개선 필요함 이상함 매우 불안한 코드
-    //림이 주기적으로 할일 이 있는지 확인하게하는게 맞을듯?
+
+    //해체 모드일 때
+    if (m_eMode == MODE_DECONSTRUCT)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
+        {
+            ZeroMemory(&m_tSelectRect, sizeof(RECT));
+            m_bDrawRect = true;
+            m_tSelectRect.left = ptMouse.x;
+            m_tSelectRect.top = ptMouse.y;
+        }
+        if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
+        {
+            m_tSelectRect.right = ptMouse.x;
+            m_tSelectRect.bottom = ptMouse.y;
+        }
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+            m_bDrawRect = false;
+            //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
+
+            int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
+            int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+            int iLeft = m_tSelectRect.left + iScrollX;
+            int iRight = m_tSelectRect.right + iScrollX;
+            int iTop = m_tSelectRect.top + iScrollY;
+            int iBottom = m_tSelectRect.bottom + iScrollY;
+
+            list<CObj*> steelWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
+            for (CObj* pObj : steelWallList)
+            {
+                //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                {
+                    continue;
+                }
+
+                if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
+                {
+                    continue;
+                }
+
+                TASK tTask;
+                tTask.pObj = pObj;
+                CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);//해체 목록 추가
+            }
+        }
+    }
 }
 
 void CColonyMgr::Render(HDC hDC)
@@ -368,6 +420,26 @@ void CColonyMgr::Render(HDC hDC)
             64,
             64,
             RGB_WHITE);
+
+        if (m_bDrawRect)
+        {
+            // 초록색 펜 생성 (두께 5)
+            HPEN hPen = CreatePen(PS_SOLID, 5, RGB(0, 255, 0)); // 두께 5, 색상 초록색
+            HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
+
+            // 사각형을 이루는 네 개의 선 그리기
+            MoveToEx(hDC, m_tSelectRect.left, m_tSelectRect.top, NULL); // 시작점
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.top);        // 윗변
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.bottom);     // 오른쪽 변
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.bottom);      // 아랫변
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.top);         // 왼쪽 변 (닫기)
+
+            // 펜 복원 및 삭제
+            SelectObject(hDC, hOldPen);
+            DeleteObject(hPen);
+
+        }
+
     }
     else if (m_eMode == MODE_CONSTRUCT)
     {

@@ -101,5 +101,9 @@ private:
 	//set<TASK>	m_TransportSet;
 
 	bool	m_bShipBtnActive;
+
+	//다중 선택
+	bool	m_bDrawRect;
+	RECT	m_tSelectRect;
 };
 

@@ -231,13 +231,13 @@ void CSteelWall::Late_Update()
 	if (PtInRect(&m_tRect, ptMouse))
 	{
 		//식민지 관리자가 해체모드일 경우 해체리스트에 넣는다. 
-		if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON) 
+		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON) 
 			&& CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_DECONSTRUCT)
 		{
 			TASK tTask;
 			tTask.pObj = this;
 			CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);
-			return;
+			//return;
 		}
 
 	}
