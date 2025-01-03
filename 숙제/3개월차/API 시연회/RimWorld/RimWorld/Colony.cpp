@@ -12,7 +12,7 @@
 #include "ScrollMgr.h"
 
 CColony::CColony()
-    :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)
+    :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
 {
     ZeroMemory(&WaveFuncs, sizeof(WaveFuncs));
 }
@@ -279,12 +279,14 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/SelectionBracketWhole.bmp", L"SelectionBracketWhole");
     //철 아이템
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Item/Steel_b.bmp", L"Steel_b");
-
+    //메시지박스
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/MsgBox.bmp", L"MsgBox");
     //소집상태 표시 칼 Draft
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Draft.bmp", L"Draft");
 
     //우주선 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ShipBtn.bmp", L"ShipBtn");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/LaunchShipBtn.bmp", L"LaunchShipBtn");
 
     //상세정보창
     CObj* pDetailView = CAbstractFactory<CDetailView>::Create(200, WINCY - 107);
@@ -343,13 +345,21 @@ void CColony::Create_UI()
     pStructureBtn->Get_ChildList()->push_back(pConstruct);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pConstruct);
 
-    //우주선 건설 버튼
-    CObj* pShip = CAbstractFactory<CMyButton>::
-        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
-    pShip->Set_Size(fShortBtnCX, fShortBtnCY);
-    pShip->Set_ImgKey(L"ShipBtn");
-    pStructureBtn->Get_ChildList()->push_back(pShip);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pShip);
+    ////우주선 건설 버튼
+    //CObj* pShip = CAbstractFactory<CMyButton>::
+    //    Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    //pShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    //pShip->Set_ImgKey(L"ShipBtn");
+    //pStructureBtn->Get_ChildList()->push_back(pShip);
+    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pShip);
+
+    ////우주선 발사 버튼
+    //CObj* pLaunchShip = CAbstractFactory<CMyButton>::
+    //    Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    //pLaunchShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    //pLaunchShip->Set_ImgKey(L"LaunchShipBtn");
+    //pCommandBtn->Get_ChildList()->push_back(pLaunchShip);
+    //CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pLaunchShip);
 
     //게임 스피드 버튼
     CObj* pObj(nullptr);
@@ -394,6 +404,51 @@ void CColony::Create_UI()
     pMenuBtn->Get_ChildList()->push_back(pGoToMainBtn);
     pGoToMainBtn->Set_Parent(pMenuBtn);
 
+    //Create_ShipBtn();
+}
+
+void CColony::Create_ShipBtn()
+{
+    float fShortBtnCX = 64.f;
+    float fShortBtnCY = 64.f;
+
+    CObj* pStructureBtn(nullptr);
+    CObj* pCommandBtn(nullptr);
+    //구조물, 명령 버튼을 가져온다.
+    list<CObj*> UIList = CObjMgr::Get_Instance()->Get_List()[OBJ_UI];
+
+    for (CObj* pUI : UIList)
+    {
+        if (!lstrcmp(L"ButtonSubtleAtlas_Structure", pUI->Get_ImgKey()))
+        {
+            pStructureBtn = pUI;
+        }
+        else if (!lstrcmp(L"ButtonSubtleAtlas_Command", pUI->Get_ImgKey()))
+        {
+            pCommandBtn = pUI;
+        }
+    }
+
+    if (!pStructureBtn || !pCommandBtn)
+    {
+        return;
+    }
+
+    //우주선 건설 버튼
+    CObj* pShip = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    pShip->Set_ImgKey(L"ShipBtn");
+    pStructureBtn->Get_ChildList()->push_back(pShip);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pShip);
+
+    //우주선 발사 버튼
+    CObj* pLaunchShip = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pLaunchShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    pLaunchShip->Set_ImgKey(L"LaunchShipBtn");
+    pCommandBtn->Get_ChildList()->push_back(pLaunchShip);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pLaunchShip);
 }
 
 void CColony::Spawn_Wave1()

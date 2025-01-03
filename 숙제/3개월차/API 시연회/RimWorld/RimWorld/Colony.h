@@ -23,7 +23,9 @@ class CColony :
 public:
     CColony();
     virtual ~CColony();
-
+//public:
+//    bool    Get_ShipBtnActive() { return m_bShipBtnActive; }
+//    void    Set_ShipBtnActive(bool _b) { m_bShipBtnActive = _b; }
 public:
     void Initialize() override;
     int Update() override;
@@ -32,6 +34,7 @@ public:
     void Release() override;
 private:
     void Create_UI();
+    void Create_ShipBtn();
 
     void Spawn_Wave1();
     void Spawn_Wave2();
@@ -46,6 +49,8 @@ private:
 
     //bool    m_bEnemySpawned;
     float   m_fSpawnTime;
+
+    //bool    m_bShipBtnActive;
 };
 
 template<typename T>

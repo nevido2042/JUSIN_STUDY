@@ -12,6 +12,12 @@ CCharge_Small::~CCharge_Small()
 	Release();
 }
 
+void CCharge_Small::Initialize()
+{
+    CProjectile::Initialize();
+    m_fDamage = 1.f;
+}
+
 void CCharge_Small::Render(HDC hDC)
 {
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();

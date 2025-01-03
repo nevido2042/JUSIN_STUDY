@@ -8,17 +8,63 @@
 #include "ObjMgr.h"
 #include "TileMgr.h"
 #include "SoundMgr.h"
+#include "AbstractFactory.h"
+#include "MyButton.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
 CColonyMgr::CColonyMgr()
-	:m_pTarget(nullptr), m_eMode(MODE_END)
+	:m_pTarget(nullptr), m_eMode(MODE_END), m_bShipBtnActive(false)
 {
 }
 
 CColonyMgr::~CColonyMgr()
 {
     Release();
+}
+
+void CColonyMgr::Create_ShipBtn()
+{
+    float fShortBtnCX = 64.f;
+    float fShortBtnCY = 64.f;
+
+    CObj* pStructureBtn(nullptr);
+    CObj* pCommandBtn(nullptr);
+    //구조물, 명령 버튼을 가져온다.
+    list<CObj*> UIList = CObjMgr::Get_Instance()->Get_List()[OBJ_UI];
+
+    for (CObj* pUI : UIList)
+    {
+        if (!lstrcmp(L"ButtonSubtleAtlas_Structure", pUI->Get_ImgKey()))
+        {
+            pStructureBtn = pUI;
+        }
+        else if (!lstrcmp(L"ButtonSubtleAtlas_Command", pUI->Get_ImgKey()))
+        {
+            pCommandBtn = pUI;
+        }
+    }
+
+    if (!pStructureBtn || !pCommandBtn)
+    {
+        return;
+    }
+
+    //우주선 건설 버튼
+    CObj* pShip = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    pShip->Set_ImgKey(L"ShipBtn");
+    pStructureBtn->Get_ChildList()->push_back(pShip);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pShip);
+
+    //우주선 발사 버튼
+    CObj* pLaunchShip = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pLaunchShip->Set_Size(fShortBtnCX, fShortBtnCY);
+    pLaunchShip->Set_ImgKey(L"LaunchShipBtn");
+    pCommandBtn->Get_ChildList()->push_back(pLaunchShip);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pLaunchShip);
 }
 
 void CColonyMgr::Change_Mode(MODE _eMode)

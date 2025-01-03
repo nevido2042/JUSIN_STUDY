@@ -8,6 +8,8 @@
 #include "ColonyMgr.h"
 #include "SteelWall.h"
 #include "TileMgr.h"
+#include "Colony.h"
+#include "SceneMgr.h"
 
 CCentipede::CCentipede()
 {
@@ -39,6 +41,15 @@ void CCentipede::Initialize()
 
 int CCentipede::Update()
 {
+    if (m_bDead)
+    {
+        if (!CColonyMgr::Get_Instance()->Get_ShipBtnActive())
+        {
+            CColonyMgr::Get_Instance()->Set_ShipBtnActive();
+            CColonyMgr::Get_Instance()->Create_ShipBtn();
+        }
+    }
+
     return CPawn::Update();
 }
 

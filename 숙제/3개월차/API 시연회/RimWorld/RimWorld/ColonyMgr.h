@@ -30,12 +30,15 @@ private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
 public:
+	void					Create_ShipBtn();
 	void					Change_Mode(MODE _eMode);
 	void					Emplace_DeconstructSet(TASK _tTask);
 	void					Emplace_ConstructSet(TASK _tTask);
 	//void					Emplace_TransportSet(TASK _tTask);
 	void					Notify_TaskChange();
 public:
+	bool					Get_ShipBtnActive() { return m_bShipBtnActive; }
+	void					Set_ShipBtnActive() { m_bShipBtnActive = true; }
 	CObj*					Get_Target() { return m_pTarget; }
 	void					Set_Target(CObj* _pObj);
 	MODE					Get_Mode() { return m_eMode; }
@@ -97,5 +100,6 @@ private:
 	set<TASK>	m_ConstructSet;
 	//set<TASK>	m_TransportSet;
 
+	bool	m_bShipBtnActive;
 };
 

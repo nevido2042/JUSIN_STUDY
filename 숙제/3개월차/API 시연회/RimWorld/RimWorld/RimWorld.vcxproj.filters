@@ -151,6 +151,10 @@
     <ClCompile Include="Ship.cpp">
       <Filter>01.Obj\Ship</Filter>
     </ClCompile>
+    <ClCompile Include="MsgBox.cpp">
+      <Filter>01.Obj\01.UI\MsgBox</Filter>
+    </ClCompile>
+    <ClCompile Include="LaunchMsgBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -318,6 +322,10 @@
     <ClInclude Include="Ship.h">
       <Filter>01.Obj\Ship</Filter>
     </ClInclude>
+    <ClInclude Include="MsgBox.h">
+      <Filter>01.Obj\01.UI\MsgBox</Filter>
+    </ClInclude>
+    <ClInclude Include="LaunchMsgBox.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="RimWorld.ico">
@@ -492,6 +500,12 @@
     </Filter>
     <Filter Include="01.Obj\01.UI\Panel">
       <UniqueIdentifier>{b9ead3b4-f610-4b86-bf45-9cfe8e7a8c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\MsgBox">
+      <UniqueIdentifier>{90b76587-45f7-4f65-a1bf-cf30ecd72151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\MsgBox\LaunchMsgBox">
+      <UniqueIdentifier>{45b21481-6f13-4c74-bc67-834cdfb7c553}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

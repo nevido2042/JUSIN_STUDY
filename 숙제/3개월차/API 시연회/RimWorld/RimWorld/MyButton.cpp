@@ -4,6 +4,7 @@
 #include "SceneMgr.h"
 #include "KeyMgr.h"
 #include "SoundMgr.h"
+#include "LaunchMsgBox.h"
 
 CMyButton::CMyButton()
 	:m_bOnHovered(false)
@@ -199,6 +200,20 @@ void CMyButton::Late_Update()
 			else if (!lstrcmp(L"ShipBtn", m_pImgKey))
 			{
 				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_SHIP);
+			}
+			else if (!lstrcmp(L"LaunchShipBtn", m_pImgKey))
+			{
+				//우주선이 있는가?
+
+				//우주선에 탑승했는가?
+				//list<CObj*> pRimList = CObjMgr::Get_Instance()->Get_List()[OBJ_RIM];
+
+				//페이드 아웃
+				
+				//페이드 아웃 끝나면 메시지 박스 띄우기
+
+				CObj* pObj = CAbstractFactory<CLaunchMsgBox>::Create(WINCX * 0.5f, WINCY * 0.5f);
+				CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 			}
 		}
 	}
