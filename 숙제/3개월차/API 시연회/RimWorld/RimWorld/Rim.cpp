@@ -11,6 +11,7 @@
 #include "SteelWall.h"
 #include "TimeMgr.h"
 #include "SoundMgr.h"
+#include "Ship.h"
 
 CRim::CRim()
     :m_bTaskCheck(false), m_pTransportingItem(nullptr)
@@ -587,6 +588,13 @@ void CRim::Construct()
     if (m_eCurrentTask.eType == TASK::SHIP)
     {
         //우주선 건설
+        CObj* pObj = CAbstractFactory<CShip>::Create(m_pTarget->Get_Info().fX + TILECX * 0.5f, m_pTarget->Get_Info().fY + TILECY * 0.5f);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
+        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX + TILECX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX + TILECX, m_pTarget->Get_Info().fY + TILECY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY + TILECY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
     }
     else if (m_eCurrentTask.eType == TASK::WALL)
     {

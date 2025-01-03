@@ -3,10 +3,10 @@
 
 typedef struct tagTask
 {
-	enum TYPE { WALL, SHIP, DECONSTRUCT };
+	enum TYPE { WALL, SHIP, DECONSTRUCT, END };
 
 	tagTask()
-		:pObj(nullptr), pRimReserved(nullptr) {}
+		:pObj(nullptr), pRimReserved(nullptr), eType(END) {}
 
 	CObj* pObj; //작업할 것... 건설 하기위한 타일 / 해체하기 위한 벽
 	CObj* pRimReserved;//이 작업을 누가 예약했는지

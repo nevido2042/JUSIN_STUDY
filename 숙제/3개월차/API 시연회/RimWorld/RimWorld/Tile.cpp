@@ -78,12 +78,12 @@ void CTile::Late_Update()
 
 void CTile::Render(HDC hDC)
 {
-	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
+	//HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	BitBlt(hDC,
+	/*BitBlt(hDC,
 		m_tRect.left + iScrollX,
 		m_tRect.top + iScrollY,
 		TILECX,
@@ -91,7 +91,7 @@ void CTile::Render(HDC hDC)
 		hMemDC,
 		TILECX * m_iDrawID,
 		0,
-		SRCCOPY);
+		SRCCOPY);*/
 
 	HPEN hPen(nullptr);
 	HPEN hOldPen(nullptr);

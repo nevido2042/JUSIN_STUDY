@@ -345,8 +345,8 @@ void CColonyMgr::Render(HDC hDC)
         ScreenToClient(g_hWnd, &ptMouse);
 
         GdiTransparentBlt(hDC,
-            ptMouse.x -64,
-            ptMouse.y -64,
+            ptMouse.x,
+            ptMouse.y,
             128,
             128,
             hShipDC,
