@@ -136,15 +136,15 @@ void CTileMgr::Render(HDC hDC)
 	 /*for (auto& pTile : m_arrTile)
 	 	pTile->Render(hDC);*/
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();// / TILECX;
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();// / TILECY;
 
-	/*HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
+	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
 
 	BitBlt(hDC,
 		iScrollX, iScrollY,
 		int(TILEX * TILECX), int(TILEY * TILECY),
-		hMemDC, 0, 0, SRCCOPY);*/
+		hMemDC, 0, 0, SRCCOPY);
 
 
 	//int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;

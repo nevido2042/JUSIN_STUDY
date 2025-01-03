@@ -32,6 +32,7 @@ protected:
     void Handle_Deconstructing() override;
     void Handle_Constructing() override;
     void Handle_Transporting() override;
+    void Handle_Boarding() override;
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();

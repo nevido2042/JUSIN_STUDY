@@ -4,6 +4,9 @@
 #include "Pawn.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
+#include "ColonyMgr.h"
+#include "KeyMgr.h"
+#include "TileMgr.h"
 
 CShip::CShip()
 {
@@ -55,7 +58,20 @@ int CShip::Update()
 
 void CShip::Late_Update()
 {
+	if (Is_MouseHovered_Scrolled() && 
+		CColonyMgr::Get_Instance()->Get_Target()&&
+		CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON)
+	)
+	{
+		//클릭하면 우주선으로 이동
+		CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target();
+		pTarget->Set_Target(this);
 
+		if (CPawn* pPawn = dynamic_cast<CPawn*>(pTarget))
+		{
+			pPawn->Change_State(CPawn::BOARDING, this);
+		}
+	}
 }
 
 void CShip::Render(HDC hDC)

@@ -298,6 +298,9 @@ void CRim::Render(HDC hDC)
     case CRim::TRANSPORTING:
         wsprintf(buffer, L"m_eState: %s", L"TRANSPORTING");
         break;
+    case CRim::BOARDING:
+        wsprintf(buffer, L"m_eState: %s", L"BOARDING");
+        break;
     case CRim::END:
         break;
     default:
@@ -312,6 +315,7 @@ void CRim::Handle_Wandering()
 {
     //배회 하자
     Wander();
+
     //새로운 작업이 생겼다면?????????? 작업의 갯수가 달라졌다면?
     //작업 목록이 달라졌다면? 작업리스트를 림이 복사에서 가지고 있는다?
     // 
@@ -532,6 +536,29 @@ void CRim::Handle_Transporting()
             PickUp_Item(m_pTarget);
         }
     }
+}
+
+void CRim::Handle_Boarding()
+{
+    if (!m_bNavigating)
+    {
+        int iTileIndex = CTileMgr::Get_TileIndex(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+        int iReachableTileIndex = Find_NearestReachableTile(iTileIndex % TILEX, iTileIndex / (TILEX));
+
+        POS tPos{ (int)((iReachableTileIndex % TILEX) * TILECX + TILECX * 0.5f),
+            (int)((iReachableTileIndex / TILEX) * TILECY + TILECY * 0.5f) };
+
+        Move_To(tPos);
+    }
+    
+    //타겟(우주선)과 거리가 가까워지면 탑승
+    if (m_fTargetDist < TILECX * 2.f)
+    {
+        //Take_Damage(1000.f);
+        m_bNavigating = false;
+        Set_Pos(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+    }
+
 }
 
 void CRim::Check_CloseTask()
