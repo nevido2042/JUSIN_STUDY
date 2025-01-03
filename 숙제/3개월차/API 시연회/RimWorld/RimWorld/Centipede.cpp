@@ -26,7 +26,7 @@ void CCentipede::Initialize()
 
     m_fSpeed = 1.f;
 
-    m_fMaxHP = 300.f;
+    m_fMaxHP = 10.f;
     m_fHP = m_fMaxHP;
 
     //무기 생성
@@ -34,7 +34,7 @@ void CCentipede::Initialize()
     CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, m_pRangedWeapon);
     m_pRangedWeapon->Set_Target(this);
 
-    Take_Damage(50.f);
+    //Take_Damage(50.f);
 
     Change_State(WANDERING);
 }

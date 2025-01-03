@@ -214,6 +214,9 @@ void CMyButton::Late_Update()
 
 				CObj* pObj = CAbstractFactory<CLaunchMsgBox>::Create(WINCX * 0.5f, WINCY * 0.5f);
 				CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
+
+				CSoundMgr::Get_Instance()->StopSound(SOUND_BGM);
+				CSoundMgr::Get_Instance()->PlaySound(L"Ship_TakeOff_1", SOUND_BGM, 1.f);
 			}
 		}
 	}
