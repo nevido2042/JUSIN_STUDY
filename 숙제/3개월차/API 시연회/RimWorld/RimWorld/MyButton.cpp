@@ -23,12 +23,7 @@ void CMyButton::Initialize()
 
 int CMyButton::Update()
 {
-	if (m_bDestroyed)
-		return OBJ_DESTROYED;
-
-	__super::Update_Rect();
-
-	return OBJ_NOEVENT;
+	return CObj::Update();
 }
 
 void CMyButton::Late_Update()

@@ -36,12 +36,7 @@ void CRimSlotMgr::Initialize()
 
 int CRimSlotMgr::Update()
 {
-	if (m_bDestroyed)
-		return OBJ_DESTROYED;
-
-	__super::Update_Rect();
-
-	return OBJ_NOEVENT;
+	return CObj::Update();
 }
 
 void CRimSlotMgr::Late_Update()

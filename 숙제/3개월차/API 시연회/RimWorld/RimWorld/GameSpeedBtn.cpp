@@ -164,10 +164,5 @@ void CGameSpeedBtn::Release()
 
 int CGameSpeedBtn::Update()
 {
-	if (m_bDestroyed)
-		return OBJ_DESTROYED;
-
-	__super::Update_Rect();
-
-	return OBJ_NOEVENT;
+	return CObj::Update();
 }

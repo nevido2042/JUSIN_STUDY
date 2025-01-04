@@ -71,6 +71,16 @@ bool CObj::Is_MouseHovered()
 	}
 }
 
+int CObj::Update()
+{
+	if (m_bDestroyed)
+		return OBJ_DESTROYED;
+
+	Update_Rect();
+
+	return OBJ_NOEVENT;
+}
+
 void CObj::OnCollision(OBJID _eID, CObj* _pOther)
 {
 }

@@ -31,19 +31,13 @@ void CBreakable::Initialize()
 
 int CBreakable::Update()
 {
-	if (m_bDestroyed)
-	{
-		return OBJ_DESTROYED;
-	}
 
 	if (m_bBrokendown)
 	{
 		Set_Destroyed();
 	}
 
-	__super::Update_Rect();
-
-	return OBJ_NOEVENT;
+    return CObj::Update();
 }
 
 void CBreakable::Late_Update()

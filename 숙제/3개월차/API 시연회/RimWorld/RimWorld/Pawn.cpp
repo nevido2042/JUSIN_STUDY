@@ -444,18 +444,13 @@ void CPawn::Initialize()
 
 int CPawn::Update()
 {
-    if (m_bDestroyed)
-        return OBJ_DESTROYED;
+    ////죽었으면 리턴
+    //if (m_bDead)
+    //{
+    //    return OBJ_NOEVENT;
+    //}
 
-    //죽었으면 리턴
-    if (m_bDead)
-    {
-        return OBJ_NOEVENT;
-    }
-
-    __super::Update_Rect();
-
-    return OBJ_NOEVENT;
+    return CObj::Update();
 }
 
 void CPawn::Late_Update()

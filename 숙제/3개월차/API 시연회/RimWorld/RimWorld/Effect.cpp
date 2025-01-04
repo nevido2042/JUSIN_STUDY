@@ -21,12 +21,7 @@ void CEffect::Initialize()
 
 int CEffect::Update()
 {
-	if (m_bDestroyed)
-		return OBJ_DESTROYED;
-
-	__super::Update_Rect();
-
-	return OBJ_NOEVENT;
+	return CObj::Update();
 }
 
 void CEffect::Late_Update()
