@@ -1,7 +1,7 @@
 #pragma once
-#include "Obj.h"
+#include "Breakable.h"
 class CTree :
-    public CObj
+    public CBreakable
 {
 public:
     CTree();

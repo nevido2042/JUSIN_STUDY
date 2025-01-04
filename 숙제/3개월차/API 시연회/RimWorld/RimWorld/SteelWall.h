@@ -1,7 +1,8 @@
 #pragma once
-#include "Obj.h"
+#include "Breakable.h"
+
 class CSteelWall :
-    public CObj
+    public CBreakable
 {
 public:
     enum STATE 
@@ -18,11 +19,8 @@ public:
     virtual ~CSteelWall();
 public:
     void    Change_Image();
-    void    Take_Damage(float _fDamage);
 public:
     void    Set_CheckNeighbor(bool _b) { m_bCheckNeighbor = _b; }
-    bool    Get_IsBrokenDown() { return m_bBrokendown; }
-    void    Set_IsBrokenDown() { m_bBrokendown = true; }
 public:
     void    Initialize() override;
     int     Update() override;
@@ -43,10 +41,5 @@ private:
     int     m_iRenderY;
 
     bool    m_bCheckNeighbor;
-
-    //³»±¸µµ(HP´À³¦)
-    float   m_fDurability;
-    float   m_fMaxDurability;
-    bool    m_bBrokendown;
 };
 

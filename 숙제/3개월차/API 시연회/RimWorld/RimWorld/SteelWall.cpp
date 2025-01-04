@@ -9,10 +9,10 @@
 #include "Pawn.h"
 #include "AbstractFactory.h"
 #include "Steel.h"
+#include "SoundMgr.h"
 
 CSteelWall::CSteelWall()
-	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false),
-	m_fDurability(0.f), m_fMaxDurability(0.f), m_bBrokendown(false)
+	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false)
 {
 }
 
@@ -104,20 +104,10 @@ void CSteelWall::Change_Image()
 
 }
 
-void CSteelWall::Take_Damage(float _fDamage)
-{
-	m_fDurability -= _fDamage;
-
-	//죽음 처리
-	if (m_fDurability <= 0.f)
-	{
-		m_bBrokendown = true;
-		//Set_Destroyed(); //바로 지우지말고 예약해야겠다.
-	}
-}
-
 void CSteelWall::Initialize()
 {
+	CBreakable::Initialize();
+
 	Set_ObjID(OBJ_WALL);
 
 	Set_ImgKey(L"Wall_Atlas_Smooth");
@@ -134,9 +124,6 @@ void CSteelWall::Initialize()
 	m_eRenderID = RENDER_GAMEOBJECT;
 
 	m_bCheckNeighbor = true;
-
-	m_fMaxDurability = 10.f;
-	m_fDurability = m_fMaxDurability;
 
 	//생성 됬을 때 일단 모든 Rock들 이웃 체크 시키자.(나중에 범위로 줄이자)
 	list<CObj*> pWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
@@ -168,14 +155,11 @@ void CSteelWall::Initialize()
 
 int CSteelWall::Update()
 {
-	if (m_bDestroyed)
-	{
-		return OBJ_DESTROYED;
-	}
-
 	if (m_bBrokendown)
 	{
-		Set_Destroyed();
+		CSoundMgr::Get_Instance()->StopSound(SOUND_WALL);
+		CSoundMgr::Get_Instance()->PlaySound(L"StoneBlock_Drop_1a.wav", SOUND_WALL, .5f);
+		//Set_Destroyed();
 
 		//올라와 있던 타일을 통행가능하도록 만든다.
 		CTileMgr::Get_Instance()->Set_TileOption(m_tInfo.fX, m_tInfo.fY, OPT_REACHABLE);
@@ -204,9 +188,7 @@ int CSteelWall::Update()
 		}
 	}
 
-    __super::Update_Rect();
-
-    return OBJ_NOEVENT;
+	return CBreakable::Update();
 }
 
 void CSteelWall::Late_Update()

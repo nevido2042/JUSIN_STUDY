@@ -698,16 +698,16 @@ void CRim::Log()
     m_fMeleeElapsed = 0.f;
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_DECONSTRUCT);
-    CSoundMgr::Get_Instance()->PlaySound(L"PickHitA.wav", SOUND_DECONSTRUCT, .5f);
+    CSoundMgr::Get_Instance()->PlaySound(L"Tree_Chop_1a.wav", SOUND_DECONSTRUCT, .5f);
 
-    CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+    CBreakable* pTree = static_cast<CBreakable*>(m_pTarget);
     //pWall->Set_IsBrokenDown();
     //Change_State(WANDERING);
 
     //해당 벽이 무너질 때 까지 공격 반복
     //시간 공격하는 시간 정해야함
 
-    pWall->Take_Damage(1.f);
+    pTree->Take_Damage(1.f);
 
 }
 

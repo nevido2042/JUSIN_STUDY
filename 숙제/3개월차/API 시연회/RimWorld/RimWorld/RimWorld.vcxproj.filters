@@ -65,7 +65,7 @@
       <Filter>02.Scene\Customize</Filter>
     </ClCompile>
     <ClCompile Include="SteelWall.cpp">
-      <Filter>01.Obj\SteelWall</Filter>
+      <Filter>01.Obj\Breakable\SteelWall</Filter>
     </ClCompile>
     <ClCompile Include="PathFinder.cpp">
       <Filter>03.Design\PathFinder</Filter>
@@ -107,7 +107,7 @@
       <Filter>01.Obj\03.Projectile\Bullet_Small</Filter>
     </ClCompile>
     <ClCompile Include="Tree.cpp">
-      <Filter>01.Obj\Tree</Filter>
+      <Filter>01.Obj\Breakable\Tree</Filter>
     </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>03.Design\SoundMgr</Filter>
@@ -154,7 +154,12 @@
     <ClCompile Include="MsgBox.cpp">
       <Filter>01.Obj\01.UI\MsgBox</Filter>
     </ClCompile>
-    <ClCompile Include="LaunchMsgBox.cpp" />
+    <ClCompile Include="Breakable.cpp">
+      <Filter>01.Obj\Breakable</Filter>
+    </ClCompile>
+    <ClCompile Include="LaunchMsgBox.cpp">
+      <Filter>01.Obj\01.UI\MsgBox\LaunchMsgBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -236,7 +241,7 @@
       <Filter>02.Scene\Customize</Filter>
     </ClInclude>
     <ClInclude Include="SteelWall.h">
-      <Filter>01.Obj\SteelWall</Filter>
+      <Filter>01.Obj\Breakable\SteelWall</Filter>
     </ClInclude>
     <ClInclude Include="PathFinder.h">
       <Filter>03.Design\PathFinder</Filter>
@@ -278,7 +283,7 @@
       <Filter>01.Obj\03.Projectile\Bullet_Small</Filter>
     </ClInclude>
     <ClInclude Include="Tree.h">
-      <Filter>01.Obj\Tree</Filter>
+      <Filter>01.Obj\Breakable\Tree</Filter>
     </ClInclude>
     <ClInclude Include="SoundMgr.h">
       <Filter>03.Design\SoundMgr</Filter>
@@ -325,7 +330,12 @@
     <ClInclude Include="MsgBox.h">
       <Filter>01.Obj\01.UI\MsgBox</Filter>
     </ClInclude>
-    <ClInclude Include="LaunchMsgBox.h" />
+    <ClInclude Include="Breakable.h">
+      <Filter>01.Obj\Breakable</Filter>
+    </ClInclude>
+    <ClInclude Include="LaunchMsgBox.h">
+      <Filter>01.Obj\01.UI\MsgBox\LaunchMsgBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="RimWorld.ico">
@@ -435,12 +445,6 @@
     <Filter Include="01.Obj\03.Projectile\Bullet_Small">
       <UniqueIdentifier>{513b0c16-ee17-4e87-9147-979229cbc95c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\Tree">
-      <UniqueIdentifier>{ef080a2b-f9f8-4060-88ef-d978443772a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Obj\SteelWall">
-      <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Design\SoundMgr">
       <UniqueIdentifier>{8155e0b7-8f3f-4b09-9987-662520816d83}</UniqueIdentifier>
     </Filter>
@@ -506,6 +510,15 @@
     </Filter>
     <Filter Include="01.Obj\01.UI\MsgBox\LaunchMsgBox">
       <UniqueIdentifier>{45b21481-6f13-4c74-bc67-834cdfb7c553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Breakable">
+      <UniqueIdentifier>{cad32dc7-3efb-493e-a1e9-54cbf85ee770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Breakable\SteelWall">
+      <UniqueIdentifier>{17823ebe-e68d-4c2d-98e3-b360f423425d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Breakable\Tree">
+      <UniqueIdentifier>{ef080a2b-f9f8-4060-88ef-d978443772a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

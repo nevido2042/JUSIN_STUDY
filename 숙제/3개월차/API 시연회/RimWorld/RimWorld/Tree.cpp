@@ -2,6 +2,9 @@
 #include "Tree.h"
 #include "ScrollMgr.h"
 #include "BmpMgr.h"
+#include "TileMgr.h"
+#include "ColonyMgr.h"
+#include "SoundMgr.h"
 
 CTree::CTree()
 {
@@ -14,8 +17,9 @@ CTree::~CTree()
 
 void CTree::Initialize()
 {
-	Set_ObjID(OBJ_TREE);
+	CBreakable::Initialize();
 
+	Set_ObjID(OBJ_TREE);
 
 	Set_ImgKey(L"TreePoplarA");
 
@@ -27,12 +31,31 @@ void CTree::Initialize()
 
 int CTree::Update()
 {
-    if (m_bDestroyed)
-        return OBJ_DESTROYED;
+	if (m_bBrokendown)
+	{
+		CSoundMgr::Get_Instance()->StopSound(SOUND_TREE);
+		CSoundMgr::Get_Instance()->PlaySound(L"Tree_Felled_1a.wav", SOUND_TREE, .5f);
+		//Set_Destroyed();
 
-    __super::Update_Rect();
+		//해당 타일위에 있는 Obj를  nullptr로 만든다.
+		CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, nullptr);
 
-    return OBJ_NOEVENT;
+		//CColonyMgr::Get_Instance()->Get_DeconstructSet()->erase(this);
+		set<TASK>& LoggingSet = *CColonyMgr::Get_Instance()->Get_LoggingSet();
+		for (auto Iter = LoggingSet.begin(); Iter != LoggingSet.end();)
+		{
+			if ((*Iter).pObj == this)
+			{
+				Iter = LoggingSet.erase(Iter);
+			}
+			else
+			{
+				++Iter;
+			}
+		}
+	}
+
+	return CBreakable::Update();
 }
 
 void CTree::Late_Update()
