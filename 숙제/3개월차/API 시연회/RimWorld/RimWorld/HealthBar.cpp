@@ -33,6 +33,14 @@ int CHealthBar::Update()
 
 void CHealthBar::Late_Update()
 {
+    if (CPawn* pPawn = dynamic_cast<CPawn*>(m_pTarget))
+    {
+        if (pPawn->Get_IsDead())
+        {
+            Set_Destroyed();
+        }
+    }
+
 	Follow_Pawn();
 }
 

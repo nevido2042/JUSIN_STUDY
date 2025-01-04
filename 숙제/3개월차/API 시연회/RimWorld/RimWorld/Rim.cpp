@@ -346,6 +346,27 @@ void CRim::Handle_Deconstructing()
         //타겟이 없다.
         if (!m_pTarget)
         {
+            //다른 작업 체크
+            m_bTaskCheck = true;
+            Change_State(WANDERING);
+            return;
+        }
+        if (CBreakable* pWall = dynamic_cast<CBreakable*>(m_pTarget))
+        {
+            if (pWall->Get_IsBrokenDown())
+            {
+                //다른 작업 체크
+                m_bTaskCheck = true;
+                Change_State(WANDERING);
+                return;
+            }
+        }
+        //타겟이 파괴됬다.
+        if (m_pTarget->Get_Destroyed())
+        {
+            //다른 작업 체크
+            m_bTaskCheck = true;
+            Change_State(WANDERING);
             return;
         }
         //타겟이 멀다
@@ -534,6 +555,24 @@ void CRim::Handle_Logging()
         {
             return;
         }
+        if (CBreakable* pWall = dynamic_cast<CBreakable*>(m_pTarget))
+        {
+            if (pWall->Get_IsBrokenDown())
+            {
+                //다른 작업 체크
+                m_bTaskCheck = true;
+                Change_State(WANDERING);
+                return;
+            }
+        }
+        //타겟이 파괴됬다.
+        if (m_pTarget->Get_Destroyed())
+        {
+            //다른 작업 체크
+            m_bTaskCheck = true;
+            Change_State(WANDERING);
+            return;
+        }
         //타겟이 멀다
         if (m_fTargetDist > TILECX * 1.2f)
         {
@@ -566,7 +605,7 @@ void CRim::Deconstruct()
     CSoundMgr::Get_Instance()->StopSound(SOUND_DECONSTRUCT);
     CSoundMgr::Get_Instance()->PlaySound(L"PickHitA.wav", SOUND_DECONSTRUCT, .5f);
 
-    CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+    CBreakable* pWall = static_cast<CBreakable*>(m_pTarget);
     //pWall->Set_IsBrokenDown();
     //Change_State(WANDERING);
 
