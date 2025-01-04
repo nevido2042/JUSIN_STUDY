@@ -81,7 +81,7 @@ int CTileMgr::Update()
 	if (m_iMinY > 0)
 	{
 		m_iMinY = 0;
-		m_iMaxX = (WINCY / TILECY) + CULLIG_OFFSET;
+		m_iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
 	}
 	else
 	{

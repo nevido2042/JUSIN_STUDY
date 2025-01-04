@@ -364,6 +364,7 @@ void CRim::Handle_Drafted()
     }
     else
     {
+        Set_Target(nullptr);
         m_bAttack = false;
     }
 
@@ -583,7 +584,7 @@ void CRim::Deconstruct()
     //해당 벽이 무너질 때 까지 공격 반복
     //시간 공격하는 시간 정해야함
 
-    pWall->Take_Damage(1.f);
+    pWall->Take_Damage(3.f);
 
 }
 
@@ -808,6 +809,7 @@ void CRim::Check_ConstructWork()
                     TASK tTask;
                     tTask.pObj = m_pTarget;
                     tTask.pRimReserved = this;
+                    tTask.eType = TASK::WALL;
                     ConstructSet.emplace(tTask);
                 }
                 else

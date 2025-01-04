@@ -38,8 +38,8 @@ void CChargeLance::Fire()
         return;
     }
 
-    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-    CSoundMgr::Get_Instance()->PlaySound(L"ChargeLance_Fire_4a.wav", SOUND_EFFECT, .5f);
+    CSoundMgr::Get_Instance()->StopSound(SOUND_CHARGELANCE);
+    CSoundMgr::Get_Instance()->PlaySound(L"ChargeLance_Fire_4a.wav", SOUND_CHARGELANCE, .5f);
 
     //°¢µµ ·£´ý
     int iRand = (rand() % 21) - 10; //-10 ~ 10
