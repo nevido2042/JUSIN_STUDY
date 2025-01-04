@@ -49,6 +49,8 @@ void CLancer::Late_Update()
 
 void CLancer::Render(HDC hDC)
 {
+    CPawn::Render(hDC);
+
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
@@ -106,46 +108,26 @@ void CLancer::Render(HDC hDC)
         break;
     }
 
-    //길 찾기 노드 출력
-    for (CNode* pNode : m_NodeList)
-    {
-        Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
-            int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
-    }
+    ////타겟 출력
+    //if (m_pTarget)
+    //{
+    //    // 빨간색 펜 생성
+    //    HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0)); // 굵기 1, 빨간색
+    //    HBRUSH hOldBrush = (HBRUSH)SelectObject(hDC, hBrush);       // 기존 펜 저장 및 빨간색 펜 설정
 
-    //타겟 출력
-    if (m_pTarget)
-    {
-        // 빨간색 펜 생성
-        HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0)); // 굵기 1, 빨간색
-        HBRUSH hOldBrush = (HBRUSH)SelectObject(hDC, hBrush);       // 기존 펜 저장 및 빨간색 펜 설정
+    //    int iX = (int)m_pTarget->Get_Info().fX;
+    //    int iY = (int)m_pTarget->Get_Info().fY;
 
-        int iX = (int)m_pTarget->Get_Info().fX;
-        int iY = (int)m_pTarget->Get_Info().fY;
+    //    Ellipse(hDC, int(iX + iScrollX - 10), int(iY + iScrollY - 10),
+    //        int(iX + 10 + iScrollX), int(iY + 10 + iScrollY));
 
-        Ellipse(hDC, int(iX + iScrollX - 10), int(iY + iScrollY - 10),
-            int(iX + 10 + iScrollX), int(iY + 10 + iScrollY));
+    //    // 펜 정리
+    //    SelectObject(hDC, hOldBrush); // 기존 펜 복원
+    //    DeleteObject(hBrush);         // 빨간색 펜 삭제
+    //}
+    //if (!m_pTarget)
+    //{
+    //    return;
+    //}
 
-        // 펜 정리
-        SelectObject(hDC, hOldBrush); // 기존 펜 복원
-        DeleteObject(hBrush);         // 빨간색 펜 삭제
-    }
-    if (!m_pTarget)
-    {
-        return;
-    }
-
-    // 변수 값을 유니코드 문자열로 변환
-    wchar_t buffer[50];
-    wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
-    // 문자열 출력 (유니코드)
-    if (!m_pTarget)
-    {
-        return;
-    }
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
-    // 변수 값을 유니코드 문자열로 변환
-    wsprintf(buffer, L"m_pTarget: %p (%d, %d)", m_pTarget, (int)m_pTarget->Get_Info().fX / TILECX, (int)m_pTarget->Get_Info().fY / TILECY);
-    // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 }

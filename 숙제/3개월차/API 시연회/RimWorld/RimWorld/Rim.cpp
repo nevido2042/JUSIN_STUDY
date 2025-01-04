@@ -130,6 +130,8 @@ void CRim::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+    CPawn::Render(hDC);
+
     /*Ellipse(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
         m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);*/
 
@@ -259,56 +261,6 @@ void CRim::Render(HDC hDC)
             hTestDC, 0, 0, 64, 64,
             RGB_WHITE);
     }
-    
-
-    //길 찾기 노드 출력
-    for (CNode* pNode : m_NodeList)
-    {
-        Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
-            int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
-    }
-
-    // 변수 값을 유니코드 문자열로 변환
-    wchar_t buffer[50];
-    wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
-    // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
-    // 변수 값을 유니코드 문자열로 변환
-    wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
-    // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
-
-    switch (Get_State())
-    {
-    case CRim::WANDERING:
-        wsprintf(buffer, L"m_eState: %s", L"WANDERING");
-        break;
-    case CRim::DRAFTED:
-        wsprintf(buffer, L"m_eState: %s", L"DRAFTED");
-        break;
-    case CRim::UNDRAFTED:
-        wsprintf(buffer, L"m_eState: %s", L"UNDRAFTED");
-        break;
-    case CRim::CONSTRUCTING:
-        wsprintf(buffer, L"m_eState: %s", L"CONSTRUCTING");
-        break;
-    case CRim::DECONSTRUCTING:
-        wsprintf(buffer, L"m_eState: %s", L"DECONSTRUCTING");
-        break;
-    case CRim::TRANSPORTING:
-        wsprintf(buffer, L"m_eState: %s", L"TRANSPORTING");
-        break;
-    case CRim::BOARDING:
-        wsprintf(buffer, L"m_eState: %s", L"BOARDING");
-        break;
-    case CRim::END:
-        break;
-    default:
-        break;
-    }
-    // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 40), buffer, lstrlenW(buffer));
-
 }
 
 void CRim::Handle_Wandering()
