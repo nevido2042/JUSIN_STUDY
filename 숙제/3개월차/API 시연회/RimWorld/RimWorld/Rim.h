@@ -33,6 +33,7 @@ protected:
     void Handle_Constructing() override;
     void Handle_Transporting() override;
     void Handle_Boarding() override;
+    void Handle_Logging() override;
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();
@@ -40,10 +41,12 @@ private:
     void Deconstruct();
     //건설
     void Construct();
-
+    //벌목
+    void Log();
 private:
     void Check_DeconstructWork();
     void Check_ConstructWork();
+    void Check_LoggingWork();
     //void Check_TransportingWork();
 
     void    Find_Enemy();

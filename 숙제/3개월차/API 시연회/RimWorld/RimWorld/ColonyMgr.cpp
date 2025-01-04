@@ -296,6 +296,7 @@ void CColonyMgr::Late_Update()
 void CColonyMgr::Render(HDC hDC)
 {
     HDC		hLoggingDC = CBmpMgr::Get_Instance()->Find_Image(L"HarvestWood");
+    HDC		hCutPlantDC = CBmpMgr::Get_Instance()->Find_Image(L"CutPlant");
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
     HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"ShipEngine_north");
@@ -332,6 +333,22 @@ void CColonyMgr::Render(HDC hDC)
             64,
             64,
             hDeconstructDC,
+            0, 0,
+            64,
+            64,
+            RGB_WHITE);
+    }
+    //벌목 리스트에 있는 모든 벽들에 해체 아이콘 표시
+    for (TASK tTask : m_LoggingSet)
+    {
+        CObj* pObj = tTask.pObj;
+
+        GdiTransparentBlt(hDC,
+            (int)pObj->Get_Rect()->left + iScrollX,
+            (int)pObj->Get_Rect()->top + iScrollY,
+            64,
+            64,
+            hCutPlantDC,
             0, 0,
             64,
             64,

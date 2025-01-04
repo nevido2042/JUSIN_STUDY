@@ -52,6 +52,10 @@ public:
 	{
 		return &m_ConstructSet; 
 	}
+	set<TASK>* Get_LoggingSet()
+	{
+		return &m_LoggingSet;
+	}
 	/*set<TASK>*				Get_TransportSet() 
 	{ 
 		return &m_TransportSet; 

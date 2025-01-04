@@ -9,7 +9,7 @@ class CPawn :
     public CObj
 {
 public:
-    enum STATE { WANDERING, DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, TRANSPORTING, BOARDING, END };
+    enum STATE { WANDERING, DRAFTED, UNDRAFTED, CHASING, DECONSTRUCTING, CONSTRUCTING, TRANSPORTING, BOARDING, LOGGING, END };
 public:
     CPawn();
     virtual ~CPawn();
@@ -63,6 +63,7 @@ protected:
     virtual void Handle_Constructing();
     virtual void Handle_Transporting();
     virtual void Handle_Boarding();
+    virtual void Handle_Logging();
 
 protected:
     void        Wander();

@@ -297,6 +297,7 @@ void CColony::Create_UI()
     //Designations
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/HarvestWood.bmp", L"HarvestWood");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/CutPlant.bmp", L"CutPlant");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
     //¸² ½½·Ô
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DesButBG.bmp", L"DesButBG");

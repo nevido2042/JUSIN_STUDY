@@ -327,6 +327,7 @@ void CRim::Handle_Wandering()
     {
         Check_ConstructWork();
         Check_DeconstructWork();
+        Check_LoggingWork();
         //Check_TransportingWork();
         //m_fElapsedTimeCheck = 0.f;
         m_bTaskCheck = false;
@@ -564,6 +565,39 @@ void CRim::Handle_Boarding()
 
 }
 
+void CRim::Handle_Logging()
+{
+    //Å¸°ÙÀÌ °¡±î¿îÁö È®ÀÎ
+    if (m_fTargetDist < TILECX * 1.2f)
+    {
+        //°¡±î¿ì¸é ¸ØÃá´Ù.
+        //RequestNavStop();
+        m_bNavigating = false;
+    }
+    //¸Ø­Ÿ´Âµ¥
+    if (!m_bNavigating)
+    {
+        //Å¸°ÙÀÌ ¾ø´Ù.
+        if (!m_pTarget)
+        {
+            return;
+        }
+        //Å¸°ÙÀÌ ¸Ö´Ù
+        if (m_fTargetDist > TILECX * 1.2f)
+        {
+            //´Ù¸¥ ÀÛ¾÷ Ã¼Å©
+            m_bTaskCheck = true;
+            Change_State(WANDERING);
+            return;
+        }
+        //ÇØÃ¼ ÇÏ´Â°Å
+        Log();
+    }
+
+    //ÇØÃ¼ ÁøÇàÁßÀÎ ¹Ù »ı¼º
+    //¸îÃÊ µÚ ÇØÃ¼ ¿Ï·á
+}
+
 void CRim::Check_CloseTask()
 {
 }
@@ -652,6 +686,29 @@ void CRim::Construct()
 
     m_pTarget = nullptr;
     Change_State(WANDERING);
+}
+
+void CRim::Log()
+{
+    if (m_fMeleeAttackSpeed > m_fMeleeElapsed)
+    {
+        return;
+    }
+
+    m_fMeleeElapsed = 0.f;
+
+    CSoundMgr::Get_Instance()->StopSound(SOUND_DECONSTRUCT);
+    CSoundMgr::Get_Instance()->PlaySound(L"PickHitA.wav", SOUND_DECONSTRUCT, .5f);
+
+    CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
+    //pWall->Set_IsBrokenDown();
+    //Change_State(WANDERING);
+
+    //ÇØ´ç º®ÀÌ ¹«³ÊÁú ¶§ ±îÁö °ø°İ ¹İº¹
+    //½Ã°£ °ø°İÇÏ´Â ½Ã°£ Á¤ÇØ¾ßÇÔ
+
+    pWall->Take_Damage(1.f);
+
 }
 
 void CRim::Check_DeconstructWork()
@@ -824,6 +881,83 @@ void CRim::Check_ConstructWork()
             m_eCurrentTask = tTask;
             Change_State(CONSTRUCTING, tTask.pObj);
             //Set_Target(tTask.pObj);
+            return;
+            //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
+        }
+    }
+}
+
+void CRim::Check_LoggingWork()
+{
+    //½Ä¹ÎÁö °ü¸®ÀÚ¿¡ ÇØÃ¼ÇÒ º®µéÀÌ ÀÖ´ÂÁö È®ÀÎ         //±×¸®°í ±æ µû¶ó°¡´Â ÁßÀÌ¾Æ´Ï°í, ÀÛ¾÷»óÅÂÁßÀÌ ¾Æ´Ò¶§ ¸¸ , »õ·Î¿î ÀÛ¾÷ÀÌ »ı°åÀ» ¶§ °Ë»ç
+    if (!CColonyMgr::Get_Instance()->Get_LoggingSet()->empty() && Get_State() == WANDERING) //ÀÌ°Å ¸ó½ºÅÍ º®ºÎ¼ö·¯°¡´Â °Å¿¡ Àû¿ë ÇÏ¸é µÉµí?
+    {
+        //ÇØÃ¼ÇÒ º®µé Áß ±æÀ» Ã£À» ¼ö ÀÖ´Â °ÍÀÌ ³ª¿À¸é
+        //ÇØ´ç º®µ¹ ÁÖº¯ÀÇ 8°³ÀÇ Å¸ÀÏÀ» È®ÀÎÇØ¼­ ±æÀ» Ã£À» ¼ö ÀÖ´ÂÁö È®ÀÎ
+        //±æÀ» ¸øÃ£À¸¸é ÇØÃ¼ÇÏÁö¸»°í, ±æÀ» Ã£À¸¸é ÇØÃ¼ÇÏ·¯°¡¶ó
+
+        //SetÀ» vector·Î º¹»çÈÄ Á¤·Ä
+        set<TASK>& LoggingSet = *CColonyMgr::Get_Instance()->Get_LoggingSet();
+        vector<TASK> vecLogging(LoggingSet.begin(), LoggingSet.end());
+        // »ç¿ëÀÚ Á¤ÀÇ Á¤·Ä: ±âÁØÁ¡°úÀÇ °Å¸®¸¦ °è»êÇØ Á¤·Ä
+        std::sort(vecLogging.begin(), vecLogging.end(),
+            [this](const TASK _tTaskA, const TASK _tTaskB)
+            {
+                // ¿¹¾àµÇÁö ¾ÊÀ¸¸é ¿ì¼±¼øÀ§ ¾ÕÀ¸·Î
+                if (!_tTaskA.pRimReserved && _tTaskB.pRimReserved)
+                {
+                    return true;  // _tTaskA°¡ ´õ ¾Õ¿¡ ¿Àµµ·Ï
+                }
+
+                if (_tTaskA.pRimReserved && !_tTaskB.pRimReserved)
+                {
+                    return false; // _tTaskB°¡ ´õ ¾Õ¿¡ ¿Àµµ·Ï
+                }
+
+                float fDistA = CObj::Calculate_Dist(this, _tTaskA.pObj);
+                float fDistB = CObj::Calculate_Dist(this, _tTaskB.pObj);
+                return fDistA < fDistB; // °Å¸®°¡ °¡±î¿ï¼ö·Ï ¾ÕÂÊÀ¸·Î Á¤·Ä
+            });
+
+        //ÀÛ¾÷ÇØ¾ßÇÒ º®µé Å½»ö(³ª¿¡°Ô °¡Àå °¡±î¿î ³à¼®µé·Î Á¤·Ä)
+        for (TASK _tTask : vecLogging)
+        {
+            //±âÁ¸ ³ëµå µô¸®Æ®
+            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            m_NodeList.clear();
+
+            //ÀÌµ¿ °¡´ÉÇÑ Å¸ÀÏÀÌ ÀÖÀ¸¸é ³ëµå¸®½ºÆ® ¹İÈ¯
+            m_NodeList = move(CTileMgr::Get_Instance()
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)_tTask.pObj->Get_Info().fX, (int)_tTask.pObj->Get_Info().fY }));
+
+            if (m_NodeList.empty())
+            {
+                continue;
+            }
+
+            Set_Target(_tTask.pObj);
+            //ÀÛ¾÷ ¸®½ºÆ®¿¡¼­ °í¸¥ ÀÛ¾÷À» ¿¹¾àÇßÀ½À» Ç¥½Ã
+            for (auto Iter = LoggingSet.begin(); Iter != LoggingSet.end();)
+            {
+                if ((*Iter).pObj == m_pTarget)
+                {
+                    //»èÁ¦ ÈÄ
+                    Iter = LoggingSet.erase(Iter);
+                    //¼öÁ¤ÇØ¼­ Ãß°¡
+                    TASK tTask;
+                    tTask.pObj = m_pTarget;
+                    tTask.pRimReserved = this;
+                    LoggingSet.emplace(tTask);
+                }
+                else
+                {
+                    ++Iter;
+                }
+            }
+
+            m_bNavigating = true;
+            Change_State(LOGGING, _tTask.pObj);
+            //Set_Target(_tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
         }

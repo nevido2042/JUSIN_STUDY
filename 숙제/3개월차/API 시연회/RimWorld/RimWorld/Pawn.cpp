@@ -510,6 +510,9 @@ void CPawn::Late_Update()
     case CPawn::BOARDING:
         Handle_Boarding();
         break;
+    case CPawn::LOGGING:
+        Handle_Logging();
+        break;
     case CPawn::END:
         break;
     default:
@@ -579,6 +582,10 @@ void CPawn::Handle_Transporting()
 }
 
 void CPawn::Handle_Boarding()
+{
+}
+
+void CPawn::Handle_Logging()
 {
 }
 
