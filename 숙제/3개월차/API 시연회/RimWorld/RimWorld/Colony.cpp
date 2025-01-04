@@ -106,6 +106,7 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Pawn/Animal/Boomrat_west.bmp", L"Boomrat_west");
     //나무
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Tree/TreePoplar_LeaflessA.bmp", L"TreePoplar_LeaflessA");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Tree/TreePoplarA.bmp", L"TreePoplarA");
 
     //타일
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Ice.bmp", L"Ice");
@@ -174,6 +175,27 @@ void CColony::Initialize()
         CObjMgr::Get_Instance()->Add_Object(OBJ_RIM, pObj);
     }
 
+    //나무
+    for (int i = 0; i < 40; ++i)
+    {
+        int iX = int(rand() % TILEX);
+        int iY = int(rand() % TILEY);
+
+        //안 나왔던 놈이 나올 때까지 뽑는다.
+        while (bVisitArray[iX + TILEX * iY])
+        {
+            iX = int(rand() % TILEX);
+            iY = int(rand() % TILEY);
+        }
+
+        bVisitArray[iX + TILEX * iY] = true;
+
+        POS tPos{ 64 * iX + 32, 64 * iY + 32 };
+
+        pObj = CAbstractFactory<CTree>::Create(tPos);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
+    }
+
     Create_UI();
 }
 
@@ -200,7 +222,7 @@ int CColony::Update()
             m_iWaveIndex = 0;
         }
 
-        m_fSpawnTime += 60;
+        m_fSpawnTime += m_fSpawnTime;
         /*m_bEnemySpawned = true;*/
     }
 
@@ -465,7 +487,10 @@ void CColony::Spawn_Wave1()
     {
         Spawn_Random<CLancer>();
     }
-    
+    for (int i = 0; i < 1; ++i)
+    {
+        Spawn_Random<CCentipede>();
+    }
 }
 
 void CColony::Spawn_Wave2()

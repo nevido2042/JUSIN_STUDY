@@ -353,7 +353,10 @@ void CRim::Handle_Drafted()
     }
     else
     {
-        Find_Enemy();
+        if (!m_bNavigating)
+        {
+            Find_Enemy();
+        }
     }
 
     //사정거리에 있고 적이 보인다면
@@ -803,13 +806,13 @@ void CRim::Check_ConstructWork()
             {
                 if ((*Iter).pObj == m_pTarget)
                 {
+                    TASK tTas = *Iter;
                     //삭제 후
                     Iter = ConstructSet.erase(Iter);
                     //수정해서 추가
-                    TASK tTask;
-                    tTask.pObj = m_pTarget;
+                    //tTask.pObj = m_pTarget;
                     tTask.pRimReserved = this;
-                    tTask.eType = TASK::WALL;
+                    //tTask.eType = TASK::WALL;
                     ConstructSet.emplace(tTask);
                 }
                 else

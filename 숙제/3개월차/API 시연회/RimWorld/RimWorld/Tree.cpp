@@ -14,7 +14,7 @@ CTree::~CTree()
 
 void CTree::Initialize()
 {
-	Set_ImgKey(L"TreePoplar_LeaflessA");
+	Set_ImgKey(L"TreePoplarA");
 
     m_tInfo.fCX = 64.f;
     m_tInfo.fCY = 64.f;
@@ -53,7 +53,7 @@ void CTree::Render(HDC hDC)
 		0,
 		128,			// 복사할 이미지의 가로, 세로
 		128,
-		RGB_WHITE);		// 제거할 색상
+		RGB_PURPLE);		// 제거할 색상
 }
 
 void CTree::Release()

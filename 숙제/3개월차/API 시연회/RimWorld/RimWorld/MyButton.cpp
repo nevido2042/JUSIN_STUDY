@@ -216,7 +216,7 @@ void CMyButton::Late_Update()
 				CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pObj);
 
 				CSoundMgr::Get_Instance()->StopSound(SOUND_BGM);
-				CSoundMgr::Get_Instance()->PlaySound(L"Ship_TakeOff_1", SOUND_BGM, 1.f);
+				CSoundMgr::Get_Instance()->PlaySound(L"Ship_TakeOff_1.wav", SOUND_BGM, 1.f);
 			}
 		}
 	}
