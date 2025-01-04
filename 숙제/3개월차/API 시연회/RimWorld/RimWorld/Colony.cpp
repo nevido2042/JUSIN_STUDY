@@ -124,6 +124,7 @@ void CColony::Initialize()
 
     //¿ìÁÖ¼±
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Ship/ShipEngine_north.bmp", L"ShipEngine_north");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Ship.bmp", L"Ship");
 
 
     //¸Ê
@@ -132,7 +133,7 @@ void CColony::Initialize()
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
 
-    for (int i = 0; i < (TILEX * TILEY) / 10; ++i)
+    for (int i = 0; i < (TILEX * TILEY) / 5; ++i)
     {
         int iX = int(rand() % TILEX);
         int iY = int(rand() % TILEY);

@@ -299,7 +299,7 @@ void CColonyMgr::Render(HDC hDC)
     HDC		hCutPlantDC = CBmpMgr::Get_Instance()->Find_Image(L"CutPlant");
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
-    HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"ShipEngine_north");
+    HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"Ship");
 
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
