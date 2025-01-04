@@ -437,7 +437,7 @@ void CPawn::Initialize()
 
     Change_State(WANDERING);
 
-    m_fMeleeAttackSpeed = 100.f;
+    m_fMeleeAttackSpeed = 50.f;
 
     m_fConstructTime = 300.f;
 }

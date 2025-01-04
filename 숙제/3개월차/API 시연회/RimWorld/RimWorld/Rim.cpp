@@ -578,7 +578,7 @@ void CRim::Deconstruct()
     m_fMeleeElapsed = 0.f;
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_DECONSTRUCT);
-    CSoundMgr::Get_Instance()->PlaySound(L"ShovelHitI.wav", SOUND_DECONSTRUCT, .2f);
+    CSoundMgr::Get_Instance()->PlaySound(L"PickHitA.wav", SOUND_DECONSTRUCT, .5f);
 
     CSteelWall* pWall = static_cast<CSteelWall*>(m_pTarget);
     //pWall->Set_IsBrokenDown();
@@ -587,7 +587,7 @@ void CRim::Deconstruct()
     //해당 벽이 무너질 때 까지 공격 반복
     //시간 공격하는 시간 정해야함
 
-    pWall->Take_Damage(3.f);
+    pWall->Take_Damage(1.f);
 
 }
 
@@ -601,7 +601,7 @@ void CRim::Construct()
     if (m_fConstructTime > m_fConstructElapsed)
     {
         //드릴소리 나게
-        CSoundMgr::Get_Instance()->PlaySound(L"DrillB.wav", SOUND_CONSTRUCT, .2f);
+        CSoundMgr::Get_Instance()->PlaySound(L"DrillB.wav", SOUND_CONSTRUCT, .5f);
         m_fConstructElapsed += GAMESPEED;
         return;
     }
@@ -609,7 +609,7 @@ void CRim::Construct()
     m_fConstructElapsed = 0.f;
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_CONSTRUCT);
-    CSoundMgr::Get_Instance()->PlaySound(L"HammerA.wav", SOUND_CONSTRUCT, .2f);
+    CSoundMgr::Get_Instance()->PlaySound(L"HammerA.wav", SOUND_CONSTRUCT, .5f);
 
     //들고 있는 철을 삭제
     m_pTransportingItem->Set_Destroyed();
