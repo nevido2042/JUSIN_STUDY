@@ -118,6 +118,8 @@ void CSteelWall::Take_Damage(float _fDamage)
 
 void CSteelWall::Initialize()
 {
+	Set_ObjID(OBJ_WALL);
+
 	Set_ImgKey(L"Wall_Atlas_Smooth");
 	//m_pImgKey = L"Wall_Atlas_Smooth";
 

@@ -17,3 +17,5 @@ OBJ (GameObj, UI, 등등)
 언리얼을 좀 따라할까?
 GameObj(Actor, 등등)
 Actor(Pawn, 등등)
+
+COBJ에 enum OBJID(TAG?)를 넣어주자

@@ -20,7 +20,9 @@ public:
 	list<CObj*>*	Get_ChildList() { return &m_ChildList; }
 	bool			Get_Activate() { return m_bActivate; }
 	CObj*			Get_Parent() { return m_pParent; }
+	OBJID			Get_ObjID() { return m_eObjID; }
 
+	void				Set_ObjID(OBJID _eObjID) { m_eObjID = _eObjID; }
 	void				Set_Parent(CObj* _pObj) { m_pParent = _pObj; }
 	virtual void		Set_Activate(bool _bActivate) { m_bActivate = _bActivate; }
 	void				Set_Pos(float _fX, float _fY)
@@ -91,5 +93,7 @@ protected:
 	list<CObj*> m_ChildList;
 	//부모 오브젝트
 	CObj*		m_pParent;
+
+	OBJID		m_eObjID;
 };
 

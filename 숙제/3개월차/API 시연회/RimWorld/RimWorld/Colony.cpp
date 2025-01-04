@@ -194,6 +194,7 @@ void CColony::Initialize()
 
         pObj = CAbstractFactory<CTree>::Create(tPos);
         CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
+        CTileMgr::Get_Instance()->Set_TileObj(tPos, pObj);
     }
 
     Create_UI();
@@ -295,6 +296,7 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/TimeSpeedButton_Pause.bmp", L"TimeSpeedButton_Pause");
     //Designations
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Deconstruct.bmp", L"Deconstruct_mini");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/HarvestWood.bmp", L"HarvestWood");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/RockSmooth_MenuIcon.bmp", L"RockSmooth_MenuIcon_mini");
     //림 슬롯
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/DesButBG.bmp", L"DesButBG");
@@ -309,6 +311,8 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/MsgBox.bmp", L"MsgBox");
     //소집상태 표시 칼 Draft
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Draft.bmp", L"Draft");
+    //벌목 버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/LoggingBtn.bmp", L"LoggingBtn");
 
     //우주선 버튼
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ShipBtn.bmp", L"ShipBtn");
@@ -362,6 +366,13 @@ void CColony::Create_UI()
     pCommandBtn->Get_ChildList()->push_back(pDeconstructBtn);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pDeconstructBtn);
 
+    //해체 버튼
+    CObj* pLoggingBtn = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pLoggingBtn->Set_Size(fShortBtnCX, fShortBtnCY);
+    pLoggingBtn->Set_ImgKey(L"LoggingBtn");
+    pCommandBtn->Get_ChildList()->push_back(pLoggingBtn);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pLoggingBtn);
 
     //철벽 건설 버튼
     CObj* pConstruct = CAbstractFactory<CMyButton>::

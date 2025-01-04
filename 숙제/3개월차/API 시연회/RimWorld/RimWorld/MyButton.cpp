@@ -218,6 +218,10 @@ void CMyButton::Late_Update()
 				CSoundMgr::Get_Instance()->StopSound(SOUND_BGM);
 				CSoundMgr::Get_Instance()->PlaySound(L"Ship_TakeOff_1.wav", SOUND_BGM, 1.f);
 			}
+			else if (!lstrcmp(L"LoggingBtn", m_pImgKey))
+			{
+				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_LOGGING);
+			}
 		}
 	}
 	else

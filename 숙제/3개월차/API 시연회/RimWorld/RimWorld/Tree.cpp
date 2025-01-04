@@ -14,6 +14,9 @@ CTree::~CTree()
 
 void CTree::Initialize()
 {
+	Set_ObjID(OBJ_TREE);
+
+
 	Set_ImgKey(L"TreePoplarA");
 
     m_tInfo.fCX = 64.f;

@@ -63,7 +63,7 @@ void CColonyMgr::Create_ShipBtn()
 
     //우주선 발사 버튼
     CObj* pLaunchShip = CAbstractFactory<CMyButton>::
-        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+        Create(fShortBtnCX * 4.5f, WINCY - fShortBtnCY * 1.f);
     pLaunchShip->Set_Size(fShortBtnCX, fShortBtnCY);
     pLaunchShip->Set_ImgKey(L"LaunchShipBtn");
     pCommandBtn->Get_ChildList()->push_back(pLaunchShip);
@@ -100,6 +100,21 @@ void CColonyMgr::Change_Mode(MODE _eMode)
     }
 
     m_eMode = _eMode;
+}
+
+void CColonyMgr::Emplace_LoggingSet(TASK _tTask)
+{
+    auto Result = m_LoggingSet.emplace(_tTask);
+
+    if (!Result.second)
+    {
+        return;
+    }
+
+    CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+    CSoundMgr::Get_Instance()->PlaySound(L"Click2.wav", SOUND_UI, .5f);
+
+    Notify_TaskChange();
 }
 
 void CColonyMgr::Emplace_DeconstructSet(TASK _tTask)
@@ -274,90 +289,13 @@ void CColonyMgr::Late_Update()
 
     Control_Target();
 
-
-    //해체 모드일 때
-    if (m_eMode == MODE_DECONSTRUCT)
-    {
-        POINT	ptMouse{};
-        GetCursorPos(&ptMouse);
-        ScreenToClient(g_hWnd, &ptMouse);
-
-        m_bDrawRect = false;
-
-        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
-        {
-            ZeroMemory(&m_tSelectRect, sizeof(RECT));
-
-            m_tSelectRect.left = ptMouse.x;
-            m_tSelectRect.top = ptMouse.y;
-        }
-        if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
-        {
-            m_bDrawRect = true;
-
-            m_tSelectRect.right = ptMouse.x;
-            m_tSelectRect.bottom = ptMouse.y;
-        }
-        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
-        {
-            
-            //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
-
-            int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
-            int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-            int iLeft = m_tSelectRect.left + iScrollX;
-            int iRight = m_tSelectRect.right + iScrollX;
-            int iTop = m_tSelectRect.top + iScrollY;
-            int iBottom = m_tSelectRect.bottom + iScrollY;
-
-            list<CObj*> steelWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
-            for (CObj* pObj : steelWallList)
-            {
-                if (iLeft < iRight)
-                {
-                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                    if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                    if (iLeft < pObj->Get_Info().fX || iRight > pObj->Get_Info().fX)
-                    {
-                        continue;
-                    }
-                }
-                
-                if (iTop < iBottom)
-                {
-                    if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    if (iTop < pObj->Get_Info().fY || iBottom > pObj->Get_Info().fY)
-                    {
-                        continue;
-                    }
-                }
-
-                
-
-                TASK tTask;
-                tTask.pObj = pObj;
-                CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);//해체 목록 추가
-            }
-        }
-    }
+    MouseDrag_Select();
+    
 }
 
 void CColonyMgr::Render(HDC hDC)
 {
+    HDC		hLoggingDC = CBmpMgr::Get_Instance()->Find_Image(L"HarvestWood");
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
     HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"ShipEngine_north");
@@ -444,6 +382,44 @@ void CColonyMgr::Render(HDC hDC)
             64,
             64,
             hDeconstructDC,
+            0, 0,
+            64,
+            64,
+            RGB_WHITE);
+
+        if (m_bDrawRect)
+        {
+            // 초록색 펜 생성 (두께 5)
+            HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0)); // 두께 5, 색상 초록색
+            HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
+
+            // 사각형을 이루는 네 개의 선 그리기
+            MoveToEx(hDC, m_tSelectRect.left, m_tSelectRect.top, NULL); // 시작점
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.top);        // 윗변
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.bottom);     // 오른쪽 변
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.bottom);      // 아랫변
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.top);         // 왼쪽 변 (닫기)
+
+            // 펜 복원 및 삭제
+            SelectObject(hDC, hOldPen);
+            DeleteObject(hPen);
+
+        }
+
+    }
+    //벌목 모드일 경우 마우스에 해체 그림 표시
+    else if (m_eMode == MODE_LOGGING)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        GdiTransparentBlt(hDC,
+            ptMouse.x,
+            ptMouse.y,
+            64,
+            64,
+            hLoggingDC,
             0, 0,
             64,
             64,
@@ -564,5 +540,177 @@ void CColonyMgr::Control_Target()
         }
 
         ReleaseCapture();
+    }
+}
+
+void CColonyMgr::MouseDrag_Select()
+{
+    MouseDrag_Select_Wall();
+    MouseDrag_Select_Tree();
+}
+
+void CColonyMgr::MouseDrag_Select_Wall()
+{
+    //해체 모드일 때
+    if (m_eMode == MODE_DECONSTRUCT)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        m_bDrawRect = false;
+
+        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
+        {
+            ZeroMemory(&m_tSelectRect, sizeof(RECT));
+
+            m_tSelectRect.left = ptMouse.x;
+            m_tSelectRect.top = ptMouse.y;
+        }
+        if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
+        {
+            m_bDrawRect = true;
+
+            m_tSelectRect.right = ptMouse.x;
+            m_tSelectRect.bottom = ptMouse.y;
+        }
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+
+            //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
+
+            int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
+            int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+            int iLeft = m_tSelectRect.left + iScrollX;
+            int iRight = m_tSelectRect.right + iScrollX;
+            int iTop = m_tSelectRect.top + iScrollY;
+            int iBottom = m_tSelectRect.bottom + iScrollY;
+
+            list<CObj*> steelWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
+            for (CObj* pObj : steelWallList)
+            {
+                if (iLeft < iRight)
+                {
+                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                    if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                    if (iLeft < pObj->Get_Info().fX || iRight > pObj->Get_Info().fX)
+                    {
+                        continue;
+                    }
+                }
+
+                if (iTop < iBottom)
+                {
+                    if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (iTop < pObj->Get_Info().fY || iBottom > pObj->Get_Info().fY)
+                    {
+                        continue;
+                    }
+                }
+
+
+
+                TASK tTask;
+                tTask.pObj = pObj;
+                CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);//해체 목록 추가
+            }
+        }
+    }
+}
+
+void CColonyMgr::MouseDrag_Select_Tree()
+{
+    //해체 모드일 때
+    if (m_eMode == MODE_LOGGING)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        m_bDrawRect = false;
+
+        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
+        {
+            ZeroMemory(&m_tSelectRect, sizeof(RECT));
+
+            m_tSelectRect.left = ptMouse.x;
+            m_tSelectRect.top = ptMouse.y;
+        }
+        if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
+        {
+            m_bDrawRect = true;
+
+            m_tSelectRect.right = ptMouse.x;
+            m_tSelectRect.bottom = ptMouse.y;
+        }
+        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+
+            //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
+
+            int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
+            int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+            int iLeft = m_tSelectRect.left + iScrollX;
+            int iRight = m_tSelectRect.right + iScrollX;
+            int iTop = m_tSelectRect.top + iScrollY;
+            int iBottom = m_tSelectRect.bottom + iScrollY;
+
+            list<CObj*> TreeList = CObjMgr::Get_Instance()->Get_List()[OBJ_TREE];
+            for (CObj* pObj : TreeList)
+            {
+                if (iLeft < iRight)
+                {
+                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                    if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
+                    if (iLeft < pObj->Get_Info().fX || iRight > pObj->Get_Info().fX)
+                    {
+                        continue;
+                    }
+                }
+
+                if (iTop < iBottom)
+                {
+                    if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (iTop < pObj->Get_Info().fY || iBottom > pObj->Get_Info().fY)
+                    {
+                        continue;
+                    }
+                }
+
+
+
+                TASK tTask;
+                tTask.pObj = pObj;
+                CColonyMgr::Get_Instance()->Emplace_LoggingSet(tTask);//해체 목록 추가
+            }
+        }
     }
 }

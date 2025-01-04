@@ -25,13 +25,14 @@ typedef struct tagTask
 class CColonyMgr
 {
 public:
-	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_CONSTRUCT, MODE_SHIP, MODE_END };
+	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_LOGGING, MODE_CONSTRUCT, MODE_SHIP, MODE_END };
 private:
 	CColonyMgr();
 	virtual ~CColonyMgr();
 public:
 	void					Create_ShipBtn();
 	void					Change_Mode(MODE _eMode);
+	void					Emplace_LoggingSet(TASK _tTask);
 	void					Emplace_DeconstructSet(TASK _tTask);
 	void					Emplace_ConstructSet(TASK _tTask);
 	//void					Emplace_TransportSet(TASK _tTask);
@@ -68,6 +69,9 @@ public:
 private:
 	void	Control_Target();
 
+	void	MouseDrag_Select();
+	void	MouseDrag_Select_Wall();
+	void	MouseDrag_Select_Tree();
 public:
 	static CColonyMgr* Get_Instance()
 	{
@@ -98,6 +102,7 @@ private:
 	//여기서 저절로 딜리트해주나?
 	set<TASK>	m_DeconstructSet;
 	set<TASK>	m_ConstructSet;
+	set<TASK>	m_LoggingSet;
 	//set<TASK>	m_TransportSet;
 
 	bool	m_bShipBtnActive;

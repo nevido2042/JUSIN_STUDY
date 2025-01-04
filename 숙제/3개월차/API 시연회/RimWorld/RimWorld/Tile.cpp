@@ -43,11 +43,21 @@ void CTile::Late_Update()
 			//오브젝트가 있다.
 			if (m_pObj)
 			{
-				//벽이면 리턴
-				if (!lstrcmp(m_pObj->Get_ImgKey(), L"Wall_Atlas_Smooth"))
+				if (m_pObj->Get_ObjID() == OBJ_WALL||
+					m_pObj->Get_ObjID() == OBJ_TREE)
 				{
 					return;
 				}
+				////벽이면 리턴
+				//if (!lstrcmp(m_pObj->Get_ImgKey(), L"Wall_Atlas_Smooth"))
+				//{
+				//	return;
+				//}
+				////나무이면 리턴
+				//if (!lstrcmp(m_pObj->Get_ImgKey(), L"TreePoplarA"))
+				//{
+				//	return;
+				//}
 			}
 
 			TASK tTask;
