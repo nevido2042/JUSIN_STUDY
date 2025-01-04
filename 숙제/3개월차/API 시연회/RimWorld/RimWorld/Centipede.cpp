@@ -22,7 +22,7 @@ CCentipede::~CCentipede()
 
 void CCentipede::Initialize()
 {
-    CPawn::Initialize();
+    CEnemy::Initialize();
 
     m_fSpeed = 1.f;
 
@@ -50,7 +50,7 @@ int CCentipede::Update()
         }
     }
 
-    return CPawn::Update();
+    return CEnemy::Update();
 }
 
 void CCentipede::Late_Update()

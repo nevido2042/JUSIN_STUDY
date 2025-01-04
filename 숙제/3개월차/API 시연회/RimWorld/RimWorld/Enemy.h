@@ -17,5 +17,9 @@ protected:
     void Handle_Deconstructing() override;
 private:
     void    Find_Target();
+
+protected:
+    float       m_fDestroyTime;
+    float       m_fDestroyTime_Elapsed;
 };
 

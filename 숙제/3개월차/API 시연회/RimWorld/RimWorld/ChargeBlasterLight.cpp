@@ -38,8 +38,8 @@ void CChargeBlasterLight::Fire()
         return;
     }
 
-    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-    CSoundMgr::Get_Instance()->PlaySound(L"ChargeShotA.wav", SOUND_EFFECT, 0.2f);
+    CSoundMgr::Get_Instance()->StopSound(SOUND_BLASTERLIGHT);
+    CSoundMgr::Get_Instance()->PlaySound(L"ChargeShotA.wav", SOUND_BLASTERLIGHT, 0.2f);
 
     //°¢µµ ·£´ý
     int iRand = (rand() % 21) - 10; //-10 ~ 10

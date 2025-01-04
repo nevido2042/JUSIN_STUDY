@@ -20,7 +20,7 @@ CLancer::~CLancer()
 
 void CLancer::Initialize()
 {
-    CPawn::Initialize();
+    CEnemy::Initialize();
 
     m_fSpeed = 1.f;
 
@@ -39,7 +39,7 @@ void CLancer::Initialize()
 
 int CLancer::Update()
 {
-    return CPawn::Update();
+    return CEnemy::Update();
 }
 
 void CLancer::Late_Update()

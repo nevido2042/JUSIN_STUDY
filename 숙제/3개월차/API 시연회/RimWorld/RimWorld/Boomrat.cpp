@@ -22,7 +22,7 @@ CBoomrat::~CBoomrat()
 
 void CBoomrat::Initialize()
 {
-    CPawn::Initialize();
+    CEnemy::Initialize();
 
     m_fSpeed = 1.5f;
 
@@ -36,7 +36,7 @@ void CBoomrat::Initialize()
 
 int CBoomrat::Update()
 {
-    return CPawn::Update();
+    return CEnemy::Update();
 }
 
 void CBoomrat::Late_Update()

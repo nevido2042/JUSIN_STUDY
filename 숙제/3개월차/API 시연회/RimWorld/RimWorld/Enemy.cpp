@@ -4,8 +4,10 @@
 #include "ObjMgr.h"
 #include "TileMgr.h"
 #include "SteelWall.h"
+#include "TimeMgr.h"
 
 CEnemy::CEnemy()
+    :m_fDestroyTime(0.f), m_fDestroyTime_Elapsed(0.f)
 {
 }
 
@@ -16,10 +18,23 @@ CEnemy::~CEnemy()
 
 void CEnemy::Initialize()
 {
+    CPawn::Initialize();
+
+    m_fDestroyTime = 100.f;
 }
 
 int CEnemy::Update()
 {
+    if (m_bDead)
+    {
+        m_fDestroyTime_Elapsed += GAMESPEED;
+    }
+
+    if (m_fDestroyTime < m_fDestroyTime_Elapsed)
+    {
+        Set_Destroyed();
+    }
+
     return CPawn::Update();
 }
 
