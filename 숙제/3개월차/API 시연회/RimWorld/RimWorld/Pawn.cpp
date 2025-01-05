@@ -597,7 +597,7 @@ void CPawn::Render(HDC hDC)
         break;
     }
     // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 40), buffer, lstrlenW(buffer));
+    //TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 40), buffer, lstrlenW(buffer));
 }
 
 void CPawn::Release()

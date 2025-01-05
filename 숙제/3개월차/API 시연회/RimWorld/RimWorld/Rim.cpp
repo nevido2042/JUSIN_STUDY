@@ -384,7 +384,7 @@ void CRim::Handle_Constructing()
     }
 
     //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.2f)
+    if (m_fTargetDist < TILECX * 1.5f)
     {
         //가까우면 멈춘다.
         //RequestNavStop();
@@ -483,7 +483,7 @@ void CRim::Handle_Transporting()
     }
 
     //타겟 아이템이 가까워지면 아이템을 들어라
-    if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.2f)
+    if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.5f)
     {
         if (m_pTarget)
         {

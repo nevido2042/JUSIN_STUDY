@@ -136,7 +136,7 @@ void CEnemy::Handle_Deconstructing()
     }
 
     //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.2f)
+    if (m_fTargetDist < TILECX * 1.5f)
     {
         //가까우면 멈춘다.
         //RequestNavStop();

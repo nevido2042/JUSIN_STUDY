@@ -91,26 +91,26 @@ void CTile::Render(HDC hDC)
 	HPEN hPen(nullptr);
 	HPEN hOldPen(nullptr);
 
-	if (m_eOption == OPT_BLOCKED)
-	{
-		// 빨간색 펜 생성
-		hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // 굵기 1, 빨간색
-		hOldPen = (HPEN)SelectObject(hDC, hPen);       // 기존 펜 저장 및 빨간색 펜 설정
-	}
-	
-	// 사각형 그리기
-	MoveToEx(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, nullptr);         // 왼쪽 위로 이동
-	LineTo(hDC, m_tRect.right+ iScrollX, m_tRect.top + iScrollY);                  // 상단 선
-	LineTo(hDC, m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);               // 오른쪽 선
-	LineTo(hDC, m_tRect.left + iScrollX, m_tRect.bottom + iScrollY);                // 하단 선
-	LineTo(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY);                   // 왼쪽 선
+	//if (m_eOption == OPT_BLOCKED)
+	//{
+	//	// 빨간색 펜 생성
+	//	hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // 굵기 1, 빨간색
+	//	hOldPen = (HPEN)SelectObject(hDC, hPen);       // 기존 펜 저장 및 빨간색 펜 설정
+	//}
+	//
+	//// 사각형 그리기
+	//MoveToEx(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, nullptr);         // 왼쪽 위로 이동
+	//LineTo(hDC, m_tRect.right+ iScrollX, m_tRect.top + iScrollY);                  // 상단 선
+	//LineTo(hDC, m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);               // 오른쪽 선
+	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.bottom + iScrollY);                // 하단 선
+	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY);                   // 왼쪽 선
 
-	if (m_eOption == OPT_BLOCKED)
-	{
-		// 펜 정리
-		SelectObject(hDC, hOldPen); // 기존 펜 복원
-		DeleteObject(hPen);         // 빨간색 펜 삭제
-	}
+	//if (m_eOption == OPT_BLOCKED)
+	//{
+	//	// 펜 정리
+	//	SelectObject(hDC, hOldPen); // 기존 펜 복원
+	//	DeleteObject(hPen);         // 빨간색 펜 삭제
+	//}
 
 }
 
