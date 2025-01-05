@@ -10,6 +10,7 @@
 #include "EffectMgr.h"
 #include "SceneMgr.h"
 #include "ScrollMgr.h"
+#include "KeyMgr.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
@@ -214,20 +215,19 @@ int CColony::Update()
     CTimeMgr::Get_Instance()->Update();
 
     //몇 초 후 적 생성
-    if (/*!m_bEnemySpawned &&*/ CTimeMgr::Get_Instance()->Get_ElapsedTime() > m_fSpawnTime)
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_F1) /*CTimeMgr::Get_Instance()->Get_ElapsedTime() > m_fSpawnTime*/)
     {
         CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
         CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
         
-        //(this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
+        (this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
         
         if (m_iWaveIndex > 2)
         {
             m_iWaveIndex = 0;
         }
 
-        m_fSpawnTime += m_fSpawnTime;
-        /*m_bEnemySpawned = true;*/
+        //m_fSpawnTime += m_fSpawnTime;
     }
 
 
