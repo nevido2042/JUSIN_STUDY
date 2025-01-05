@@ -12,6 +12,7 @@
 #include "TimeMgr.h"
 #include "SoundMgr.h"
 #include "Ship.h"
+#include "Campfire.h"
 
 CRim::CRim()
     :m_bTaskCheck(false), m_pTransportingItem(nullptr)
@@ -585,6 +586,15 @@ void CRim::Construct()
     //CObj* pSteel =  CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
     //pSteel->Set_Destroyed();
 
+    //이미 타일 위에 뭐가 있으면 취소 시키기
+    if (CTileMgr::Get_Instance()->Get_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY))
+    {
+        m_bTaskCheck = true;
+        PutDown_Item();
+        Change_State(WANDERING);
+        return;
+    }
+
     //해체 시간 걸리게 하고 사운드 출력
     if (m_fConstructTime > m_fConstructElapsed)
     {
@@ -620,6 +630,13 @@ void CRim::Construct()
         CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
         CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
         CTileMgr::Get_Instance()->Set_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, OPT_BLOCKED);
+        CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
+    }
+    else if (m_eCurrentTask.eType == TASK::CAMPFIRE)
+    {
+        //모닥불 건설
+        CObj* pObj = CAbstractFactory<CCampfire>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
+        CObjMgr::Get_Instance()->Add_Object(OBJ_CAMPFIRE, pObj);
         CTileMgr::Get_Instance()->Set_TileObj(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY, pObj);
     }
 

@@ -20,7 +20,7 @@ void CEnemy::Initialize()
 {
     CPawn::Initialize();
 
-    m_fDestroyTime = 100.f;
+    m_fDestroyTime = 1000.f;
 }
 
 int CEnemy::Update()

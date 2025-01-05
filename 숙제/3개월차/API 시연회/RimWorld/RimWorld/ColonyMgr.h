@@ -3,7 +3,7 @@
 
 typedef struct tagTask
 {
-	enum TYPE { WALL, SHIP, DECONSTRUCT, END };
+	enum TYPE { WALL, SHIP, CAMPFIRE, DECONSTRUCT, END };
 
 	tagTask()
 		:pObj(nullptr), pRimReserved(nullptr), eType(END) {}
@@ -25,7 +25,7 @@ typedef struct tagTask
 class CColonyMgr
 {
 public:
-	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_LOGGING, MODE_CONSTRUCT, MODE_SHIP, MODE_END };
+	enum MODE { MODE_SELECT, MODE_DECONSTRUCT, MODE_LOGGING, MODE_CONSTRUCT, MODE_SHIP, MODE_CAMPFIRE, MODE_END };
 private:
 	CColonyMgr();
 	virtual ~CColonyMgr();

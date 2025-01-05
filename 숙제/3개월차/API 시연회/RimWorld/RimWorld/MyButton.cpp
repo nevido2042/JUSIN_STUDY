@@ -43,8 +43,6 @@ void CMyButton::Late_Update()
 			m_bOnHovered = true;
 		}
 
-
-
 		m_iDrawID = 1;
 		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 		{
@@ -216,6 +214,10 @@ void CMyButton::Late_Update()
 			else if (!lstrcmp(L"LoggingBtn", m_pImgKey))
 			{
 				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_LOGGING);
+			}
+			else if (!lstrcmp(L"CampfireBtn", m_pImgKey))
+			{
+				CColonyMgr::Get_Instance()->Change_Mode(CColonyMgr::MODE_CAMPFIRE);
 			}
 		}
 	}

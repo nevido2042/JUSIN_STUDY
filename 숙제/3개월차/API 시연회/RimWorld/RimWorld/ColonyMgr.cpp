@@ -55,7 +55,7 @@ void CColonyMgr::Create_ShipBtn()
 
     //우주선 건설 버튼
     CObj* pShip = CAbstractFactory<CMyButton>::
-        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+        Create(fShortBtnCX * 4.5f, WINCY - fShortBtnCY * 1.f);
     pShip->Set_Size(fShortBtnCX, fShortBtnCY);
     pShip->Set_ImgKey(L"ShipBtn");
     pStructureBtn->Get_ChildList()->push_back(pShip);
@@ -300,6 +300,8 @@ void CColonyMgr::Render(HDC hDC)
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
     HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"Ship");
+    HDC     hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire_MenuIcon");
+    HDC     hCampfireBlueprintDC = CBmpMgr::Get_Instance()->Find_Image(L"CampfireBlueprint");
 
 
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
@@ -382,6 +384,18 @@ void CColonyMgr::Render(HDC hDC)
                 512, 512,
                 RGB_WHITE);
         }
+        else if (tTask.eType == TASK::CAMPFIRE)
+        {
+            GdiTransparentBlt(hDC,
+                (int)pObj->Get_Rect()->left + iScrollX,
+                (int)pObj->Get_Rect()->top + iScrollY,
+                64,
+                64,
+                hCampfireBlueprintDC,
+                0, 0,
+                64, 64,
+                RGB_WHITE);
+        }
 
         
     }
@@ -424,7 +438,7 @@ void CColonyMgr::Render(HDC hDC)
         }
 
     }
-    //벌목 모드일 경우 마우스에 해체 그림 표시
+    //벌목 모드일 경우 마우스에 도끼모양 그림 표시
     else if (m_eMode == MODE_LOGGING)
     {
         POINT	ptMouse{};
@@ -491,6 +505,22 @@ void CColonyMgr::Render(HDC hDC)
             hShipDC,
             0, 0,
             512, 512,
+            RGB_WHITE);
+    }
+    else if (m_eMode == MODE_CAMPFIRE)
+    {
+        POINT	ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        GdiTransparentBlt(hDC,
+            ptMouse.x,
+            ptMouse.y,
+            64,
+            64,
+            hCampfireDC,
+            0, 0,
+            64, 64,
             RGB_WHITE);
     }
 }

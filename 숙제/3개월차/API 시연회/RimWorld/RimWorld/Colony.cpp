@@ -324,6 +324,13 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/ShipBtn.bmp", L"ShipBtn");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/LaunchShipBtn.bmp", L"LaunchShipBtn");
 
+    //캠프파이어버튼
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/CampfireBtn.bmp", L"CampfireBtn");
+    //캠프파이어 아이콘
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Campfire_MenuIcon.bmp", L"Campfire_MenuIcon");
+    //캠프파이어 블루프린트
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/CampfireBlueprint.bmp", L"CampfireBlueprint");
+
     //상세정보창
     CObj* pDetailView = CAbstractFactory<CDetailView>::Create(200, WINCY - 107);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pDetailView);
@@ -387,6 +394,14 @@ void CColony::Create_UI()
     pConstruct->Set_ImgKey(L"Construct");
     pStructureBtn->Get_ChildList()->push_back(pConstruct);
     CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pConstruct);
+
+    //캠프파이어 건설 버튼
+    CObj* pCampfire = CAbstractFactory<CMyButton>::
+        Create(fShortBtnCX * 3.5f, WINCY - fShortBtnCY * 1.f);
+    pCampfire->Set_Size(fShortBtnCX, fShortBtnCY);
+    pCampfire->Set_ImgKey(L"CampfireBtn");
+    pStructureBtn->Get_ChildList()->push_back(pCampfire);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_UI, pCampfire);
 
     ////우주선 건설 버튼
     //CObj* pShip = CAbstractFactory<CMyButton>::
