@@ -556,11 +556,11 @@ void CPawn::Render(HDC hDC)
     wchar_t buffer[50];
     wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
     // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
+    //TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
     // 변수 값을 유니코드 문자열로 변환
     wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
     // 문자열 출력 (유니코드)
-    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
+    //TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 
     switch (Get_State())
     {
@@ -584,6 +584,12 @@ void CPawn::Render(HDC hDC)
         break;
     case CPawn::BOARDING:
         wsprintf(buffer, L"m_eState: %s", L"BOARDING");
+        break;
+    case CPawn::MOVETOWORK:
+        wsprintf(buffer, L"m_eState: %s", L"MOVE TO WORK");
+        break;
+    case CPawn::LOGGING:
+        wsprintf(buffer, L"m_eState: %s", L"LOGGING");
         break;
     case CPawn::END:
         break;

@@ -357,7 +357,6 @@ void CRim::Handle_Deconstructing()
 
 void CRim::Handle_Constructing()
 {
-
     //건설 할때 이미 벽이 있으면 철 내려놓고 다른 일 찾아라
     if (CTileMgr::Get_Instance()->Get_TileOption(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY) == OPT_BLOCKED)
     {
@@ -367,7 +366,6 @@ void CRim::Handle_Constructing()
         return;
     }
 
-  
     //옮기는 철이 없다.
     if (!m_pTransportingItem)
     {
@@ -403,8 +401,6 @@ void CRim::Handle_Constructing()
         //건설
         Construct();
     }
-
-
 
     //해체 진행중인 바 생성
     //몇초 뒤 해체 완료
@@ -457,8 +453,11 @@ void CRim::Handle_Transporting()
             }
         }
 
-        POS tPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
-        Move_To(tPos);
+        if (pItem)
+        {
+            POS tPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
+            Move_To(tPos);
+        }
     }
     
 
@@ -787,7 +786,7 @@ void CRim::Check_DeconstructWork()
             }
 
             m_bNavigating = true;
-            Change_State(DECONSTRUCTING, _tTask.pObj);
+            Change_State(MOVETOWORK, _tTask.pObj);
             //Set_Target(_tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });
