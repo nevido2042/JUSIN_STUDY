@@ -542,56 +542,56 @@ void CPawn::Late_Update()
 
 void CPawn::Render(HDC hDC)
 {
-    //int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    //int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    ////길 찾기 노드 출력
-    //for (CNode* pNode : m_NodeList)
-    //{
-    //    Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
-    //        int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
-    //}
+    //길 찾기 노드 출력
+    for (CNode* pNode : m_NodeList)
+    {
+        Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
+            int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
+    }
 
-    //// 변수 값을 유니코드 문자열로 변환
-    //wchar_t buffer[50];
-    //wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
-    //// 문자열 출력 (유니코드)
-    //TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
-    //// 변수 값을 유니코드 문자열로 변환
-    //wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
-    //// 문자열 출력 (유니코드)
-    //TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
+    // 변수 값을 유니코드 문자열로 변환
+    wchar_t buffer[50];
+    wsprintf(buffer, L"m_bAttack: %d", m_bAttack);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY), buffer, lstrlenW(buffer));
+    // 변수 값을 유니코드 문자열로 변환
+    wsprintf(buffer, L"m_pTarget: %p", m_pTarget);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 20), buffer, lstrlenW(buffer));
 
-    //switch (Get_State())
-    //{
-    //case CPawn::WANDERING:
-    //    wsprintf(buffer, L"m_eState: %s", L"WANDERING");
-    //    break;
-    //case CPawn::DRAFTED:
-    //    wsprintf(buffer, L"m_eState: %s", L"DRAFTED");
-    //    break;
-    //case CPawn::UNDRAFTED:
-    //    wsprintf(buffer, L"m_eState: %s", L"UNDRAFTED");
-    //    break;
-    //case CPawn::CONSTRUCTING:
-    //    wsprintf(buffer, L"m_eState: %s", L"CONSTRUCTING");
-    //    break;
-    //case CPawn::DECONSTRUCTING:
-    //    wsprintf(buffer, L"m_eState: %s", L"DECONSTRUCTING");
-    //    break;
-    //case CPawn::TRANSPORTING:
-    //    wsprintf(buffer, L"m_eState: %s", L"TRANSPORTING");
-    //    break;
-    //case CPawn::BOARDING:
-    //    wsprintf(buffer, L"m_eState: %s", L"BOARDING");
-    //    break;
-    //case CPawn::END:
-    //    break;
-    //default:
-    //    break;
-    //}
-    //// 문자열 출력 (유니코드)
-    //TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 40), buffer, lstrlenW(buffer));
+    switch (Get_State())
+    {
+    case CPawn::WANDERING:
+        wsprintf(buffer, L"m_eState: %s", L"WANDERING");
+        break;
+    case CPawn::DRAFTED:
+        wsprintf(buffer, L"m_eState: %s", L"DRAFTED");
+        break;
+    case CPawn::UNDRAFTED:
+        wsprintf(buffer, L"m_eState: %s", L"UNDRAFTED");
+        break;
+    case CPawn::CONSTRUCTING:
+        wsprintf(buffer, L"m_eState: %s", L"CONSTRUCTING");
+        break;
+    case CPawn::DECONSTRUCTING:
+        wsprintf(buffer, L"m_eState: %s", L"DECONSTRUCTING");
+        break;
+    case CPawn::TRANSPORTING:
+        wsprintf(buffer, L"m_eState: %s", L"TRANSPORTING");
+        break;
+    case CPawn::BOARDING:
+        wsprintf(buffer, L"m_eState: %s", L"BOARDING");
+        break;
+    case CPawn::END:
+        break;
+    default:
+        break;
+    }
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, int(m_tInfo.fX + iScrollX), int(m_tInfo.fY + iScrollY + 40), buffer, lstrlenW(buffer));
 }
 
 void CPawn::Release()

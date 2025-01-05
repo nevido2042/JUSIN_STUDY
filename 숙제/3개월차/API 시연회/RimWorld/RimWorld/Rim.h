@@ -58,6 +58,9 @@ private:
     bool    m_bTaskCheck;
     CObj*   m_pTransportingItem;
 
+    float   m_fTaskCheckTime;
+    float   m_fTaskCheckTime_Elapsed;
+
     //¸öÅë, ¾ó±¼, ¸Ó¸®
     wstring m_pImgKey_Body;
     wstring m_pImgKey_Face;

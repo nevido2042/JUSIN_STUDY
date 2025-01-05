@@ -164,7 +164,7 @@
       <Filter>01.Obj\Campfire</Filter>
     </ClCompile>
     <ClCompile Include="WoodLog.cpp">
-      <Filter>01.Obj\04.Item\Wood</Filter>
+      <Filter>01.Obj\04.Item\WoodLog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,7 +346,7 @@
       <Filter>01.Obj\Campfire</Filter>
     </ClInclude>
     <ClInclude Include="WoodLog.h">
-      <Filter>01.Obj\04.Item\Wood</Filter>
+      <Filter>01.Obj\04.Item\WoodLog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -535,7 +535,7 @@
     <Filter Include="01.Obj\Campfire">
       <UniqueIdentifier>{b4953cd3-4df9-428d-9610-99f62d475032}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Obj\04.Item\Wood">
+    <Filter Include="01.Obj\04.Item\WoodLog">
       <UniqueIdentifier>{0ce2f0f7-89e6-475f-a8bb-67aa2788d77d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

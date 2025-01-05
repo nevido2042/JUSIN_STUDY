@@ -15,7 +15,8 @@
 #include "Campfire.h"
 
 CRim::CRim()
-    :m_bTaskCheck(false), m_pTransportingItem(nullptr)
+    :m_bTaskCheck(false), m_pTransportingItem(nullptr),
+    m_fTaskCheckTime(0.f), m_fTaskCheckTime_Elapsed(0.f)
 {
 
 }
@@ -28,6 +29,8 @@ CRim::~CRim()
 void CRim::Initialize()
 {
     CPawn::Initialize();
+
+    m_fTaskCheckTime = 100.f;
 
     m_fSpeed = 2.f;
 
@@ -113,6 +116,14 @@ int CRim::Update()
 void CRim::Late_Update()
 {
     CPawn::Late_Update();
+
+    m_fTaskCheckTime_Elapsed += GAMESPEED;
+
+    if (m_fTaskCheckTime < m_fTaskCheckTime_Elapsed)
+    {
+        m_bTaskCheck = true;
+        m_fTaskCheckTime_Elapsed = 0.f;
+    }
 
     //마우스가 올라가져있는가?
     if (Is_MouseHovered_Scrolled())
@@ -401,6 +412,56 @@ void CRim::Handle_Constructing()
 
 void CRim::Handle_Transporting()
 {
+    //현재 건설작업이 뭔지 파악하고, 어떤 재료를 가져가야할지 판단
+
+    if (!m_pTarget)
+    {
+        CObj* pItem(nullptr);
+
+        if (m_eCurrentTask.eType == TASK::CAMPFIRE)
+        {
+            //나무
+            if (!m_pTransportingItem)
+            {
+                pItem = Find_Item(L"WoodLog_b");
+
+                if (pItem)
+                {
+                    Set_Target(pItem);
+                }
+                else
+                {
+                    //m_bTaskCheck = true;
+                    Change_State(WANDERING);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            //철
+            if (!m_pTransportingItem)
+            {
+                pItem = Find_Item(L"Steel_b");
+
+                if (pItem)
+                {
+                    Set_Target(pItem);
+                }
+                else
+                {
+                    m_bTaskCheck = true;
+                    Change_State(WANDERING);
+                    return;
+                }
+            }
+        }
+
+        POS tPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
+        Move_To(tPos);
+    }
+    
+
 
     //타겟으로 한 철이 다른 애가 이미 가져갔으면
     if (m_pTarget)
@@ -414,63 +475,13 @@ void CRim::Handle_Transporting()
         }
     }
 
-    //철을 못찾았으면
-    if (!m_pTarget)
-    {
-        CObj* pItem = Find_Item(L"Steel_b");
-
-        if (pItem)
-        {
-            //들 수 있는 철이 있으면
-            //운반으로 변경
-            m_pTarget = pItem;
-
-            POS tPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
-            Move_To(tPos);
-            return;
-            //PickUp_Item(pItem);
-        }
-        else
-        {
-            m_bTaskCheck = true;
-            Change_State(WANDERING);
-            PutDown_Item();
-            return;
-        }
-    }
-
-    //타겟 있고, 운반하는게 없고, 네비게이션 끝났으면 종료
-    if (m_pTarget && !m_pTransportingItem && !m_bNavigating)
-    {
-        m_bTaskCheck = true;
-        Change_State(WANDERING);
-        PutDown_Item();
-        return;
-    }
-
-
-    //운반하고있는게 있으면
-    if (m_pTransportingItem)
-    {
-        m_pTarget = nullptr;
-
-        Check_ConstructWork();
-
-        //건설 할게 없으면
-        if (Get_State() != CONSTRUCTING)
-        {
-            m_bTaskCheck = true;
-            Change_State(WANDERING);
-            PutDown_Item();
-        }
-    }
-
     //타겟 아이템이 가까워지면 아이템을 들어라
-    if (!m_pTransportingItem && m_fTargetDist < TILECX * 0.5f)
+    if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.2f)
     {
         if (m_pTarget)
         {
             PickUp_Item(m_pTarget);
+            Change_State(MOVETOWORK, m_eCurrentTask.pObj);
         }
     }
 }
@@ -513,6 +524,24 @@ void CRim::Handle_MoveToWork()
 {
     if (m_pTarget)
     {
+        if (!m_bNavigating)
+        {
+            //기존 노드 딜리트
+            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            m_NodeList.clear();
+
+            //이동 가능한 타일이 있으면 노드리스트 반환
+            m_NodeList = move(CTileMgr::Get_Instance()
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY }));
+
+            if (m_NodeList.empty())
+            {
+                return;
+            }
+
+            m_bNavigating = true;
+        }
+
         if (CBreakable* pWall = dynamic_cast<CBreakable*>(m_pTarget))
         {
             if (pWall->Get_IsBrokenDown())
@@ -548,8 +577,10 @@ void CRim::Handle_MoveToWork()
         {
             Change_State(DECONSTRUCTING, m_pTarget);
         }
-
-
+        else if (m_pTarget->Get_ObjID() == OBJ_TILE)
+        {
+            Change_State(CONSTRUCTING, m_pTarget);
+        }
     }
 }
 
@@ -722,18 +753,18 @@ void CRim::Check_DeconstructWork()
         //작업해야할 벽들 탐색(나에게 가장 가까운 녀석들로 정렬)
         for (TASK _tTask : vecDeconstruct)
         {
-            //기존 노드 딜리트
-            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
-            m_NodeList.clear();
+            ////기존 노드 딜리트
+            //for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            //m_NodeList.clear();
 
-            //이동 가능한 타일이 있으면 노드리스트 반환
-            m_NodeList = move(CTileMgr::Get_Instance()
-                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)_tTask.pObj->Get_Info().fX, (int)_tTask.pObj->Get_Info().fY }));
+            ////이동 가능한 타일이 있으면 노드리스트 반환
+            //m_NodeList = move(CTileMgr::Get_Instance()
+            //    ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)_tTask.pObj->Get_Info().fX, (int)_tTask.pObj->Get_Info().fY }));
 
-            if (m_NodeList.empty())
-            {
-                continue;
-            }
+            //if (m_NodeList.empty())
+            //{
+            //    continue;
+            //}
 
             Set_Target(_tTask.pObj);
             //작업 리스트에서 고른 작업을 예약했음을 표시
@@ -773,7 +804,7 @@ void CRim::Check_ConstructWork()
         //내가 철을 들고 있어야만 건설 가능
         //철을 안들었으면 철 찾아서 들어라
         //철이 있어야함
-        if (!m_pTransportingItem)
+        /*if (!m_pTransportingItem)
         {
             CObj* pItem = Find_Item(L"Steel_b");
 
@@ -786,7 +817,7 @@ void CRim::Check_ConstructWork()
             {
                 return;
             }
-        }
+        }*/
 
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -821,17 +852,17 @@ void CRim::Check_ConstructWork()
         for (TASK tTask : vecConstruct)
         {
             //기존 노드 딜리트
-            for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
-            m_NodeList.clear();
+            //for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
+            //m_NodeList.clear();
 
-            //이동 가능한 타일이 있으면 노드리스트 반환
-            m_NodeList = move(CTileMgr::Get_Instance()
-                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)tTask.pObj->Get_Info().fX, (int)tTask.pObj->Get_Info().fY }));
+            ////이동 가능한 타일이 있으면 노드리스트 반환
+            //m_NodeList = move(CTileMgr::Get_Instance()
+            //    ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)tTask.pObj->Get_Info().fX, (int)tTask.pObj->Get_Info().fY }));
 
-            if (m_NodeList.empty())
-            {
-                continue;
-            }
+            //if (m_NodeList.empty())
+            //{
+            //    continue;
+            //}
 
             Set_Target(tTask.pObj);
             //작업 리스트에서 고른 작업을 예약했음을 표시
@@ -855,7 +886,7 @@ void CRim::Check_ConstructWork()
             }
             m_bNavigating = true;
             m_eCurrentTask = tTask;
-            Change_State(CONSTRUCTING, tTask.pObj);
+            Change_State(TRANSPORTING);
             //Set_Target(tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });

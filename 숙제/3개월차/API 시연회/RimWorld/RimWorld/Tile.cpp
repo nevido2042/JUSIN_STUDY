@@ -22,6 +22,8 @@ void CTile::Initialize()
 	m_pImgKey = L"Ice";
 
 	m_eOption = OPT_REACHABLE;
+
+	m_eObjID = OBJ_TILE;
 }
 
 int CTile::Update()
