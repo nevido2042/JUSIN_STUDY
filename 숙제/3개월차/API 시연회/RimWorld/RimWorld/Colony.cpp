@@ -10,6 +10,7 @@
 #include "EffectMgr.h"
 #include "SceneMgr.h"
 #include "ScrollMgr.h"
+#include "Campfire.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
@@ -113,6 +114,9 @@ void CColony::Initialize()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Terrain/Gravel.bmp", L"Gravel");
     //Ã¶º® ¾ÆÆ²¶ó½º
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Linked/Wall_Atlas_Smooth.bmp", L"Wall_Atlas_Smooth");
+    //ºÒ ¾Ö´Ï¸ÞÀÌ¼Ç
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/FireAnimated.bmp", L"FireAnimated");
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Campfire.bmp", L"Campfire");
     //ÇÍÀÚ±¹
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Mote/Blood.bmp", L"Blood");
     //Æø¹ß
@@ -125,6 +129,9 @@ void CColony::Initialize()
     //¿ìÁÖ¼±
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Ship/ShipEngine_north.bmp", L"ShipEngine_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Ship.bmp", L"Ship");
+
+    CObj* pFire = CAbstractFactory<CCampfire>::Create(-64.f, -64.f);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pFire);
 
 
     //¸Ê

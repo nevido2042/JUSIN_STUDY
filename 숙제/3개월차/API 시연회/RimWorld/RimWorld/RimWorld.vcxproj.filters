@@ -160,6 +160,9 @@
     <ClCompile Include="LaunchMsgBox.cpp">
       <Filter>01.Obj\01.UI\MsgBox\LaunchMsgBox</Filter>
     </ClCompile>
+    <ClCompile Include="Campfire.cpp">
+      <Filter>01.Obj\Campfire</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -335,6 +338,9 @@
     </ClInclude>
     <ClInclude Include="LaunchMsgBox.h">
       <Filter>01.Obj\01.UI\MsgBox\LaunchMsgBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Campfire.h">
+      <Filter>01.Obj\Campfire</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -519,6 +525,9 @@
     </Filter>
     <Filter Include="01.Obj\Breakable\Tree">
       <UniqueIdentifier>{ef080a2b-f9f8-4060-88ef-d978443772a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Campfire">
+      <UniqueIdentifier>{b4953cd3-4df9-428d-9610-99f62d475032}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

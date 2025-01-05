@@ -19,3 +19,6 @@ GameObj(Actor, 등등)
 Actor(Pawn, 등등)
 
 COBJ에 enum OBJID(TAG?)를 넣어주자
+
+객체 내부에 이미지를 둬서
+스태틱 함수로 이미지 로드 할 수 있나?

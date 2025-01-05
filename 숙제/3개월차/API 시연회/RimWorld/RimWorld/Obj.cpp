@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Obj.h"
 #include "ScrollMgr.h"
+#include "TimeMgr.h"
 
 CObj::CObj() : m_fSpeed(0.f), m_eDir(DIR_END), m_bDestroyed(false),
 m_fAngle(0.f), m_fDistance(0.f), m_pTarget(nullptr), m_pImgKey(nullptr),
@@ -95,13 +96,15 @@ void CObj::Update_Rect()
 
 void CObj::Move_Frame()
 {
-	if (m_tFrame.ullTime + m_tFrame.ullSpeed < GetTickCount64())
+	m_tFrame.ullElapsedTime += (ULONGLONG)GAMESPEED;
+
+	if (m_tFrame.ullElapsedTime > m_tFrame.ullTime)
 	{
 		++m_tFrame.iFrameStart;
 
 		if (m_tFrame.iFrameStart > m_tFrame.iFrameEnd)
 			m_tFrame.iFrameStart = 0;
 
-		m_tFrame.ullTime = GetTickCount64();
+		m_tFrame.ullElapsedTime = 0;
 	}
 }

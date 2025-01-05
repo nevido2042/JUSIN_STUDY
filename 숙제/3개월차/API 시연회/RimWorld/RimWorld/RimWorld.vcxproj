@@ -143,6 +143,7 @@
     <ClInclude Include="Boomrat.h" />
     <ClInclude Include="Breakable.h" />
     <ClInclude Include="Bullet_Small.h" />
+    <ClInclude Include="Campfire.h" />
     <ClInclude Include="Centipede.h" />
     <ClInclude Include="ChargeBlasterLight.h" />
     <ClInclude Include="ChargeLance.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Boomrat.cpp" />
     <ClCompile Include="Breakable.cpp" />
     <ClCompile Include="Bullet_Small.cpp" />
+    <ClCompile Include="Campfire.cpp" />
     <ClCompile Include="Centipede.cpp" />
     <ClCompile Include="ChargeBlasterLight.cpp" />
     <ClCompile Include="ChargeLance.cpp" />

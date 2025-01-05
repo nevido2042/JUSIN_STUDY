@@ -96,6 +96,7 @@ typedef struct tagFrame
 	int			iMotion;
 	ULONGLONG	ullSpeed;
 	ULONGLONG	ullTime;
+    ULONGLONG   ullElapsedTime;
 
 }FRAME;
 
