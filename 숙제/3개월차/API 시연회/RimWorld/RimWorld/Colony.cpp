@@ -219,7 +219,7 @@ int CColony::Update()
         CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
         CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
         
-        (this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
+        //(this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
         
         if (m_iWaveIndex > 2)
         {

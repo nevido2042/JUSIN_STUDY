@@ -117,14 +117,6 @@ void CRim::Late_Update()
 {
     CPawn::Late_Update();
 
-    m_fTaskCheckTime_Elapsed += GAMESPEED;
-
-    if (m_fTaskCheckTime < m_fTaskCheckTime_Elapsed)
-    {
-        m_bTaskCheck = true;
-        m_fTaskCheckTime_Elapsed = 0.f;
-    }
-
     //마우스가 올라가져있는가?
     if (Is_MouseHovered_Scrolled())
     {
@@ -277,6 +269,20 @@ void CRim::Render(HDC hDC)
 
 void CRim::Handle_Wandering()
 {
+    m_fTaskCheckTime_Elapsed += GAMESPEED;
+
+    if (m_fTaskCheckTime < m_fTaskCheckTime_Elapsed)
+    {
+        m_bTaskCheck = true;
+        m_fTaskCheckTime_Elapsed = 0.f;
+    }
+
+    //템 들고 있지 않도록
+    if (m_pTransportingItem)
+    {
+        PutDown_Item();
+    }
+
     //배회 하자
     Wander();
 
@@ -289,9 +295,12 @@ void CRim::Handle_Wandering()
     //작업을 체크할 시간이 됬다면(이거 빼버리고)
     if (m_bTaskCheck)
     {
+        //건설이 앞에 서면, 재료가 없어도 transport 상태가 되서 해체(?), 벌목을 안한다
         Check_ConstructWork();
+        //순서가 중요함
         Check_DeconstructWork();
         Check_LoggingWork();
+
         //Check_TransportingWork();
         //m_fElapsedTimeCheck = 0.f;
         m_bTaskCheck = false;
@@ -390,7 +399,7 @@ void CRim::Handle_Constructing()
             return;
         }
         //타겟이 멀다
-        if (m_fTargetDist > TILECX * 1.2f)
+        if (m_fTargetDist > TILECX * 1.5f)
         {
             //다른 작업 체크
             m_bTaskCheck = true;
@@ -452,14 +461,13 @@ void CRim::Handle_Transporting()
                 }
             }
         }
-
-        if (pItem)
-        {
-            POS tPos{ (int)pItem->Get_Info().fX, (int)pItem->Get_Info().fY };
-            Move_To(tPos);
-        }
     }
-    
+
+    if (m_pTarget && !m_bNavigating)
+    {
+        POS tPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+        Move_To(tPos);
+    }
 
 
     //타겟으로 한 철이 다른 애가 이미 가져갔으면
@@ -480,8 +488,13 @@ void CRim::Handle_Transporting()
         if (m_pTarget)
         {
             PickUp_Item(m_pTarget);
-            Change_State(MOVETOWORK, m_eCurrentTask.pObj);
         }
+    }
+
+    //아이템을 들었으면 건설하러가라
+    if (m_pTransportingItem)
+    {
+        Change_State(MOVETOWORK, m_eCurrentTask.pObj);
     }
 }
 
@@ -560,9 +573,16 @@ void CRim::Handle_MoveToWork()
             return;
         }
     }
+    else
+    {
+        //다른 작업 체크
+        m_bTaskCheck = true;
+        Change_State(WANDERING);
+        return;
+    }
 
     //타겟이 가까운지 확인
-    if (m_fTargetDist < TILECX * 1.2f)
+    if (m_fTargetDist < TILECX * 1.5f)
     {
         //가까우면 멈춘다.
         //RequestNavStop();
@@ -800,23 +820,6 @@ void CRim::Check_ConstructWork()
     if (!CColonyMgr::Get_Instance()->Get_ConstructSet()->empty() && (Get_State() == WANDERING|| Get_State() == TRANSPORTING)) //이거 몬스터 벽부수러가는 거에 적용 하면 될듯?
     {
 
-        //내가 철을 들고 있어야만 건설 가능
-        //철을 안들었으면 철 찾아서 들어라
-        //철이 있어야함
-        /*if (!m_pTransportingItem)
-        {
-            CObj* pItem = Find_Item(L"Steel_b");
-
-            if (pItem)
-            {
-                Change_State(TRANSPORTING);
-                return;
-            }
-            else
-            {
-                return;
-            }
-        }*/
 
         //해체할 벽들 중 길을 찾을 수 있는 것이 나오면
         //해당 벽돌 주변의 8개의 타일을 확인해서 길을 찾을 수 있는지 확인
@@ -854,14 +857,40 @@ void CRim::Check_ConstructWork()
             //for_each(m_NodeList.begin(), m_NodeList.end(), Safe_Delete<CNode*>);
             //m_NodeList.clear();
 
-            ////이동 가능한 타일이 있으면 노드리스트 반환
-            //m_NodeList = move(CTileMgr::Get_Instance()
-            //    ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)tTask.pObj->Get_Info().fX, (int)tTask.pObj->Get_Info().fY }));
+            //이동 가능한 타일이 있으면 노드리스트 반환
+            list<CNode*> NodeList = move(CTileMgr::Get_Instance()
+                ->Find_ReachableTiles(POS{ (int)m_tInfo.fX, (int)m_tInfo.fY }, POS{ (int)tTask.pObj->Get_Info().fX, (int)tTask.pObj->Get_Info().fY }));
 
-            //if (m_NodeList.empty())
-            //{
-            //    continue;
-            //}
+            if (NodeList.empty())
+            {
+                continue;
+            }
+
+            for_each(NodeList.begin(), NodeList.end(), Safe_Delete<CNode*>);
+            NodeList.clear();
+
+            //재료가 있는지 확인
+            CObj* pItem(nullptr);
+            switch (tTask.eType)
+            {
+            case TASK::CAMPFIRE:
+                pItem = Find_Item(L"WoodLog_b");
+                break;
+            case TASK::SHIP:
+                pItem = Find_Item(L"Steel_b");
+                break;
+            case TASK::WALL:
+                pItem = Find_Item(L"Steel_b");
+                break;
+            default:
+                break;
+            }
+
+            if (!pItem)
+            {
+                continue;
+            }
+
 
             Set_Target(tTask.pObj);
             //작업 리스트에서 고른 작업을 예약했음을 표시
