@@ -5,6 +5,8 @@
 #include "TileMgr.h"
 #include "ColonyMgr.h"
 #include "SoundMgr.h"
+#include "AbstractFactory.h"
+#include "ObjMgr.h"
 
 CTree::CTree()
 {
@@ -40,7 +42,13 @@ int CTree::Update()
 		//해당 타일위에 있는 Obj를  nullptr로 만든다.
 		CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, nullptr);
 
-		//CColonyMgr::Get_Instance()->Get_DeconstructSet()->erase(this);
+		//원목을 자기 위치에 생성
+		CObj* pObj = CAbstractFactory<CWoodLog>::Create(m_tInfo.fX, m_tInfo.fY);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_ITEM, pObj);
+
+		//생성되었을 때 타일에게 아이템이 있음을 알림
+		//CTileMgr::Get_Instance()->Set_TileObj(m_tInfo.fX, m_tInfo.fY, pObj);
+
 		set<TASK>& LoggingSet = *CColonyMgr::Get_Instance()->Get_LoggingSet();
 		for (auto Iter = LoggingSet.begin(); Iter != LoggingSet.end();)
 		{

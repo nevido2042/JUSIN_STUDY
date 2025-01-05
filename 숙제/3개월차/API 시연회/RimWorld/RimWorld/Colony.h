@@ -16,6 +16,7 @@
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
 #include "Panel.h"
+#include "Campfire.h"
 
 class CColony :
     public CScene

@@ -540,21 +540,20 @@ void CRim::Handle_Boarding()
 
 void CRim::Handle_Logging()
 {
-    //Å¸°ÙÀÌ °¡±î¿îÁö È®ÀÎ
-    if (m_fTargetDist < TILECX * 1.2f)
+    if (!m_pTarget)
     {
-        //°¡±î¿ì¸é ¸ØÃá´Ù.
-        //RequestNavStop();
-        m_bNavigating = false;
+        m_bTaskCheck = true;
+        Change_State(WANDERING);
+        return;
     }
-    //¸Ø­Ÿ´Âµ¥
-    if (!m_bNavigating)
+
+    Log();
+}
+
+void CRim::Handle_MoveToWork()
+{
+    if (m_pTarget)
     {
-        //Å¸°ÙÀÌ ¾ø´Ù.
-        if (!m_pTarget)
-        {
-            return;
-        }
         if (CBreakable* pWall = dynamic_cast<CBreakable*>(m_pTarget))
         {
             if (pWall->Get_IsBrokenDown())
@@ -573,20 +572,16 @@ void CRim::Handle_Logging()
             Change_State(WANDERING);
             return;
         }
-        //Å¸°ÙÀÌ ¸Ö´Ù
-        if (m_fTargetDist > TILECX * 1.2f)
-        {
-            //´Ù¸¥ ÀÛ¾÷ Ã¼Å©
-            m_bTaskCheck = true;
-            Change_State(WANDERING);
-            return;
-        }
-        //ÇØÃ¼ ÇÏ´Â°Å
-        Log();
     }
 
-    //ÇØÃ¼ ÁøÇàÁßÀÎ ¹Ù »ý¼º
-    //¸îÃÊ µÚ ÇØÃ¼ ¿Ï·á
+    //Å¸°ÙÀÌ °¡±î¿îÁö È®ÀÎ
+    if (m_fTargetDist < TILECX * 1.2f)
+    {
+        //°¡±î¿ì¸é ¸ØÃá´Ù.
+        //RequestNavStop();
+        m_bNavigating = false;
+        Change_State(LOGGING, m_pTarget);
+    }
 }
 
 void CRim::Check_CloseTask()
@@ -699,6 +694,11 @@ void CRim::Log()
     //½Ã°£ °ø°ÝÇÏ´Â ½Ã°£ Á¤ÇØ¾ßÇÔ
 
     pTree->Take_Damage(1.f);
+
+    if (pTree->Get_IsBrokenDown())
+    {
+        m_pTarget = nullptr;
+    }
 
 }
 
@@ -947,7 +947,7 @@ void CRim::Check_LoggingWork()
             }
 
             m_bNavigating = true;
-            Change_State(LOGGING, _tTask.pObj);
+            Change_State(MOVETOWORK, _tTask.pObj);
             //Set_Target(_tTask.pObj);
             return;
             //Move_To(POS{ pTile->Get_Info().fX,pTile->Get_Info().fX });

@@ -10,7 +10,6 @@
 #include "EffectMgr.h"
 #include "SceneMgr.h"
 #include "ScrollMgr.h"
-#include "Campfire.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
@@ -129,10 +128,6 @@ void CColony::Initialize()
     //우주선
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Building/Ship/ShipEngine_north.bmp", L"ShipEngine_north");
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Designations/Ship.bmp", L"Ship");
-
-    CObj* pFire = CAbstractFactory<CCampfire>::Create(-64.f, -64.f);
-    CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pFire);
-
 
     //맵
     CTileMgr::Get_Instance()->Initialize();
@@ -316,6 +311,8 @@ void CColony::Create_UI()
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/SelectionBracketWhole.bmp", L"SelectionBracketWhole");
     //철 아이템
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Item/Steel_b.bmp", L"Steel_b");
+    //원목 아이템
+    CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Things/Item/WoodLog_b.bmp", L"WoodLog_b");
     //메시지박스
     CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/MsgBox.bmp", L"MsgBox");
     //소집상태 표시 칼 Draft

@@ -34,6 +34,8 @@ protected:
     void Handle_Transporting() override;
     void Handle_Boarding() override;
     void Handle_Logging() override;
+    void Handle_MoveToWork() override;
+
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();

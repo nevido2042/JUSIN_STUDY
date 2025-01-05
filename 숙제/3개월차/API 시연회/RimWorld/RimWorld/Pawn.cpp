@@ -508,6 +508,9 @@ void CPawn::Late_Update()
     case CPawn::LOGGING:
         Handle_Logging();
         break;
+    case CPawn::MOVETOWORK:
+        Handle_MoveToWork();
+        break;
     case CPawn::END:
         break;
     default:
@@ -635,6 +638,10 @@ void CPawn::Handle_Boarding()
 }
 
 void CPawn::Handle_Logging()
+{
+}
+
+void CPawn::Handle_MoveToWork()
 {
 }
 

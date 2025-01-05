@@ -198,6 +198,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeMgr.h" />
     <ClInclude Include="Tree.h" />
+    <ClInclude Include="WoodLog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BmpMgr.cpp" />
@@ -261,6 +262,7 @@
     </ClCompile>
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="WoodLog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RimWorld.rc" />

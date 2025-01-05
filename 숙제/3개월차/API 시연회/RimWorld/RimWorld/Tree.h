@@ -1,5 +1,7 @@
 #pragma once
 #include "Breakable.h"
+#include "WoodLog.h"
+
 class CTree :
     public CBreakable
 {
