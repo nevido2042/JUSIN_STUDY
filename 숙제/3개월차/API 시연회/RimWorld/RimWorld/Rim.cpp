@@ -333,56 +333,14 @@ void CRim::Handle_Undrafted()
 
 void CRim::Handle_Deconstructing()
 {
-    //≈∏∞Ÿ¿Ã ∞°±ÓøÓ¡ˆ »Æ¿Œ
-    if (m_fTargetDist < TILECX * 1.2f)
+    if (!m_pTarget)
     {
-        //∞°±ÓøÏ∏È ∏ÿ√·¥Ÿ.
-        //RequestNavStop();
-        m_bNavigating = false;
-    }
-    //∏ÿ≠ü¥¬µ•
-    if (!m_bNavigating)
-    {
-        //≈∏∞Ÿ¿Ã æ¯¥Ÿ.
-        if (!m_pTarget)
-        {
-            //¥Ÿ∏• ¿€æ˜ √º≈©
-            m_bTaskCheck = true;
-            Change_State(WANDERING);
-            return;
-        }
-        if (CBreakable* pWall = dynamic_cast<CBreakable*>(m_pTarget))
-        {
-            if (pWall->Get_IsBrokenDown())
-            {
-                //¥Ÿ∏• ¿€æ˜ √º≈©
-                m_bTaskCheck = true;
-                Change_State(WANDERING);
-                return;
-            }
-        }
-        //≈∏∞Ÿ¿Ã ∆ƒ±´âÁ¥Ÿ.
-        if (m_pTarget->Get_Destroyed())
-        {
-            //¥Ÿ∏• ¿€æ˜ √º≈©
-            m_bTaskCheck = true;
-            Change_State(WANDERING);
-            return;
-        }
-        //≈∏∞Ÿ¿Ã ∏÷¥Ÿ
-        if (m_fTargetDist > TILECX * 1.2f)
-        {
-            //¥Ÿ∏• ¿€æ˜ √º≈©
-            m_bTaskCheck = true;
-            Change_State(WANDERING);
-            return;
-        }
-        //«ÿ√º «œ¥¬∞≈
-        Deconstruct();
+        m_bTaskCheck = true;
+        Change_State(WANDERING);
+        return;
     }
 
-    //«ÿ√º ¡¯«‡¡ﬂ¿Œ πŸ ª˝º∫
-    //∏Ó√  µ⁄ «ÿ√º øœ∑·
+    Deconstruct();
 }
 
 void CRim::Handle_Constructing()
@@ -580,7 +538,17 @@ void CRim::Handle_MoveToWork()
         //∞°±ÓøÏ∏È ∏ÿ√·¥Ÿ.
         //RequestNavStop();
         m_bNavigating = false;
-        Change_State(LOGGING, m_pTarget);
+
+        if (m_pTarget->Get_ObjID() == OBJ_TREE)
+        {
+            Change_State(LOGGING, m_pTarget);
+        }
+        else if(m_pTarget->Get_ObjID() == OBJ_WALL)
+        {
+            Change_State(DECONSTRUCTING, m_pTarget);
+        }
+
+
     }
 }
 
