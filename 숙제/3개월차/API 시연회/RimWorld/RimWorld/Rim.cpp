@@ -16,7 +16,8 @@
 
 CRim::CRim()
     :m_bTaskCheck(false), m_pTransportingItem(nullptr),
-    m_fTaskCheckTime(0.f), m_fTaskCheckTime_Elapsed(0.f)
+    m_fTaskCheckTime(0.f), m_fTaskCheckTime_Elapsed(0.f),
+    m_eDraftState(DRAFTED_END)
 {
 
 }
@@ -309,39 +310,61 @@ void CRim::Handle_Wandering()
 
 void CRim::Handle_Drafted()
 {
-    if (m_pTarget)
+    //적 탐색 상태
+    //적 조준 상태
+    //적 사격 가능 상태
+
+    switch (m_eDraftState)
     {
-        //사정거리에 있고 적이 보인다면
-        if (IsWithinRange() && IsCanSeeTarget())
-        {
-            static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
-            m_bAttack = true;
-        }
-        else
-        {
-            Set_Target(nullptr);
-            m_bAttack = false;
-        }
+    case CRim::DRAFTED_SEARCH:
+        Drfated_Search();
+        break;
+    case CRim::DRAFHTED_AIM:
+        Drfated_Aim();
+        break;
+    case CRim::DRAFTED_FIRE:
+        Drfated_Fire();
+        break;
+    case CRim::DRAFTED_END:
+        break;
+    default:
+        break;
     }
 
-    if (m_pTarget)
-    {
-        //타겟이 죽으면 타겟 없애기
-        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
-        if (pTarget->Get_IsDead())
-        {
-            Set_Target(nullptr);
-            //적이 죽었으면 다른 적을 찾는다.
-            //Find_Enemy();
-        }
-    }
-    else
-    {
-        if (!m_bNavigating)
-        {
-            Find_Enemy();
-        }
-    }
+
+    //if (m_pTarget)
+    //{
+    //    //사정거리에 있고 적이 보인다면
+    //    if (IsWithinRange() && IsCanSeeTarget())
+    //    {
+    //        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
+    //        m_bAttack = true;
+    //    }
+    //    else
+    //    {
+    //        Set_Target(nullptr);
+    //        m_bAttack = false;
+    //    }
+    //}
+
+    //if (m_pTarget)
+    //{
+    //    //타겟이 죽으면 타겟 없애기
+    //    CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+    //    if (pTarget->Get_IsDead())
+    //    {
+    //        Set_Target(nullptr);
+    //        //적이 죽었으면 다른 적을 찾는다.
+    //        //Find_Enemy();
+    //    }
+    //}
+    //else
+    //{
+    //    if (!m_bNavigating)
+    //    {
+    //        Find_Enemy();
+    //    }
+    //}
 
 }
 
@@ -600,6 +623,99 @@ void CRim::Handle_MoveToWork()
         {
             Change_State(CONSTRUCTING, m_pTarget);
         }
+    }
+}
+
+void CRim::Change_State(STATE _eState, CObj* _pTarget)
+{
+    CPawn::Change_State(_eState, _pTarget);
+
+    if (_eState == STATE::DRAFTED)
+    {
+        m_eDraftState = DRAFTED_SEARCH;
+    }
+}
+
+void CRim::Change_DraftedState(DRAFTED_STATE _eState)
+{
+    if (m_eDraftState == _eState)
+    {
+        return;
+    }
+
+    m_eDraftState = _eState;
+}
+
+void CRim::Drfated_Search()
+{
+     Find_Enemy();
+
+     if (m_pTarget)
+     {
+         Change_DraftedState(DRAFHTED_AIM);
+     }
+}
+
+void CRim::Drfated_Aim()
+{
+    if (m_pTarget)
+    {
+        //타겟이 죽으면 타겟 없애기
+        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+        if (pTarget->Get_IsDead())
+        {
+            Set_Target(nullptr);
+            //적이 죽었으면 다른 적을 찾는다.
+            Change_DraftedState(DRAFTED_SEARCH);
+        }
+    }
+
+
+    if (m_pTarget)
+    {
+        //사정거리에 있고 적이 보인다면
+        if (IsWithinRange() && IsCanSeeTarget())
+        {
+            Change_DraftedState(DRAFTED_FIRE);
+        }
+    }
+    else
+    {
+        Change_DraftedState(DRAFTED_SEARCH);
+    }
+}
+
+void CRim::Drfated_Fire()
+{
+    if (m_bNavigating)
+    {
+        m_bAttack = false;
+        return;
+    }
+
+    if (m_pTarget)
+    {
+        //타겟이 죽으면 타겟 없애기
+        CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
+        if (pTarget->Get_IsDead())
+        {
+            Set_Target(nullptr);
+            //적이 죽었으면 다른 적을 찾는다.
+            m_bAttack = false;
+            Change_DraftedState(DRAFTED_SEARCH);
+        }
+    }
+
+    //사정거리에 있고 적이 보인다면
+    if (IsWithinRange() && IsCanSeeTarget())
+    {
+        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
+        m_bAttack = true;
+    }
+    else
+    {
+        m_bAttack = false;
+        Change_DraftedState(DRAFTED_SEARCH);
     }
 }
 

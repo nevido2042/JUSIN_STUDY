@@ -21,7 +21,7 @@ public:
     { 
         return m_eState; 
     }
-    void    Change_State(STATE _eState, CObj* pTarget = nullptr);
+    virtual void    Change_State(STATE _eState, CObj* pTarget = nullptr);
 public:
     float Get_HP() { return m_fHP; }
     float Get_MaxHP() { return m_fMaxHP; }

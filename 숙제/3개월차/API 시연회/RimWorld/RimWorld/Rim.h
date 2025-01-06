@@ -35,7 +35,15 @@ protected:
     void Handle_Boarding() override;
     void Handle_Logging() override;
     void Handle_MoveToWork() override;
-
+public:
+    void Change_State(STATE _eState, CObj* _pTarget = nullptr) override;
+private:
+    enum DRAFTED_STATE { DRAFTED_SEARCH, DRAFHTED_AIM, DRAFTED_FIRE, DRAFTED_END };
+    void Change_DraftedState(DRAFTED_STATE _eState);
+    DRAFTED_STATE m_eDraftState;
+    void        Drfated_Search();
+    void        Drfated_Aim();
+    void        Drfated_Fire();
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();
@@ -69,5 +77,4 @@ private:
     array<wstring, 4> m_ImgKeyArr_Body;
     array<wstring, 4> m_ImgKeyArr_Face;
     array<wstring, 4> m_ImgKeyArr_Hair;
-   
 };
