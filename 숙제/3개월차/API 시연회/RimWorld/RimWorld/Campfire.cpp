@@ -32,8 +32,8 @@ void CCampfire::Late_Update()
 
 void CCampfire::Render(HDC hDC)
 {
-	int iScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
-	int iScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
+	int iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	HDC hFireDC = CBmpMgr::Get_Instance()->Find_Image(L"FireAnimated");
 	HDC hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire");
@@ -51,10 +51,10 @@ void CCampfire::Render(HDC hDC)
 		RGB_WHITE);		// 제거할 색상
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
-		m_tRect.left + iScrollX,	// 복사 받을 위치 좌표 X, Y	
-		m_tRect.top + iScrollY,
-		(int)m_tInfo.fCX,			// 복사 받을 이미지의 가로, 세로
-		(int)m_tInfo.fCY,
+		m_tRect.left + iScrollX + 5,	// 복사 받을 위치 좌표 X, Y	
+		m_tRect.top + iScrollY - 5,
+		(int)(m_tInfo.fCX * 0.9f),			// 복사 받을 이미지의 가로, 세로
+		(int)(m_tInfo.fCY * 0.9f),
 		hFireDC,						// 복사할 이미지 DC	
 		(int)m_tInfo.fCX * m_tFrame.iFrameStart,							// 비트맵 출력 시작 좌표(Left, top)
 		(int)m_tInfo.fCY * m_tFrame.iMotion,

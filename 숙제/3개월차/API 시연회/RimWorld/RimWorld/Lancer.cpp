@@ -32,7 +32,7 @@ void CLancer::Initialize()
     CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, m_pRangedWeapon);
     m_pRangedWeapon->Set_Target(this);
 
-    Take_Damage(50.f);
+    //Take_Damage(50.f);
 
     Change_State(WANDERING);
 }
