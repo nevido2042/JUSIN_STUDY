@@ -109,6 +109,8 @@ void CBoomrat::Render(HDC hDC)
 void CBoomrat::Dead()
 {
     CPawn::Dead();
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->PlaySound(L"Boomrat_Death_1b.wav", SOUND_EFFECT, .1f);
     Boom();
 }
 

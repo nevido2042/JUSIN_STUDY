@@ -11,6 +11,7 @@
 #include "Colony.h"
 #include "SceneMgr.h"
 #include "TutorialMgr.h"
+#include "SoundMgr.h"
 
 CCentipede::CCentipede()
 {
@@ -124,4 +125,11 @@ void CCentipede::Render(HDC hDC)
     default:
         break;
     }
+}
+
+void CCentipede::Dead()
+{
+    CEnemy::Dead();
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->PlaySound(L"Pawn_Mechanoid_Centipede_Death_1a.wav", SOUND_EFFECT, .2f);
 }

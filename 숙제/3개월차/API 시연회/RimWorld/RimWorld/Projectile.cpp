@@ -62,13 +62,13 @@ void CProjectile::OnCollision(OBJID _eID, CObj* _pOther)
     {
         if (_eID == OBJ_RIM)
         {
-            CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-            CSoundMgr::Get_Instance()->PlaySound(L"Bullet_Flesh_1a.wav", SOUND_EFFECT, 1.f);
+            //CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+            CSoundMgr::Get_Instance()->PlaySound(L"Bullet_Flesh_1a.wav", SOUND_FLESH, .3f);
         }
         else
         {
-            CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
-            CSoundMgr::Get_Instance()->PlaySound(L"Bullet_Metal_1g.wav", SOUND_EFFECT, 1.f);
+            //CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+            CSoundMgr::Get_Instance()->PlaySound(L"Bullet_Metal_1g.wav", SOUND_METAL, .05f);
         }
 
         static_cast<CPawn*>(_pOther)->Take_Damage(m_fDamage);

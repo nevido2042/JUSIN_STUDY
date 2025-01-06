@@ -69,8 +69,10 @@ void CDetailView::Render(HDC hDC)
 			DrawText(hDC, L"\n   상태: 소집 됨", -1, &rect, DT_NOCLIP);
 			break;
 		case CPawn::UNDRAFTED:
+			DrawText(hDC, L"\n   상태: 소집 안 됨", -1, &rect, DT_NOCLIP);
 			break;
 		case CPawn::CHASING:
+			DrawText(hDC, L"\n   상태: 쫒는 중", -1, &rect, DT_NOCLIP);
 			break;
 		case CPawn::DECONSTRUCTING:
 			DrawText(hDC, L"\n   상태: 해체 중", -1, &rect, DT_NOCLIP);
@@ -78,8 +80,17 @@ void CDetailView::Render(HDC hDC)
 		case CPawn::CONSTRUCTING:
 			DrawText(hDC, L"\n   상태: 건설 중", -1, &rect, DT_NOCLIP);
 			break;
+		case CPawn::TRANSPORTING:
+			DrawText(hDC, L"\n   상태: 운반 중", -1, &rect, DT_NOCLIP);
+			break;
 		case CPawn::BOARDING:
 			DrawText(hDC, L"\n   상태: 탑승 중", -1, &rect, DT_NOCLIP);
+			break;
+		case CPawn::LOGGING:
+			DrawText(hDC, L"\n   상태: 벌목 중", -1, &rect, DT_NOCLIP);
+			break;
+		case CPawn::MOVETOWORK:
+			DrawText(hDC, L"\n   상태: 작업 중", -1, &rect, DT_NOCLIP);
 			break;
 		case CPawn::END:
 			break;
@@ -96,6 +107,14 @@ void CDetailView::Release()
 
 void CDetailView::Set_Activate(bool _bActivate)
 {
+	if (m_bActivate == _bActivate)
+	{
+		if (m_bActivate == false)
+		{
+			return;
+		}
+	}
+
 	m_bActivate = _bActivate;
 
 	if (m_bActivate)

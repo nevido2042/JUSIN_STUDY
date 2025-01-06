@@ -14,5 +14,6 @@ public:
     int     Update() override;
     void    Late_Update() override;
     void    Render(HDC hDC) override;
+    void    Dead() override;
 };
 

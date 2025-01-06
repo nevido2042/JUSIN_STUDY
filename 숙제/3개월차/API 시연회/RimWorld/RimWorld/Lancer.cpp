@@ -8,6 +8,7 @@
 #include "ColonyMgr.h"
 #include "SteelWall.h"
 #include "TileMgr.h"
+#include "SoundMgr.h"
 
 CLancer::CLancer()
 {
@@ -130,4 +131,11 @@ void CLancer::Render(HDC hDC)
     //    return;
     //}
 
+}
+
+void CLancer::Dead()
+{
+    CEnemy::Dead();
+    CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+    CSoundMgr::Get_Instance()->PlaySound(L"Pawn_Mech_Scyther_Death_1a.wav", SOUND_EFFECT, .2f);
 }
