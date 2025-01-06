@@ -214,20 +214,43 @@ int CColony::Update()
 
     CTimeMgr::Get_Instance()->Update();
 
+    ////割 檬 饶 利 积己
+    //if (CKeyMgr::Get_Instance()->Key_Down(VK_F1) /*CTimeMgr::Get_Instance()->Get_ElapsedTime() > m_fSpawnTime*/)
+    //{
+    //    CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
+    //    CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
+    //    
+    //    (this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
+    //    
+    //    if (m_iWaveIndex > 2)
+    //    {
+    //        m_iWaveIndex = 0;
+    //    }
+
+    //    //m_fSpawnTime += m_fSpawnTime;
+    //}
+
     //割 檬 饶 利 积己
-    if (CKeyMgr::Get_Instance()->Key_Down(VK_F1) /*CTimeMgr::Get_Instance()->Get_ElapsedTime() > m_fSpawnTime*/)
+    if (CKeyMgr::Get_Instance()->Key_Down(VK_F1))
     {
         CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
         CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
-        
-        (this->*WaveFuncs[m_iWaveIndex++])();// Spawn_Wave();
-        
-        if (m_iWaveIndex > 2)
-        {
-            m_iWaveIndex = 0;
-        }
 
-        //m_fSpawnTime += m_fSpawnTime;
+        Spawn_Random<CBoomrat>();
+    }
+    else if (CKeyMgr::Get_Instance()->Key_Down(VK_F2))
+    {
+        CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
+        CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
+
+        Spawn_Random<CLancer>();
+    }
+    else if (CKeyMgr::Get_Instance()->Key_Down(VK_F3))
+    {
+        CSoundMgr::Get_Instance()->StopSound(SOUND_EVENT);
+        CSoundMgr::Get_Instance()->PlaySound(L"LetterArriveBadUrgent.wav", SOUND_EVENT, .5f);
+
+        Spawn_Random<CCentipede>();
     }
 
 
