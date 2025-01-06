@@ -26,8 +26,8 @@
 #define	TILECX				64
 #define	TILECY				64
 
-#define TILEX				30//60
-#define TILEY				20//40
+#define TILEX				45
+#define TILEY				30
 
 
 //health¹Ù offset

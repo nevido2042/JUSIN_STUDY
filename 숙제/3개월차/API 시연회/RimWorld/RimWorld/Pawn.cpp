@@ -546,11 +546,46 @@ void CPawn::Render(HDC hDC)
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     //길 찾기 노드 출력
-    for (CNode* pNode : m_NodeList)
+    /*for (CNode* pNode : m_NodeList)
     {
         Ellipse(hDC, int(pNode->Get_Pos().iX + iScrollX - 10.f), int(pNode->Get_Pos().iY + iScrollY - 10.f),
             int(pNode->Get_Pos().iX + 10.f + iScrollX), int(pNode->Get_Pos().iY + 10.f + iScrollY));
+    }*/
+
+    // 길 찾기 노드 출력 (노드를 연결하는 두꺼운 회색 선 그리기)
+    if (!m_NodeList.empty()) {
+        // 이전 노드 포인터
+        CNode* pPrevNode = nullptr;
+
+        // 회색 펜 생성 (두께 3)
+        HPEN hGrayPen = CreatePen(PS_SOLID, 3, RGB(255, 255, 255));
+        HPEN hOldPen = (HPEN)SelectObject(hDC, hGrayPen);
+
+        // 노드 리스트 순회
+        for (CNode* pNode : m_NodeList) {
+            // 현재 노드의 위치
+            int iCurrentX = int(pNode->Get_Pos().iX + iScrollX);
+            int iCurrentY = int(pNode->Get_Pos().iY + iScrollY);
+
+            // 이전 노드가 있다면 선을 그림
+            if (pPrevNode != nullptr) {
+                int iPrevX = int(pPrevNode->Get_Pos().iX + iScrollX);
+                int iPrevY = int(pPrevNode->Get_Pos().iY + iScrollY);
+
+                // 선 그리기
+                MoveToEx(hDC, iPrevX, iPrevY, nullptr);
+                LineTo(hDC, iCurrentX, iCurrentY);
+            }
+
+            // 현재 노드를 이전 노드로 설정
+            pPrevNode = pNode;
+        }
+
+        // 원래 펜으로 복원하고 회색 펜 삭제
+        SelectObject(hDC, hOldPen);
+        DeleteObject(hGrayPen);
     }
+
 
     // 변수 값을 유니코드 문자열로 변환
     wchar_t buffer[50];

@@ -274,196 +274,120 @@ void CSteelWall::OnCollision(OBJID _eID, CObj* _pOther)
 {
 }
 
-void CSteelWall::Check_Neighbor()
-{
-
+void CSteelWall::Check_Neighbor() {
+	// 주변 타일 위치 계산
 	POS tTopPos{ (int)m_tInfo.fX, (int)m_tInfo.fY - TILECY };
 	POS tBottomPos{ (int)m_tInfo.fX, (int)m_tInfo.fY + TILECY };
 	POS tLeftPos{ (int)m_tInfo.fX - TILECX, (int)m_tInfo.fY };
-	POS tRightPos{ (int)m_tInfo.fX + TILECX, (int)m_tInfo.fY};
+	POS tRightPos{ (int)m_tInfo.fX + TILECX, (int)m_tInfo.fY };
 
-	//4개짜리 십자가
-	if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tRightPos)&&
-		CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
-	{
-		m_eCurState = CROSS;
-		Change_Image();
+	// TileMgr 인스턴스 가져오기
+	CTileMgr* pTileMgr = CTileMgr::Get_Instance();
+
+	// 주변 타일 상태 확인 (타일이 존재하고 OBJID가 OBJ_WALL인지 확인)
+	bool hasTop = pTileMgr->Get_TileObj(tTopPos) && pTileMgr->Get_TileObj(tTopPos)->Get_ObjID() == OBJ_WALL;
+	bool hasBottom = pTileMgr->Get_TileObj(tBottomPos) && pTileMgr->Get_TileObj(tBottomPos)->Get_ObjID() == OBJ_WALL;
+	bool hasLeft = pTileMgr->Get_TileObj(tLeftPos) && pTileMgr->Get_TileObj(tLeftPos)->Get_ObjID() == OBJ_WALL;
+	bool hasRight = pTileMgr->Get_TileObj(tRightPos) && pTileMgr->Get_TileObj(tRightPos)->Get_ObjID() == OBJ_WALL;
+
+	// 4개 십자가
+	if (hasTop && hasBottom && hasLeft && hasRight) {
+		Set_State(CROSS);
 		return;
 	}
 
-	//3개 짜리 T 시리즈
-	//T12
-	if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-	{
-		m_eCurState = T12;
-		Change_Image();
+	// T자 형태
+	if (hasBottom && hasLeft && hasRight) {
+		Set_State(T12);
+		return;
+	}
+	if (hasTop && hasLeft && hasBottom) {
+		Set_State(T3);
+		return;
+	}
+	if (hasTop && hasLeft && hasRight) {
+		Set_State(T6);
+		return;
+	}
+	if (hasRight && hasTop && hasBottom) {
+		Set_State(T9);
 		return;
 	}
 
-	//T3
-	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tTopPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-	{
-		m_eCurState = T3;
-		Change_Image();
+	// 왼쪽 이웃
+	if (hasLeft) {
+		if (hasTop) {
+			Set_State(RIGHT_BOTTOM);
+		}
+		else if (hasBottom) {
+			Set_State(RIGHT_TOP);
+		}
+		else if (!hasRight) {
+			Set_State(END_RIGHT);
+		}
+		else {
+			Set_State(HORIZONTAL);
+		}
 		return;
 	}
 
-	//T6
-	if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tLeftPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-	{
-		m_eCurState = T6;
-		Change_Image();
+	// 오른쪽 이웃
+	if (hasRight) {
+		if (hasTop) {
+			Set_State(LEFT_BOTTOM);
+		}
+		else if (hasBottom) {
+			Set_State(LEFT_TOP);
+		}
+		else if (!hasLeft) {
+			Set_State(END_LEFT);
+		}
+		else {
+			Set_State(HORIZONTAL);
+		}
 		return;
 	}
 
-	//T9
-	if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tTopPos) &&
-		CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-	{
-		m_eCurState = T9;
-		Change_Image();
+	// 위쪽 이웃
+	if (hasTop) {
+		if (hasLeft) {
+			Set_State(RIGHT_BOTTOM);
+		}
+		else if (hasRight) {
+			Set_State(LEFT_BOTTOM);
+		}
+		else if (!hasBottom) {
+			Set_State(END_BOTTOM);
+		}
+		else {
+			Set_State(VERTICAL);
+		}
 		return;
 	}
 
-	//3개 이하------------------------------------------
-
-	//1.왼쪽 이웃
-	if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
-	{	
-		//3.위쪽도 이웃
-		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
-		{
-			m_eCurState = RIGHT_BOTTOM;
-			Change_Image();
-			return;
+	// 아래쪽 이웃
+	if (hasBottom) {
+		if (hasLeft) {
+			Set_State(RIGHT_TOP);
 		}
-		//3.아래 쪽도 이웃
-		else if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-		{
-			m_eCurState = RIGHT_TOP;
-			Change_Image();
-			return;
+		else if (hasRight) {
+			Set_State(LEFT_TOP);
 		}
-		//4.오른 쪽 끝이다.
-		else if (!CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-		{
-			m_eCurState = END_RIGHT;
-			Change_Image();
-			return;
+		else if (!hasTop) {
+			Set_State(END_TOP);
 		}
-
-		//5.수평
-		m_eCurState = HORIZONTAL;
-		Change_Image();
+		else {
+			Set_State(VERTICAL);
+		}
 		return;
 	}
-	//오른 쪽 이웃
-	else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-	{
-		
-		//위쪽도 이웃
-		if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
-		{
-			m_eCurState = LEFT_BOTTOM;
-			Change_Image();
-			return;
-		}
-		//아래 쪽도 이웃
-		else if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-		{
-			m_eCurState = LEFT_TOP;
-			Change_Image();
-			return;
-		}
 
+	// 주변에 아무것도 없을 때
+	Set_State(SOLO);
+}
 
-		//왼쪽에 끝이다
-		else if (!CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
-		{
-			m_eCurState = END_LEFT;
-			Change_Image();
-			return;
-		}
-
-		m_eCurState = HORIZONTAL;
-		Change_Image();
-		return;
-	}
-	
-	//vertical 위에 이웃
-	else if (CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
-	{
-		//3.왼쪽도 이웃
-		if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
-		{
-			m_eCurState = RIGHT_BOTTOM;
-			Change_Image();
-			return;
-		}
-		//3.오른쪽도 이웃
-		else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-		{
-			m_eCurState = LEFT_BOTTOM;
-			Change_Image();
-			return;
-		}
-		//아래 끝이다
-		if (!CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-		{
-			m_eCurState = END_BOTTOM;
-			Change_Image();
-			return;
-		}
-		
-
-		m_eCurState = VERTICAL;
-		Change_Image();
-		return;
-	}
-	//아래 이웃
-	else if (CTileMgr::Get_Instance()->Get_TileObj(tBottomPos))
-	{
-		//3.왼쪽도 이웃
-		if (CTileMgr::Get_Instance()->Get_TileObj(tLeftPos))
-		{
-			m_eCurState = RIGHT_TOP;
-			Change_Image();
-			return;
-		}
-		//3.오른쪽도 이웃
-		else if (CTileMgr::Get_Instance()->Get_TileObj(tRightPos))
-		{
-			m_eCurState = LEFT_TOP;
-			Change_Image();
-			return;
-		}
-		//위쪽에 아무도 없다.
-		else if(!CTileMgr::Get_Instance()->Get_TileObj(tTopPos))
-		{
-			m_eCurState = END_TOP;
-			Change_Image();
-			return;
-		}
-
-		//수직
-		m_eCurState = VERTICAL;
-		Change_Image();
-		return;
-	}
-	//주위에 아무것도 없다.
-	else
-	{
-		m_eCurState = SOLO;
-		Change_Image();
-		return;
-	}
+void CSteelWall::Set_State(STATE _eNewState) 
+{
+	m_eCurState = _eNewState;
+	Change_Image();
 }

@@ -32,6 +32,8 @@ public:
 private:
     void    Check_Neighbor();
 
+    void    Set_State(STATE _eNewState);
+
 protected:
     STATE               m_eCurState;
     STATE               m_ePreState;

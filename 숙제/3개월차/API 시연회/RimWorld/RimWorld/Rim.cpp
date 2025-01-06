@@ -311,6 +311,21 @@ void CRim::Handle_Drafted()
 {
     if (m_pTarget)
     {
+        //사정거리에 있고 적이 보인다면
+        if (IsWithinRange() && IsCanSeeTarget())
+        {
+            static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
+            m_bAttack = true;
+        }
+        else
+        {
+            Set_Target(nullptr);
+            m_bAttack = false;
+        }
+    }
+
+    if (m_pTarget)
+    {
         //타겟이 죽으면 타겟 없애기
         CPawn* pTarget = static_cast<CPawn*>(m_pTarget);
         if (pTarget->Get_IsDead())
@@ -319,11 +334,6 @@ void CRim::Handle_Drafted()
             //적이 죽었으면 다른 적을 찾는다.
             //Find_Enemy();
         }
-        else
-        {
-            //멈춰서 공격 중일 때 못찾게해야함!!!!!!!!!!!
-            //Move_To(POS{ m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY });
-        }
     }
     else
     {
@@ -331,18 +341,6 @@ void CRim::Handle_Drafted()
         {
             Find_Enemy();
         }
-    }
-
-    //사정거리에 있고 적이 보인다면
-    if (IsWithinRange() && IsCanSeeTarget())
-    {
-        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
-        m_bAttack = true;
-    }
-    else
-    {
-        Set_Target(nullptr);
-        m_bAttack = false;
     }
 
 }
@@ -417,8 +415,19 @@ void CRim::Handle_Constructing()
 
 void CRim::Handle_Transporting()
 {
-    //현재 건설작업이 뭔지 파악하고, 어떤 재료를 가져가야할지 판단
+    //처음들어올때 타겟이 없는게 정상
+    //타겟 아이템이 가까워지면 아이템을 들어라
+    if (m_pTarget)
+    {
+        if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.5f)
+        {
 
+            PickUp_Item(m_pTarget);
+
+        }
+    }
+
+    //현재 건설작업이 뭔지 파악하고, 어떤 재료를 가져가야할지 판단
     if (!m_pTarget)
     {
         CObj* pItem(nullptr);
@@ -479,15 +488,6 @@ void CRim::Handle_Transporting()
             m_bTaskCheck = true;
             m_pTarget = nullptr;
             return;
-        }
-    }
-
-    //타겟 아이템이 가까워지면 아이템을 들어라
-    if (!m_pTransportingItem && m_fTargetDist < TILECX * 1.5f)
-    {
-        if (m_pTarget)
-        {
-            PickUp_Item(m_pTarget);
         }
     }
 
