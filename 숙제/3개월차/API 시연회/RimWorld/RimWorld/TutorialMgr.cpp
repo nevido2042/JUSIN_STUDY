@@ -4,6 +4,7 @@
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
 #include "ProgressBar.h"
+#include "SoundMgr.h"
 
 CTutorialMgr* CTutorialMgr::m_pInstance = nullptr;
 
@@ -39,10 +40,13 @@ void CTutorialMgr::IncreaseQuestProgress()
 
 	if (m_iProgress >= m_iProgressMax)
 	{
+		CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+		CSoundMgr::Get_Instance()->PlaySound(L"LessonActivated.wav", SOUND_UI, 1.f);
+
 		m_iProgress = 0;
 		static_cast<CProgressBar*>(m_pProgressBar)->Set_Value((float)m_iProgress, (float)m_iProgressMax);
 
-		//다음 퀘스트 시작
+		//다음 퀘스트 시작 //다음 퀘스트 시작전에 몇초 기다렸다가 하는건 어떠한가
 		Start_NextQuest();
 
 		//퀘스트 다 했으면 UI 삭제

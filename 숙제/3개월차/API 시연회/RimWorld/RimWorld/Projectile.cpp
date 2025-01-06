@@ -3,6 +3,7 @@
 #include "TimeMgr.h"
 #include "Pawn.h"
 #include "SteelWall.h"
+#include "SoundMgr.h"
 
 CProjectile::CProjectile()
     :m_fDamage(0.f), m_pOwner(nullptr)
@@ -59,6 +60,17 @@ void CProjectile::OnCollision(OBJID _eID, CObj* _pOther)
     //림이거나, 메카노이드면 데미지주고 없어진다.
     if (_eID == OBJ_RIM || _eID == OBJ_ENEMY)
     {
+        if (_eID == OBJ_RIM)
+        {
+            CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+            CSoundMgr::Get_Instance()->PlaySound(L"Bullet_Flesh_1a.wav", SOUND_EFFECT, 1.f);
+        }
+        else
+        {
+            CSoundMgr::Get_Instance()->StopSound(SOUND_EFFECT);
+            CSoundMgr::Get_Instance()->PlaySound(L"Bullet_Metal_1g.wav", SOUND_EFFECT, 1.f);
+        }
+
         static_cast<CPawn*>(_pOther)->Take_Damage(m_fDamage);
         Set_Destroyed();
     }
