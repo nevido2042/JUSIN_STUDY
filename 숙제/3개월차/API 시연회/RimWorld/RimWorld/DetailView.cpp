@@ -54,12 +54,6 @@ void CDetailView::Render(HDC hDC)
 
 	CObj* pObj = CColonyMgr::Get_Instance()->Get_Target();
 
-	// 배경을 투명하게 설정
-	SetBkMode(hDC, TRANSPARENT);
-
-	// 텍스트 색을 흰색으로 설정 (RGB(255, 255, 255))
-	SetTextColor(hDC, RGB(255, 255, 255));
-
 	if (pObj)
 	{
 		RECT rect = { m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom }; // 텍스트를 출력할 영역

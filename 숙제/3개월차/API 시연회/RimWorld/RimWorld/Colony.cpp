@@ -11,6 +11,7 @@
 #include "SceneMgr.h"
 #include "ScrollMgr.h"
 #include "KeyMgr.h"
+#include "TutorialMgr.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
@@ -202,6 +203,9 @@ void CColony::Initialize()
     }
 
     Create_UI();
+
+    CTutorialMgr::Get_Instance()->Initialize();
+
 }
 
 int CColony::Update()
@@ -288,6 +292,12 @@ void CColony::Render(HDC hDC)
     CColonyMgr::Get_Instance()->Render(hDC);
 
     CTimeMgr::Get_Instance()->Render(hDC);
+
+    // 배경을 투명하게 설정
+    SetBkMode(hDC, TRANSPARENT);
+
+    // 텍스트 색을 흰색으로 설정 (RGB(255, 255, 255))
+    SetTextColor(hDC, RGB(255, 255, 255));
 }
 
 void CColony::Release()
@@ -300,6 +310,7 @@ void CColony::Release()
     CPathFinder::Destroy_Instance();
     CTimeMgr::Destroy_Instance();
     CEffectMgr::Destroy_Instance();
+    CTutorialMgr::Destroy_Instance();
 }
 
 void CColony::Create_UI()

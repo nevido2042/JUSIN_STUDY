@@ -160,6 +160,8 @@
     <ClInclude Include="LaunchMsgBox.h" />
     <ClInclude Include="MsgBox.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="ProgressBar.h" />
+    <ClInclude Include="QuestMsgBox.h" />
     <ClInclude Include="RimSlot.h" />
     <ClInclude Include="RimSlotMgr.h" />
     <ClInclude Include="Ship.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeMgr.h" />
     <ClInclude Include="Tree.h" />
+    <ClInclude Include="TutorialMgr.h" />
     <ClInclude Include="WoodLog.h" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +226,8 @@
     <ClCompile Include="LaunchMsgBox.cpp" />
     <ClCompile Include="MsgBox.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="ProgressBar.cpp" />
+    <ClCompile Include="QuestMsgBox.cpp" />
     <ClCompile Include="RimSlot.cpp" />
     <ClCompile Include="RimSlotMgr.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -262,6 +267,7 @@
     </ClCompile>
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="TutorialMgr.cpp" />
     <ClCompile Include="WoodLog.cpp" />
   </ItemGroup>
   <ItemGroup>

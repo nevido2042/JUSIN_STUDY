@@ -11,6 +11,7 @@
 #include "AbstractFactory.h"
 #include "MyButton.h"
 #include "EffectMgr.h"
+#include "TutorialMgr.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -214,7 +215,7 @@ void CColonyMgr::Input_Key()
     }
     else if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
     {
-
+        
         if (GAMESPEED == 0.f)
         {
             CSoundMgr::Get_Instance()->StopSound(SOUND_UI);

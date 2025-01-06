@@ -166,6 +166,15 @@
     <ClCompile Include="WoodLog.cpp">
       <Filter>01.Obj\04.Item\WoodLog</Filter>
     </ClCompile>
+    <ClCompile Include="TutorialMgr.cpp">
+      <Filter>03.Design\TutorialMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestMsgBox.cpp">
+      <Filter>01.Obj\01.UI\MsgBox\QuestMsgBox</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>01.Obj\01.UI\ProgressBar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -347,6 +356,15 @@
     </ClInclude>
     <ClInclude Include="WoodLog.h">
       <Filter>01.Obj\04.Item\WoodLog</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialMgr.h">
+      <Filter>03.Design\TutorialMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestMsgBox.h">
+      <Filter>01.Obj\01.UI\MsgBox\QuestMsgBox</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>01.Obj\01.UI\ProgressBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -537,6 +555,15 @@
     </Filter>
     <Filter Include="01.Obj\04.Item\WoodLog">
       <UniqueIdentifier>{0ce2f0f7-89e6-475f-a8bb-67aa2788d77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\TutorialMgr">
+      <UniqueIdentifier>{b8efec71-ad4a-4402-9812-0336254c82ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\MsgBox\QuestMsgBox">
+      <UniqueIdentifier>{a5e0c849-734f-4cd0-96cc-f5fb527f93d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\01.UI\ProgressBar">
+      <UniqueIdentifier>{932e02e2-46d2-4584-9c0b-c1f0a01a38d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

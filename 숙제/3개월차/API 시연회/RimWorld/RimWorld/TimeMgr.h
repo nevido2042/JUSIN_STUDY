@@ -1,4 +1,6 @@
 #pragma once
+#include "TutorialMgr.h"
+
 class CTimeMgr
 {
 private:
@@ -8,7 +10,16 @@ private:
 public:
 	int		Get_CurrentFrame() { return m_iCurFrame; }
 	float	Get_GameSpeed() { return m_fGameSpeed; }
-	void	Set_GameSpeed(float _fGameSpeed) { m_fGameSpeed = _fGameSpeed; }
+	void	Set_GameSpeed(float _fGameSpeed) 
+	{
+		CTutorialMgr::QUEST eCurQuest = CTutorialMgr::Get_Instance()->Get_CurQuest();
+		if (eCurQuest == CTutorialMgr::QUEST::QUEST_GAMESPEED)
+		{
+			CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+		}
+
+		m_fGameSpeed = _fGameSpeed; 
+	}
 	float	Get_ElapsedTime() { return m_fElapsedTime; }
 
 public:
