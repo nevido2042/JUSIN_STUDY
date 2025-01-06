@@ -5,6 +5,7 @@
 #include "KeyMgr.h"
 #include "SoundMgr.h"
 #include "LaunchMsgBox.h"
+#include "TutorialMgr.h"
 
 CMyButton::CMyButton()
 	:m_bOnHovered(false)
@@ -210,6 +211,11 @@ void CMyButton::Late_Update()
 
 				CSoundMgr::Get_Instance()->StopSound(SOUND_BGM);
 				CSoundMgr::Get_Instance()->PlaySound(L"Ship_TakeOff_1.wav", SOUND_BGM, 1.f);
+
+				if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST_ESCAPE)
+				{
+					CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+				}
 			}
 			else if (!lstrcmp(L"LoggingBtn", m_pImgKey))
 			{

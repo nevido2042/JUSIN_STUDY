@@ -252,6 +252,11 @@ void CColonyMgr::Input_Key()
                 }
                 else
                 {
+                    if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST_DRAFTE)
+                    {
+                        CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+                    }
+
                     CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
                     CSoundMgr::Get_Instance()->PlaySound(L"Drafted_1a.wav", SOUND_UI, .2f);
                     pTargetRim->Change_State(CRim::DRAFTED);

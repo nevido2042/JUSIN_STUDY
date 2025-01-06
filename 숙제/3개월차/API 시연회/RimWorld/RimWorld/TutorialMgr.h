@@ -7,18 +7,31 @@ private:
 	CTutorialMgr();
 	~CTutorialMgr();
 public:
-	enum QUEST { QUEST_GAMESPEED, QUEST_DECONSTRUCT, QUEST_END };
+	enum QUEST 
+	{ 
+		QUEST_START,
+		QUEST_GAMESPEED, 
+		QUEST_DECONSTRUCT, 
+		QUEST_LOGGING, 
+		QUEST_CONSTRUCT_WALL,
+		QUEST_CONSTRUCT_CAMPFIRE,
+		QUEST_DRAFTE,
+		QUEST_BATTLE,
+		QUEST_CONSTRUCT_SHIP,
+		QUEST_ESCAPE,
+		QUEST_END };
 public:
 	void	Initialize();
-	void	Check_Quest();//퀘스트 진행상황 확인
+	//void	Check_Quest();//퀘스트 진행상황 확인
 	QUEST	Get_CurQuest() { return m_eCurQuest; }//현재 진행 중인 퀘스트 확인
 	void	IncreaseQuestProgress();//퀘스트 진척도 올리기
 private:
 	//void Start_Tutorial_GameSpeed();
 	//void Start_Tutorial_Deconstruct();
-	void	Change_Quest(QUEST _eQuest);
+	//void	Change_Quest(QUEST _eQuest);
 	void	Create_MsgBox();//퀘스트에 따른 메시지 박스 출력
 	void	Create_ProgressBar();//프로그레스 바 생성
+	void	Start_NextQuest();
 
 public:
 	static CTutorialMgr* Get_Instance()

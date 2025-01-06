@@ -665,6 +665,11 @@ void CRim::Construct()
 
     if (m_eCurrentTask.eType == TASK::SHIP)
     {
+        if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST_CONSTRUCT_SHIP)
+        {
+            CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+        }
+
         //우주선 건설
         CObj* pObj = CAbstractFactory<CShip>::Create(m_pTarget->Get_Info().fX + TILECX * 0.5f, m_pTarget->Get_Info().fY + TILECY * 0.5f);
         CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
@@ -676,6 +681,11 @@ void CRim::Construct()
     }
     else if (m_eCurrentTask.eType == TASK::WALL)
     {
+        if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST::QUEST_CONSTRUCT_WALL)
+        {
+            CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+        }
+
         //벽 건설
         CObj* pObj = CAbstractFactory<CSteelWall>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
         CObjMgr::Get_Instance()->Add_Object(OBJ_WALL, pObj);
@@ -684,6 +694,11 @@ void CRim::Construct()
     }
     else if (m_eCurrentTask.eType == TASK::CAMPFIRE)
     {
+        if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST::QUEST_CONSTRUCT_CAMPFIRE)
+        {
+            CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+        }
+
         //모닥불 건설
         CObj* pObj = CAbstractFactory<CCampfire>::Create(m_pTarget->Get_Info().fX, m_pTarget->Get_Info().fY);
         CObjMgr::Get_Instance()->Add_Object(OBJ_CAMPFIRE, pObj);

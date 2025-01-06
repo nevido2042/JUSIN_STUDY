@@ -10,6 +10,7 @@
 #include "AbstractFactory.h"
 #include "Steel.h"
 #include "SoundMgr.h"
+#include "TutorialMgr.h"
 
 CSteelWall::CSteelWall()
 	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false)
@@ -157,6 +158,11 @@ int CSteelWall::Update()
 {
 	if (m_bBrokendown)
 	{
+		if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST_DECONSTRUCT)
+		{
+			CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+		}
+
 		CSoundMgr::Get_Instance()->StopSound(SOUND_WALL);
 		CSoundMgr::Get_Instance()->PlaySound(L"StoneBlock_Drop_1a.wav", SOUND_WALL, .5f);
 		//Set_Destroyed();

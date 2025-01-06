@@ -10,6 +10,7 @@
 #include "TileMgr.h"
 #include "Colony.h"
 #include "SceneMgr.h"
+#include "TutorialMgr.h"
 
 CCentipede::CCentipede()
 {
@@ -47,6 +48,11 @@ int CCentipede::Update()
         {
             CColonyMgr::Get_Instance()->Set_ShipBtnActive();
             CColonyMgr::Get_Instance()->Create_ShipBtn();
+
+            if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST_BATTLE)
+            {
+                CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+            }
         }
     }
 

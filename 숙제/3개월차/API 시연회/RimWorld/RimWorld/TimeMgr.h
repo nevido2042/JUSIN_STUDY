@@ -12,6 +12,11 @@ public:
 	float	Get_GameSpeed() { return m_fGameSpeed; }
 	void	Set_GameSpeed(float _fGameSpeed) 
 	{
+		if (m_fGameSpeed == _fGameSpeed)
+		{
+			return;
+		}
+
 		CTutorialMgr::QUEST eCurQuest = CTutorialMgr::Get_Instance()->Get_CurQuest();
 		if (eCurQuest == CTutorialMgr::QUEST::QUEST_GAMESPEED)
 		{

@@ -1,12 +1,13 @@
 #include "pch.h"
-#include "Tree.h"
-#include "ScrollMgr.h"
-#include "BmpMgr.h"
-#include "TileMgr.h"
-#include "ColonyMgr.h"
-#include "SoundMgr.h"
 #include "AbstractFactory.h"
+#include "BmpMgr.h"
+#include "ColonyMgr.h"
 #include "ObjMgr.h"
+#include "ScrollMgr.h"
+#include "SoundMgr.h"
+#include "TileMgr.h"
+#include "Tree.h"
+#include "TutorialMgr.h"
 
 CTree::CTree()
 {
@@ -35,6 +36,11 @@ int CTree::Update()
 {
 	if (m_bBrokendown)
 	{
+		if (CTutorialMgr::Get_Instance()->Get_CurQuest() == CTutorialMgr::QUEST_LOGGING)
+		{
+			CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
+		}
+
 		CSoundMgr::Get_Instance()->StopSound(SOUND_TREE);
 		CSoundMgr::Get_Instance()->PlaySound(L"Tree_Felled_1a.wav", SOUND_TREE, .5f);
 		//Set_Destroyed();
