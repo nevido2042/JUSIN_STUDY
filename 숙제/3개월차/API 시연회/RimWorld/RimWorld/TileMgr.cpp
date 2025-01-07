@@ -49,60 +49,60 @@ void CTileMgr::Initialize()
 
 int CTileMgr::Update()
 {
-	/*for (int iRow = 0; iRow < TILEY; ++iRow) 
+	for (int iRow = 0; iRow < TILEY; ++iRow) 
 	{
 		for (int iCol = 0; iCol < TILEX; ++iCol) 
 		{
 			m_TileMap[iRow][iCol]->Update();
 		}
-	}*/
-
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
-
-	m_iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
-	m_iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
-
-	m_iMinX = iScrollX;
-	m_iMinY = iScrollY;
-
-	//스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
-	if (m_iMinX > 0)
-	{
-		m_iMinX = 0;
-		m_iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
-	}
-	//음수면 스크롤 ex) 
-	else
-	{
-		m_iMinX = abs(m_iMinX);
-		m_iMaxX = m_iMaxX - iScrollX;
 	}
 
-	if (m_iMinY > 0)
-	{
-		m_iMinY = 0;
-		m_iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
-	}
-	else
-	{
-		m_iMinY = abs(m_iMinY);
-		m_iMaxY = m_iMaxY - iScrollY;
-	}
+	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX() / TILECX;
+	//int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY() / TILECY;
+
+	//m_iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	//m_iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+
+	//m_iMinX = iScrollX;
+	//m_iMinY = iScrollY;
+
+	////스크롤 값이 양수가 되었다는건 0번부터~ 최대까지 출력해야한다는것
+	//if (m_iMinX > 0)
+	//{
+	//	m_iMinX = 0;
+	//	m_iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
+	//}
+	////음수면 스크롤 ex) 
+	//else
+	//{
+	//	m_iMinX = abs(m_iMinX);
+	//	m_iMaxX = m_iMaxX - iScrollX;
+	//}
+
+	//if (m_iMinY > 0)
+	//{
+	//	m_iMinY = 0;
+	//	m_iMaxY = (WINCY / TILECY) + CULLIG_OFFSET;
+	//}
+	//else
+	//{
+	//	m_iMinY = abs(m_iMinY);
+	//	m_iMaxY = m_iMaxY - iScrollY;
+	//}
 
 
-	for (int i = m_iMinY; i < m_iMaxY; ++i)
-	{
-		for (int j = m_iMinX; j < m_iMaxX; ++j)
-		{
-			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
-			{
-				continue;
-			}
+	//for (int i = m_iMinY; i < m_iMaxY; ++i)
+	//{
+	//	for (int j = m_iMinX; j < m_iMaxX; ++j)
+	//	{
+	//		if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
+	//		{
+	//			continue;
+	//		}
 
-			m_TileMap[i][j]->Update();
-		}
-	}
+	//		m_TileMap[i][j]->Update();
+	//	}
+	//}
 
 
 	return 0;
@@ -110,26 +110,26 @@ int CTileMgr::Update()
 
 void CTileMgr::Late_Update()
 {
-	/*for (int iRow = 0; iRow < TILEY; ++iRow)
+	for (int iRow = 0; iRow < TILEY; ++iRow)
 	{
 		for (int iCol = 0; iCol < TILEX; ++iCol)
 		{
 			m_TileMap[iRow][iCol]->Late_Update();
 		}
-	}*/
-
-	for (int i = m_iMinY; i < m_iMaxY; ++i)
-	{
-		for (int j = m_iMinX; j < m_iMaxX; ++j)
-		{
-			if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
-			{
-				continue;
-			}
-
-			m_TileMap[i][j]->Late_Update();
-		}
 	}
+
+	//for (int i = m_iMinY; i < m_iMaxY; ++i)
+	//{
+	//	for (int j = m_iMinX; j < m_iMaxX; ++j)
+	//	{
+	//		if (0 > i || TILEY <= i || 0 > j || TILEX <= j)
+	//		{
+	//			continue;
+	//		}
+
+	//		m_TileMap[i][j]->Late_Update();
+	//	}
+	//}
 }
 
 void CTileMgr::Render(HDC hDC)

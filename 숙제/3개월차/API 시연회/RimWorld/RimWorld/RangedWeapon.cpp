@@ -129,7 +129,7 @@ void CRangedWeapon::Render(HDC hDC)
     Grapics.RotateTransform(-m_fAngle);        // 회전 각도 적용
     Grapics.TranslateTransform((REAL)-centerX, (REAL)-centerY); // 원래 위치로 이동
 
-    Grapics.DrawImage(m_pImage, tPoint.x + iScrollX, tPoint.y + iScrollY, 64 * fZoom, 64 * fZoom);
+    Grapics.DrawImage(m_pImage, tPoint.x + iScrollX, tPoint.y + iScrollY, int(64 * fZoom), int(64 * fZoom));
 
 
     //무기 출력

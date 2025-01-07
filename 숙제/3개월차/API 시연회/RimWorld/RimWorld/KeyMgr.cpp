@@ -25,7 +25,7 @@ bool CKeyMgr::Key_Down(int _iKey)
 {
 	if ((!m_bKeyState[_iKey]) && (GetAsyncKeyState(_iKey) & 0x8000))
 	{
-		m_bKeyState[_iKey] = !m_bKeyState[_iKey];
+		//m_bKeyState[_iKey] = !m_bKeyState[_iKey];
 		return true;
 	}
 
@@ -37,7 +37,7 @@ bool CKeyMgr::Key_Up(int _iKey)
 {
 	if ((m_bKeyState[_iKey]) && !(GetAsyncKeyState(_iKey) & 0x8000))
 	{
-		m_bKeyState[_iKey] = !m_bKeyState[_iKey];
+		//m_bKeyState[_iKey] = !m_bKeyState[_iKey];
 		return true;
 	}
 

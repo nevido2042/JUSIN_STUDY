@@ -29,9 +29,9 @@ int CRimSlot::Update()
 
 void CRimSlot::Late_Update()
 {
-	if (Is_MouseHovered())
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
 	{
-		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+		if (Is_MouseHovered())
 		{
 			/*CScrollMgr::Get_Instance()->Set_ScrollX(-Get_Target()->Get_Info().fX + WINCX * 0.5f);
 			CScrollMgr::Get_Instance()->Set_ScrollY(-Get_Target()->Get_Info().fY + WINCY * 0.5f);*/

@@ -36,7 +36,7 @@ void CTile::Late_Update()
 {
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
 	{
-		if (Is_MouseHovered_Scrolled())
+		if (Is_MouseHovered_Scrolled()) //왜 안되는거야 창사이즈보다 멀리있는 곳은
 		{
 			//오브젝트가 있다.
 			if (m_pObj)

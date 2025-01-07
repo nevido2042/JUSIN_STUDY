@@ -306,7 +306,7 @@ void CColony::Render(HDC hDC)
 
     // °´Ã¼ ¸Å´ÏÀú ·»´õ¸µ
     CObjMgr::Get_Instance()->Render(hDC);
-    //CCamera::Get_Instance()->Render(hDC);
+    CCamera::Get_Instance()->Render(hDC);
 
     CColonyMgr::Get_Instance()->Render(hDC);
 

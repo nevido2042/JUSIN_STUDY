@@ -517,11 +517,22 @@ void CPawn::Late_Update()
         break;
     }
 
-    //마우스 클릭 했을 때 타겟으로 설정
-    if (Is_MouseHovered_Scrolled())
+
+    //좌클릭은 타겟으로 설정
+    if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
     {
-        //우클릭은 타겟의 공격 타겟으로 설정
-        if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
+        //마우스가 올라가져있는가?
+        if (Is_MouseHovered_Scrolled())
+        {
+            CColonyMgr::Get_Instance()->Set_Target(this);
+        }
+    }
+
+    //우클릭은 타겟의 공격 타겟으로 설정
+    if (CKeyMgr::Get_Instance()->Key_Up(VK_RBUTTON))
+    {
+        //마우스가 올라가져있는가?
+        if (Is_MouseHovered_Scrolled())
         {
             if (CObj* pTarget = CColonyMgr::Get_Instance()->Get_Target())
             {
@@ -533,7 +544,6 @@ void CPawn::Late_Update()
                     CEffectMgr::Get_Instance()->Create_Effect(tPos, 64.f, 64.f, L"FeedbackShoot", 30.f);
                 }
             }
-            return;
         }
     }
 

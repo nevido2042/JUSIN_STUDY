@@ -90,5 +90,25 @@ bool CCamera::IsInCameraView(float _fX, float _fY, float _fWidth, float _fHeight
 
 void CCamera::Render(HDC hDC)
 {
+    // 변수 값을 유니코드 문자열로 변환
+    //wchar_t buffer[50];
+    //wsprintf(buffer, L"m_iCurFrame: %d", m_iCurFrame);
+    //// 문자열 출력 (유니코드)
+    //TextOutW(hDC, 0, 0, buffer, lstrlenW(buffer));
 
+    //마우스 클릭 했을 때 타겟으로 설정
+    POINT	ptMouse{};
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    wchar_t buffer[256];
+    swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"Mouse Screen: %.2f, %.2f", (double)ptMouse.x, (double)ptMouse.y);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, 0, 20, buffer, lstrlenW(buffer));
+
+    POINT tWorldPoint = ScreenToWorld((int)ptMouse.x, (int)ptMouse.y);
+
+    swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"Mouse World: %.2f, %.2f", (double)tWorldPoint.x, (double)tWorldPoint.y);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, 0, 40, buffer, lstrlenW(buffer));
 }
