@@ -14,7 +14,9 @@ CBullet_Small::~CBullet_Small()
 
 void CBullet_Small::Render(HDC hDC)
 {
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    CProjectile::Render(hDC);
+
+    /*int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     Ellipse(hDC,
@@ -22,7 +24,7 @@ void CBullet_Small::Render(HDC hDC)
         m_tRect.top + iScrollY,
         m_tRect.right + iScrollX,
         m_tRect.bottom + iScrollY
-    );
+    );*/
 
     ////ÃÑ¾Ë Ãâ·Â
     //HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Bullet_Small");

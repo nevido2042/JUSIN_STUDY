@@ -113,6 +113,8 @@ void CRangedWeapon::Render(HDC hDC)
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+    float fZoom = CCamera::Get_Instance()->Get_Zoom();
+
 
     // image.png 파일을 이용하여 Image 객체를 생성합니다.
 
@@ -127,7 +129,7 @@ void CRangedWeapon::Render(HDC hDC)
     Grapics.RotateTransform(-m_fAngle);        // 회전 각도 적용
     Grapics.TranslateTransform((REAL)-centerX, (REAL)-centerY); // 원래 위치로 이동
 
-    Grapics.DrawImage(m_pImage, tPoint.x + iScrollX, tPoint.y + iScrollY, 64, 64);
+    Grapics.DrawImage(m_pImage, tPoint.x + iScrollX, tPoint.y + iScrollY, 64 * fZoom, 64 * fZoom);
 
 
     //무기 출력

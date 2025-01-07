@@ -652,6 +652,7 @@ void CColonyMgr::MouseDrag_Select_Wall()
             int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
             int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+
             int iLeft = m_tSelectRect.left + iScrollX;
             int iRight = m_tSelectRect.right + iScrollX;
             int iTop = m_tSelectRect.top + iScrollY;
@@ -660,18 +661,20 @@ void CColonyMgr::MouseDrag_Select_Wall()
             list<CObj*> steelWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
             for (CObj* pObj : steelWallList)
             {
+                // pObj의 월드 좌표를 스크린 좌표로 변환합니다.
+                POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen(pObj->Get_Info().fX, pObj->Get_Info().fY);
+
+                // 선택 영역과 객체가 겹치는지 확인
                 if (iLeft < iRight)
                 {
-                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                    if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                    if (iLeft > tScreenPos.x || iRight < tScreenPos.x)
                     {
                         continue;
                     }
                 }
                 else
                 {
-                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                    if (iLeft < pObj->Get_Info().fX || iRight > pObj->Get_Info().fX)
+                    if (iLeft < tScreenPos.x || iRight > tScreenPos.x)
                     {
                         continue;
                     }
@@ -679,24 +682,23 @@ void CColonyMgr::MouseDrag_Select_Wall()
 
                 if (iTop < iBottom)
                 {
-                    if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
+                    if (iTop > tScreenPos.y || iBottom < tScreenPos.y)
                     {
                         continue;
                     }
                 }
                 else
                 {
-                    if (iTop < pObj->Get_Info().fY || iBottom > pObj->Get_Info().fY)
+                    if (iTop < tScreenPos.y || iBottom > tScreenPos.y)
                     {
                         continue;
                     }
                 }
 
-
-
+                // 작업할 객체를 해체 목록에 추가
                 TASK tTask;
                 tTask.pObj = pObj;
-                CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);//해체 목록 추가
+                CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);  // 해체 목록 추가
             }
         }
     }
@@ -743,18 +745,20 @@ void CColonyMgr::MouseDrag_Select_Tree()
             list<CObj*> TreeList = CObjMgr::Get_Instance()->Get_List()[OBJ_TREE];
             for (CObj* pObj : TreeList)
             {
+                // pObj의 월드 좌표를 스크린 좌표로 변환합니다.
+                POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen(pObj->Get_Info().fX, pObj->Get_Info().fY);
+
+                // 선택 영역과 객체가 겹치는지 확인
                 if (iLeft < iRight)
                 {
-                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                    if (iLeft > pObj->Get_Info().fX || iRight < pObj->Get_Info().fX)
+                    if (iLeft > tScreenPos.x || iRight < tScreenPos.x)
                     {
                         continue;
                     }
                 }
                 else
                 {
-                    //left, rigth 사이, top, down 사이에 있으면 내부에 있음
-                    if (iLeft < pObj->Get_Info().fX || iRight > pObj->Get_Info().fX)
+                    if (iLeft < tScreenPos.x || iRight > tScreenPos.x)
                     {
                         continue;
                     }
@@ -762,20 +766,18 @@ void CColonyMgr::MouseDrag_Select_Tree()
 
                 if (iTop < iBottom)
                 {
-                    if (iTop > pObj->Get_Info().fY || iBottom < pObj->Get_Info().fY)
+                    if (iTop > tScreenPos.y || iBottom < tScreenPos.y)
                     {
                         continue;
                     }
                 }
                 else
                 {
-                    if (iTop < pObj->Get_Info().fY || iBottom > pObj->Get_Info().fY)
+                    if (iTop < tScreenPos.y || iBottom > tScreenPos.y)
                     {
                         continue;
                     }
                 }
-
-
 
                 TASK tTask;
                 tTask.pObj = pObj;
