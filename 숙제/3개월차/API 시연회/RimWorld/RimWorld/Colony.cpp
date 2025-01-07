@@ -302,7 +302,7 @@ void CColony::Render(HDC hDC)
     HDC hBlackDC = CBmpMgr::Get_Instance()->Find_Image(L"Black");
     BitBlt(hDC, 0, 0, WINCX, WINCY, hBlackDC, 0, 0, SRCCOPY);  // 검은 배경 그리기
 
-    //CTileMgr::Get_Instance()->Render(hDC);
+    CTileMgr::Get_Instance()->Render(hDC);
 
     // 객체 매니저 렌더링
     CObjMgr::Get_Instance()->Render(hDC);
