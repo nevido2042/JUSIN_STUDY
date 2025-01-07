@@ -32,35 +32,42 @@ void CCampfire::Late_Update()
 
 void CCampfire::Render(HDC hDC)
 {
-	int iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	int iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+    float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
+    float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
+    float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
-	HDC hFireDC = CBmpMgr::Get_Instance()->Find_Image(L"FireAnimated");
-	HDC hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire");
+    HDC hFireDC = CBmpMgr::Get_Instance()->Find_Image(L"FireAnimated");
+    HDC hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire");
 
-	GdiTransparentBlt(hDC,			// 복사 받을 DC
-		m_tRect.left + iScrollX,	// 복사 받을 위치 좌표 X, Y	
-		m_tRect.top + iScrollY,
-		(int)m_tInfo.fCX,			// 복사 받을 이미지의 가로, 세로
-		(int)m_tInfo.fCY,
-		hCampfireDC,						// 복사할 이미지 DC	
-		0,							// 비트맵 출력 시작 좌표(Left, top)
-		0,
-		(int)m_tInfo.fCX,			// 복사할 이미지의 가로, 세로
-		(int)m_tInfo.fCY,
-		RGB_WHITE);		// 제거할 색상
+    // 월드 좌표를 스크린 좌표로 변환 (줌 반영)
+    POINT tScreenPoint = CCamera::Get_Instance()->WorldToScreen(m_tInfo.fX, m_tInfo.fY);
 
-	GdiTransparentBlt(hDC,			// 복사 받을 DC
-		m_tRect.left + iScrollX + 5,	// 복사 받을 위치 좌표 X, Y	
-		m_tRect.top + iScrollY - 5,
-		(int)(m_tInfo.fCX * 0.9f),			// 복사 받을 이미지의 가로, 세로
-		(int)(m_tInfo.fCY * 0.9f),
-		hFireDC,						// 복사할 이미지 DC	
-		(int)m_tInfo.fCX * m_tFrame.iFrameStart,							// 비트맵 출력 시작 좌표(Left, top)
-		(int)m_tInfo.fCY * m_tFrame.iMotion,
-		(int)m_tInfo.fCX,			// 복사할 이미지의 가로, 세로
-		(int)m_tInfo.fCY,
-		RGB_PURPLE);		// 제거할 색상
+    // 첫 번째 이미지: Campfire
+    GdiTransparentBlt(hDC,
+        (int)(tScreenPoint.x - (m_tInfo.fCX / 2) * fZoom),  // 중심점 기준 좌표 조정 (가로)
+        (int)(tScreenPoint.y - (m_tInfo.fCY / 2) * fZoom),  // 중심점 기준 좌표 조정 (세로)
+        (int)(m_tInfo.fCX * fZoom),                        // 복사받을 이미지의 가로 (줌 반영)
+        (int)(m_tInfo.fCY * fZoom),                        // 복사받을 이미지의 세로 (줌 반영)
+        hCampfireDC,
+        0,
+        0,
+        (int)m_tInfo.fCX,                                  // 원본 가로 크기
+        (int)m_tInfo.fCY,                                  // 원본 세로 크기
+        RGB_WHITE);
+
+    // 두 번째 이미지: FireAnimated
+    GdiTransparentBlt(hDC,
+        (int)(tScreenPoint.x - (m_tInfo.fCX * 0.45f) * fZoom),  // 좌표 조정 (가로) + 줌 반영
+        (int)(tScreenPoint.y - (m_tInfo.fCY * 0.55f) * fZoom),  // 좌표 조정 (세로) + 줌 반영
+        (int)((m_tInfo.fCX * 0.9f) * fZoom),                   // 복사받을 이미지의 가로 (줌 반영)
+        (int)((m_tInfo.fCY * 0.9f) * fZoom),                   // 복사받을 이미지의 세로 (줌 반영)
+        hFireDC,
+        (int)(m_tInfo.fCX * m_tFrame.iFrameStart),             // 비트맵 출력 시작 좌표 (X)
+        (int)(m_tInfo.fCY * m_tFrame.iMotion),                 // 비트맵 출력 시작 좌표 (Y)
+        (int)m_tInfo.fCX,                                      // 원본 가로 크기
+        (int)m_tInfo.fCY,                                      // 원본 세로 크기
+        RGB_PURPLE);
+
 }
 
 void CCampfire::Release()

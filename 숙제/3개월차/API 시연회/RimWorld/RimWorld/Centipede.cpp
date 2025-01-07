@@ -69,11 +69,15 @@ void CCentipede::Render(HDC hDC)
 {
     CPawn::Render(hDC);
 
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+    // 화면 스크롤 값을 가져옵니다.
+    int iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    /*Ellipse(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
-        m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);*/
+    // 월드 좌표를 스크린 좌표로 변환합니다.
+    POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+
+    // 확대/축소 비율을 가져옵니다.
+    float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
     // 림 몸통, 얼굴, 머리 순
     HDC hTestDC(nullptr);
@@ -83,9 +87,10 @@ void CCentipede::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Centipede_north");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
+            (int)(tScreenPos.x + (iScrollX - IMAGE_OFFSET_X) * fZoom), // 좌표 보정 후 fZoom을 적용
+            (int)(tScreenPos.y + (iScrollY - IMAGE_OFFSET_Y) * fZoom),
+            (int)(128 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(128 * fZoom),
             hTestDC, 0, 0, 128, 128,
             RGB_WHITE);
         break;
@@ -94,9 +99,10 @@ void CCentipede::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Centipede_east");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
+            (int)(tScreenPos.x + (iScrollX - IMAGE_OFFSET_X) * fZoom), // 좌표 보정 후 fZoom을 적용
+            (int)(tScreenPos.y + (iScrollY - IMAGE_OFFSET_Y) * fZoom),
+            (int)(128 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(128 * fZoom),
             hTestDC, 0, 0, 128, 128,
             RGB_WHITE);
         break;
@@ -105,9 +111,10 @@ void CCentipede::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Centipede_south");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
+            (int)(tScreenPos.x + (iScrollX - IMAGE_OFFSET_X) * fZoom), // 좌표 보정 후 fZoom을 적용
+            (int)(tScreenPos.y + (iScrollY - IMAGE_OFFSET_Y) * fZoom),
+            (int)(128 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(128 * fZoom),
             hTestDC, 0, 0, 128, 128,
             RGB_WHITE);
         break;
@@ -116,15 +123,18 @@ void CCentipede::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Centipede_west");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
+            (int)(tScreenPos.x + (iScrollX - IMAGE_OFFSET_X) * fZoom), // 좌표 보정 후 fZoom을 적용
+            (int)(tScreenPos.y + (iScrollY - IMAGE_OFFSET_Y) * fZoom),
+            (int)(128 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(128 * fZoom),
             hTestDC, 0, 0, 128, 128,
             RGB_WHITE);
         break;
+
     default:
         break;
     }
+
 }
 
 void CCentipede::Dead()

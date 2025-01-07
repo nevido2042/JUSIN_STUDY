@@ -46,15 +46,17 @@ void CBoomrat::Late_Update()
 
 void CBoomrat::Render(HDC hDC)
 {
-    CPawn::Render(hDC);
+    // 화면 스크롤 값을 가져옵니다.
+    int iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+    int iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+    // 화면 확대/축소 비율을 가져옵니다.
+    float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
-    /*Ellipse(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY,
-        m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);*/
+    // 월드 좌표를 스크린 좌표로 변환합니다.
+    POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
 
-        // 림 몸통, 얼굴, 머리 순
+    // 림 몸통, 얼굴, 머리 순
     HDC hTestDC(nullptr);
     switch (m_eDir)
     {
@@ -62,9 +64,10 @@ void CBoomrat::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Boomrat_north");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX
-            , m_tRect.top + iScrollY,
-            64, 64,
+            (int)(tScreenPos.x),  // 위치 보정만 하고 fZoom은 크기 보정에만 사용
+            (int)(tScreenPos.y),
+            (int)(64 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(64 * fZoom),
             hTestDC, 0, 0, 64, 64,
             RGB_PURPLE);
         break;
@@ -73,9 +76,10 @@ void CBoomrat::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Boomrat_east");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX
-            , m_tRect.top + iScrollY,
-            64, 64,
+            (int)(tScreenPos.x),  // 위치 보정만 하고 fZoom은 크기 보정에만 사용
+            (int)(tScreenPos.y),
+            (int)(64 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(64 * fZoom),
             hTestDC, 0, 0, 64, 64,
             RGB_PURPLE);
         break;
@@ -84,9 +88,10 @@ void CBoomrat::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Boomrat_south");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX
-            , m_tRect.top + iScrollY,
-            64, 64,
+            (int)(tScreenPos.x),  // 위치 보정만 하고 fZoom은 크기 보정에만 사용
+            (int)(tScreenPos.y),
+            (int)(64 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(64 * fZoom),
             hTestDC, 0, 0, 64, 64,
             RGB_PURPLE);
         break;
@@ -95,15 +100,18 @@ void CBoomrat::Render(HDC hDC)
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Boomrat_west");
         // 몸통
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX
-            , m_tRect.top + iScrollY,
-            64, 64,
+            (int)(tScreenPos.x),  // 위치 보정만 하고 fZoom은 크기 보정에만 사용
+            (int)(tScreenPos.y),
+            (int)(64 * fZoom),  // 크기 보정 (fZoom만 크기 조정)
+            (int)(64 * fZoom),
             hTestDC, 0, 0, 64, 64,
             RGB_PURPLE);
         break;
+
     default:
         break;
     }
+
 }
 
 void CBoomrat::Dead()

@@ -309,23 +309,25 @@ void CColonyMgr::Render(HDC hDC)
     HDC     hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire_MenuIcon");
     HDC     hCampfireBlueprintDC = CBmpMgr::Get_Instance()->Find_Image(L"CampfireBlueprint");
 
-
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-    //선택한 것 강조
+    // 선택한 것 강조
     if (m_pTarget)
     {
-        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_pTarget->Get_Rect()->left, m_pTarget->Get_Rect()->top);
+        float fZoom = CCamera::Get_Instance()->Get_Zoom();
+        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+            m_pTarget->Get_Rect()->left,
+            m_pTarget->Get_Rect()->top
+        );
 
-
-        HDC		hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
+        HDC hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
 
         GdiTransparentBlt(hDC,
-            (int)tPoint.x + iScrollX,
-            (int)tPoint.y + iScrollY,
-            (int)(64 * CCamera::Get_Instance()->Get_Zoom()),
-            (int)(64 * CCamera::Get_Instance()->Get_Zoom()),
+            (int)tPoint.x,
+            (int)tPoint.y,
+            (int)(64 * fZoom),
+            (int)(64 * fZoom),
             hSelectionBracketWholeDC,
             0, 0,
             64,
@@ -333,61 +335,79 @@ void CColonyMgr::Render(HDC hDC)
             RGB_PURPLE);
     }
 
-    //해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
+    // 해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
     for (TASK tTask : m_DeconstructSet)
     {
+        float fZoom = CCamera::Get_Instance()->Get_Zoom();
         CObj* pObj = tTask.pObj;
+        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+            pObj->Get_Rect()->left,
+            pObj->Get_Rect()->top
+        );
 
         GdiTransparentBlt(hDC,
-            (int)pObj->Get_Rect()->left + iScrollX,
-            (int)pObj->Get_Rect()->top + iScrollY,
-            64,
-            64,
+            (int)tPoint.x,
+            (int)tPoint.y,
+            (int)(64 * fZoom),
+            (int)(64 * fZoom),
             hDeconstructDC,
             0, 0,
             64,
             64,
             RGB_WHITE);
     }
-    //벌목 리스트에 있는 모든 벽들에 해체 아이콘 표시
+
+    // 벌목 리스트에 있는 모든 벽들에 해체 아이콘 표시
     for (TASK tTask : m_LoggingSet)
     {
+        float fZoom = CCamera::Get_Instance()->Get_Zoom();
         CObj* pObj = tTask.pObj;
+        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+            pObj->Get_Rect()->left,
+            pObj->Get_Rect()->top
+        );
 
         GdiTransparentBlt(hDC,
-            (int)pObj->Get_Rect()->left + iScrollX,
-            (int)pObj->Get_Rect()->top + iScrollY,
-            64,
-            64,
+            (int)tPoint.x,
+            (int)tPoint.y,
+            (int)(64 * fZoom),
+            (int)(64 * fZoom),
             hCutPlantDC,
             0, 0,
             64,
             64,
             RGB_WHITE);
     }
-    //건설할 벽들 표시, 우주선 표시
+
+    // 건설할 벽들 표시, 우주선 표시
     for (TASK tTask : m_ConstructSet)
     {
+        float fZoom = CCamera::Get_Instance()->Get_Zoom();
         CObj* pObj = tTask.pObj;
+        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+            pObj->Get_Rect()->left,
+            pObj->Get_Rect()->top
+        );
 
         if (tTask.eType == TASK::WALL)
         {
-            BitBlt(hDC,
-                (int)pObj->Get_Rect()->left + iScrollX + 16,
-                (int)pObj->Get_Rect()->top + iScrollY + 16,
-                32,
-                32,
+            GdiTransparentBlt(hDC,
+                (int)(tPoint.x + 16 * fZoom),
+                (int)(tPoint.y + 16 * fZoom),
+                (int)(32 * fZoom),
+                (int)(32 * fZoom),
                 hSteelWallDC,
                 0, 0,
-                SRCCOPY);
+                32, 32,
+                RGB_WHITE);
         }
         else if (tTask.eType == TASK::SHIP)
         {
             GdiTransparentBlt(hDC,
-                (int)pObj->Get_Rect()->left + iScrollX,
-                (int)pObj->Get_Rect()->top + iScrollY,
-                128,
-                128,
+                (int)tPoint.x,
+                (int)tPoint.y,
+                (int)(128 * fZoom),
+                (int)(128 * fZoom),
                 hShipDC,
                 0, 0,
                 512, 512,
@@ -396,31 +416,32 @@ void CColonyMgr::Render(HDC hDC)
         else if (tTask.eType == TASK::CAMPFIRE)
         {
             GdiTransparentBlt(hDC,
-                (int)pObj->Get_Rect()->left + iScrollX,
-                (int)pObj->Get_Rect()->top + iScrollY,
-                64,
-                64,
+                (int)tPoint.x,
+                (int)tPoint.y,
+                (int)(64 * fZoom),
+                (int)(64 * fZoom),
                 hCampfireBlueprintDC,
                 0, 0,
                 64, 64,
                 RGB_WHITE);
         }
-
-        
     }
 
-    //해체 모드일 경우 마우스에 해체 그림 표시
+    // 해체 모드일 경우 마우스에 해체 그림 표시
     if (m_eMode == MODE_DECONSTRUCT)
     {
-        POINT	ptMouse{};
+        //float fZoom = CCamera::Get_Instance()->Get_Zoom();
+        POINT ptMouse{};
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
+        int iconSize = (int)(64);
+
         GdiTransparentBlt(hDC,
-            ptMouse.x,
-            ptMouse.y,
-            64,
-            64,
+            ptMouse.x - iconSize / 2,  // 마우스 중심에 아이콘 표시
+            ptMouse.y - iconSize / 2,
+            iconSize,
+            iconSize,
             hDeconstructDC,
             0, 0,
             64,
@@ -429,36 +450,35 @@ void CColonyMgr::Render(HDC hDC)
 
         if (m_bDrawRect)
         {
-            // 초록색 펜 생성 (두께 5)
-            HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0)); // 두께 5, 색상 초록색
+            HPEN hPen = CreatePen(PS_SOLID, (int)(2), RGB(0, 255, 0));
             HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
 
-            // 사각형을 이루는 네 개의 선 그리기
-            MoveToEx(hDC, m_tSelectRect.left, m_tSelectRect.top, NULL); // 시작점
-            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.top);        // 윗변
-            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.bottom);     // 오른쪽 변
-            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.bottom);      // 아랫변
-            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.top);         // 왼쪽 변 (닫기)
+            MoveToEx(hDC, m_tSelectRect.left, m_tSelectRect.top, NULL);
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.top);
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.bottom);
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.bottom);
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.top);
 
-            // 펜 복원 및 삭제
             SelectObject(hDC, hOldPen);
             DeleteObject(hPen);
-
         }
-
     }
-    //벌목 모드일 경우 마우스에 도끼모양 그림 표시
+
+    // 벌목 모드일 경우 마우스에 도끼 모양 그림 표시
     else if (m_eMode == MODE_LOGGING)
     {
-        POINT	ptMouse{};
+        //float fZoom = CCamera::Get_Instance()->Get_Zoom();
+        POINT ptMouse{};
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
+        int iconSize = (int)(64);
+
         GdiTransparentBlt(hDC,
-            ptMouse.x,
-            ptMouse.y,
-            64,
-            64,
+            ptMouse.x - iconSize / 2,  // 마우스 중심에 아이콘 표시
+            ptMouse.y - iconSize / 2,
+            iconSize,
+            iconSize,
             hLoggingDC,
             0, 0,
             64,
@@ -467,71 +487,58 @@ void CColonyMgr::Render(HDC hDC)
 
         if (m_bDrawRect)
         {
-            // 초록색 펜 생성 (두께 5)
-            HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0)); // 두께 5, 색상 초록색
+            HPEN hPen = CreatePen(PS_SOLID, (int)(2), RGB(0, 255, 0));
             HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
 
-            // 사각형을 이루는 네 개의 선 그리기
-            MoveToEx(hDC, m_tSelectRect.left, m_tSelectRect.top, NULL); // 시작점
-            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.top);        // 윗변
-            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.bottom);     // 오른쪽 변
-            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.bottom);      // 아랫변
-            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.top);         // 왼쪽 변 (닫기)
+            MoveToEx(hDC, m_tSelectRect.left, m_tSelectRect.top, NULL);
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.top);
+            LineTo(hDC, m_tSelectRect.right, m_tSelectRect.bottom);
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.bottom);
+            LineTo(hDC, m_tSelectRect.left, m_tSelectRect.top);
 
-            // 펜 복원 및 삭제
             SelectObject(hDC, hOldPen);
             DeleteObject(hPen);
+        }
+    }
 
+    // 나머지 모드
+    else if (m_eMode == MODE_CONSTRUCT || m_eMode == MODE_SHIP || m_eMode == MODE_CAMPFIRE)
+    {
+        //float fZoom = CCamera::Get_Instance()->Get_Zoom();
+        POINT ptMouse{};
+        GetCursorPos(&ptMouse);
+        ScreenToClient(g_hWnd, &ptMouse);
+
+        HDC hIconDC = nullptr;
+        int iconSize = (int)(64);
+
+        if (m_eMode == MODE_CONSTRUCT)
+        {
+            hIconDC = hSteelWallDC;
+            iconSize = (int)(32);
+        }
+        else if (m_eMode == MODE_SHIP)
+        {
+            hIconDC = hShipDC;
+            iconSize = (int)(128);
+        }
+        else if (m_eMode == MODE_CAMPFIRE)
+        {
+            hIconDC = hCampfireBlueprintDC;
         }
 
-    }
-    else if (m_eMode == MODE_CONSTRUCT)
-    {
-        POINT	ptMouse{};
-        GetCursorPos(&ptMouse);
-        ScreenToClient(g_hWnd, &ptMouse);
-
-        BitBlt(hDC,
-            ptMouse.x,
-            ptMouse.y,
-            64,
-            64,
-            hSteelWallDC,
-            0, 0,
-            SRCCOPY);
-    }
-    else if (m_eMode == MODE_SHIP)
-    {
-        POINT	ptMouse{};
-        GetCursorPos(&ptMouse);
-        ScreenToClient(g_hWnd, &ptMouse);
-
         GdiTransparentBlt(hDC,
-            ptMouse.x,
-            ptMouse.y,
-            128,
-            128,
-            hShipDC,
+            ptMouse.x,// - iconSize / 2,  // 마우스 중심에 아이콘 표시
+            ptMouse.y,// - iconSize / 2,
+            iconSize,
+            iconSize,
+            hIconDC,
             0, 0,
-            512, 512,
+            iconSize, iconSize,
             RGB_WHITE);
     }
-    else if (m_eMode == MODE_CAMPFIRE)
-    {
-        POINT	ptMouse{};
-        GetCursorPos(&ptMouse);
-        ScreenToClient(g_hWnd, &ptMouse);
 
-        GdiTransparentBlt(hDC,
-            ptMouse.x,
-            ptMouse.y,
-            64,
-            64,
-            hCampfireDC,
-            0, 0,
-            64, 64,
-            RGB_WHITE);
-    }
+
 }
 
 void CColonyMgr::Release()
