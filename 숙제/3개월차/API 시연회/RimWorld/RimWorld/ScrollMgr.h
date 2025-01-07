@@ -12,8 +12,8 @@ public:
 	void Scroll_Lock();
 
 public:
-	float			Get_ScrollX() { return m_fScrollX; }
-	float			Get_ScrollY() { return m_fScrollY; }
+	float			Get_ScrollX() { return /*m_fScrollX*/0; }
+	float			Get_ScrollY() { return /*m_fScrollY*/0; }
 
 	void			Move_ScrollX(float _fX) { m_bMoveLerp = false; m_fScrollX += _fX; }
 	void			Move_ScrollY(float _fY) { m_bMoveLerp = false; m_fScrollY += _fY; }

@@ -175,6 +175,9 @@
     <ClCompile Include="ProgressBar.cpp">
       <Filter>01.Obj\01.UI\ProgressBar</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>03.Design\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -365,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="ProgressBar.h">
       <Filter>01.Obj\01.UI\ProgressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>03.Design\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -564,6 +570,9 @@
     </Filter>
     <Filter Include="01.Obj\01.UI\ProgressBar">
       <UniqueIdentifier>{932e02e2-46d2-4584-9c0b-c1f0a01a38d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Design\Camera">
+      <UniqueIdentifier>{4f7c0c69-8c66-4cf9-bb1a-dc61a57e5702}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

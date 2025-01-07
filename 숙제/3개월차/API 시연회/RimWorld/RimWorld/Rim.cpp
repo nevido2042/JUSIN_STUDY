@@ -13,6 +13,7 @@
 #include "SoundMgr.h"
 #include "Ship.h"
 #include "Campfire.h"
+#include "Camera.h"
 
 CRim::CRim()
     :m_bTaskCheck(false), m_pTransportingItem(nullptr),
@@ -142,118 +143,38 @@ void CRim::Render(HDC hDC)
 
     // ¸² ¸öÅë, ¾ó±¼, ¸Ó¸® ¼ø
     HDC hTestDC(nullptr);
-    switch (m_eDir)
+
+
+    switch (m_eDir) 
     {
     case UU:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[NORTH].c_str());
-        // ¸öÅë
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[NORTH].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[NORTH].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[NORTH], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[NORTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[NORTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     case RR:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[EAST].c_str());
-        // ¸öÅë
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[EAST].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[EAST].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[EAST], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[EAST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[EAST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     case DD:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[SOUTH].c_str());
-        // ¸öÅë
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[SOUTH].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[SOUTH].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[SOUTH], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[SOUTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[SOUTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     case LL:
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Body[WEST].c_str());
-        // ¸öÅë
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X
-            , m_tRect.top + iScrollY - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        //¾ó±¼
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Face[WEST].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
-        // ¸Ó¸®
-        hTestDC = CBmpMgr::Get_Instance()->Find_Image(m_ImgKeyArr_Hair[WEST].c_str());
-        GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX - IMAGE_OFFSET_X,
-            m_tRect.top + iScrollY - HEAD_OFFSET - IMAGE_OFFSET_Y,
-            128, 128,
-            hTestDC, 0, 0, 128, 128,
-            RGB_PURPLE);
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[WEST], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[WEST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[WEST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
+
     default:
         break;
     }
+
 
     //Á×¾úÀ» ¶§ ÇÍÀÚ±¹ Ãâ·Â
     if (m_bDead)
@@ -717,6 +638,22 @@ void CRim::Drfated_Fire()
         m_bAttack = false;
         Change_DraftedState(DRAFTED_SEARCH);
     }
+}
+
+void CRim::DrawImage(HDC hDC, const RECT& m_tRect, int iScrollX, int iScrollY, const std::wstring& imageKey, int offsetX, int offsetY)
+{
+
+    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tInfo.fX, m_tInfo.fY);
+
+    // ÀÌ¹ÌÁö ±×¸®±â ÇÔ¼ö
+        HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(imageKey.c_str());
+        GdiTransparentBlt(hDC,
+            tPoint.x + iScrollX - int(offsetX * CCamera::Get_Instance()->Get_Zoom()),
+            tPoint.y + iScrollY - int(offsetY * CCamera::Get_Instance()->Get_Zoom()),
+            int(128 * CCamera::Get_Instance()->Get_Zoom()), int(128 * CCamera::Get_Instance()->Get_Zoom()),
+            hTestDC, 0, 0, 128, 128,
+            RGB_PURPLE);
+    
 }
 
 void CRim::Check_CloseTask()

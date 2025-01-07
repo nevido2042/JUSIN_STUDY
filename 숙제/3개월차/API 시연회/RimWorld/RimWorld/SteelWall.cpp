@@ -11,6 +11,7 @@
 #include "Steel.h"
 #include "SoundMgr.h"
 #include "TutorialMgr.h"
+#include "Camera.h"
 
 CSteelWall::CSteelWall()
 	:m_eCurState(END), m_ePreState(END), m_iRenderX(0), m_iRenderY(0), m_bCheckNeighbor(false)
@@ -241,12 +242,13 @@ void CSteelWall::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tInfo.fX, m_tInfo.fY);
+
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
-		m_tRect.left + iScrollX -8
-		,	// 복사 받을 위치 좌표 X, Y	
-		m_tRect.top + iScrollY -8,
-		80,			// 복사 받을 이미지의 가로, 세로
-		80,
+		tPoint.x,//m_tRect.left + iScrollX -8,	// 복사 받을 위치 좌표 X, Y	
+		tPoint.y,// + iScrollY -8,
+		int(80 * CCamera::Get_Instance()->Get_Zoom()),			// 복사 받을 이미지의 가로, 세로
+		int(80 * CCamera::Get_Instance()->Get_Zoom()),
 		hMemDC,						// 복사할 이미지 DC	
 		80 * m_iRenderX,// 비트맵 출력 시작 좌표(Left, top)
 		80 * m_iRenderY,

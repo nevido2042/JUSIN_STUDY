@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ObjMgr.h"
 #include "CollisionMgr.h"
+#include "Camera.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
@@ -105,7 +106,14 @@ void CObjMgr::Render(HDC hDC)
 		}
 
 		for (auto& pObj : m_RenderList[i])
-			pObj->Render(hDC);
+		{
+			if (CCamera::Get_Instance()->IsInCameraView(pObj->Get_Info().fX, pObj->Get_Info().fY, pObj->Get_Info().fCX, pObj->Get_Info().fCY) ||
+				pObj->Get_GroupID() == RENDER_UI || pObj->Get_GroupID() == RENDER_INUI)
+			{
+				pObj->Render(hDC);
+			}
+		}
+
 
 		m_RenderList[i].clear();
 	}

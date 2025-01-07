@@ -12,6 +12,7 @@
 #include "ScrollMgr.h"
 #include "KeyMgr.h"
 #include "TutorialMgr.h"
+#include "Camera.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
@@ -29,6 +30,8 @@ void CColony::Initialize()
     CSoundMgr::Get_Instance()->PlayBGM(L"Alpaca.wav", 0.3f);
 
     CTimeMgr::Get_Instance()->Initialize();
+
+    CCamera::Get_Instance()->Initialize();
 
     WaveFuncs[0] = &CColony::Spawn_Wave1;
     WaveFuncs[1] = &CColony::Spawn_Wave2;
@@ -218,6 +221,8 @@ int CColony::Update()
 
     CTimeMgr::Get_Instance()->Update();
 
+    CCamera::Get_Instance()->Update();
+
     ////몇 초 후 적 생성
     //if (CKeyMgr::Get_Instance()->Key_Down(VK_F1) /*CTimeMgr::Get_Instance()->Get_ElapsedTime() > m_fSpawnTime*/)
     //{
@@ -288,6 +293,7 @@ void CColony::Render(HDC hDC)
 
     // 객체 매니저 렌더링
     CObjMgr::Get_Instance()->Render(hDC);
+    //CCamera::Get_Instance()->Render(hDC);
 
     CColonyMgr::Get_Instance()->Render(hDC);
 
@@ -311,6 +317,7 @@ void CColony::Release()
     CTimeMgr::Destroy_Instance();
     CEffectMgr::Destroy_Instance();
     CTutorialMgr::Destroy_Instance();
+    CCamera::Destroy_Instance();
 }
 
 void CColony::Create_UI()
