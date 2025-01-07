@@ -9,7 +9,7 @@ public:
 	{
 		POINT screenPoint;
 		screenPoint.x = int((worldX - m_fX) * m_fZoom + m_fWidth / 2);
-		screenPoint.y = int((worldY - m_fY) * m_fZoom + m_fHeigth / 2);
+		screenPoint.y = int((worldY - m_fY) * m_fZoom + m_fHeight / 2);
 		return screenPoint;
 	}
 
@@ -53,6 +53,6 @@ private:
 	float	m_fY;
 
 	float	m_fWidth;
-	float	m_fHeigth;
+	float	m_fHeight;
 	float	m_fZoom; // 줌 비율 (1.0 = 기본 크기)
 };

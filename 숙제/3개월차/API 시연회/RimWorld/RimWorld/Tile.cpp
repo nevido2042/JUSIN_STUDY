@@ -79,7 +79,7 @@ void CTile::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tInfo.fX, m_tInfo.fY);
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
 	GdiTransparentBlt(hDC,
 		tPoint.x,//m_tRect.left + iScrollX,
 		tPoint.y,//m_tRect.top + iScrollY,
@@ -108,6 +108,28 @@ void CTile::Render(HDC hDC)
 	//LineTo(hDC, m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);               // 오른쪽 선
 	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.bottom + iScrollY);                // 하단 선
 	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY);                   // 왼쪽 선
+
+	// 사각형 그리기
+	if (m_eOption == OPT_BLOCKED)
+	{
+		// 월드 좌표를 화면 좌표로 변환
+		POINT topLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+		POINT bottomRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
+
+		// 줌 적용
+		int zoomedLeft = topLeft.x;
+		int zoomedTop = topLeft.y;
+		int zoomedRight = bottomRight.x;
+		int zoomedBottom = bottomRight.y;
+
+		// 사각형 그리기
+		MoveToEx(hDC, zoomedLeft, zoomedTop, nullptr);             // 왼쪽 위로 이동
+		LineTo(hDC, zoomedRight, zoomedTop);                       // 상단 선
+		LineTo(hDC, zoomedRight, zoomedBottom);                    // 오른쪽 선
+		LineTo(hDC, zoomedLeft, zoomedBottom);                     // 하단 선
+		LineTo(hDC, zoomedLeft, zoomedTop);                        // 왼쪽 선
+	}
+
 
 	if (m_eOption == OPT_BLOCKED)
 	{

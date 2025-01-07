@@ -205,6 +205,19 @@ void CColony::Initialize()
         CTileMgr::Get_Instance()->Set_TileObj(tPos, pObj);
     }
 
+
+    /*POS tPos{ 64 * 0 + 32, 64 * 0 + 32 };
+
+    pObj = CAbstractFactory<CTree>::Create(tPos);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
+    CTileMgr::Get_Instance()->Set_TileObj(tPos, pObj);*/
+
+    /*POS tPos2{ 64 * 0 + 32, 64 * 0 + 32 };
+
+    pObj = CAbstractFactory<CSteelWall>::Create(tPos2);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_TREE, pObj);
+    CTileMgr::Get_Instance()->Set_TileObj(tPos2, pObj);*/
+
     Create_UI();
 
     CTutorialMgr::Get_Instance()->Initialize();

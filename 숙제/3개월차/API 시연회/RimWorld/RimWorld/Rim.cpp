@@ -643,7 +643,7 @@ void CRim::Drfated_Fire()
 void CRim::DrawImage(HDC hDC, const RECT& m_tRect, int iScrollX, int iScrollY, const std::wstring& imageKey, int offsetX, int offsetY)
 {
 
-    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tInfo.fX, m_tInfo.fY);
+    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
 
     // 이미지 그리기 함수
         HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(imageKey.c_str());

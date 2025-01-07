@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Define.h"
+#include "Camera.h"
 
 class CObj
 {

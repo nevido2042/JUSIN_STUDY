@@ -242,7 +242,7 @@ void CSteelWall::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tInfo.fX, m_tInfo.fY);
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left - 8, m_tRect.top - 8);
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
 		tPoint.x,//m_tRect.left + iScrollX -8,	// 복사 받을 위치 좌표 X, Y	

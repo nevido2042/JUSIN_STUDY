@@ -83,11 +83,13 @@ void CTree::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left - IMAGE_OFFSET_X, m_tRect.top - IMAGE_OFFSET_Y - 32);
+
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
-		m_tRect.left + iScrollX - IMAGE_OFFSET_X,	// 복사 받을 위치 좌표 X, Y	
-		m_tRect.top + iScrollY - IMAGE_OFFSET_Y - 32,
-		128,			// 복사 받을 이미지의 가로, 세로
-		128,
+		tPoint.x, //m_tRect.left + iScrollX - IMAGE_OFFSET_X,	// 복사 받을 위치 좌표 X, Y	
+		tPoint.y, //m_tRect.top + iScrollY - IMAGE_OFFSET_Y - 32,
+		128 * CCamera::Get_Instance()->Get_Zoom(),			// 복사 받을 이미지의 가로, 세로
+		128 * CCamera::Get_Instance()->Get_Zoom(),
 		hMemDC,						// 복사할 이미지 DC	
 		0,				// 비트맵 출력 시작 좌표(Left, top)
 		0,
