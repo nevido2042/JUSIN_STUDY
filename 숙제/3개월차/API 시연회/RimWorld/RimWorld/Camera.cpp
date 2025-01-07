@@ -50,7 +50,7 @@ void CCamera::Update()
     int screenHeight = WINCY;
 
     // Ä«¸Þ¶ó ÁÜ ÀÎ/¾Æ¿ô
-    if (CKeyMgr::Get_Instance()->Key_Down(VK_ADD))
+    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_ADD))
     {
         m_fZoom += 0.1f;
         //m_fWidth = screenWidth / m_fZoom;
@@ -61,7 +61,7 @@ void CCamera::Update()
         //m_fY = (m_fY + screenHeight / 2) / m_fZoom - screenHeight / 2;
     }
 
-    if (CKeyMgr::Get_Instance()->Key_Down(VK_SUBTRACT))
+    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SUBTRACT))
     {
         m_fZoom -= 0.1f;
         //m_fWidth = screenWidth / m_fZoom;

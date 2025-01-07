@@ -41,10 +41,15 @@ bool CObj::Is_MouseHovered_Scrolled()
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	ptMouse.x -= iScrollX;
-	ptMouse.y -= iScrollY;
+	POINT tPoint = CCamera::Get_Instance()->ScreenToWorld(ptMouse.x, ptMouse.y);
 
-	if (PtInRect(&m_tRect, ptMouse))
+	/*ptMouse.x -= iScrollX;
+	ptMouse.y -= iScrollY;*/
+
+	//ptMouse.x -= tPoint.x;
+	//ptMouse.y -= tPoint.y;
+
+	if (PtInRect(&m_tRect, tPoint))
 	{
 		return true;
 	}

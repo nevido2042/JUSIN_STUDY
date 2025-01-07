@@ -20,7 +20,7 @@ public:
     void            Initialize() override;
     int             Update() override;
     void            Late_Update() override;
-    virtual void    Render(HDC hDC) PURE;
+    virtual void    Render(HDC hDC) override;
     void            Release() override;
 
 protected:

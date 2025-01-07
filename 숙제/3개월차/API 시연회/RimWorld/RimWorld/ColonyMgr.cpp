@@ -316,13 +316,16 @@ void CColonyMgr::Render(HDC hDC)
     //선택한 것 강조
     if (m_pTarget)
     {
+        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_pTarget->Get_Rect()->left, m_pTarget->Get_Rect()->top);
+
+
         HDC		hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
 
         GdiTransparentBlt(hDC,
-            (int)m_pTarget->Get_Rect()->left + iScrollX,
-            (int)m_pTarget->Get_Rect()->top + iScrollY,
-            64,
-            64,
+            (int)tPoint.x + iScrollX,
+            (int)tPoint.y + iScrollY,
+            (int)(64 * CCamera::Get_Instance()->Get_Zoom()),
+            (int)(64 * CCamera::Get_Instance()->Get_Zoom()),
             hSelectionBracketWholeDC,
             0, 0,
             64,
@@ -562,8 +565,12 @@ void CColonyMgr::Control_Target()
             }
             //마우스 좌표를 잘 깎아서 넣어야 한다.
 
-            float fX = float(ptMouse.x - iScrollX);
-            float fY = float(ptMouse.y - iScrollY);
+            POINT tPoint = CCamera::Get_Instance()->ScreenToWorld(ptMouse.x, ptMouse.y);
+
+            float fX = (float)tPoint.x;//float(ptMouse.x - iScrollX);
+            float fY = (float)tPoint.y; //float(ptMouse.y - iScrollY);
+
+            
 
             fX = float(fX - (int)fX % TILECX + TILECX * 0.5f);
             fY = float(fY - (int)fY % TILECY + TILECY * 0.5f);
@@ -582,7 +589,10 @@ void CColonyMgr::Control_Target()
 
             POS tMovePos{ (int)fX, (int)fY };
             pTargetRim->Move_To(tMovePos);
-            CEffectMgr::Get_Instance()->Create_Effect(tMovePos, 64.f, 64.f, L"FeedbackGoto", 30.f);
+
+            //POINT tScreenPoint = CCamera::Get_Instance()->WorldToScreen(fX, fY);
+
+            CEffectMgr::Get_Instance()->Create_Effect((float)fX, (float)fY, 64.f, 64.f, L"FeedbackGoto", 30.f);
 
             //림이 공격 중이었고 타겠도 있었다면 해제
             if (pTargetRim->Get_Target() && pTargetRim->Get_IsAttack())

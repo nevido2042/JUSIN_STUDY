@@ -22,3 +22,12 @@ void CEffectMgr::Create_Effect(POS _tPos, float _CX, float _CY, const TCHAR* _pI
 	static_cast<CEffect*>(pEffect)->Set_LifeTime(_fTime);
 	CObjMgr::Get_Instance()->Add_Object(OBJ_EFFECT, pEffect);
 }
+
+void CEffectMgr::Create_Effect(float _fX, float _fY, float _CX, float _CY, const TCHAR* _pImgKey, float _fTime)
+{
+	CObj* pEffect = CAbstractFactory<CEffect>::Create(_fX, _fY);
+	pEffect->Set_Size(_CX, _CY);
+	pEffect->Set_ImgKey(_pImgKey);
+	static_cast<CEffect*>(pEffect)->Set_LifeTime(_fTime);
+	CObjMgr::Get_Instance()->Add_Object(OBJ_EFFECT, pEffect);
+}

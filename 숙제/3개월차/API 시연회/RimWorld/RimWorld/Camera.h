@@ -13,13 +13,13 @@ public:
 		return screenPoint;
 	}
 
-	/*POINT ScreenToWorld(int screenX, int screenY)
+	POINT ScreenToWorld(int screenX, int screenY)
 	{
 		POINT worldPoint;
-		worldPoint.x = int((screenX - camera.viewportWidth / 2) / camera.zoom + camera.x);
-		worldPoint.y = int((screenY - camera.viewportHeight / 2) / camera.zoom + camera.y);
+		worldPoint.x = int((screenX - m_fWidth / 2) / m_fZoom + m_fX);
+		worldPoint.y = int((screenY - m_fHeight / 2) / m_fZoom + m_fY);
 		return worldPoint;
-	}*/
+	}
 
 public:
 	void Initialize();

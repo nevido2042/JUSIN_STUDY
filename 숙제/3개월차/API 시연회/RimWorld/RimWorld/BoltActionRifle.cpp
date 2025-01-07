@@ -65,11 +65,13 @@ void CBoltActionRifle::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+
     Graphics Grapics(hDC);
 
     // 회전의 중심점 설정 (이미지의 중심)
-    int centerX = int(m_tRect.left + iScrollX + 64 * 0.5f);
-    int centerY = int(m_tRect.top + iScrollY + 64 * 0.5f);
+    int centerX = int(tPoint.x + iScrollX + 64 * 0.5f);
+    int centerY = int(tPoint.y + iScrollY + 64 * 0.5f);
 
     // 회전 변환 적용
     Grapics.TranslateTransform((REAL)centerX, (REAL)centerY);  // 회전 중심으로 이동
@@ -85,6 +87,6 @@ void CBoltActionRifle::Render(HDC hDC)
     Grapics.TranslateTransform((REAL)-centerX, (REAL)-centerY);
 
     // 이미지 그리기
-    Grapics.DrawImage(m_pImage, m_tRect.left + iScrollX, m_tRect.top + iScrollY, 64, 64);
+    Grapics.DrawImage(m_pImage, tPoint.x + iScrollX, tPoint.y + iScrollY, 64 * CCamera::Get_Instance()->Get_Zoom(), 64 * CCamera::Get_Instance()->Get_Zoom());
 
 }

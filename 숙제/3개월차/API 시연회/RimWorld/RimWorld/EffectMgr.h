@@ -8,6 +8,7 @@ public:
 	~CEffectMgr();
 public:
 	void Create_Effect(POS _tPos, float _CX, float _CY, const TCHAR* _pImgKey, float _fTime);
+	void Create_Effect(float _fX, float _fY, float _CX, float _CY, const TCHAR* _pImgKey, float _fTime);
 
 public:
 	static CEffectMgr* Get_Instance()

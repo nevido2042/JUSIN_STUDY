@@ -558,19 +558,25 @@ void CPawn::Render(HDC hDC)
         CNode* pPrevNode = nullptr;
 
         // 회색 펜 생성 (두께 3)
-        HPEN hGrayPen = CreatePen(PS_SOLID, 3, RGB(255, 255, 255));
+        HPEN hGrayPen = CreatePen(PS_SOLID, 3 * CCamera::Get_Instance()->Get_Zoom(), RGB(255, 255, 255));
         HPEN hOldPen = (HPEN)SelectObject(hDC, hGrayPen);
 
         // 노드 리스트 순회
         for (CNode* pNode : m_NodeList) {
             // 현재 노드의 위치
-            int iCurrentX = int(pNode->Get_Pos().iX + iScrollX);
-            int iCurrentY = int(pNode->Get_Pos().iY + iScrollY);
+
+            POINT tPoint = CCamera::Get_Instance()->WorldToScreen(pNode->Get_Pos().iX, pNode->Get_Pos().iY);
+
+            int iCurrentX = int(tPoint.x + iScrollX);
+            int iCurrentY = int(tPoint.y + iScrollY);
 
             // 이전 노드가 있다면 선을 그림
-            if (pPrevNode != nullptr) {
-                int iPrevX = int(pPrevNode->Get_Pos().iX + iScrollX);
-                int iPrevY = int(pPrevNode->Get_Pos().iY + iScrollY);
+            if (pPrevNode != nullptr) 
+            {
+                POINT tPoint = CCamera::Get_Instance()->WorldToScreen(pPrevNode->Get_Pos().iX, pPrevNode->Get_Pos().iY);
+
+                int iPrevX = int(tPoint.x + iScrollX);
+                int iPrevY = int(tPoint.y + iScrollY);
 
                 // 선 그리기
                 MoveToEx(hDC, iPrevX, iPrevY, nullptr);
