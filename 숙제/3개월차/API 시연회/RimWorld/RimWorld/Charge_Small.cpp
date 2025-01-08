@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Charge_Small.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 
 CCharge_Small::CCharge_Small()
 {

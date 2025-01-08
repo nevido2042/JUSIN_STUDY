@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Obj.h"
-#include "ScrollMgr.h"
+
 #include "TimeMgr.h"
 
 CObj::CObj() : m_fSpeed(0.f), m_eDir(DIR_END), m_bDestroyed(false),

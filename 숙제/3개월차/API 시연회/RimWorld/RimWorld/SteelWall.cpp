@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SteelWall.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 #include "TileMgr.h"
 #include "ObjMgr.h"
 #include "KeyMgr.h"

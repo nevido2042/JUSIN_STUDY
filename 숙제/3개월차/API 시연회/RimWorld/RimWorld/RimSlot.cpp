@@ -2,7 +2,7 @@
 #include "RimSlot.h"
 #include "BmpMgr.h"
 #include "KeyMgr.h"
-#include "ScrollMgr.h"
+
 #include "ColonyMgr.h"
 #include "Rim.h"
 #include "Camera.h"

@@ -2,7 +2,7 @@
 #include "RangedWeapon.h"
 #include "TimeMgr.h"
 #include "Pawn.h"
-#include "ScrollMgr.h"
+
 
 CRangedWeapon::CRangedWeapon()
     :m_fFireRate(0), m_pProjectile(nullptr), m_pImage(nullptr),

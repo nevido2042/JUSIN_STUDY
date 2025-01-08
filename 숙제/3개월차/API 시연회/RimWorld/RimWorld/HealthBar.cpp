@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "HealthBar.h"
-#include "ScrollMgr.h"
+
 #include "Pawn.h"
 
 CHealthBar::CHealthBar()

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ColonyMgr.h"
 #include "KeyMgr.h"
-#include "ScrollMgr.h"
+
 #include "Rim.h"
 #include "TimeMgr.h"
 #include "BmpMgr.h"
@@ -192,25 +192,6 @@ void CColonyMgr::Set_Target(CObj* _pObj)
 
 void CColonyMgr::Input_Key()
 {
-    //화면 스크롤
-    float fSpeed(10.f);
-    if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollX(fSpeed);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('D'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollX(-fSpeed);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollY(fSpeed);
-    }
-    if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
-    {
-        CScrollMgr::Get_Instance()->Move_ScrollY(-fSpeed);
-    }
-
     //게임 스피드 조절
     if (CKeyMgr::Get_Instance()->Key_Down('1'))
     {
@@ -311,8 +292,6 @@ int CColonyMgr::Update()
 
 void CColonyMgr::Late_Update()
 {
-    CScrollMgr::Get_Instance()->Scroll_Lock();
-
     Control_Target();
 
     MouseDrag_Select();

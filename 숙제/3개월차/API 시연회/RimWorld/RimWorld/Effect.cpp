@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Effect.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 #include "TimeMgr.h"
 
 CEffect::CEffect()

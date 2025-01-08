@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Boomrat.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
 #include "KeyMgr.h"

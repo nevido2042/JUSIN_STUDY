@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Item.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 #include "TileMgr.h"
 
 CItem::CItem()

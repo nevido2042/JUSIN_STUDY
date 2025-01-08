@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ChargeLance.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
 #include "SoundMgr.h"

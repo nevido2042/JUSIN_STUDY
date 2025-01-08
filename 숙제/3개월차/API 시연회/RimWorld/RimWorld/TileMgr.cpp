@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TileMgr.h"
 #include "AbstractFactory.h"
-#include "ScrollMgr.h"
+
 #include "PathFinder.h"
 #include "BmpMgr.h"
 #include "Camera.h"

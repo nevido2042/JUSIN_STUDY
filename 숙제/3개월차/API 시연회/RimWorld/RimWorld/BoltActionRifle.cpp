@@ -3,7 +3,7 @@
 #include "BmpMgr.h"
 #include "AbstractFactory.h"
 #include "ObjMgr.h"
-#include "ScrollMgr.h"
+
 #include "Rim.h"
 #include "SoundMgr.h"
 #include <gdiplus.h>

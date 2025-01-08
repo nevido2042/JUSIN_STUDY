@@ -9,7 +9,6 @@
 #include "SoundMgr.h"
 #include "EffectMgr.h"
 #include "SceneMgr.h"
-#include "ScrollMgr.h"
 #include "KeyMgr.h"
 #include "TutorialMgr.h"
 #include "Camera.h"

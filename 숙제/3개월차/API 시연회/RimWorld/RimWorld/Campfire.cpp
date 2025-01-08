@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Campfire.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 
 CCampfire::CCampfire()
 {

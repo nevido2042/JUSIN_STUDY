@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Bullet_Small.h"
 #include "BmpMgr.h"
-#include "ScrollMgr.h"
+
 
 CBullet_Small::CBullet_Small()
 {

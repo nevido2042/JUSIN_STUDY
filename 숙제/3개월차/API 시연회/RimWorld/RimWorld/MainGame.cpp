@@ -6,7 +6,7 @@
 #include "CollisionMgr.h"
 
 #include "KeyMgr.h"
-#include "ScrollMgr.h"
+
 #include "BmpMgr.h"
 #include "SceneMgr.h"
 #include "SoundMgr.h"
@@ -81,7 +81,6 @@ void CMainGame::Render()
 void CMainGame::Release()
 {
 	CBmpMgr::Destroy_Instance();
-	CScrollMgr::Destroy_Instance();
 	CKeyMgr::Destroy_Instance();
 	CSceneMgr::Destroy_Instance();
 	CObjMgr::DestroyInstance();
