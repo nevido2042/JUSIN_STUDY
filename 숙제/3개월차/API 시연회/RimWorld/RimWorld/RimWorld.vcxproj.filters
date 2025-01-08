@@ -178,6 +178,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>03.Design\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>01.Obj\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -371,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>03.Design\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>01.Obj\Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -573,6 +579,9 @@
     </Filter>
     <Filter Include="03.Design\Camera">
       <UniqueIdentifier>{4f7c0c69-8c66-4cf9-bb1a-dc61a57e5702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Obj\Ground">
+      <UniqueIdentifier>{22520da7-9b13-439e-91e1-b956f8949757}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

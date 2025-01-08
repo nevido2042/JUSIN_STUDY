@@ -156,6 +156,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectMgr.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Lancer.h" />
     <ClInclude Include="LaunchMsgBox.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectMgr.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Lancer.cpp" />
     <ClCompile Include="LaunchMsgBox.cpp" />

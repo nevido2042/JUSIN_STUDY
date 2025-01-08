@@ -108,7 +108,7 @@ void CObjMgr::Render(HDC hDC)
 		for (auto& pObj : m_RenderList[i])
 		{
 			if (CCamera::Get_Instance()->IsInCameraView(pObj->Get_Info().fX, pObj->Get_Info().fY, pObj->Get_Info().fCX, pObj->Get_Info().fCY) ||
-				pObj->Get_GroupID() == RENDER_UI || pObj->Get_GroupID() == RENDER_INUI)
+				pObj->Get_GroupID() == RENDER_UI || pObj->Get_GroupID() == RENDER_INUI || pObj->Get_GroupID() == RENDER_BACKGROUND)
 			{
 				pObj->Render(hDC);
 			}

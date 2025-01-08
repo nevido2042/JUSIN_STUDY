@@ -13,6 +13,7 @@
 #include "KeyMgr.h"
 #include "TutorialMgr.h"
 #include "Camera.h"
+#include "Ground.h"
 
 CColony::CColony()
     :/*m_bEnemySpawned(false),*/ m_fSpawnTime(0.f), m_iWaveIndex(0)//, m_bShipBtnActive(false)
@@ -136,6 +137,10 @@ void CColony::Initialize()
 
     //맵
     CTileMgr::Get_Instance()->Initialize();
+
+    //그라운드 땅 배경(축소시 렉 심함)
+    CObj* pGround = CAbstractFactory<CGround>::Create(TILECX * TILEX * 0.5f, TILECY * TILEY * 0.5f);
+    CObjMgr::Get_Instance()->Add_Object(OBJ_GROUND, pGround);
 
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
