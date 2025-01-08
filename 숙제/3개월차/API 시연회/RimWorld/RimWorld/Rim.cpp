@@ -692,16 +692,30 @@ void CRim::Construct()
     //해체 시간 걸리게 하고 사운드 출력
     if (m_fConstructTime > m_fConstructElapsed)
     {
-        //드릴소리 나게
-        CSoundMgr::Get_Instance()->PlaySound(L"DrillB.wav", SOUND_CONSTRUCT, .5f);
+        switch (m_eCurrentTask.eType)
+        {
+        case TASK::TYPE::CAMPFIRE:
+            //나무소리 나게
+            //CSoundMgr::Get_Instance()->StopSound(SOUND_CONSTRUCT_WOOD);
+            CSoundMgr::Get_Instance()->PlaySound(L"Hammer_Nail_Wood_1a.wav", SOUND_CONSTRUCT_WOOD, .5f);
+            break;
+        case TASK::TYPE::WALL:
+        case TASK::TYPE::SHIP:
+            //드릴소리 나게
+            //CSoundMgr::Get_Instance()->StopSound(SOUND_CONSTRUCT_STEEL);
+            CSoundMgr::Get_Instance()->PlaySound(L"DrillB.wav", SOUND_CONSTRUCT_STEEL, .5f);
+            break;
+        }
+
+
         m_fConstructElapsed += GAMESPEED;
         return;
     }
 
     m_fConstructElapsed = 0.f;
 
-    CSoundMgr::Get_Instance()->StopSound(SOUND_CONSTRUCT);
-    CSoundMgr::Get_Instance()->PlaySound(L"HammerA.wav", SOUND_CONSTRUCT, .5f);
+    CSoundMgr::Get_Instance()->StopSound(SOUND_CONSTRUCT_FINISH);
+    CSoundMgr::Get_Instance()->PlaySound(L"BuildingComplete.wav", SOUND_CONSTRUCT_FINISH, .5f);
 
     //들고 있는 철을 삭제
     m_pTransportingItem->Set_Destroyed();
