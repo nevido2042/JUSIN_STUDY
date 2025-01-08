@@ -83,13 +83,13 @@ void CTree::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left - IMAGE_OFFSET_X, m_tRect.top - IMAGE_OFFSET_Y - 32);
-
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)(m_tRect.left - IMAGE_OFFSET_X), (float)(m_tRect.top - IMAGE_OFFSET_Y - 32));
+	float fZoom = CCamera::Get_Instance()->Get_Zoom();
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
 		tPoint.x, //m_tRect.left + iScrollX - IMAGE_OFFSET_X,	// 복사 받을 위치 좌표 X, Y	
 		tPoint.y, //m_tRect.top + iScrollY - IMAGE_OFFSET_Y - 32,
-		128 * CCamera::Get_Instance()->Get_Zoom(),			// 복사 받을 이미지의 가로, 세로
-		128 * CCamera::Get_Instance()->Get_Zoom(),
+		int(128 * fZoom),			// 복사 받을 이미지의 가로, 세로
+		int(128 * fZoom),
 		hMemDC,						// 복사할 이미지 DC	
 		0,				// 비트맵 출력 시작 좌표(Left, top)
 		0,
@@ -105,8 +105,8 @@ void CTree::Render(HDC hDC)
 		float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
 		POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-			Get_Rect()->left,
-			Get_Rect()->top
+			(float)Get_Rect()->left,
+			(float)Get_Rect()->top
 		);
 
 		GdiTransparentBlt(hDC,

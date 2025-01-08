@@ -322,11 +322,9 @@ void CColonyMgr::Late_Update()
 void CColonyMgr::Render(HDC hDC)
 {
     HDC		hLoggingDC = CBmpMgr::Get_Instance()->Find_Image(L"HarvestWood");
-    //HDC		hCutPlantDC = CBmpMgr::Get_Instance()->Find_Image(L"CutPlant");
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
     HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"Ship");
-    //HDC     hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire_MenuIcon");
     HDC     hCampfireBlueprintDC = CBmpMgr::Get_Instance()->Find_Image(L"CampfireBlueprint");
 
     // 선택한 것 강조
@@ -334,8 +332,8 @@ void CColonyMgr::Render(HDC hDC)
     {
         float fZoom = CCamera::Get_Instance()->Get_Zoom();
         POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-            m_pTarget->Get_Rect()->left,
-            m_pTarget->Get_Rect()->top
+            (float)m_pTarget->Get_Rect()->left,
+            (float)m_pTarget->Get_Rect()->top
         );
 
         HDC hSelectionBracketWholeDC = CBmpMgr::Get_Instance()->Find_Image(L"SelectionBracketWhole");
@@ -351,98 +349,6 @@ void CColonyMgr::Render(HDC hDC)
             64,
             RGB_PURPLE);
     }
-
-    // 해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
-    /*for (TASK tTask : m_DeconstructSet)
-    {
-        float fZoom = CCamera::Get_Instance()->Get_Zoom();
-        CObj* pObj = tTask.pObj;
-        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-            pObj->Get_Rect()->left,
-            pObj->Get_Rect()->top
-        );
-
-        GdiTransparentBlt(hDC,
-            (int)tPoint.x,
-            (int)tPoint.y,
-            (int)(64 * fZoom),
-            (int)(64 * fZoom),
-            hDeconstructDC,
-            0, 0,
-            64,
-            64,
-            RGB_WHITE);
-    }*/
-
-    // 벌목 리스트에 있는 모든 벽들에 해체 아이콘 표시
-    /*for (TASK tTask : m_LoggingSet)
-    {
-        float fZoom = CCamera::Get_Instance()->Get_Zoom();
-        CObj* pObj = tTask.pObj;
-        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-            pObj->Get_Rect()->left,
-            pObj->Get_Rect()->top
-        );
-
-        GdiTransparentBlt(hDC,
-            (int)tPoint.x,
-            (int)tPoint.y,
-            (int)(64 * fZoom),
-            (int)(64 * fZoom),
-            hCutPlantDC,
-            0, 0,
-            64,
-            64,
-            RGB_WHITE);
-    }*/
-
-    // 건설할 벽들 표시, 우주선 표시
-    //for (TASK tTask : m_ConstructSet)
-    //{
-    //    float fZoom = CCamera::Get_Instance()->Get_Zoom();
-    //    CObj* pObj = tTask.pObj;
-    //    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-    //        pObj->Get_Rect()->left,
-    //        pObj->Get_Rect()->top
-    //    );
-
-    //    if (tTask.eType == TASK::WALL)
-    //    {
-    //        /*GdiTransparentBlt(hDC,
-    //            (int)(tPoint.x + 16 * fZoom),
-    //            (int)(tPoint.y + 16 * fZoom),
-    //            (int)(32 * fZoom),
-    //            (int)(32 * fZoom),
-    //            hSteelWallDC,
-    //            0, 0,
-    //            32, 32,
-    //            RGB_WHITE);*/
-    //    }
-    //    else if (tTask.eType == TASK::SHIP)
-    //    {
-    //        //GdiTransparentBlt(hDC,
-    //        //    (int)tPoint.x,
-    //        //    (int)tPoint.y,
-    //        //    (int)(128 * fZoom),
-    //        //    (int)(128 * fZoom),
-    //        //    hShipDC,
-    //        //    0, 0,
-    //        //    512, 512,
-    //        //    RGB_WHITE);
-    //    }
-    //    else if (tTask.eType == TASK::CAMPFIRE)
-    //    {
-    //        //GdiTransparentBlt(hDC,
-    //        //    (int)tPoint.x,
-    //        //    (int)tPoint.y,
-    //        //    (int)(64 * fZoom),
-    //        //    (int)(64 * fZoom),
-    //        //    hCampfireBlueprintDC,
-    //        //    0, 0,
-    //        //    64, 64,
-    //        //    RGB_WHITE);
-    //    }
-    //}
 
     // 해체 모드일 경우 마우스에 해체 그림 표시
     if (m_eMode == MODE_DECONSTRUCT)
@@ -558,8 +464,6 @@ void CColonyMgr::Render(HDC hDC)
             iDCSize, iDCSize,
             RGB_WHITE);
     }
-
-
 }
 
 void CColonyMgr::Release()

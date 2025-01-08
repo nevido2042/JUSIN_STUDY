@@ -54,8 +54,8 @@ void CProjectile::Render(HDC hDC)
     //float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
     // 월드 좌표를 스크린 좌표로 변환합니다.
-    POINT tScreenPosLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
-    POINT tScreenPosRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
+    POINT tScreenPosLeft = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
+    POINT tScreenPosRight = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.right, (float)m_tRect.bottom);
 
     // Ellipse에 대한 위치와 크기 보정
     int left = (int)(tScreenPosLeft.x);  // 왼쪽 상단 위치 보정

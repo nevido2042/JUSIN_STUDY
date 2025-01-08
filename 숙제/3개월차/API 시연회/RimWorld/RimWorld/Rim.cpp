@@ -169,12 +169,12 @@ void CRim::Render(HDC hDC)
     if (m_bDead)
     {
         POINT tWorldPoint = CCamera::Get_Instance()->WorldToScreen(float(m_tRect.left), float(m_tRect.top));
-
+        float fZoom = CCamera::Get_Instance()->Get_Zoom();
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Blood");
         GdiTransparentBlt(hDC,
             tWorldPoint.x,// m_tRect.left + iScrollX,
             tWorldPoint.y,//m_tRect.top + iScrollY,
-            64, 64,
+            int(64* fZoom), int(64* fZoom),
             hTestDC, 0, 0, 64, 64,
             RGB_WHITE);
     }
@@ -634,7 +634,7 @@ void CRim::Drfated_Fire()
 void CRim::DrawImage(HDC hDC, const RECT& m_tRect, int iScrollX, int iScrollY, const std::wstring& imageKey, int offsetX, int offsetY)
 {
 
-    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+    POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
 
     // 이미지 그리기 함수
         HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(imageKey.c_str());
@@ -756,6 +756,11 @@ void CRim::Construct()
     {
         if ((*Iter).pObj == m_pTarget)
         {
+            if (CTile* pTile = dynamic_cast<CTile*>(Iter->pObj))
+            {
+                pTile->Set_Reserved(CTile::RESERVED_END);
+            }
+
             Iter = ConstructSet.erase(Iter);
         }
         else

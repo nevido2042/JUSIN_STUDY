@@ -60,7 +60,7 @@ void CMyMenu::Render(HDC hDC)
     BitBlt(hDC, 0, 0, WINCX, WINCY, hBackgroundDC, 0, 0, SRCCOPY);
 
     // 게임 타이틀 이미지 (투명 배경 사용)
-    int iCX(1024 * 0.7f), iCY(145 * 0.7f);
+    int iCX(int(1024 * 0.7f)), iCY(int(145 * 0.7f));
     int iLeft = int((WINCX - iCX) * 0.5f), iTop = iCY;
     HDC hGameTitleDC = CBmpMgr::Get_Instance()->Find_Image(L"GameTitle");
     GdiTransparentBlt(hDC, iLeft, iTop, iCX, iCY, hGameTitleDC, 0, 0, 1024, 145, RGB_PURPLE);

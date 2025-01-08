@@ -54,7 +54,7 @@ void CBoomrat::Render(HDC hDC)
     float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
     // 월드 좌표를 스크린 좌표로 변환합니다.
-    POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+    POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
 
     // 림 몸통, 얼굴, 머리 순
     HDC hTestDC(nullptr);

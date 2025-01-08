@@ -74,7 +74,7 @@ void CCentipede::Render(HDC hDC)
     int iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     // 월드 좌표를 스크린 좌표로 변환합니다.
-    POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+    POINT tScreenPos = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
 
     // 확대/축소 비율을 가져옵니다.
     float fZoom = CCamera::Get_Instance()->Get_Zoom();

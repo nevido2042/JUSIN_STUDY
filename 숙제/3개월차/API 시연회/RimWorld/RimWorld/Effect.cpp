@@ -40,15 +40,15 @@ void CEffect::Render(HDC hDC)
 
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	float	fZoom = CCamera::Get_Instance()->Get_Zoom();
 
-
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
 		tPoint.x,//m_tRect.left + iScrollX // 복사 받을 위치 좌표 X, Y	
 		tPoint.y,//m_tRect.top + iScrollY,
-		(int)m_tInfo.fCX * CCamera::Get_Instance()->Get_Zoom(),			// 복사 받을 이미지의 가로, 세로
-		(int)m_tInfo.fCY * CCamera::Get_Instance()->Get_Zoom(),
+		(int)(m_tInfo.fCX * fZoom),			// 복사 받을 이미지의 가로, 세로
+		(int)(m_tInfo.fCY * fZoom),
 		hMemDC,						// 복사할 이미지 DC	
 		0,// 비트맵 출력 시작 좌표(Left, top)
 		0,

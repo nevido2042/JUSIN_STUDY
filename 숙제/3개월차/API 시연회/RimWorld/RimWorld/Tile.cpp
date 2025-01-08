@@ -26,7 +26,7 @@ void CTile::Initialize()
 
 	m_eObjID = OBJ_TILE;
 
-	m_eRenderID = RENDER_GAMEOBJECT;
+	m_eRenderID = RENDER_INUI;
 }
 
 int CTile::Update()
@@ -164,8 +164,8 @@ void CTile::Render(HDC hDC)
 	
 	float fZoom = CCamera::Get_Instance()->Get_Zoom();
 	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-		Get_Rect()->left,
-		Get_Rect()->top
+		(float)Get_Rect()->left,
+		(float)Get_Rect()->top
 	);
 
 	//예약된 작업에 따라 아이콘 출력

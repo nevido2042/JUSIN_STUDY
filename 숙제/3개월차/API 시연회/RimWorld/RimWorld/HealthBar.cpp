@@ -41,8 +41,8 @@ void CHealthBar::Late_Update()
 void CHealthBar::Render(HDC hDC)
 {
     // 월드 좌표를 화면 좌표로 변환
-    POINT tTopLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
-    POINT tBottomRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
+    POINT tTopLeft = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
+    POINT tBottomRight = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.right, (float)m_tRect.bottom);
 
     // 빨간색 브러시 생성
     HBRUSH hRedBrush = CreateSolidBrush(RGB(255, 0, 0));

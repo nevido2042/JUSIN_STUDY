@@ -247,7 +247,7 @@ void CSteelWall::Render(HDC hDC)
     int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
     int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left - 8, m_tRect.top - 8);
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)(m_tRect.left - 8), (float)(m_tRect.top - 8));
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC
 		tPoint.x,//m_tRect.left + iScrollX -8,	// 복사 받을 위치 좌표 X, Y	
@@ -270,8 +270,8 @@ void CSteelWall::Render(HDC hDC)
 
 		float fZoom = CCamera::Get_Instance()->Get_Zoom();
 		POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-			Get_Rect()->left,
-			Get_Rect()->top
+			(float)Get_Rect()->left,
+			(float)Get_Rect()->top
 		);
 
 		GdiTransparentBlt(hDC,

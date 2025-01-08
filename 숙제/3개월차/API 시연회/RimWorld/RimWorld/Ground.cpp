@@ -31,7 +31,7 @@ void CGround::Render(HDC hDC)
 {
 	// 줌과 화면 좌표 계산
 	float fZoom = CCamera::Get_Instance()->Get_Zoom();
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
 
 	// 줌을 적용한 타일 크기 계산
 	int destWidth = (int)(m_tInfo.fCX * fZoom);
