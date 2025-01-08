@@ -6,7 +6,7 @@
 #include "KeyMgr.h"
 #include "Camera.h"
 
-CTile::CTile() : m_eOption(OPT_END), m_pObj(nullptr)
+CTile::CTile() : m_eOption(OPT_END), m_pObj(nullptr), m_eReserved(RESERVED_END)
 {
 }
 
@@ -116,15 +116,15 @@ void CTile::Render(HDC hDC)
 	//	SRCCOPY          // 단순 복사
 	//);
 
-	HPEN hPen(nullptr);
-	HPEN hOldPen(nullptr);
+	//HPEN hPen(nullptr);
+	//HPEN hOldPen(nullptr);
 
-	if (m_eOption == OPT_BLOCKED)
-	{
-		// 빨간색 펜 생성
-		hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // 굵기 1, 빨간색
-		hOldPen = (HPEN)SelectObject(hDC, hPen);       // 기존 펜 저장 및 빨간색 펜 설정
-	}
+	//if (m_eOption == OPT_BLOCKED)
+	//{
+	//	// 빨간색 펜 생성
+	//	hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // 굵기 1, 빨간색
+	//	hOldPen = (HPEN)SelectObject(hDC, hPen);       // 기존 펜 저장 및 빨간색 펜 설정
+	//}
 	
 	////사각형 그리기
 	//MoveToEx(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, nullptr);         // 왼쪽 위로 이동
@@ -133,33 +133,93 @@ void CTile::Render(HDC hDC)
 	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.bottom + iScrollY);                // 하단 선
 	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY);                   // 왼쪽 선
 
-	// 사각형 그리기
-	if (m_eOption == OPT_BLOCKED)
+	//// 사각형 그리기
+	//if (m_eOption == OPT_BLOCKED)
+	//{
+	//	// 월드 좌표를 화면 좌표로 변환
+	//	POINT topLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+	//	POINT bottomRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
+
+	//	// 줌 적용
+	//	int zoomedLeft = topLeft.x;
+	//	int zoomedTop = topLeft.y;
+	//	int zoomedRight = bottomRight.x;
+	//	int zoomedBottom = bottomRight.y;
+
+	//	// 사각형 그리기
+	//	MoveToEx(hDC, zoomedLeft, zoomedTop, nullptr);             // 왼쪽 위로 이동
+	//	LineTo(hDC, zoomedRight, zoomedTop);                       // 상단 선
+	//	LineTo(hDC, zoomedRight, zoomedBottom);                    // 오른쪽 선
+	//	LineTo(hDC, zoomedLeft, zoomedBottom);                     // 하단 선
+	//	LineTo(hDC, zoomedLeft, zoomedTop);                        // 왼쪽 선
+	//}
+
+
+	//if (m_eOption == OPT_BLOCKED)
+	//{
+	//	// 펜 정리
+	//	SelectObject(hDC, hOldPen); // 기존 펜 복원
+	//	DeleteObject(hPen);         // 빨간색 펜 삭제
+	//}
+	
+	float fZoom = CCamera::Get_Instance()->Get_Zoom();
+	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+		Get_Rect()->left,
+		Get_Rect()->top
+	);
+
+	//예약된 작업에 따라 아이콘 출력
+	switch (m_eReserved)
 	{
-		// 월드 좌표를 화면 좌표로 변환
-		POINT topLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
-		POINT bottomRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
+	case CTile::RESERVED_WALL:
+	{
+		HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
 
-		// 줌 적용
-		int zoomedLeft = topLeft.x;
-		int zoomedTop = topLeft.y;
-		int zoomedRight = bottomRight.x;
-		int zoomedBottom = bottomRight.y;
-
-		// 사각형 그리기
-		MoveToEx(hDC, zoomedLeft, zoomedTop, nullptr);             // 왼쪽 위로 이동
-		LineTo(hDC, zoomedRight, zoomedTop);                       // 상단 선
-		LineTo(hDC, zoomedRight, zoomedBottom);                    // 오른쪽 선
-		LineTo(hDC, zoomedLeft, zoomedBottom);                     // 하단 선
-		LineTo(hDC, zoomedLeft, zoomedTop);                        // 왼쪽 선
+		GdiTransparentBlt(hDC,
+			(int)(tPoint.x + 16 * fZoom),
+			(int)(tPoint.y + 16 * fZoom),
+			(int)(32 * fZoom),
+			(int)(32 * fZoom),
+			hSteelWallDC,
+			0, 0,
+			32, 32,
+			RGB_WHITE);
+		break;
 	}
-
-
-	if (m_eOption == OPT_BLOCKED)
+	case CTile::RESERVED_CAMPFIRE:
 	{
-		// 펜 정리
-		SelectObject(hDC, hOldPen); // 기존 펜 복원
-		DeleteObject(hPen);         // 빨간색 펜 삭제
+		HDC     hCampfireBlueprintDC = CBmpMgr::Get_Instance()->Find_Image(L"CampfireBlueprint");
+
+		GdiTransparentBlt(hDC,
+			(int)tPoint.x,
+			(int)tPoint.y,
+			(int)(64 * fZoom),
+			(int)(64 * fZoom),
+			hCampfireBlueprintDC,
+			0, 0,
+			64, 64,
+			RGB_WHITE);
+		break;
+	}
+	case CTile::RESERVED_SHIP:
+	{
+		HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"Ship");
+
+		GdiTransparentBlt(hDC,
+			(int)tPoint.x,
+			(int)tPoint.y,
+			(int)(128 * fZoom),
+			(int)(128 * fZoom),
+			hShipDC,
+			0, 0,
+			512, 512,
+			RGB_WHITE);
+		break;
+	}
+	case CTile::RESERVED_END:
+		break;
+	default:
+		break;
 	}
 
 }

@@ -150,7 +150,20 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
         return;
     }
 
-    static_cast<CBreakable*>(_tTask.pObj)->Set_TaskReserved(true);
+    CTile* pTile = static_cast<CTile*>(_tTask.pObj);
+
+    switch (_tTask.eType)
+    {
+    case TASK::TYPE::WALL:
+        pTile->Set_Reserved(CTile::RESERVED_WALL);
+        break;
+    case TASK::TYPE::CAMPFIRE:
+        pTile->Set_Reserved(CTile::RESERVED_CAMPFIRE);
+        break;
+    case TASK::TYPE::SHIP:
+        pTile->Set_Reserved(CTile::RESERVED_SHIP);
+        break;
+    }
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
     CSoundMgr::Get_Instance()->PlaySound(L"DragBuilding.wav", SOUND_UI, .2f);
@@ -309,15 +322,12 @@ void CColonyMgr::Late_Update()
 void CColonyMgr::Render(HDC hDC)
 {
     HDC		hLoggingDC = CBmpMgr::Get_Instance()->Find_Image(L"HarvestWood");
-    HDC		hCutPlantDC = CBmpMgr::Get_Instance()->Find_Image(L"CutPlant");
+    //HDC		hCutPlantDC = CBmpMgr::Get_Instance()->Find_Image(L"CutPlant");
     HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
     HDC		hSteelWallDC = CBmpMgr::Get_Instance()->Find_Image(L"RockSmooth_MenuIcon_mini");
     HDC		hShipDC = CBmpMgr::Get_Instance()->Find_Image(L"Ship");
-    HDC     hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire_MenuIcon");
+    //HDC     hCampfireDC = CBmpMgr::Get_Instance()->Find_Image(L"Campfire_MenuIcon");
     HDC     hCampfireBlueprintDC = CBmpMgr::Get_Instance()->Find_Image(L"CampfireBlueprint");
-
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     // 선택한 것 강조
     if (m_pTarget)
@@ -387,52 +397,52 @@ void CColonyMgr::Render(HDC hDC)
     }*/
 
     // 건설할 벽들 표시, 우주선 표시
-    for (TASK tTask : m_ConstructSet)
-    {
-        float fZoom = CCamera::Get_Instance()->Get_Zoom();
-        CObj* pObj = tTask.pObj;
-        POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
-            pObj->Get_Rect()->left,
-            pObj->Get_Rect()->top
-        );
+    //for (TASK tTask : m_ConstructSet)
+    //{
+    //    float fZoom = CCamera::Get_Instance()->Get_Zoom();
+    //    CObj* pObj = tTask.pObj;
+    //    POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+    //        pObj->Get_Rect()->left,
+    //        pObj->Get_Rect()->top
+    //    );
 
-        if (tTask.eType == TASK::WALL)
-        {
-            GdiTransparentBlt(hDC,
-                (int)(tPoint.x + 16 * fZoom),
-                (int)(tPoint.y + 16 * fZoom),
-                (int)(32 * fZoom),
-                (int)(32 * fZoom),
-                hSteelWallDC,
-                0, 0,
-                32, 32,
-                RGB_WHITE);
-        }
-        else if (tTask.eType == TASK::SHIP)
-        {
-            GdiTransparentBlt(hDC,
-                (int)tPoint.x,
-                (int)tPoint.y,
-                (int)(128 * fZoom),
-                (int)(128 * fZoom),
-                hShipDC,
-                0, 0,
-                512, 512,
-                RGB_WHITE);
-        }
-        else if (tTask.eType == TASK::CAMPFIRE)
-        {
-            GdiTransparentBlt(hDC,
-                (int)tPoint.x,
-                (int)tPoint.y,
-                (int)(64 * fZoom),
-                (int)(64 * fZoom),
-                hCampfireBlueprintDC,
-                0, 0,
-                64, 64,
-                RGB_WHITE);
-        }
-    }
+    //    if (tTask.eType == TASK::WALL)
+    //    {
+    //        /*GdiTransparentBlt(hDC,
+    //            (int)(tPoint.x + 16 * fZoom),
+    //            (int)(tPoint.y + 16 * fZoom),
+    //            (int)(32 * fZoom),
+    //            (int)(32 * fZoom),
+    //            hSteelWallDC,
+    //            0, 0,
+    //            32, 32,
+    //            RGB_WHITE);*/
+    //    }
+    //    else if (tTask.eType == TASK::SHIP)
+    //    {
+    //        //GdiTransparentBlt(hDC,
+    //        //    (int)tPoint.x,
+    //        //    (int)tPoint.y,
+    //        //    (int)(128 * fZoom),
+    //        //    (int)(128 * fZoom),
+    //        //    hShipDC,
+    //        //    0, 0,
+    //        //    512, 512,
+    //        //    RGB_WHITE);
+    //    }
+    //    else if (tTask.eType == TASK::CAMPFIRE)
+    //    {
+    //        //GdiTransparentBlt(hDC,
+    //        //    (int)tPoint.x,
+    //        //    (int)tPoint.y,
+    //        //    (int)(64 * fZoom),
+    //        //    (int)(64 * fZoom),
+    //        //    hCampfireBlueprintDC,
+    //        //    0, 0,
+    //        //    64, 64,
+    //        //    RGB_WHITE);
+    //    }
+    //}
 
     // 해체 모드일 경우 마우스에 해체 그림 표시
     if (m_eMode == MODE_DECONSTRUCT)
