@@ -142,6 +142,8 @@ void CColony::Initialize()
     CObj* pGround = CAbstractFactory<CGround>::Create(TILECX * TILEX * 0.5f, TILECY * TILEY * 0.5f);
     CObjMgr::Get_Instance()->Add_Object(OBJ_GROUND, pGround);
 
+
+
     bool bVisitArray[TILEX * TILEY];
     memset(bVisitArray, false, sizeof(bVisitArray));
 
@@ -235,7 +237,7 @@ int CColony::Update()
 
     CObjMgr::Get_Instance()->Update();
 
-    CTileMgr::Get_Instance()->Update();
+    //CTileMgr::Get_Instance()->Update();
 
     CTimeMgr::Get_Instance()->Update();
 
@@ -291,10 +293,10 @@ void CColony::Late_Update()
     //릴리즈 후 이놈이 다시 만들어져서 말썽이다.
     //현재 씬이 콜로니씬일때만 돌리는게 맞나?
     //싱글톤의 문제: 여기저기서 겟 인스턴스 쓰니까 삭제 이후에도 언제든지 생길 수 있다.
-    if (CSceneMgr::Get_Instance()->Get_Scene() == SC_COLONY)
+    /*if (CSceneMgr::Get_Instance()->Get_Scene() == SC_COLONY)
     {
         CTileMgr::Get_Instance()->Late_Update();
-    }
+    }*/
 
     CColonyMgr::Get_Instance()->Late_Update();
 
@@ -312,7 +314,6 @@ void CColony::Render(HDC hDC)
     // 객체 매니저 렌더링
     CObjMgr::Get_Instance()->Render(hDC);
     CCamera::Get_Instance()->Render(hDC);
-    CTileMgr::Get_Instance()->Render(hDC);
 
     CColonyMgr::Get_Instance()->Render(hDC);
 

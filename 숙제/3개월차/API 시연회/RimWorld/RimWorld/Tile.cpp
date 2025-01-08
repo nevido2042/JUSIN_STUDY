@@ -25,6 +25,8 @@ void CTile::Initialize()
 	m_eOption = OPT_REACHABLE;
 
 	m_eObjID = OBJ_TILE;
+
+	m_eRenderID = RENDER_GAMEOBJECT;
 }
 
 int CTile::Update()

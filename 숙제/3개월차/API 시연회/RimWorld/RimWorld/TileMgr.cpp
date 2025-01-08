@@ -5,6 +5,7 @@
 #include "PathFinder.h"
 #include "BmpMgr.h"
 #include "Camera.h"
+#include "ObjMgr.h"
 
 CTileMgr* CTileMgr::m_pInstance = nullptr;
 
@@ -43,6 +44,8 @@ void CTileMgr::Initialize()
 
 			CObj* pTile = CAbstractFactory<CTile>::Create(fX, fY);
 			m_TileMap[iRow][iCol] = pTile;
+
+			CObjMgr::Get_Instance()->Add_Object(OBJ_TILE, pTile);
 		}
 	}
 }
@@ -219,10 +222,10 @@ void CTileMgr::Render(HDC hDC)
 
 void CTileMgr::Release()
 {
-	for_each(m_TileMap.begin(), m_TileMap.end(), [](auto& row) 
+	/*for_each(m_TileMap.begin(), m_TileMap.end(), [](auto& row) 
 		{
 			for_each(row.begin(), row.end(), Safe_Delete<CObj*>);
-		});
+		});*/
 }
 
 void CTileMgr::Set_TileOption(POS _tPos, TILEOPT _eOpt)
