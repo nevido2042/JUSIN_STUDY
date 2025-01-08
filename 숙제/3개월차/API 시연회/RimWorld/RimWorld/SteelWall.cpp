@@ -262,6 +262,29 @@ void CSteelWall::Render(HDC hDC)
 		RGB_PURPLE);		// 제거할 색상
 
 	//Rectangle(hDC, m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom);
+
+	//작업 예약되었으면 해체 아이콘 출력
+	if (m_bTaskReserved)
+	{
+		HDC		hDeconstructDC = CBmpMgr::Get_Instance()->Find_Image(L"Deconstruct_mini");
+
+		float fZoom = CCamera::Get_Instance()->Get_Zoom();
+		POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+			Get_Rect()->left,
+			Get_Rect()->top
+		);
+
+		GdiTransparentBlt(hDC,
+			(int)tPoint.x,
+			(int)tPoint.y,
+			(int)(64 * fZoom),
+			(int)(64 * fZoom),
+			hDeconstructDC,
+			0, 0,
+			64,
+			64,
+			RGB_WHITE);
+	}
 }
 
 void CSteelWall::Release()

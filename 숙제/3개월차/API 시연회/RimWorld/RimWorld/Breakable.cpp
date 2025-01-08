@@ -3,7 +3,7 @@
 #include "ObjMgr.h"
 
 CBreakable::CBreakable()
-    :m_bBrokendown(false), m_fDurability(0.f), m_fMaxDurability(0.f)
+    :m_bBrokendown(false), m_fDurability(0.f), m_fMaxDurability(0.f), m_bTaskReserved(false)
 {
 }
 

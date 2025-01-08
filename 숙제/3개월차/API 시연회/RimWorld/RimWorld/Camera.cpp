@@ -63,13 +63,13 @@ void CCamera::Update()
 
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_ADD)) // ÁÜÀÎ
     {
-        m_fZoom += 0.1f;
+        m_fZoom += 0.01f;
         if (m_fZoom > 3.0f) m_fZoom = 3.0f; // ÃÖ´ë ÁÜ Á¦ÇÑ
     }
 
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SUBTRACT)) // ÁÜ¾Æ¿ô
     {
-        m_fZoom -= 0.1f;
+        m_fZoom -= 0.01f;
         if (m_fZoom < 0.2f) m_fZoom = 0.2f; // ÃÖ¼Ò ÁÜ Á¦ÇÑ
     }
 

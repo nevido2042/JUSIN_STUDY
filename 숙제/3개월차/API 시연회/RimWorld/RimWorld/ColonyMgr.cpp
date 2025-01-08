@@ -12,6 +12,7 @@
 #include "MyButton.h"
 #include "EffectMgr.h"
 #include "TutorialMgr.h"
+#include "Breakable.h"
 
 CColonyMgr* CColonyMgr::m_pInstance = nullptr;
 
@@ -112,6 +113,8 @@ void CColonyMgr::Emplace_LoggingSet(TASK _tTask)
         return;
     }
 
+    static_cast<CBreakable*>(_tTask.pObj)->Set_TaskReserved(true);
+
     CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
     CSoundMgr::Get_Instance()->PlaySound(L"Click2.wav", SOUND_UI, .5f);
 
@@ -126,6 +129,8 @@ void CColonyMgr::Emplace_DeconstructSet(TASK _tTask)
     {
         return;
     }
+
+    static_cast<CBreakable*>(_tTask.pObj)->Set_TaskReserved(true);
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
     CSoundMgr::Get_Instance()->PlaySound(L"Click2.wav", SOUND_UI, .5f);
@@ -144,6 +149,8 @@ void CColonyMgr::Emplace_ConstructSet(TASK _tTask)
     {
         return;
     }
+
+    static_cast<CBreakable*>(_tTask.pObj)->Set_TaskReserved(true);
 
     CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
     CSoundMgr::Get_Instance()->PlaySound(L"DragBuilding.wav", SOUND_UI, .2f);
@@ -336,7 +343,7 @@ void CColonyMgr::Render(HDC hDC)
     }
 
     // 해체 리스트에 있는 모든 벽들에 해체 아이콘 표시
-    for (TASK tTask : m_DeconstructSet)
+    /*for (TASK tTask : m_DeconstructSet)
     {
         float fZoom = CCamera::Get_Instance()->Get_Zoom();
         CObj* pObj = tTask.pObj;
@@ -355,10 +362,10 @@ void CColonyMgr::Render(HDC hDC)
             64,
             64,
             RGB_WHITE);
-    }
+    }*/
 
     // 벌목 리스트에 있는 모든 벽들에 해체 아이콘 표시
-    for (TASK tTask : m_LoggingSet)
+    /*for (TASK tTask : m_LoggingSet)
     {
         float fZoom = CCamera::Get_Instance()->Get_Zoom();
         CObj* pObj = tTask.pObj;
@@ -377,7 +384,7 @@ void CColonyMgr::Render(HDC hDC)
             64,
             64,
             RGB_WHITE);
-    }
+    }*/
 
     // 건설할 벽들 표시, 우주선 표시
     for (TASK tTask : m_ConstructSet)

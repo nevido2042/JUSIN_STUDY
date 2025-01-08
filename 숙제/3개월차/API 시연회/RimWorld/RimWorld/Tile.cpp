@@ -77,30 +77,30 @@ void CTile::Late_Update()
 
 void CTile::Render(HDC hDC)
 {
-	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
+	//HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	//int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	// 줌을 적용한 타일 크기 계산
-	int zoomedTileCX = int(TILECX * CCamera::Get_Instance()->Get_Zoom());
-	int zoomedTileCY = int(TILECY * CCamera::Get_Instance()->Get_Zoom());
+	//// 줌을 적용한 타일 크기 계산
+	//int zoomedTileCX = int(TILECX * CCamera::Get_Instance()->Get_Zoom());
+	//int zoomedTileCY = int(TILECY * CCamera::Get_Instance()->Get_Zoom());
 
-	POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
-	// 타일 렌더링 (StretchBlt 사용)
-	StretchBlt(
-		hDC,
-		tPoint.x,
-		tPoint.y,
-		zoomedTileCX,
-		zoomedTileCY,
-		hMemDC,
-		0,
-		0,
-		TILECX,
-		TILECY,
-		SRCCOPY // 단순 복사
-	);
+	//POINT tPoint = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+	//// 타일 렌더링 (StretchBlt 사용)
+	//StretchBlt(
+	//	hDC,
+	//	tPoint.x,
+	//	tPoint.y,
+	//	zoomedTileCX,
+	//	zoomedTileCY,
+	//	hMemDC,
+	//	0,
+	//	0,
+	//	TILECX,
+	//	TILECY,
+	//	SRCCOPY // 단순 복사
+	//);
 
 	//BitBlt(
 	//	hDC,
@@ -114,51 +114,51 @@ void CTile::Render(HDC hDC)
 	//	SRCCOPY          // 단순 복사
 	//);
 
-	//HPEN hPen(nullptr);
-	//HPEN hOldPen(nullptr);
+	HPEN hPen(nullptr);
+	HPEN hOldPen(nullptr);
 
-	//if (m_eOption == OPT_BLOCKED)
-	//{
-	//	// 빨간색 펜 생성
-	//	hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // 굵기 1, 빨간색
-	//	hOldPen = (HPEN)SelectObject(hDC, hPen);       // 기존 펜 저장 및 빨간색 펜 설정
-	//}
-	//
-	//// 사각형 그리기
-	////MoveToEx(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, nullptr);         // 왼쪽 위로 이동
-	////LineTo(hDC, m_tRect.right+ iScrollX, m_tRect.top + iScrollY);                  // 상단 선
-	////LineTo(hDC, m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);               // 오른쪽 선
-	////LineTo(hDC, m_tRect.left + iScrollX, m_tRect.bottom + iScrollY);                // 하단 선
-	////LineTo(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY);                   // 왼쪽 선
+	if (m_eOption == OPT_BLOCKED)
+	{
+		// 빨간색 펜 생성
+		hPen = CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // 굵기 1, 빨간색
+		hOldPen = (HPEN)SelectObject(hDC, hPen);       // 기존 펜 저장 및 빨간색 펜 설정
+	}
+	
+	////사각형 그리기
+	//MoveToEx(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY, nullptr);         // 왼쪽 위로 이동
+	//LineTo(hDC, m_tRect.right+ iScrollX, m_tRect.top + iScrollY);                  // 상단 선
+	//LineTo(hDC, m_tRect.right + iScrollX, m_tRect.bottom + iScrollY);               // 오른쪽 선
+	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.bottom + iScrollY);                // 하단 선
+	//LineTo(hDC, m_tRect.left + iScrollX, m_tRect.top + iScrollY);                   // 왼쪽 선
 
-	//// 사각형 그리기
-	//if (m_eOption == OPT_BLOCKED)
-	//{
-	//	// 월드 좌표를 화면 좌표로 변환
-	//	POINT topLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
-	//	POINT bottomRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
+	// 사각형 그리기
+	if (m_eOption == OPT_BLOCKED)
+	{
+		// 월드 좌표를 화면 좌표로 변환
+		POINT topLeft = CCamera::Get_Instance()->WorldToScreen(m_tRect.left, m_tRect.top);
+		POINT bottomRight = CCamera::Get_Instance()->WorldToScreen(m_tRect.right, m_tRect.bottom);
 
-	//	// 줌 적용
-	//	int zoomedLeft = topLeft.x;
-	//	int zoomedTop = topLeft.y;
-	//	int zoomedRight = bottomRight.x;
-	//	int zoomedBottom = bottomRight.y;
+		// 줌 적용
+		int zoomedLeft = topLeft.x;
+		int zoomedTop = topLeft.y;
+		int zoomedRight = bottomRight.x;
+		int zoomedBottom = bottomRight.y;
 
-	//	// 사각형 그리기
-	//	MoveToEx(hDC, zoomedLeft, zoomedTop, nullptr);             // 왼쪽 위로 이동
-	//	LineTo(hDC, zoomedRight, zoomedTop);                       // 상단 선
-	//	LineTo(hDC, zoomedRight, zoomedBottom);                    // 오른쪽 선
-	//	LineTo(hDC, zoomedLeft, zoomedBottom);                     // 하단 선
-	//	LineTo(hDC, zoomedLeft, zoomedTop);                        // 왼쪽 선
-	//}
+		// 사각형 그리기
+		MoveToEx(hDC, zoomedLeft, zoomedTop, nullptr);             // 왼쪽 위로 이동
+		LineTo(hDC, zoomedRight, zoomedTop);                       // 상단 선
+		LineTo(hDC, zoomedRight, zoomedBottom);                    // 오른쪽 선
+		LineTo(hDC, zoomedLeft, zoomedBottom);                     // 하단 선
+		LineTo(hDC, zoomedLeft, zoomedTop);                        // 왼쪽 선
+	}
 
 
-	//if (m_eOption == OPT_BLOCKED)
-	//{
-	//	// 펜 정리
-	//	SelectObject(hDC, hOldPen); // 기존 펜 복원
-	//	DeleteObject(hPen);         // 빨간색 펜 삭제
-	//}
+	if (m_eOption == OPT_BLOCKED)
+	{
+		// 펜 정리
+		SelectObject(hDC, hOldPen); // 기존 펜 복원
+		DeleteObject(hPen);         // 빨간색 펜 삭제
+	}
 
 }
 

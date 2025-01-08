@@ -9,6 +9,8 @@ public:
 public:
     void    Take_Damage(float _fDamage);
 public:
+    void    Set_TaskReserved(bool _b) { m_bTaskReserved = _b; }
+
     bool    Get_IsBrokenDown() { return m_bBrokendown; }
     void    Set_IsBrokenDown() { m_bBrokendown = true; }
 public:
@@ -22,5 +24,7 @@ protected:
     float   m_fDurability;
     float   m_fMaxDurability;
     bool    m_bBrokendown;
+
+    bool    m_bTaskReserved;
 };
 

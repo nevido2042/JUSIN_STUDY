@@ -96,6 +96,30 @@ void CTree::Render(HDC hDC)
 		128,			// 복사할 이미지의 가로, 세로
 		128,
 		RGB_PURPLE);		// 제거할 색상
+
+	//작업 예약되었으면 해체 아이콘 출력
+	if (m_bTaskReserved)
+	{
+		HDC		hCutPlantDC = CBmpMgr::Get_Instance()->Find_Image(L"CutPlant");
+
+		float fZoom = CCamera::Get_Instance()->Get_Zoom();
+
+		POINT tPoint = CCamera::Get_Instance()->WorldToScreen(
+			Get_Rect()->left,
+			Get_Rect()->top
+		);
+
+		GdiTransparentBlt(hDC,
+			(int)tPoint.x,
+			(int)tPoint.y,
+			(int)(64 * fZoom),
+			(int)(64 * fZoom),
+			hCutPlantDC,
+			0, 0,
+			64,
+			64,
+			RGB_WHITE);
+	}
 }
 
 void CTree::Release()
