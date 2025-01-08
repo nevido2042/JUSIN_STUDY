@@ -438,8 +438,8 @@ void CColonyMgr::Render(HDC hDC)
         int iconSize = (int)(64);
 
         GdiTransparentBlt(hDC,
-            ptMouse.x - iconSize / 2,  // 마우스 중심에 아이콘 표시
-            ptMouse.y - iconSize / 2,
+            ptMouse.x,
+            ptMouse.y,
             iconSize,
             iconSize,
             hDeconstructDC,
@@ -472,11 +472,11 @@ void CColonyMgr::Render(HDC hDC)
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
-        int iconSize = (int)(64);
+        int iconSize = 48;
 
         GdiTransparentBlt(hDC,
-            ptMouse.x - iconSize / 2,  // 마우스 중심에 아이콘 표시
-            ptMouse.y - iconSize / 2,
+            ptMouse.x,  // 마우스 중심에 아이콘 표시
+            ptMouse.y,
             iconSize,
             iconSize,
             hLoggingDC,
@@ -510,17 +510,21 @@ void CColonyMgr::Render(HDC hDC)
         ScreenToClient(g_hWnd, &ptMouse);
 
         HDC hIconDC = nullptr;
-        int iconSize = (int)(64);
+        int iconSize(64);
+        int iDCSize(64);
 
         if (m_eMode == MODE_CONSTRUCT)
         {
             hIconDC = hSteelWallDC;
             iconSize = (int)(32);
+            iDCSize = 32;
+
         }
         else if (m_eMode == MODE_SHIP)
         {
             hIconDC = hShipDC;
-            iconSize = (int)(128);
+            iconSize = 128;
+            iDCSize = 512;
         }
         else if (m_eMode == MODE_CAMPFIRE)
         {
@@ -534,7 +538,7 @@ void CColonyMgr::Render(HDC hDC)
             iconSize,
             hIconDC,
             0, 0,
-            iconSize, iconSize,
+            iDCSize, iDCSize,
             RGB_WHITE);
     }
 

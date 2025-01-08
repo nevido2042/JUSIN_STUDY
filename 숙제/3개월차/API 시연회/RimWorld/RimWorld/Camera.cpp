@@ -63,16 +63,20 @@ void CCamera::Update()
 
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_ADD)) // 줌인
     {
-        float prevZoom = m_fZoom; // 이전 줌 값을 저장
         m_fZoom += 0.1f;
         if (m_fZoom > 5.0f) m_fZoom = 5.0f; // 최대 줌 제한
     }
 
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SUBTRACT)) // 줌아웃
     {
-        float prevZoom = m_fZoom; // 이전 줌 값을 저장
         m_fZoom -= 0.1f;
         if (m_fZoom < 0.1f) m_fZoom = 0.1f; // 최소 줌 제한
+    }
+
+    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_NUMPAD0)) // 줌 배율 기본
+    {
+        m_fZoom = 1.f;
+        //if (m_fZoom < 0.1f) m_fZoom = 0.1f; // 최소 줌 제한
     }
 }
 

@@ -58,7 +58,7 @@ private:
 
 	float	m_fWidth;
 	float	m_fHeight;
-	float	m_fZoom; // 줌 비율 (1.0 = 기본 크기)
+	float		m_fZoom; // 줌 비율 (1.0 = 기본 크기)
 
 	float	m_fViewWidth;
 	float	m_fViewHeight;
