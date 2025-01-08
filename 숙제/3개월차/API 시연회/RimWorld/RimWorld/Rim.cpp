@@ -168,10 +168,12 @@ void CRim::Render(HDC hDC)
     //Á×¾úÀ» ¶§ ÇÍÀÚ±¹ Ãâ·Â
     if (m_bDead)
     {
+        POINT tWorldPoint = CCamera::Get_Instance()->WorldToScreen(float(m_tRect.left), float(m_tRect.top));
+
         hTestDC = CBmpMgr::Get_Instance()->Find_Image(L"Blood");
         GdiTransparentBlt(hDC,
-            m_tRect.left + iScrollX,
-            m_tRect.top + iScrollY,
+            tWorldPoint.x,// m_tRect.left + iScrollX,
+            tWorldPoint.y,//m_tRect.top + iScrollY,
             64, 64,
             hTestDC, 0, 0, 64, 64,
             RGB_WHITE);

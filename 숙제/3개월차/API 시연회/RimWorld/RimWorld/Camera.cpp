@@ -64,19 +64,18 @@ void CCamera::Update()
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_ADD)) // ¡‹¿Œ
     {
         m_fZoom += 0.1f;
-        if (m_fZoom > 5.0f) m_fZoom = 5.0f; // √÷¥Î ¡‹ ¡¶«—
+        if (m_fZoom > 3.0f) m_fZoom = 3.0f; // √÷¥Î ¡‹ ¡¶«—
     }
 
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SUBTRACT)) // ¡‹æ∆øÙ
     {
         m_fZoom -= 0.1f;
-        if (m_fZoom < 0.1f) m_fZoom = 0.1f; // √÷º“ ¡‹ ¡¶«—
+        if (m_fZoom < 0.2f) m_fZoom = 0.2f; // √÷º“ ¡‹ ¡¶«—
     }
 
     if (CKeyMgr::Get_Instance()->Key_Pressing(VK_NUMPAD0)) // ¡‹ πË¿≤ ±‚∫ª
     {
         m_fZoom = 1.f;
-        //if (m_fZoom < 0.1f) m_fZoom = 0.1f; // √÷º“ ¡‹ ¡¶«—
     }
 }
 

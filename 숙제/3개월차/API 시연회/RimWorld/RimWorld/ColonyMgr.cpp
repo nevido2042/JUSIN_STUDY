@@ -632,15 +632,8 @@ void CColonyMgr::MouseDrag_Select_Wall()
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
-        m_bDrawRect = false;
+        //m_bDrawRect = false;
 
-        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
-        {
-            ZeroMemory(&m_tSelectRect, sizeof(RECT));
-
-            m_tSelectRect.left = ptMouse.x;
-            m_tSelectRect.top = ptMouse.y;
-        }
         if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
         {
             m_bDrawRect = true;
@@ -648,9 +641,19 @@ void CColonyMgr::MouseDrag_Select_Wall()
             m_tSelectRect.right = ptMouse.x;
             m_tSelectRect.bottom = ptMouse.y;
         }
-        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
-        {
 
+        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
+        {
+            m_bDrawRect = false;
+
+            ZeroMemory(&m_tSelectRect, sizeof(RECT));
+
+            m_tSelectRect.left = ptMouse.x;
+            m_tSelectRect.top = ptMouse.y;
+        }
+        else if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+            m_bDrawRect = false;
             //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
 
             int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
@@ -703,6 +706,8 @@ void CColonyMgr::MouseDrag_Select_Wall()
                 TASK tTask;
                 tTask.pObj = pObj;
                 CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);  // 해체 목록 추가
+
+                ZeroMemory(&m_tSelectRect, sizeof(RECT));
             }
         }
     }
@@ -717,15 +722,8 @@ void CColonyMgr::MouseDrag_Select_Tree()
         GetCursorPos(&ptMouse);
         ScreenToClient(g_hWnd, &ptMouse);
 
-        m_bDrawRect = false;
+        //m_bDrawRect = false;
 
-        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
-        {
-            ZeroMemory(&m_tSelectRect, sizeof(RECT));
-
-            m_tSelectRect.left = ptMouse.x;
-            m_tSelectRect.top = ptMouse.y;
-        }
         if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
         {
             m_bDrawRect = true;
@@ -733,8 +731,19 @@ void CColonyMgr::MouseDrag_Select_Tree()
             m_tSelectRect.right = ptMouse.x;
             m_tSelectRect.bottom = ptMouse.y;
         }
-        if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+
+        if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
         {
+            m_bDrawRect = false;
+
+            ZeroMemory(&m_tSelectRect, sizeof(RECT));
+
+            m_tSelectRect.left = ptMouse.x;
+            m_tSelectRect.top = ptMouse.y;
+        }
+        else if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON))
+        {
+            m_bDrawRect = false;
 
             //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
 
@@ -786,6 +795,8 @@ void CColonyMgr::MouseDrag_Select_Tree()
                 TASK tTask;
                 tTask.pObj = pObj;
                 CColonyMgr::Get_Instance()->Emplace_LoggingSet(tTask);//해체 목록 추가
+
+                ZeroMemory(&m_tSelectRect, sizeof(RECT));
             }
         }
     }

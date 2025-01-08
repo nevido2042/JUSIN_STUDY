@@ -102,6 +102,18 @@ void CTile::Render(HDC hDC)
 		SRCCOPY // 단순 복사
 	);
 
+	//BitBlt(
+	//	hDC,
+	//	tPoint.x,        // 타일의 화면 좌표 X
+	//	tPoint.y,        // 타일의 화면 좌표 Y
+	//	TILECX,          // 원본 타일의 너비 (크기 고정)
+	//	TILECY,          // 원본 타일의 높이 (크기 고정)
+	//	hMemDC,
+	//	0,
+	//	0,
+	//	SRCCOPY          // 단순 복사
+	//);
+
 	//HPEN hPen(nullptr);
 	//HPEN hOldPen(nullptr);
 

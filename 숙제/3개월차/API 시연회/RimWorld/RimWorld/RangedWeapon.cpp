@@ -120,9 +120,10 @@ void CRangedWeapon::Render(HDC hDC)
 
     Graphics Grapics(hDC);
 
+    POINT tCenterPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left + 64 * 0.5f, (float)m_tRect.top + 64 * 0.5f);
     // 회전의 중심점 설정 (이미지의 중심)
-    int centerX = int(tPoint.x + iScrollX + 64 * 0.5f);
-    int centerY = int(tPoint.y + iScrollY + 64 * 0.5f);
+    int centerX = tCenterPoint.x;// int(tPoint.x + iScrollX + 64 * 0.5f);
+    int centerY = tCenterPoint.y;// int(tPoint.y + iScrollY + 64 * 0.5f);
 
     // 회전 변환 적용
     Grapics.TranslateTransform((REAL)centerX, (REAL)centerY);  // 회전 중심으로 이동

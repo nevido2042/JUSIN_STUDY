@@ -207,30 +207,35 @@ void CSteelWall::Late_Update()
 		m_bCheckNeighbor = false;
 	}
 
-	//마우스 클릭 했을 때 타겟으로 설정
-	POINT	ptMouse{};
+	////마우스 클릭 했을 때 타겟으로 설정
+	//POINT	ptMouse{};
 
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(g_hWnd, &ptMouse);
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	//int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	//int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	ptMouse.x -= iScrollX;
-	ptMouse.y -= iScrollY;
+	//ptMouse.x -= iScrollX;
+	//ptMouse.y -= iScrollY;
 
-	if (PtInRect(&m_tRect, ptMouse))
+	//if (PtInRect(&m_tRect, ptMouse))
+	//{
+	//	
+
+	//}
+
+	//식민지 관리자가 해체모드일 경우 해체리스트에 넣는다. 
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON)
+		&& CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_DECONSTRUCT)
 	{
-		//식민지 관리자가 해체모드일 경우 해체리스트에 넣는다. 
-		if (CKeyMgr::Get_Instance()->Key_Up(VK_LBUTTON) 
-			&& CColonyMgr::Get_Instance()->Get_Mode() == CColonyMgr::MODE_DECONSTRUCT)
+		if (Is_MouseHovered_Scrolled())
 		{
 			TASK tTask;
 			tTask.pObj = this;
 			CColonyMgr::Get_Instance()->Emplace_DeconstructSet(tTask);
 			//return;
 		}
-
 	}
 	
 }
