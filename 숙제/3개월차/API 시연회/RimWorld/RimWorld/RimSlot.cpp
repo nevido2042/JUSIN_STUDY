@@ -5,6 +5,7 @@
 #include "ScrollMgr.h"
 #include "ColonyMgr.h"
 #include "Rim.h"
+#include "Camera.h"
 
 CRimSlot::CRimSlot()
 {
@@ -36,8 +37,10 @@ void CRimSlot::Late_Update()
 			/*CScrollMgr::Get_Instance()->Set_ScrollX(-Get_Target()->Get_Info().fX + WINCX * 0.5f);
 			CScrollMgr::Get_Instance()->Set_ScrollY(-Get_Target()->Get_Info().fY + WINCY * 0.5f);*/
 
+			//CScrollMgr::Get_Instance()->Move_To_Lerp(Get_Target()->Get_Info().fX, Get_Target()->Get_Info().fY);
 
-			CScrollMgr::Get_Instance()->Move_To_Lerp(Get_Target()->Get_Info().fX, Get_Target()->Get_Info().fY);
+			CCamera::Get_Instance()->Move_To_Lerp(Get_Target()->Get_Info().fX, Get_Target()->Get_Info().fY);
+
 			CColonyMgr::Get_Instance()->Set_Target(m_pTarget);
 		}
 	}

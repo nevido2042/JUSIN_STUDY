@@ -293,7 +293,9 @@ void CColony::Late_Update()
 
     CColonyMgr::Get_Instance()->Late_Update();
 
-    CScrollMgr::Get_Instance()->Late_Update();
+    //CScrollMgr::Get_Instance()->Late_Update();
+
+    CCamera::Get_Instance()->Late_Update();
 }
 
 void CColony::Render(HDC hDC)

@@ -20,12 +20,16 @@ public:
 		worldPoint.y = int((screenY - m_fHeight / 2) / m_fZoom + m_fY);
 		return worldPoint;
 	}
-
+	void Move_To_Lerp(float _fX, float _fY);
 public:
 	void Initialize();
 	void Update();
+	void Late_Update();
 	void Render(HDC hDC);
 public:
+	float	Get_X() { return m_fX; }
+	float	Get_Y() { return m_fY; }
+	void	Set_Pos(float _fX, float _fY) { m_fX = _fX, m_fY = _fY; }
 	float	Get_Zoom() { return m_fZoom; }
 	bool	IsInCameraView(float _fX, float _fY, float _fWidth, float _fHeight);
 public:
@@ -55,4 +59,12 @@ private:
 	float	m_fWidth;
 	float	m_fHeight;
 	float	m_fZoom; // 줌 비율 (1.0 = 기본 크기)
+
+	float	m_fViewWidth;
+	float	m_fViewHeight;
+
+	//보간이동
+	float	m_fMoveX;
+	float	m_fMoveY;
+	bool	m_bMoveLerp;
 };
