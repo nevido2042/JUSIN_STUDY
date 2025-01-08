@@ -5,6 +5,7 @@
 #include "framework.h"
 #include "RimWorld.h"
 #include "MainGame.h"
+#include "Camera.h"
 
 #define MAX_LOADSTRING 100
 
@@ -253,6 +254,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
    //     // 3인자 : TRUE일 경우 그려져 있지 않는 부분도 갱신
    //     //        FALSE 일 경우 그린 부분만 갱신
    //     break;
+
+    case WM_MOUSEWHEEL:
+    {
+        // WPARAM의 상위 16비트는 휠 회전 값
+        short wheelDelta = HIWORD(wParam);  // 휠의 회전 정도 (양수: 휠 업, 음수: 휠 다운)
+
+        CCamera* pCamera = CCamera::Get_Instance();
+
+        if (wheelDelta > 0)
+        {
+            // 휠 업 (줌 인)
+            pCamera->Set_Zoom(pCamera->Get_Zoom() + 0.1f);
+            if (pCamera->Get_Zoom() > ZOOM_MAX)
+            {
+                pCamera->Set_Zoom(ZOOM_MAX);
+            }
+        }
+        else if (wheelDelta < 0)
+        {
+            // 휠 다운 (줌 아웃)
+            pCamera->Set_Zoom(pCamera->Get_Zoom() - 0.1f);
+            if (pCamera->Get_Zoom() < ZOOM_MIN)
+            {
+                pCamera->Set_Zoom(ZOOM_MIN);
+            }
+        }
+    }
+    break;
 
     case WM_COMMAND:
         {

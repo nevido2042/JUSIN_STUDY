@@ -1,4 +1,8 @@
 #pragma once
+
+#define ZOOM_MAX 3.f
+#define ZOOM_MIN 0.2f
+
 class CCamera
 {
 private:
@@ -34,6 +38,7 @@ public:
 	float	Get_Y() { return m_fY; }
 	void	Set_Pos(float _fX, float _fY) { m_fX = _fX, m_fY = _fY; }
 	float	Get_Zoom() { return m_fZoom; }
+	void	Set_Zoom(float _fZoom) { m_fZoom = _fZoom; }
 	bool	IsInCameraView(float _fX, float _fY, float _fWidth, float _fHeight);
 public:
 	static CCamera* Get_Instance()
