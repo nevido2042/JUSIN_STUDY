@@ -1,7 +1,7 @@
 #pragma once
 
-#define WINCX				1280
-#define WINCY				720
+#define WINCX				800//1280
+#define WINCY				600//720
 
 #define	PURE				= 0
 #define PI					3.141592f
@@ -26,8 +26,8 @@
 #define	TILECX				64
 #define	TILECY				64
 
-#define TILEX				30//45
-#define TILEY				20//30
+#define TILEX				45
+#define TILEY				30
 
 
 //health¹Ù offset

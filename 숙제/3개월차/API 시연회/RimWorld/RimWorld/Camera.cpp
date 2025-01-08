@@ -20,7 +20,7 @@ void CCamera::Initialize()
     m_fHeight = WINCY;
 
     m_fX = m_fWidth * 0.5f;
-    m_fY = m_fWidth * 0.5f;
+    m_fY = m_fHeight * 0.5f;
 
     m_fZoom = 1.f;
 }
@@ -46,43 +46,32 @@ void CCamera::Update()
     }
 
     // 화면 크기
-    int screenWidth = WINCX;
-    int screenHeight = WINCY;
+    //int screenWidth = WINCX;
+    //int screenHeight = WINCY;
 
-    // 카메라 줌 인/아웃
-    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_ADD))
+    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_ADD)) // 줌인
     {
+        float prevZoom = m_fZoom; // 이전 줌 값을 저장
         m_fZoom += 0.1f;
-        //m_fWidth = screenWidth / m_fZoom;
-        //m_fHeight = screenHeight / m_fZoom;
-
-        // 카메라 위치 조정 (화면 중앙을 기준으로)
-        //m_fX = (m_fX + screenWidth / 2) / m_fZoom - screenWidth / 2;
-        //m_fY = (m_fY + screenHeight / 2) / m_fZoom - screenHeight / 2;
+        if (m_fZoom > 5.0f) m_fZoom = 5.0f; // 최대 줌 제한
     }
 
-    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SUBTRACT))
+    if (CKeyMgr::Get_Instance()->Key_Pressing(VK_SUBTRACT)) // 줌아웃
     {
+        float prevZoom = m_fZoom; // 이전 줌 값을 저장
         m_fZoom -= 0.1f;
-        //m_fWidth = screenWidth / m_fZoom;
-        //m_fHeight = screenHeight / m_fZoom;
-
-        // 카메라 위치 조정 (화면 중앙을 기준으로)
-        //m_fX = (m_fX + screenWidth / 2) / m_fZoom - screenWidth / 2;
-        //m_fY = (m_fY + screenHeight / 2) / m_fZoom - screenHeight / 2;
+        if (m_fZoom < 0.1f) m_fZoom = 0.1f; // 최소 줌 제한
     }
 
 
-    if (m_fZoom < 0.1f) m_fZoom = 0.1f; // 최소 줌 제한
-    if (m_fZoom > 5.0f) m_fZoom = 5.0f; // 최대 줌 제한
 }
 
 bool CCamera::IsInCameraView(float _fX, float _fY, float _fWidth, float _fHeight)
 {
-    float fLeft = m_fX - m_fWidth * 0.5f;
-    float fRight = m_fX + m_fWidth * 0.5f;
-    float fTop = m_fY - m_fHeight * 0.5f;
-    float fBottom = m_fY + m_fHeight * 0.5f;
+    float fLeft = m_fX - (m_fWidth * 0.5f / m_fZoom + TILECX);
+    float fRight = m_fX + (m_fWidth * 0.5f / m_fZoom + TILECX);
+    float fTop = m_fY - (m_fHeight * 0.5f / m_fZoom + TILECY);
+    float fBottom = m_fY + (m_fHeight * 0.5f / m_fZoom + TILECY);
 
     // 객체가 카메라 뷰포트와 겹치는지 확인
     return !(_fX + _fWidth < fLeft || _fX > fRight || _fY + _fHeight < fTop || _fY > fBottom);
@@ -111,4 +100,16 @@ void CCamera::Render(HDC hDC)
     swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"Mouse World: %.2f, %.2f", (double)tWorldPoint.x, (double)tWorldPoint.y);
     // 문자열 출력 (유니코드)
     TextOutW(hDC, 0, 40, buffer, lstrlenW(buffer));
+
+    swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"Camera W/H: %.2f, %.2f", (double)m_fWidth, (double)m_fHeight);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, 0, 60, buffer, lstrlenW(buffer));
+
+    swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"Camera X/Y: %.2f, %.2f", (double)m_fX, (double)m_fY);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, 0, 80, buffer, lstrlenW(buffer));
+
+    swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"Camera Zoom: %.2f", (double)m_fZoom);
+    // 문자열 출력 (유니코드)
+    TextOutW(hDC, 0, 100, buffer, lstrlenW(buffer));
 }

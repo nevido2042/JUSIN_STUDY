@@ -142,10 +142,12 @@ void CTileMgr::Render(HDC hDC)
 
 	//HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gravel");
 
-	//BitBlt(hDC,
-	//	iScrollX, iScrollY,
+	////CCamera::Get_Instance()->WorldToScreen()
+
+	//GdiTransparentBlt(hDC,
+	//	0, 0,
 	//	int(TILEX * TILECX), int(TILEY * TILECY),
-	//	hMemDC, 0, 0, SRCCOPY);
+	//	hMemDC, 0, 0, 3000, 3000, NULL);
 
 
 	////int		iMaxX = (WINCX / TILECX) + CULLIG_OFFSET;
