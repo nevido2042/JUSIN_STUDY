@@ -40,8 +40,8 @@ void CTutorialMgr::IncreaseQuestProgress()
 
 	if (m_iProgress >= m_iProgressMax)
 	{
-		CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
-		CSoundMgr::Get_Instance()->PlaySound(L"LessonActivated.wav", SOUND_UI, 1.f);
+		CSoundMgr::Get_Instance()->StopSound(SOUND_QUEST);
+		CSoundMgr::Get_Instance()->PlaySound(L"LessonActivated.wav", SOUND_QUEST, 1.f);
 
 		m_iProgress = 0;
 		static_cast<CProgressBar*>(m_pProgressBar)->Set_Value((float)m_iProgress, (float)m_iProgressMax);

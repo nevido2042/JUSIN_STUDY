@@ -216,6 +216,8 @@ void CMyButton::Late_Update()
 				{
 					CTutorialMgr::Get_Instance()->IncreaseQuestProgress();
 				}
+					
+				CCamera::Get_Instance()->Start_Shake(10.f, 1000.f);
 			}
 			else if (!lstrcmp(L"LoggingBtn", m_pImgKey))
 			{

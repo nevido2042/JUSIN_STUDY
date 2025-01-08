@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "KeyMgr.h"
 #include "TimeMgr.h"
+#include "SoundMgr.h"
 
 CGameSpeedBtn::CGameSpeedBtn()
 {
@@ -34,21 +35,29 @@ void CGameSpeedBtn::Late_Update()
 		{
 			if (!lstrcmp(L"TimeSpeedButton_Pause", m_pImgKey))
 			{
-				CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);
+				CTimeMgr::Get_Instance()->Set_GameSpeed(0.f);            
+				CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+				CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingNormal.wav", SOUND_UI, 1.f);
+
 			}
 			else if (!lstrcmp(L"TimeSpeedButton_Normal", m_pImgKey))
 			{
 				CTimeMgr::Get_Instance()->Set_GameSpeed(1.f);
-
+				CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+				CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingNormal.wav", SOUND_UI, 1.f);
 			}
 			else if (!lstrcmp(L"TimeSpeedButton_Fast", m_pImgKey))
 			{
 				CTimeMgr::Get_Instance()->Set_GameSpeed(2.f);
+				CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+				CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingFast.wav", SOUND_UI, 1.f);
 
 			}
 			else if (!lstrcmp(L"TimeSpeedButton_Superfast", m_pImgKey))
 			{
 				CTimeMgr::Get_Instance()->Set_GameSpeed(3.f);
+				CSoundMgr::Get_Instance()->StopSound(SOUND_UI);
+				CSoundMgr::Get_Instance()->PlaySound(L"ClockTickingSuperFast.wav", SOUND_UI, 1.f);
 
 			}
 				

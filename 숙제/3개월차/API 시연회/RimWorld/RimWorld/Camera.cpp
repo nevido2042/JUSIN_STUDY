@@ -2,13 +2,16 @@
 #include "Camera.h"
 #include "ObjMgr.h"
 #include "KeyMgr.h"
+#include "TimeMgr.h"
 
 CCamera* CCamera::m_pInstance = nullptr;
 
 CCamera::CCamera()
     :m_fHeight(0.f), m_fWidth(0.f), m_fX(0.f), m_fY(0.f), m_fZoom(0.f),
-    m_fViewHeight(0.f), m_fViewWidth(0.f), m_fMoveX(0.f), m_fMoveY(0.f), m_bMoveLerp(false)
+    m_fViewHeight(0.f), m_fViewWidth(0.f), m_fMoveX(0.f), m_fMoveY(0.f), m_bMoveLerp(false),
+    m_bIsShaking(false), m_fShakeDuration(0.f), m_fShakeIntensity(0.f), m_fShakeTimer(0.f)
 {
+
 }
 
 CCamera::~CCamera()
@@ -77,6 +80,40 @@ void CCamera::Update()
     {
         m_fZoom = 1.f;
     }
+
+
+
+
+    // 쉐이킹 처리
+    if (m_bIsShaking)
+    {
+        float finalX = m_fX;
+        float finalY = m_fY;
+
+        m_fShakeTimer += GAMESPEED;
+
+        // 쉐이킹이 지속되는 동안
+        if (m_fShakeTimer < m_fShakeDuration)
+        {
+            // 랜덤값을 이용한 쉐이킹
+            float offsetX = (rand() % 100 / 100.0f - 0.5f) * m_fShakeIntensity * 2.0f;
+            float offsetY = (rand() % 100 / 100.0f - 0.5f) * m_fShakeIntensity * 2.0f;
+
+            finalX += offsetX;
+            finalY += offsetY;
+        }
+        else
+        {
+            // 쉐이킹 종료
+            m_bIsShaking = false;
+            m_fShakeTimer = 0.0f;
+        }
+
+        // 카메라 최종 위치 적용
+        m_fX = finalX;
+        m_fY = finalY;
+    }
+
 }
 
 void CCamera::Late_Update()
@@ -117,10 +154,10 @@ void CCamera::Late_Update()
 
 bool CCamera::IsInCameraView(float _fX, float _fY, float _fWidth, float _fHeight)
 {
-    float fLeft = m_fX - (m_fWidth * 0.5f / m_fZoom + TILECX * 0.5f);
-    float fRight = m_fX + (m_fWidth * 0.5f / m_fZoom + TILECX * 0.5f);
-    float fTop = m_fY - (m_fHeight * 0.5f / m_fZoom + TILECY * 0.5f);
-    float fBottom = m_fY + (m_fHeight * 0.5f / m_fZoom + TILECY * 0.5f);
+    float fLeft = m_fX - (m_fWidth * 0.5f / m_fZoom + TILECX * 2.f);
+    float fRight = m_fX + (m_fWidth * 0.5f / m_fZoom + TILECX * 2.f);
+    float fTop = m_fY - (m_fHeight * 0.5f / m_fZoom + TILECY * 2.f);
+    float fBottom = m_fY + (m_fHeight * 0.5f / m_fZoom + TILECY * 2.f);
 
     m_fViewWidth = abs(fLeft - fRight);
     m_fViewHeight = abs(fTop - fBottom);
@@ -137,7 +174,7 @@ void CCamera::Render(HDC hDC)
     //// 문자열 출력 (유니코드)
     //TextOutW(hDC, 0, 0, buffer, lstrlenW(buffer));
 
-    //마우스 클릭 했을 때 타겟으로 설정
+    //마우스 위치
     POINT	ptMouse{};
     GetCursorPos(&ptMouse);
     ScreenToClient(g_hWnd, &ptMouse);
@@ -168,4 +205,12 @@ void CCamera::Render(HDC hDC)
     swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"View W/H: %.2f, %.2f", (double)m_fViewWidth, (double)m_fViewHeight);
     // 문자열 출력 (유니코드)
     TextOutW(hDC, 0, 120, buffer, lstrlenW(buffer));
+}
+
+void CCamera::Start_Shake(float intensity, float duration)
+{
+    m_bIsShaking = true;
+    m_fShakeIntensity = intensity;
+    m_fShakeDuration = duration;
+    m_fShakeTimer = 0.0f; // 타이머 초기화
 }

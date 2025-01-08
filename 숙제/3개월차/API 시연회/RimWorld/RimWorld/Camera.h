@@ -27,6 +27,9 @@ public:
 	void Late_Update();
 	void Render(HDC hDC);
 public:
+	void Start_Shake(float intensity, float duration);
+	//void ApplyPosition(float x, float y);
+public:
 	float	Get_X() { return m_fX; }
 	float	Get_Y() { return m_fY; }
 	void	Set_Pos(float _fX, float _fY) { m_fX = _fX, m_fY = _fY; }
@@ -58,7 +61,7 @@ private:
 
 	float	m_fWidth;
 	float	m_fHeight;
-	float		m_fZoom; // 줌 비율 (1.0 = 기본 크기)
+	float	m_fZoom; // 줌 비율 (1.0 = 기본 크기)
 
 	float	m_fViewWidth;
 	float	m_fViewHeight;
@@ -67,4 +70,10 @@ private:
 	float	m_fMoveX;
 	float	m_fMoveY;
 	bool	m_bMoveLerp;
+
+	// 카메라 쉐이킹 관련 변수
+	bool m_bIsShaking = false; // 쉐이킹 활성화 여부
+	float m_fShakeDuration = 0.0f; // 쉐이킹 지속 시간
+	float m_fShakeIntensity = 0.0f; // 쉐이킹 강도
+	float m_fShakeTimer = 0.0f; // 쉐이킹 시간 누적
 };
