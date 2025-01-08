@@ -312,11 +312,11 @@ void CColony::Render(HDC hDC)
 
     // 객체 매니저 렌더링
     CObjMgr::Get_Instance()->Render(hDC);
-    CCamera::Get_Instance()->Render(hDC);
+    //CCamera::Get_Instance()->Render(hDC);
 
     CColonyMgr::Get_Instance()->Render(hDC);
 
-    CTimeMgr::Get_Instance()->Render(hDC);
+    //CTimeMgr::Get_Instance()->Render(hDC);
 
     // 배경을 투명하게 설정
     SetBkMode(hDC, TRANSPARENT);

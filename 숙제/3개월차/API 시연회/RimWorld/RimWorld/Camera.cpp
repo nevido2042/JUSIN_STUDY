@@ -136,8 +136,6 @@ void CCamera::Late_Update()
         float fNewY = fCurrentY + (fTargetY - fCurrentY) * fLerpFactor;
 
         // 새로운 위치 설정
-        //CScrollMgr::Get_Instance()->Set_ScrollX(fNewX);
-        //CScrollMgr::Get_Instance()->Set_ScrollY(fNewY);
         Set_Pos(fNewX, fNewY);
 
         // 거리 계산 (유클리드 거리)
