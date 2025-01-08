@@ -1087,44 +1087,54 @@ void CRim::Find_Enemy()
 
 CObj* CRim::Find_Item(const TCHAR* _pImgKey)
 {
-    CObj* pItem(nullptr);
-    //아이템 리스트에서 찾고자 하는 아이템을 찾아라
+    CObj* pClosestItem = nullptr;
+    float fMinDistance = FLT_MAX; // 초기 최소 거리 값을 매우 큰 값으로 설정
+
+    // 아이템 리스트에서 가장 가까운 아이템을 찾는다.
     for (CObj* pObj : CObjMgr::Get_Instance()->Get_List()[OBJ_ITEM])
     {
+        // 이미지 키가 일치하지 않으면 건너뜀
         if (lstrcmp(pObj->Get_ImgKey(), _pImgKey))
         {
             continue;
         }
 
-        //주인이 있으면
+        // 주인이 있는 아이템은 건너뜀
         if (pObj->Get_Target())
         {
             continue;
         }
 
-        //찾고 그 아이템까지 도달 할 수 있는 길을 찾아라.
+        // 현재 위치와 아이템 위치를 가져옴
         POS tStart{ (int)m_tInfo.fX, (int)m_tInfo.fY };
         POS tEnd{ (int)pObj->Get_Info().fX, (int)pObj->Get_Info().fY };
 
+        // 경로를 찾음
         list<CNode*> PathList = move(CPathFinder::Get_Instance()->Find_Path(tStart, tEnd));
+
+        // 경로가 없으면 건너뜀
         if (PathList.empty())
         {
-            //못 찾으면 컨티뉴
             continue;
         }
-        else
-        {
-            //노드 딜리트
-            for_each(PathList.begin(), PathList.end(), Safe_Delete<CNode*>);
-            PathList.clear();
 
-            //길을 찾았으면 그 아이템 리턴
-            pItem = pObj;
-            break;
+        // 노드를 모두 삭제
+        for_each(PathList.begin(), PathList.end(), Safe_Delete<CNode*>);
+        PathList.clear();
+
+        // 거리 계산 (피타고라스 공식)
+        float fDistance = sqrtf(powf(float(tEnd.iX - tStart.iX), 2.f) + powf(float(tEnd.iY - tStart.iY), 2.f));
+
+        // 가장 가까운 아이템을 선택
+        if (fDistance < fMinDistance)
+        {
+            fMinDistance = fDistance;
+            pClosestItem = pObj;
         }
     }
 
-    return pItem;
+    return pClosestItem;
+
 }
 
 void CRim::PickUp_Item(CObj* _pObj)
