@@ -53,7 +53,7 @@ void CPawn::Move_To(POS _Pos)
     //±æÀ» ¸øÃ£¾ÒÀ» °æ¿ì
     else if (m_NodeList.empty() && Get_Target())
     {
-        Change_State(DECONSTRUCTING);
+        Change_State(DECONSTRUCTING, m_pTarget);
         //Å¸°Ù°ú ÀÚ½Å»çÀÌ¿¡¼­ Àå¾Ö¹°À» Ã£°í
         //Å¸°ÙÀ» ±× Àå¾Ö¹°·Î ÇÑ´Ù.
         Set_Target(Get_ObstacleToTarget());
@@ -213,30 +213,36 @@ void CPawn::Calculate_MoveDir()
     //m_tPrevPos.iX = (int)m_tInfo.fX;
     //m_tPrevPos.iY = (int)m_tInfo.fY;
 
-    //°ø°Ý ÁßÀÌ°í, Å¸°ÙÀÌ ÀÖÀ» ¶§¸¸ Å¸°Ù ¹Ù¶óº¸±â
-    if (m_bAttack && m_pTarget)
+
+    if (m_pTarget)
     {
-        //xÃàÀÌ °ÅÀÇ °°À» ¶§¸¸ yÃà ºñ±³
-        if (fabs(m_pTarget->Get_Info().fX - m_tInfo.fX) < FLT_EPSILON)
+        //°ø°Ý ÁßÀÌ°í, Å¸°ÙÀÌ ÀÖÀ» ¶§¸¸ Å¸°Ù ¹Ù¶óº¸±â    //¸Ø­ŸÀ» ¶§ Å¸°Ù ¹Ù¶óº¸±â
+        if (m_bAttack || !m_bNavigating)
         {
-            if (m_pTarget->Get_Info().fY > m_tInfo.fY)
+            //xÃàÀÌ °ÅÀÇ °°À» ¶§¸¸ yÃà ºñ±³
+            if (fabs(m_pTarget->Get_Info().fX - m_tInfo.fX) < FLT_EPSILON)
             {
-                m_eDir = DD;
+                if (m_pTarget->Get_Info().fY > m_tInfo.fY)
+                {
+                    m_eDir = DD;
+                }
+                else
+                {
+                    m_eDir = UU;
+                }
+            }
+            else if (m_pTarget->Get_Info().fX > m_tInfo.fX)
+            {
+                m_eDir = RR;
             }
             else
             {
-                m_eDir = UU;
+                m_eDir = LL;
             }
         }
-        else if (m_pTarget->Get_Info().fX > m_tInfo.fX)
-        {
-            m_eDir = RR;
-        }
-        else
-        {
-            m_eDir = LL;
-        }
     }
+
+   
 }
 
 void CPawn::Measure_Target()
