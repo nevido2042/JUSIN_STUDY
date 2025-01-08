@@ -15,4 +15,3 @@ private:
     //image
     Gdiplus::Image* m_pImage;
 };
-
