@@ -32,8 +32,7 @@ void CCampfire::Late_Update()
 
 void CCampfire::Render(HDC hDC)
 {
-    float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
-    float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
+
     float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
     HDC hFireDC = CBmpMgr::Get_Instance()->Find_Image(L"FireAnimated");

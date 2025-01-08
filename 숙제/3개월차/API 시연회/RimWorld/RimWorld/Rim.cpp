@@ -122,8 +122,6 @@ void CRim::Late_Update()
 
 void CRim::Render(HDC hDC)
 {
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     CPawn::Render(hDC);
 
@@ -137,27 +135,27 @@ void CRim::Render(HDC hDC)
     switch (m_eDir) 
     {
     case UU:
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[NORTH], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[NORTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[NORTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Body[NORTH], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Face[NORTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Hair[NORTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     case RR:
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[EAST], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[EAST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[EAST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Body[EAST], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Face[EAST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Hair[EAST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     case DD:
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[SOUTH], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[SOUTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[SOUTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Body[SOUTH], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Face[SOUTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Hair[SOUTH], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     case LL:
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Body[WEST], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Face[WEST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
-        DrawImage(hDC, m_tRect, iScrollX, iScrollY, m_ImgKeyArr_Hair[WEST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Body[WEST], IMAGE_OFFSET_X, IMAGE_OFFSET_Y); // ¸öÅë
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Face[WEST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¾ó±¼
+        DrawImage(hDC, m_tRect, m_ImgKeyArr_Hair[WEST], IMAGE_OFFSET_X, HEAD_OFFSET + IMAGE_OFFSET_Y); // ¸Ó¸®
         break;
 
     default:
@@ -631,7 +629,7 @@ void CRim::Drfated_Fire()
     }
 }
 
-void CRim::DrawImage(HDC hDC, const RECT& m_tRect, int iScrollX, int iScrollY, const std::wstring& imageKey, int offsetX, int offsetY)
+void CRim::DrawImage(HDC hDC, const RECT& m_tRect, const std::wstring& imageKey, int offsetX, int offsetY)
 {
 
     POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
@@ -639,8 +637,8 @@ void CRim::DrawImage(HDC hDC, const RECT& m_tRect, int iScrollX, int iScrollY, c
     // ÀÌ¹ÌÁö ±×¸®±â ÇÔ¼ö
         HDC hTestDC = CBmpMgr::Get_Instance()->Find_Image(imageKey.c_str());
         GdiTransparentBlt(hDC,
-            tPoint.x + iScrollX - int(offsetX * CCamera::Get_Instance()->Get_Zoom()),
-            tPoint.y + iScrollY - int(offsetY * CCamera::Get_Instance()->Get_Zoom()),
+            tPoint.x - int(offsetX * CCamera::Get_Instance()->Get_Zoom()),
+            tPoint.y - int(offsetY * CCamera::Get_Instance()->Get_Zoom()),
             int(128 * CCamera::Get_Instance()->Get_Zoom()), int(128 * CCamera::Get_Instance()->Get_Zoom()),
             hTestDC, 0, 0, 128, 128,
             RGB_PURPLE);

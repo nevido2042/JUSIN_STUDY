@@ -475,8 +475,6 @@ void CColonyMgr::Control_Target()
 {
     if (CKeyMgr::Get_Instance()->Key_Down(VK_RBUTTON) && m_pTarget)
     {
-        int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-        int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
         //마우스 입력
         SetCapture(g_hWnd);
@@ -577,14 +575,10 @@ void CColonyMgr::MouseDrag_Select_Wall()
             m_bDrawRect = false;
             //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
 
-            int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
-            int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-
-            int iLeft = m_tSelectRect.left + iScrollX;
-            int iRight = m_tSelectRect.right + iScrollX;
-            int iTop = m_tSelectRect.top + iScrollY;
-            int iBottom = m_tSelectRect.bottom + iScrollY;
+            int iLeft = m_tSelectRect.left;
+            int iRight = m_tSelectRect.right;
+            int iTop = m_tSelectRect.top;
+            int iBottom = m_tSelectRect.bottom;
 
             list<CObj*> steelWallList = CObjMgr::Get_Instance()->Get_List()[OBJ_WALL];
             for (CObj* pObj : steelWallList)
@@ -668,13 +662,10 @@ void CColonyMgr::MouseDrag_Select_Tree()
 
             //사각형 내부에 있는 steelWall들을 해체 작업으로 넣는다.
 
-            int iScrollX = -(int)CScrollMgr::Get_Instance()->Get_ScrollX();
-            int iScrollY = -(int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
-            int iLeft = m_tSelectRect.left + iScrollX;
-            int iRight = m_tSelectRect.right + iScrollX;
-            int iTop = m_tSelectRect.top + iScrollY;
-            int iBottom = m_tSelectRect.bottom + iScrollY;
+            int iLeft = m_tSelectRect.left;
+            int iRight = m_tSelectRect.right;
+            int iTop = m_tSelectRect.top;
+            int iBottom = m_tSelectRect.bottom;
 
             list<CObj*> TreeList = CObjMgr::Get_Instance()->Get_List()[OBJ_TREE];
             for (CObj* pObj : TreeList)

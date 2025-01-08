@@ -71,15 +71,12 @@ void CShip::Render(HDC hDC)
 {
 	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 
-	float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
-	float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
-
 	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
 	float fZoom = CCamera::Get_Instance()->Get_Zoom();
 
 	GdiTransparentBlt(hDC,
-		(int)(tPoint.x + fScrollX),
-		(int)(tPoint.y + fScrollY),
+		(int)(tPoint.x),
+		(int)(tPoint.y),
 		(int)(m_tInfo.fCX * fZoom),
 		(int)(m_tInfo.fCY * fZoom),
 		hMemDC,

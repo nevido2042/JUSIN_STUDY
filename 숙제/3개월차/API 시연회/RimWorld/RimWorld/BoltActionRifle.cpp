@@ -62,9 +62,6 @@ void CBoltActionRifle::Render(HDC hDC)
         }
     }
 
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
     POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)m_tRect.left, (float)m_tRect.top);
     float fZoom = CCamera::Get_Instance()->Get_Zoom();
     Graphics Grapics(hDC);
@@ -88,6 +85,6 @@ void CBoltActionRifle::Render(HDC hDC)
     Grapics.TranslateTransform((REAL)-centerX, (REAL)-centerY);
 
     // 이미지 그리기
-    Grapics.DrawImage(m_pImage, tPoint.x + iScrollX, tPoint.y + iScrollY, int(64 * fZoom), int(64 * fZoom));
+    Grapics.DrawImage(m_pImage, tPoint.x, tPoint.y, int(64 * fZoom), int(64 * fZoom));
 
 }

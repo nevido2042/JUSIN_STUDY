@@ -46,9 +46,6 @@ void CBoomrat::Late_Update()
 
 void CBoomrat::Render(HDC hDC)
 {
-    // 화면 스크롤 값을 가져옵니다.
-    int iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     // 화면 확대/축소 비율을 가져옵니다.
     float fZoom = CCamera::Get_Instance()->Get_Zoom();

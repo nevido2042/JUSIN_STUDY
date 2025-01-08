@@ -80,9 +80,6 @@ void CTree::Render(HDC hDC)
 {
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
 	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)(m_tRect.left - IMAGE_OFFSET_X), (float)(m_tRect.top - IMAGE_OFFSET_Y - 32));
 	float fZoom = CCamera::Get_Instance()->Get_Zoom();
 	GdiTransparentBlt(hDC,			// 복사 받을 DC

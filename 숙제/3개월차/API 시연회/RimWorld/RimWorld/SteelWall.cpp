@@ -244,9 +244,6 @@ void CSteelWall::Render(HDC hDC)
 {
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);
 
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
 	POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)(m_tRect.left - 8), (float)(m_tRect.top - 8));
 
 	GdiTransparentBlt(hDC,			// 복사 받을 DC

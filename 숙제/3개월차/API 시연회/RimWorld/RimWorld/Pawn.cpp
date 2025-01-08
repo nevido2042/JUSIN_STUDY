@@ -558,8 +558,6 @@ void CPawn::Late_Update()
 
 void CPawn::Render(HDC hDC)
 {
-    int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-    int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
     //길 찾기 노드 출력
     /*for (CNode* pNode : m_NodeList)
@@ -583,16 +581,16 @@ void CPawn::Render(HDC hDC)
 
             POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)(pNode->Get_Pos().iX), (float)(pNode->Get_Pos().iY));
 
-            int iCurrentX = int(tPoint.x + iScrollX);
-            int iCurrentY = int(tPoint.y + iScrollY);
+            int iCurrentX = int(tPoint.x);
+            int iCurrentY = int(tPoint.y);
 
             // 이전 노드가 있다면 선을 그림
             if (pPrevNode != nullptr) 
             {
                 POINT tPoint = CCamera::Get_Instance()->WorldToScreen((float)(pPrevNode->Get_Pos().iX), (float)(pPrevNode->Get_Pos().iY));
 
-                int iPrevX = int(tPoint.x + iScrollX);
-                int iPrevY = int(tPoint.y + iScrollY);
+                int iPrevX = int(tPoint.x);
+                int iPrevY = int(tPoint.y);
 
                 // 선 그리기
                 MoveToEx(hDC, iPrevX, iPrevY, nullptr);

@@ -30,8 +30,6 @@ void CItem::Late_Update()
 
 void CItem::Render(HDC hDC)
 {
-	float fScrollX = CScrollMgr::Get_Instance()->Get_ScrollX();
-	float fScrollY = CScrollMgr::Get_Instance()->Get_ScrollY();
 	float fZoom = CCamera::Get_Instance()->Get_Zoom(); // 줌 레벨 가져오기
 
 	HDC hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pImgKey);

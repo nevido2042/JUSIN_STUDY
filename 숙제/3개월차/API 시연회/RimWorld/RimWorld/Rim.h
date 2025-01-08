@@ -46,7 +46,7 @@ private:
     void        Drfated_Fire();
 private:
     // 이미지 그리기 함수
-    void DrawImage(HDC hDC, const RECT& m_tRect, int iScrollX, int iScrollY, const std::wstring& imageKey, int offsetX, int offsetY);
+    void DrawImage(HDC hDC, const RECT& m_tRect, const std::wstring& imageKey, int offsetX, int offsetY);
 private:
     //작업 목표물에 도달했는지 체크
     void Check_CloseTask();

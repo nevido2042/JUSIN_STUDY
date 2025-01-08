@@ -38,9 +38,6 @@ bool CObj::Is_MouseHovered_Scrolled()
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
-
 	POINT tPoint = CCamera::Get_Instance()->ScreenToWorld(ptMouse.x, ptMouse.y);
 
 	/*ptMouse.x -= iScrollX;
