@@ -180,13 +180,13 @@ void CRim::Render(HDC hDC)
 
 void CRim::Handle_Wandering()
 {
-    m_fTaskCheckTime_Elapsed += GAMESPEED;
-
-    if (m_fTaskCheckTime < m_fTaskCheckTime_Elapsed)
-    {
-        m_bTaskCheck = true;
-        m_fTaskCheckTime_Elapsed = 0.f;
-    }
+    //일정 시간마다 작업 체크 하는거
+    //m_fTaskCheckTime_Elapsed += GAMESPEED;
+    //if (m_fTaskCheckTime < m_fTaskCheckTime_Elapsed)
+    //{
+    //    //m_bTaskCheck = true;
+    //    m_fTaskCheckTime_Elapsed = 0.f;
+    //}
 
     //템 들고 있지 않도록
     if (m_pTransportingItem)
