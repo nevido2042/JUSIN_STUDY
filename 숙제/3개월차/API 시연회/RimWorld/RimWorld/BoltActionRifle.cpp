@@ -55,7 +55,7 @@ void CBoltActionRifle::Render(HDC hDC)
     {
         if (CRim* pTargetRim = dynamic_cast<CRim*>(m_pTarget))
         {
-            if (pTargetRim->Get_State() != CRim::DRAFTED)
+            if (pTargetRim->Get_State() != CRim::DRAFTED && pTargetRim->Get_State() != CRim::CHASING)
             {
                 return;
             }

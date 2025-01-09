@@ -546,6 +546,13 @@ void CPawn::Late_Update()
                 if (pTarget != this)
                 {
                     pTarget->Set_Target(this);
+                    
+                    if (CPawn* pPawn = dynamic_cast<CPawn*>(pTarget))
+                    {
+                        pPawn->Change_State(CHASING, this);
+                    }
+
+
                     POS tPos{ (int)m_tInfo.fX, (int)m_tInfo.fY };
                     CEffectMgr::Get_Instance()->Create_Effect(tPos, 64.f, 64.f, L"FeedbackShoot", 30.f);
                 }
@@ -680,6 +687,49 @@ void CPawn::Handle_Undrafted()
 
 void CPawn::Handle_Chasing()
 {
+    if (!m_pTarget)
+    {
+        Change_State(WANDERING);
+    }
+
+    //타겟 있으면 따라가기
+    if (m_pTarget)
+    {
+        POS tMoveToPos{ (int)m_pTarget->Get_Info().fX, (int)m_pTarget->Get_Info().fY };
+
+        //타겟이 Pawn이라면
+        if (CPawn* pPawnTarget = dynamic_cast<CPawn*>(m_pTarget))//타겟이 Pawn이고 죽었으면
+        {
+            //Pawn이 죽었다면
+            if (pPawnTarget->Get_IsDead())
+            {
+                Set_Target(nullptr);
+
+
+                //RequestNavStop();
+                m_bNavigating = false;
+            }
+
+        }
+        if (!m_bNavigating)
+        {
+            Move_To(tMoveToPos);
+        }
+
+    }
+
+    //사정거리 내에 있고, 적이 보여야함
+    if (IsWithinRange() && IsCanSeeTarget())
+    {
+        //RequestNavStop();
+        m_bNavigating = false;
+        static_cast<CRangedWeapon*>(m_pRangedWeapon)->Fire();
+        m_bAttack = true;
+    }
+    else
+    {
+        m_bAttack = false;
+    }
 }
 
 void CPawn::Handle_Deconstructing()

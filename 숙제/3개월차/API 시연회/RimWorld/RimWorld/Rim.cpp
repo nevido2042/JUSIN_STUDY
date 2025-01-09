@@ -218,6 +218,11 @@ void CRim::Handle_Wandering()
     }
 }
 
+void CRim::Handle_Chasing()
+{
+    CPawn::Handle_Chasing();
+}
+
 void CRim::Handle_Drafted()
 {
     //적 탐색 상태

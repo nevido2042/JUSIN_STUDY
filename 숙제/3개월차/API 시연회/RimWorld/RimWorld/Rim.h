@@ -27,6 +27,7 @@ public:
     void Render(HDC hDC) override;
 protected:
     void Handle_Wandering() override;
+    void Handle_Chasing() override;
     void Handle_Drafted() override;
     void Handle_Undrafted() override;
     void Handle_Deconstructing() override;
