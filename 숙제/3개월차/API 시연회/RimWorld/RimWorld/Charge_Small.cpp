@@ -15,7 +15,7 @@ CCharge_Small::~CCharge_Small()
 void CCharge_Small::Initialize()
 {
     CProjectile::Initialize();
-    m_fDamage = 1.f;
+    m_fDamage = 3.f;
 }
 
 void CCharge_Small::Render(HDC hDC)

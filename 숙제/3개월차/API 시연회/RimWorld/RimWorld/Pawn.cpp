@@ -53,10 +53,10 @@ void CPawn::Move_To(POS _Pos)
     //길을 못찾았을 경우
     else if (m_NodeList.empty() && Get_Target())
     {
-        Change_State(DECONSTRUCTING, m_pTarget);
         //타겟과 자신사이에서 장애물을 찾고
         //타겟을 그 장애물로 한다.
         Set_Target(Get_ObstacleToTarget());
+        Change_State(DECONSTRUCTING, m_pTarget);
     }
 }
 
@@ -704,7 +704,7 @@ void CPawn::Handle_Chasing()
             if (pPawnTarget->Get_IsDead())
             {
                 Set_Target(nullptr);
-
+                Change_State(WANDERING);
 
                 //RequestNavStop();
                 m_bNavigating = false;
