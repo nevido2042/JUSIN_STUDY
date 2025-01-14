@@ -56,6 +56,27 @@ void CDetailView::Render(HDC hDC)
 
 	if (pObj)
 	{
+		// Step 1: Create a new font
+		HFONT hFont = CreateFont(
+			24,                        // Height of font
+			0,                         // Width of font (0 means default)
+			0,                         // Angle of text rotation (0 for horizontal)
+			0,                         // Angle of text rotation (0 for horizontal)
+			FW_NORMAL,                 // Weight (normal font)
+			FALSE,                     // Italic
+			FALSE,                     // Underline
+			FALSE,                     // Strikeout
+			ANSI_CHARSET,              // Character set
+			OUT_DEFAULT_PRECIS,        // Output precision
+			CLIP_DEFAULT_PRECIS,       // Clipping precision
+			DEFAULT_QUALITY,           // Quality
+			DEFAULT_PITCH | FF_SWISS,  // Pitch and family
+			L"맑은 고딕"                   // Font name
+		);
+
+		// Step 2: Select the font into the device context
+		HFONT hOldFont = (HFONT)SelectObject(hDC, hFont);
+
 		RECT rect = { m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom }; // 텍스트를 출력할 영역
 
 		CPawn::STATE eState = static_cast<CPawn*>(pObj)->Get_State();
@@ -72,7 +93,7 @@ void CDetailView::Render(HDC hDC)
 			DrawText(hDC, L"\n   상태: 소집 안 됨", -1, &rect, DT_NOCLIP);
 			break;
 		case CPawn::CHASING:
-			DrawText(hDC, L"\n   상태: 쫒는 중", -1, &rect, DT_NOCLIP);
+			DrawText(hDC, L"\n   상태: 따라가는 중", -1, &rect, DT_NOCLIP);
 			break;
 		case CPawn::DECONSTRUCTING:
 			DrawText(hDC, L"\n   상태: 해체 중", -1, &rect, DT_NOCLIP);
@@ -97,6 +118,12 @@ void CDetailView::Render(HDC hDC)
 		default:
 			break;
 		}
+
+		// Step 4: Restore the old font
+		SelectObject(hDC, hOldFont);
+
+		// Optional: Step 5: Delete the created font when done
+		DeleteObject(hFont);
 	}
 
 }

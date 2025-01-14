@@ -25,7 +25,7 @@ void CLancer::Initialize()
 
     m_fSpeed = 1.f;
 
-    m_fMaxHP = 10.f;
+    m_fMaxHP = 30.f;
     m_fHP = m_fMaxHP;
 
     //무기 생성

@@ -25,10 +25,31 @@ void CQuestMsgBox::Render(HDC hDC)
 	
 	CTutorialMgr::QUEST eCurQuest = CTutorialMgr::Get_Instance()->Get_CurQuest();
 	
+	// Step 1: Create a new font
+	HFONT hFont = CreateFont(
+		18,                        // Height of font
+		0,                         // Width of font (0 means default)
+		0,                         // Angle of text rotation (0 for horizontal)
+		0,                         // Angle of text rotation (0 for horizontal)
+		FW_NORMAL,                 // Weight (normal font)
+		FALSE,                     // Italic
+		FALSE,                     // Underline
+		FALSE,                     // Strikeout
+		ANSI_CHARSET,              // Character set
+		OUT_DEFAULT_PRECIS,        // Output precision
+		CLIP_DEFAULT_PRECIS,       // Clipping precision
+		DEFAULT_QUALITY,           // Quality
+		DEFAULT_PITCH | FF_SWISS,  // Pitch and family
+		L"맑은 고딕"                   // Font name
+	);
+
+	// Step 2: Select the font into the device context
+	HFONT hOldFont =  (HFONT)SelectObject(hDC, hFont);
+
 	switch (eCurQuest)
 	{
 	case CTutorialMgr::QUEST_GAMESPEED:
-		DrawText(
+		/*DrawText(
 			hDC,
 			L" \n"
 			L" 퀘스트:\n"
@@ -41,6 +62,22 @@ void CQuestMsgBox::Render(HDC hDC)
 			&rect,
 			DT_NOCLIP
 		);
+		break;*/
+
+		// Step 3: Draw the text with the new font
+		DrawText(
+			hDC,
+			L" \n"
+			L" 퀘스트:\n"
+			L" 게임 속도를 변경하거나 멈추세요.\n"
+			L" \n"
+			L" 숫자 키 1, 2, 3 눌러서 배속 조절\n"
+			L" SPACE 키를 눌러서 일시 정지\n",
+			-1,
+			&rect,
+			DT_NOCLIP
+		);
+
 		break;
 	case CTutorialMgr::QUEST_DECONSTRUCT:
 		DrawText(
@@ -84,8 +121,9 @@ void CQuestMsgBox::Render(HDC hDC)
 			L" 철벽을 건설하세요.\n"
 			L" \n"
 			L" 구상 -> 구조물 -> 철벽\n"
-			L" 비어있는 땅에 클릭 또는 드래그하여\n"
-			L" 건설 하고 싶은 위치에 건설\n"
+			L" 비어있는 땅에\n"
+			L" 클릭 또는 드래그하여\n"
+			L" 원하는 위치에 건설\n"
 			,
 			-1,
 			&rect,
@@ -138,7 +176,7 @@ void CQuestMsgBox::Render(HDC hDC)
 			L" 적과 싸워 승리하세요.\n"
 			L" \n"
 			L" 오인 사격 방지를 위해\n"
-			L" 림을 적절히 배치하세요\n"
+			L" 림을 적절히 배치하세요.\n"
 			L" \n"
 			L" 지네로봇을 처치하면\n"
 			L" 우주선 설계도를 얻을 수 있습니다.\n"
@@ -171,7 +209,7 @@ void CQuestMsgBox::Render(HDC hDC)
 			L" \n"
 			L" 퀘스트:\n"
 			L" \n"
-			L" 림을 우주선에 태워\n."
+			L" 림을 우주선에 태워\n"
 			L" 이 행성을 탈출 하세요.\n"
 			L" \n"
 			L" 림을 클릭 후.\n"
@@ -188,4 +226,10 @@ void CQuestMsgBox::Render(HDC hDC)
 	default:
 		break;
 	}
+	
+	// Step 4: Restore the old font
+	SelectObject(hDC, hOldFont);
+
+	// Optional: Step 5: Delete the created font when done
+	DeleteObject(hFont);
 }

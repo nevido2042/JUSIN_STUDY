@@ -106,7 +106,7 @@ void CTutorialMgr::Start_NextQuest()
 		m_iProgressMax = 1;
 		break;
 	case CTutorialMgr::QUEST_DRAFTE:
-		m_iProgressMax = 5;
+		m_iProgressMax = 3;
 		break;
 	case CTutorialMgr::QUEST_BATTLE:
 		m_iProgressMax = 1;
