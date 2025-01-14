@@ -16,5 +16,7 @@ public:
 private:
     void        Key_Input();
 
+    ULONGLONG   m_LastMoveTime;
+
 };
 
