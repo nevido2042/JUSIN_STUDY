@@ -30,7 +30,7 @@ PSystem::~PSystem()
 	d3d::Release<IDirect3DTexture9*>(_tex);
 }
 
-bool PSystem::init(IDirect3DDevice9* device, char* texFileName)
+bool PSystem::init(IDirect3DDevice9* device, const char* texFileName)
 {
 	// vertex buffer's size does not equal the number of particles in our system.  We
 	// use the vertex buffer to draw a portion of our particles at a time.  The arbitrary

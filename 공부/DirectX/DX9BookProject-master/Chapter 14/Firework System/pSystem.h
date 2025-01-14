@@ -52,7 +52,7 @@ namespace psys
 		PSystem();
 		virtual ~PSystem();
 
-		virtual bool init(IDirect3DDevice9* device, char* texFileName);
+		virtual bool init(IDirect3DDevice9* device, const char* texFileName);
 		virtual void reset();
 		
 		// sometimes we don't want to free the memory of a dead particle,

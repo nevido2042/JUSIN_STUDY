@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Chapter 14\Laser System\laser.cpp" />
+    <ClCompile Include="..\..\..\Chapter 14\Snow System\camera.cpp" />
+    <ClCompile Include="..\..\..\Chapter 14\Snow System\pSystem.cpp" />
+    <ClCompile Include="..\..\..\Chapter 19\CartoonEffect\d3dUtility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Chapter 14\Snow System\camera.h" />
+    <ClInclude Include="..\..\..\Chapter 14\Snow System\pSystem.h" />
+    <ClInclude Include="..\..\..\Chapter 19\CartoonEffect\d3dUtility.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{DA75FA1E-53B5-460D-9F79-0A5EE178E9D3}</ProjectGuid>
@@ -130,13 +141,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="cube.cpp" />
-    <ClCompile Include="d3dUtility.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="d3dUtility.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

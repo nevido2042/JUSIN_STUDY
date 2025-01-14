@@ -187,7 +187,7 @@ bool Display(float timeDelta)
 		D3DXMATRIX WorldViewProj;
 		for(int i = 0; i < numPasses; i++)
 		{
-			ToonEffect->Pass(i);
+			ToonEffect->BeginPass(i);
 
 			for(int j = 0; j < 4; j++)
 			{
