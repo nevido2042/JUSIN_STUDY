@@ -18,6 +18,7 @@ public:
 	void Release() override;
 
 private:
-	CObj* m_pPlayer;
+	CObj*	m_pPlayer;
+	float	m_fRadian;
 };
 

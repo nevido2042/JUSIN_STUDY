@@ -22,7 +22,7 @@ void CPlayer::Update()
 {
 	//m_tInfo.vPos += m_tInfo.vDir;
 
-	if (m_LastMoveTime + 5000 < GetTickCount64())
+	if (m_LastMoveTime + 1000 < GetTickCount64())
 	{
 		m_LastMoveTime = GetTickCount64();
 		m_tInfo.vPos.x = rand() % WINCX;
