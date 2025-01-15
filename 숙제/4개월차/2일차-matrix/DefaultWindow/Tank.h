@@ -16,11 +16,16 @@ public:
 private:
     void Input_Key();
     void Update_WorldMatrix();
+    void Update_WorldMatrix_Gun();
 private:
 
     D3DXVECTOR3 m_tTankBody[4];
     float       m_fSize;
+    float       m_fBodyAngle;
+
+    D3DXVECTOR3 m_tGunEnd;
     float       m_fGunLength;
-    float       m_fAngle;
+    float       m_fTurretAngle;
+    D3DXMATRIX  m_matGunWorld;
 };
 
