@@ -3,6 +3,7 @@
 #include "Define.h"
 #include "CPlayer.h"
 #include "CMonster.h"
+#include "Tank.h"
 
 class CMainGame
 {
@@ -20,7 +21,7 @@ private:
 	HDC			m_hDC;
 
 	CObj*		m_pPlayer;
-	CObj* m_pMonster;
+	CObj*		m_pMonster;
 
 	DWORD		m_dwTime;
 	int			m_iFPS;

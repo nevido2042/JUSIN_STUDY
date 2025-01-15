@@ -6,6 +6,8 @@
 #define	PURE		= 0
 #define PI			3.141592f
 
+#define VK_MAX		256
+
 extern HWND		g_hWnd;
 
 

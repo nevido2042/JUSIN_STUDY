@@ -25,6 +25,12 @@
     <Filter Include="01. Obj\01. Monster">
       <UniqueIdentifier>{cec2acd4-df8a-4bd9-9dd6-a178a6af097c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\02. Tank">
+      <UniqueIdentifier>{c98735b1-066c-4e0e-870c-64116f329db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Designe">
+      <UniqueIdentifier>{70d3cbd5-6b6f-47c1-a524-84c59c4f20c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -57,6 +63,12 @@
     <ClInclude Include="CMonster.h">
       <Filter>01. Obj\01. Monster</Filter>
     </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>01. Obj\02. Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>02. Designe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -76,6 +88,12 @@
     </ClCompile>
     <ClCompile Include="CMonster.cpp">
       <Filter>01. Obj\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>01. Obj\02. Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>02. Designe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
