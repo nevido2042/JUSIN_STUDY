@@ -31,6 +31,9 @@
     <Filter Include="02. Designe">
       <UniqueIdentifier>{70d3cbd5-6b6f-47c1-a524-84c59c4f20c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\03. Square">
+      <UniqueIdentifier>{08dc972b-1e6a-4d21-aca5-334177a3cdb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -69,6 +72,9 @@
     <ClInclude Include="KeyMgr.h">
       <Filter>02. Designe</Filter>
     </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>01. Obj\03. Square</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -94,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="KeyMgr.cpp">
       <Filter>02. Designe</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>01. Obj\03. Square</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,19 +23,19 @@ void CMainGame::Initialize()
 		m_pPlayer->Initialize();
 	}
 
-	/*if (!m_pMonster)
+	if (!m_pMonster)
 	{
-		m_pMonster = new CMonster;
+		m_pMonster = new CSquare;//CMonster;
 		m_pMonster->Initialize();
 	}
 
-	dynamic_cast<CMonster*>(m_pMonster)->Set_Player(m_pPlayer);*/
+	//dynamic_cast<CMonster*>(m_pMonster)->Set_Player(m_pPlayer);
 }
 
 void CMainGame::Update()
 {
 	m_pPlayer->Update();
-	//m_pMonster->Update();
+	m_pMonster->Update();
 
 }
 
@@ -56,7 +56,10 @@ void CMainGame::Render()
 	Rectangle(m_hDC, 0, 0, WINCX, WINCY);
 
 	m_pPlayer->Render(m_hDC);
-	//m_pMonster->Render(m_hDC);
+	m_pMonster->Render(m_hDC);
+
+	MoveToEx(m_hDC, 0, int(WINCY * 0.5f), nullptr);
+	LineTo(m_hDC, int(WINCX), int(WINCY * 0.5f));
 
 }
 
@@ -66,7 +69,7 @@ void CMainGame::Release()
 	CKeyMgr::Destroy_Instance();
 
 	Safe_Delete<CObj*>(m_pPlayer);
-	//Safe_Delete<CObj*>(m_pMonster);
+	Safe_Delete<CObj*>(m_pMonster);
 
 	ReleaseDC(g_hWnd, m_hDC);
 }

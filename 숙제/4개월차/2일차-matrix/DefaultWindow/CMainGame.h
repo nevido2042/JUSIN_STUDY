@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CMonster.h"
 #include "Tank.h"
+#include "Square.h"
 
 class CMainGame
 {

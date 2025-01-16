@@ -20,8 +20,8 @@ void CTank::Initialize()
 	m_tInfo.vPos.x = (float)WINCX * 0.5f;
 	m_tInfo.vPos.y = (float)WINCY * 0.5f;
 
-	//m_tInfo.vLook = { 0, -1, 0 };	//포신 방향
-	//m_tInfo.vDir = { 0, -1, 0 };	//몸체 방향
+	m_tInfo.vLook = { 0, -1, 0 };
+	//m_tInfo.vDir = { 0, -1, 0 };
 
 	m_fSize = 50.f;
 
@@ -94,14 +94,18 @@ void CTank::Input_Key()
 {
 	if (CKeyMgr::Get_Instance()->Key_Pressing('W'))
 	{
-		m_tInfo.vPos.y -= cos(m_fBodyAngle) * m_fSpeed;
-		m_tInfo.vPos.x += sin(m_fBodyAngle) * m_fSpeed;
+		//m_tInfo.vPos.y -= cos(m_fBodyAngle) * m_fSpeed;
+		//m_tInfo.vPos.x += sin(m_fBodyAngle) * m_fSpeed;
+		D3DXVec3TransformNormal(&m_tInfo.vDir, &m_tInfo.vLook, &m_tInfo.matWorld);
+		m_tInfo.vPos += m_tInfo.vDir * m_fSpeed;
 	}
 	
 	if (CKeyMgr::Get_Instance()->Key_Pressing('S'))
 	{
-		m_tInfo.vPos.y += cos(m_fBodyAngle) * m_fSpeed;
-		m_tInfo.vPos.x -= sin(m_fBodyAngle) * m_fSpeed;
+		//m_tInfo.vPos.y += cos(m_fBodyAngle) * m_fSpeed;
+		//m_tInfo.vPos.x -= sin(m_fBodyAngle) * m_fSpeed;
+		D3DXVec3TransformNormal(&m_tInfo.vDir, &m_tInfo.vLook, &m_tInfo.matWorld);
+		m_tInfo.vPos -= m_tInfo.vDir * m_fSpeed;
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Pressing('A'))
