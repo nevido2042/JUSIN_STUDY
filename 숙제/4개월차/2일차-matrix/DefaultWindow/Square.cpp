@@ -35,7 +35,7 @@ void CSquare::Initialize()
 void CSquare::Update()
 {
 	//각도를 증가 시킨다.
-	m_fAngle += D3DXToRadian(1.5f);
+	m_fAngle += D3DXToRadian(2.5f);
 
 	//충돌 체크할 포인트 설정
 	int iCheckPoint = m_iRotPoint - 1;
@@ -48,6 +48,9 @@ void CSquare::Update()
 	if (m_vWorldPoint[iCheckPoint].y > WINCY * 0.5f)
 	{
 		//현재 회전의 중점으로 하는 포인트에 따라, 사각형의 중점을 이동 시킨다.[하드코딩, 규칙을 못 찾음]
+		//처음 시작점(3) 포인트 차이만큼 이동시키는 것 같긴함
+		//m_tInfo.vPos += 2.f * (m_vLocalPoint[3] - m_vLocalPoint[m_iRotPoint]);
+
 		switch (m_iRotPoint)
 		{
 		case 0:
@@ -65,9 +68,6 @@ void CSquare::Update()
 		default:
 			break;
 		}
-
-		//m_tInfo.vPos += 2.f * m_vLocalPoint[m_iRotPoint + 1];
-		//m_tInfo.vPos += {2.f * m_fSize, 0.f, 0.f};
 
 		//체크 하던 포인트로 회전 중점을 변경
 		m_iRotPoint = iCheckPoint;
