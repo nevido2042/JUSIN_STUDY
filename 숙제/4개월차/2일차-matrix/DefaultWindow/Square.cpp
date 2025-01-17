@@ -35,7 +35,7 @@ void CSquare::Initialize()
 void CSquare::Update()
 {
 	//각도를 증가 시킨다.
-	m_fAngle += D3DXToRadian(2.5f);
+	m_fAngle += D3DXToRadian(.5f);
 
 	//충돌 체크할 포인트 설정
 	int iCheckPoint = m_iRotPoint - 1;
