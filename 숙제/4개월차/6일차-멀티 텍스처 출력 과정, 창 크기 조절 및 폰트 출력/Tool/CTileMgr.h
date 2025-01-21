@@ -7,6 +7,8 @@ class CTileMgr
 {
 	DECLARE_SINGLETON(CTileMgr)
 public:
+	void Change_Tile(float _fX, float _fY);
+public:
 	void Initialize();
 	void Render(CDevice* _pDevice);
 	void Release();

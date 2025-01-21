@@ -38,8 +38,9 @@ void CTile::Render(CDevice* _pDevice)
 		LONG(m_tInfo.vPos.x + TILECX * 0.5f), LONG(m_tInfo.vPos.y + TILECY * 0.5f) };
 
 	TCHAR	szBuf[MIN_STR] = L"";
-	int	iNumber = 1000;
-	swprintf_s(szBuf, L"%d", iNumber);
+	float	fX = m_tInfo.vPos.x;
+	float	fY = m_tInfo.vPos.y;
+	swprintf_s(szBuf, L"(%.0f, %.0f)", fX, fY);
 
 	_pDevice->Get_Font()->DrawTextW(_pDevice->Get_Sprite(),
 		szBuf,											// 출력할 문자열

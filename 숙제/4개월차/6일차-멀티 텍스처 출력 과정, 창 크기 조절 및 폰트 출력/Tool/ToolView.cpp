@@ -54,6 +54,17 @@ CToolView::~CToolView()
 
 void CToolView::OnInitialUpdate()
 {
+#ifdef _DEBUG
+	if (::AllocConsole() == TRUE)
+	{
+	    FILE* nfp[3];
+	    freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+	    freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+	    freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+	    std::ios::sync_with_stdio();
+	}
+#endif	// _DEBUG
+
 	CView::OnInitialUpdate();
 
 	// AfxGetMainWnd : 현재 메인 윈도우의 값을 반환하는 전역함수
@@ -129,6 +140,26 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// point.x, point.y
 
+	D3DXVECTOR3 vClickPos;
+	vClickPos.x = (float)point.x;
+	vClickPos.y = (float)point.y;
+	vClickPos.z = 0.f;
+
+	D3DXMATRIX	matWorld, matScale, matTrans;
+
+	D3DXMatrixIdentity(&matWorld);
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, -400.f, -300.f, 0.f);
+
+	matWorld = matScale * matTrans;
+
+	D3DXVec3TransformCoord(&vClickPos, &vClickPos, &matWorld);
+
+	cout << "(" << vClickPos.x << "," << vClickPos.y << ")" << endl;
+	//클릭한 위치와, 직선 비교
+	
+	CTileMgr::Get_Instance()->Change_Tile(vClickPos.x, vClickPos.y);
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -160,12 +191,14 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	CTileMgr::Get_Instance()->Render(m_pDevice);
 
 	m_pDevice->Render_End();
-
-
 }
 
 void CToolView::OnDestroy()
 {
+#ifdef _DEBUG
+	FreeConsole();
+#endif // _DEBUG
+
 	CView::OnDestroy();
 
 	//Safe_Delete(m_pSingle);

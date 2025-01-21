@@ -23,6 +23,11 @@ void CObj::Set_Pos(float _fX, float _fY, float _fZ)
 	m_tInfo.vPos.z = _fZ;
 }
 
+void CObj::Set_TexInfo(const TEXINFO* _pTexInfo)
+{
+	m_pTexInfo = _pTexInfo;
+}
+
 void CObj::Initialize()
 {
 }
