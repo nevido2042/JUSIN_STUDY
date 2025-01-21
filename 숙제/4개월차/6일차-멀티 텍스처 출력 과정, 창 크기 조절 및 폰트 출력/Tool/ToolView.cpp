@@ -149,7 +149,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
-	D3DXMatrixTranslation(&matTrans, -400.f, -300.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, -WINCX * 0.5f, 0.f, 0.f);
 
 	matWorld = matScale * matTrans;
 
@@ -176,7 +176,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
 	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(45.f));
-	D3DXMatrixTranslation(&matTrans, 400.f, 300.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, WINCX * 0.5f, 0.f, 0.f);
 
 	matWorld = matScale * matTrans;
 

@@ -10,6 +10,7 @@ void CTileMgr::Change_Tile(float _fX, float _fY)
 	D3DXVECTOR3 tPointA, tPointB;
 	float fSlope(0.f);
 	float fIntercept(0.f);
+
 #pragma region 가로 좌표 인덱스 계산
 	// 맵의 우측 경계를 확인: 가장 우측 직선보다 밖에 있으면 맵 밖임
 	tPointA = m_vecTileMap[0][TILEX - 1]->Get_Info().vPos;
