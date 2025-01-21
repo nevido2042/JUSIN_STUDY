@@ -15,6 +15,7 @@
 #include "CDevice.h"
 #include "CTextureMgr.h"
 #include "MainFrm.h"
+#include "CTileMgr.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -118,6 +119,10 @@ void CToolView::OnInitialUpdate()
 		return;
 	}
 
+	/////////////////////////////
+
+	CTileMgr::Get_Instance()->Initialize();
+
 }
 
 void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
@@ -146,42 +151,13 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 
 	m_pDevice->Render_Begin();
 
-
 	m_pDevice->Get_Sprite()->SetTransform(&matWorld);
 
 	// float	fCenterX = m_pSingle->Get_Texture()->tImgInfo.Width / 2.f;
 	// float	fCenterY = m_pSingle->Get_Texture()->tImgInfo.Height / 2.f;
 
-	const TEXINFO* pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", 7);
-
-	float	fCenterX = pTexInfo->tImgInfo.Width / 2.f;
-	float	fCenterY = pTexInfo->tImgInfo.Height / 2.f;
-
-	D3DXVECTOR3	vTemp{ fCenterX, fCenterY, 0.f };
-
-	m_pDevice->Get_Sprite()->Draw(pTexInfo->pTexture, //출력할 텍스처 컴객체
-									nullptr,		// 출력할 이미지 영역에 대한 Rect 주소, null인 경우 이미지의 0, 0기준으로 출력
-									&vTemp,		// 출력할 이미지의 중심 좌표 vec3 주소, null인 경우 0, 0 이미지 중심
-									nullptr,		// 위치 좌표에 대한 vec3 주소, null인 경우 스크린 상 0, 0 좌표 출력	
-									D3DCOLOR_ARGB(255, 255, 255, 255)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 섞지 않고 원본 색상 유지
-
-	// 폰트의 출력 위치를 조정 가능
-	// D3DXMatrixTranslation(&matTrans, 200.f, 200.f, 0.f);
-	// m_pDevice->Get_Sprite()->SetTransform(&matTrans);
-
-	TCHAR	szBuf[MIN_STR] = L"";
-
-	int	iNumber = 1000;
-
-	swprintf_s(szBuf, L"%d", iNumber);
-
-	m_pDevice->Get_Font()->DrawTextW(m_pDevice->Get_Sprite(),
-		szBuf,		// 출력할 문자열
-		lstrlen(szBuf),  // 문자열 버퍼의 크기
-		nullptr,	// 출력할 렉트 위치
-		0,			// 정렬 기준(옵션)
-		D3DCOLOR_ARGB(255, 255, 255, 255));
-
+	//타일 출력
+	CTileMgr::Get_Instance()->Render(m_pDevice);
 
 	m_pDevice->Render_End();
 
@@ -193,6 +169,7 @@ void CToolView::OnDestroy()
 	CView::OnDestroy();
 
 	//Safe_Delete(m_pSingle);
+	CTileMgr::Destroy_Instance();
 
 	CTextureMgr::Destroy_Instance();
 	m_pDevice->Destroy_Instance();

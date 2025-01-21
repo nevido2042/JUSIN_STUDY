@@ -46,6 +46,15 @@
     <Filter Include="04. Etc\01. Terrain">
       <UniqueIdentifier>{7218ab5d-d802-495c-a4d6-35cc525b2bc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Manager\02. TileMgr">
+      <UniqueIdentifier>{a24d1137-cb8f-4106-9ec2-cccc34524129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Obj">
+      <UniqueIdentifier>{9e83451a-149c-42cc-9150-3e519ea5512a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Obj\00. Tile">
+      <UniqueIdentifier>{e46a1acf-3624-41cf-a0f2-10ff7a683c4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -90,6 +99,15 @@
     <ClInclude Include="CTerrain.h">
       <Filter>04. Etc\01. Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="CTileMgr.h">
+      <Filter>03. Manager\02. TileMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CObj.h">
+      <Filter>05. Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>05. Obj\00. Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -124,6 +142,15 @@
     </ClCompile>
     <ClCompile Include="CTerrain.cpp">
       <Filter>04. Etc\01. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMgr.cpp">
+      <Filter>03. Manager\02. TileMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj.cpp">
+      <Filter>05. Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>05. Obj\00. Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
