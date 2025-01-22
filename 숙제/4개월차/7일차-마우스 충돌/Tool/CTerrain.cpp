@@ -35,10 +35,13 @@ HRESULT CTerrain::Initialize()
 		{
 			TILE* pTile = new TILE;
 
-			float	fY = (TILECY / 2.f) * i;
-			float	fX = (TILECX * j) + (i % 2) * (TILECX / 2.f);
+			pTile->vPos = 
+			{
+				float(j * TILECX * 0.5f) - float(i * TILECX * 0.5f), 
+				float(j * TILECY * 0.5f) + float(i * TILECY * 0.5f),
+				0.f 
+			};
 
-			pTile->vPos = { fX, fY, 0.f };
 			pTile->vSize = { (float)TILECX, (float)TILECY };
 			pTile->byOption = 0;
 			pTile->byDrawID = 3;
