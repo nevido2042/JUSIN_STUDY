@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "Game.h"
+#include "CMainGame.h"
 
 #define MAX_LOADSTRING 100
 
@@ -43,13 +44,49 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+    CMainGame       MainGame;
+    MainGame.Initialize();
+
+    ULONG64       dwTime = GetTickCount64();
+
     // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (true)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        // PeekMessage : 시스템 메세지 큐로부터 메세지를 읽어오면 TRUE, 읽어올 메세지가 없을 경우 FALSE
+
+        // PM_REMOVE       : 메세지를 읽어옴과 동시에 메세지 제거
+        // PM_NOREMOVE     : 메세지 큐에 메세지가 있는지 파악, 메세지가 있을 경우, GetMessage를 호출하여 true처리
+
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (WM_QUIT == msg.message)
+                break;
+
+            // 메뉴 기능의 단축키가 제대로 작동하도록 검사하는 함수
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                // 키보드 메세지를 가공하여 프로그램에서 쉽게 사용할 수 있도록 하는 함수
+                TranslateMessage(&msg);
+
+                // 시스템 메세지 큐에서 꺼낸 메세지를 프로그램의 메세지 처리기에게 전달하는 함수
+                DispatchMessage(&msg);
+            }
+        }
+
+        else
+        {
+            if (dwTime + 10 < GetTickCount64())
+            {
+                MainGame.Update();
+                MainGame.Late_Update();
+                MainGame.Render();
+
+                dwTime = GetTickCount64();
+            }
+
+            // MainGame.Update();
+            // MainGame.Late_Update();
+            // MainGame.Render();
         }
     }
 

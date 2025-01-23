@@ -241,24 +241,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>../Header;$(IncludePath)</IncludePath>
+    <IncludePath>../Tool;../Tool;../Header;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(DXSDK_DIR)Include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(DXSDK_DIR)lib/x64;$(DXSDK_DIR)lib/x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib/x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>../Header;$(IncludePath)</IncludePath>
+    <IncludePath>../Tool;../Header;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(DXSDK_DIR)Include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(DXSDK_DIR)lib/x64;$(DXSDK_DIR)lib/x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib/x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../Header;$(IncludePath)</IncludePath>
+    <IncludePath>../Tool;../Tool;../Header;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(DXSDK_DIR)Include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(DXSDK_DIR)lib/x64;$(DXSDK_DIR)lib/x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib/x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>../Header;$(IncludePath)</IncludePath>
+    <IncludePath>../Tool;../Header;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(DXSDK_DIR)Include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(DXSDK_DIR)lib/x64;$(DXSDK_DIR)lib/x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib/x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -414,6 +414,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -449,6 +451,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -484,6 +487,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -519,6 +524,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -530,6 +536,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Tool\CDevice.h" />
+    <ClInclude Include="CMainGame.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="pch.h" />
@@ -538,6 +545,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Tool\CDevice.cpp" />
+    <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
