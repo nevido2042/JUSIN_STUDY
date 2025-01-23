@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CObj.h"
 
-CObj::CObj() : m_fSpeed(0.f)
+CObj::CObj()
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 }

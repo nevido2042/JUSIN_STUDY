@@ -19,9 +19,6 @@
     <Filter Include="01. Obj">
       <UniqueIdentifier>{d78caa9e-1555-4ccc-b3d3-cca5622a339c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\00.Player">
-      <UniqueIdentifier>{eaeac929-0c65-4daf-adb5-991eb20341a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Manager">
       <UniqueIdentifier>{1aca77db-ca2f-4cf4-b6fb-3affe8409457}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,15 @@
     </Filter>
     <Filter Include="02. Manager\03. SceneMgr\00. Scene\00. MenuScene">
       <UniqueIdentifier>{c9966b11-4d2a-41a9-8880-03691b056f6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\00.GameObject">
+      <UniqueIdentifier>{e1ab7973-c6a5-4593-81e8-d2048363a0b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01.UI">
+      <UniqueIdentifier>{0c892c8c-fbef-47fd-ac0d-a369a1a671cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\00.GameObject\00.Player">
+      <UniqueIdentifier>{eaeac929-0c65-4daf-adb5-991eb20341a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +85,7 @@
       <Filter>02. Manager</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
-      <Filter>01. Obj\00.Player</Filter>
+      <Filter>01. Obj\00.GameObject\00.Player</Filter>
     </ClInclude>
     <ClInclude Include="CTexture.h">
       <Filter>헤더 파일</Filter>
@@ -105,6 +111,12 @@
     <ClInclude Include="CMyMenu.h">
       <Filter>02. Manager\03. SceneMgr\00. Scene\00. MenuScene</Filter>
     </ClInclude>
+    <ClInclude Include="CGameObject.h">
+      <Filter>01. Obj\00.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>01. Obj\01.UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -123,7 +135,7 @@
       <Filter>01. Obj</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
-      <Filter>01. Obj\00.Player</Filter>
+      <Filter>01. Obj\00.GameObject\00.Player</Filter>
     </ClCompile>
     <ClCompile Include="CTexture.cpp">
       <Filter>소스 파일</Filter>
@@ -148,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="CMyMenu.cpp">
       <Filter>02. Manager\03. SceneMgr\00. Scene\00. MenuScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameObject.cpp">
+      <Filter>01. Obj\00.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>01. Obj\01.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

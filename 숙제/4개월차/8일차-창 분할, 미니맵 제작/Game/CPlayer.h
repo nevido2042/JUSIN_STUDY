@@ -1,8 +1,12 @@
 #pragma once
-#include "CObj.h"
+#include "CGameObject.h"
 class CPlayer :
-    public CObj
+    public CGameObject
 {
+public:
+    CPlayer();
+    virtual ~CPlayer();
+public:
     void Initialize() override;
     int Update() override;
     void Late_Update() override;

@@ -3,6 +3,15 @@
 #include "CDevice.h"
 #include "CTextureMgr.h"
 
+CPlayer::CPlayer()
+{
+}
+
+CPlayer::~CPlayer()
+{
+	Release();
+}
+
 void CPlayer::Initialize()
 {
 }

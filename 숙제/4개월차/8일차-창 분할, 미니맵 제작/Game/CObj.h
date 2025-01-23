@@ -24,7 +24,6 @@ protected:
 
 protected:
 	INFO		m_tInfo;
-	float		m_fSpeed;
 
 };
 
