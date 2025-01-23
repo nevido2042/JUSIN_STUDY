@@ -13,5 +13,7 @@ public:
 	void Late_Update();
 	void Render();
 	void Release();
+private:
+	void Load_Texture();
 };
 

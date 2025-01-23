@@ -21,13 +21,7 @@ void CMainGame::Initialize()
 		return;
 	}
 
-	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(
-		L"../Texture/Stage/Player/Stand/AKIHA_AKI00_000.png",
-		TEX_SINGLE, L"Player")))
-	{
-		//AfxMessageBox(L"Terrain Texture Insert Failed");
-		return;
-	}
+	Load_Texture();
 
 	CSceneMgr::Get_Instance()->Set_Scene(SC_MENU);
 
@@ -73,4 +67,23 @@ void CMainGame::Release()
 #endif // _DEBUG
 
 	CSceneMgr::Destroy_Instance();
+}
+
+void CMainGame::Load_Texture()
+{
+	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(
+		L"../Texture/Stage/Player/Stand/AKIHA_AKI00_000.png",
+		TEX_SINGLE, L"Player")))
+	{
+		//AfxMessageBox(L"Terrain Texture Insert Failed");
+		return;
+	}
+
+	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(
+		L"../Texture/Resources/Logo/banners.png",
+		TEX_SINGLE, L"GameTitle")))
+	{
+		//AfxMessageBox(L"Terrain Texture Insert Failed");
+		return;
+	}
 }

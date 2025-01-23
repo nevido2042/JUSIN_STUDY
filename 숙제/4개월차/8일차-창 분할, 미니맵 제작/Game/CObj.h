@@ -3,7 +3,7 @@
 #include "Struct.h"
 #include "Define.h"
 
-class CObj
+class CObj abstract
 {
 public:
 	CObj();
@@ -18,12 +18,13 @@ public:
 	virtual int			Update();
 	virtual void		Late_Update()PURE;
 	virtual void		Render()PURE;
-	virtual void		Release()PURE;
+	virtual void		Release();
 protected:
 	virtual void		UpdateWorldMatrix();
 
 protected:
-	INFO		m_tInfo;
+	INFO				m_tInfo;
+	const TEXINFO*		m_tTexInfo;
 
 };
 

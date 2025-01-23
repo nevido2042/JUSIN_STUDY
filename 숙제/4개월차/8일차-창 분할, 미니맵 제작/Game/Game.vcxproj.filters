@@ -55,6 +55,9 @@
     <Filter Include="01. Obj\00.GameObject\00.Player">
       <UniqueIdentifier>{eaeac929-0c65-4daf-adb5-991eb20341a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\01.UI\GameTitle">
+      <UniqueIdentifier>{28aa250a-54b8-4d94-af09-6b5b4c258a5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -117,6 +120,9 @@
     <ClInclude Include="CUI.h">
       <Filter>01. Obj\01.UI</Filter>
     </ClInclude>
+    <ClInclude Include="CGameTitle.h">
+      <Filter>01. Obj\01.UI\GameTitle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -166,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="CUI.cpp">
       <Filter>01. Obj\01.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameTitle.cpp">
+      <Filter>01. Obj\01.UI\GameTitle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

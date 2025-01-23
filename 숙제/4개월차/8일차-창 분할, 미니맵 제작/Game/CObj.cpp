@@ -2,12 +2,14 @@
 #include "CObj.h"
 
 CObj::CObj()
+	:m_tTexInfo(nullptr)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 }
 
 CObj::~CObj()
 {
+	Release();
 }
 
 int CObj::Update()
@@ -20,6 +22,10 @@ int CObj::Update()
 	UpdateWorldMatrix();
 
 	return OBJ_NOEVENT;
+}
+
+void CObj::Release()
+{
 }
 
 void CObj::UpdateWorldMatrix()

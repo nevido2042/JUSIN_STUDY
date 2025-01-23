@@ -538,6 +538,7 @@
     <ClInclude Include="..\Tool\CDevice.h" />
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CGameTitle.h" />
     <ClInclude Include="CMainGame.h" />
     <ClInclude Include="CMultiTexture.h" />
     <ClInclude Include="CMyMenu.h" />
@@ -559,6 +560,7 @@
   <ItemGroup>
     <ClCompile Include="..\Tool\CDevice.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CGameTitle.cpp" />
     <ClCompile Include="CMainGame.cpp" />
     <ClCompile Include="CMultiTexture.cpp" />
     <ClCompile Include="CMyMenu.cpp" />
