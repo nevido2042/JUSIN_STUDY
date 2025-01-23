@@ -536,7 +536,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Tool\CDevice.h" />
+    <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="CMainGame.h" />
+    <ClInclude Include="CMultiTexture.h" />
+    <ClInclude Include="CObj.h" />
+    <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CSingleTexture.h" />
+    <ClInclude Include="CTexture.h" />
+    <ClInclude Include="CTextureMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="pch.h" />
@@ -546,6 +553,12 @@
   <ItemGroup>
     <ClCompile Include="..\Tool\CDevice.cpp" />
     <ClCompile Include="CMainGame.cpp" />
+    <ClCompile Include="CMultiTexture.cpp" />
+    <ClCompile Include="CObj.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CSingleTexture.cpp" />
+    <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTextureMgr.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

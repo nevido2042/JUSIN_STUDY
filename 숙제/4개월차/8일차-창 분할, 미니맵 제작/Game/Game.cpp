@@ -5,6 +5,7 @@
 #include "framework.h"
 #include "Game.h"
 #include "CMainGame.h"
+#include "Define.h"
 
 #define MAX_LOADSTRING 100
 
@@ -135,8 +136,21 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   RECT rc{ 0, 0, WINCX, WINCY };
+
+   // rc = rc + 기본 창 스타일을 고려한 크기 + 메뉴 바 크기 고려 여부
+   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+   HWND hWnd = CreateWindowW(szWindowClass,         // 정의한 윈도우 클래스의 전달할 클래스 이름
+       szTitle,               // 창 타이틀 문자열
+       WS_OVERLAPPEDWINDOW,   // 만들고자 하는 윈도우의 형태(스타일)지정, 기본 값으로 흔히 접하는 모양
+       CW_USEDEFAULT, 0,      // 창을 생성하는 X,Y 좌표
+       rc.right - rc.left,
+       rc.bottom - rc.top,    // 생성할 창의 가로, 세로 사이즈
+       nullptr,               // 부모 윈도우의 핸들을 지정, 없으면 null
+       nullptr,               // 윈도우에서 사용할 메뉴의 핸들
+       hInstance,             // 윈도우를 만드는 주체, 프로그램의 핸들 지정
+       nullptr);              // 운영체제가 특수한 목적으로 사용
 
    if (!hWnd)
    {

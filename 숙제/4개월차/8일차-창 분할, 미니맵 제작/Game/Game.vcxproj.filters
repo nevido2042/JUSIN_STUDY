@@ -22,6 +22,21 @@
     <Filter Include="00. MainGame">
       <UniqueIdentifier>{9e9b95f0-1aa6-402f-89a8-09c559767e51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj">
+      <UniqueIdentifier>{d78caa9e-1555-4ccc-b3d3-cca5622a339c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\00.Player">
+      <UniqueIdentifier>{eaeac929-0c65-4daf-adb5-991eb20341a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\01. TextureMgr">
+      <UniqueIdentifier>{4fb46b27-f474-45a7-837e-a268c5897ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\01. TextureMgr\00. SingleTexture">
+      <UniqueIdentifier>{3fab970d-cac8-452b-87c8-efeaf75c1caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Manager\01. TextureMgr\01. MultiTexture">
+      <UniqueIdentifier>{c87ec628-e28a-442b-ac16-56a87cd280a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -45,6 +60,27 @@
     <ClInclude Include="CMainGame.h">
       <Filter>00. MainGame</Filter>
     </ClInclude>
+    <ClInclude Include="CObj.h">
+      <Filter>01. Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>03. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>01. Obj\00.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureMgr.h">
+      <Filter>03. Manager\01. TextureMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CMultiTexture.h">
+      <Filter>03. Manager\01. TextureMgr\01. MultiTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="CSingleTexture.h">
+      <Filter>03. Manager\01. TextureMgr\00. SingleTexture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -58,6 +94,24 @@
     </ClCompile>
     <ClCompile Include="CMainGame.cpp">
       <Filter>00. MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj.cpp">
+      <Filter>01. Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>01. Obj\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureMgr.cpp">
+      <Filter>03. Manager\01. TextureMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMultiTexture.cpp">
+      <Filter>03. Manager\01. TextureMgr\01. MultiTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="CSingleTexture.cpp">
+      <Filter>03. Manager\01. TextureMgr\00. SingleTexture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

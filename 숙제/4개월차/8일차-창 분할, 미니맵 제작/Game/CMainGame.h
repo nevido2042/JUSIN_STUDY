@@ -1,4 +1,7 @@
 #pragma once
+#include "CPlayer.h"
+#include "CTextureMgr.h"
+
 class CMainGame
 {
 public:
@@ -10,5 +13,7 @@ public:
 	void Late_Update();
 	void Render();
 	void Release();
+private:
+	CObj*	m_pPlayer;
 };
 
