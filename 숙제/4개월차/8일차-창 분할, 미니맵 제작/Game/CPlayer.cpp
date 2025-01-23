@@ -7,21 +7,16 @@ void CPlayer::Initialize()
 {
 }
 
-void CPlayer::Update()
+int CPlayer::Update()
 {
 	m_tInfo.vPos.x += 1.f;
 	m_tInfo.vPos.y += 1.f;
 
-	D3DXMATRIX	matWorld, matScale, matTrans;
+	return CObj::Update();
+}
 
-	D3DXMatrixIdentity(&matWorld);
-	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
-	D3DXMatrixTranslation(&matTrans,
-		m_tInfo.vPos.x,
-		m_tInfo.vPos.y,
-		m_tInfo.vPos.z);
-
-	m_tInfo.matWorld = matScale * matTrans;
+void CPlayer::Late_Update()
+{
 }
 
 void CPlayer::Render()
@@ -42,7 +37,6 @@ void CPlayer::Render()
 			D3DCOLOR_ARGB(255, 255, 255, 255)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 섞지 않고 원본 색상 유지
 
 		swprintf_s(szBuf, L"Player");
-
 		RECT tRect{ (long)m_tInfo.vPos.x, (long)m_tInfo.vPos.y, (long)m_tInfo.vPos.x + 100, (long)m_tInfo.vPos.x + 100 };
 		CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
 			szBuf,		// 출력할 문자열
@@ -55,3 +49,5 @@ void CPlayer::Render()
 void CPlayer::Release()
 {
 }
+
+

@@ -13,7 +13,5 @@ public:
 	void Late_Update();
 	void Render();
 	void Release();
-private:
-	CObj*	m_pPlayer;
 };
 

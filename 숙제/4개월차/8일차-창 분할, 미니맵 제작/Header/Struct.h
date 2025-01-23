@@ -9,6 +9,8 @@ typedef struct tagInfo
 
 	D3DXMATRIX		matWorld;
 
+	bool			bDead;
+
 }INFO;
 
 typedef struct tagTexture
