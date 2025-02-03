@@ -43,6 +43,7 @@ HRESULT CTextureMgr::Insert_Texture(const TCHAR* pFilePath, TEXTYPE eTexture, co
 			return false;
 		});
 
+	//없던 오브젝트면 새로 만든다.
 	if (iter == m_mapTex.end())
 	{
 		CTexture* pTexture = nullptr;
@@ -66,6 +67,11 @@ HRESULT CTextureMgr::Insert_Texture(const TCHAR* pFilePath, TEXTYPE eTexture, co
 
 		m_mapTex.insert({ pObjKey, pTexture });
 
+	}
+	//있던 오브젝트인데 멀티 텍스쳐다
+	else if (CMultiTexture* pMultiTex = dynamic_cast<CMultiTexture*>(iter->second))
+	{
+		pMultiTex->Insert_Texture(pFilePath, pStateKey, iCnt);
 	}
 
 	return S_OK;

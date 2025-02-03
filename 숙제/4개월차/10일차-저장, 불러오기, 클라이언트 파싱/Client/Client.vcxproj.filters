@@ -55,6 +55,9 @@
     <Filter Include="01. Mgr\TImeMgr">
       <UniqueIdentifier>{f622cbb8-14fb-405c-a3dc-23cc610d19b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Mgr\ObjMgr\Obj\Player">
+      <UniqueIdentifier>{211351f4-cec3-4a68-81f1-6c641f53b70f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -111,6 +114,9 @@
     <ClInclude Include="TimeMgr.h">
       <Filter>01. Mgr\TImeMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>01. Mgr\ObjMgr\Obj\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -157,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="TimeMgr.cpp">
       <Filter>01. Mgr\TImeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>01. Mgr\ObjMgr\Obj\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

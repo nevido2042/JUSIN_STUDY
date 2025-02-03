@@ -144,6 +144,7 @@
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CMultiTexture.h" />
+    <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CSingleTexture.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTextureMgr.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CMultiTexture.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CSingleTexture.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTextureMgr.cpp" />
