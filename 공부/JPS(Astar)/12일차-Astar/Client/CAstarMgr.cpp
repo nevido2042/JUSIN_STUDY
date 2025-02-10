@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CAstarMgr.h"
 #include "ObjMgr.h"
+#include "CDevice.h"
 
 IMPLEMENT_SINGLETON(CAstarMgr)
 
@@ -43,6 +44,57 @@ void CAstarMgr::Start_Astar(const D3DXVECTOR3& vStart, const D3DXVECTOR3& vGoal)
 		Make_BestList(m_iStartIdx, iGoalIdx);
 	}
 
+}
+
+void CAstarMgr::Render()
+{
+	if (m_BestList.empty())
+	{
+		return;
+	}
+
+	// 디바이스 가져오기
+	LPDIRECT3DDEVICE9 pDevice = CDevice::Get_Instance()->Get_Device();
+	if (!pDevice)
+		return;
+
+	// ID3DXLine 생성
+	CDevice::Get_Instance()->CreateLine();
+	ID3DXLine* pLine = CDevice::Get_Instance()->Get_Line();
+	if (!pLine)
+		return;
+
+	pLine->SetWidth(2.0f);               // 선의 굵기
+
+	//이전 타일
+	TILE* pPrevTile(nullptr);
+	//인덱스 01, 12, 23, 34 ... 타일을 이어라
+	for (TILE* pTile : m_BestList)
+	{
+		//처음 시작 타일일 경우 이전타일이 없음
+		if (pPrevTile == nullptr)
+		{
+			pPrevTile = pTile;
+			continue;
+		}
+
+		// 화면 좌표로 선 두 점 정의
+		D3DXVECTOR2 LinePoints[] = {
+			D3DXVECTOR2(pPrevTile->vPos.x + CObj::Get_Scroll().x, pPrevTile->vPos.y + CObj::Get_Scroll().y),  // 시작점
+			D3DXVECTOR2(pTile->vPos.x + CObj::Get_Scroll().x ,pTile->vPos.y + CObj::Get_Scroll().y)			// 끝점
+		};
+
+		// 선 그리기 준비
+		pLine->Begin();
+
+		// 선 그리기 (흰색)
+		pLine->Draw(LinePoints, 2, D3DCOLOR_XRGB(255, 0, 0));
+
+		// 선 그리기 종료
+		pLine->End();
+
+		pPrevTile = pTile;
+	}
 }
 
 

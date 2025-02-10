@@ -21,6 +21,8 @@ public:
 		D3DXVec3Normalize(&m_tInfo.vDir, &m_tInfo.vDir);
 	}
 
+	static D3DXVECTOR3		Get_Scroll() { return m_vScroll; }
+
 public:
 	virtual HRESULT		Initialize(void)PURE;
 	virtual int			Update(void)PURE;

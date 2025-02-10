@@ -62,7 +62,6 @@ void CMainGame::Late_Update(void)
 
 void CMainGame::Render(void)
 {
-
 	m_pGraphicDev->Render_Begin();
 
 	CSceneMgr::Get_Instance()->Render_SceneMgr();

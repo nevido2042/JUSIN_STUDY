@@ -16,6 +16,7 @@ public:
 
 public:
 	void		Start_Astar(const D3DXVECTOR3& vStart, const D3DXVECTOR3& vGoal);
+	void		Render();
 	void		Release();
 
 private:

@@ -4,6 +4,7 @@
 #include "ObjMgr.h"
 #include "MyTerrain.h"
 #include "CPlayer.h"
+#include "CAstarMgr.h"
 
 CStage::CStage()
 {
@@ -63,8 +64,10 @@ void CStage::Late_Update_Scene()
 void CStage::Render_Scene()
 {
 	CObjMgr::Get_Instance()->Render();
+	//CAstarMgr::Get_Instance()->Render();
 }
 
 void CStage::Release_Scene()
 {
+	CAstarMgr::Destroy_Instance();
 }

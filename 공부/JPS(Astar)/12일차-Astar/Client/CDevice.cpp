@@ -1,16 +1,23 @@
 #include "pch.h"
 #include "CDevice.h"
+#include "CAstarMgr.h"
 
 IMPLEMENT_SINGLETON(CDevice)
 
 CDevice::CDevice() 
-	: m_pDevice(nullptr), m_pSDK(nullptr), m_pSprite(nullptr), m_pFont(nullptr)
+	: m_pDevice(nullptr), m_pSDK(nullptr), m_pSprite(nullptr), m_pFont(nullptr), m_pLine(nullptr)
 {
 }
 
 CDevice::~CDevice()
 {
 	Release();
+}
+
+void CDevice::CreateLine()
+{
+	if (m_pDevice && !m_pLine)
+		D3DXCreateLine(m_pDevice, &m_pLine);
 }
 
 HRESULT CDevice::Init_Device()
@@ -110,6 +117,9 @@ void CDevice::Render_Begin()
 void CDevice::Render_End(HWND hWnd)
 {
 	m_pSprite->End();
+	
+	//이걸 여기다 호출하는건 좀 아닌 것 같다
+	CAstarMgr::Get_Instance()->Render();
 
 	m_pDevice->EndScene();
 
@@ -118,6 +128,31 @@ void CDevice::Render_End(HWND hWnd)
 	// 1, 2, 4 번 인자 사용 조건 : D3DSWAPEFFECY_COPY로 작성했을 사용 가능
 	// 3인자 : 출력 대상 윈도우 핸들, NULL인 경우에는 Set_Parameters에서 지정한 핸들 값으로 지정
 }
+
+void CDevice::Render_Line()
+{
+	if (!m_pLine) return; // 라인 객체 확인
+
+	// 라인 렌더링을 위해 렌더 상태를 초기화
+	m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+
+	// 라인 그리기
+	D3DXVECTOR2 LinePoints[] = {
+		D3DXVECTOR2(100.0f, 100.0f), // 시작점
+		D3DXVECTOR2(300.0f, 300.0f)  // 끝점
+	};
+
+	m_pLine->SetWidth(2.0f); // 라인 두께
+	m_pLine->Begin();
+	m_pLine->Draw(LinePoints, 2, D3DCOLOR_XRGB(255, 255, 255)); // 흰색 선
+	m_pLine->End();
+
+	// 렌더 상태 복원
+	m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+}
+
 
 void CDevice::Release()
 {
