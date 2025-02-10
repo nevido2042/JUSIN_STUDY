@@ -230,7 +230,44 @@ void CMyTerrain::Ready_Adjacency()
 				{
 					m_vecAdj[iIndex].push_back(m_vecTile[iIndex + TILEX]);
 				}
-			}	
+			}
+
+			////좌로 이동
+			if ((0 != iIndex % 20 ))
+			{
+				// 1감소
+				if ((!m_vecTile[iIndex - 1]->byOption))
+				{
+					m_vecAdj[iIndex].push_back(m_vecTile[iIndex - 1]);
+				}
+			}
+			////우로 이동
+			if ((19 != iIndex % 20))
+			{
+				// 1증가
+				if ((!m_vecTile[iIndex + 1]->byOption))
+				{
+					m_vecAdj[iIndex].push_back(m_vecTile[iIndex + 1]);
+				}
+			}
+			////상 이동
+			if (iIndex > 39)
+			{
+				// 40 감소
+				if ((!m_vecTile[iIndex - 40]->byOption))
+				{
+					m_vecAdj[iIndex].push_back(m_vecTile[iIndex - 40]);
+				}
+			}
+			////하 이동
+			if (iIndex < 560)
+			{
+				// 40 증가
+				if ((!m_vecTile[iIndex + 40]->byOption))
+				{
+					m_vecAdj[iIndex].push_back(m_vecTile[iIndex + 40]);
+				}
+			}
 		}
 	}
 }
