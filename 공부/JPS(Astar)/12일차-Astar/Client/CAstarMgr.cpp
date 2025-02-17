@@ -233,8 +233,6 @@ void CAstarMgr::Find_ShortestPath_Bresenham()
 
 bool CAstarMgr::Check_Obstacle_Bresenham(int _iStartIndex, int _iEndIndex)
 {
-	
-
 	int x0 = static_cast<int>(_iStartIndex % TILEX);
 	int y0 = static_cast<int>(_iStartIndex / TILEX);
 	int x1 = static_cast<int>(_iEndIndex % TILEX);
