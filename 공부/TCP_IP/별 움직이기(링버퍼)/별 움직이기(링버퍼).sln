@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "별 움직이기(링버퍼)", "별 움직이기(링버퍼)\별 움직이기(링버퍼).vcxproj", "{4D894C91-2469-49A0-9590-85B1154B7AB9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{38FE3365-77D2-4D82-B351-E3246C7B013D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RingBuffer", "RingBuffer", "{E4B1CFBA-BA0E-42F0-92AA-EFE1B5210F33}"
+	ProjectSection(SolutionItems) = preProject
+		RingBuffer\CRingBuffer.cpp = RingBuffer\CRingBuffer.cpp
+		RingBuffer\CRingBuffer.h = RingBuffer\CRingBuffer.h
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Debug|x64.ActiveCfg = Debug|x64
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Debug|x64.Build.0 = Debug|x64
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Debug|x86.ActiveCfg = Debug|Win32
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Debug|x86.Build.0 = Debug|Win32
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Release|x64.ActiveCfg = Release|x64
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Release|x64.Build.0 = Release|x64
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Release|x86.ActiveCfg = Release|Win32
+		{4D894C91-2469-49A0-9590-85B1154B7AB9}.Release|x86.Build.0 = Release|Win32
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Debug|x64.ActiveCfg = Debug|x64
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Debug|x64.Build.0 = Debug|x64
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Debug|x86.ActiveCfg = Debug|Win32
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Debug|x86.Build.0 = Debug|Win32
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Release|x64.ActiveCfg = Release|x64
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Release|x64.Build.0 = Release|x64
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Release|x86.ActiveCfg = Release|Win32
+		{38FE3365-77D2-4D82-B351-E3246C7B013D}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
