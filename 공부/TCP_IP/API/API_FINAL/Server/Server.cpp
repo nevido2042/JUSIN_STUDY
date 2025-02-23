@@ -25,8 +25,8 @@ fd_set readSet;
   
 void Network();
 void AcceptProc();
-void SendUnicast(SESSION* playerSession, MSG_BASE* msg, int* msgSize);
-void SendBroadcast(SESSION* playerSession, MSG_BASE* msg, int* msgSize);
+void SendUnicast(const SESSION* playerSession, MSG_BASE* msg, int* msgSize);
+void SendBroadcast(const SESSION* playerSession, MSG_BASE* msg, int* msgSize);
 void ReadProc(SESSION* playerSession);
 
 int main() 

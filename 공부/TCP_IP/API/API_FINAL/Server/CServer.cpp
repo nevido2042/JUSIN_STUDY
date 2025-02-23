@@ -1,3 +1,5 @@
+#include <locale>
+#include <iostream>
 #include "CServer.h"
 
 CServer::CServer()
@@ -14,7 +16,6 @@ CServer::~CServer()
 
 bool CServer::Initialize()
 {
-    cout << "서버" << endl;
     setlocale(LC_ALL, "KOREAN");
 
     // 윈속 초기화
@@ -58,6 +59,7 @@ bool CServer::Initialize()
         return false;
     }
 
+    cout << "서버 실행 성공" << endl;
     return true;
 }
 
@@ -122,20 +124,20 @@ void CServer::AcceptProc()
     while (true)
     {
         SOCKADDR_IN clntAdr;
-        int adrSize = sizeof(clntAdr);
-        SOCKET clntSock = accept(m_ServSock, (SOCKADDR*)&clntAdr, &adrSize);
+        int iAdrSize = sizeof(clntAdr);
+        SOCKET clntSock = accept(m_ServSock, (SOCKADDR*)&clntAdr, &iAdrSize);
 
         if (clntSock == INVALID_SOCKET)
         {
-            int errCode = WSAGetLastError();
-            if (errCode == WSAEWOULDBLOCK)
+            int iErrCode = WSAGetLastError();
+            if (iErrCode == WSAEWOULDBLOCK)
                 break;
 
-            wprintf_s(L"accept() error: %d\n", errCode);
+            wprintf_s(L"accept() error: %d\n", iErrCode);
             return;
         }
 
-        cout << "클라이언트 접속" << endl;
+        cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
         m_arrSession[m_iSessionCnt] = { clntAdr, clntSock, m_iID, rand() % 800, rand() % 600 };
 
@@ -144,54 +146,54 @@ void CServer::AcceptProc()
         Send_Unicast(&m_arrSession[m_iSessionCnt], (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
 
         // 기존 클라이언트 정보 전송
-        MSG_CREATE_STAR msgCreateStar = { CREATE_STAR, m_iID };
+        MSG_CREATE_STAR tMSG = { CREATE_STAR, m_iID };
         for (int i = 0; i < m_iSessionCnt + 1; i++)
         {
-            msgCreateStar.id = m_arrSession[i].id;
-            msgCreateStar.x = m_arrSession[i].x;
-            msgCreateStar.y = m_arrSession[i].y;
-            Send_Unicast(&m_arrSession[m_iSessionCnt], (MSG_BASE*)&msgCreateStar, sizeof(msgCreateStar));
+            tMSG.id = m_arrSession[i].id;
+            tMSG.x = m_arrSession[i].x;
+            tMSG.y = m_arrSession[i].y;
+            Send_Unicast(&m_arrSession[m_iSessionCnt], (MSG_BASE*)&tMSG, sizeof(tMSG));
         }
 
-        Send_Broadcast(NULL, (MSG_BASE*)&msgCreateStar, sizeof(msgCreateStar));
+        Send_Broadcast(NULL, (MSG_BASE*)&tMSG, sizeof(tMSG));
 
         m_iSessionCnt++;
         m_iID++;
     }
 }
 
-void CServer::Send_Unicast(SESSION* pSession, MSG_BASE* pMSG, int iSize)
+void CServer::Send_Unicast(const SESSION* pSession, const MSG_BASE* pMSG, const int iSize)
 {
-    int retSend = send(pSession->clntSock, (char*)pMSG, iSize, 0);
-    if (retSend == SOCKET_ERROR)
+    int iResult = send(pSession->clntSock, (char*)pMSG, iSize, 0);
+    if (iResult == SOCKET_ERROR)
     {
         wprintf_s(L"send() error:%d\n", WSAGetLastError());
     }
 }
 
-void CServer::Send_Broadcast(SESSION* pSession, MSG_BASE* pMSG, int iSize)
+void CServer::Send_Broadcast(const SESSION* pSession, const MSG_BASE* pMSG, const int iSize)
 {
     for (int i = 0; i < m_iSessionCnt; i++)
     {
         if (pSession == &m_arrSession[i]) continue;
-        int retSend = send(m_arrSession[i].clntSock, (char*)pMSG, iSize, 0);
-        if (retSend == SOCKET_ERROR)
+        int iResult = send(m_arrSession[i].clntSock, (char*)pMSG, iSize, 0);
+        if (iResult == SOCKET_ERROR)
         {
             wprintf_s(L"send() error:%d\n", WSAGetLastError());
         }
     }
 }
 
-void CServer::Read_Proc(SESSION* pSession)
+void CServer::Read_Proc(const SESSION* pSession)
 {
     char szMSG[16];
 
-    int retRecv = recv(pSession->clntSock, szMSG, sizeof(szMSG), 0);
-    int errCode = WSAGetLastError();
+    int iResult = recv(pSession->clntSock, szMSG, sizeof(szMSG), 0);
+    int iErrCode = WSAGetLastError();
 
-    if (retRecv == 0 || (retRecv == SOCKET_ERROR && errCode != WSAEWOULDBLOCK))
+    if (iResult == 0 || (iResult == SOCKET_ERROR && iErrCode != WSAEWOULDBLOCK))
     {
-        wprintf_s(L"recv() error: %d\n", errCode);
+        wprintf_s(L"recv() error: %d\n", iErrCode);
         closesocket(pSession->clntSock);
 
         for (int i = 0; i < m_iSessionCnt; i++)
@@ -208,9 +210,9 @@ void CServer::Read_Proc(SESSION* pSession)
         return;
     }
 
-    if (retRecv > 0)
+    if (iResult > 0)
     {
-        int type;
-        memcpy(&type, szMSG, sizeof(int));
+        int iType;
+        memcpy(&iType, szMSG, sizeof(int));
     }
 }

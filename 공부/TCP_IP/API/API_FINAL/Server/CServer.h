@@ -1,8 +1,6 @@
 #pragma once
-#include <iostream>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
-#include <locale>
 #include <array>
 #include "MSG.h"
 
@@ -32,14 +30,14 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(SESSION* pSession, MSG_BASE* tMSG, int iSize);
-	void Send_Broadcast(SESSION* pSession, MSG_BASE* tMSG, int iSize);
-	void Read_Proc(SESSION* pSession);
+	void Send_Unicast(const SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
+	void Send_Broadcast(const SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
+	void Read_Proc(const SESSION* pSession);
 private:
-	SOCKET m_ServSock;
+	SOCKET						m_ServSock;
 	array<SESSION, SESSION_MAX> m_arrSession;
-	int m_iSessionCnt;
-	int m_iID;
-	fd_set m_tReadSet;
+	int							m_iSessionCnt;
+	int							m_iID;
+	fd_set						m_tReadSet;
 };
 
