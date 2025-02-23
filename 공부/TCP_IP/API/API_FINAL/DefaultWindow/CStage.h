@@ -3,6 +3,8 @@
 #include "CPlayer.h"
 #include "CMonster.h"
 #include "CMouse.h"
+#include "CNetwork.h"
+
 
 class CStage : public CScene
 {
@@ -16,5 +18,7 @@ public:
 	void Late_Update() override;
 	void Render(HDC hDC) override;
 	void Release() override;
+private:
+	CNetwork* m_pNetwork;
 };
 

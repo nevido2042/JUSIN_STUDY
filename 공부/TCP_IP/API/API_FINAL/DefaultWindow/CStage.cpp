@@ -7,14 +7,9 @@
 #include "CScrollMgr.h"
 #include "CTileMgr.h"
 
-#include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <locale>
-
-#define IP L"127.0.0.1"
-#define PORT L"3000"
 
 CStage::CStage()
+	:m_pNetwork(nullptr)
 {
 }
 
@@ -32,16 +27,19 @@ void CStage::Initialize()
 	//CLineMgr::Get_Instance()->Initialize();
 
 	CTileMgr::Get_Instance()->Load_Tile();
-	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
-
+	//CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
 	//for (int i = 0; i < 3; ++i)
 	//{
 	//	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(float(rand() % WINCX), float(rand() % WINCY), 0.f));		
 	//}
+
+	m_pNetwork = new CNetwork();
+	m_pNetwork->Initialize();
 }
 
 int CStage::Update()
 {
+	m_pNetwork->Update();
 	CObjMgr::Get_Instance()->Update();
 	CTileMgr::Get_Instance()->Update();
 
@@ -73,4 +71,7 @@ void CStage::Render(HDC hDC)
 void CStage::Release()
 {
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_PLAYER);
+	
+	m_pNetwork->Release();
+	delete m_pNetwork;
 }
