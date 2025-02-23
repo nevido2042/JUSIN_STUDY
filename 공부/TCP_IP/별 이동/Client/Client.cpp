@@ -218,14 +218,17 @@ void Network() {
             int type = *(int*)msg;
             wprintf(L"받은 메시지 타입: %d\n", type);
 
-            switch (type) {
-            case ALLOC_ID: {
+            switch (type) 
+            {
+            case ALLOC_ID:
+            {
                 MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)msg;
                 myID = msgAllocID->id;
                 wprintf_s(L"아이디는 %d\n", msgAllocID->id);
                 break;
             }
-            case CREATE_STAR: {
+            case CREATE_STAR: 
+            {
                 MSG_CREATE_STAR* msgCreateStar = (MSG_CREATE_STAR*)msg;
                 clientArr[clientCnt].id = msgCreateStar->id;
                 clientArr[clientCnt].x = msgCreateStar->x;
@@ -233,10 +236,12 @@ void Network() {
                 clientCnt++;
                 break;
             }
-            case MOVE_STAR: {
+            case MOVE_STAR: 
+            {
                 MSG_MOVE_STAR* msgMoveStar = (MSG_MOVE_STAR*)msg;
                 for (int k = 0; k < clientCnt; k++) {
-                    if (msgMoveStar->id == clientArr[k].id) {
+                    if (msgMoveStar->id == clientArr[k].id) 
+                    {
                         clientArr[k].x = msgMoveStar->x;
                         clientArr[k].y = msgMoveStar->y;
                         break;
@@ -244,10 +249,13 @@ void Network() {
                 }
                 break;
             }
-            case DELETE_STAR: {
+            case DELETE_STAR: 
+            {
                 MSG_DELETE_STAR* msgDeleteStar = (MSG_DELETE_STAR*)msg;
-                for (int i = 0; i < clientCnt; i++) {
-                    if (msgDeleteStar->id == clientArr[i].id) {
+                for (int i = 0; i < clientCnt; i++) 
+                {
+                    if (msgDeleteStar->id == clientArr[i].id) 
+                    {
                         clientArr[i] = clientArr[clientCnt - 1];
                         clientCnt--;
                         break;
@@ -255,7 +263,8 @@ void Network() {
                 }
                 break;
             }
-            default: {
+            default: 
+            {
                 wprintf(L"Unknown msg type: %d\n", type);
                 closesocket(sock);
                 WSACleanup();

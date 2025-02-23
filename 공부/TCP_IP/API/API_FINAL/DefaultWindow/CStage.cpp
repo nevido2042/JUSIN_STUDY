@@ -27,14 +27,19 @@ void CStage::Initialize()
 	//CLineMgr::Get_Instance()->Initialize();
 
 	CTileMgr::Get_Instance()->Load_Tile();
-	//CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
+
 	//for (int i = 0; i < 3; ++i)
 	//{
 	//	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(float(rand() % WINCX), float(rand() % WINCY), 0.f));		
 	//}
 
 	m_pNetwork = new CNetwork();
-	m_pNetwork->Initialize();
+	bool bResult = m_pNetwork->Initialize();
+
+	//if (bResult)
+	//{
+	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
+	//}
 }
 
 int CStage::Update()

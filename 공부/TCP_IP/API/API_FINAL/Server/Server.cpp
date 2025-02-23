@@ -1,14 +1,14 @@
-#pragma comment(lib, "ws2_32")
 #include <iostream>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <locale>
+#include "MSG.h"
 
 using namespace std;
 
 #define PORT L"2042"
 
-struct PlayerSession
+struct SESSION
 {
     SOCKADDR_IN clntAdr;
     SOCKET clntSock = INVALID_SOCKET;
@@ -18,14 +18,16 @@ struct PlayerSession
 };
 
 SOCKET servSock = INVALID_SOCKET;
-PlayerSession playerSessionArr[30] = { 0, };
+SESSION playerSessionArr[30] = { 0, };
 int playerSessionCnt = 0;
 int g_ID = 0;
 fd_set readSet;
-
+  
 void Network();
 void AcceptProc();
-void ReadProc(PlayerSession* playerSession);
+void SendUnicast(SESSION* playerSession, MSG_BASE* msg, int* msgSize);
+void SendBroadcast(SESSION* playerSession, MSG_BASE* msg, int* msgSize);
+void ReadProc(SESSION* playerSession);
 
 int main() 
 {
@@ -144,18 +146,68 @@ void AcceptProc()
 
         cout << "클라이언트 접속" << endl;
 
+        //신입 정보
         playerSessionArr[playerSessionCnt].clntAdr = clntAdr;
         playerSessionArr[playerSessionCnt].clntSock = clntSock;
         playerSessionArr[playerSessionCnt].id = g_ID;
+        playerSessionArr[playerSessionCnt].x = rand() % 800;
+        playerSessionArr[playerSessionCnt].y = rand() % 600;
+        //신입 정보 메시지
+        MSG_ALLOC_ID msgAllocID;
+        int msgSize = sizeof(msgAllocID);
+        msgAllocID.type = ALLOC_ID;
+        msgAllocID.id = g_ID;
+        //신입한테 아이디 알려줌
+        SendUnicast(&playerSessionArr[playerSessionCnt], (MSG_BASE*)&msgAllocID, &msgSize);
+        //신입한테 모든 유저 출력하라고 함
+        MSG_CREATE_STAR msgCreateStar;
+        msgSize = sizeof(msgCreateStar);
+
+        for (int i = 0; i < playerSessionCnt + 1; i++)
+        {
+            msgCreateStar.type = CREATE_STAR;
+            msgCreateStar.id = playerSessionArr[i].id;
+            msgCreateStar.x = playerSessionArr[i].x;
+            msgCreateStar.y = playerSessionArr[i].y;
+            SendUnicast(&playerSessionArr[playerSessionCnt], (MSG_BASE*)&msgCreateStar, &msgSize);
+        }
+
+        msgCreateStar.type = CREATE_STAR;
+        msgCreateStar.id = g_ID;
+        //msgCreateStar.x = playerSessionArr[playerSessionCnt].x;
+        //msgCreateStar.y = playerSessionArr[playerSessionCnt].y;
+
+        SendBroadcast(NULL, (MSG_BASE*)&msgCreateStar, &msgSize);
 
         playerSessionCnt++;
-
         g_ID++;
     }
 }
 
+void SendUnicast(SESSION* playerSession, MSG_BASE* msg, int* msgSize)
+{
+    int retSend = send(playerSession->clntSock, (char*)msg, *msgSize, 0);
+    if (retSend == SOCKET_ERROR) 
+    {
+        wprintf_s(L"send() error:%d\n", WSAGetLastError());
+    }
+}
 
-void ReadProc(PlayerSession* playerSession) 
+void SendBroadcast(SESSION* playerSession, MSG_BASE* msg, int* msgSize)
+{
+    for (int i = 0; i < playerSessionCnt; i++)
+    {
+        if (playerSession == &playerSessionArr[i]) continue;
+        int retSend = send(playerSessionArr[i].clntSock, (char*)msg, *msgSize, 0);
+        if (retSend == SOCKET_ERROR)
+        {
+            wprintf_s(L"send() error:%d\n", WSAGetLastError());
+        }
+    }
+}
+
+
+void ReadProc(SESSION* playerSession) 
 {
     char msg[16];
     while (1) 

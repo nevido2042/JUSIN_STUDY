@@ -78,11 +78,11 @@ void CPlayer::Late_Update()
 
 #ifdef  _DEBUG
 
-	if (m_dwTime + 1000 < GetTickCount())
+	/*if (m_dwTime + 1000 < GetTickCount())
 	{
 		cout << "플레이어 위치 : " << m_tInfo.fX << '\t' << m_tInfo.fY << endl;
 		m_dwTime = GetTickCount();
-	}
+	}*/
 
 
 #endif //  _DEBUG

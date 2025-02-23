@@ -300,7 +300,7 @@
       <Filter>03. Design\SoundMgr</Filter>
     </ClCompile>
     <ClCompile Include="CNetwork.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>04. Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

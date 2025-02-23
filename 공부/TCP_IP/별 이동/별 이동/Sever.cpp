@@ -173,22 +173,27 @@ void AcceptProc() {
             continue;
         }
 
+        //신입 정보 입력
         playerSessionArr[playerSessionCnt].clntAdr = clntAdr;
         playerSessionArr[playerSessionCnt].clntSock = clntSock;
         playerSessionArr[playerSessionCnt].id = g_ID;
         playerSessionArr[playerSessionCnt].x = INIT_X;
         playerSessionArr[playerSessionCnt].y = INIT_Y;
 
+        //신입 등록 메시지
         MSG_ALLOC_ID msgAllocID;
         int msgSize = sizeof(msgAllocID);
         msgAllocID.type = ALLOC_ID;
         msgAllocID.id = g_ID;
-
+        //신입 한테 등록 메시지 전달
         SendUnicast(&playerSessionArr[playerSessionCnt], (MSG_BASE*)&msgAllocID, &msgSize);
 
+        //신입,기존회원 위치 생성 메시지 신입에게 전달
         MSG_CREATE_STAR msgCreateStar;
         msgSize = sizeof(msgCreateStar);
-        for (int i = 0; i < playerSessionCnt; i++) {
+
+        for (int i = 0; i < playerSessionCnt; i++)
+        {
             msgCreateStar.type = CREATE_STAR;
             msgCreateStar.id = playerSessionArr[i].id;
             msgCreateStar.x = playerSessionArr[i].x;
@@ -203,24 +208,30 @@ void AcceptProc() {
         msgCreateStar.x = INIT_X;
         msgCreateStar.y = INIT_Y;
 
+        //신입 생성 메시지 모두 전달
         SendBroadcast(NULL, (MSG_BASE*)&msgCreateStar, &msgSize);
 
         g_ID++;
     }
 }
 
-void SendUnicast(PlayerSession* playerSession, MSG_BASE* msg, int* msgSize) {
+void SendUnicast(PlayerSession* playerSession, MSG_BASE* msg, int* msgSize) 
+{
     int retSend = send(playerSession->clntSock, (char*)msg, *msgSize, 0);
-    if (retSend == SOCKET_ERROR) {
+    if (retSend == SOCKET_ERROR)
+    {
         wprintf_s(L"send() error:%d\n", WSAGetLastError());
     }
 }
 
-void SendBroadcast(PlayerSession* playerSession, MSG_BASE* msg, int* msgSize) {
-    for (int i = 0; i < playerSessionCnt; i++) {
+void SendBroadcast(PlayerSession* playerSession, MSG_BASE* msg, int* msgSize) 
+{
+    for (int i = 0; i < playerSessionCnt; i++) 
+    {
         if (playerSession == &playerSessionArr[i]) continue;
         int retSend = send(playerSessionArr[i].clntSock, (char*)msg, *msgSize, 0);
-        if (retSend == SOCKET_ERROR) {
+        if (retSend == SOCKET_ERROR) 
+        {
             wprintf_s(L"send() error:%d\n", WSAGetLastError());
         }
     }
