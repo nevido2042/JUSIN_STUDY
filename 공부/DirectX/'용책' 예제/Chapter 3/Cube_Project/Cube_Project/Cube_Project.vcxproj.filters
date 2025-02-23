@@ -18,13 +18,10 @@
     <ClCompile Include="..\..\..\Chapter 19\CartoonEffect\d3dUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Chapter 14\Snow System\pSystem.cpp">
+    <ClCompile Include="cube.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Chapter 14\Snow System\camera.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Chapter 14\Laser System\laser.cpp">
+    <ClCompile Include="d3dUtility.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,11 +29,13 @@
     <ClInclude Include="..\..\..\Chapter 19\CartoonEffect\d3dUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chapter 14\Snow System\pSystem.h">
+    <ClInclude Include="d3dUtility.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Chapter 14\Snow System\camera.h">
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="chap3_1.jpg">
       <Filter>Resource Files</Filter>
-    </ClInclude>
+    </Image>
   </ItemGroup>
 </Project>

@@ -1,25 +1,44 @@
 ﻿#include <iostream>
 #include <vector>
-#include <algorithm>
-
 using namespace std;
 
-typedef struct tagPC
+typedef struct tagInfo
 {
-	vector<int> vecAdj;
-	bool		isInfected = { false };
-}PC;
+	int iKg{};
+	int iCm{};
+	int iRate{};
+}INFO;
 
 int main()
 {
-	int iN = { 0 };
-	int iM = { 0 };
-	cin >> iN >> iM;
-
-	vector<PC> vecPC(iN);
-	for (int i = 0; i < iM; ++i)
+	/*
+	사람 받아와서 한사람과 다른사람 모두 비교 후 등급 매기기_O(N^2)
+	*/
+	int iN;
+	cin >> iN;
+	vector<INFO>vec(iN);
+	for (int i = 0; i < iN; ++i)
 	{
-		int iPC1 = { 0 }, iPC2 = { 0 };
-		cin >> iPC1 >> iPC2;
+		cin >> vec[i].iKg;
+		cin >> vec[i].iCm;
+	}
+
+	for (INFO& tINFO : vec)
+	{
+		int iRate{ 1 };
+		for (const INFO& tOther : vec)
+		{
+			if (tINFO.iKg < tOther.iKg && tINFO.iCm < tOther.iCm)
+			{
+				++iRate;
+			}
+		}
+
+		tINFO.iRate = iRate;
+	}
+
+	for (const INFO& tInfo : vec)
+	{
+		cout << tInfo.iRate << '\n';
 	}
 }
