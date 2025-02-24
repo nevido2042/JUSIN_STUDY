@@ -4,9 +4,17 @@
 #include "CPlayer.h"
 #include "CObjMgr.h"
 
+CNetwork* CNetwork::m_pInstance = nullptr;
+
 CNetwork::CNetwork()
-	:m_iMyID(0), m_iClientCnt(0)
+	:m_iMyID(0), m_iClientCnt(0),m_hSocket(0)
 {
+	ZeroMemory(&m_ReadSet, sizeof(fd_set));
+}
+
+CNetwork::~CNetwork()
+{
+	Release();
 }
 
 bool CNetwork::Initialize()
@@ -43,16 +51,17 @@ bool CNetwork::Initialize()
 
 	if (connect(m_hSocket, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
-		if (WSAGetLastError() != 10035)
+		if (WSAGetLastError() == 10035)
+		{
+			cout << "connected..." << endl;
+		}
+		else
 		{
 			cout << "connect() error: " << WSAGetLastError() << endl;
 			return false;
 		}
-		else
-		{
-			cout << "connected..." << endl;
-		}
 	}
+
 
 	FD_ZERO(&m_ReadSet);
 	FD_SET(m_hSocket, &m_ReadSet);
@@ -99,17 +108,64 @@ void CNetwork::Update()
                 wprintf_s(L"MyID %d\n", msgAllocID->id);
                 break;
             }
-			case CREATE_STAR:
+			case CREATE_PLAYER:
 			{
-				MSG_CREATE_STAR* msgCreateStar = (MSG_CREATE_STAR*)msg;
-				m_ClientArr[m_iClientCnt].id = msgCreateStar->id;
-				m_ClientArr[m_iClientCnt].x = msgCreateStar->x;
-				m_ClientArr[m_iClientCnt].y = msgCreateStar->y;
-				CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create((float)msgCreateStar->x, (float)msgCreateStar->y));
+				MSG_CREATE_PLAYER& msgCreatePlayer = (MSG_CREATE_PLAYER&)msg;
+				m_ClientArr[m_iClientCnt].id = msgCreatePlayer.id;
+				m_ClientArr[m_iClientCnt].x = msgCreatePlayer.x;
+				m_ClientArr[m_iClientCnt].y = msgCreatePlayer.y;
 
-				wprintf_s(L"Create ID: %d\n", msgCreateStar->id);
+				CObj* pObj = CAbstractFactory<CPlayer>::Create((float)msgCreatePlayer.x, (float)msgCreatePlayer.y);
+				static_cast<CPlayer*>(pObj)->Set_ID(msgCreatePlayer.id);
+				CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+
+				wprintf_s(L"Create ID: %d\n", msgCreatePlayer.id);
 
 				m_iClientCnt++;
+				break;
+			}
+			case MOVE_RIGHT_PLAYER:
+			{
+				MSG_MOVE_RIGHT_PLAYER& msgMoveRight = (MSG_MOVE_RIGHT_PLAYER&)msg;
+				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveRight.id);
+
+				if (pPlayer) 
+				{
+					static_cast<CPlayer*>(pPlayer)->Set_MoveRight(true);
+				}
+				break;
+			}
+			case MOVE_LEFT_PLAYER:
+			{
+				MSG_MOVE_LEFT_PLAYER& msgMoveLeft = (MSG_MOVE_LEFT_PLAYER&)msg;
+				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveLeft.id);
+
+				if (pPlayer)
+				{
+					static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(true);
+				}
+				break;
+			}
+			case STOP_RIGHT_PLAYER:
+			{
+				MSG_STOP_RIGHT_PLAYER& msgStopLeft = (MSG_STOP_RIGHT_PLAYER&)msg;
+				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopLeft.id);
+
+				if (pPlayer)
+				{
+					static_cast<CPlayer*>(pPlayer)->Set_MoveRight(false);
+				}
+				break;
+			}
+			case STOP_LEFT_PLAYER:
+			{
+				MSG_STOP_LEFT_PLAYER& msgStopLeft = (MSG_STOP_LEFT_PLAYER&)msg;
+				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopLeft.id);
+
+				if (pPlayer)
+				{
+					static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(false);
+				}
 				break;
 			}
             default:
@@ -127,4 +183,14 @@ void CNetwork::Release()
 {
 	closesocket(m_hSocket);
 	WSACleanup();
+}
+
+void CNetwork::Send_Message(MSG_ID& tMsg)
+{
+	tMsg.iID = m_iMyID;
+
+	if (send(m_hSocket, (char*)&tMsg, sizeof(tMsg), 0) == SOCKET_ERROR)
+	{
+		wprintf_s(L"send() error:%d", WSAGetLastError());
+	}
 }

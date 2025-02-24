@@ -12,6 +12,8 @@ private:
 	~CObjMgr();
 
 public:
+
+	CObj* Find_Player(int iID);
 	CObj* Get_Player()		{ return m_ObjList[OBJ_PLAYER].front(); }
 	CObj* Get_LastMonster() { return m_ObjList[OBJ_MONSTER].back(); }
 

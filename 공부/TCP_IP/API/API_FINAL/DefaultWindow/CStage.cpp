@@ -9,7 +9,6 @@
 
 
 CStage::CStage()
-	:m_pNetwork(nullptr)
 {
 }
 
@@ -33,8 +32,7 @@ void CStage::Initialize()
 	//	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(float(rand() % WINCX), float(rand() % WINCY), 0.f));		
 	//}
 
-	m_pNetwork = new CNetwork();
-	bool bResult = m_pNetwork->Initialize();
+	CNetwork::Get_Instance()->Initialize();
 
 	//if (bResult)
 	//{
@@ -44,7 +42,7 @@ void CStage::Initialize()
 
 int CStage::Update()
 {
-	m_pNetwork->Update();
+	CNetwork::Get_Instance()->Update();
 	CObjMgr::Get_Instance()->Update();
 	CTileMgr::Get_Instance()->Update();
 
@@ -76,7 +74,5 @@ void CStage::Render(HDC hDC)
 void CStage::Release()
 {
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_PLAYER);
-	
-	m_pNetwork->Release();
-	delete m_pNetwork;
+	CNetwork::Get_Instance()->Destroy_Instance();
 }

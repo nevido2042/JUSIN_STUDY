@@ -146,7 +146,7 @@ void CServer::AcceptProc()
         Send_Unicast(&m_arrSession[m_iSessionCnt], (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
 
         // 기존 클라이언트 정보 전송
-        MSG_CREATE_STAR tMSG = { CREATE_STAR, m_iID };
+        MSG_CREATE_PLAYER tMSG = { CREATE_PLAYER, m_iID };
         for (int i = 0; i < m_iSessionCnt + 1; i++)
         {
             tMSG.id = m_arrSession[i].id;
@@ -210,9 +210,53 @@ void CServer::Read_Proc(const SESSION* pSession)
         return;
     }
 
+    int iType{ 0 };
     if (iResult > 0)
     {
-        int iType;
         memcpy(&iType, szMSG, sizeof(int));
+    }
+
+    switch (iType)
+    {
+    case MOVE_RIGHT_PLAYER:
+    {
+        MSG_MOVE_RIGHT_PLAYER& recvMSG = (MSG_MOVE_RIGHT_PLAYER&)szMSG;
+
+        MSG_MOVE_RIGHT_PLAYER msgMoveRight;
+        msgMoveRight.id = recvMSG.id;
+
+        Send_Broadcast(NULL, (MSG_BASE*)&msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
+        break;
+    }
+    case MOVE_LEFT_PLAYER:
+    {
+        MSG_MOVE_LEFT_PLAYER& recvMSG = (MSG_MOVE_LEFT_PLAYER&)szMSG;
+
+        MSG_MOVE_LEFT_PLAYER msgMoveLeft;
+        msgMoveLeft.id = recvMSG.id;
+
+        Send_Broadcast(NULL, (MSG_BASE*)&msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
+        break;
+    }
+    case STOP_RIGHT_PLAYER:
+    {
+        MSG_STOP_RIGHT_PLAYER& recvMSG = (MSG_STOP_RIGHT_PLAYER&)szMSG;
+
+        MSG_STOP_RIGHT_PLAYER msgStopRight;
+        msgStopRight.id = recvMSG.id;
+
+        Send_Broadcast(NULL, (MSG_BASE*)&msgStopRight, sizeof(MSG_STOP_RIGHT_PLAYER));
+        break;
+    }
+    case STOP_LEFT_PLAYER:
+    {
+        MSG_STOP_LEFT_PLAYER& recvMSG = (MSG_STOP_LEFT_PLAYER&)szMSG;
+
+        MSG_STOP_LEFT_PLAYER msgStopLeft;
+        msgStopLeft.id = recvMSG.id;
+
+        Send_Broadcast(NULL, (MSG_BASE*)&msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
+        break;
+    }
     }
 }

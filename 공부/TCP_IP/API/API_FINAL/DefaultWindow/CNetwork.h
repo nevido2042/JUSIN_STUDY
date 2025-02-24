@@ -10,17 +10,41 @@
 
 class CNetwork
 {
-public:
+private:
 	CNetwork();
+	~CNetwork();
 public:
 	bool Initialize();
 	void Update();
 	void Release();
+public:
+	void Send_Message(MSG_ID& tMsg);
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;
 	int		m_iMyID;
 	CLIENT	m_ClientArr[30];
 	int		m_iClientCnt;
+
+public:
+	static CNetwork* Get_Instance()
+	{
+		if (nullptr == m_pInstance)
+			m_pInstance = new CNetwork;
+
+		return m_pInstance;
+	}
+
+	static void	Destroy_Instance()
+	{
+		if (m_pInstance)
+		{
+			delete m_pInstance;
+			m_pInstance = nullptr;
+		}
+	}
+
+private:
+	static CNetwork* m_pInstance;
 };
 

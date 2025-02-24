@@ -160,19 +160,19 @@ void AcceptProc()
         //신입한테 아이디 알려줌
         SendUnicast(&playerSessionArr[playerSessionCnt], (MSG_BASE*)&msgAllocID, &msgSize);
         //신입한테 모든 유저 출력하라고 함
-        MSG_CREATE_STAR msgCreateStar;
+        MSG_CREATE_PLAYER msgCreateStar;
         msgSize = sizeof(msgCreateStar);
 
         for (int i = 0; i < playerSessionCnt + 1; i++)
         {
-            msgCreateStar.type = CREATE_STAR;
+            msgCreateStar.type = CREATE_PLAYER;
             msgCreateStar.id = playerSessionArr[i].id;
             msgCreateStar.x = playerSessionArr[i].x;
             msgCreateStar.y = playerSessionArr[i].y;
             SendUnicast(&playerSessionArr[playerSessionCnt], (MSG_BASE*)&msgCreateStar, &msgSize);
         }
 
-        msgCreateStar.type = CREATE_STAR;
+        msgCreateStar.type = CREATE_PLAYER;
         msgCreateStar.id = g_ID;
         //msgCreateStar.x = playerSessionArr[playerSessionCnt].x;
         //msgCreateStar.y = playerSessionArr[playerSessionCnt].y;

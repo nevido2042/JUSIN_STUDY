@@ -237,14 +237,17 @@ void SendBroadcast(PlayerSession* playerSession, MSG_BASE* msg, int* msgSize)
     }
 }
 
-void ReadProc(PlayerSession* playerSession) {
+void ReadProc(PlayerSession* playerSession) 
+{
     char msg[16];
-    while (1) {
+    while (1) 
+    {
         int retRecv = recv(playerSession->clntSock, msg, sizeof(msg), 0);
 
         if (WSAGetLastError() == WSAEWOULDBLOCK || retRecv == 0) break;
 
-        if (retRecv == SOCKET_ERROR) {
+        if (retRecv == SOCKET_ERROR) 
+        {
             wprintf_s(L"recv():%d\n", WSAGetLastError());
 
             MSG_DELETE_STAR msgDeleteStar;
@@ -254,8 +257,10 @@ void ReadProc(PlayerSession* playerSession) {
             SendBroadcast(playerSession, (MSG_BASE*)&msgDeleteStar, &msgSize);
 
             closesocket(playerSession->clntSock);
-            for (int i = 0; i < playerSessionCnt; i++) {
-                if (playerSession->id == playerSessionArr[i].id) {
+            for (int i = 0; i < playerSessionCnt; i++) 
+            {
+                if (playerSession->id == playerSessionArr[i].id)
+                {
                     playerSessionArr[i] = playerSessionArr[playerSessionCnt - 1];
                     playerSessionCnt--;
                     break;
@@ -268,11 +273,15 @@ void ReadProc(PlayerSession* playerSession) {
 
         int type = *(int*)msg;
 
-        switch (type) {
-        case MOVE_STAR: {
+        switch (type)
+        {
+        case MOVE_STAR: 
+        {
             MSG_MOVE_STAR* recvMSG = (MSG_MOVE_STAR*)msg;
-            for (int i = 0; i < playerSessionCnt; i++) {
-                if (recvMSG->id == playerSessionArr[i].id) {
+            for (int i = 0; i < playerSessionCnt; i++) 
+            {
+                if (recvMSG->id == playerSessionArr[i].id)
+                {
                     playerSessionArr[i].x = recvMSG->x;
                     playerSessionArr[i].y = recvMSG->y;
                 }

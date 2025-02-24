@@ -8,12 +8,13 @@
 #include "CScrollMgr.h"
 #include "CBmpMgr.h"
 #include "CSoundMgr.h"
+#include "CNetwork.h"
 
 float	g_fVolume(1.f);
 
 CPlayer::CPlayer() 
 : m_bJump(false), m_fJumpPower(0.f), m_fTime(0.f), m_bStretch(false)
-, m_dwTime(GetTickCount())
+, m_dwTime(GetTickCount()), m_iID(0), m_bMoveRight(false), m_bMoveLeft(false)
 {
 	ZeroMemory(&m_tPosin, sizeof(POINT));
 }
@@ -26,7 +27,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize()
 {
 	m_tInfo  = { 100.f, WINCY / 2.f, 200.f, 200.f };
-	m_fSpeed = 5.f;
+	m_fSpeed = 1.f;
 	m_fDistance = 100.f;
 
 	m_fJumpPower = 20.f;
@@ -63,6 +64,21 @@ void CPlayer::Initialize()
 
 int CPlayer::Update()
 {
+	if (m_bMoveRight)
+	{
+		m_tInfo.fX += m_fSpeed;
+		m_pImgKey = L"Player_RIGHT";
+		m_eCurState = WALK;
+		m_bStretch = false;
+	}
+	if (m_bMoveLeft)
+	{
+		m_tInfo.fX -= m_fSpeed;
+		m_pImgKey = L"Player_RIGHT";
+		m_eCurState = WALK;
+		m_bStretch = true;
+	}
+
 	Key_Input();
 	Change_Motion();
 
@@ -152,39 +168,63 @@ void CPlayer::Key_Input()
 {
 	float	fY(0.f);
 
-	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LEFT))
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT))
 	{
-		m_tInfo.fX -= m_fSpeed;
+		MSG_MOVE_LEFT_PLAYER msgMoveLeft;
+		msgMoveLeft.type = MOVE_LEFT_PLAYER;
+
+		CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgMoveLeft);
+
+		/*m_tInfo.fX -= m_fSpeed;
 		m_pImgKey = L"Player_RIGHT";
 		m_eCurState = WALK;
-		m_bStretch = true;
+		m_bStretch = true;*/
 	}
-
-	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_RIGHT))
+	else if (CKeyMgr::Get_Instance()->Key_Down(VK_RIGHT))
 	{
-		m_tInfo.fX += m_fSpeed;
+		MSG_MOVE_RIGHT_PLAYER msgMoveRight;
+		msgMoveRight.type = MOVE_RIGHT_PLAYER;
+
+		CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgMoveRight);
+
+		/*m_tInfo.fX += m_fSpeed;
 		m_pImgKey = L"Player_RIGHT";
 		m_eCurState = WALK;
-		m_bStretch = false;
+		m_bStretch = false;*/
 	}
+	else if (CKeyMgr::Get_Instance()->Key_Up(VK_RIGHT))
+	{
+		//오른쪽 가지 말라 메시지 요청
 
+		MSG_STOP_RIGHT_PLAYER msgStopRight;
+		msgStopRight.type = STOP_RIGHT_PLAYER;
+
+		CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgStopRight);
+	}
+	else if (CKeyMgr::Get_Instance()->Key_Up(VK_LEFT))
+	{
+		MSG_STOP_LEFT_PLAYER msgStopLeft;
+		msgStopLeft.type = STOP_LEFT_PLAYER;
+
+		CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgStopLeft);
+	}
 	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_UP))
 	{
-		m_tInfo.fY -= m_fSpeed;
+		/*m_tInfo.fY -= m_fSpeed;
 		m_pImgKey = L"Player_UP";
 		m_eCurState = WALK;
-		m_bStretch = false;
+		m_bStretch = false;*/
 	}
 
 	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 	{
-		m_tInfo.fY += m_fSpeed;
+		/*m_tInfo.fY += m_fSpeed;
 		m_pImgKey = L"Player_DOWN";
 		m_eCurState = WALK;
-		m_bStretch = false;
+		m_bStretch = false;*/
 	}
 
-	else if (CKeyMgr::Get_Instance()->Key_Up(VK_SPACE))
+	if (CKeyMgr::Get_Instance()->Key_Up(VK_SPACE))
 	{
 		// m_bJump = true;
 		// m_bStretch = false;

@@ -2,6 +2,8 @@
 #include "CObjMgr.h"
 #include "CCollisionMgr.h"
 
+#include "CPlayer.h"
+
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
 CObjMgr::CObjMgr()
@@ -11,6 +13,21 @@ CObjMgr::CObjMgr()
 CObjMgr::~CObjMgr()
 {
 	Release();
+}
+
+CObj* CObjMgr::Find_Player(int iID)
+{
+	CObj* pPlayer{ nullptr };
+
+	for (CObj* pObj : m_ObjList[OBJ_PLAYER])
+	{
+		if (static_cast<CPlayer*>(pObj)->Get_ID() == iID)
+		{
+			pPlayer = pObj;
+			return pPlayer;
+		}
+	}
+	return nullptr;
 }
 
 CObj* CObjMgr::Get_Target(OBJID eID, CObj* pDst)
