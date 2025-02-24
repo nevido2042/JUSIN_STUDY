@@ -47,9 +47,5 @@ private:
 	int							m_iSessionCnt;
 	int							m_iID;
 	fd_set						m_tReadSet;
-
-	//¸µ¹öÆÛ
-	CRingBuffer					m_RecvQ;
-	CRingBuffer					m_SendQ;
 };
 

@@ -147,6 +147,9 @@ void CServer::AcceptProc()
         cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
         m_arrSession[m_iSessionCnt] = { clntAdr, clntSock, m_iID, rand() % 800, rand() % 600 };
+        //링버퍼 초기화
+        m_arrSession[m_iSessionCnt].recvQ = CRingBuffer(5000);
+        m_arrSession[m_iSessionCnt].sendQ = CRingBuffer(5000);
 
         // 클라이언트에게 ID 전송
         MSG_ALLOC_ID msgAllocID = { ALLOC_ID, m_iID };
@@ -229,6 +232,7 @@ void CServer::Read_Proc(SESSION* pSession)
     }
 
     pSession->recvQ.Enqueue(Buffer, iResult);
+
     while (true)
     {
         if (pSession->recvQ.GetUseSize() < MSG_SIZE)

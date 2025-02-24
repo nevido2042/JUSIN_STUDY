@@ -3,6 +3,7 @@
 #include <WS2tcpip.h>
 #include <locale>
 #include "MSG.h"
+#include "CRingBuffer.h"
 
 #define BUF_SIZE 1024
 #define IP L"127.0.0.1"
@@ -25,6 +26,8 @@ private:
 	int		m_iMyID;
 	CLIENT	m_ClientArr[30];
 	int		m_iClientCnt;
+	CRingBuffer sendQ;
+	CRingBuffer recvQ;
 
 public:
 	static CNetwork* Get_Instance()
