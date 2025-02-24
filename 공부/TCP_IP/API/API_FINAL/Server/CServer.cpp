@@ -258,5 +258,16 @@ void CServer::Read_Proc(const SESSION* pSession)
         Send_Broadcast(NULL, (MSG_BASE*)&msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
         break;
     }
+    case DELETE_PLAYER:
+    {
+        MSG_DELETE_PLAYER& recvMSG = (MSG_DELETE_PLAYER&)szMSG;
+        cout << "Delete Player ID:" << recvMSG.id << endl;
+
+        MSG_DELETE_PLAYER msgDeletePlayer;
+        msgDeletePlayer.id = recvMSG.id;
+
+        Send_Broadcast(&m_arrSession[msgDeletePlayer.id], (MSG_BASE*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
+        break;
+    }
     }
 }

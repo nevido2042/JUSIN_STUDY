@@ -168,6 +168,18 @@ void CNetwork::Update()
 				}
 				break;
 			}
+			case DELETE_PLAYER:
+			{
+				MSG_DELETE_PLAYER& msgDelete = (MSG_DELETE_PLAYER&)msg;
+
+				cout << "Delete Player ID:" << msgDelete.id;
+				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgDelete.id);
+				if (pPlayer)
+				{
+					pPlayer->Set_Dead();
+				}
+				break;
+			}
             default:
             {
                 wprintf(L"Unknown msg type: %d\n", type);
@@ -181,6 +193,11 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
+	MSG_DELETE_PLAYER tMsg;
+	tMsg.type = DELETE_PLAYER;
+	tMsg.id = m_iMyID;
+	Send_Message((MSG_ID&)tMsg);
+
 	closesocket(m_hSocket);
 	WSACleanup();
 }

@@ -64,6 +64,11 @@ void CPlayer::Initialize()
 
 int CPlayer::Update()
 {
+	if (m_bDead)
+	{
+		return OBJ_DEAD;
+	}
+
 	if (m_bMoveRight)
 	{
 		m_tInfo.fX += m_fSpeed;
