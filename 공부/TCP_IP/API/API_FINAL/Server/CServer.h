@@ -39,7 +39,8 @@ private:
 	void Send_Unicast(SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
 	void Send_Broadcast(SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
 	void Read_Proc(SESSION* pSession);
-	void Decode_Message(int iType, char* pBuffer);
+	void Decode_Message(int iType, char* pMsg);
+	void Recieve_Message();
 	void Send_Message();
 private:
 	SOCKET						m_ServSock;

@@ -20,14 +20,20 @@ public:
 	void Release();
 public:
 	void Send_Message(MSG_ID& tMsg);
+	void Send_Message();
+	int Enqueue_SendQ(MSG_ID& tMsg, int iSize);
+
+private:
+	void Receive_Message();
+	void Decode_Message(int iType, char* pMsg);
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;
 	int		m_iMyID;
 	CLIENT	m_ClientArr[30];
 	int		m_iClientCnt;
-	CRingBuffer sendQ;
-	CRingBuffer recvQ;
+	CRingBuffer m_sendQ;
+	CRingBuffer m_recvQ;
 
 public:
 	static CNetwork* Get_Instance()

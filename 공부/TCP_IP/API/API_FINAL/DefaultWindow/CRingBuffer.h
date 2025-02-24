@@ -1,4 +1,4 @@
-#define DEFAULT_BUF_SIZE 100
+#define DEFAULT_BUF_SIZE 1000
 
 class CRingBuffer
 {

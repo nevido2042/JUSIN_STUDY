@@ -71,124 +71,8 @@ bool CNetwork::Initialize()
 
 void CNetwork::Update()
 {
-    while (true) 
-    {
-        fd_set TempSet;
-		timeval TimeOut;
-		char msg[16] = { 0, };
-        TempSet = m_ReadSet;
-        TimeOut.tv_sec = 0;
-        TimeOut.tv_usec = 0;
-
-        int retSelect = select(0, &TempSet, 0, 0, &TimeOut);
-
-        if (WSAGetLastError() == WSAEWOULDBLOCK || retSelect == 0) break;
-
-        if (retSelect == SOCKET_ERROR) {
-            wprintf_s(L"select() error:%d\n", WSAGetLastError());
-            break;
-        }
-
-        if (FD_ISSET(m_hSocket, &TempSet))
-		{
-            int retRecv = recv(m_hSocket, msg, sizeof(msg), 0);
-            if (retRecv == SOCKET_ERROR) 
-			{
-                wprintf_s(L"recv() error:%d\n", WSAGetLastError());
-                break;
-            }
-            int type = *(int*)msg;
-
-            switch (type)
-            {
-            case ALLOC_ID:
-            {
-                MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)msg;
-				m_iMyID = msgAllocID->id;
-                wprintf_s(L"MyID %d\n", msgAllocID->id);
-                break;
-            }
-			case CREATE_PLAYER:
-			{
-				MSG_CREATE_PLAYER& msgCreatePlayer = (MSG_CREATE_PLAYER&)msg;
-				m_ClientArr[m_iClientCnt].id = msgCreatePlayer.id;
-				m_ClientArr[m_iClientCnt].x = msgCreatePlayer.x;
-				m_ClientArr[m_iClientCnt].y = msgCreatePlayer.y;
-
-				CObj* pObj = CAbstractFactory<CPlayer>::Create((float)msgCreatePlayer.x, (float)msgCreatePlayer.y);
-				static_cast<CPlayer*>(pObj)->Set_ID(msgCreatePlayer.id);
-				CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
-
-				wprintf_s(L"Create ID: %d\n", msgCreatePlayer.id);
-
-				m_iClientCnt++;
-				break;
-			}
-			case MOVE_RIGHT_PLAYER:
-			{
-				MSG_MOVE_RIGHT_PLAYER& msgMoveRight = (MSG_MOVE_RIGHT_PLAYER&)msg;
-				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveRight.id);
-
-				if (pPlayer) 
-				{
-					static_cast<CPlayer*>(pPlayer)->Set_MoveRight(true);
-				}
-				break;
-			}
-			case MOVE_LEFT_PLAYER:
-			{
-				MSG_MOVE_LEFT_PLAYER& msgMoveLeft = (MSG_MOVE_LEFT_PLAYER&)msg;
-				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveLeft.id);
-
-				if (pPlayer)
-				{
-					static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(true);
-				}
-				break;
-			}
-			case STOP_RIGHT_PLAYER:
-			{
-				MSG_STOP_RIGHT_PLAYER& msgStopLeft = (MSG_STOP_RIGHT_PLAYER&)msg;
-				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopLeft.id);
-
-				if (pPlayer)
-				{
-					static_cast<CPlayer*>(pPlayer)->Set_MoveRight(false);
-				}
-				break;
-			}
-			case STOP_LEFT_PLAYER:
-			{
-				MSG_STOP_LEFT_PLAYER& msgStopLeft = (MSG_STOP_LEFT_PLAYER&)msg;
-				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopLeft.id);
-
-				if (pPlayer)
-				{
-					static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(false);
-				}
-				break;
-			}
-			case DELETE_PLAYER:
-			{
-				MSG_DELETE_PLAYER& msgDelete = (MSG_DELETE_PLAYER&)msg;
-
-				cout << "Delete Player ID:" << msgDelete.id;
-				CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgDelete.id);
-				if (pPlayer)
-				{
-					pPlayer->Set_Dead();
-				}
-				break;
-			}
-            default:
-            {
-                wprintf(L"Unknown msg type: %d\n", type);
-				Release();
-                return;
-            }
-            }
-        }
-    }
+	Receive_Message();
+	Send_Message();
 }
 
 void CNetwork::Release()
@@ -196,7 +80,9 @@ void CNetwork::Release()
 	MSG_DELETE_PLAYER tMsg;
 	tMsg.type = DELETE_PLAYER;
 	tMsg.id = m_iMyID;
-	Send_Message((MSG_ID&)tMsg);
+
+	CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)tMsg, sizeof(MSG_DELETE_PLAYER));
+	//Send_Message((MSG_ID&)tMsg);
 
 	closesocket(m_hSocket);
 	WSACleanup();
@@ -211,3 +97,191 @@ void CNetwork::Send_Message(MSG_ID& tMsg)
 		wprintf_s(L"send() error:%d", WSAGetLastError());
 	}
 }
+
+void CNetwork::Send_Message()
+{
+	fd_set writeSet;
+	FD_ZERO(&writeSet);
+	FD_SET(m_hSocket, &writeSet);
+
+	timeval timeout{ 0, 0 }; // 즉시 반환
+
+	int retSelect = select(0, NULL, &writeSet, NULL, &timeout);
+	if (retSelect == SOCKET_ERROR)
+	{
+		wprintf_s(L"select() error: %d\n", WSAGetLastError());
+		exit(1);
+	}
+
+	if (retSelect == 0)
+		return;
+
+	char sendBuffer[BUF_SIZE];
+	int retPeek = m_sendQ.Peek(sendBuffer, m_sendQ.GetUseSize());
+	if (retPeek <= 0)
+		return;
+
+	int retSend = send(m_hSocket, sendBuffer, retPeek, 0);
+	if (retSend == SOCKET_ERROR)
+	{
+		wprintf_s(L"send() error: %d\n", WSAGetLastError());
+		return;
+	}
+
+	// 보낸 만큼만 MoveFront()
+	m_sendQ.MoveFront(retSend);
+}
+
+
+int CNetwork::Enqueue_SendQ(MSG_ID& tMsg, int iSize)
+{
+	tMsg.iID = m_iMyID;
+	int iResult = m_sendQ.Enqueue((char*)&tMsg, iSize);
+
+	if (iResult < iSize)
+		wprintf_s(L"sendQ.Enqueue() error\n");
+
+	return iResult;
+}
+
+void CNetwork::Receive_Message()
+{
+	fd_set TempSet;
+	timeval TimeOut{ 0,0 };
+	char Buffer[BUF_SIZE] = { 0, };
+	TempSet = m_ReadSet;
+
+	int retSelect = select(0, &TempSet, 0, 0, &TimeOut);
+
+	if (WSAGetLastError() == WSAEWOULDBLOCK || retSelect == 0)
+		return;
+
+	if (retSelect == SOCKET_ERROR)
+	{
+		wprintf_s(L"select() error:%d\n", WSAGetLastError());
+		return;
+	}
+
+	if (FD_ISSET(m_hSocket, &TempSet))
+	{
+		int iResultRecv = recv(m_hSocket, Buffer, sizeof(Buffer), 0);
+		if (iResultRecv == SOCKET_ERROR)
+		{
+			wprintf_s(L"recv() error:%d\n", WSAGetLastError());
+			return;
+		}
+
+		m_recvQ.Enqueue(Buffer, iResultRecv);
+
+		while (true)
+		{
+			if (m_recvQ.GetUseSize() < MSG_SIZE)
+				break;//중단
+
+			char Msg[16];
+			int iResult = m_recvQ.Dequeue(Msg, MSG_SIZE);
+			if (iResult < MSG_SIZE)
+				exit(1);//결함
+
+			int iType{ 0 };
+			if (iResult > 0)
+			{
+				memcpy(&iType, Msg, sizeof(int));
+				Decode_Message(iType, Msg);
+			}
+		}
+	}
+}
+
+void CNetwork::Decode_Message(int iType, char* pMsg)
+{
+	switch (iType)
+	{
+	case ALLOC_ID:
+	{
+		MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)pMsg;
+		m_iMyID = msgAllocID->id;
+		wprintf_s(L"MyID %d\n", msgAllocID->id);
+		break;
+	}
+	case CREATE_PLAYER:
+	{
+		MSG_CREATE_PLAYER* msgCreatePlayer = (MSG_CREATE_PLAYER*)pMsg;
+		m_ClientArr[m_iClientCnt].id = msgCreatePlayer->id;
+		m_ClientArr[m_iClientCnt].x = msgCreatePlayer->x;
+		m_ClientArr[m_iClientCnt].y = msgCreatePlayer->y;
+
+		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)msgCreatePlayer->x, (float)msgCreatePlayer->y);
+		static_cast<CPlayer*>(pObj)->Set_ID(msgCreatePlayer->id);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+
+		wprintf_s(L"Create ID: %d\n", msgCreatePlayer->id);
+
+		m_iClientCnt++;
+		break;
+	}
+	case MOVE_RIGHT_PLAYER:
+	{
+		MSG_MOVE_RIGHT_PLAYER* msgMoveRight = (MSG_MOVE_RIGHT_PLAYER*)pMsg;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveRight->id);
+
+		if (pPlayer)
+		{
+			static_cast<CPlayer*>(pPlayer)->Set_MoveRight(true);
+		}
+		break;
+	}
+	case MOVE_LEFT_PLAYER:
+	{
+		MSG_MOVE_LEFT_PLAYER* msgMoveLeft = (MSG_MOVE_LEFT_PLAYER*)pMsg;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveLeft->id);
+
+		if (pPlayer)
+		{
+			static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(true);
+		}
+		break;
+	}
+	case STOP_RIGHT_PLAYER:
+	{
+		MSG_STOP_RIGHT_PLAYER* msgStopRight = (MSG_STOP_RIGHT_PLAYER*)pMsg;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopRight->id);
+
+		if (pPlayer)
+		{
+			static_cast<CPlayer*>(pPlayer)->Set_MoveRight(false);
+		}
+		break;
+	}
+	case STOP_LEFT_PLAYER:
+	{
+		MSG_STOP_LEFT_PLAYER* msgStopLeft = (MSG_STOP_LEFT_PLAYER*)pMsg;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopLeft->id);
+
+		if (pPlayer)
+		{
+			static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(false);
+		}
+		break;
+	}
+	case DELETE_PLAYER:
+	{
+		MSG_DELETE_PLAYER* msgDelete = (MSG_DELETE_PLAYER*)pMsg;
+
+		cout << "Delete Player ID: " << msgDelete->id;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgDelete->id);
+		if (pPlayer)
+		{
+			pPlayer->Set_Dead();
+		}
+		break;
+	}
+	default:
+	{
+		wprintf(L"Unknown msg type: %d\n", iType);
+		Release();
+		return;
+	}
+	}
+}
+

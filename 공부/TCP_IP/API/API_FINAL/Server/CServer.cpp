@@ -79,52 +79,13 @@ void CServer::Release()
 
 bool CServer::Network()
 {
-    fd_set tCpySet;
-    FD_ZERO(&m_tReadSet);
-    FD_SET(m_ServSock, &m_tReadSet);
-    TIMEVAL tTimeOut = { 0, 0 };
-
-    for (int i = 0; i < m_iSessionCnt; i++)
-    {
-        FD_SET(m_arrSession[i].clntSock, &m_tReadSet);
-    }
-
-    tCpySet = m_tReadSet;
-
-    int iResult = select(0, &tCpySet, NULL, NULL, &tTimeOut);
-    if (iResult == SOCKET_ERROR) 
-    {
-        wprintf_s(L"select() error:%d\n", WSAGetLastError());
-        return false;
-    }
-
-    if (iResult > 0)
-    {
-        for (u_int i = 0; i < m_tReadSet.fd_count; i++)
-        {
-            if (FD_ISSET(m_tReadSet.fd_array[i], &tCpySet))
-            {
-                if (m_tReadSet.fd_array[i] == m_ServSock)
-                {
-                    AcceptProc();// 클라이언트 연결 처리
-                }
-                else
-                {
-                    for (int j = 0; j < m_iSessionCnt; j++)
-                    {
-                        if (m_tReadSet.fd_array[i] == m_arrSession[j].clntSock)
-                        {
-                            Read_Proc(&m_arrSession[j]); // 데이터 수신 처리
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    Recieve_Message();
+    // 메시지 전송 처리
     Send_Message();
+
     return true;
 }
+
 
 void CServer::AcceptProc()
 {
@@ -252,19 +213,18 @@ void CServer::Read_Proc(SESSION* pSession)
         if (iResult > 0)
         {
             memcpy(&iType, Buffer, sizeof(int));
+            Decode_Message(iType, Msg);
         }
-
-        Decode_Message(iType, Buffer);
     }
 }
 
-void CServer::Decode_Message(int iType, char* pBuffer)
+void CServer::Decode_Message(int iType, char* pMsg)
 {
     switch (iType)
     {
     case MOVE_RIGHT_PLAYER:
     {
-        MSG_MOVE_RIGHT_PLAYER& recvMSG = (MSG_MOVE_RIGHT_PLAYER&)*pBuffer;
+        MSG_MOVE_RIGHT_PLAYER& recvMSG = (MSG_MOVE_RIGHT_PLAYER&)*pMsg;
         wprintf_s(L"%d: MOVE_RIGHT_PLAYER\n", recvMSG.id);
 
         MSG_MOVE_RIGHT_PLAYER msgMoveRight;
@@ -275,7 +235,7 @@ void CServer::Decode_Message(int iType, char* pBuffer)
     }
     case MOVE_LEFT_PLAYER:
     {
-        MSG_MOVE_LEFT_PLAYER& recvMSG = (MSG_MOVE_LEFT_PLAYER&)*pBuffer;
+        MSG_MOVE_LEFT_PLAYER& recvMSG = (MSG_MOVE_LEFT_PLAYER&)*pMsg;
         wprintf_s(L"%d: MOVE_LEFT_PLAYER\n", recvMSG.id);
 
         MSG_MOVE_LEFT_PLAYER msgMoveLeft;
@@ -286,7 +246,7 @@ void CServer::Decode_Message(int iType, char* pBuffer)
     }
     case STOP_RIGHT_PLAYER:
     {
-        MSG_STOP_RIGHT_PLAYER& recvMSG = (MSG_STOP_RIGHT_PLAYER&)*pBuffer;
+        MSG_STOP_RIGHT_PLAYER& recvMSG = (MSG_STOP_RIGHT_PLAYER&)*pMsg;
         wprintf_s(L"%d: STOP_RIGHT_PLAYER\n", recvMSG.id);
 
         MSG_STOP_RIGHT_PLAYER msgStopRight;
@@ -297,7 +257,7 @@ void CServer::Decode_Message(int iType, char* pBuffer)
     }
     case STOP_LEFT_PLAYER:
     {
-        MSG_STOP_LEFT_PLAYER& recvMSG = (MSG_STOP_LEFT_PLAYER&)*pBuffer;
+        MSG_STOP_LEFT_PLAYER& recvMSG = (MSG_STOP_LEFT_PLAYER&)*pMsg;
         wprintf_s(L"%d: STOP_LEFT_PLAYER\n", recvMSG.id);
 
         MSG_STOP_LEFT_PLAYER msgStopLeft;
@@ -308,7 +268,7 @@ void CServer::Decode_Message(int iType, char* pBuffer)
     }
     case DELETE_PLAYER:
     {
-        MSG_DELETE_PLAYER& recvMSG = (MSG_DELETE_PLAYER&)*pBuffer;
+        MSG_DELETE_PLAYER& recvMSG = (MSG_DELETE_PLAYER&)*pMsg;
         wprintf_s(L"%d: DELETE_PLAYER\n", recvMSG.id);
 
         MSG_DELETE_PLAYER msgDeletePlayer;
@@ -317,6 +277,89 @@ void CServer::Decode_Message(int iType, char* pBuffer)
         Send_Broadcast(&m_arrSession[msgDeletePlayer.id], (MSG_BASE*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
         break;
     }
+    }
+}
+
+void CServer::Recieve_Message()
+{
+    fd_set tCpySet;
+    FD_ZERO(&m_tReadSet);
+    FD_SET(m_ServSock, &m_tReadSet);
+
+    // 타임아웃 설정 (0초, 0마이크로초)
+    TIMEVAL tTimeOut = { 0, 0 };
+
+    // 클라이언트 소켓을 읽기 집합에 추가
+    for (int i = 0; i < m_iSessionCnt; i++)
+    {
+        FD_SET(m_arrSession[i].clntSock, &m_tReadSet);
+    }
+
+    // 소켓 상태를 확인하기 위한 복사본
+    tCpySet = m_tReadSet;
+
+    // select() 호출
+    int iResult = select(0, &tCpySet, NULL, NULL, &tTimeOut);
+    if (iResult == SOCKET_ERROR)
+    {
+        wprintf_s(L"select() error:%d\n", WSAGetLastError());
+        return;  // 오류가 발생하면 종료
+    }
+
+    // select()가 성공적으로 완료된 경우
+    if (iResult > 0)
+    {
+        // 선택된 소켓들을 순차적으로 처리
+        for (u_int i = 0; i < tCpySet.fd_count; i++)
+        {
+            SOCKET currentSock = tCpySet.fd_array[i];
+
+            // 서버 소켓(새로운 클라이언트 연결) 처리
+            if (currentSock == m_ServSock)
+            {
+                AcceptProc(); // 클라이언트 연결 처리
+            }
+            else
+            {
+                // 클라이언트 소켓에 대해 처리
+                bool sessionFound = false;
+                for (int j = 0; j < m_iSessionCnt; j++)
+                {
+                    if (m_arrSession[j].clntSock == currentSock)
+                    {
+                        sessionFound = true;
+
+                        // 데이터 수신 전 소켓 상태 확인
+                        char buffer[1];
+                        int result = recv(currentSock, buffer, sizeof(buffer), MSG_PEEK);
+                        if (result <= 0) // 연결 종료되었거나 오류 발생
+                        {
+                            MSG_DELETE_PLAYER tMSG;
+                            tMSG.type = DELETE_PLAYER;
+                            tMSG.id = m_arrSession[j].id;
+                            Send_Broadcast(NULL, (MSG_BASE*)&tMSG, sizeof(MSG_BASE));
+
+                            // 클라이언트 소켓 종료 처리
+                            closesocket(m_arrSession[j].clntSock);
+
+                            // 세션 배열에서 해당 클라이언트 제거
+                            m_arrSession[j] = m_arrSession[m_iSessionCnt - 1];
+                            m_iSessionCnt--;  // 세션 카운트 감소
+                        }
+                        else
+                        {
+                            Read_Proc(&m_arrSession[j]); // 정상적인 데이터 수신 처리
+                        }
+                    }
+                }
+
+                // 세션에 해당하지 않는 소켓은 종료
+                if (!sessionFound)
+                {
+                    closesocket(currentSock);
+                }
+            }
+        }
     }
 }
 
