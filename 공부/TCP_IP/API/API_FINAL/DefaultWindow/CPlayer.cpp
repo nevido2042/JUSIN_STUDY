@@ -171,6 +171,11 @@ void CPlayer::Release()
 
 void CPlayer::Key_Input()
 {
+	if (g_hWnd != GetForegroundWindow())
+	{
+		return;
+	}
+
 	float	fY(0.f);
 
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT))

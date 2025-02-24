@@ -71,19 +71,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\DefaultWindow</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IncludePath>../Header/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\DefaultWindow</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IncludePath>../Header/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\DefaultWindow</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IncludePath>../Header/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\DefaultWindow</OutDir>
+    <OutDir>..\bin\</OutDir>
     <IncludePath>../Header/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CRingBuffer.cpp" />
     <ClCompile Include="CServer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp">
@@ -157,6 +158,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CRingBuffer.h" />
     <ClInclude Include="CServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

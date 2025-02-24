@@ -16,6 +16,9 @@
     <Filter Include="00. Server">
       <UniqueIdentifier>{71dbeec5-ae3a-44a2-9765-5ece69db1e29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. RingBuffer">
+      <UniqueIdentifier>{efe7d005-a50a-4512-bc8e-d0b76559e2b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -27,10 +30,16 @@
     <ClCompile Include="CServer.cpp">
       <Filter>00. Server</Filter>
     </ClCompile>
+    <ClCompile Include="CRingBuffer.cpp">
+      <Filter>01. RingBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
       <Filter>00. Server</Filter>
+    </ClInclude>
+    <ClInclude Include="CRingBuffer.h">
+      <Filter>01. RingBuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

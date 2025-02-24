@@ -3,19 +3,25 @@
 #include <WS2tcpip.h>
 #include <array>
 #include "MSG.h"
+#include "CRingBuffer.h" 
 
 using namespace std;
+
+#define BUF_SIZE 1024
 
 #define PORT L"2042"
 #define SESSION_MAX 30
 
 typedef struct tagSession
 {
-	SOCKADDR_IN clntAdr;
+	SOCKADDR_IN clntAdr{};
 	SOCKET clntSock = INVALID_SOCKET;
 	int id = 0;
 	int x = 0;
 	int y = 0;
+	//링버퍼
+	CRingBuffer recvQ;
+	CRingBuffer sendQ;
 }SESSION;
 
 class CServer
@@ -30,14 +36,20 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(const SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
-	void Send_Broadcast(const SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
-	void Read_Proc(const SESSION* pSession);
+	void Send_Unicast(SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
+	void Send_Broadcast(SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
+	void Read_Proc(SESSION* pSession);
+	void Decode_Message(int iType, char* pBuffer);
+	void Send_Message();
 private:
 	SOCKET						m_ServSock;
 	array<SESSION, SESSION_MAX> m_arrSession;
 	int							m_iSessionCnt;
 	int							m_iID;
 	fd_set						m_tReadSet;
+
+	//링버퍼
+	CRingBuffer					m_RecvQ;
+	CRingBuffer					m_SendQ;
 };
 

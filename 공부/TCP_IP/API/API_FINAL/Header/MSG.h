@@ -1,5 +1,7 @@
 #pragma once
 
+#define MSG_SIZE 16
+
 enum MSG_TYPE 
 {
     ALLOC_ID, CREATE_PLAYER, DELETE_PLAYER,
