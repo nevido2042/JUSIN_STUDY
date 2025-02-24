@@ -4,7 +4,7 @@
 
 CServer::CServer()
     :m_ServSock(INVALID_SOCKET),
-    m_iSessionCnt(0),
+    //m_iSessionCnt(0),
     m_iID(0)
 {
     ZeroMemory(&m_tReadSet, sizeof(fd_set));
@@ -107,28 +107,28 @@ void CServer::AcceptProc()
 
         cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
-        m_arrSession[m_iSessionCnt] = { clntAdr, clntSock, m_iID, rand() % 800, rand() % 600 };
+        SESSION* pNewSession = new SESSION(clntAdr, clntSock, m_iID, rand() % 400, rand() % 300);
+        m_vecSession.push_back(pNewSession);
         //링버퍼 초기화
-        m_arrSession[m_iSessionCnt].recvQ = CRingBuffer(5000);
-        m_arrSession[m_iSessionCnt].sendQ = CRingBuffer(5000);
+        m_vecSession.back()->recvQ = CRingBuffer(5000);
+        m_vecSession.back()->sendQ = CRingBuffer(5000);
 
         // 클라이언트에게 ID 전송
         MSG_ALLOC_ID msgAllocID = { ALLOC_ID, m_iID };
-        Send_Unicast(&m_arrSession[m_iSessionCnt], (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
+        Send_Unicast(m_vecSession.back(), (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
 
         // 기존 클라이언트 정보 전송
         MSG_CREATE_PLAYER tMSG = { CREATE_PLAYER, m_iID };
-        for (int i = 0; i < m_iSessionCnt + 1; i++)
+        for (int i = 0; i < m_vecSession.size() + 1; i++)
         {
-            tMSG.id = m_arrSession[i].id;
-            tMSG.x = m_arrSession[i].x;
-            tMSG.y = m_arrSession[i].y;
-            Send_Unicast(&m_arrSession[m_iSessionCnt], (MSG_BASE*)&tMSG, sizeof(tMSG));
+            tMSG.id = m_vecSession.back()->id;
+            tMSG.x = m_vecSession.back()->x;
+            tMSG.y = m_vecSession.back()->y;
+            Send_Unicast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
         }
 
         Send_Broadcast(NULL, (MSG_BASE*)&tMSG, sizeof(tMSG));
 
-        m_iSessionCnt++;
         m_iID++;
     }
 }
@@ -144,15 +144,16 @@ void CServer::Send_Unicast(SESSION* pSession, const MSG_BASE* pMSG, const int iS
     }
 }
 
-void CServer::Send_Broadcast(SESSION* pSession, const MSG_BASE* pMSG, const int iSize)
+void CServer::Send_Broadcast(SESSION* _pSession, const MSG_BASE* pMSG, const int iSize)
 {
     int iResult{ 0 };
-    for (int i = 0; i < m_iSessionCnt; i++)
+
+    for (SESSION* pSession : m_vecSession)
     {
-        if (pSession == &m_arrSession[i])
+        if (pSession == _pSession)
             continue;
 
-        iResult = m_arrSession[i].sendQ.Enqueue((char*)pMSG, iSize);
+        iResult = pSession->sendQ.Enqueue((char*)pMSG, iSize);
         if (iResult < iSize)
         {
             wprintf_s(L"sendQ.Enqueue() error\n");
@@ -177,15 +178,15 @@ void CServer::Read_Proc(SESSION* pSession)
         }
 
         // 세션 목록에서 제거
-        for (int i = 0; i < m_iSessionCnt - 1; i++)
+        /*for (int i = 0; i < m_iSessionCnt - 1; i++)
         {
-            if (m_arrSession[i].clntSock == pSession->clntSock)
+            if (m_vecSession[i].clntSock == pSession->clntSock)
             {
-                m_arrSession[i] = m_arrSession[m_iSessionCnt - 1];
+                m_vecSession[i] = m_vecSession[m_iSessionCnt - 1];
                 m_iSessionCnt--;
                 break;
             }
-        }
+        }*/
 
         // 소켓 정리
         FD_CLR(pSession->clntSock, &m_tReadSet);
@@ -274,7 +275,7 @@ void CServer::Decode_Message(int iType, char* pMsg)
         MSG_DELETE_PLAYER msgDeletePlayer;
         msgDeletePlayer.id = recvMSG.id;
 
-        Send_Broadcast(&m_arrSession[msgDeletePlayer.id], (MSG_BASE*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
+        Send_Broadcast(&m_vecSession[msgDeletePlayer.id], (MSG_BASE*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
         break;
     }
     }
@@ -290,9 +291,10 @@ void CServer::Recieve_Message()
     TIMEVAL tTimeOut = { 0, 0 };
 
     // 클라이언트 소켓을 읽기 집합에 추가
-    for (int i = 0; i < m_iSessionCnt; i++)
+
+    for (SESSION* pSession : m_vecSession)
     {
-        FD_SET(m_arrSession[i].clntSock, &m_tReadSet);
+        FD_SET(pSession->clntSock, &m_tReadSet);
     }
 
     // 소켓 상태를 확인하기 위한 복사본
@@ -325,7 +327,7 @@ void CServer::Recieve_Message()
                 bool sessionFound = false;
                 for (int j = 0; j < m_iSessionCnt; j++)
                 {
-                    if (m_arrSession[j].clntSock == currentSock)
+                    if (m_vecSession[j].clntSock == currentSock)
                     {
                         sessionFound = true;
 
@@ -336,19 +338,19 @@ void CServer::Recieve_Message()
                         {
                             MSG_DELETE_PLAYER tMSG;
                             tMSG.type = DELETE_PLAYER;
-                            tMSG.id = m_arrSession[j].id;
+                            tMSG.id = m_vecSession[j].id;
                             Send_Broadcast(NULL, (MSG_BASE*)&tMSG, sizeof(MSG_BASE));
 
                             // 클라이언트 소켓 종료 처리
-                            closesocket(m_arrSession[j].clntSock);
+                            closesocket(m_vecSession[j].clntSock);
 
                             // 세션 배열에서 해당 클라이언트 제거
-                            m_arrSession[j] = m_arrSession[m_iSessionCnt - 1];
+                            m_vecSession[j] = m_vecSession[m_iSessionCnt - 1];
                             m_iSessionCnt--;  // 세션 카운트 감소
                         }
                         else
                         {
-                            Read_Proc(&m_arrSession[j]); // 정상적인 데이터 수신 처리
+                            Read_Proc(&m_vecSession[j]); // 정상적인 데이터 수신 처리
                         }
                     }
                 }
@@ -372,8 +374,8 @@ void CServer::Send_Message()
     //플레이어 세션들의 sendQ 사용여부를 확인하고 세트에 넣는다.
     for (int i = 0; i < m_iSessionCnt; i++)
     {
-        if (m_arrSession[i].sendQ.GetUseSize() > 0)
-            FD_SET(m_arrSession[i].clntSock, &writeSet);
+        if (m_vecSession[i].sendQ.GetUseSize() > 0)
+            FD_SET(m_vecSession[i].clntSock, &writeSet);
     }
 
     TIMEVAL tTimeOut = { 0, 0 };
@@ -390,18 +392,18 @@ void CServer::Send_Message()
             {
                 for (int j = 0; j < m_iSessionCnt; j++)
                 {
-                    if (m_arrSession[j].clntSock != writeSet.fd_array[j])
+                    if (m_vecSession[j].clntSock != writeSet.fd_array[j])
                         continue;
 
                     int iPeek{};
-                    iPeek = m_arrSession[j].sendQ.Peek(Buffer, m_arrSession[j].sendQ.GetUseSize());
+                    iPeek = m_vecSession[j].sendQ.Peek(Buffer, m_vecSession[j].sendQ.GetUseSize());
 
                     int iSend{};
-                    iSend = send(m_arrSession[j].clntSock, Buffer, iPeek, 0);
+                    iSend = send(m_vecSession[j].clntSock, Buffer, iPeek, 0);
                     if (iSend == SOCKET_ERROR)
                         wprintf_s(L"send() error:%d\n", WSAGetLastError());
 
-                    m_arrSession[j].sendQ.MoveFront(iSend);
+                    m_vecSession[j].sendQ.MoveFront(iSend);
                 }
             }
         }

@@ -1,7 +1,7 @@
 #pragma once
 #include <WinSock2.h>
 #include <WS2tcpip.h>
-#include <array>
+#include <vector>
 #include "MSG.h"
 #include "CRingBuffer.h" 
 
@@ -14,6 +14,14 @@ using namespace std;
 
 typedef struct tagSession
 {
+	tagSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, int _id , int _x, int _y)
+	{
+		clntAdr = _clntAdr;
+		clntSock = _clntSock;
+		id = _id;
+		x = _x;
+		y = _y;
+	}
 	SOCKADDR_IN clntAdr{};
 	SOCKET clntSock = INVALID_SOCKET;
 	int id = 0;
@@ -44,8 +52,8 @@ private:
 	void Send_Message();
 private:
 	SOCKET						m_ServSock;
-	array<SESSION, SESSION_MAX> m_arrSession;
-	int							m_iSessionCnt;
+	vector<SESSION*>				m_vecSession;
+	//int							m_iSessionCnt;
 	int							m_iID;
 	fd_set						m_tReadSet;
 };
