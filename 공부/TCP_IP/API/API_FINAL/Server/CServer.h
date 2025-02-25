@@ -7,6 +7,9 @@
 
 using namespace std;
 
+#define WINCX 800
+#define WINCY 600
+
 #define BUF_SIZE 1024
 
 #define PORT L"2042"

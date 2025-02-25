@@ -268,7 +268,7 @@ void CNetwork::Decode_Message(int iType, char* pMsg)
 	{
 		MSG_DELETE_PLAYER* msgDelete = (MSG_DELETE_PLAYER*)pMsg;
 
-		cout << "Delete Player ID: " << msgDelete->id;
+		cout << "Delete Player ID: " << msgDelete->id << endl;
 		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgDelete->id);
 		if (pPlayer)
 		{
