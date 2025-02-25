@@ -107,8 +107,8 @@ void CServer::AcceptProc()
 
         cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
-        int iRandX = (WINCX / 2) + rand() % (WINCX / 2);
-        int iRandY = (WINCY / 2) + rand() % (WINCY / 2);
+        int iRandX = (WINCX / 10) + rand() % (WINCX / 2);
+        int iRandY = (WINCY / 10) + rand() % (WINCY / 2);
 
         SESSION* pNewSession = new SESSION(clntAdr, clntSock, m_iID, iRandX, iRandY);
         m_vecSession.push_back(pNewSession);
@@ -167,47 +167,60 @@ void CServer::Send_Broadcast(SESSION* _pSession, const MSG_BASE* pMSG, const int
 
 }
 
-void CServer::Read_Proc(SESSION* pSession)
+void CServer::Read_Proc(SESSION* _pSession)
 {
-    char Buffer[BUF_SIZE];
-
-    int iResult = recv(pSession->clntSock, Buffer, sizeof(Buffer), 0);
-    int iErrCode = WSAGetLastError();
-
-    if (iResult == 0 || (iResult == SOCKET_ERROR && iErrCode != WSAEWOULDBLOCK))
+    //recvQ에 다이렉트로 꽂는다.
+    if (_pSession->recvQ.DirectEnqueueSize() > 0)
     {
-        if (iErrCode)
+        int retRecv = recv(_pSession->clntSock, _pSession->recvQ.GetRearBufferPtr() + 1, _pSession->recvQ.DirectEnqueueSize(), 0);
+
+        if (retRecv == 0)
         {
-            wprintf_s(L"recv() error: %d\n", iErrCode);
+            Delete_Session(_pSession);
+            return;
+        }
+        if (retRecv == SOCKET_ERROR)
+        {
+            if (WSAGetLastError() == WSAEWOULDBLOCK)
+                return;
+
+            Delete_Session(_pSession);
+            wprintf_s(L"recv() Error:%d(Line:%d)\n", WSAGetLastError(), __LINE__);
+            return;
         }
 
-        // 세션 목록에서 제거
-        /*for (int i = 0; i < m_iSessionCnt - 1; i++)
-        {
-            if (m_vecSession[i].clntSock == pSession->clntSock)
-            {
-                m_vecSession[i] = m_vecSession[m_iSessionCnt - 1];
-                m_iSessionCnt--;
-                break;
-            }
-        }*/
-
-        // 소켓 정리
-        FD_CLR(pSession->clntSock, &m_tReadSet);
-        closesocket(pSession->clntSock);
+        _pSession->recvQ.MoveRear(retRecv);
     }
+    else//버퍼를 통해 리시브큐로 꽂는다.
+    {
+        char Buffer[BUF_SIZE];
+        int iResult = recv(_pSession->clntSock, Buffer, sizeof(Buffer), 0);
+        int iErrCode = WSAGetLastError();
 
-    pSession->recvQ.Enqueue(Buffer, iResult);
+        if (iResult == 0 || (iResult == SOCKET_ERROR && iErrCode != WSAEWOULDBLOCK))
+        {
+            if (iErrCode)
+            {
+                wprintf_s(L"recv() error: %d\n", iErrCode);
+            }
+
+            // 소켓 정리
+            FD_CLR(_pSession->clntSock, &m_tReadSet);
+            closesocket(_pSession->clntSock);
+        }
+
+        _pSession->recvQ.Enqueue(Buffer, iResult);
+    }
 
     while (true)
     {
-        if (pSession->recvQ.GetUseSize() < MSG_SIZE)
+        if (_pSession->recvQ.GetUseSize() < MSG_SIZE)
             break;//중단
 
         char Msg[MSG_SIZE];
 
         int iResult{ 0 };
-        iResult = pSession->recvQ.Dequeue(Msg, MSG_SIZE);
+        iResult = _pSession->recvQ.Dequeue(Msg, MSG_SIZE);
         if (iResult != MSG_SIZE)
         {
             //결함
@@ -217,7 +230,7 @@ void CServer::Read_Proc(SESSION* pSession)
         int iType{ 0 };
         if (iResult > 0)
         {
-            memcpy(&iType, Buffer, sizeof(int));
+            memcpy(&iType, Msg, sizeof(int));
             Decode_Message(iType, Msg);
         }
     }
@@ -406,6 +419,32 @@ void CServer::Send_Message()
                     m_vecSession[j]->sendQ.MoveFront(iSend);
                 }
             }
+        }
+    }
+}
+
+void CServer::Delete_Session(SESSION* _pSession)
+{
+    //클로즈 소켓
+    closesocket(_pSession->clntSock);
+
+    //브로드 캐스트 캐릭터 삭제
+    MSG_DELETE_PLAYER tMsg;
+    tMsg.id = _pSession->id;
+    tMsg.type = DELETE_PLAYER;
+    wprintf_s(L"id:%d Disconnect\n", _pSession->id);
+    Send_Broadcast(_pSession, (MSG_BASE*)&tMsg, sizeof(MSG_BASE));
+
+    //세션 정리
+    for (auto iter = m_vecSession.begin(); iter != m_vecSession.end();)
+    {
+        if ((*iter)->id == _pSession->id)
+        {
+            iter = m_vecSession.erase(iter);
+        }
+        else
+        {
+            ++iter;
         }
     }
 }

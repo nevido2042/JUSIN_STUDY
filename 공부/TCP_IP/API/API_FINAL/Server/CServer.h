@@ -53,6 +53,7 @@ private:
 	void Decode_Message(int iType, char* pMsg);
 	void Recieve_Message();
 	void Send_Message();
+	void Delete_Session(SESSION* pSession);
 private:
 	SOCKET						m_ServSock;
 	vector<SESSION*>				m_vecSession;
