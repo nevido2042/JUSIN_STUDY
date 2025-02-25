@@ -111,33 +111,86 @@ void CServer::AcceptProc()
         int iRandY = (WINCY / 10) + rand() % (WINCY / 2);
 
         SESSION* pNewSession = new SESSION(clntAdr, clntSock, m_iID, iRandX, iRandY);
-        m_vecSession.push_back(pNewSession);
         //링버퍼 초기화
-        m_vecSession.back()->recvQ = CRingBuffer(5000);
-        m_vecSession.back()->sendQ = CRingBuffer(5000);
+        pNewSession->recvQ = CRingBuffer(5000);
+        pNewSession->sendQ = CRingBuffer(5000);
 
-        // 클라이언트에게 ID 전송
-        MSG_ALLOC_ID msgAllocID = { ALLOC_ID, m_iID };
-        Send_Unicast(m_vecSession.back(), (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
+        //신입에게 니 캐릭터 만들어라 패킷 작성
+        tagPACKET_SC_CREATE_MY_CHARACTER tSC_Create_My_Character
+        {
+            pNewSession->iID,
+            pNewSession->iX,
+            pNewSession->iY
+        };
 
-        //기존 유저에게는 신입만 생성하도록
-        MSG_CREATE_PLAYER tMSG = { CREATE_PLAYER, m_iID, m_vecSession.back()->x, m_vecSession.back()->y };
-        Send_Broadcast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
+        //헤더 작성
+        tagPACKET_HEADER tPacketHeader;
+        tPacketHeader.BYTEbyCode = (char)0x20;
+        tPacketHeader.BYTEbySize = sizeof(tSC_Create_My_Character);
+        tPacketHeader.BYTEbyType = PACKET_SC_CREATE_MY_CHARACTER;
+
+        Send_Unicast(pNewSession, (char*)&tPacketHeader, sizeof(tPacketHeader));
+        Send_Unicast(pNewSession, (char*)&tSC_Create_My_Character, sizeof(tSC_Create_My_Character));
+
+        //기존 유저에게 신입 뿌리기
+        tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
+        {
+            pNewSession->iID,
+            pNewSession->iX,
+            pNewSession->iY
+        };
+
+        //헤더 작성
+        tPacketHeader.BYTEbyCode = (char)0x20;
+        tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
+        tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
+
+        Send_Broadcast(pNewSession, (char*)&tPacketHeader, sizeof(tPacketHeader));
+        Send_Broadcast(pNewSession, (char*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
 
         //신입에게는 자신 포함한 모두를 생성하라하고
         for (size_t i = 0; i < m_vecSession.size(); i++)
         {
-            tMSG.id = m_vecSession[i]->id;
-            tMSG.x = m_vecSession[i]->x;
-            tMSG.y = m_vecSession[i]->y;
-            Send_Unicast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
+            //기존유저 정보 중 하나
+            tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
+            {
+                m_vecSession[i]->iID,
+                m_vecSession[i]->iX,
+                m_vecSession[i]->iY
+            };
+
+            //헤더 작성
+            tagPACKET_HEADER tPacketHeader;
+            tPacketHeader.BYTEbyCode = (char)0x20;
+            tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
+            tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
+
+            Send_Unicast(pNewSession, (char*)&tPacketHeader, sizeof(tPacketHeader));
+            Send_Unicast(pNewSession, (char*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
         }
 
+        //// 클라이언트에게 ID 전송
+        //MSG_ALLOC_ID msgAllocID = { ALLOC_ID, m_iID };
+        //Send_Unicast(m_vecSession.back(), (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
+
+        ////기존 유저에게는 신입만 생성하도록
+        //MSG_CREATE_PLAYER tMSG = { CREATE_PLAYER, m_iID, m_vecSession.back()->iX, m_vecSession.back()->iY };
+        //Send_Broadcast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
+
+        ////신입에게는 자신 포함한 모두를 생성하라하고
+        //for (size_t i = 0; i < m_vecSession.size(); i++)
+        //{
+        //    tMSG.id = m_vecSession[i]->iID;
+        //    tMSG.x = m_vecSession[i]->iX;
+        //    tMSG.y = m_vecSession[i]->iY;
+        //    Send_Unicast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
+        //}
+        m_vecSession.push_back(pNewSession);
         m_iID++;
     }
 }
 
-void CServer::Send_Unicast(SESSION* pSession, const MSG_BASE* pMSG, const int iSize)
+void CServer::Send_Unicast(SESSION* pSession, const char* pMSG, const int iSize)
 {
     int iResult{ 0 };
     iResult = pSession->sendQ.Enqueue((char*)pMSG, iSize);
@@ -148,7 +201,7 @@ void CServer::Send_Unicast(SESSION* pSession, const MSG_BASE* pMSG, const int iS
     }
 }
 
-void CServer::Send_Broadcast(SESSION* _pSession, const MSG_BASE* pMSG, const int iSize)
+void CServer::Send_Broadcast(SESSION* _pSession, const char* pMSG, const int iSize)
 {
     int iResult{ 0 };
 
@@ -248,7 +301,7 @@ void CServer::Decode_Message(int iType, char* pMsg)
         MSG_MOVE_RIGHT_PLAYER msgMoveRight;
         msgMoveRight.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (MSG_BASE*)&msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
+        Send_Broadcast(NULL, (char*)&msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
         break;
     }
     case MOVE_LEFT_PLAYER:
@@ -259,7 +312,7 @@ void CServer::Decode_Message(int iType, char* pMsg)
         MSG_MOVE_LEFT_PLAYER msgMoveLeft;
         msgMoveLeft.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (MSG_BASE*)&msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
+        Send_Broadcast(NULL, (char*)&msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
         break;
     }
     case STOP_RIGHT_PLAYER:
@@ -270,7 +323,7 @@ void CServer::Decode_Message(int iType, char* pMsg)
         MSG_STOP_RIGHT_PLAYER msgStopRight;
         msgStopRight.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (MSG_BASE*)&msgStopRight, sizeof(MSG_STOP_RIGHT_PLAYER));
+        Send_Broadcast(NULL, (char*)&msgStopRight, sizeof(MSG_STOP_RIGHT_PLAYER));
         break;
     }
     case STOP_LEFT_PLAYER:
@@ -281,7 +334,7 @@ void CServer::Decode_Message(int iType, char* pMsg)
         MSG_STOP_LEFT_PLAYER msgStopLeft;
         msgStopLeft.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (MSG_BASE*)&msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
+        Send_Broadcast(NULL, (char*)&msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
         break;
     }
     case DELETE_PLAYER:
@@ -294,7 +347,7 @@ void CServer::Decode_Message(int iType, char* pMsg)
         
         //세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
 
-        Send_Broadcast(NULL/*&m_vecSession[msgDeletePlayer.id]*/, (MSG_BASE*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
+        Send_Broadcast(NULL/*&m_vecSession[msgDeletePlayer.id]*/, (char*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
         break;
     }
     }
@@ -353,8 +406,8 @@ void CServer::Recieve_Message()
                         {
                             MSG_DELETE_PLAYER tMSG;
                             tMSG.type = DELETE_PLAYER;
-                            tMSG.id = (*it)->id;
-                            Send_Broadcast(NULL, (MSG_BASE*)&tMSG, sizeof(MSG_BASE));
+                            tMSG.id = (*it)->iID;
+                            Send_Broadcast(NULL, (char*)&tMSG, sizeof(MSG_BASE));
 
                             // 클라이언트 소켓 종료 처리
                             closesocket((*it)->clntSock);
@@ -430,15 +483,15 @@ void CServer::Delete_Session(SESSION* _pSession)
 
     //브로드 캐스트 캐릭터 삭제
     MSG_DELETE_PLAYER tMsg;
-    tMsg.id = _pSession->id;
+    tMsg.id = _pSession->iID;
     tMsg.type = DELETE_PLAYER;
-    wprintf_s(L"id:%d Disconnect\n", _pSession->id);
-    Send_Broadcast(_pSession, (MSG_BASE*)&tMsg, sizeof(MSG_BASE));
+    wprintf_s(L"id:%d Disconnect\n", _pSession->iID);
+    Send_Broadcast(_pSession, (char*)&tMsg, sizeof(MSG_BASE));
 
     //세션 정리
     for (auto iter = m_vecSession.begin(); iter != m_vecSession.end();)
     {
-        if ((*iter)->id == _pSession->id)
+        if ((*iter)->iID == _pSession->iID)
         {
             iter = m_vecSession.erase(iter);
         }

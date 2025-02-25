@@ -7,7 +7,7 @@
 CNetwork* CNetwork::m_pInstance = nullptr;
 
 CNetwork::CNetwork()
-	:m_iMyID(0), m_iClientCnt(0),m_hSocket(0)
+	:m_iMyID(0)/*m_iClientCnt(0)*/,m_hSocket(0)
 {
 	ZeroMemory(&m_ReadSet, sizeof(fd_set));
 }
@@ -77,20 +77,30 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
-	MSG_DELETE_PLAYER tMsg;
-	tMsg.type = DELETE_PLAYER;
-	tMsg.id = m_iMyID;
+	tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
+	tCS_Delete_Character.iID = m_iMyID;
+	tagPACKET_HEADER tHeader;
+	tHeader.BYTEbyCode = (char)0x20;
+	tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
+	tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
 
-	CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)tMsg, sizeof(MSG_DELETE_PLAYER));
+	m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
+	m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
+
+	//MSG_DELETE_PLAYER tMsg;
+	//tMsg.type = DELETE_PLAYER;
+	//tMsg.id = m_iMyID;
+
+	//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)tMsg, sizeof(MSG_DELETE_PLAYER));
 	//Send_Message((MSG_ID&)tMsg);
 
 	closesocket(m_hSocket);
 	WSACleanup();
 }
 
-void CNetwork::Send_Message(MSG_ID& tMsg)
+void CNetwork::Send_Message(char* tMsg)
 {
-	tMsg.iID = m_iMyID;
+	//tMsg->iID = m_iMyID;
 
 	if (send(m_hSocket, (char*)&tMsg, sizeof(tMsg), 0) == SOCKET_ERROR)
 	{
@@ -133,16 +143,16 @@ void CNetwork::Send_Message()
 }
 
 
-int CNetwork::Enqueue_SendQ(MSG_ID& tMsg, int iSize)
-{
-	tMsg.iID = m_iMyID;
-	int iResult = m_sendQ.Enqueue((char*)&tMsg, iSize);
-
-	if (iResult < iSize)
-		wprintf_s(L"sendQ.Enqueue() error\n");
-
-	return iResult;
-}
+//int CNetwork::Enqueue_SendQ(char* tMsg, int iSize)
+//{
+//	//tMsg.iID = m_iMyID;
+//	int iResult = m_sendQ.Enqueue((char*)&tMsg, iSize);
+//
+//	if (iResult < iSize)
+//		wprintf_s(L"sendQ.Enqueue() error\n");
+//
+//	return iResult;
+//}
 
 void CNetwork::Receive_Message()
 {
@@ -175,52 +185,114 @@ void CNetwork::Receive_Message()
 
 		while (true)
 		{
-			if (m_recvQ.GetUseSize() < MSG_SIZE)
-				break;//중단
+			//메시지 분석
+			tagPACKET_HEADER tHeader;
 
-			char Msg[16];
-			int iResult = m_recvQ.Dequeue(Msg, MSG_SIZE);
-			if (iResult < MSG_SIZE)
-				exit(1);//결함
-
-			int iType{ 0 };
-			if (iResult > 0)
+			//헤더도 못 뽑는 정도 밖에 안들어왔다면
+			if (sizeof(tagPACKET_HEADER) > m_recvQ.GetUseSize())
 			{
-				memcpy(&iType, Msg, sizeof(int));
-				Decode_Message(iType, Msg);
+				break;
 			}
+
+			int retPeek = m_recvQ.Peek((char*)&tHeader, sizeof(tagPACKET_HEADER));
+			if (retPeek != sizeof(tHeader))
+			{
+				wprintf_s(L"Peek() Error:%d\n", retPeek);
+				return;// exit(1);
+			}
+			if (tHeader.BYTEbyCode != (char)0x20)
+			{
+				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.BYTEbyCode);
+				return;// exit(1);
+			}
+			if (tHeader.BYTEbySize + sizeof(tagPACKET_HEADER) > size_t(m_recvQ.GetUseSize()))
+			{
+				break;
+			}
+
+			m_recvQ.MoveFront(sizeof(tagPACKET_HEADER));
+			
+			Decode_Message(tHeader.BYTEbyType);
+			//if (m_recvQ.GetUseSize() < MSG_SIZE)
+			//	break;//중단
+
+			//char Msg[16];
+			//int iResult = m_recvQ.Dequeue(Msg, MSG_SIZE);
+			//if (iResult < MSG_SIZE)
+			//	exit(1);//결함
+
+			//int iType{ 0 };
+			//if (iResult > 0)
+			//{
+			//	memcpy(&iType, Msg, sizeof(int));
+			//	Decode_Message(iType, Msg);
+			//}
 		}
 	}
 }
 
-void CNetwork::Decode_Message(int iType, char* pMsg)
-{
+void CNetwork::Decode_Message(char iType)
+{  
 	switch (iType)
 	{
-	case ALLOC_ID:
+	case PACKET_SC_CREATE_MY_CHARACTER:
 	{
-		MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)pMsg;
-		m_iMyID = msgAllocID->id;
-		wprintf_s(L"MyID %d\n", msgAllocID->id);
-		break;
-	}
-	case CREATE_PLAYER:
-	{
-		MSG_CREATE_PLAYER* msgCreatePlayer = (MSG_CREATE_PLAYER*)pMsg;
-		m_ClientArr[m_iClientCnt].id = msgCreatePlayer->id;
-		m_ClientArr[m_iClientCnt].x = msgCreatePlayer->x;
-		m_ClientArr[m_iClientCnt].y = msgCreatePlayer->y;
+		tagPACKET_SC_CREATE_MY_CHARACTER tSC_Create_My_Character;
+		int iResult = m_recvQ.Dequeue((char*)&tSC_Create_My_Character, sizeof(tSC_Create_My_Character));
+		if (iResult != sizeof(tSC_Create_My_Character))
+		{
+			wprintf_s(L"Dequeue() Error:%d\n", iResult);
+			exit(1);
+		}
 
-		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)msgCreatePlayer->x, (float)msgCreatePlayer->y);
-		static_cast<CPlayer*>(pObj)->Set_ID(msgCreatePlayer->id);
+		m_iMyID = tSC_Create_My_Character.iID;
+		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_My_Character.iX, (float)tSC_Create_My_Character.iY);
+		static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_My_Character.iID);
 		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
 
-		wprintf_s(L"Create ID: %d\n", msgCreatePlayer->id);
+		wprintf_s(L"Create ID: %d\n", tSC_Create_My_Character.iID);
 
-		m_iClientCnt++;
+		//m_iClientCnt++;
+	/*	MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)pMsg;
+		m_iMyID = msgAllocID->id;
+		wprintf_s(L"MyID %d\n", msgAllocID->id);*/
 		break;
 	}
-	case MOVE_RIGHT_PLAYER:
+	case PACKET_SC_CREATE_OTHER_CHARACTER:
+	{
+		tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character;
+		int iResult = m_recvQ.Dequeue((char*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
+		if (iResult != sizeof(tSC_Create_Other_Character))
+		{
+			wprintf_s(L"Dequeue() Error:%d\n", iResult);
+			exit(1);
+		}
+
+		m_iMyID = tSC_Create_Other_Character.iID;
+		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_Other_Character.iX, (float)tSC_Create_Other_Character.iY);
+		static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_Other_Character.iID);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+
+		wprintf_s(L"Create ID: %d\n", tSC_Create_Other_Character.iID);
+		break;
+	}
+	//case CREATE_PLAYER:
+	//{
+	//	MSG_CREATE_PLAYER* msgCreatePlayer = (MSG_CREATE_PLAYER*)pMsg;
+	//	m_ClientArr[m_iClientCnt].id = msgCreatePlayer->id;
+	//	m_ClientArr[m_iClientCnt].x = msgCreatePlayer->x;
+	//	m_ClientArr[m_iClientCnt].y = msgCreatePlayer->y;
+
+	//	CObj* pObj = CAbstractFactory<CPlayer>::Create((float)msgCreatePlayer->x, (float)msgCreatePlayer->y);
+	//	static_cast<CPlayer*>(pObj)->Set_ID(msgCreatePlayer->id);
+	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+
+	//	wprintf_s(L"Create ID: %d\n", msgCreatePlayer->id);
+
+	//	m_iClientCnt++;
+	//	break;
+	//}
+	/*case MOVE_RIGHT_PLAYER:
 	{
 		MSG_MOVE_RIGHT_PLAYER* msgMoveRight = (MSG_MOVE_RIGHT_PLAYER*)pMsg;
 		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveRight->id);
@@ -275,7 +347,7 @@ void CNetwork::Decode_Message(int iType, char* pMsg)
 			pPlayer->Set_Dead();
 		}
 		break;
-	}
+	}*/
 	default:
 	{
 		wprintf(L"Unknown msg type: %d\n", iType);

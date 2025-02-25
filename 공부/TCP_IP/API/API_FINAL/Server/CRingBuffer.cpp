@@ -67,7 +67,7 @@ int CRingBuffer::GetFreeSize()
     return m_iBufferSize - GetUseSize();
 }
 
-int CRingBuffer::Enqueue(char* chpData, int iSize)
+int CRingBuffer::Enqueue(char* pData, int iSize)
 {
     if (GetFreeSize() < iSize)
     {
@@ -76,12 +76,12 @@ int CRingBuffer::Enqueue(char* chpData, int iSize)
     }
     for (int i = 0; i < iSize; i++)
     {
-        *NextPos(&m_rear) = chpData[i];
+        *NextPos(&m_rear) = pData[i];
     }
     return iSize;
 }
 
-int CRingBuffer::Dequeue(char* chpDest, int iSize)
+int CRingBuffer::Dequeue(char* pDest, int iSize)
 {
     if (GetUseSize() < iSize)
     {
@@ -90,7 +90,7 @@ int CRingBuffer::Dequeue(char* chpDest, int iSize)
     }
     for (int i = 0; i < iSize; i++)
     {
-        chpDest[i] = *NextPos(&m_front);
+        pDest[i] = *NextPos(&m_front);
     }
     return iSize;
 }
@@ -127,30 +127,38 @@ int CRingBuffer::DirectDequeueSize()
 
 int CRingBuffer::MoveRear(int iSize)
 {
-    if (iSize < 0 && GetUseSize() < -iSize)
+    //사용하고 있는 것보다 크면 안됨
+    if (GetUseSize() < iSize)
     {
-        wprintf_s(L"MoveRear() error: 사용하고 있는 크기보다 덮으려는 크기가 큽니다.\n");
+        wprintf_s(L"MoveRear() error:사용하고 있는 크기보다 덮으려는 크기가 큽니다.\n");
         return 0;
     }
-    for (int i = 0; i < abs(iSize); i++)
+
+    int iMoveSize = 0;
+    for (int i = 0; i < iSize; i++)
     {
-        iSize < 0 ? PrevPos(&m_rear) : NextPos(&m_rear);
+        PrevPos(&m_rear);
+        iMoveSize++;
     }
-    return abs(iSize);
+    return iMoveSize;
 }
 
 int CRingBuffer::MoveFront(int iSize)
 {
-    if (iSize > 0 && GetUseSize() < iSize)
+    //사용하고 있는 것보다 크면 안됨
+    if (GetUseSize() < iSize)
     {
-        wprintf_s(L"MoveFront() error: 사용하고 있는 크기보다 삭제하려는 크기가 큽니다.\n");
+        wprintf_s(L"MoveFront() error:사용하고 있는 크기보다 삭제하려는 크기가 큽니다.\n");
         return 0;
     }
-    for (int i = 0; i < abs(iSize); i++)
+
+    int iMoveSize = 0;
+    for (int i = 0; i < iSize; i++)
     {
-        iSize > 0 ? NextPos(&m_front) : PrevPos(&m_front);
+        NextPos(&m_front);
+        iMoveSize++;
     }
-    return abs(iSize);
+    return iMoveSize;
 }
 
 char* CRingBuffer::GetFrontBufferPtr()

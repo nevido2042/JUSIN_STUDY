@@ -19,19 +19,19 @@ public:
 	void Update();
 	void Release();
 public:
-	void Send_Message(MSG_ID& tMsg);
+	void Send_Message(char* tMsg);
 	void Send_Message();
-	int Enqueue_SendQ(MSG_ID& tMsg, int iSize);
+	//int Enqueue_SendQ(char* tMsg, int iSize);
 
 private:
 	void Receive_Message();
-	void Decode_Message(int iType, char* pMsg);
+	void Decode_Message(char iType);
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;
 	int		m_iMyID;
-	CLIENT	m_ClientArr[30];
-	int		m_iClientCnt;
+	//CLIENT	m_ClientArr[30];
+	//int		m_iClientCnt;
 	CRingBuffer m_sendQ;
 	CRingBuffer m_recvQ;
 

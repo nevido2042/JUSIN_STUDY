@@ -187,7 +187,7 @@ void CPlayer::Key_Input()
 
 		//-------------------------------------------------//
 
-		CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
+		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
 
 		/*m_tInfo.fX -= m_fSpeed;
 		m_pImgKey = L"Player_RIGHT";
@@ -200,7 +200,7 @@ void CPlayer::Key_Input()
 		msgMoveRight.type = MOVE_RIGHT_PLAYER;
 
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgMoveRight);
-		CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
+		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
 
 		/*m_tInfo.fX += m_fSpeed;
 		m_pImgKey = L"Player_RIGHT";
@@ -215,7 +215,7 @@ void CPlayer::Key_Input()
 		msgStopRight.type = STOP_RIGHT_PLAYER;
 
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgStopRight);
-		CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgStopRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
+		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgStopRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
 
 	}
 	else if (CKeyMgr::Get_Instance()->Key_Up(VK_LEFT))
@@ -223,7 +223,7 @@ void CPlayer::Key_Input()
 		MSG_STOP_LEFT_PLAYER msgStopLeft;
 		msgStopLeft.type = STOP_LEFT_PLAYER;
 
-		CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
+		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgStopLeft);
 	}
 	else if (CKeyMgr::Get_Instance()->Key_Pressing(VK_UP))

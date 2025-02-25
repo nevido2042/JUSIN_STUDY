@@ -21,15 +21,15 @@ typedef struct tagSession
 	{
 		clntAdr = _clntAdr;
 		clntSock = _clntSock;
-		id = _id;
-		x = _x;
-		y = _y;
+		iID = _id;
+		iX = _x;
+		iY = _y;
 	}
 	SOCKADDR_IN clntAdr{};
 	SOCKET clntSock = INVALID_SOCKET;
-	int id = 0;
-	int x = 0;
-	int y = 0;
+	int iID = 0;
+	int iX = 0;
+	int iY = 0;
 	//¸µ¹öÆÛ
 	CRingBuffer recvQ;
 	CRingBuffer sendQ;
@@ -47,8 +47,8 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
-	void Send_Broadcast(SESSION* pSession, const MSG_BASE* tMSG, const int iSize);
+	void Send_Unicast(SESSION* pSession, const char* tMSG, const int iSize);
+	void Send_Broadcast(SESSION* pSession, const char* tMSG, const int iSize);
 	void Read_Proc(SESSION* pSession);
 	void Decode_Message(int iType, char* pMsg);
 	void Recieve_Message();
