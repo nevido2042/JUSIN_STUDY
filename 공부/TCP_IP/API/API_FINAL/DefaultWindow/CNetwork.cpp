@@ -77,25 +77,18 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
-	tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
-	tCS_Delete_Character.iID = m_iMyID;
-	tagPACKET_HEADER tHeader;
-	tHeader.BYTEbyCode = (char)0x20;
-	tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
-	tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
+	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
+	//tCS_Delete_Character.iID = m_iMyID;
+	//tagPACKET_HEADER tHeader;
+	//tHeader.BYTEbyCode = (char)0x20;
+	//tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
+	//tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
 
-	m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
-	m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
+	//m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
+	//m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
 
-	//MSG_DELETE_PLAYER tMsg;
-	//tMsg.type = DELETE_PLAYER;
-	//tMsg.id = m_iMyID;
-
-	//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)tMsg, sizeof(MSG_DELETE_PLAYER));
-	//Send_Message((MSG_ID&)tMsg);
-
-	closesocket(m_hSocket);
-	WSACleanup();
+	//closesocket(m_hSocket);
+	//WSACleanup();
 }
 
 void CNetwork::Send_Message(char* tMsg)

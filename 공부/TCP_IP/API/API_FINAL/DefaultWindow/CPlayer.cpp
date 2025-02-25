@@ -180,8 +180,8 @@ void CPlayer::Key_Input()
 
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT))
 	{
-		MSG_MOVE_LEFT_PLAYER msgMoveLeft;
-		msgMoveLeft.type = MOVE_LEFT_PLAYER;
+		/*MSG_MOVE_LEFT_PLAYER msgMoveLeft;
+		msgMoveLeft.type = MOVE_LEFT_PLAYER;*/
 
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgMoveLeft);
 
@@ -196,8 +196,8 @@ void CPlayer::Key_Input()
 	}
 	else if (CKeyMgr::Get_Instance()->Key_Down(VK_RIGHT))
 	{
-		MSG_MOVE_RIGHT_PLAYER msgMoveRight;
-		msgMoveRight.type = MOVE_RIGHT_PLAYER;
+		/*MSG_MOVE_RIGHT_PLAYER msgMoveRight;
+		msgMoveRight.type = MOVE_RIGHT_PLAYER;*/
 
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgMoveRight);
 		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
@@ -211,8 +211,8 @@ void CPlayer::Key_Input()
 	{
 		//오른쪽 가지 말라 메시지 요청
 
-		MSG_STOP_RIGHT_PLAYER msgStopRight;
-		msgStopRight.type = STOP_RIGHT_PLAYER;
+	/*	MSG_STOP_RIGHT_PLAYER msgStopRight;
+		msgStopRight.type = STOP_RIGHT_PLAYER;*/
 
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgStopRight);
 		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgStopRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
@@ -220,8 +220,8 @@ void CPlayer::Key_Input()
 	}
 	else if (CKeyMgr::Get_Instance()->Key_Up(VK_LEFT))
 	{
-		MSG_STOP_LEFT_PLAYER msgStopLeft;
-		msgStopLeft.type = STOP_LEFT_PLAYER;
+		/*MSG_STOP_LEFT_PLAYER msgStopLeft;
+		msgStopLeft.type = STOP_LEFT_PLAYER;*/
 
 		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
 		//CNetwork::Get_Instance()->Send_Message((MSG_ID&)msgStopLeft);

@@ -75,6 +75,14 @@ bool CServer::Update()
 
 void CServer::Release()
 {
+	for (size_t i = 0; i < m_vecSession.size(); i++)
+	{
+		closesocket(m_vecSession[i]->clntSock);
+		delete m_vecSession[i];
+	}
+	m_vecSession.clear();
+	closesocket(m_ServSock);
+	WSACleanup();
 }
 
 bool CServer::Network()
@@ -265,92 +273,92 @@ void CServer::Read_Proc(SESSION* _pSession)
         _pSession->recvQ.Enqueue(Buffer, iResult);
     }
 
-    while (true)
-    {
-        if (_pSession->recvQ.GetUseSize() < MSG_SIZE)
-            break;//중단
+    //while (true)
+    //{
+    //    if (_pSession->recvQ.GetUseSize() < MSG_SIZE)
+    //        break;//중단
 
-        char Msg[MSG_SIZE];
+    //    char Msg[MSG_SIZE];
 
-        int iResult{ 0 };
-        iResult = _pSession->recvQ.Dequeue(Msg, MSG_SIZE);
-        if (iResult != MSG_SIZE)
-        {
-            //결함
-            exit(1);
-        }
+    //    int iResult{ 0 };
+    //    iResult = _pSession->recvQ.Dequeue(Msg, MSG_SIZE);
+    //    if (iResult != MSG_SIZE)
+    //    {
+    //        //결함
+    //        exit(1);
+    //    }
 
-        int iType{ 0 };
-        if (iResult > 0)
-        {
-            memcpy(&iType, Msg, sizeof(int));
-            Decode_Message(iType, Msg);
-        }
-    }
+    //    int iType{ 0 };
+    //    if (iResult > 0)
+    //    {
+    //        memcpy(&iType, Msg, sizeof(int));
+    //        Decode_Message(iType, Msg);
+    //    }
+    //}
 }
 
 void CServer::Decode_Message(int iType, char* pMsg)
 {
-    switch (iType)
-    {
-    case MOVE_RIGHT_PLAYER:
-    {
-        MSG_MOVE_RIGHT_PLAYER& recvMSG = (MSG_MOVE_RIGHT_PLAYER&)*pMsg;
-        wprintf_s(L"%d: MOVE_RIGHT_PLAYER\n", recvMSG.id);
+    //switch (iType)
+    //{
+    //case MOVE_RIGHT_PLAYER:
+    //{
+    //    MSG_MOVE_RIGHT_PLAYER& recvMSG = (MSG_MOVE_RIGHT_PLAYER&)*pMsg;
+    //    wprintf_s(L"%d: MOVE_RIGHT_PLAYER\n", recvMSG.id);
 
-        MSG_MOVE_RIGHT_PLAYER msgMoveRight;
-        msgMoveRight.id = recvMSG.id;
+    //    MSG_MOVE_RIGHT_PLAYER msgMoveRight;
+    //    msgMoveRight.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (char*)&msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
-        break;
-    }
-    case MOVE_LEFT_PLAYER:
-    {
-        MSG_MOVE_LEFT_PLAYER& recvMSG = (MSG_MOVE_LEFT_PLAYER&)*pMsg;
-        wprintf_s(L"%d: MOVE_LEFT_PLAYER\n", recvMSG.id);
+    //    Send_Broadcast(NULL, (char*)&msgMoveRight, sizeof(MSG_MOVE_RIGHT_PLAYER));
+    //    break;
+    //}
+    //case MOVE_LEFT_PLAYER:
+    //{
+    //    MSG_MOVE_LEFT_PLAYER& recvMSG = (MSG_MOVE_LEFT_PLAYER&)*pMsg;
+    //    wprintf_s(L"%d: MOVE_LEFT_PLAYER\n", recvMSG.id);
 
-        MSG_MOVE_LEFT_PLAYER msgMoveLeft;
-        msgMoveLeft.id = recvMSG.id;
+    //    MSG_MOVE_LEFT_PLAYER msgMoveLeft;
+    //    msgMoveLeft.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (char*)&msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
-        break;
-    }
-    case STOP_RIGHT_PLAYER:
-    {
-        MSG_STOP_RIGHT_PLAYER& recvMSG = (MSG_STOP_RIGHT_PLAYER&)*pMsg;
-        wprintf_s(L"%d: STOP_RIGHT_PLAYER\n", recvMSG.id);
+    //    Send_Broadcast(NULL, (char*)&msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
+    //    break;
+    //}
+    //case STOP_RIGHT_PLAYER:
+    //{
+    //    MSG_STOP_RIGHT_PLAYER& recvMSG = (MSG_STOP_RIGHT_PLAYER&)*pMsg;
+    //    wprintf_s(L"%d: STOP_RIGHT_PLAYER\n", recvMSG.id);
 
-        MSG_STOP_RIGHT_PLAYER msgStopRight;
-        msgStopRight.id = recvMSG.id;
+    //    MSG_STOP_RIGHT_PLAYER msgStopRight;
+    //    msgStopRight.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (char*)&msgStopRight, sizeof(MSG_STOP_RIGHT_PLAYER));
-        break;
-    }
-    case STOP_LEFT_PLAYER:
-    {
-        MSG_STOP_LEFT_PLAYER& recvMSG = (MSG_STOP_LEFT_PLAYER&)*pMsg;
-        wprintf_s(L"%d: STOP_LEFT_PLAYER\n", recvMSG.id);
+    //    Send_Broadcast(NULL, (char*)&msgStopRight, sizeof(MSG_STOP_RIGHT_PLAYER));
+    //    break;
+    //}
+    //case STOP_LEFT_PLAYER:
+    //{
+    //    MSG_STOP_LEFT_PLAYER& recvMSG = (MSG_STOP_LEFT_PLAYER&)*pMsg;
+    //    wprintf_s(L"%d: STOP_LEFT_PLAYER\n", recvMSG.id);
 
-        MSG_STOP_LEFT_PLAYER msgStopLeft;
-        msgStopLeft.id = recvMSG.id;
+    //    MSG_STOP_LEFT_PLAYER msgStopLeft;
+    //    msgStopLeft.id = recvMSG.id;
 
-        Send_Broadcast(NULL, (char*)&msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
-        break;
-    }
-    case DELETE_PLAYER:
-    {
-        MSG_DELETE_PLAYER& recvMSG = (MSG_DELETE_PLAYER&)*pMsg;
-        wprintf_s(L"%d: DELETE_PLAYER\n", recvMSG.id);
+    //    Send_Broadcast(NULL, (char*)&msgStopLeft, sizeof(MSG_STOP_LEFT_PLAYER));
+    //    break;
+    //}
+    //case DELETE_PLAYER:
+    //{
+    //    //MSG_DELETE_PLAYER& recvMSG = (MSG_DELETE_PLAYER&)*pMsg;
+    //    //wprintf_s(L"%d: DELETE_PLAYER\n", recvMSG.id);
 
-        MSG_DELETE_PLAYER msgDeletePlayer;
-        msgDeletePlayer.id = recvMSG.id;
-        
-        //세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
+    //    //MSG_DELETE_PLAYER msgDeletePlayer;
+    //    //msgDeletePlayer.id = recvMSG.id;
+    //    //
+    //    ////세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
 
-        Send_Broadcast(NULL/*&m_vecSession[msgDeletePlayer.id]*/, (char*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
-        break;
-    }
-    }
+    //    //Send_Broadcast(NULL/*&m_vecSession[msgDeletePlayer.id]*/, (char*)&msgDeletePlayer, sizeof(MSG_DELETE_PLAYER));
+    //    break;
+    //}
+    //}
 }
 
 void CServer::Recieve_Message()
@@ -404,10 +412,10 @@ void CServer::Recieve_Message()
                         int result = recv(currentSock, buffer, sizeof(buffer), MSG_PEEK);
                         if (result <= 0) // 연결 종료되었거나 오류 발생
                         {
-                            MSG_DELETE_PLAYER tMSG;
+                            /*MSG_DELETE_PLAYER tMSG;
                             tMSG.type = DELETE_PLAYER;
                             tMSG.id = (*it)->iID;
-                            Send_Broadcast(NULL, (char*)&tMSG, sizeof(MSG_BASE));
+                            Send_Broadcast(NULL, (char*)&tMSG, sizeof(MSG_BASE));*/
 
                             // 클라이언트 소켓 종료 처리
                             closesocket((*it)->clntSock);
@@ -481,12 +489,12 @@ void CServer::Delete_Session(SESSION* _pSession)
     //클로즈 소켓
     closesocket(_pSession->clntSock);
 
-    //브로드 캐스트 캐릭터 삭제
-    MSG_DELETE_PLAYER tMsg;
-    tMsg.id = _pSession->iID;
-    tMsg.type = DELETE_PLAYER;
-    wprintf_s(L"id:%d Disconnect\n", _pSession->iID);
-    Send_Broadcast(_pSession, (char*)&tMsg, sizeof(MSG_BASE));
+    ////브로드 캐스트 캐릭터 삭제
+    //MSG_DELETE_PLAYER tMsg;
+    //tMsg.id = _pSession->iID;
+    //tMsg.type = DELETE_PLAYER;
+    //wprintf_s(L"id:%d Disconnect\n", _pSession->iID);
+    //Send_Broadcast(_pSession, (char*)&tMsg, sizeof(MSG_BASE));
 
     //세션 정리
     for (auto iter = m_vecSession.begin(); iter != m_vecSession.end();)
