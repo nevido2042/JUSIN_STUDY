@@ -273,32 +273,64 @@ void CServer::Read_Proc(SESSION* _pSession)
         _pSession->recvQ.Enqueue(Buffer, iResult);
     }
 
-    //while (true)
-    //{
-    //    if (_pSession->recvQ.GetUseSize() < MSG_SIZE)
-    //        break;//중단
+    while (1)
+    {
+        //메시지 분석
+        tagPACKET_HEADER tHeader;
 
-    //    char Msg[MSG_SIZE];
+        //헤더도 못 뽑는 정도 밖에 안들어왔다면
+        if (sizeof(tHeader) > _pSession->recvQ.GetUseSize())
+        {
+            break;
+        }
 
-    //    int iResult{ 0 };
-    //    iResult = _pSession->recvQ.Dequeue(Msg, MSG_SIZE);
-    //    if (iResult != MSG_SIZE)
-    //    {
-    //        //결함
-    //        exit(1);
-    //    }
+        int retPeek = _pSession->recvQ.Peek((char*)&tHeader, sizeof(tHeader));
+        if (retPeek != sizeof(tHeader))
+        {
+            wprintf_s(L"Peek() Error:%d\n", retPeek);
+            exit(1);
+        }
+        if (tHeader.BYTEbyCode != (char)0x20)
+        {
+            wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.BYTEbyCode);
+            exit(1);
+        }
+        if (tHeader.BYTEbySize + sizeof(tHeader) > _pSession->recvQ.GetUseSize())
+        {
+            break;
+        }
 
-    //    int iType{ 0 };
-    //    if (iResult > 0)
-    //    {
-    //        memcpy(&iType, Msg, sizeof(int));
-    //        Decode_Message(iType, Msg);
-    //    }
-    //}
+        _pSession->recvQ.MoveFront(sizeof(tHeader));
+        Decode_Message(tHeader.BYTEbyType, _pSession);
+    }
 }
 
-void CServer::Decode_Message(int iType, char* pMsg)
+void CServer::Decode_Message(int iType, SESSION* _pSession)
 {
+    switch (iType)
+    {
+    case PACKET_CS_DELETE_CHARACTER:
+    {
+        tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character{};
+        _pSession->recvQ.Dequeue((char*) & tCS_Delete_Character, sizeof(tCS_Delete_Character));
+        wprintf_s(L"ID: %d, 캐릭터 삭제\n", tCS_Delete_Character.iID);
+
+        tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character{};
+        tSC_Delete_Character.iID = tCS_Delete_Character.iID;
+
+        tagPACKET_HEADER tHeader{};
+        tHeader.BYTEbyCode = (char)(0x20);
+        tHeader.BYTEbySize = sizeof(tSC_Delete_Character);
+        tHeader.BYTEbyType = PACKET_SC_DELETE_CHARACTER;
+
+        //세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
+        Send_Broadcast(NULL, (char*)&tHeader, sizeof(tHeader));
+        Send_Broadcast(NULL, (char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
+
+        break;
+    }
+    }
+
     //switch (iType)
     //{
     //case MOVE_RIGHT_PLAYER:
@@ -475,7 +507,7 @@ void CServer::Send_Message()
                     int iSend{};
                     iSend = send(m_vecSession[j]->clntSock, Buffer, iPeek, 0);
                     if (iSend == SOCKET_ERROR)
-                        wprintf_s(L"send() error:%d\n", WSAGetLastError());
+                        wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->iID, WSAGetLastError());
 
                     m_vecSession[j]->sendQ.MoveFront(iSend);
                 }

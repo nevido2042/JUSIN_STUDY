@@ -50,14 +50,14 @@ private:
 	void Send_Unicast(SESSION* pSession, const char* tMSG, const int iSize);
 	void Send_Broadcast(SESSION* pSession, const char* tMSG, const int iSize);
 	void Read_Proc(SESSION* pSession);
-	void Decode_Message(int iType, char* pMsg);
+	void Decode_Message(int iType, SESSION* _pSession);
 	void Recieve_Message();
 	void Send_Message();
 	void Delete_Session(SESSION* pSession);
 private:
 	SOCKET						m_ServSock;
-	vector<SESSION*>				m_vecSession;
-	//int							m_iSessionCnt;
+	vector<SESSION*>			m_vecSession;
+	//int						m_iSessionCnt;
 	int							m_iID;
 	fd_set						m_tReadSet;
 };

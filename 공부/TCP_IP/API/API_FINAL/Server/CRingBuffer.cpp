@@ -8,10 +8,10 @@ void CRingBuffer::FreeRingBuffer()
     free(m_pBufferAlloc);
 }
 
-char* CRingBuffer::NextPos(char** pchPos)
+char* CRingBuffer::NextPos(char** ppPos)
 {
-    *pchPos = (*pchPos == m_pBufferAllocEnd) ? m_pBufferAlloc : (*pchPos + 1);
-    return *pchPos;
+    *ppPos = (*ppPos == m_pBufferAllocEnd) ? m_pBufferAlloc : (*ppPos + 1);
+    return *ppPos;
 }
 
 char* CRingBuffer::PrevPos(char** pchPos)
@@ -117,27 +117,41 @@ void CRingBuffer::ClearBuffer()
 
 int CRingBuffer::DirectEnqueueSize()
 {
-    return (m_rear < m_front) ? (m_front - 1) - m_rear : m_pBufferAllocEnd - m_rear;
+    if (m_rear < m_front)
+    {
+        return (m_front - 1) - m_rear;
+    }
+    else
+    {
+        return  m_pBufferAllocEnd - m_rear;
+    }
 }
 
 int CRingBuffer::DirectDequeueSize()
 {
-    return (m_rear < m_front) ? m_pBufferAllocEnd - m_front : m_rear - m_front;
+    if (m_rear < m_front)
+    {
+        return m_pBufferAllocEnd - m_front;
+    }
+    else
+    {
+        return m_rear - m_front;
+    }
 }
 
 int CRingBuffer::MoveRear(int iSize)
 {
-    //사용하고 있는 것보다 크면 안됨
-    if (GetUseSize() < iSize)
+    //여유 공간 보다 크면 안됨
+    if (GetFreeSize() < iSize)
     {
-        wprintf_s(L"MoveRear() error:사용하고 있는 크기보다 덮으려는 크기가 큽니다.\n");
+        wprintf_s(L"MoveRear() error:여유 크기보다 덮으려는 크기가 큽니다.\n");
         return 0;
     }
 
     int iMoveSize = 0;
     for (int i = 0; i < iSize; i++)
     {
-        PrevPos(&m_rear);
+        NextPos(&m_rear);
         iMoveSize++;
     }
     return iMoveSize;

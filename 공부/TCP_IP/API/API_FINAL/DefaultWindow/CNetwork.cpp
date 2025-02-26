@@ -77,18 +77,20 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
-	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
-	//tCS_Delete_Character.iID = m_iMyID;
-	//tagPACKET_HEADER tHeader;
-	//tHeader.BYTEbyCode = (char)0x20;
-	//tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
-	//tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
+	tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
+	tCS_Delete_Character.iID = m_iMyID;
+	tagPACKET_HEADER tHeader;
+	tHeader.BYTEbyCode = (char)0x20;
+	tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
+	tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
 
-	//m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
-	//m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
+	m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
+	m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
 
-	//closesocket(m_hSocket);
-	//WSACleanup();
+	Send_Message();
+
+	closesocket(m_hSocket);
+	WSACleanup();
 }
 
 void CNetwork::Send_Message(char* tMsg)
@@ -225,7 +227,7 @@ void CNetwork::Receive_Message()
 }
 
 void CNetwork::Decode_Message(char iType)
-{  
+{
 	switch (iType)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
@@ -261,7 +263,6 @@ void CNetwork::Decode_Message(char iType)
 			exit(1);
 		}
 
-		m_iMyID = tSC_Create_Other_Character.iID;
 		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_Other_Character.iX, (float)tSC_Create_Other_Character.iY);
 		static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_Other_Character.iID);
 		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
@@ -269,84 +270,21 @@ void CNetwork::Decode_Message(char iType)
 		wprintf_s(L"Create ID: %d\n", tSC_Create_Other_Character.iID);
 		break;
 	}
-	//case CREATE_PLAYER:
-	//{
-	//	MSG_CREATE_PLAYER* msgCreatePlayer = (MSG_CREATE_PLAYER*)pMsg;
-	//	m_ClientArr[m_iClientCnt].id = msgCreatePlayer->id;
-	//	m_ClientArr[m_iClientCnt].x = msgCreatePlayer->x;
-	//	m_ClientArr[m_iClientCnt].y = msgCreatePlayer->y;
-
-	//	CObj* pObj = CAbstractFactory<CPlayer>::Create((float)msgCreatePlayer->x, (float)msgCreatePlayer->y);
-	//	static_cast<CPlayer*>(pObj)->Set_ID(msgCreatePlayer->id);
-	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
-
-	//	wprintf_s(L"Create ID: %d\n", msgCreatePlayer->id);
-
-	//	m_iClientCnt++;
-	//	break;
-	//}
-	/*case MOVE_RIGHT_PLAYER:
+	case PACKET_SC_DELETE_CHARACTER:
 	{
-		MSG_MOVE_RIGHT_PLAYER* msgMoveRight = (MSG_MOVE_RIGHT_PLAYER*)pMsg;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveRight->id);
+		tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;
 
-		if (pPlayer)
-		{
-			static_cast<CPlayer*>(pPlayer)->Set_MoveRight(true);
-		}
-		break;
-	}
-	case MOVE_LEFT_PLAYER:
-	{
-		MSG_MOVE_LEFT_PLAYER* msgMoveLeft = (MSG_MOVE_LEFT_PLAYER*)pMsg;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgMoveLeft->id);
+		m_recvQ.Dequeue((char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
 
-		if (pPlayer)
-		{
-			static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(true);
-		}
-		break;
-	}
-	case STOP_RIGHT_PLAYER:
-	{
-		MSG_STOP_RIGHT_PLAYER* msgStopRight = (MSG_STOP_RIGHT_PLAYER*)pMsg;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopRight->id);
-
-		if (pPlayer)
-		{
-			static_cast<CPlayer*>(pPlayer)->Set_MoveRight(false);
-		}
-		break;
-	}
-	case STOP_LEFT_PLAYER:
-	{
-		MSG_STOP_LEFT_PLAYER* msgStopLeft = (MSG_STOP_LEFT_PLAYER*)pMsg;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgStopLeft->id);
-
-		if (pPlayer)
-		{
-			static_cast<CPlayer*>(pPlayer)->Set_MoveLeft(false);
-		}
-		break;
-	}
-	case DELETE_PLAYER:
-	{
-		MSG_DELETE_PLAYER* msgDelete = (MSG_DELETE_PLAYER*)pMsg;
-
-		cout << "Delete Player ID: " << msgDelete->id << endl;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(msgDelete->id);
+		cout << "Delete Player ID: " << tSC_Delete_Character.iID << endl;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(tSC_Delete_Character.iID);
 		if (pPlayer)
 		{
 			pPlayer->Set_Dead();
 		}
 		break;
-	}*/
-	default:
-	{
-		wprintf(L"Unknown msg type: %d\n", iType);
-		Release();
-		return;
 	}
 	}
 }
+
 
