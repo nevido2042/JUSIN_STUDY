@@ -8,13 +8,13 @@ void CRingBuffer::FreeRingBuffer()
     free(m_pBufferAlloc);
 }
 
-char* CRingBuffer::NextPos(char** ppPos)
+_byte* CRingBuffer::NextPos(_byte** ppPos)
 {
     *ppPos = (*ppPos == m_pBufferAllocEnd) ? m_pBufferAlloc : (*ppPos + 1);
     return *ppPos;
 }
 
-char* CRingBuffer::PrevPos(char** pchPos)
+_byte* CRingBuffer::PrevPos(_byte** pchPos)
 {
     *pchPos = (*pchPos == m_pBufferAlloc) ? m_pBufferAllocEnd : (*pchPos - 1);
     return *pchPos;
@@ -22,7 +22,7 @@ char* CRingBuffer::PrevPos(char** pchPos)
 
 CRingBuffer::CRingBuffer()
 {
-    m_pBufferAlloc = (char*)malloc(DEFAULT_BUF_SIZE + 1);
+    m_pBufferAlloc = (_byte*)malloc(DEFAULT_BUF_SIZE + 1);
     if (m_pBufferAlloc == nullptr)
     {
         wprintf_s(L"malloc() error: 버퍼 할당 실패\n");
@@ -36,7 +36,7 @@ CRingBuffer::CRingBuffer()
 
 CRingBuffer::CRingBuffer(int iBufferSize)
 {
-    m_pBufferAlloc = (char*)malloc(iBufferSize + 1);
+    m_pBufferAlloc = (_byte*)malloc(iBufferSize + 1);
     if (m_pBufferAlloc == nullptr)
     {
         wprintf_s(L"malloc() error: 버퍼 할당 실패\n");
@@ -67,7 +67,7 @@ int CRingBuffer::GetFreeSize()
     return m_iBufferSize - GetUseSize();
 }
 
-int CRingBuffer::Enqueue(char* pData, int iSize)
+int CRingBuffer::Enqueue(_byte* pData, int iSize)
 {
     if (GetFreeSize() < iSize)
     {
@@ -81,7 +81,7 @@ int CRingBuffer::Enqueue(char* pData, int iSize)
     return iSize;
 }
 
-int CRingBuffer::Dequeue(char* pDest, int iSize)
+int CRingBuffer::Dequeue(_byte* pDest, int iSize)
 {
     if (GetUseSize() < iSize)
     {
@@ -95,14 +95,14 @@ int CRingBuffer::Dequeue(char* pDest, int iSize)
     return iSize;
 }
 
-int CRingBuffer::Peek(char* chpDest, int iSize)
+int CRingBuffer::Peek(_byte* chpDest, int iSize)
 {
     if (GetUseSize() < iSize)
     {
         wprintf_s(L"Peek() error: 확인하려는 크기가 남아있는 데이터보다 많다.\n");
         return 0;
     }
-    char* frontCpy = m_front;
+    _byte* frontCpy = m_front;
     for (int i = 0; i < iSize; i++)
     {
         chpDest[i] = *NextPos(&frontCpy);
@@ -175,12 +175,12 @@ int CRingBuffer::MoveFront(int iSize)
     return iMoveSize;
 }
 
-char* CRingBuffer::GetFrontBufferPtr()
+_byte* CRingBuffer::GetFrontBufferPtr()
 {
     return m_front;
 }
 
-char* CRingBuffer::GetRearBufferPtr()
+_byte* CRingBuffer::GetRearBufferPtr()
 {
     return m_rear;
 }

@@ -48,8 +48,8 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(SESSION* pSession, const char* tMSG, const int iSize);
-	void Send_Broadcast(SESSION* pSession, const char* tMSG, const int iSize);
+	void Send_Unicast(SESSION* pSession, const _byte* tMSG, const int iSize);
+	void Send_Broadcast(SESSION* pSession, const _byte* tMSG, const int iSize);
 	void Read_Proc(SESSION* pSession);
 	void Decode_Message(int iType, SESSION* _pSession);
 	void Recieve_Message();

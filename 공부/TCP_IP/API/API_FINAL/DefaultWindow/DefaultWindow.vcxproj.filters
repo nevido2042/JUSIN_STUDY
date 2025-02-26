@@ -302,9 +302,6 @@
     <ClCompile Include="CNetwork.cpp">
       <Filter>04. Network</Filter>
     </ClCompile>
-    <ClCompile Include="Packet.cpp">
-      <Filter>04. Network</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DefaultWindow.rc">

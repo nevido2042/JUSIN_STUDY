@@ -1,5 +1,5 @@
-#define DEFAULT_BUF_SIZE 100
-
+#define DEFAULT_BUF_SIZE 1024
+typedef char _byte;
 class CRingBuffer
 {
 public:
@@ -19,13 +19,13 @@ public:
 	int GetFreeSize();
 
 	//데이터 넣음
-	int Enqueue(char* chpData, int iSize);
+	int Enqueue(_byte* chpData, int iSize);
 
 	//데이터 뺌
-	int Dequeue(char* chpDest, int iSize);
+	int Dequeue(_byte* chpDest, int iSize);
 
 	//데이터 보기
-	int Peek(char* chpDest, int iSize);
+	int Peek(_byte* chpDest, int iSize);
 
 	//버퍼 데이터 삭제
 	void ClearBuffer();
@@ -45,22 +45,22 @@ public:
 	int MoveFront(int iSize);
 
 	//m_front m_rear 포인터 얻음
-	char* GetFrontBufferPtr();
-	char* GetRearBufferPtr();
+	_byte* GetFrontBufferPtr();
+	_byte* GetRearBufferPtr();
 private:
 	//버퍼 할당 시작 지점
-	char* m_pBufferAlloc;
+	_byte* m_pBufferAlloc;
 	//버퍼 할당 끝 지점
-	char* m_pBufferAllocEnd;
+	_byte* m_pBufferAllocEnd;
 	//버퍼 사이즈
 	int m_iBufferSize;
 	//m_front
-	char* m_front;
+	_byte* m_front;
 	//m_rear
-	char* m_rear;
+	_byte* m_rear;
 
 	//다음 위치 반환
-	char* NextPos(char** pchPos);
+	_byte* NextPos(_byte** pchPos);
 	//이전 위치 반환
-	char* PrevPos(char** pchPos);
+	_byte* PrevPos(_byte** pchPos);
 };

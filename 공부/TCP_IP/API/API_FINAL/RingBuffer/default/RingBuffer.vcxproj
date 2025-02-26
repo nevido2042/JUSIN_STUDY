@@ -24,6 +24,7 @@
     <ProjectGuid>{5510c192-8485-4e73-98e2-46a4972713fd}</ProjectGuid>
     <RootNamespace>RingBuffer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>NetBuffer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -147,9 +148,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\Packet.cpp" />
     <ClCompile Include="..\private\RingBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\public\Packet.h" />
     <ClInclude Include="..\public\RingBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

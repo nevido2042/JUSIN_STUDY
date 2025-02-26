@@ -1,6 +1,21 @@
 #pragma once
 #include<Windows.h>
-#include "MSG.h"
+#define PACKET_CODE (char)0x20
+//---------------------------------------------------------------
+// 패킷헤더.
+//
+//---------------------------------------------------------------
+/*
+	BYTE	byCode;			// 패킷코드 0x20 고정.
+	BYTE	bySize;			// 패킷 사이즈.
+	BYTE	byType;			// 패킷타입.
+*/
+struct tagPACKET_HEADER
+{
+	char BYTEbyCode;
+	char BYTEbySize;
+	char BYTEbyType;
+};
 
 class CPacket
 {
