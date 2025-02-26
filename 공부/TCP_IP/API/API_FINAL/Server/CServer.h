@@ -3,7 +3,7 @@
 #include <WS2tcpip.h>
 #include <vector>
 #include "MSG.h"
-#include "CRingBuffer.h" 
+#include "RingBuffer.h" 
 #include "Packet.h"
 
 using namespace std;

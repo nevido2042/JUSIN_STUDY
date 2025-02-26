@@ -103,9 +103,6 @@
     <Filter Include="04. Network">
       <UniqueIdentifier>{812de89e-3d7a-4739-b852-98c595ce4a64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. RingBuffer">
-      <UniqueIdentifier>{db5fb088-8634-4e9b-a482-777b1915d2df}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -213,9 +210,6 @@
     <ClInclude Include="CNetwork.h">
       <Filter>04. Network</Filter>
     </ClInclude>
-    <ClInclude Include="CRingBuffer.h">
-      <Filter>05. RingBuffer</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DefaultWindow.cpp">
@@ -307,9 +301,6 @@
     </ClCompile>
     <ClCompile Include="CNetwork.cpp">
       <Filter>04. Network</Filter>
-    </ClCompile>
-    <ClCompile Include="CRingBuffer.cpp">
-      <Filter>05. RingBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Packet.cpp">
       <Filter>04. Network</Filter>

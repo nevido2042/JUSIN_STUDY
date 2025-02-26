@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00. RingBuffer">
+      <UniqueIdentifier>{41608654-34f8-40f3-a53b-8f7c316b7928}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\private\RingBuffer.cpp">
+      <Filter>00. RingBuffer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\RingBuffer.h">
+      <Filter>00. RingBuffer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

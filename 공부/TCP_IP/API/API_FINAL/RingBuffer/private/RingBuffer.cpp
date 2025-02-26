@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "CRingBuffer.h"
+#include "RingBuffer.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <memory.h>

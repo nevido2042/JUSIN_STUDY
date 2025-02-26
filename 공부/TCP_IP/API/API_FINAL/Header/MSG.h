@@ -1,7 +1,7 @@
 #pragma once
 
 #define PACKET_CODE (char)0x20
-
+       
 #pragma pack(push, 1)  // 패킹을 1로 설정
 
 enum SC_PacketType

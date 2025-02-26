@@ -3,7 +3,7 @@
 #include <WS2tcpip.h>
 #include <locale>
 #include "MSG.h"
-#include "CRingBuffer.h"
+#include "RingBuffer.h"
 
 #define BUF_SIZE 1024
 #define IP L"127.0.0.1"
