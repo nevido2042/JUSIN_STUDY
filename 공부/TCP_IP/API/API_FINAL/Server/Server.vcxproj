@@ -150,10 +150,13 @@
     <ClCompile Include="CRingBuffer.cpp" />
     <ClCompile Include="CServer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="PacketHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CRingBuffer.h" />
     <ClInclude Include="CServer.h" />
+    <ClInclude Include="PacketHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

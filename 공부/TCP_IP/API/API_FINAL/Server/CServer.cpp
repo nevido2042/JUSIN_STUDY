@@ -1,6 +1,7 @@
 #include <locale>
 #include <iostream>
 #include "CServer.h"
+#include "PacketHandler.h"
 
 CServer::CServer()
     :m_ServSock(INVALID_SOCKET),
@@ -123,22 +124,15 @@ void CServer::AcceptProc()
         pNewSession->recvQ = CRingBuffer(5000);
         pNewSession->sendQ = CRingBuffer(5000);
 
-        //신입에게 니 캐릭터 만들어라 패킷 작성
-        tagPACKET_SC_CREATE_MY_CHARACTER tSC_Create_My_Character
-        {
+        CPacketHandler::mp_SC_CreateMyCharacter(&m_CPacket,
             pNewSession->iID,
             pNewSession->iX,
             pNewSession->iY
-        };
+        );
+        Send_Unicast(pNewSession, (char*)m_CPacket.GetBufferPtr(), m_CPacket.GetDataSize());
 
-        //헤더 작성
+        ////헤더 작성
         tagPACKET_HEADER tPacketHeader;
-        tPacketHeader.BYTEbyCode = PACKET_CODE;
-        tPacketHeader.BYTEbySize = sizeof(tSC_Create_My_Character);
-        tPacketHeader.BYTEbyType = PACKET_SC_CREATE_MY_CHARACTER;
-
-        Send_Unicast(pNewSession, (char*)&tPacketHeader, sizeof(tPacketHeader));
-        Send_Unicast(pNewSession, (char*)&tSC_Create_My_Character, sizeof(tSC_Create_My_Character));
 
         //기존 유저에게 신입 뿌리기
         tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
@@ -207,6 +201,8 @@ void CServer::Send_Unicast(SESSION* pSession, const char* pMSG, const int iSize)
         wprintf_s(L"sendQ.Enqueue() error\n");
         exit(1);
     }
+
+    m_CPacket.Clear();
 }
 
 void CServer::Send_Broadcast(SESSION* _pSession, const char* pMSG, const int iSize)
@@ -226,6 +222,7 @@ void CServer::Send_Broadcast(SESSION* _pSession, const char* pMSG, const int iSi
         }
     }
 
+    m_CPacket.Clear();
 }
 
 void CServer::Read_Proc(SESSION* _pSession)
@@ -541,3 +538,4 @@ void CServer::Delete_Session(SESSION* _pSession)
         }
     }
 }
+

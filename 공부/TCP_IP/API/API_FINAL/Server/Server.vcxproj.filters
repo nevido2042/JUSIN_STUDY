@@ -30,6 +30,12 @@
     <ClCompile Include="CRingBuffer.cpp">
       <Filter>01. RingBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>00. Server</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketHandler.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -37,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="CRingBuffer.h">
       <Filter>01. RingBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketHandler.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

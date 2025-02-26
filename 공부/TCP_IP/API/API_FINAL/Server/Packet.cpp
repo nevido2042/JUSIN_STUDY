@@ -1,4 +1,4 @@
-#include"Pakcet.h"
+#include"Packet.h"
 #include<stdio.h>
 CPacket::CPacket()
 {
@@ -30,7 +30,9 @@ CPacket::~CPacket()
 
 void CPacket::Clear()
 {
-	front = rear;
+	//front = allocPtr;  // 버퍼의 시작 위치로 초기화
+	//rear = allocPtr;   // 버퍼의 시작 위치로 초기화
+	rear = front;
 }
 
 int CPacket::GetBufferSize()
@@ -133,4 +135,14 @@ int	CPacket::PutData(char* chpSrc, int iSrcSize)
 {
 	Enqueue(chpSrc, iSrcSize);
 	return iSrcSize;
+}
+
+void CPacket::UpdateHeaderSize(int packetSize) 
+{
+	// 패킷 크기 정보는 보통 2번째 바이트 위치
+	//*(GetBufferPtr() + 1) = static_cast<char>(packetSize);
+
+	// PACKET_HEADER 구조체를 버퍼의 처음에 위치한다고 가정
+	tagPACKET_HEADER* pHeader = reinterpret_cast<tagPACKET_HEADER*>(GetBufferPtr());
+	pHeader->BYTEbySize = static_cast<char>(packetSize);
 }

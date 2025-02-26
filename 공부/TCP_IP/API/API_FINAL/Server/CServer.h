@@ -4,6 +4,7 @@
 #include <vector>
 #include "MSG.h"
 #include "CRingBuffer.h" 
+#include "Packet.h"
 
 using namespace std;
 
@@ -54,11 +55,13 @@ private:
 	void Recieve_Message();
 	void Send_Message();
 	void Delete_Session(SESSION* pSession);
+
 private:
 	SOCKET						m_ServSock;
 	vector<SESSION*>			m_vecSession;
 	//int						m_iSessionCnt;
 	int							m_iID;
 	fd_set						m_tReadSet;
+	CPacket						m_CPacket;
 };
 

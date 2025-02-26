@@ -1,7 +1,6 @@
-#ifndef  __PACKET__
-#define  __PACKET__
-
+#pragma once
 #include<Windows.h>
+#include "MSG.h"
 
 class CPacket
 {
@@ -152,6 +151,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	int		PutData(char* chpSrc, int iSrcSize);
 
+	void	UpdateHeaderSize(int packetSize);
+
 
 
 
@@ -173,5 +174,3 @@ protected:
 	//------------------------------------------------------------
 	int	m_iDataSize = { 0 };
 };
-
-#endif

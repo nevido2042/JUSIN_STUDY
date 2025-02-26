@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header", "Header", "{F0DF7DEB-5DA1-4298-8670-9ABA7594BA53}"
 	ProjectSection(SolutionItems) = preProject
 		Header\MSG.h = Header\MSG.h
+		Header\Packet.h = Header\Packet.h
 	EndProjectSection
 EndProject
 Global

@@ -311,6 +311,9 @@
     <ClCompile Include="CRingBuffer.cpp">
       <Filter>05. RingBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>04. Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DefaultWindow.rc">
