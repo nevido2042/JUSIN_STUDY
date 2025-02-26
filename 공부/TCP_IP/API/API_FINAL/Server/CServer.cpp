@@ -131,45 +131,45 @@ void CServer::AcceptProc()
         );
         Send_Unicast(pNewSession, (_byte*)m_CPacket.GetBufferPtr(), m_CPacket.GetDataSize());
 
+        //////헤더 작성
+        //tagPACKET_HEADER tPacketHeader;
+
+        ////기존 유저에게 신입 뿌리기
+        //tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
+        //{
+        //    pNewSession->iID,
+        //    pNewSession->iX,
+        //    pNewSession->iY
+        //};
+
         ////헤더 작성
-        tagPACKET_HEADER tPacketHeader;
+        //tPacketHeader.BYTEbyCode = PACKET_CODE;
+        //tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
+        //tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
 
-        //기존 유저에게 신입 뿌리기
-        tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
-        {
-            pNewSession->iID,
-            pNewSession->iX,
-            pNewSession->iY
-        };
+        //Send_Broadcast(pNewSession, (_byte*)&tPacketHeader, sizeof(tPacketHeader));
+        //Send_Broadcast(pNewSession, (_byte*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
 
-        //헤더 작성
-        tPacketHeader.BYTEbyCode = PACKET_CODE;
-        tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
-        tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
+        ////신입에게는 자신 포함한 모두를 생성하라하고
+        //for (size_t i = 0; i < m_vecSession.size(); i++)
+        //{
+        //    //기존유저 정보 중 하나
+        //    tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
+        //    {
+        //        m_vecSession[i]->iID,
+        //        m_vecSession[i]->iX,
+        //        m_vecSession[i]->iY
+        //    };
 
-        Send_Broadcast(pNewSession, (_byte*)&tPacketHeader, sizeof(tPacketHeader));
-        Send_Broadcast(pNewSession, (_byte*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
+        //    //헤더 작성
+        //    tagPACKET_HEADER tPacketHeader;
+        //    tPacketHeader.BYTEbyCode = PACKET_CODE;
+        //    tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
+        //    tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
 
-        //신입에게는 자신 포함한 모두를 생성하라하고
-        for (size_t i = 0; i < m_vecSession.size(); i++)
-        {
-            //기존유저 정보 중 하나
-            tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
-            {
-                m_vecSession[i]->iID,
-                m_vecSession[i]->iX,
-                m_vecSession[i]->iY
-            };
-
-            //헤더 작성
-            tagPACKET_HEADER tPacketHeader;
-            tPacketHeader.BYTEbyCode = PACKET_CODE;
-            tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
-            tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
-
-            Send_Unicast(pNewSession, (_byte*)&tPacketHeader, sizeof(tPacketHeader));
-            Send_Unicast(pNewSession, (_byte*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
-        }
+        //    Send_Unicast(pNewSession, (_byte*)&tPacketHeader, sizeof(tPacketHeader));
+        //    Send_Unicast(pNewSession, (_byte*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
+        //}
 
         //// 클라이언트에게 ID 전송
         //MSG_ALLOC_ID msgAllocID = { ALLOC_ID, m_iID };
@@ -304,29 +304,29 @@ void CServer::Read_Proc(SESSION* _pSession)
 
 void CServer::Decode_Message(int iType, SESSION* _pSession)
 {
-    switch (iType)
-    {
-    case PACKET_CS_DELETE_CHARACTER:
-    {
-        tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character{};
-        _pSession->recvQ.Dequeue((_byte*) & tCS_Delete_Character, sizeof(tCS_Delete_Character));
-        wprintf_s(L"ID: %d, 캐릭터 삭제\n", tCS_Delete_Character.iID);
+    //switch (iType)
+    //{
+    //case PACKET_CS_DELETE_CHARACTER:
+    //{
+    //    tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character{};
+    //    _pSession->recvQ.Dequeue((_byte*) & tCS_Delete_Character, sizeof(tCS_Delete_Character));
+    //    wprintf_s(L"ID: %d, 캐릭터 삭제\n", tCS_Delete_Character.iID);
 
-        tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character{};
-        tSC_Delete_Character.iID = tCS_Delete_Character.iID;
+    //    tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character{};
+    //    tSC_Delete_Character.iID = tCS_Delete_Character.iID;
 
-        tagPACKET_HEADER tHeader{};
-        tHeader.BYTEbyCode = (_byte)(0x20);
-        tHeader.BYTEbySize = sizeof(tSC_Delete_Character);
-        tHeader.BYTEbyType = PACKET_SC_DELETE_CHARACTER;
+    //    tagPACKET_HEADER tHeader{};
+    //    tHeader.BYTEbyCode = (_byte)(0x20);
+    //    tHeader.BYTEbySize = sizeof(tSC_Delete_Character);
+    //    tHeader.BYTEbyType = PACKET_SC_DELETE_CHARACTER;
 
-        //세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
-        Send_Broadcast(NULL, (_byte*)&tHeader, sizeof(tHeader));
-        Send_Broadcast(NULL, (_byte*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
+    //    //세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
+    //    Send_Broadcast(NULL, (_byte*)&tHeader, sizeof(tHeader));
+    //    Send_Broadcast(NULL, (_byte*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
 
-        break;
-    }
-    }
+    //    break;
+    //}
+    //}
 
     //switch (iType)
     //{

@@ -3,6 +3,7 @@
 #include "CAbstractFactory.h"
 #include "CPlayer.h"
 #include "CObjMgr.h"
+#include "Packet.h"
 
 CNetwork* CNetwork::m_pInstance = nullptr;
 
@@ -77,15 +78,15 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
-	tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
-	tCS_Delete_Character.iID = m_iMyID;
-	tagPACKET_HEADER tHeader;
-	tHeader.BYTEbyCode = PACKET_CODE;
-	tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
-	tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
+	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
+	//tCS_Delete_Character.iID = m_iMyID;
+	//tagPACKET_HEADER tHeader;
+	//tHeader.BYTEbyCode = PACKET_CODE;
+	//tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
+	//tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
 
-	m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
-	m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
+	//m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
+	//m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
 
 	Send_Message();
 
@@ -228,63 +229,63 @@ void CNetwork::Receive_Message()
 
 void CNetwork::Decode_Message(char iType)
 {
-	switch (iType)
-	{
-	case PACKET_SC_CREATE_MY_CHARACTER:
-	{
-		tagPACKET_SC_CREATE_MY_CHARACTER tSC_Create_My_Character;
-		int iResult = m_recvQ.Dequeue((char*)&tSC_Create_My_Character, sizeof(tSC_Create_My_Character));
-		if (iResult != sizeof(tSC_Create_My_Character))
-		{
-			wprintf_s(L"Dequeue() Error:%d\n", iResult);
-			exit(1);
-		}
+	//switch (iType)
+	//{
+	//case PACKET_SC_CREATE_MY_CHARACTER:
+	//{
+	//	tagPACKET_SC_CREATE_MY_CHARACTER tSC_Create_My_Character;
+	//	int iResult = m_recvQ.Dequeue((char*)&tSC_Create_My_Character, sizeof(tSC_Create_My_Character));
+	//	if (iResult != sizeof(tSC_Create_My_Character))
+	//	{
+	//		wprintf_s(L"Dequeue() Error:%d\n", iResult);
+	//		exit(1);
+	//	}
 
-		m_iMyID = tSC_Create_My_Character.iID;
-		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_My_Character.iX, (float)tSC_Create_My_Character.iY);
-		static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_My_Character.iID);
-		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+	//	m_iMyID = tSC_Create_My_Character.iID;
+	//	CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_My_Character.iX, (float)tSC_Create_My_Character.iY);
+	//	static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_My_Character.iID);
+	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
 
-		wprintf_s(L"Create ID: %d\n", tSC_Create_My_Character.iID);
+	//	wprintf_s(L"Create ID: %d\n", tSC_Create_My_Character.iID);
 
-		//m_iClientCnt++;
-	/*	MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)pMsg;
-		m_iMyID = msgAllocID->id;
-		wprintf_s(L"MyID %d\n", msgAllocID->id);*/
-		break;
-	}
-	case PACKET_SC_CREATE_OTHER_CHARACTER:
-	{
-		tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character;
-		int iResult = m_recvQ.Dequeue((char*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
-		if (iResult != sizeof(tSC_Create_Other_Character))
-		{
-			wprintf_s(L"Dequeue() Error:%d\n", iResult);
-			exit(1);
-		}
+	//	//m_iClientCnt++;
+	///*	MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)pMsg;
+	//	m_iMyID = msgAllocID->id;
+	//	wprintf_s(L"MyID %d\n", msgAllocID->id);*/
+	//	break;
+	//}
+	//case PACKET_SC_CREATE_OTHER_CHARACTER:
+	//{
+	//	tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character;
+	//	int iResult = m_recvQ.Dequeue((char*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
+	//	if (iResult != sizeof(tSC_Create_Other_Character))
+	//	{
+	//		wprintf_s(L"Dequeue() Error:%d\n", iResult);
+	//		exit(1);
+	//	}
 
-		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_Other_Character.iX, (float)tSC_Create_Other_Character.iY);
-		static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_Other_Character.iID);
-		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+	//	CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_Other_Character.iX, (float)tSC_Create_Other_Character.iY);
+	//	static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_Other_Character.iID);
+	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
 
-		wprintf_s(L"Create ID: %d\n", tSC_Create_Other_Character.iID);
-		break;
-	}
-	case PACKET_SC_DELETE_CHARACTER:
-	{
-		tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;
+	//	wprintf_s(L"Create ID: %d\n", tSC_Create_Other_Character.iID);
+	//	break;
+	//}
+	//case PACKET_SC_DELETE_CHARACTER:
+	//{
+	//	tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;
 
-		m_recvQ.Dequeue((char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
+	//	m_recvQ.Dequeue((char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
 
-		cout << "Delete Player ID: " << tSC_Delete_Character.iID << endl;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(tSC_Delete_Character.iID);
-		if (pPlayer)
-		{
-			pPlayer->Set_Dead();
-		}
-		break;
-	}
-	}
+	//	cout << "Delete Player ID: " << tSC_Delete_Character.iID << endl;
+	//	CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(tSC_Delete_Character.iID);
+	//	if (pPlayer)
+	//	{
+	//		pPlayer->Set_Dead();
+	//	}
+	//	break;
+	//}
+	//}
 }
 
 

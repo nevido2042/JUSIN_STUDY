@@ -7,12 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DefaultWindow", "DefaultWin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{909C9E00-1A80-4E7B-8ED7-C152E2700ADE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header", "Header", "{F0DF7DEB-5DA1-4298-8670-9ABA7594BA53}"
-	ProjectSection(SolutionItems) = preProject
-		Header\MSG.h = Header\MSG.h
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RingBuffer", "RingBuffer\default\RingBuffer.vcxproj", "{5510C192-8485-4E73-98E2-46A4972713FD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetBuffer", "NetBuffer\default\NetBuffer.vcxproj", "{5510C192-8485-4E73-98E2-46A4972713FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
