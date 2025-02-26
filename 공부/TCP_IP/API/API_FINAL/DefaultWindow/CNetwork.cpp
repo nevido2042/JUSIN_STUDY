@@ -80,7 +80,7 @@ void CNetwork::Release()
 	tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
 	tCS_Delete_Character.iID = m_iMyID;
 	tagPACKET_HEADER tHeader;
-	tHeader.BYTEbyCode = (char)0x20;
+	tHeader.BYTEbyCode = PACKET_CODE;
 	tHeader.BYTEbySize = sizeof(tCS_Delete_Character);
 	tHeader.BYTEbyType = PACKET_CS_DELETE_CHARACTER;
 
@@ -195,7 +195,7 @@ void CNetwork::Receive_Message()
 				wprintf_s(L"Peek() Error:%d\n", retPeek);
 				return;// exit(1);
 			}
-			if (tHeader.BYTEbyCode != (char)0x20)
+			if (tHeader.BYTEbyCode != PACKET_CODE)
 			{
 				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.BYTEbyCode);
 				return;// exit(1);

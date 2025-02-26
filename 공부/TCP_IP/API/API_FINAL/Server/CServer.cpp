@@ -133,7 +133,7 @@ void CServer::AcceptProc()
 
         //헤더 작성
         tagPACKET_HEADER tPacketHeader;
-        tPacketHeader.BYTEbyCode = (char)0x20;
+        tPacketHeader.BYTEbyCode = PACKET_CODE;
         tPacketHeader.BYTEbySize = sizeof(tSC_Create_My_Character);
         tPacketHeader.BYTEbyType = PACKET_SC_CREATE_MY_CHARACTER;
 
@@ -149,7 +149,7 @@ void CServer::AcceptProc()
         };
 
         //헤더 작성
-        tPacketHeader.BYTEbyCode = (char)0x20;
+        tPacketHeader.BYTEbyCode = PACKET_CODE;
         tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
         tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
 
@@ -169,7 +169,7 @@ void CServer::AcceptProc()
 
             //헤더 작성
             tagPACKET_HEADER tPacketHeader;
-            tPacketHeader.BYTEbyCode = (char)0x20;
+            tPacketHeader.BYTEbyCode = PACKET_CODE;
             tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
             tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
 
@@ -290,7 +290,7 @@ void CServer::Read_Proc(SESSION* _pSession)
             wprintf_s(L"Peek() Error:%d\n", retPeek);
             exit(1);
         }
-        if (tHeader.BYTEbyCode != (char)0x20)
+        if (tHeader.BYTEbyCode != PACKET_CODE)
         {
             wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.BYTEbyCode);
             exit(1);
