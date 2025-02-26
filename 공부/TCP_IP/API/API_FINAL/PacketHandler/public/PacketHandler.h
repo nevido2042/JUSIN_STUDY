@@ -16,6 +16,11 @@ enum CS_PacketType
 class CPacketHandler
 {
 public:
-	static 	void mp_SC_CreateMyCharacter(CPacket* clpPacket, int iID, int iX, int iY);
+#define SC_CREATE_MY_CHARACTER_SIZE 12
+    static 	void mp_SC_CreateMyCharacter(CPacket* clpPacket, int iID, int iX, int iY);
+    static 	void net_CreateMyCharacter(CPacket* clpPacket, int& iID, int& iX, int& iY);
+#define SC_CREATE_OTHER_CHARACTER_SIZE 12
+    static 	void mp_SC_CreateOtherCharacter(CPacket* clpPacket, int iID, int iX, int iY);
+    static 	void net_CreateOtherCharacter(CPacket* clpPacket, int& iID, int& iX, int& iY);
 };
 

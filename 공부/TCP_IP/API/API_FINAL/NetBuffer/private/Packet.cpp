@@ -30,9 +30,9 @@ CPacket::~CPacket()
 
 void CPacket::Clear()
 {
-	//front = allocPtr;  // 버퍼의 시작 위치로 초기화
-	//rear = allocPtr;   // 버퍼의 시작 위치로 초기화
-	rear = front;
+	front = allocPtr;  // 버퍼의 시작 위치로 초기화
+	rear = allocPtr;   // 버퍼의 시작 위치로 초기화
+	//rear = front;
 }
 
 int CPacket::GetBufferSize()

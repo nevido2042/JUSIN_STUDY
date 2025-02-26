@@ -58,7 +58,6 @@ private:
 private:
 	SOCKET						m_ServSock;
 	vector<SESSION*>			m_vecSession;
-	//int						m_iSessionCnt;
 	int							m_iID;
 	fd_set						m_tReadSet;
 	CPacket						m_CPacket;

@@ -131,6 +131,14 @@ void CServer::AcceptProc()
         );
         Send_Unicast(pNewSession, (_byte*)m_CPacket.GetBufferPtr(), m_CPacket.GetDataSize());
 
+        CPacketHandler::mp_SC_CreateOtherCharacter(&m_CPacket,
+            pNewSession->iID,
+            pNewSession->iX,
+            pNewSession->iY
+        );
+        Send_Broadcast(pNewSession, (_byte*)m_CPacket.GetBufferPtr(), m_CPacket.GetDataSize());
+
+
         //////헤더 작성
         //tagPACKET_HEADER tPacketHeader;
 

@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CObjMgr.h"
 #include "Packet.h"
+#include "PacketHandler.h"
 
 CNetwork* CNetwork::m_pInstance = nullptr;
 
@@ -92,16 +93,6 @@ void CNetwork::Release()
 
 	closesocket(m_hSocket);
 	WSACleanup();
-}
-
-void CNetwork::Send_Message(char* tMsg)
-{
-	//tMsg->iID = m_iMyID;
-
-	if (send(m_hSocket, (char*)&tMsg, sizeof(tMsg), 0) == SOCKET_ERROR)
-	{
-		wprintf_s(L"send() error:%d", WSAGetLastError());
-	}
 }
 
 void CNetwork::Send_Message()
@@ -229,48 +220,51 @@ void CNetwork::Receive_Message()
 
 void CNetwork::Decode_Message(char iType)
 {
-	//switch (iType)
-	//{
-	//case PACKET_SC_CREATE_MY_CHARACTER:
-	//{
-	//	tagPACKET_SC_CREATE_MY_CHARACTER tSC_Create_My_Character;
-	//	int iResult = m_recvQ.Dequeue((char*)&tSC_Create_My_Character, sizeof(tSC_Create_My_Character));
-	//	if (iResult != sizeof(tSC_Create_My_Character))
-	//	{
-	//		wprintf_s(L"Dequeue() Error:%d\n", iResult);
-	//		exit(1);
-	//	}
+	switch (iType)
+	{
+	case PACKET_SC_CREATE_MY_CHARACTER:
+	{
+		int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), SC_CREATE_MY_CHARACTER_SIZE);
+		if (iResult != SC_CREATE_MY_CHARACTER_SIZE)
+		{
+			wprintf_s(L"Dequeue() Error:%d\n", iResult);
+			exit(1);
+		}
+		m_Packet.MoveWritePos(iResult);
 
-	//	m_iMyID = tSC_Create_My_Character.iID;
-	//	CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_My_Character.iX, (float)tSC_Create_My_Character.iY);
-	//	static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_My_Character.iID);
-	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+		int iX;
+		int iY;
+		CPacketHandler::net_CreateMyCharacter(&m_Packet, m_iMyID, iX, iY);
 
-	//	wprintf_s(L"Create ID: %d\n", tSC_Create_My_Character.iID);
+		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
+		static_cast<CPlayer*>(pObj)->Set_ID(m_iMyID);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+		wprintf_s(L"Create ID: %d\n", m_iMyID);
+		break;
+	}
+	case PACKET_SC_CREATE_OTHER_CHARACTER:
+	{
+		int iResult = m_recvQ.Dequeue((char*)&m_Packet, SC_CREATE_OTHER_CHARACTER_SIZE);
+		if (iResult != SC_CREATE_OTHER_CHARACTER_SIZE)
+		{
+			wprintf_s(L"Dequeue() Error:%d\n", iResult);
+			exit(1);
+		}
+		m_Packet.MoveWritePos(iResult);
 
-	//	//m_iClientCnt++;
-	///*	MSG_ALLOC_ID* msgAllocID = (MSG_ALLOC_ID*)pMsg;
-	//	m_iMyID = msgAllocID->id;
-	//	wprintf_s(L"MyID %d\n", msgAllocID->id);*/
-	//	break;
-	//}
-	//case PACKET_SC_CREATE_OTHER_CHARACTER:
-	//{
-	//	tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character;
-	//	int iResult = m_recvQ.Dequeue((char*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
-	//	if (iResult != sizeof(tSC_Create_Other_Character))
-	//	{
-	//		wprintf_s(L"Dequeue() Error:%d\n", iResult);
-	//		exit(1);
-	//	}
+		int iID;
+		int iX;
+		int iY;
+		CPacketHandler::net_CreateOtherCharacter(&m_Packet, iID, iX, iY);
 
-	//	CObj* pObj = CAbstractFactory<CPlayer>::Create((float)tSC_Create_Other_Character.iX, (float)tSC_Create_Other_Character.iY);
-	//	static_cast<CPlayer*>(pObj)->Set_ID(tSC_Create_Other_Character.iID);
-	//	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
+		static_cast<CPlayer*>(pObj)->Set_ID(iID);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
 
-	//	wprintf_s(L"Create ID: %d\n", tSC_Create_Other_Character.iID);
-	//	break;
-	//}
+		wprintf_s(L"Create ID: %d\n", iID);
+		break;
+	}
+	}
 	//case PACKET_SC_DELETE_CHARACTER:
 	//{
 	//	tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;

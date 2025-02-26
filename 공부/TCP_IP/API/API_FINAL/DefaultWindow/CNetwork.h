@@ -3,6 +3,7 @@
 #include <WS2tcpip.h>
 #include <locale>
 #include "RingBuffer.h"
+#include "Packet.h"
 
 #define BUF_SIZE 1024
 #define IP L"127.0.0.1"
@@ -18,9 +19,7 @@ public:
 	void Update();
 	void Release();
 public:
-	void Send_Message(char* tMsg);
 	void Send_Message();
-	//int Enqueue_SendQ(char* tMsg, int iSize);
 
 private:
 	void Receive_Message();
@@ -33,6 +32,8 @@ private:
 	//int		m_iClientCnt;
 	CRingBuffer m_sendQ;
 	CRingBuffer m_recvQ;
+
+	CPacket		m_Packet;
 
 public:
 	static CNetwork* Get_Instance()
