@@ -23,8 +23,7 @@ public:
     static 	void net_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
 
     static void mp_SC_DeleteCharacter(CPacket* pPacket, int iID);
-    static void net_
-
+    static void net_DeleteCharacter(CPacket* pPacket, int& iID);
     static void mp_CS_DeleteMyCharacter(CPacket* pPacket);
 };
 

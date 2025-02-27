@@ -80,7 +80,7 @@ void CNetwork::Update()
 void CNetwork::Release()
 {
 	CPacketHandler::mp_CS_DeleteMyCharacter(&m_Packet);
-	m_sendQ.Enqueue((char*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize() - sizeof(tagPACKET_HEADER));
+	m_sendQ.Enqueue((char*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
 	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
 	//tCS_Delete_Character.iID = m_iMyID;
@@ -223,18 +223,18 @@ void CNetwork::Receive_Message()
 
 void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 {
+	int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.BYTEbySize);
+	if (iResult != _tHeader.BYTEbySize)
+	{
+		wprintf_s(L"Dequeue() Error:%d\n", iResult);
+		exit(1);
+	}
+	m_Packet.MoveWritePos(iResult);
+
 	switch (_tHeader.BYTEbyType)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
 	{
-		int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.BYTEbySize);
-		if (iResult != _tHeader.BYTEbySize)
-		{
-			wprintf_s(L"Dequeue() Error:%d\n", iResult);
-			exit(1);
-		}
-		m_Packet.MoveWritePos(iResult);
-
 		int iX;
 		int iY;
 		CPacketHandler::net_CreateMyCharacter(&m_Packet, m_iMyID, iX, iY);
@@ -247,14 +247,6 @@ void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 	}
 	case PACKET_SC_CREATE_OTHER_CHARACTER:
 	{
-		int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.BYTEbySize);
-		if (iResult != _tHeader.BYTEbySize)
-		{
-			wprintf_s(L"Dequeue() Error:%d\n", iResult);
-			exit(1);
-		}
-		m_Packet.MoveWritePos(iResult);
-
 		int iID;
 		int iX;
 		int iY;
@@ -269,12 +261,11 @@ void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 	}
 	case PACKET_SC_DELETE_CHARACTER:
 	{
-		tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;
+		int iID;
+		CPacketHandler::net_DeleteCharacter(&m_Packet, iID);
 
-		m_recvQ.Dequeue((char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
-
-		cout << "Delete Player ID: " << tSC_Delete_Character.iID << endl;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(tSC_Delete_Character.iID);
+		cout << "Delete Player ID: " << iID << endl;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(iID);
 		if (pPlayer)
 		{
 			pPlayer->Set_Dead();

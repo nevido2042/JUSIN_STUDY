@@ -124,6 +124,7 @@ void CServer::AcceptProc()
         pNewSession->recvQ = CRingBuffer(5000);
         pNewSession->sendQ = CRingBuffer(5000);
 
+        //신입 자기 캐릭 생성
         CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
             pNewSession->iID,
             pNewSession->iX,
@@ -131,6 +132,7 @@ void CServer::AcceptProc()
         );
         Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
+        //신입 뿌리기
         CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
             pNewSession->iID,
             pNewSession->iX,
@@ -138,63 +140,18 @@ void CServer::AcceptProc()
         );
         Send_Broadcast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
+        //신입에게 기존 유저 뿌리기
+        for (SESSION* pSession : m_vecSession)
+        {
+            //신입 뿌리기
+            CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+                pSession->iID,
+                pSession->iX,
+                pSession->iY
+            );
+            Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        }
 
-        //////헤더 작성
-        //tagPACKET_HEADER tPacketHeader;
-
-        ////기존 유저에게 신입 뿌리기
-        //tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
-        //{
-        //    pNewSession->iID,
-        //    pNewSession->iX,
-        //    pNewSession->iY
-        //};
-
-        ////헤더 작성
-        //tPacketHeader.BYTEbyCode = PACKET_CODE;
-        //tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
-        //tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
-
-        //Send_Broadcast(pNewSession, (_byte*)&tPacketHeader, sizeof(tPacketHeader));
-        //Send_Broadcast(pNewSession, (_byte*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
-
-        ////신입에게는 자신 포함한 모두를 생성하라하고
-        //for (size_t i = 0; i < m_vecSession.size(); i++)
-        //{
-        //    //기존유저 정보 중 하나
-        //    tagPACKET_SC_CREATE_OTHER_CHARACTER tSC_Create_Other_Character
-        //    {
-        //        m_vecSession[i]->iID,
-        //        m_vecSession[i]->iX,
-        //        m_vecSession[i]->iY
-        //    };
-
-        //    //헤더 작성
-        //    tagPACKET_HEADER tPacketHeader;
-        //    tPacketHeader.BYTEbyCode = PACKET_CODE;
-        //    tPacketHeader.BYTEbySize = sizeof(tSC_Create_Other_Character);
-        //    tPacketHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
-
-        //    Send_Unicast(pNewSession, (_byte*)&tPacketHeader, sizeof(tPacketHeader));
-        //    Send_Unicast(pNewSession, (_byte*)&tSC_Create_Other_Character, sizeof(tSC_Create_Other_Character));
-        //}
-
-        //// 클라이언트에게 ID 전송
-        //MSG_ALLOC_ID msgAllocID = { ALLOC_ID, m_iID };
-        //Send_Unicast(m_vecSession.back(), (MSG_BASE*)&msgAllocID, sizeof(msgAllocID));
-
-        ////기존 유저에게는 신입만 생성하도록
-        //MSG_CREATE_PLAYER tMSG = { CREATE_PLAYER, m_iID, m_vecSession.back()->iX, m_vecSession.back()->iY };
-        //Send_Broadcast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
-
-        ////신입에게는 자신 포함한 모두를 생성하라하고
-        //for (size_t i = 0; i < m_vecSession.size(); i++)
-        //{
-        //    tMSG.id = m_vecSession[i]->iID;
-        //    tMSG.x = m_vecSession[i]->iX;
-        //    tMSG.y = m_vecSession[i]->iY;
-        //    Send_Unicast(m_vecSession.back(), (MSG_BASE*)&tMSG, sizeof(tMSG));
-        //}
         m_vecSession.push_back(pNewSession);
         m_iID++;
     }
@@ -312,14 +269,23 @@ void CServer::Read_Proc(SESSION* _pSession)
 
 void CServer::Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession)
 {
+    int iResult = _pSession->recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _Header.BYTEbySize);
+    if (iResult != _Header.BYTEbySize)
+    {
+        wprintf_s(L"Dequeue() Error:%d\n", iResult);
+        exit(1);
+    }
+    m_Packet.MoveWritePos(iResult);
+
     switch (_Header.BYTEbyType)
     {
     case PACKET_CS_DELETE_MY_CHARACTER:
     {
         CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, _pSession->iID);
+
         wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->iID);
 
-        Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize() - sizeof(tagPACKET_HEADER));
+        Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
         break;
     }
@@ -504,6 +470,7 @@ void CServer::Send_Message()
                         wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->iID, WSAGetLastError());
 
                     m_vecSession[j]->sendQ.MoveFront(iSend);
+                    //wprintf_s(L"Send Byte: %d\n", iSend);
                 }
             }
         }

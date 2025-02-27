@@ -62,6 +62,13 @@ void CPacketHandler::mp_SC_DeleteCharacter(CPacket* pPacket, int iID)
     pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }
 
+void CPacketHandler::net_DeleteCharacter(CPacket* pPacket, int& iID)
+{
+    *pPacket >> iID;
+
+    pPacket->Clear();
+}
+
 void CPacketHandler::mp_CS_DeleteMyCharacter(CPacket* pPacket)
 {
     tagPACKET_HEADER tHeader{};
