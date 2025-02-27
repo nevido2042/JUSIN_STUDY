@@ -190,12 +190,12 @@ void CNetwork::Receive_Message()
 				wprintf_s(L"Peek() Error:%d\n", retPeek);
 				return;// exit(1);
 			}
-			if (tHeader.BYTEbyCode != PACKET_CODE)
+			if (tHeader.byCode != PACKET_CODE)
 			{
-				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.BYTEbyCode);
+				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.byCode);
 				return;// exit(1);
 			}
-			if (tHeader.BYTEbySize + sizeof(tagPACKET_HEADER) > size_t(m_recvQ.GetUseSize()))
+			if (tHeader.bySize + sizeof(tagPACKET_HEADER) > size_t(m_recvQ.GetUseSize()))
 			{
 				break;
 			}
@@ -223,15 +223,15 @@ void CNetwork::Receive_Message()
 
 void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 {
-	int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.BYTEbySize);
-	if (iResult != _tHeader.BYTEbySize)
+	int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.bySize);
+	if (iResult != _tHeader.bySize)
 	{
 		wprintf_s(L"Dequeue() Error:%d\n", iResult);
 		exit(1);
 	}
 	m_Packet.MoveWritePos(iResult);
 
-	switch (_tHeader.BYTEbyType)
+	switch (_tHeader.byType)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
 	{

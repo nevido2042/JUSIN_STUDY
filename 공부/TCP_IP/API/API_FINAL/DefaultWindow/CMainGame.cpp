@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CMainGame.h"
 #include "CAbstractFactory.h"
 #include "CObjMgr.h"
@@ -45,7 +45,19 @@ void CMainGame::Initialize()
 		std::ios::sync_with_stdio();
 	}
 
+	// 1️⃣ 콘솔 핸들 가져오기
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// 2️⃣ 콘솔 버퍼 크기 먼저 조정
+	COORD bufferSize = { 20, 20 }; // 가로 80, 세로 20
+	SetConsoleScreenBufferSize(hConsole, bufferSize);
+
+	// 3️⃣ 콘솔 창 크기 조정
+	SMALL_RECT windowSize = { 0, 0, 80 - 1, 20 - 1 };
+	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+
 #endif // _DEBUG
+
 
 
 }
@@ -66,7 +78,7 @@ void CMainGame::Late_Update()
 
 void CMainGame::Render()
 {
-#pragma region  FPS ���
+#pragma region  FPS 출력
 	++m_iFPS;
 
 	if (m_dwTime + 1000 < GetTickCount())

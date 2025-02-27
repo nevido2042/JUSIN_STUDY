@@ -1,5 +1,6 @@
-#define DEFAULT_BUF_SIZE 1024
-typedef char _byte;
+#pragma	once
+#include "Define.h"
+
 class CRingBuffer
 {
 public:
@@ -19,13 +20,13 @@ public:
 	int GetFreeSize();
 
 	//데이터 넣음
-	int Enqueue(_byte* chpData, int iSize);
+	int Enqueue(_byte* pData, int iSize);
 
 	//데이터 뺌
-	int Dequeue(_byte* chpDest, int iSize);
+	int Dequeue(_byte* pDest, int iSize);
 
 	//데이터 보기
-	int Peek(_byte* chpDest, int iSize);
+	int Peek(_byte* pDest, int iSize);
 
 	//버퍼 데이터 삭제
 	void ClearBuffer();
@@ -60,7 +61,7 @@ private:
 	_byte* m_rear;
 
 	//다음 위치 반환
-	_byte* NextPos(_byte** pchPos);
+	_byte* NextPos(_byte** ppPos);
 	//이전 위치 반환
-	_byte* PrevPos(_byte** pchPos);
+	_byte* PrevPos(_byte** ppPos);
 };

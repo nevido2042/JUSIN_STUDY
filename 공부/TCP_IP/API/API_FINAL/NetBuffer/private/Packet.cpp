@@ -2,37 +2,38 @@
 #include<stdio.h>
 CPacket::CPacket()
 {
-	allocPtr = (char*)malloc(eBUFFER_DEFAULT + 1);
-	front = allocPtr;
-	rear = allocPtr;
+	m_pAlloc = (_byte*)malloc(eBUFFER_DEFAULT + 1);
+	m_Front = m_pAlloc;
+	m_Rear = m_pAlloc;
 	m_iBufferSize = eBUFFER_DEFAULT;
-	allocEndPtr = allocPtr + eBUFFER_DEFAULT;
+	m_pAllocEnd = m_pAlloc + eBUFFER_DEFAULT;
 
-	if (allocPtr == nullptr)
+	if (m_pAlloc == nullptr)
 		wprintf_s(L"CPacket() Error: alloc nullptr\n");
 }
-CPacket::CPacket(int iBufferSize)
+CPacket::CPacket(int iSize)
 {
-	allocPtr = (char*)malloc(iBufferSize + 1);
-	front = allocPtr;
-	rear = allocPtr;
-	m_iBufferSize = iBufferSize;
-	allocEndPtr = allocPtr + iBufferSize;
+	m_pAlloc = (_byte*)malloc(iSize + 1);
+	m_Front = m_pAlloc;
+	m_Rear = m_pAlloc;
+	m_iBufferSize = iSize;
+	m_pAllocEnd = m_pAlloc + iSize;
 
-	if (allocPtr == nullptr)
+	if (m_pAlloc == nullptr)
 		wprintf_s(L"CPacket() Error: alloc nullptr\n");
 }
 
 CPacket::~CPacket()
 {
-	free(allocPtr);
+	free(m_pAlloc);
 }
 
 void CPacket::Clear()
 {
-	front = allocPtr;  // 버퍼의 시작 위치로 초기화
-	rear = allocPtr;   // 버퍼의 시작 위치로 초기화
+	m_Front = m_pAlloc;  // 버퍼의 시작 위치로 초기화
+	m_Rear = m_pAlloc;   // 버퍼의 시작 위치로 초기화
 	//rear = front;
+	m_iDataSize = 0;
 }
 
 int CPacket::GetBufferSize()
@@ -42,18 +43,18 @@ int CPacket::GetBufferSize()
 
 int CPacket::GetDataSize()
 {
-	return rear - front;
+	return m_Rear - m_Front;
 }
 
-char* CPacket::GetBufferPtr()
+_byte* CPacket::GetBufferPtr()
 {
-	return allocPtr;
+	return m_pAlloc;
 }
 
 int CPacket::MoveReadPos(int iSize)
 {
 	//rear을 넘어가면 안된다.
-	if (front + iSize > rear)
+	if (m_Front + iSize > m_Rear)
 	{
 		wprintf_s(L"MoveReadPos() Error:front + iSize > rear\n");
 		return -1;
@@ -65,14 +66,14 @@ int CPacket::MoveReadPos(int iSize)
 		return -1;
 	}
 
-	front += iSize;
+	m_Front += iSize;
 	return iSize;
 }
 
 int CPacket::MoveWritePos(int iSize)
 {
 	//rear가 할당 끝지점을 넘어서면 안된다.
-	if (rear + iSize > allocEndPtr)
+	if (m_Rear + iSize > m_pAllocEnd)
 	{
 		wprintf_s(L"MoveWritePos() Error: rear + iSize > allocEndPtr\n");
 		return -1;
@@ -83,14 +84,14 @@ int CPacket::MoveWritePos(int iSize)
 		wprintf_s(L"MoveReadPos() Error:iSize < 0\n");
 		return -1;
 	}
-	rear += iSize;
+	m_Rear += iSize;
 	return iSize;
 }
 
-void CPacket::Enqueue(char* value, int size)
+void CPacket::Enqueue(_byte* pData, int iSize)
 {
 	//rear+size > allocEndPtr?
-	if (rear + size > allocEndPtr)
+	if (m_Rear + iSize > m_pAllocEnd)
 	{
 		wprintf_s(L"Enqueue() Error:rear+size > allocEndPtr\n");
 		return;
@@ -99,17 +100,19 @@ void CPacket::Enqueue(char* value, int size)
 	//rear 지점에 데이터를 넣고
 	//rear++
 	//iSize만큼 반복
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < iSize; i++)
 	{
-		*rear = *value++;
-		rear++;
+		*m_Rear = *pData++;
+		m_Rear++;
 	}
+
+	m_iDataSize = m_Rear - m_Front;
 }
 
-void CPacket::Dequeue(char* value, int size)
+void CPacket::Dequeue(_byte* pBuf, int iSize)
 {
 	//front + size > rear?
-	if (front + size > rear)
+	if (m_Front + iSize > m_Rear)
 	{
 		wprintf_s(L"Dequeue() Error:front+size > rear\n");
 		return;
@@ -118,31 +121,33 @@ void CPacket::Dequeue(char* value, int size)
 	//데이터에 front값을 넣고
 	//front++
 	//iSize만큼 반복
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < iSize; i++)
 	{
-		*value++ = *front;
-		front++;
+		*pBuf++ = *m_Front;
+		m_Front++;
 	}
+
+	m_iDataSize = m_Rear - m_Front;
 }
 
-int	CPacket::GetData(char* chpDest, int iSize)
+int	CPacket::GetData(_byte* pDest, int iSize)
 {
-	Dequeue(chpDest, iSize);
+	Dequeue(pDest, iSize);
 	return iSize;
 }
 
-int	CPacket::PutData(char* chpSrc, int iSrcSize)
+int	CPacket::PutData(_byte* pSrc, int iSize)
 {
-	Enqueue(chpSrc, iSrcSize);
-	return iSrcSize;
+	Enqueue(pSrc, iSize);
+	return iSize;
 }
 
-void CPacket::UpdateHeaderSize(int packetSize) 
+void CPacket::UpdateHeaderSize(int iSize) 
 {
 	// 패킷 크기 정보는 보통 2번째 바이트 위치
 	//*(GetBufferPtr() + 1) = static_cast<char>(packetSize);
 
 	// PACKET_HEADER 구조체를 버퍼의 처음에 위치한다고 가정
 	tagPACKET_HEADER* pHeader = reinterpret_cast<tagPACKET_HEADER*>(GetBufferPtr());
-	pHeader->BYTEbySize = static_cast<char>(packetSize);
+	pHeader->bySize = static_cast<_byte>(iSize);
 }

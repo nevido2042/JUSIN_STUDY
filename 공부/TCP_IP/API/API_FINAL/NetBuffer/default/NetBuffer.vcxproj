@@ -152,6 +152,7 @@
     <ClCompile Include="..\private\RingBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\public\Define.h" />
     <ClInclude Include="..\public\Packet.h" />
     <ClInclude Include="..\public\RingBuffer.h" />
   </ItemGroup>

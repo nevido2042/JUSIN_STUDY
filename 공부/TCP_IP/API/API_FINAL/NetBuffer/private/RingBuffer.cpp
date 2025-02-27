@@ -10,15 +10,24 @@ void CRingBuffer::FreeRingBuffer()
 
 _byte* CRingBuffer::NextPos(_byte** ppPos)
 {
-    *ppPos = (*ppPos == m_pBufferAllocEnd) ? m_pBufferAlloc : (*ppPos + 1);
+    if (*ppPos == m_pBufferAllocEnd)
+        *ppPos = m_pBufferAlloc;
+    else
+        *ppPos += 1;
+
     return *ppPos;
 }
 
-_byte* CRingBuffer::PrevPos(_byte** pchPos)
+_byte* CRingBuffer::PrevPos(_byte** ppPos)
 {
-    *pchPos = (*pchPos == m_pBufferAlloc) ? m_pBufferAllocEnd : (*pchPos - 1);
-    return *pchPos;
+    if (*ppPos == m_pBufferAlloc)
+        *ppPos = m_pBufferAllocEnd;
+    else
+        *ppPos -= 1;
+
+    return *ppPos;
 }
+
 
 CRingBuffer::CRingBuffer()
 {
@@ -95,17 +104,17 @@ int CRingBuffer::Dequeue(_byte* pDest, int iSize)
     return iSize;
 }
 
-int CRingBuffer::Peek(_byte* chpDest, int iSize)
+int CRingBuffer::Peek(_byte* pDest, int iSize)
 {
     if (GetUseSize() < iSize)
     {
         wprintf_s(L"Peek() error: 확인하려는 크기가 남아있는 데이터보다 많다.\n");
         return 0;
     }
-    _byte* frontCpy = m_front;
+    _byte* pFrontCpy = m_front;
     for (int i = 0; i < iSize; i++)
     {
-        chpDest[i] = *NextPos(&frontCpy);
+        pDest[i] = *NextPos(&pFrontCpy);
     }
     return iSize;
 }

@@ -252,12 +252,12 @@ void CServer::Read_Proc(SESSION* _pSession)
             wprintf_s(L"Peek() Error:%d\n", retPeek);
             exit(1);
         }
-        if (tHeader.BYTEbyCode != PACKET_CODE)
+        if (tHeader.byCode != PACKET_CODE)
         {
-            wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.BYTEbyCode);
+            wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.byCode);
             exit(1);
         }
-        if (tHeader.BYTEbySize + sizeof(tHeader) > _pSession->recvQ.GetUseSize())
+        if (tHeader.bySize + sizeof(tHeader) > _pSession->recvQ.GetUseSize())
         {
             break;
         }
@@ -269,15 +269,15 @@ void CServer::Read_Proc(SESSION* _pSession)
 
 void CServer::Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession)
 {
-    int iResult = _pSession->recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _Header.BYTEbySize);
-    if (iResult != _Header.BYTEbySize)
+    int iResult = _pSession->recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _Header.bySize);
+    if (iResult != _Header.bySize)
     {
         wprintf_s(L"Dequeue() Error:%d\n", iResult);
         exit(1);
     }
     m_Packet.MoveWritePos(iResult);
 
-    switch (_Header.BYTEbyType)
+    switch (_Header.byType)
     {
     case PACKET_CS_DELETE_MY_CHARACTER:
     {
