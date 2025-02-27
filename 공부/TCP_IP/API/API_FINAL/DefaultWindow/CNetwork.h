@@ -23,7 +23,7 @@ public:
 
 private:
 	void Receive_Message();
-	void Decode_Message(char iType);
+	void Decode_Message(const tagPACKET_HEADER& _tHeader);
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;

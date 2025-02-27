@@ -124,19 +124,19 @@ void CServer::AcceptProc()
         pNewSession->recvQ = CRingBuffer(5000);
         pNewSession->sendQ = CRingBuffer(5000);
 
-        CPacketHandler::mp_SC_CreateMyCharacter(&m_CPacket,
+        CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
             pNewSession->iID,
             pNewSession->iX,
             pNewSession->iY
         );
-        Send_Unicast(pNewSession, (_byte*)m_CPacket.GetBufferPtr(), m_CPacket.GetDataSize());
+        Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
-        CPacketHandler::mp_SC_CreateOtherCharacter(&m_CPacket,
+        CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
             pNewSession->iID,
             pNewSession->iX,
             pNewSession->iY
         );
-        Send_Broadcast(pNewSession, (_byte*)m_CPacket.GetBufferPtr(), m_CPacket.GetDataSize());
+        Send_Broadcast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
 
         //////헤더 작성
@@ -210,7 +210,7 @@ void CServer::Send_Unicast(SESSION* pSession, const _byte* pMSG, const int iSize
         exit(1);
     }
 
-    m_CPacket.Clear();
+    m_Packet.Clear();
 }
 
 void CServer::Send_Broadcast(SESSION* _pSession, const _byte* pMSG, const int iSize)
@@ -230,7 +230,7 @@ void CServer::Send_Broadcast(SESSION* _pSession, const _byte* pMSG, const int iS
         }
     }
 
-    m_CPacket.Clear();
+    m_Packet.Clear();
 }
 
 void CServer::Read_Proc(SESSION* _pSession)
@@ -306,35 +306,24 @@ void CServer::Read_Proc(SESSION* _pSession)
         }
 
         _pSession->recvQ.MoveFront(sizeof(tHeader));
-        Decode_Message(tHeader.BYTEbyType, _pSession);
+        Decode_Message(tHeader, _pSession);
     }
 }
 
-void CServer::Decode_Message(int iType, SESSION* _pSession)
+void CServer::Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession)
 {
-    //switch (iType)
-    //{
-    //case PACKET_CS_DELETE_CHARACTER:
-    //{
-    //    tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character{};
-    //    _pSession->recvQ.Dequeue((_byte*) & tCS_Delete_Character, sizeof(tCS_Delete_Character));
-    //    wprintf_s(L"ID: %d, 캐릭터 삭제\n", tCS_Delete_Character.iID);
+    switch (_Header.BYTEbyType)
+    {
+    case PACKET_CS_DELETE_MY_CHARACTER:
+    {
+        CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, _pSession->iID);
+        wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->iID);
 
-    //    tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character{};
-    //    tSC_Delete_Character.iID = tCS_Delete_Character.iID;
+        Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize() - sizeof(tagPACKET_HEADER));
 
-    //    tagPACKET_HEADER tHeader{};
-    //    tHeader.BYTEbyCode = (_byte)(0x20);
-    //    tHeader.BYTEbySize = sizeof(tSC_Delete_Character);
-    //    tHeader.BYTEbyType = PACKET_SC_DELETE_CHARACTER;
-
-    //    //세션중 아이디가 같은 녀석의 세션을 제외하고 보내려했는데 그냥 보내볼까
-    //    Send_Broadcast(NULL, (_byte*)&tHeader, sizeof(tHeader));
-    //    Send_Broadcast(NULL, (_byte*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
-
-    //    break;
-    //}
-    //}
+        break;
+    }
+    }
 
     //switch (iType)
     //{

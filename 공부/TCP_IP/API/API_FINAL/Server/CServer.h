@@ -50,7 +50,7 @@ private:
 	void Send_Unicast(SESSION* pSession, const _byte* tMSG, const int iSize);
 	void Send_Broadcast(SESSION* pSession, const _byte* tMSG, const int iSize);
 	void Read_Proc(SESSION* pSession);
-	void Decode_Message(int iType, SESSION* _pSession);
+	void Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession);
 	void Recieve_Message();
 	void Send_Message();
 	void Delete_Session(SESSION* pSession);
@@ -60,6 +60,6 @@ private:
 	vector<SESSION*>			m_vecSession;
 	int							m_iID;
 	fd_set						m_tReadSet;
-	CPacket						m_CPacket;
+	CPacket						m_Packet;
 };
 

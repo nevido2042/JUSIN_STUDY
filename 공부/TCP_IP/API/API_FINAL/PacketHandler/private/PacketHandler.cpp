@@ -1,6 +1,6 @@
 #include "PacketHandler.h"
 
-void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* clpPacket, int iID, int iX, int iY)
+void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.BYTEbyCode = PACKET_CODE;
@@ -9,43 +9,66 @@ void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* clpPacket, int iID, int iX
 
     //wprintf_s(L"mp_headerSize:%d\n", sizeof(header));
 
-    clpPacket->PutData((char*)&tHeader, sizeof(tHeader));
-    *clpPacket << iID;
-    *clpPacket << iX;
-    *clpPacket << iY;
+    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    *pPacket << iID;
+    *pPacket << iX;
+    *pPacket << iY;
 
-    clpPacket->UpdateHeaderSize(clpPacket->GetDataSize() - sizeof(tHeader));
+    pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }
 
-void CPacketHandler::net_CreateMyCharacter(CPacket* clpPacket, int& iID, int& iX, int& iY)
+void CPacketHandler::net_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY)
 {
-    *clpPacket >> iID;
-    *clpPacket >> iX;
-    *clpPacket >> iY;
+    *pPacket >> iID;
+    *pPacket >> iX;
+    *pPacket >> iY;
 
-    clpPacket->Clear();
+    pPacket->Clear();
 }
 
-void CPacketHandler::mp_SC_CreateOtherCharacter(CPacket* clpPacket, int iID, int iX, int iY)
+void CPacketHandler::mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, int iX, int iY)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.BYTEbyCode = PACKET_CODE;
     //tHeader.BYTEbySize = 0;//일단 고정 길이로
     tHeader.BYTEbyType = PACKET_SC_CREATE_OTHER_CHARACTER;
 
-    clpPacket->PutData((char*)&tHeader, sizeof(tHeader));
-    *clpPacket << iID;
-    *clpPacket << iX;
-    *clpPacket << iY;
+    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    *pPacket << iID;
+    *pPacket << iX;
+    *pPacket << iY;
 
-    clpPacket->UpdateHeaderSize(clpPacket->GetDataSize() - sizeof(tHeader));
+    pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }
 
-void CPacketHandler::net_CreateOtherCharacter(CPacket* clpPacket, int& iID, int& iX, int& iY)
+void CPacketHandler::net_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY)
 {
-    *clpPacket >> iID;
-    *clpPacket >> iX;
-    *clpPacket >> iY;
+    *pPacket >> iID;
+    *pPacket >> iX;
+    *pPacket >> iY;
 
-    clpPacket->Clear();
+    pPacket->Clear();
+}
+
+void CPacketHandler::mp_SC_DeleteCharacter(CPacket* pPacket, int iID)
+{
+    tagPACKET_HEADER tHeader{};
+    tHeader.BYTEbyCode = PACKET_CODE;
+    tHeader.BYTEbyType = PACKET_SC_DELETE_CHARACTER;
+
+    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    *pPacket << iID;
+
+    pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::mp_CS_DeleteMyCharacter(CPacket* pPacket)
+{
+    tagPACKET_HEADER tHeader{};
+    tHeader.BYTEbyCode = PACKET_CODE;
+    tHeader.BYTEbyType = PACKET_CS_DELETE_MY_CHARACTER;
+
+    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+
+    pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }

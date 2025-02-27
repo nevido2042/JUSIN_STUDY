@@ -79,6 +79,9 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
+	CPacketHandler::mp_CS_DeleteMyCharacter(&m_Packet);
+	m_sendQ.Enqueue((char*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize() - sizeof(tagPACKET_HEADER));
+
 	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
 	//tCS_Delete_Character.iID = m_iMyID;
 	//tagPACKET_HEADER tHeader;
@@ -199,7 +202,7 @@ void CNetwork::Receive_Message()
 
 			m_recvQ.MoveFront(sizeof(tagPACKET_HEADER));
 			
-			Decode_Message(tHeader.BYTEbyType);
+			Decode_Message(tHeader);
 			//if (m_recvQ.GetUseSize() < MSG_SIZE)
 			//	break;//Áß´Ü
 
@@ -218,14 +221,14 @@ void CNetwork::Receive_Message()
 	}
 }
 
-void CNetwork::Decode_Message(char iType)
+void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 {
-	switch (iType)
+	switch (_tHeader.BYTEbyType)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
 	{
-		int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), SC_CREATE_MY_CHARACTER_SIZE);
-		if (iResult != SC_CREATE_MY_CHARACTER_SIZE)
+		int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.BYTEbySize);
+		if (iResult != _tHeader.BYTEbySize)
 		{
 			wprintf_s(L"Dequeue() Error:%d\n", iResult);
 			exit(1);
@@ -244,8 +247,8 @@ void CNetwork::Decode_Message(char iType)
 	}
 	case PACKET_SC_CREATE_OTHER_CHARACTER:
 	{
-		int iResult = m_recvQ.Dequeue((char*)&m_Packet, SC_CREATE_OTHER_CHARACTER_SIZE);
-		if (iResult != SC_CREATE_OTHER_CHARACTER_SIZE)
+		int iResult = m_recvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _tHeader.BYTEbySize);
+		if (iResult != _tHeader.BYTEbySize)
 		{
 			wprintf_s(L"Dequeue() Error:%d\n", iResult);
 			exit(1);
@@ -264,22 +267,21 @@ void CNetwork::Decode_Message(char iType)
 		wprintf_s(L"Create ID: %d\n", iID);
 		break;
 	}
+	case PACKET_SC_DELETE_CHARACTER:
+	{
+		tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;
+
+		m_recvQ.Dequeue((char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
+
+		cout << "Delete Player ID: " << tSC_Delete_Character.iID << endl;
+		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(tSC_Delete_Character.iID);
+		if (pPlayer)
+		{
+			pPlayer->Set_Dead();
+		}
+		break;
 	}
-	//case PACKET_SC_DELETE_CHARACTER:
-	//{
-	//	tagPACKET_SC_DELETE_CHARACTER tSC_Delete_Character;
-
-	//	m_recvQ.Dequeue((char*)&tSC_Delete_Character, sizeof(tSC_Delete_Character));
-
-	//	cout << "Delete Player ID: " << tSC_Delete_Character.iID << endl;
-	//	CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(tSC_Delete_Character.iID);
-	//	if (pPlayer)
-	//	{
-	//		pPlayer->Set_Dead();
-	//	}
-	//	break;
-	//}
-	//}
+	}
 }
 
 
