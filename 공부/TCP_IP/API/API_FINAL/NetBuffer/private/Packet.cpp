@@ -51,7 +51,7 @@ _byte* CPacket::GetBufferPtr()
 	return m_pAlloc;
 }
 
-int CPacket::MoveReadPos(int iSize)
+int CPacket::Move_ReadPos(int iSize)
 {
 	//rear을 넘어가면 안된다.
 	if (m_Front + iSize > m_Rear)
@@ -70,7 +70,7 @@ int CPacket::MoveReadPos(int iSize)
 	return iSize;
 }
 
-int CPacket::MoveWritePos(int iSize)
+int CPacket::Move_WritePos(int iSize)
 {
 	//rear가 할당 끝지점을 넘어서면 안된다.
 	if (m_Rear + iSize > m_pAllocEnd)

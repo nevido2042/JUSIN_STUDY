@@ -5,6 +5,26 @@
 class CPacket
 {
 public:
+/* =============================================================================
+연산자 오버로딩 (템플릿)
+============================================================================= */
+
+// 데이터 삽입 (Enqueue)
+    template <typename T>
+    CPacket& operator << (const T& value)
+    {
+        Enqueue(reinterpret_cast<const _byte*>(&value), sizeof(T));
+        return *this;
+    }
+
+    // 데이터 추출 (Dequeue)
+    template <typename T>
+    CPacket& operator >> (T& value)
+    {
+        Dequeue(reinterpret_cast<_byte*>(&value), sizeof(T));
+        return *this;
+    }
+public:
     /*---------------------------------------------------------------
     Packet Enum
     ---------------------------------------------------------------*/
@@ -25,61 +45,15 @@ public:
     _byte* GetBufferPtr(void);
 
     // 버퍼 포지션 이동
-    int MoveWritePos(int iSize);
-    int MoveReadPos(int iSize);
+    int Move_WritePos(int iSize);
+    int Move_ReadPos(int iSize);
 
-    /* =============================================================================
-    연산자 오버로딩
-    ============================================================================= */
-
-    // 데이터 삽입 (Enqueue)
-    CPacket& operator << (char chValue)
-    {
-        Enqueue(&chValue, sizeof(chValue));
-        return *this;
-    }
-
-    CPacket& operator << (short shValue)
-    {
-        Enqueue((_byte*)&shValue, sizeof(shValue));
-        return *this;
-    }
-
-    CPacket& operator << (int iValue)
-    {
-        Enqueue((_byte*)&iValue, sizeof(iValue));
-        return *this;
-    }
-
-    // 데이터 추출 (Dequeue)
-    CPacket& operator >> (char& chValue)
-    {
-        Dequeue(&chValue, sizeof(chValue));
-        return *this;
-    }
-
-    CPacket& operator >> (short& shValue)
-    {
-        Dequeue((_byte*)&shValue, sizeof(shValue));
-        return *this;
-    }
-
-    CPacket& operator >> (int& iValue)
-    {
-        Dequeue((_byte*)&iValue, sizeof(iValue));
-        return *this;
-    }
-
-    /* =============================================================================
-    데이터 복사
-    ============================================================================= */
     int GetData(_byte* pDest, int iSize);
     int PutData(_byte* pSrc, int iSize);
 
     void UpdateHeaderSize(int iSize);
 
-protected:
-    // 내부 처리 함수 (Enqueue / Dequeue)
+private:
     void Enqueue(_byte* pData, int iSize);
     void Dequeue(_byte* pBuf, int iSize);
 

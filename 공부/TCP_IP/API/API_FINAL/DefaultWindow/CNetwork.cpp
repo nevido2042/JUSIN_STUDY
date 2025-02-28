@@ -229,7 +229,7 @@ void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 		wprintf_s(L"Dequeue() Error:%d\n", iResult);
 		exit(1);
 	}
-	m_Packet.MoveWritePos(iResult);
+	m_Packet.Move_WritePos(iResult);
 
 	switch (_tHeader.byType)
 	{

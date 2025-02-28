@@ -131,7 +131,6 @@ void CServer::AcceptProc()
             pNewSession->iY
         );
         Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
-        cout << "Send_Unicast: mp_SC_CreateMyCharacter ID:" << m_iID  << endl;
 
         //신입 뿌리기
         CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
@@ -140,7 +139,6 @@ void CServer::AcceptProc()
             pNewSession->iY
         );
         Send_Broadcast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
-        cout << "Send_Broadcast: mp_SC_CreateOtherCharacter ID:" << m_iID << endl;
 
         //신입에게 기존 유저 뿌리기
         for (SESSION* pSession : m_vecSession)
@@ -153,7 +151,6 @@ void CServer::AcceptProc()
             );
             Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
-            cout << "Send_Unicast: mp_SC_CreateOtherCharacter ID:" << pSession->iID << endl;
 
         }
 
@@ -280,7 +277,7 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession
         wprintf_s(L"Dequeue() Error:%d\n", iResult);
         exit(1);
     }
-    m_Packet.MoveWritePos(iResult);
+    m_Packet.Move_WritePos(iResult);
 
     switch (_Header.byType)
     {
