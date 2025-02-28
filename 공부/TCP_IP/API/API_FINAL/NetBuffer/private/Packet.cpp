@@ -88,47 +88,47 @@ int CPacket::MoveWritePos(int iSize)
 	return iSize;
 }
 
-//void CPacket::Enqueue(const _byte* pData, int iSize)
-//{
-//	//rear+size > allocEndPtr?
-//	if (m_Rear + iSize > m_pAllocEnd)
-//	{
-//		wprintf_s(L"Enqueue() Error:rear+size > allocEndPtr\n");
-//		return;
-//	}
-//
-//	//rear 지점에 데이터를 넣고
-//	//rear++
-//	//iSize만큼 반복
-//	for (int i = 0; i < iSize; i++)
-//	{
-//		*m_Rear = *pData++;
-//		m_Rear++;
-//	}
-//
-//	m_iDataSize = m_Rear - m_Front;
-//}
-//
-//void CPacket::Dequeue(_byte* pBuf, int iSize)
-//{
-//	//front + size > rear?
-//	if (m_Front + iSize > m_Rear)
-//	{
-//		wprintf_s(L"Dequeue() Error:front+size > rear\n");
-//		return;
-//	}
-//
-//	//데이터에 front값을 넣고
-//	//front++
-//	//iSize만큼 반복
-//	for (int i = 0; i < iSize; i++)
-//	{
-//		*pBuf++ = *m_Front;
-//		m_Front++;
-//	}
-//
-//	m_iDataSize = m_Rear - m_Front;
-//}
+void CPacket::Enqueue(_byte* pData, int iSize)
+{
+	//rear+size > allocEndPtr?
+	if (m_Rear + iSize > m_pAllocEnd)
+	{
+		wprintf_s(L"Enqueue() Error:rear+size > allocEndPtr\n");
+		return;
+	}
+
+	//rear 지점에 데이터를 넣고
+	//rear++
+	//iSize만큼 반복
+	for (int i = 0; i < iSize; i++)
+	{
+		*m_Rear = *pData++;
+		m_Rear++;
+	}
+
+	m_iDataSize = m_Rear - m_Front;
+}
+
+void CPacket::Dequeue(_byte* pBuf, int iSize)
+{
+	//front + size > rear?
+	if (m_Front + iSize > m_Rear)
+	{
+		wprintf_s(L"Dequeue() Error:front+size > rear\n");
+		return;
+	}
+
+	//데이터에 front값을 넣고
+	//front++
+	//iSize만큼 반복
+	for (int i = 0; i < iSize; i++)
+	{
+		*pBuf++ = *m_Front;
+		m_Front++;
+	}
+
+	m_iDataSize = m_Rear - m_Front;
+}
 
 int	CPacket::GetData(_byte* pDest, int iSize)
 {

@@ -1,6 +1,5 @@
 #pragma once
 #include <Windows.h>
-#include <type_traits> // static_assert 사용을 위해 필요
 #include "Define.h"
 
 class CPacket
@@ -30,21 +29,44 @@ public:
     int MoveReadPos(int iSize);
 
     /* =============================================================================
-    연산자 오버로딩 (템플릿)
+    연산자 오버로딩
     ============================================================================= */
-    template <typename T>
-    CPacket& operator<<(const T& value)
+
+    // 데이터 삽입 (Enqueue)
+    CPacket& operator << (char chValue)
     {
-        static_assert(std::is_trivially_copyable<T>::value, "T must be trivially copyable");
-        Enqueue(reinterpret_cast<const _byte*>(&value), sizeof(T));
+        Enqueue(&chValue, sizeof(chValue));
         return *this;
     }
 
-    template <typename T>
-    CPacket& operator>>(T& value)
+    CPacket& operator << (short shValue)
     {
-        static_assert(std::is_trivially_copyable<T>::value, "T must be trivially copyable");
-        Dequeue(reinterpret_cast<_byte*>(&value), sizeof(T));
+        Enqueue((_byte*)&shValue, sizeof(shValue));
+        return *this;
+    }
+
+    CPacket& operator << (int iValue)
+    {
+        Enqueue((_byte*)&iValue, sizeof(iValue));
+        return *this;
+    }
+
+    // 데이터 추출 (Dequeue)
+    CPacket& operator >> (char& chValue)
+    {
+        Dequeue(&chValue, sizeof(chValue));
+        return *this;
+    }
+
+    CPacket& operator >> (short& shValue)
+    {
+        Dequeue((_byte*)&shValue, sizeof(shValue));
+        return *this;
+    }
+
+    CPacket& operator >> (int& iValue)
+    {
+        Dequeue((_byte*)&iValue, sizeof(iValue));
         return *this;
     }
 
@@ -58,31 +80,8 @@ public:
 
 protected:
     // 내부 처리 함수 (Enqueue / Dequeue)
-    void Enqueue(const _byte* pData, int iSize) 
-    {
-        if (iSize <= 0 || !pData)
-            return;
-
-        if (m_iDataSize + iSize > m_iBufferSize) // 버퍼 오버플로우 방지
-            return;
-
-        memcpy(m_Rear, pData, iSize);
-        m_Rear += iSize;
-        m_iDataSize += iSize;
-    }
-
-    void Dequeue(_byte* pBuf, int iSize)
-    {
-        if (iSize <= 0 || !pBuf)
-            return;
-
-        if (m_iDataSize < iSize) // 데이터 부족 방지
-            return;
-
-        memcpy(pBuf, m_Front, iSize);
-        m_Front += iSize;
-        m_iDataSize -= iSize;
-    }
+    void Enqueue(_byte* pData, int iSize);
+    void Dequeue(_byte* pBuf, int iSize);
 
 private:
     // 할당 위치
