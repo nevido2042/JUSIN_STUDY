@@ -3,6 +3,15 @@
 #include <stdio.h>
 #include <memory.h>
 
+void CRingBuffer::Release()
+{
+    if (m_pBufferAlloc != nullptr)
+    {
+        free(m_pBufferAlloc);  // 메모리 해제
+        m_pBufferAlloc = nullptr;  // 포인터 초기화 (안전성을 위해)
+    }
+}
+
 void CRingBuffer::FreeRingBuffer()
 {
     free(m_pBufferAlloc);
@@ -43,18 +52,23 @@ CRingBuffer::CRingBuffer()
     m_rear = m_front;
 }
 
-CRingBuffer::CRingBuffer(int iBufferSize)
+//CRingBuffer::CRingBuffer(int iBufferSize)
+//{
+//    m_pBufferAlloc = (_byte*)malloc(iBufferSize + 1);
+//    if (m_pBufferAlloc == nullptr)
+//    {
+//        wprintf_s(L"malloc() error: 버퍼 할당 실패\n");
+//        exit(EXIT_FAILURE);
+//    }
+//    m_iBufferSize = iBufferSize;
+//    m_pBufferAllocEnd = m_pBufferAlloc + iBufferSize;
+//    m_front = m_pBufferAlloc;
+//    m_rear = m_front;
+//}
+
+CRingBuffer::~CRingBuffer()
 {
-    m_pBufferAlloc = (_byte*)malloc(iBufferSize + 1);
-    if (m_pBufferAlloc == nullptr)
-    {
-        wprintf_s(L"malloc() error: 버퍼 할당 실패\n");
-        exit(EXIT_FAILURE);
-    }
-    m_iBufferSize = iBufferSize;
-    m_pBufferAllocEnd = m_pBufferAlloc + iBufferSize;
-    m_front = m_pBufferAlloc;
-    m_rear = m_front;
+    Release();
 }
 
 int CRingBuffer::GetBufferSize()

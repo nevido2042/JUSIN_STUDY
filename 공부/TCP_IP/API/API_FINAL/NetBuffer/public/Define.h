@@ -1,8 +1,20 @@
 #pragma once
 
-typedef char _byte;
+#ifdef _DEBUG
 
-#define DEFAULT_BUF_SIZE 1024
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#ifndef DBG_NEW 
+
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+#define new DBG_NEW 
+
+#endif
+#endif
+
+typedef char _byte;
 #define PACKET_CODE (_byte)0x20
 
 #pragma pack(push, 1)

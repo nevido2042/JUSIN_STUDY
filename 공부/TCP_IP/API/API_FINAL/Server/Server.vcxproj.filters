@@ -8,6 +8,12 @@
     <Filter Include="00. Server">
       <UniqueIdentifier>{71dbeec5-ae3a-44a2-9765-5ece69db1e29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Session">
+      <UniqueIdentifier>{26fc421e-662c-4dc9-8d3f-c04d4b06186c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Define">
+      <UniqueIdentifier>{59eae9cd-69a4-4e10-b04f-052364d25a8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -16,10 +22,19 @@
     <ClCompile Include="CServer.cpp">
       <Filter>00. Server</Filter>
     </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>01. Session</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
       <Filter>00. Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>01. Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>99. Define</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

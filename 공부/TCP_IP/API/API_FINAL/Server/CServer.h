@@ -1,9 +1,7 @@
 #pragma once
-#include <WinSock2.h>
-#include <WS2tcpip.h>
 #include <vector>
-#include "RingBuffer.h" 
 #include "Packet.h"
+#include "Session.h"
 
 using namespace std;
 
@@ -11,29 +9,7 @@ using namespace std;
 #define WINCY 600
 
 #define BUF_SIZE 1024
-
 #define PORT L"2042"
-#define SESSION_MAX 30
-
-typedef struct tagSession
-{
-	tagSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, int _id , int _x, int _y)
-	{
-		clntAdr = _clntAdr;
-		clntSock = _clntSock;
-		iID = _id;
-		iX = _x;
-		iY = _y;
-	}
-	SOCKADDR_IN clntAdr{};
-	SOCKET clntSock = INVALID_SOCKET;
-	int iID = 0;
-	int iX = 0;
-	int iY = 0;
-	//¸µ¹öÆÛ
-	CRingBuffer recvQ;
-	CRingBuffer sendQ;
-}SESSION;
 
 class CServer
 {
@@ -47,17 +23,17 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(SESSION* pSession, const _byte* tMSG, const int iSize);
-	void Send_Broadcast(SESSION* pSession, const _byte* tMSG, const int iSize);
-	void Read_Proc(SESSION* pSession);
-	void Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession);
+	void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
+	void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
+	void Read_Proc(CSession* pSession);
+	void Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession);
 	void Recieve_Message();
 	void Send_Message();
-	void Delete_Session(SESSION* pSession);
+	void Delete_Session(CSession* pSession);
 
 private:
 	SOCKET						m_ServSock;
-	vector<SESSION*>			m_vecSession;
+	vector<CSession*>			m_vecSession;
 	int							m_iID;
 	fd_set						m_tReadSet;
 	CPacket						m_Packet;
