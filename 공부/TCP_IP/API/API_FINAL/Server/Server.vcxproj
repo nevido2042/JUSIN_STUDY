@@ -163,6 +163,7 @@
     <ClInclude Include="CServer.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="SessionInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

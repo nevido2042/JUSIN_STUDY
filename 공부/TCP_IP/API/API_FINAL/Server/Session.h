@@ -3,6 +3,7 @@
 #include <WS2tcpip.h>
 #include "RingBuffer.h" 
 #include "Packet.h"
+#include "SessionInfo.h"
 
 class CSession
 {
@@ -17,14 +18,14 @@ public:
 	int					Recive_Data(CPacket& pPakcet, int Size);
 	CRingBuffer&		Get_RecvQ() { return m_RecvQ; }
 	CRingBuffer&		Get_SendQ() { return m_SendQ; }
-public:
-	int m_iID = 0;
-	int iX = 0;
-	int iY = 0;
+	SESSION_INFO&		Get_SessionInfo() { return m_tSessionInfo; }
+
 private:
-	SOCKADDR_IN m_ClientAddress{};
-	SOCKET m_ClientSocket = INVALID_SOCKET;
+	SOCKADDR_IN			m_ClientAddress{};
+	SOCKET				m_ClientSocket = INVALID_SOCKET;
 	//¸µ¹öÆÛ
-	CRingBuffer m_RecvQ;
-	CRingBuffer m_SendQ;
+	CRingBuffer			m_RecvQ;
+	CRingBuffer			m_SendQ;
+
+	SESSION_INFO		m_tSessionInfo;
 };

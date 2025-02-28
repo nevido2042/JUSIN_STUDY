@@ -14,6 +14,9 @@
     <Filter Include="99. Define">
       <UniqueIdentifier>{59eae9cd-69a4-4e10-b04f-052364d25a8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. SessionInfo">
+      <UniqueIdentifier>{8f66b5ec-d214-4bd6-8af2-c5b4ba5627fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -35,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>99. Define</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionInfo.h">
+      <Filter>02. SessionInfo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

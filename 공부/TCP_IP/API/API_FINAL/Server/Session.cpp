@@ -1,11 +1,12 @@
 #include "Session.h"
 
 CSession::CSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, int _id, int _x, int _y)
-	:m_ClientAddress(_clntAdr), m_ClientSocket(_clntSock), m_iID(_id)
+	:m_ClientAddress(_clntAdr), m_ClientSocket(_clntSock)
 {
 	//추후에 플레이어 정보를 따로 저장하는 클래스를 만드는 것이 좋을 것 같음
-	iX = _x;
-	iY = _y;
+	m_tSessionInfo.iID = _id;
+	m_tSessionInfo.iX = _x;
+	m_tSessionInfo.iY = _y;
 }
 
 CSession::~CSession()

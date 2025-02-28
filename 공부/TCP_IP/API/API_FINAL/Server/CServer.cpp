@@ -127,17 +127,17 @@ void CServer::AcceptProc()
 
         //신입 자기 캐릭 생성
         CPacketHandler::SC_CreateMyCharacter(&m_Packet,
-            pNewSession->m_iID,
-            pNewSession->iX,
-            pNewSession->iY
+            pNewSession->Get_SessionInfo().iID,
+            pNewSession->Get_SessionInfo().iX,
+            pNewSession->Get_SessionInfo().iY
         );
         Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
         //신입 뿌리기
         CPacketHandler::SC_CreateOtherCharacter(&m_Packet,
-            pNewSession->m_iID,
-            pNewSession->iX,
-            pNewSession->iY
+            pNewSession->Get_SessionInfo().iID,
+            pNewSession->Get_SessionInfo().iX,
+            pNewSession->Get_SessionInfo().iY
         );
         Send_Broadcast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
@@ -146,9 +146,9 @@ void CServer::AcceptProc()
         {
             //신입 뿌리기
             CPacketHandler::SC_CreateOtherCharacter(&m_Packet,
-                pSession->m_iID,
-                pSession->iX,
-                pSession->iY
+                pSession->Get_SessionInfo().iID,
+                pSession->Get_SessionInfo().iX,
+                pSession->Get_SessionInfo().iY
             );
             Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
@@ -285,9 +285,9 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
     {
     case PACKET_CS_DELETE_MY_CHARACTER:
     {
-        CPacketHandler::SC_DeleteCharacter(&m_Packet, _pSession->m_iID);
+        CPacketHandler::SC_DeleteCharacter(&m_Packet, _pSession->Get_SessionInfo().iID);
 
-        wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->m_iID);
+        wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->Get_SessionInfo().iID);
 
         Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
@@ -475,7 +475,7 @@ void CServer::Send_Message()
                     int iSend = send(writeSock, Buffer, iPeek, 0);
                     if (iSend == SOCKET_ERROR)
                     {
-                        wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->m_iID, WSAGetLastError());
+                        wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->Get_SessionInfo().iID, WSAGetLastError());
                         continue;
                     }
 
@@ -506,7 +506,7 @@ void CServer::Delete_Session(CSession* _pSession)
     //세션 정리
     for (auto iter = m_vecSession.begin(); iter != m_vecSession.end();)
     {
-        if ((*iter)->m_iID == _pSession->m_iID)
+        if ((*iter)->Get_SessionInfo().iID == _pSession->Get_SessionInfo().iID)
         {
             iter = m_vecSession.erase(iter);
         }
