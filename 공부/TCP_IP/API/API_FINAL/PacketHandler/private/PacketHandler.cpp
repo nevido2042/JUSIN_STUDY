@@ -9,7 +9,7 @@ void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, 
 
     //wprintf_s(L"mp_headerSize:%d\n", sizeof(header));
 
-    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    pPacket->PutData((_byte*)&tHeader, sizeof(tHeader));
     *pPacket << iID;
     *pPacket << iX;
     *pPacket << iY;
@@ -33,7 +33,7 @@ void CPacketHandler::mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, int i
     //tHeader.BYTEbySize = 0;//일단 고정 길이로
     tHeader.byType = PACKET_SC_CREATE_OTHER_CHARACTER;
 
-    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    pPacket->PutData((_byte*)&tHeader, sizeof(tHeader));
     *pPacket << iID;
     *pPacket << iX;
     *pPacket << iY;
@@ -56,7 +56,7 @@ void CPacketHandler::mp_SC_DeleteCharacter(CPacket* pPacket, int iID)
     tHeader.byCode = PACKET_CODE;
     tHeader.byType = PACKET_SC_DELETE_CHARACTER;
 
-    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    pPacket->PutData((_byte*)&tHeader, sizeof(tHeader));
     *pPacket << iID;
 
     pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
@@ -75,7 +75,7 @@ void CPacketHandler::mp_CS_DeleteMyCharacter(CPacket* pPacket)
     tHeader.byCode = PACKET_CODE;
     tHeader.byType = PACKET_CS_DELETE_MY_CHARACTER;
 
-    pPacket->PutData((char*)&tHeader, sizeof(tHeader));
+    pPacket->PutData((_byte*)&tHeader, sizeof(tHeader));
 
     pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }

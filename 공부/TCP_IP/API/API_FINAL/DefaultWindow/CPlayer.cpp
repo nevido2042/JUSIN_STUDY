@@ -187,7 +187,8 @@ void CPlayer::Key_Input()
 
 		//-------------------------------------------------//
 
-		//CNetwork::Get_Instance()->Enqueue_SendQ((MSG_ID&)msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
+		//CNetwork::Get_Instance()->
+		// _SendQ((MSG_ID&)msgMoveLeft, sizeof(MSG_MOVE_LEFT_PLAYER));
 
 		/*m_tInfo.fX -= m_fSpeed;
 		m_pImgKey = L"Player_RIGHT";
