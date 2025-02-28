@@ -88,7 +88,7 @@ int CPacket::Move_WritePos(int iSize)
 	return iSize;
 }
 
-void CPacket::Enqueue(_byte* pData, int iSize)
+void CPacket::Enqueue(const _byte* pData, int iSize)
 {
 	//rear+size > allocEndPtr?
 	if (m_Rear + iSize > m_pAllocEnd)

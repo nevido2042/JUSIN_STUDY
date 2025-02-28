@@ -54,7 +54,7 @@ public:
     void UpdateHeaderSize(int iSize);
 
 private:
-    void Enqueue(_byte* pData, int iSize);
+    void Enqueue(const _byte* pData, int iSize);
     void Dequeue(_byte* pBuf, int iSize);
 
 private:

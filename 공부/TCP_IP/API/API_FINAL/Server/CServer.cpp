@@ -125,7 +125,7 @@ void CServer::AcceptProc()
         pNewSession->sendQ = CRingBuffer(5000);
 
         //신입 자기 캐릭 생성
-        CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
+        CPacketHandler::SC_CreateMyCharacter(&m_Packet,
             pNewSession->iID,
             pNewSession->iX,
             pNewSession->iY
@@ -133,7 +133,7 @@ void CServer::AcceptProc()
         Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
         //신입 뿌리기
-        CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+        CPacketHandler::SC_CreateOtherCharacter(&m_Packet,
             pNewSession->iID,
             pNewSession->iX,
             pNewSession->iY
@@ -144,7 +144,7 @@ void CServer::AcceptProc()
         for (SESSION* pSession : m_vecSession)
         {
             //신입 뿌리기
-            CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+            CPacketHandler::SC_CreateOtherCharacter(&m_Packet,
                 pSession->iID,
                 pSession->iX,
                 pSession->iY
@@ -283,7 +283,7 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, SESSION* _pSession
     {
     case PACKET_CS_DELETE_MY_CHARACTER:
     {
-        CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, _pSession->iID);
+        CPacketHandler::SC_DeleteCharacter(&m_Packet, _pSession->iID);
 
         wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->iID);
 

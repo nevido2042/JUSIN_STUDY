@@ -16,14 +16,14 @@ enum CS_PacketType
 class CPacketHandler
 {
 public:
-    static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY);
-    static 	void net_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
+    static 	void SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY);
+    static 	void Recive_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
 
-    static 	void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, int iX, int iY);
-    static 	void net_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
+    static 	void SC_CreateOtherCharacter(CPacket* pPacket, int iID, int iX, int iY);
+    static 	void Recive_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
 
-    static void mp_SC_DeleteCharacter(CPacket* pPacket, int iID);
-    static void net_DeleteCharacter(CPacket* pPacket, int& iID);
-    static void mp_CS_DeleteMyCharacter(CPacket* pPacket);
+    static void SC_DeleteCharacter(CPacket* pPacket, int iID);
+    static void Recive_DeleteCharacter(CPacket* pPacket, int& iID);
+    static void CS_DeleteMyCharacter(CPacket* pPacket);
 };
 

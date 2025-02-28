@@ -1,6 +1,6 @@
 #include "PacketHandler.h"
 
-void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY)
+void CPacketHandler::SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
@@ -17,7 +17,7 @@ void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, 
     pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }
 
-void CPacketHandler::net_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY)
+void CPacketHandler::Recive_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY)
 {
     *pPacket >> iID;
     *pPacket >> iX;
@@ -26,7 +26,7 @@ void CPacketHandler::net_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, 
     pPacket->Clear();
 }
 
-void CPacketHandler::mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, int iX, int iY)
+void CPacketHandler::SC_CreateOtherCharacter(CPacket* pPacket, int iID, int iX, int iY)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
@@ -41,7 +41,7 @@ void CPacketHandler::mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, int i
     pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }
 
-void CPacketHandler::net_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY)
+void CPacketHandler::Recive_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY)
 {
     *pPacket >> iID;
     *pPacket >> iX;
@@ -50,7 +50,7 @@ void CPacketHandler::net_CreateOtherCharacter(CPacket* pPacket, int& iID, int& i
     pPacket->Clear();
 }
 
-void CPacketHandler::mp_SC_DeleteCharacter(CPacket* pPacket, int iID)
+void CPacketHandler::SC_DeleteCharacter(CPacket* pPacket, int iID)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
@@ -62,14 +62,14 @@ void CPacketHandler::mp_SC_DeleteCharacter(CPacket* pPacket, int iID)
     pPacket->UpdateHeaderSize(pPacket->GetDataSize() - sizeof(tHeader));
 }
 
-void CPacketHandler::net_DeleteCharacter(CPacket* pPacket, int& iID)
+void CPacketHandler::Recive_DeleteCharacter(CPacket* pPacket, int& iID)
 {
     *pPacket >> iID;
 
     pPacket->Clear();
 }
 
-void CPacketHandler::mp_CS_DeleteMyCharacter(CPacket* pPacket)
+void CPacketHandler::CS_DeleteMyCharacter(CPacket* pPacket)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;

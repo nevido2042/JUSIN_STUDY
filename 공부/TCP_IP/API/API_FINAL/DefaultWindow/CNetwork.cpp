@@ -79,7 +79,7 @@ void CNetwork::Update()
 
 void CNetwork::Release()
 {
-	CPacketHandler::mp_CS_DeleteMyCharacter(&m_Packet);
+	CPacketHandler::CS_DeleteMyCharacter(&m_Packet);
 	m_sendQ.Enqueue((_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
 	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
@@ -237,7 +237,7 @@ void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 	{
 		int iX;
 		int iY;
-		CPacketHandler::net_CreateMyCharacter(&m_Packet, m_iMyID, iX, iY);
+		CPacketHandler::Recive_CreateMyCharacter(&m_Packet, m_iMyID, iX, iY);
 
 		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
 		static_cast<CPlayer*>(pObj)->Set_ID(m_iMyID);
@@ -250,7 +250,7 @@ void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 		int iID;
 		int iX;
 		int iY;
-		CPacketHandler::net_CreateOtherCharacter(&m_Packet, iID, iX, iY);
+		CPacketHandler::Recive_CreateOtherCharacter(&m_Packet, iID, iX, iY);
 
 		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
 		static_cast<CPlayer*>(pObj)->Set_ID(iID);
@@ -262,7 +262,7 @@ void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
 	case PACKET_SC_DELETE_CHARACTER:
 	{
 		int iID;
-		CPacketHandler::net_DeleteCharacter(&m_Packet, iID);
+		CPacketHandler::Recive_DeleteCharacter(&m_Packet, iID);
 
 		cout << "Delete Player ID: " << iID << endl;
 		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(iID);
