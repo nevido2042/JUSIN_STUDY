@@ -28,6 +28,7 @@ private:
     void        Key_Input();
     void        Jumping();
     void        Offset();
+    void        Update_State();
 
     CObj*       Create_Shield();
     void        Change_Motion();

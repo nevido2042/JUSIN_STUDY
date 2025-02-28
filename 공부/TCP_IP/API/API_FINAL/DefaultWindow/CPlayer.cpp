@@ -69,7 +69,9 @@ int CPlayer::Update()
 		return OBJ_DEAD;
 	}
 
-	if (m_bMoveRight)
+	Update_State();
+
+	/*if (m_bMoveRight)
 	{
 		m_tInfo.fX += m_fSpeed;
 		m_pImgKey = L"Player_RIGHT";
@@ -82,7 +84,7 @@ int CPlayer::Update()
 		m_pImgKey = L"Player_RIGHT";
 		m_eCurState = WALK;
 		m_bStretch = true;
-	}
+	}*/
 
 	Key_Input();
 	Change_Motion();
@@ -180,6 +182,8 @@ void CPlayer::Key_Input()
 
 	if (CKeyMgr::Get_Instance()->Key_Down(VK_LEFT))
 	{
+		//CNetwork::Get_Instance()->
+
 		/*MSG_MOVE_LEFT_PLAYER msgMoveLeft;
 		msgMoveLeft.type = MOVE_LEFT_PLAYER;*/
 
@@ -325,6 +329,32 @@ void CPlayer::Offset()
 
 	if (iOffSetmaxY < m_tInfo.fY + iScrollY)
 		CScrollMgr::Get_Instance()->Set_ScrollY(-m_fSpeed);
+}
+
+void CPlayer::Update_State()
+{
+	switch (m_eCurState)
+	{
+	case CPlayer::IDLE:
+		break;
+	case CPlayer::WALK:
+		m_tInfo.fX += m_fSpeed;
+		//m_pImgKey = L"Player_RIGHT";
+		//m_eCurState = WALK;
+		//m_bStretch = false;
+		break;
+	case CPlayer::ATTACK:
+		break;
+	case CPlayer::HIT:
+		break;
+	case CPlayer::DEAD:
+		break;
+	case CPlayer::END:
+		break;
+	default:
+		break;
+	}
+
 }
 
 CObj* CPlayer::Create_Shield()

@@ -10,7 +10,8 @@ enum SC_PacketType
 
 enum CS_PacketType
 {
-    PACKET_CS_DELETE_MY_CHARACTER = 100
+    PACKET_CS_DELETE_MY_CHARACTER = 100,
+    PACKET_CS_MOVE_MY_CHARACTER
 };
 
 class CPacketHandler
@@ -25,5 +26,8 @@ public:
     static void SC_DeleteCharacter(CPacket* pPacket, int iID);
     static void Recive_DeleteCharacter(CPacket* pPacket, int& iID);
     static void CS_DeleteMyCharacter(CPacket* pPacket);
+
+    //static void CS_MoveMyCharacter(CPacket* pPacket, );
+
 };
 

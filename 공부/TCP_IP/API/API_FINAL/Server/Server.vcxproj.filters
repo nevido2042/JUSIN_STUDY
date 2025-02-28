@@ -11,11 +11,11 @@
     <Filter Include="01. Session">
       <UniqueIdentifier>{26fc421e-662c-4dc9-8d3f-c04d4b06186c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99. Define">
-      <UniqueIdentifier>{59eae9cd-69a4-4e10-b04f-052364d25a8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. SessionInfo">
       <UniqueIdentifier>{8f66b5ec-d214-4bd6-8af2-c5b4ba5627fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Define">
+      <UniqueIdentifier>{25725f1c-e8fe-428a-aa1a-53b24015231c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,11 +36,11 @@
     <ClInclude Include="Session.h">
       <Filter>01. Session</Filter>
     </ClInclude>
-    <ClInclude Include="Define.h">
-      <Filter>99. Define</Filter>
-    </ClInclude>
     <ClInclude Include="SessionInfo.h">
       <Filter>02. SessionInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>99. Define</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
