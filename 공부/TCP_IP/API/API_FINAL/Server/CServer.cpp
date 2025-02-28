@@ -131,6 +131,7 @@ void CServer::AcceptProc()
             pNewSession->iY
         );
         Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        cout << "Send_Unicast: mp_SC_CreateMyCharacter ID:" << m_iID  << endl;
 
         //신입 뿌리기
         CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
@@ -139,6 +140,7 @@ void CServer::AcceptProc()
             pNewSession->iY
         );
         Send_Broadcast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        cout << "Send_Broadcast: mp_SC_CreateOtherCharacter ID:" << m_iID << endl;
 
         //신입에게 기존 유저 뿌리기
         for (SESSION* pSession : m_vecSession)
@@ -150,6 +152,9 @@ void CServer::AcceptProc()
                 pSession->iY
             );
             Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+
+            cout << "Send_Unicast: mp_SC_CreateOtherCharacter ID:" << pSession->iID << endl;
+
         }
 
         m_vecSession.push_back(pNewSession);
@@ -257,7 +262,7 @@ void CServer::Read_Proc(SESSION* _pSession)
             wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.byCode);
             exit(1);
         }
-        if (tHeader.bySize + sizeof(tHeader) > _pSession->recvQ.GetUseSize())
+        if (tHeader.bySize + sizeof(tHeader) > (size_t)_pSession->recvQ.GetUseSize())
         {
             break;
         }
@@ -452,29 +457,39 @@ void CServer::Send_Message()
     if (iResult > 0)
     {
         _byte Buffer[BUF_SIZE];
+
         for (u_int i = 0; i < writeSet.fd_count; i++)
         {
-            if (FD_ISSET(writeSet.fd_array[i], &cpySet))
+            SOCKET writeSock = writeSet.fd_array[i]; // 현재 write 가능 소켓
+
+            // 벡터에서 해당 소켓을 가진 세션을 찾기
+            for (size_t j = 0; j < m_vecSession.size(); j++)
             {
-                for (size_t j = 0; j < m_vecSession.size(); j++)
+                if (m_vecSession[j]->clntSock == writeSock)
                 {
-                    if (m_vecSession[j]->clntSock != writeSet.fd_array[j])
+                    // 현재 세션의 큐에서 보낼 데이터 가져오기
+                    int iPeek = m_vecSession[j]->sendQ.Peek(Buffer, m_vecSession[j]->sendQ.GetUseSize());
+                    if (iPeek <= 0) // 보낼 데이터가 없음
                         continue;
 
-                    int iPeek{};
-                    iPeek = m_vecSession[j]->sendQ.Peek(Buffer, m_vecSession[j]->sendQ.GetUseSize());
-
-                    int iSend{};
-                    iSend = send(m_vecSession[j]->clntSock, Buffer, iPeek, 0);
+                    // 데이터 전송
+                    int iSend = send(writeSock, Buffer, iPeek, 0);
                     if (iSend == SOCKET_ERROR)
+                    {
                         wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->iID, WSAGetLastError());
+                        continue;
+                    }
 
+                    // 전송된 만큼 큐의 데이터를 이동
                     m_vecSession[j]->sendQ.MoveFront(iSend);
-                    //wprintf_s(L"Send Byte: %d\n", iSend);
+                    // wprintf_s(L"To IndexSock: %d, Send Byte: %d\n", i, iSend);
+
+                    break; // 해당 writeSock에 대한 처리가 끝났으므로 내부 루프 종료
                 }
             }
         }
     }
+
 }
 
 void CServer::Delete_Session(SESSION* _pSession)
