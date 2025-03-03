@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="99,Default">
+      <UniqueIdentifier>{49566c24-05cf-41f9-ae7a-688120e4bc3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Server">
+      <UniqueIdentifier>{6838db26-7b76-4661-8fa9-6ea63e831cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Server\Session">
+      <UniqueIdentifier>{b7825dbb-14e1-46ed-ab6a-71d03c718802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Server\Session\SessionInfo">
+      <UniqueIdentifier>{ff833db7-fc50-4e79-a271-bad4303b6bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Headers">
+      <UniqueIdentifier>{85ce7d07-c96a-4625-b3c1-f1e08c03989f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>99,Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Server.cpp">
+      <Filter>00.Server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Session.cpp">
+      <Filter>00.Server\Session</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\Server.h">
+      <Filter>00.Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Session.h">
+      <Filter>00.Server\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SessionInfo.h">
+      <Filter>00.Server\Session\SessionInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Server_Defines.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

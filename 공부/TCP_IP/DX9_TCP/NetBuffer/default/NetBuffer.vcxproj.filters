@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\private\Packet.cpp">
+      <Filter>01.Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RingBuffer.cpp">
+      <Filter>00.RingBuffer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\Packet.h">
+      <Filter>01.Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RingBuffer.h">
+      <Filter>00.RingBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Define.h">
+      <Filter>02.Define</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="00.RingBuffer">
+      <UniqueIdentifier>{5ffa8fc9-fcaa-4e73-be39-bbba5f7f7c9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Packet">
+      <UniqueIdentifier>{d68fe312-bdf7-4bdd-b1a6-b8d3e1be1984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Define">
+      <UniqueIdentifier>{7d239a20-ca35-4302-83f9-f34a924a8965}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -28,6 +28,9 @@
     <Filter Include="02.BackGround">
       <UniqueIdentifier>{fc197735-46d5-4551-ad66-96d8601cef85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="50.Network">
+      <UniqueIdentifier>{cda08125-6f55-4e75-b727-a1295eb6e75a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
