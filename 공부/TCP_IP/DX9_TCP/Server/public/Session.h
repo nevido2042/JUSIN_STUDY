@@ -15,7 +15,7 @@ public:
 	void				Release();
 public:
 	const SOCKET		Get_Socket() { return m_ClientSocket; }
-	int					Recive_Data(CPacket& pPakcet, int Size);
+	int					Receive_Data(CPacket& pPakcet, int Size);
 	CRingBuffer&		Get_RecvQ() { return m_RecvQ; }
 	CRingBuffer&		Get_SendQ() { return m_SendQ; }
 	SESSION_INFO&		Get_SessionInfo() { return m_tSessionInfo; }

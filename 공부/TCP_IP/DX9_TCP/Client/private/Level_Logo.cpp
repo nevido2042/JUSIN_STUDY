@@ -3,6 +3,9 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
+#include "Network.h"
+
+
 CLevel_Logo::CLevel_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
 {
@@ -13,6 +16,8 @@ HRESULT CLevel_Logo::Initialize()
 {
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
+
+	CNetwork::Create();
 
 	return S_OK;
 }

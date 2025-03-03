@@ -69,6 +69,9 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.BackGround</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Network.h">
+      <Filter>50.Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
       <Filter>02.BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Network.cpp">
+      <Filter>50.Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

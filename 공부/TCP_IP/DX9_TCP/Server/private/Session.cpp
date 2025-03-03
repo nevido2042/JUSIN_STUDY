@@ -24,7 +24,7 @@ void CSession::Release()
 	m_SendQ.Release();
 }
 
-int CSession::Recive_Data(CPacket& pPakcet, int Size)
+int CSession::Receive_Data(CPacket& pPakcet, int Size)
 {
-	return m_RecvQ.Dequeue(pPakcet.Get_BufferPtr(), Size);
+	return m_RecvQ.Dequeue((_BYTE*)pPakcet.Get_BufferPtr(), Size);
 }

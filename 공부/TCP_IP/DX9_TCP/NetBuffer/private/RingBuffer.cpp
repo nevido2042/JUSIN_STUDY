@@ -12,7 +12,7 @@ void CRingBuffer::Release()
     }
 }
 
-_byte* CRingBuffer::Set_Next(_byte** ppPos)
+_BYTE* CRingBuffer::Set_Next(_BYTE** ppPos)
 {
     if (*ppPos == m_pBufferAllocEnd)
         *ppPos = m_pBufferAlloc;
@@ -22,7 +22,7 @@ _byte* CRingBuffer::Set_Next(_byte** ppPos)
     return *ppPos;
 }
 
-_byte* CRingBuffer::Set_Prev(_byte** ppPos)
+_BYTE* CRingBuffer::Set_Prev(_BYTE** ppPos)
 {
     if (*ppPos == m_pBufferAlloc)
         *ppPos = m_pBufferAllocEnd;
@@ -35,7 +35,7 @@ _byte* CRingBuffer::Set_Prev(_byte** ppPos)
 
 CRingBuffer::CRingBuffer()
 {
-    m_pBufferAlloc = (_byte*)malloc(DEFAULT_BUF_SIZE + 1);
+    m_pBufferAlloc = (_BYTE*)malloc(DEFAULT_BUF_SIZE + 1);
     if (m_pBufferAlloc == nullptr)
     {
         wprintf_s(L"malloc() error: 버퍼 할당 실패\n");
@@ -71,7 +71,7 @@ int CRingBuffer::Get_FreeSize()
     return m_iBufferSize - Get_UseSize();
 }
 
-int CRingBuffer::Enqueue(_byte* pData, int iSize)
+int CRingBuffer::Enqueue(_BYTE* pData, int iSize)
 {
     if (Get_FreeSize() < iSize)
     {
@@ -85,7 +85,7 @@ int CRingBuffer::Enqueue(_byte* pData, int iSize)
     return iSize;
 }
 
-int CRingBuffer::Dequeue(_byte* pDest, int iSize)
+int CRingBuffer::Dequeue(_BYTE* pDest, int iSize)
 {
     if (Get_UseSize() < iSize)
     {
@@ -99,14 +99,14 @@ int CRingBuffer::Dequeue(_byte* pDest, int iSize)
     return iSize;
 }
 
-int CRingBuffer::Peek(_byte* pDest, int iSize)
+int CRingBuffer::Peek(_BYTE* pDest, int iSize)
 {
     if (Get_UseSize() < iSize)
     {
         wprintf_s(L"Peek() error: 확인하려는 크기가 남아있는 데이터보다 많다.\n");
         return 0;
     }
-    _byte* pFrontCpy = m_front;
+    _BYTE* pFrontCpy = m_front;
     for (int i = 0; i < iSize; i++)
     {
         pDest[i] = *Set_Next(&pFrontCpy);
@@ -179,12 +179,12 @@ int CRingBuffer::Move_Front(int iSize)
     return iMoveSize;
 }
 
-_byte* CRingBuffer::Get_Front()
+_BYTE* CRingBuffer::Get_Front()
 {
     return m_front;
 }
 
-_byte* CRingBuffer::Get_Rear()
+_BYTE* CRingBuffer::Get_Rear()
 {
     return m_rear;
 }

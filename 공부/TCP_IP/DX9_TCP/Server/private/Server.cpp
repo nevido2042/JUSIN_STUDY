@@ -161,10 +161,10 @@ void CServer::AcceptProc()
     }
 }
 
-void CServer::Send_Unicast(CSession* pSession, const _byte* pMSG, const int iSize)
+void CServer::Send_Unicast(CSession* pSession, const _BYTE* pMSG, const int iSize)
 {
     int iResult{ 0 };
-    iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
+    iResult = pSession->Get_SendQ().Enqueue((_BYTE*)pMSG, iSize);
     if (iResult < iSize)
     {
         wprintf_s(L"sendQ.Enqueue() error\n");
@@ -174,7 +174,7 @@ void CServer::Send_Unicast(CSession* pSession, const _byte* pMSG, const int iSiz
     m_Packet.Clear();
 }
 
-void CServer::Send_Broadcast(CSession* _pSession, const _byte* pMSG, const int iSize)
+void CServer::Send_Broadcast(CSession* _pSession, const _BYTE* pMSG, const int iSize)
 {
     int iResult{ 0 };
 
@@ -183,7 +183,7 @@ void CServer::Send_Broadcast(CSession* _pSession, const _byte* pMSG, const int i
         if (pSession == _pSession)
             continue;
 
-        iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
+        iResult = pSession->Get_SendQ().Enqueue((_BYTE*)pMSG, iSize);
         if (iResult < iSize)
         {
             wprintf_s(L"sendQ.Enqueue() error\n");
@@ -199,7 +199,7 @@ void CServer::Read_Proc(CSession* _pSession)
     //recvQ에 다이렉트로 꽂는다.
     if (_pSession->Get_RecvQ().DirectEnqueueSize() > 0)
     {
-        int retRecv = recv(_pSession->Get_Socket(), _pSession->Get_RecvQ().Get_Rear() + 1, _pSession->Get_RecvQ().DirectEnqueueSize(), 0);
+        int retRecv = recv(_pSession->Get_Socket(), (char*)_pSession->Get_RecvQ().Get_Rear() + 1, _pSession->Get_RecvQ().DirectEnqueueSize(), 0);
 
         if (retRecv == 0)
         {
@@ -220,8 +220,8 @@ void CServer::Read_Proc(CSession* _pSession)
     }
     else//버퍼를 통해 리시브큐로 꽂는다.
     {
-        _byte Buffer[BUF_SIZE];
-        int iResult = recv(_pSession->Get_Socket(), Buffer, sizeof(Buffer), 0);
+        _BYTE Buffer[BUF_SIZE];
+        int iResult = recv(_pSession->Get_Socket(), (char*)Buffer, sizeof(Buffer), 0);
         int iErrCode = WSAGetLastError();
 
         if (iResult == 0 || (iResult == SOCKET_ERROR && iErrCode != WSAEWOULDBLOCK))
@@ -250,7 +250,7 @@ void CServer::Read_Proc(CSession* _pSession)
             break;
         }
 
-        int retPeek = _pSession->Get_RecvQ().Peek((_byte*)&tHeader, sizeof(tHeader));
+        int retPeek = _pSession->Get_RecvQ().Peek((_BYTE*)&tHeader, sizeof(tHeader));
         if (retPeek != sizeof(tHeader))
         {
             wprintf_s(L"Peek() Error:%d\n", retPeek);
@@ -274,7 +274,7 @@ void CServer::Read_Proc(CSession* _pSession)
 void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession)
 {
     //_pSession->Recive((_byte*)m_Packet.GetBufferPtr(), _Header.bySize);
-    int iResult = _pSession->Recive_Data(m_Packet, _Header.bySize);//_pSession->m_RecvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _Header.bySize);
+    int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);//_pSession->m_RecvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _Header.bySize);
     if (iResult != _Header.bySize)
     {
         wprintf_s(L"Dequeue() Error:%d\n", iResult);
@@ -344,8 +344,8 @@ void CServer::Recieve_Message()
                     if ((*it)->Get_Socket() == currentSock)
                     {
                         // 데이터 수신 전 소켓 상태 확인
-                        _byte buffer[1];
-                        int result = recv(currentSock, buffer, sizeof(buffer), MSG_PEEK);
+                        _BYTE buffer[1];
+                        int result = recv(currentSock, (char*)buffer, sizeof(buffer), MSG_PEEK);
                         if (result <= 0) // 연결 종료되었거나 오류 발생
                         {
                             /*MSG_DELETE_PLAYER tMSG;
@@ -395,7 +395,7 @@ void CServer::Send_Message()
     int iResult = select(0, NULL, &cpySet, NULL, &tTimeOut);
     if (iResult > 0)
     {
-        _byte Buffer[BUF_SIZE];
+        _BYTE Buffer[BUF_SIZE];
 
         for (u_int i = 0; i < writeSet.fd_count; i++)
         {
@@ -412,7 +412,7 @@ void CServer::Send_Message()
                         continue;
 
                     // 데이터 전송
-                    int iSend = send(writeSock, Buffer, iPeek, 0);
+                    int iSend = send(writeSock, (char*)Buffer, iPeek, 0);
                     if (iSend == SOCKET_ERROR)
                     {
                         wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->Get_SessionInfo().iID, WSAGetLastError());

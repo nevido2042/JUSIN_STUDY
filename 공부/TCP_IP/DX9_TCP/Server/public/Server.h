@@ -20,8 +20,8 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
-	void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
+	void Send_Unicast(CSession* pSession, const _BYTE* tMSG, const int iSize);
+	void Send_Broadcast(CSession* pSession, const _BYTE* tMSG, const int iSize);
 	void Read_Proc(CSession* pSession);
 	void Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession);
 	void Recieve_Message();

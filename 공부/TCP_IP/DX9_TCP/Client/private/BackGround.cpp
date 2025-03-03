@@ -7,7 +7,7 @@ CBackGround::CBackGround(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CBackGround::CBackGround(const CBackGround& Prototype)
-    : CGameObject { Prototype }
+    : CGameObject (Prototype)
 {
 }
 

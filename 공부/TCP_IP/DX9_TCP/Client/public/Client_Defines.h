@@ -2,8 +2,14 @@
 
 /* 특정 헤더파일에 소속되지 않는 전역정보들을 선언해두는 역활 */
 /* 기타 다른 정의파일(.h)들을 인클루드하는 역활. */
+
+//먼저 인클루드해야 오류안남
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+
 #include <Windows.h>
 #include <process.h>
+
 #include "Client_Enum.h"
 
 
