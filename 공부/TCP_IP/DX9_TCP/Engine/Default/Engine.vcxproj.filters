@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\Public\Engine_Enum.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Function.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Macro.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Struct.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Defines.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Base.h">
+      <Filter>98.Superclass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Graphic_Device.h">
+      <Filter>97.Device\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameInstance.h">
+      <Filter>00.GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Manager.h">
+      <Filter>01.Level\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level.h">
+      <Filter>01.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameObject.h">
+      <Filter>02.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Prototype_Manager.h">
+      <Filter>03.Prototype\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_Manager.h">
+      <Filter>02.GameObject\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Layer.h">
+      <Filter>02.GameObject\Manager\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Renderer.h">
+      <Filter>04.Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Component.h">
+      <Filter>04.Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Texture.h">
+      <Filter>04.Components\Texture</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="99.Headers">
+      <UniqueIdentifier>{4cd85e69-79d0-46a8-a4d9-1fcfefe60f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Superclass">
+      <UniqueIdentifier>{5d706b49-4323-4697-bf88-8772695c313b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Device">
+      <UniqueIdentifier>{35eaf6d8-6290-4c76-80a4-fb607d029e44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Device\Graphic">
+      <UniqueIdentifier>{b0f5d192-78e6-4208-b0f4-cac2b5546ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.GameInstance">
+      <UniqueIdentifier>{f146498a-b946-42b7-9519-141ac6f93f7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level">
+      <UniqueIdentifier>{4984c672-521a-4088-a0d7-c4c1f4639603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Manager">
+      <UniqueIdentifier>{178f61da-d50b-4e2e-9547-906f3926861e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject">
+      <UniqueIdentifier>{8a591089-8197-4821-a844-e77d37c00b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Manager">
+      <UniqueIdentifier>{dd17cb57-187f-43cd-82d0-64a0880616a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Manager\Layer">
+      <UniqueIdentifier>{b7cc089a-858e-492e-9041-130cf6a28548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Prototype">
+      <UniqueIdentifier>{fff994a1-1d65-4ab2-b65a-a4e49cdffb59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Prototype\Manager">
+      <UniqueIdentifier>{00500f36-ef8e-41b5-aa07-5e12106b1fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Renderer">
+      <UniqueIdentifier>{ac1221d1-ea14-4963-a022-db50384008db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components">
+      <UniqueIdentifier>{430a8c1a-1040-4ea7-bd9c-16a49f38a6a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\Texture">
+      <UniqueIdentifier>{435382d3-d1d7-453c-bc59-7a6c58348515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\VIBuffer">
+      <UniqueIdentifier>{93bf0b31-6059-4bf3-a7c2-e0a748647b9c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Private\Base.cpp">
+      <Filter>98.Superclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Graphic_Device.cpp">
+      <Filter>97.Device\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameInstance.cpp">
+      <Filter>00.GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Manager.cpp">
+      <Filter>01.Level\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level.cpp">
+      <Filter>01.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameObject.cpp">
+      <Filter>02.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Prototype_Manager.cpp">
+      <Filter>03.Prototype\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_Manager.cpp">
+      <Filter>02.GameObject\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Layer.cpp">
+      <Filter>02.GameObject\Manager\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Renderer.cpp">
+      <Filter>04.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Component.cpp">
+      <Filter>04.Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Texture.cpp">
+      <Filter>04.Components\Texture</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
