@@ -137,9 +137,9 @@ int main(int, char**)
         //------- 여기에 렌더 될 코드 작성하기 --------
 
         //창 사이즈 500, 500으로 고정
-        ImGui::SetNextWindowSize(ImVec2(500, 500));
+        //ImGui::SetNextWindowSize(ImVec2(500, 500));
         //개인모니터 크기에 맞춤
-        //ImGui::SetNextWindowSize(ImVec2(iWindowSizeX/4, iWindowSizeY/8)); 
+        //ImGui::SetNextWindowSize(ImVec2(iWindowSizeX/2, iWindowSizeY/2)); 
 
         //위치 설정 - 이거 하면 위치 못옮김
         //ImGui::SetNextWindowPos(ImVec2(0, 0));
