@@ -127,11 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Chapter 3\D3DXCreate\d3dUtility.h" />
     <ClInclude Include="d3dUtility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Chapter 3\D3DXCreate\d3dUtility.cpp" />
+    <ClCompile Include="..\..\..\..\Chapter 3\D3DXCreate\d3dxcreate.cpp" />
     <ClCompile Include="d3dInit.cpp" />
     <ClCompile Include="d3dUtility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Chapter 3\D3DXCreate\chap3_3.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

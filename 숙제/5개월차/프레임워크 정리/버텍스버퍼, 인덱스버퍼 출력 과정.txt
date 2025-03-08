@@ -1,0 +1,11 @@
+BeginScene()
+
+버텍스버퍼, 인덱스 버퍼
+
+SetStreamSoruce()
+SetIndices()
+SetFVF()
+
+DrawIndexedPrimitive()
+
+EndScene()

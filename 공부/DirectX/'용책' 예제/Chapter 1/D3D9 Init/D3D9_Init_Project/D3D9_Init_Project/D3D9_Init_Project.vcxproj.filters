@@ -18,6 +18,9 @@
     <ClInclude Include="d3dUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Chapter 3\D3DXCreate\d3dUtility.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="d3dInit.cpp">
@@ -26,5 +29,16 @@
     <ClCompile Include="d3dUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Chapter 3\D3DXCreate\d3dUtility.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Chapter 3\D3DXCreate\d3dxcreate.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Chapter 3\D3DXCreate\chap3_3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
