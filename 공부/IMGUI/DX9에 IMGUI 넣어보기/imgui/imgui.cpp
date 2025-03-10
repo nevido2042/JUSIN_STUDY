@@ -283,7 +283,7 @@ CODE
 
      // Initialize helper Platform and Renderer backends (here we are using imgui_impl_win32.cpp and imgui_impl_dx11.cpp)
      ImGui_ImplWin32_Init(hwnd);
-     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
+     ImGui_ImplDX11_Init(m_pGraphic_Device, m_pGraphic_DeviceContext);
 
      // Application main loop
      while (true)

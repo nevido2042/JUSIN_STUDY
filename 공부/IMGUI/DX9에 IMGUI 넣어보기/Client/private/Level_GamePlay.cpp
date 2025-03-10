@@ -59,7 +59,7 @@ CLevel_GamePlay* CLevel_GamePlay::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 		Safe_Release(pInstance);
 	}
 
-	return pInstance;
+ 	return pInstance;
 }
 
 
