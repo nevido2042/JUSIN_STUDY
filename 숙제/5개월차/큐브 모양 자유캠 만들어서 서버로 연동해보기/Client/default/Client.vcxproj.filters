@@ -43,6 +43,21 @@
     <Filter Include="02.GameObjects\Cube">
       <UniqueIdentifier>{069e6cbc-cfb6-4f05-8251-96e163a22c2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="100.Network">
+      <UniqueIdentifier>{e01cbf66-3e7f-4bff-a021-8e62ae840753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="100.Network\RingBuffer">
+      <UniqueIdentifier>{d9489910-5657-4b93-bfea-e87fcfd52fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="100.Network\Packet">
+      <UniqueIdentifier>{21c5eada-98a6-4b0d-b451-96788b0988a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="100.Network\Define">
+      <UniqueIdentifier>{c64284a7-4ce9-4426-befa-41729c6181eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="100.Network\Packet\PacketHandler">
+      <UniqueIdentifier>{5a036e6e-aaa7-464a-bb2d-46a4665cd8b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -90,6 +105,21 @@
     <ClInclude Include="..\public\Cube.h">
       <Filter>02.GameObjects\Cube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Network.h">
+      <Filter>100.Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Packet.h">
+      <Filter>100.Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RingBuffer.h">
+      <Filter>100.Network\RingBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Network_Define.h">
+      <Filter>100.Network\Define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PacketHandler.h">
+      <Filter>100.Network\Packet\PacketHandler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -134,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Cube.cpp">
       <Filter>02.GameObjects\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Network.cpp">
+      <Filter>100.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Packet.cpp">
+      <Filter>100.Network\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RingBuffer.cpp">
+      <Filter>100.Network\RingBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PacketHandler.cpp">
+      <Filter>100.Network\Packet\PacketHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
