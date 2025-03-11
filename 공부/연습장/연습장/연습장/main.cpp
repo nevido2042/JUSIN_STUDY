@@ -1,94 +1,110 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
-#include <algorithm>
-#include <cmath>
-#include <list>
-#include <map>
-#include <stack>
 #include <queue>
-using namespace std;
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <functional>
 
-typedef struct tagNode
-{
-    int iData = 0;
-    int iCost = 0;
-    tagNode* pLeft = nullptr;
-    tagNode* pRight = nullptr;
-}NODE;
+class ThreadPool {
+public:
+    ThreadPool(size_t numThreads);
+    ~ThreadPool();
 
-int Check_Arm_Length(NODE* pRoot, NODE* pNodes);
+    void enqueue(std::function<void()> task);
+    void waitForCompletion(); // 모든 작업이 끝날 때까지 대기
 
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+private:
+    std::vector<std::thread> workers;
+    std::queue<std::function<void()>> tasks;
 
-    int iN;
-    cin >> iN;
+    std::mutex queueMutex;
+    std::condition_variable condition;
+    std::condition_variable completionCondition;
+    bool stop;
+    size_t activeTasks = 0; // 실행 중인 작업 개수 추적
 
-    NODE* pNodes = new NODE[iN];
+    void workerThread();
+};
 
-    for (int i = 0; i < iN - 1; ++i)
-    {
-        int iParent, iChild, iCost;
-        cin >> iParent >> iChild >> iCost;
-
-        NODE* pParent = &pNodes[iParent - 1];
-        NODE* pChild = &pNodes[iChild - 1];
-        pChild->iCost = iCost;
-
-        if (pParent->pLeft == nullptr)
-        {
-            pParent->pLeft = pChild;
-        }
-        else
-        {
-            pParent->pRight = pChild;
-        }
+// 스레드 풀 생성자
+ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
+    for (size_t i = 0; i < numThreads; ++i) {
+        workers.emplace_back(&ThreadPool::workerThread, this);
     }
-
-    int iMaxLength = 0;
-    for (int i = 0; i < iN; ++i)
-    {
-        int iLength{ 0 };
-        iLength += Check_Arm_Length(pNodes[i].pLeft, pNodes);//왼팔
-        //iLength += Check_Arm_Length(pNodes[i].pRight, pNodes);//오른팔
-        if (iMaxLength < iLength)
-        {
-            iMaxLength = iLength;
-        }
-    }
-
-    cout << iMaxLength;
-
-    delete[] pNodes;
 }
 
-int Check_Arm_Length(NODE* pRoot, NODE* pNodes)
+// 작업 추가
+void ThreadPool::enqueue(std::function<void()> task) {
+    {
+        std::unique_lock<std::mutex> lock(queueMutex);
+        tasks.push(std::move(task));
+        activeTasks++; // 작업 개수 증가
+    }
+    condition.notify_one(); // 대기 중인 스레드 깨우기
+}
+
+// 스레드 실행 함수
+void ThreadPool::workerThread() 
 {
-    if (!pRoot)
-        return 0;
+    while (true) 
+    {
+        std::function<void()> task;
+        {
+            std::unique_lock<std::mutex> lock(queueMutex);
+            condition.wait(lock, [this] { return stop || !tasks.empty(); });
 
-    // 좌우 자식이 없으면 리프 노드
-    if (!pRoot->pLeft && !pRoot->pRight)
-        cout << "Leaf Node: " << pRoot->iCost << endl;
+            if (stop && tasks.empty()) return;
 
-    Check_Arm_Length(pRoot->pLeft, pNodes);
-    Check_Arm_Length(pRoot->pRight, pNodes);
+            task = std::move(tasks.front());
+            tasks.pop();
+        }
 
-    //iTotal += pRoot->iLCost;
+        task(); // 작업 실행
 
-    //pRoot = pRoot->pLeft;
-    //if (pRoot->iLCost > pRoot->iRCost)
-    //{
-    //    iTotal += pRoot->iLCost;
-    //    pRoot = pRoot->pLeft;
-    //}
-    //else
-    //{
-    //    iTotal += pRoot->iRCost;
-    //    pRoot = pRoot->pRight;
-    //}
+        {
+            std::unique_lock<std::mutex> lock(queueMutex);
+            activeTasks--; // 작업 완료 시 감소
+            if (activeTasks == 0) {
+                completionCondition.notify_all(); // 모든 작업 완료 알림
+            }
+        }
+    }
+}
+
+// 모든 작업이 끝날 때까지 대기
+void ThreadPool::waitForCompletion() {
+    std::unique_lock<std::mutex> lock(queueMutex);
+    completionCondition.wait(lock, [this] { return activeTasks == 0; });
+}
+
+// 스레드 풀 소멸자: 모든 스레드 종료
+ThreadPool::~ThreadPool() {
+    {
+        std::unique_lock<std::mutex> lock(queueMutex);
+        stop = true;
+    }
+    condition.notify_all(); // 모든 스레드를 깨움
+
+    for (std::thread& worker : workers) {
+        worker.join(); // 모든 스레드가 끝날 때까지 대기
+    }
+}
+
+// 사용 예제
+int main() {
+    ThreadPool pool(10); // 4개의 스레드 생성
+
+    for (int i = 1; i <= 10; ++i) {
+        pool.enqueue([i] {
+            std::cout << "Task " << i << " is running on thread "
+                << std::this_thread::get_id() << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            });
+    }
+
+    pool.waitForCompletion(); // 모든 작업이 끝날 때까지 대기
+
+    std::cout << "All tasks completed!" << std::endl;
+    return 0;
 }
