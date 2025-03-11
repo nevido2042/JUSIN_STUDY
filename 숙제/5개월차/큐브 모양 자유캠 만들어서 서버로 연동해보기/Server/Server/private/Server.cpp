@@ -304,6 +304,20 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
 
         break;
     }
+    case PACKET_CS_MOVE_STOP:
+    {
+
+        //wprintf_s(L"PACKET_CS_MOVE_START\n");
+
+        _float3 MoveStopPos;
+        CPacketHandler::net_Move_Stop(&m_Packet, MoveStopPos);
+
+        wprintf_s(L"MoveStopPos:(%f, %f, %f)\n", MoveStopPos.x, MoveStopPos.y, MoveStopPos.z);
+
+        //Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+
+        break;
+    }
     }
 }
 

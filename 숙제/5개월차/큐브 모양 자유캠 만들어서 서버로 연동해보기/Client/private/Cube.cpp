@@ -39,17 +39,18 @@ void CCube::Update(_float fTimeDelta)
 {
 	m_pNetwork->Update();
 
+
+
 	if (CGameInstance::Get_Instance()->Key_Down(VK_UP))
 	{
 		//VK_UP 시작
 		//현재위치 전달
-		m_pNetwork->Send_To_Server(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pNetwork->mp_CS_Move_Start(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 		//m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	}
 
 	if(CGameInstance::Get_Instance()->Key_Pressing(VK_UP))
 	{
-
 		m_pTransformCom->Go_Straight(0.016f);
 	}
 
@@ -57,6 +58,7 @@ void CCube::Update(_float fTimeDelta)
 	{
 		//VK_UP 끝
 		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Stop(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 
 	if (GetKeyState(VK_DOWN) & 0x8000)
@@ -164,6 +166,8 @@ CGameObject* CCube::Clone(void* pArg)
 void CCube::Free()
 {
 	__super::Free();
+
+	m_pNetwork->Release();
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);

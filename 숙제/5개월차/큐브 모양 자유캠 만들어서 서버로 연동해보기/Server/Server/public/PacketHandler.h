@@ -13,6 +13,7 @@ enum CS_PacketType
 {
     PACKET_CS_DELETE_MY_CHARACTER = 100,
     PACKET_CS_MOVE_START,
+    PACKET_CS_MOVE_STOP,
 };
 
 class CPacketHandler
@@ -20,7 +21,9 @@ class CPacketHandler
 public:
     static 	void mp_CS_Move_Start(CPacket* pPacket, _float3& _pStartPos);
     static 	void net_Move_Start(CPacket* pPacket, _float3& _pStartPos);
-
+public:
+    static 	void mp_CS_Move_Stop(CPacket* pPacket, _float3& _pStartPos);
+    static 	void net_Move_Stop(CPacket* pPacket, _float3& _pStartPos);
 public:
     static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY);
     static 	void net_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);

@@ -21,7 +21,10 @@ public:
 	void Update();
 	//void Release();
 public:
-	void Send_To_Server(_float3 MoveStartPos/*const _byte* pMSG, const int iSize*/);
+	void mp_CS_Move_Start(_float3 MoveStartPos);
+	void mp_CS_Move_Stop(_float3 MoveStartPos);
+public:
+	void Send_To_Server(/*const _byte* pMSG, const int iSize*/);
 private:
 	void Send_Packet();
 	void Receive_Packet();
