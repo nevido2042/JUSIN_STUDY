@@ -15,16 +15,5 @@
 #endif
 #endif
 
-typedef signed char _BYTE;
-
-#define PACKET_CODE (_BYTE)0x20
-
-#pragma pack(push, 1)
-struct tagPACKET_HEADER
-{
-    _BYTE byCode;
-    _BYTE bySize;
-    _BYTE byType;
-};
-#pragma pack(pop)
+typedef signed char _byte;
 

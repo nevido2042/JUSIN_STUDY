@@ -36,5 +36,16 @@ using namespace Engine;
 
 #define	VK_MAX		0xff
 
+#define PACKET_CODE (_byte)0x20
+
+#pragma pack(push, 1)
+struct tagPACKET_HEADER
+{
+    _byte byCode;
+    _byte bySize;
+    _byte byType;
+};
+#pragma pack(pop)
+
 
 

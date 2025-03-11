@@ -70,7 +70,7 @@ void CNetwork::Update()
 //void CNetwork::Release()
 //{
 //	//CPacketHandler::CS_DeleteMyCharacter(&m_Packet);
-//	m_sendQ.Enqueue((_BYTE*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+//	m_sendQ.Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 //
 //	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
 //	//tCS_Delete_Character.iID = m_iMyID;
@@ -308,7 +308,7 @@ void CNetwork::Free()
 	__super::Free();
 
 	//CPacketHandler::CS_DeleteMyCharacter(&m_Packet);
-	m_sendQ.Enqueue((_BYTE*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+	m_sendQ.Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
 	//tagPACKET_CS_DELETE_CHARACTER tCS_Delete_Character;
 	//tCS_Delete_Character.iID = m_iMyID;

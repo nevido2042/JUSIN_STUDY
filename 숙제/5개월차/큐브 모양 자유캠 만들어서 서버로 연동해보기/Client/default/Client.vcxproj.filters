@@ -52,9 +52,6 @@
     <Filter Include="100.Network\Packet">
       <UniqueIdentifier>{21c5eada-98a6-4b0d-b451-96788b0988a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="100.Network\Define">
-      <UniqueIdentifier>{c64284a7-4ce9-4426-befa-41729c6181eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="100.Network\Packet\PacketHandler">
       <UniqueIdentifier>{5a036e6e-aaa7-464a-bb2d-46a4665cd8b1}</UniqueIdentifier>
     </Filter>
@@ -113,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="..\public\RingBuffer.h">
       <Filter>100.Network\RingBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Network_Define.h">
-      <Filter>100.Network\Define</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PacketHandler.h">
       <Filter>100.Network\Packet\PacketHandler</Filter>

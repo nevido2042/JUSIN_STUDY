@@ -1,6 +1,8 @@
 #pragma once
 //#include <Windows.h>
-#include "Network_Define.h"
+//#include "Network_Define.h"
+#include "Engine_Defines.h"
+
 
 class CPacket
 {
@@ -13,7 +15,7 @@ public:
     template <typename T>
     CPacket& operator << (const T& value)
     {
-        Enqueue(reinterpret_cast<const _BYTE*>(&value), sizeof(T));
+        Enqueue(reinterpret_cast<const _byte*>(&value), sizeof(T));
         return *this;
     }
 
@@ -21,7 +23,7 @@ public:
     template <typename T>
     CPacket& operator >> (T& value)
     {
-        Dequeue(reinterpret_cast<_BYTE*>(&value), sizeof(T));
+        Dequeue(reinterpret_cast<_byte*>(&value), sizeof(T));
         return *this;
     }
 public:
@@ -44,28 +46,28 @@ public:
     void Clear(void);
     int Get_BufferSize(void);
     int Get_DataSize(void);
-    _BYTE* Get_BufferPtr(void);
+    _byte* Get_BufferPtr(void);
 
     // 버퍼 포지션 이동
     int Move_WritePos(int iSize);
     int Move_ReadPos(int iSize);
 
-    int Get_Data(_BYTE* pDest, int iSize);
-    int Put_Data(_BYTE* pSrc, int iSize);
+    int Get_Data(_byte* pDest, int iSize);
+    int Put_Data(_byte* pSrc, int iSize);
 
     void Update_HeaderSize(int iSize);
 
 private:
-    void Enqueue(const _BYTE* pData, int iSize);
-    void Dequeue(_BYTE* pBuf, int iSize);
+    void Enqueue(const _byte* pData, int iSize);
+    void Dequeue(_byte* pBuf, int iSize);
 
 private:
     // 할당 위치
-    _BYTE* m_pAlloc = nullptr;
-    _BYTE* m_pAllocEnd = nullptr;
+    _byte* m_pAlloc = nullptr;
+    _byte* m_pAllocEnd = nullptr;
 
-    _BYTE* m_Front = nullptr;
-    _BYTE* m_Rear = nullptr;
+    _byte* m_Front = nullptr;
+    _byte* m_Rear = nullptr;
 
     int m_iBufferSize = 0;
     int m_iDataSize = 0; // 현재 버퍼에 사용 중인 사이즈

@@ -2,7 +2,7 @@
 #include<stdio.h>
 CPacket::CPacket()
 {
-	m_pAlloc = (_BYTE*)malloc(eBUFFER_DEFAULT + 1);
+	m_pAlloc = (_byte*)malloc(eBUFFER_DEFAULT + 1);
 	m_Front = m_pAlloc;
 	m_Rear = m_pAlloc;
 	m_iBufferSize = eBUFFER_DEFAULT;
@@ -13,7 +13,7 @@ CPacket::CPacket()
 }
 CPacket::CPacket(int iSize)
 {
-	m_pAlloc = (_BYTE*)malloc(iSize + 1);
+	m_pAlloc = (_byte*)malloc(iSize + 1);
 	m_Front = m_pAlloc;
 	m_Rear = m_pAlloc;
 	m_iBufferSize = iSize;
@@ -46,7 +46,7 @@ int CPacket::Get_DataSize()
 	return m_Rear - m_Front;
 }
 
-_BYTE* CPacket::Get_BufferPtr()
+_byte* CPacket::Get_BufferPtr()
 {
 	return m_pAlloc;
 }
@@ -88,7 +88,7 @@ int CPacket::Move_WritePos(int iSize)
 	return iSize;
 }
 
-void CPacket::Enqueue(const _BYTE* pData, int iSize)
+void CPacket::Enqueue(const _byte* pData, int iSize)
 {
 	//rear+size > allocEndPtr?
 	if (m_Rear + iSize > m_pAllocEnd)
@@ -109,7 +109,7 @@ void CPacket::Enqueue(const _BYTE* pData, int iSize)
 	m_iDataSize = m_Rear - m_Front;
 }
 
-void CPacket::Dequeue(_BYTE* pBuf, int iSize)
+void CPacket::Dequeue(_byte* pBuf, int iSize)
 {
 	//front + size > rear?
 	if (m_Front + iSize > m_Rear)
@@ -130,13 +130,13 @@ void CPacket::Dequeue(_BYTE* pBuf, int iSize)
 	m_iDataSize = m_Rear - m_Front;
 }
 
-int	CPacket::Get_Data(_BYTE* pDest, int iSize)
+int	CPacket::Get_Data(_byte* pDest, int iSize)
 {
 	Dequeue(pDest, iSize);
 	return iSize;
 }
 
-int	CPacket::Put_Data(_BYTE* pSrc, int iSize)
+int	CPacket::Put_Data(_byte* pSrc, int iSize)
 {
 	Enqueue(pSrc, iSize);
 	return iSize;
@@ -149,5 +149,5 @@ void CPacket::Update_HeaderSize(int iSize)
 
 	// PACKET_HEADER 구조체를 버퍼의 처음에 위치한다고 가정
 	tagPACKET_HEADER* pHeader = reinterpret_cast<tagPACKET_HEADER*>(Get_BufferPtr());
-	pHeader->bySize = static_cast<_BYTE>(iSize);
+	pHeader->bySize = static_cast<_byte>(iSize);
 }

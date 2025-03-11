@@ -1,5 +1,5 @@
 #pragma	once
-#include"Server_Defines.h"
+#include"Engine_Defines.h"
 
 class CRingBuffer
 {
@@ -16,11 +16,11 @@ public:
 	//현재 버퍼에 남은 용량 얻기
 	int Get_FreeSize();
 	//데이터 넣음
-	int Enqueue(_BYTE* pData, int iSize);
+	int Enqueue(_byte* pData, int iSize);
 	//데이터 뺌
-	int Dequeue(_BYTE* pDest, int iSize);
+	int Dequeue(_byte* pDest, int iSize);
 	//데이터 보기
-	int Peek(_BYTE* pDest, int iSize);
+	int Peek(_byte* pDest, int iSize);
 	//버퍼 데이터 삭제
 	void Clear();
 	//[][f][][r]*[][][][][]* *~* 사이즈(외부에서 한방에 쓸 수 있는 사이즈)
@@ -34,22 +34,22 @@ public:
 	//원하는 만큼 삭제
 	int Move_Front(int iSize);
 	//m_front m_rear 포인터 얻음
-	_BYTE* Get_Front();
-	_BYTE* Get_Rear();
+	_byte* Get_Front();
+	_byte* Get_Rear();
 private:
 	//다음 위치 반환
-	_BYTE* Set_Next(_BYTE** ppPos);
+	_byte* Set_Next(_byte** ppPos);
 	//이전 위치 반환
-	_BYTE* Set_Prev(_BYTE** ppPos);
+	_byte* Set_Prev(_byte** ppPos);
 private:
 	//버퍼 할당 시작 지점
-	_BYTE* m_pBufferAlloc;
+	_byte* m_pBufferAlloc;
 	//버퍼 할당 끝 지점
-	_BYTE* m_pBufferAllocEnd;
+	_byte* m_pBufferAllocEnd;
 	//버퍼 사이즈
 	int m_iBufferSize;
 	//m_front
-	_BYTE* m_front;
+	_byte* m_front;
 	//m_rear
-	_BYTE* m_rear;
+	_byte* m_rear;
 };

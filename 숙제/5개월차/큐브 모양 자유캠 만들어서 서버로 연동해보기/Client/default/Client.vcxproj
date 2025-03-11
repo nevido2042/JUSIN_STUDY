@@ -153,7 +153,6 @@
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\Network.h" />
-    <ClInclude Include="..\public\Network_Define.h" />
     <ClInclude Include="..\public\Packet.h" />
     <ClInclude Include="..\public\PacketHandler.h" />
     <ClInclude Include="..\public\RingBuffer.h" />

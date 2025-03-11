@@ -1,6 +1,6 @@
 #include "Server.h"
 #include "PacketHandler.h"
-#include "Server_Defines.h"
+
 
 CServer::CServer()
     :m_ServSock(INVALID_SOCKET),
@@ -158,10 +158,10 @@ void CServer::AcceptProc()
     }
 }
 
-void CServer::Send_Unicast(CSession* pSession, const _BYTE* pMSG, const int iSize)
+void CServer::Send_Unicast(CSession* pSession, const _byte* pMSG, const int iSize)
 {
     int iResult{ 0 };
-    iResult = pSession->Get_SendQ().Enqueue((_BYTE*)pMSG, iSize);
+    iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
     if (iResult < iSize)
     {
         wprintf_s(L"sendQ.Enqueue() error\n");
@@ -171,7 +171,7 @@ void CServer::Send_Unicast(CSession* pSession, const _BYTE* pMSG, const int iSiz
     m_Packet.Clear();
 }
 
-void CServer::Send_Broadcast(CSession* _pSession, const _BYTE* pMSG, const int iSize)
+void CServer::Send_Broadcast(CSession* _pSession, const _byte* pMSG, const int iSize)
 {
     int iResult{ 0 };
 
@@ -180,7 +180,7 @@ void CServer::Send_Broadcast(CSession* _pSession, const _BYTE* pMSG, const int i
         if (pSession == _pSession)
             continue;
 
-        iResult = pSession->Get_SendQ().Enqueue((_BYTE*)pMSG, iSize);
+        iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
         if (iResult < iSize)
         {
             wprintf_s(L"sendQ.Enqueue() error\n");
@@ -217,7 +217,7 @@ void CServer::Read_Proc(CSession* _pSession)
     }
     else//버퍼를 통해 리시브큐로 꽂는다.
     {
-        _BYTE Buffer[BUF_SIZE];
+        _byte Buffer[BUF_SIZE];
         int iResult = recv(_pSession->Get_Socket(), (char*)Buffer, sizeof(Buffer), 0);
         int iErrCode = WSAGetLastError();
 
@@ -247,7 +247,7 @@ void CServer::Read_Proc(CSession* _pSession)
             break;
         }
 
-        int retPeek = _pSession->Get_RecvQ().Peek((_BYTE*)&tHeader, sizeof(tHeader));
+        int retPeek = _pSession->Get_RecvQ().Peek((_byte*)&tHeader, sizeof(tHeader));
         if (retPeek != sizeof(tHeader))
         {
             wprintf_s(L"Peek() Error:%d\n", retPeek);
@@ -298,7 +298,7 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
         _float3 MoveStartPos;
         CPacketHandler::net_Move_Start(&m_Packet, MoveStartPos);
 
-        wprintf_s(L"MoveStartPos:(%f, %f, %f)\n", MoveStartPos.x, MoveStartPos.y, MoveStartPos.z);
+        wprintf_s(L"MoveStartPos:(%.2f, %.2f, %.2f)\n", MoveStartPos.x, MoveStartPos.y, MoveStartPos.z);
 
         //Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
@@ -312,7 +312,7 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
         _float3 MoveStopPos;
         CPacketHandler::net_Move_Stop(&m_Packet, MoveStopPos);
 
-        wprintf_s(L"MoveStopPos:(%f, %f, %f)\n", MoveStopPos.x, MoveStopPos.y, MoveStopPos.z);
+        wprintf_s(L"MoveStopPos:(%.2f, %.2f, %.2f)\n", MoveStopPos.x, MoveStopPos.y, MoveStopPos.z);
 
         //Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
 
@@ -368,7 +368,7 @@ void CServer::Recieve_Message()
                     if ((*iter)->Get_Socket() == currentSock)
                     {
                         // 데이터 수신 전 소켓 상태 확인
-                        _BYTE buffer[1];
+                        _byte buffer[1];
                         int result = recv(currentSock, (char*)buffer, sizeof(buffer), MSG_PEEK);
                         if (result <= 0) // 연결 종료되었거나 오류 발생
                         {
@@ -420,7 +420,7 @@ void CServer::Send_Message()
     int iResult = select(0, NULL, &cpySet, NULL, &tTimeOut);
     if (iResult > 0)
     {
-        _BYTE Buffer[BUF_SIZE];
+        _byte Buffer[BUF_SIZE];
 
         for (u_int i = 0; i < writeSet.fd_count; i++)
         {

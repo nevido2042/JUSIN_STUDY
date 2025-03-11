@@ -26,5 +26,5 @@ void CSession::Release()
 
 int CSession::Receive_Data(CPacket& pPakcet, int Size)
 {
-	return m_RecvQ.Dequeue((_BYTE*)pPakcet.Get_BufferPtr(), Size);
+	return m_RecvQ.Dequeue((_byte*)pPakcet.Get_BufferPtr(), Size);
 }

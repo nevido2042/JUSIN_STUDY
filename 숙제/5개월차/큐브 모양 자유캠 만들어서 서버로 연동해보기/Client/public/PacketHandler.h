@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine_Defines.h"
-#include "Network_Define.h"
 #include "Packet.h"
+
 
 enum SC_PacketType
 {

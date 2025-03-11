@@ -62,8 +62,5 @@
     <ClInclude Include="..\public\PacketHandler.h">
       <Filter>Packet\PacketHandler</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Server_Defines.h">
-      <Filter>Define</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
