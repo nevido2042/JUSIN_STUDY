@@ -1,6 +1,6 @@
 #pragma once
-#include <WinSock2.h>
-#include <WS2tcpip.h>
+#include "Server_Defines.h"
+
 #include "RingBuffer.h" 
 #include "Packet.h"
 #include "SessionInfo.h"

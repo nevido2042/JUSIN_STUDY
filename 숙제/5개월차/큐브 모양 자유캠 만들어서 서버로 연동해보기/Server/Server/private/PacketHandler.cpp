@@ -1,19 +1,25 @@
 #include "PacketHandler.h"
-#include "Server_Defines.h"
-//#include "Packet.h"
+#include "Packet.h"
 
-void CPacketHandler::CS_KeyUp(CPacket* pPacket)
+void CPacketHandler::mp_CS_Move_Start(CPacket* pPacket, _float3& _pStartPos)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
     //tHeader.BYTEbySize = 0;//일단 고정 길이로
-    tHeader.byType = PACKET_CS_KEYUP;
+    tHeader.byType = PACKET_CS_MOVE_START;
 
     //wprintf_s(L"mp_headerSize:%d\n", sizeof(header));
 
     pPacket->Put_Data((_BYTE*)&tHeader, sizeof(tHeader));
-
+    *pPacket << _pStartPos;
     pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::net_Move_Start(CPacket* pPacket, _float3& _pStartPos)
+{
+    *pPacket >> _pStartPos;
+
+    pPacket->Clear();
 }
 
 void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY)

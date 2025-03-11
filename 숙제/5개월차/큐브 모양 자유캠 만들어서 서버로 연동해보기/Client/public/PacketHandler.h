@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine_Defines.h"
+#include "Network_Define.h"
 #include "Packet.h"
 
 enum SC_PacketType
@@ -11,13 +13,14 @@ enum SC_PacketType
 enum CS_PacketType
 {
     PACKET_CS_DELETE_MY_CHARACTER = 100,
-    PACKET_CS_KEYUP,
+    PACKET_CS_MOVE_START,
 };
 
 class CPacketHandler
 {
 public:
-    static 	void CS_KeyUp(CPacket* pPacket);
+    static 	void mp_CS_Move_Start(CPacket* pPacket, _float3& _pStartPos);
+    static 	void net_Move_Start(CPacket* pPacket, _float3& _pStartPos);
 
 public:
     static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY);

@@ -47,7 +47,7 @@
       <Filter>02.GameObject\Manager\Layer</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Renderer.h">
-      <Filter>04.Renderer</Filter>
+      <Filter>07.Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Component.h">
       <Filter>04.Components</Filter>
@@ -78,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Cube.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\KeyMgr.h">
+      <Filter>06.KeyMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +120,6 @@
     <Filter Include="03.Prototype\Manager">
       <UniqueIdentifier>{00500f36-ef8e-41b5-aa07-5e12106b1fa6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Renderer">
-      <UniqueIdentifier>{ac1221d1-ea14-4963-a022-db50384008db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Components">
       <UniqueIdentifier>{430a8c1a-1040-4ea7-bd9c-16a49f38a6a1}</UniqueIdentifier>
     </Filter>
@@ -149,6 +149,12 @@
     </Filter>
     <Filter Include="02.GameObject\Camera">
       <UniqueIdentifier>{818845ae-d1f4-4af6-8117-3b38123510e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.KeyMgr">
+      <UniqueIdentifier>{89dcb03c-b3a9-4fc6-8657-9f3632a65ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07.Renderer">
+      <UniqueIdentifier>{ac1221d1-ea14-4963-a022-db50384008db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +186,7 @@
       <Filter>02.GameObject\Manager\Layer</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Renderer.cpp">
-      <Filter>04.Renderer</Filter>
+      <Filter>07.Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Component.cpp">
       <Filter>04.Components</Filter>
@@ -211,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Cube.cpp">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\KeyMgr.cpp">
+      <Filter>06.KeyMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

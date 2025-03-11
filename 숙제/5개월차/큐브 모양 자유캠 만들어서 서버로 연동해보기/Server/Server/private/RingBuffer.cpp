@@ -63,9 +63,9 @@ int CRingBuffer::Get_UseSize()
 {
     if (m_front <= m_rear)
     {
-        return m_rear - m_front;
+        return static_cast<int>(m_rear - m_front);
     }
-    return (m_pBufferAllocEnd - m_front) + (m_rear - m_pBufferAlloc);
+    return static_cast<int>(m_pBufferAllocEnd - m_front) + static_cast<int>(m_rear - m_pBufferAlloc);
 }
 
 int CRingBuffer::Get_FreeSize()
@@ -125,11 +125,11 @@ int CRingBuffer::DirectEnqueueSize()
 {
     if (m_rear < m_front)
     {
-        return (m_front - 1) - m_rear;
+        return static_cast<int>((m_front - 1) - m_rear);
     }
     else
     {
-        return  m_pBufferAllocEnd - m_rear;
+        return static_cast<int>(m_pBufferAllocEnd - m_rear);
     }
 }
 
@@ -137,11 +137,11 @@ int CRingBuffer::DirectDequeueSize()
 {
     if (m_rear < m_front)
     {
-        return m_pBufferAllocEnd - m_front;
+        return static_cast<int>(m_pBufferAllocEnd - m_front);
     }
     else
     {
-        return m_rear - m_front;
+        return static_cast<int>(m_rear - m_front);
     }
 }
 

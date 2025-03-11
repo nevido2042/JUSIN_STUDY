@@ -122,9 +122,9 @@ void CNetwork::Send_Packet()
 	m_sendQ.Move_Front(retSend);
 }
 
-void CNetwork::Send_To_Server(/*const _byte* pMSG, const int iSize*/)
+void CNetwork::Send_To_Server(_float3 MoveStartPos/*const _byte* pMSG, const int iSize*/)
 {
-	CPacketHandler::CS_KeyUp(&m_Packet);
+	CPacketHandler::mp_CS_Move_Start(&m_Packet, MoveStartPos);
 
 	int iResult{ 0 };
 	iResult = m_sendQ.Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());

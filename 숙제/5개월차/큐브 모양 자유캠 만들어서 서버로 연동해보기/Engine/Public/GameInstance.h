@@ -5,6 +5,7 @@
 /* 엔진 개발자가 클라개밫자에게 보여주고싶은 함수를 ... */
 #include "Renderer.h"
 #include "Prototype_Manager.h"
+#include "KeyMgr.h"
 
 BEGIN(Engine)
 
@@ -46,6 +47,12 @@ public:
 	HRESULT Add_Timer(const _wstring& strTimerTag);
 	void Update_Timer(const _wstring& strTimerTag);
 #pragma endregion
+	bool		Key_Pressing(int _Key);
+	bool		Key_Up(int _Key);		// 누르고 있다가 뗐을 때
+	bool		Key_Down(int _Key);		// 눌렀을 때
+#pragma region KEY_MANAGER
+
+#pragma endregion
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -54,6 +61,7 @@ private:
 	class CObject_Manager*		m_pObject_Manager = { nullptr };
 	class CRenderer*			m_pRenderer = { nullptr };
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
+	class CKeyMgr*				m_pKey_Manager = { nullptr };
 
 public:
 	void Release_Engine();

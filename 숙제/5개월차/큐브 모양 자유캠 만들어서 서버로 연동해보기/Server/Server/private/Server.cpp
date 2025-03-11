@@ -1,5 +1,3 @@
-#include <locale>
-#include <iostream>
 #include "Server.h"
 #include "PacketHandler.h"
 #include "Server_Defines.h"
@@ -293,16 +291,18 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
 
         break;*/
     }
-    case PACKET_CS_KEYUP:
+    case PACKET_CS_MOVE_START:
     {
-        wprintf_s(L"Key_UP\n");
-        /*CPacketHandler::SC_DeleteCharacter(&m_Packet, _pSession->Get_SessionInfo().iID);
+        //wprintf_s(L"PACKET_CS_MOVE_START\n");
 
-        wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->Get_SessionInfo().iID);
+        _float3 MoveStartPos;
+        CPacketHandler::net_Move_Start(&m_Packet, MoveStartPos);
 
-        Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        wprintf_s(L"MoveStartPos:(%f, %f, %f)\n", MoveStartPos.x, MoveStartPos.y, MoveStartPos.z);
 
-        break;*/
+        //Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+
+        break;
     }
     }
 }

@@ -39,6 +39,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, LPDIRECT
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 
+	m_pKey_Manager = CKeyMgr::Create(*ppOut);
+	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -136,6 +140,21 @@ HRESULT CGameInstance::Add_Timer(const _wstring& strTimerTag)
 void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 {
 	return m_pTimer_Manager->Update(strTimerTag);
+}
+
+bool CGameInstance::Key_Pressing(int _Key)
+{
+	return m_pKey_Manager->Key_Pressing(_Key);
+}
+
+bool CGameInstance::Key_Up(int _Key)
+{
+	return m_pKey_Manager->Key_Up(_Key);
+}
+
+bool CGameInstance::Key_Down(int _Key)
+{
+	return m_pKey_Manager->Key_Down(_Key);
 }
 
 #pragma endregion

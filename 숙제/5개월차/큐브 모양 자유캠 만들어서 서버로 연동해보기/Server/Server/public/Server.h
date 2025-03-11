@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "Packet.h"
 #include "Session.h"
 

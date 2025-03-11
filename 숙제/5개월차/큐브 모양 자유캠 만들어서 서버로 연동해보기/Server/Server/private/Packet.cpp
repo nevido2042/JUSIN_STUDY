@@ -43,7 +43,7 @@ int CPacket::Get_BufferSize()
 
 int CPacket::Get_DataSize()
 {
-	return m_Rear - m_Front;
+	return static_cast<int>(m_Rear - m_Front);
 }
 
 _BYTE* CPacket::Get_BufferPtr()
@@ -106,7 +106,7 @@ void CPacket::Enqueue(const _BYTE* pData, int iSize)
 		m_Rear++;
 	}
 
-	m_iDataSize = m_Rear - m_Front;
+	m_iDataSize = static_cast<int>(m_Rear - m_Front);
 }
 
 void CPacket::Dequeue(_BYTE* pBuf, int iSize)
@@ -127,7 +127,7 @@ void CPacket::Dequeue(_BYTE* pBuf, int iSize)
 		m_Front++;
 	}
 
-	m_iDataSize = m_Rear - m_Front;
+	m_iDataSize = static_cast<int>(m_Rear - m_Front);
 }
 
 int	CPacket::Get_Data(_BYTE* pDest, int iSize)
