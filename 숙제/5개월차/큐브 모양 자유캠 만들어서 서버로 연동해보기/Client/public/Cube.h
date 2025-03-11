@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
+#include "Network.h"
+
 BEGIN(Engine)
 class CTexture;
 class CTransform;
@@ -30,6 +32,8 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
+private:
+	CNetwork* m_pNetwork{ nullptr };
 
 private:
 	HRESULT Ready_Components();

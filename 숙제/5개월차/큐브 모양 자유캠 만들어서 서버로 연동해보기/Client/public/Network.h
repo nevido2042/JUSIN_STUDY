@@ -21,11 +21,11 @@ public:
 	void Update();
 	//void Release();
 public:
-	void Send_Message();
-
+	void Send_To_Server(/*const _byte* pMSG, const int iSize*/);
 private:
-	void Receive_Message();
-	void Decode_Message(const tagPACKET_HEADER& _tHeader);
+	void Send_Packet();
+	void Receive_Packet();
+	void Decode_Packet(const tagPACKET_HEADER& _tHeader);
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;

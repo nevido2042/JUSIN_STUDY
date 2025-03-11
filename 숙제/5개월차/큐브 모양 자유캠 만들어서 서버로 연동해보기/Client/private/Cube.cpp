@@ -3,6 +3,8 @@
 #include "Transform.h"
 #include "GameInstance.h"
 
+#include "PacketHandler.h"
+
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
 {
@@ -20,6 +22,8 @@ HRESULT CCube::Initialize_Prototype()
 
 HRESULT CCube::Initialize(void* pArg)
 {
+	m_pNetwork = CNetwork::Create();
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -33,8 +37,13 @@ void CCube::Priority_Update(_float fTimeDelta)
 
 void CCube::Update(_float fTimeDelta)
 {
+	m_pNetwork->Update();
+
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
+		m_pNetwork->Send_To_Server();
+		//신입 자기 캐릭 생성
+
 		m_pTransformCom->Go_Straight(0.016f);
 	}
 	if (GetKeyState(VK_DOWN) & 0x8000)

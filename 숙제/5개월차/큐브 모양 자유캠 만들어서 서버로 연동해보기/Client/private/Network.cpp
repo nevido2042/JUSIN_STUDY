@@ -63,8 +63,8 @@ HRESULT CNetwork::Initialize()
 
 void CNetwork::Update()
 {
-	Receive_Message();
-	Send_Message();
+	Receive_Packet();
+	Send_Packet();
 }
 
 //void CNetwork::Release()
@@ -88,7 +88,7 @@ void CNetwork::Update()
 //	WSACleanup();
 //}
 
-void CNetwork::Send_Message()
+void CNetwork::Send_Packet()
 {
 	fd_set writeSet;
 	FD_ZERO(&writeSet);
@@ -122,6 +122,21 @@ void CNetwork::Send_Message()
 	m_sendQ.Move_Front(retSend);
 }
 
+void CNetwork::Send_To_Server(/*const _byte* pMSG, const int iSize*/)
+{
+	CPacketHandler::CS_KeyUp(&m_Packet);
+
+	int iResult{ 0 };
+	iResult = m_sendQ.Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+	if (iResult < m_Packet.Get_DataSize())
+	{
+		wprintf_s(L"sendQ.Enqueue() error\n");
+		exit(1);
+	}
+
+	m_Packet.Clear();
+}
+
 
 //int CNetwork::Enqueue_SendQ(char* tMsg, int iSize)
 //{
@@ -134,7 +149,7 @@ void CNetwork::Send_Message()
 //	return iResult;
 //}
 
-void CNetwork::Receive_Message()
+void CNetwork::Receive_Packet()
 {
 	fd_set TempSet;
 	timeval TimeOut{ 0,0 };
@@ -192,7 +207,7 @@ void CNetwork::Receive_Message()
 
 			m_recvQ.Move_Front(sizeof(tagPACKET_HEADER));
 
-			Decode_Message(tHeader);
+			Decode_Packet(tHeader);
 			//if (m_recvQ.GetUseSize() < MSG_SIZE)
 			//	break;//Áß´Ü
 
@@ -211,7 +226,7 @@ void CNetwork::Receive_Message()
 	}
 }
 
-void CNetwork::Decode_Message(const tagPACKET_HEADER& _tHeader)
+void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 {
 	int iResult = m_recvQ.Dequeue((_byte*)m_Packet.Get_BufferPtr(), _tHeader.bySize);
 	if (iResult != _tHeader.bySize)
@@ -295,7 +310,7 @@ void CNetwork::Free()
 	//m_sendQ.Enqueue((char*)&tHeader, sizeof(tHeader));
 	//m_sendQ.Enqueue((char*)&tCS_Delete_Character, sizeof(tCS_Delete_Character));
 
-	Send_Message();
+	Send_Packet();
 
 	closesocket(m_hSocket);
 	WSACleanup();

@@ -293,6 +293,17 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
 
         break;*/
     }
+    case PACKET_CS_KEYUP:
+    {
+        wprintf_s(L"Key_UP\n");
+        /*CPacketHandler::SC_DeleteCharacter(&m_Packet, _pSession->Get_SessionInfo().iID);
+
+        wprintf_s(L"ID: %d, 캐릭터 삭제\n", _pSession->Get_SessionInfo().iID);
+
+        Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+
+        break;*/
+    }
     }
 }
 
@@ -338,35 +349,36 @@ void CServer::Recieve_Message()
             }
             else
             {
-                for (auto it = m_vecSession.begin(); it != m_vecSession.end(); )
+                for (auto iter = m_vecSession.begin(); iter != m_vecSession.end(); )
                 {
-                    if ((*it)->Get_Socket() == currentSock)
+                    if ((*iter)->Get_Socket() == currentSock)
                     {
                         // 데이터 수신 전 소켓 상태 확인
                         _BYTE buffer[1];
                         int result = recv(currentSock, (char*)buffer, sizeof(buffer), MSG_PEEK);
                         if (result <= 0) // 연결 종료되었거나 오류 발생
                         {
+                            wprintf_s(L"클라이언트 종료 ID:%d, WSAGetLastError:%d\n", (*iter)->Get_SessionInfo().iID, WSAGetLastError());
                             /*MSG_DELETE_PLAYER tMSG;
                             tMSG.type = DELETE_PLAYER;
                             tMSG.id = (*it)->iID;
                             Send_Broadcast(NULL, (_byte*)&tMSG, sizeof(MSG_BASE));*/
 
                             // 클라이언트 소켓 종료 처리
-                            closesocket((*it)->Get_Socket());
-                            Safe_Delete(*it);
+                            closesocket((*iter)->Get_Socket());
+                            Safe_Delete(*iter);
                             // 세션 제거
-                            it = m_vecSession.erase(it); // erase는 삭제된 다음 요소의 iterator를 반환함
+                            iter = m_vecSession.erase(iter); // erase는 삭제된 다음 요소의 iterator를 반환함
                         }
                         else
                         {
-                            Read_Proc(*it);
-                            ++it;
+                            Read_Proc(*iter);
+                            ++iter;
                         }
                     }
                     else
                     {
-                        ++it;
+                        ++iter;
                     }
                 }
             }

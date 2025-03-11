@@ -2,6 +2,20 @@
 #include "Network_Define.h"
 //#include "Packet.h"
 
+void CPacketHandler::CS_KeyUp(CPacket* pPacket)
+{
+    tagPACKET_HEADER tHeader{};
+    tHeader.byCode = PACKET_CODE;
+    //tHeader.BYTEbySize = 0;//일단 고정 길이로
+    tHeader.byType = PACKET_CS_KEYUP;
+
+    //wprintf_s(L"mp_headerSize:%d\n", sizeof(header));
+
+    pPacket->Put_Data((_BYTE*)&tHeader, sizeof(tHeader));
+
+    pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
 void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY)
 {
     tagPACKET_HEADER tHeader{};
