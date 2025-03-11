@@ -1,6 +1,8 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Base.h"
+#include "GameInstance.h"
+
 #include "RingBuffer.h"
 #include "Packet.h"
 #include <locale>
@@ -13,13 +15,14 @@ BEGIN(Client)
 
 class CNetwork : public CBase
 {
+	DECLARE_SINGLETON(CNetwork);
+
 private:
 	CNetwork();
 	virtual ~CNetwork() = default;
 public:
 	HRESULT Initialize();
 	void Update();
-	//void Release();
 public:
 	void mp_CS_Move_Start(_float3 MoveStartPos);
 	void mp_CS_Move_Stop(_float3 MoveStartPos);
@@ -37,10 +40,10 @@ private:
 	CRingBuffer m_recvQ;
 
 	CPacket		m_Packet;
-public:
-	static CNetwork* Create();
-	virtual void Free();
+private:
+	CGameInstance* m_pGameInstance = { nullptr };
 
+	virtual void Free();
 };
 
 END

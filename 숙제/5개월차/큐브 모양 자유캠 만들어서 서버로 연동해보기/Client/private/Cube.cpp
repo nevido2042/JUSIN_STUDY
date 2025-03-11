@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "GameInstance.h"
 
-#include "PacketHandler.h"
+//#include "PacketHandler.h"
 
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -13,6 +13,7 @@ CCube::CCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 CCube::CCube(const CCube& Prototype)
 	: CGameObject{ Prototype }
 {
+	m_pNetwork = { CNetwork::Get_Instance() };
 }
 
 HRESULT CCube::Initialize_Prototype()
@@ -22,7 +23,7 @@ HRESULT CCube::Initialize_Prototype()
 
 HRESULT CCube::Initialize(void* pArg)
 {
-	m_pNetwork = CNetwork::Create();
+	//m_pNetwork = CNetwork::Create();
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -37,10 +38,6 @@ void CCube::Priority_Update(_float fTimeDelta)
 
 void CCube::Update(_float fTimeDelta)
 {
-	m_pNetwork->Update();
-
-
-
 	if (CGameInstance::Get_Instance()->Key_Down(VK_UP))
 	{
 		//VK_UP ½ÃÀÛ
@@ -167,7 +164,7 @@ void CCube::Free()
 {
 	__super::Free();
 
-	m_pNetwork->Release();
+	//m_pNetwork->Release();
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);

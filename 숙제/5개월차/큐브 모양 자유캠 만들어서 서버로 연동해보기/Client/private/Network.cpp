@@ -2,10 +2,13 @@
 #include "Packet.h"
 #include "PacketHandler.h"
 
+IMPLEMENT_SINGLETON(CNetwork);
+
 CNetwork::CNetwork()
 	:m_iMyID(0)/*m_iClientCnt(0)*/, m_hSocket(0)
 {
 	ZeroMemory(&m_ReadSet, sizeof(fd_set));
+	m_pGameInstance = { CGameInstance::Get_Instance() };
 }
 
 HRESULT CNetwork::Initialize()
@@ -250,28 +253,34 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
 	{
-		/*int iX;
-		int iY;
-		CPacketHandler::Recive_CreateMyCharacter(&m_Packet, m_iMyID, iX, iY);
+		int iID;
+		_float3 Postion;
+		CPacketHandler::net_CreateMyCharacter(&m_Packet, m_iMyID, Postion);
 
-		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
-		static_cast<CPlayer*>(pObj)->Set_ID(m_iMyID);
-		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
-		wprintf_s(L"Create ID: %d\n", m_iMyID);*/
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Cube"),
+			LEVEL_GAMEPLAY, TEXT("Layer_Cube"))))
+			return;
+		//CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
+		//static_cast<CPlayer*>(pObj)->Set_ID(m_iMyID);
+		//CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+		//wprintf_s(L"Create ID: %d\n", m_iMyID);
 		break;
 	}
 	case PACKET_SC_CREATE_OTHER_CHARACTER:
 	{
-		/*int iID;
-		int iX;
-		int iY;
-		CPacketHandler::Recive_CreateOtherCharacter(&m_Packet, iID, iX, iY);
+		int iID;
+		_float3 Postion;
+		CPacketHandler::net_CreateOtherCharacter(&m_Packet, iID, Postion);
 
-		CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Cube"),
+			LEVEL_GAMEPLAY, TEXT("Layer_Cube"))))
+			return;
+
+		/*CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
 		static_cast<CPlayer*>(pObj)->Set_ID(iID);
-		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);
+		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);*/
 
-		wprintf_s(L"Create ID: %d\n", iID);*/
+		//wprintf_s(L"Create ID: %d\n", iID);
 		break;
 	}
 	case PACKET_SC_DELETE_CHARACTER:
@@ -288,19 +297,6 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 		break;
 	}
 	}
-}
-
-CNetwork* CNetwork::Create()
-{
-	CNetwork* pInstance = new CNetwork();
-
-	if (FAILED(pInstance->Initialize()))
-	{
-		MSG_BOX("Failed to Created : CNetwork");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
 }
 
 void CNetwork::Free()

@@ -115,29 +115,29 @@ void CServer::AcceptProc()
 
         cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
-        int iRandX{};// = (WINCX / 10) + rand() % (WINCX / 2);
-        int iRandY{};// = (WINCY / 10) + rand() % (WINCY / 2);
+        int iRandX{ rand() % 100 };
+        int iRandZ{ rand() % 100 };
 
-        CSession* pNewSession = new CSession(clntAdr, clntSock, m_iID, iRandX, iRandY);
+        _float3 Position{ static_cast<_float>(iRandX) , 0.f, static_cast<_float>(iRandZ) };
+
+        CSession* pNewSession = new CSession(clntAdr, clntSock, m_iID, Position);
         //링버퍼 초기화
         /*pNewSession->m_RecvQ = CRingBuffer(5000);
         pNewSession->m_SendQ = CRingBuffer(5000);*/
 
-        ////신입 자기 캐릭 생성
-        //CPacketHandler::SC_CreateMyCharacter(&m_Packet,
-        //    pNewSession->Get_SessionInfo().iID,
-        //    pNewSession->Get_SessionInfo().iX,
-        //    pNewSession->Get_SessionInfo().iY
-        //);
-        //Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        //신입 자기 캐릭 생성
+        CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
+            pNewSession->Get_SessionInfo().iID,
+            pNewSession->Get_SessionInfo().Position
+        );
+        Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
-        ////신입 뿌리기
-        //CPacketHandler::SC_CreateOtherCharacter(&m_Packet,
-        //    pNewSession->Get_SessionInfo().iID,
-        //    pNewSession->Get_SessionInfo().iX,
-        //    pNewSession->Get_SessionInfo().iY
-        //);
-        //Send_Broadcast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        //신입 뿌리기
+        CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+            pNewSession->Get_SessionInfo().iID,
+            pNewSession->Get_SessionInfo().Position
+        );
+        Send_Broadcast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
         ////신입에게 기존 유저 뿌리기
         //for (CSession* pSession : m_vecSession)

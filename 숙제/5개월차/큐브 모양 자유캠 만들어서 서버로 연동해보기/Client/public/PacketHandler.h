@@ -20,17 +20,17 @@ enum CS_PacketType
 class CPacketHandler
 {
 public:
-    static 	void mp_CS_Move_Start(CPacket* pPacket, _float3& _pStartPos);
-    static 	void net_Move_Start(CPacket* pPacket, _float3& _pStartPos);
+    static 	void mp_CS_Move_Start(CPacket* pPacket, _float3& Pos);
+    static 	void net_Move_Start(CPacket* pPacket, _float3& Pos);
 public:
-    static 	void mp_CS_Move_Stop(CPacket* pPacket, _float3& _pStartPos);
-    static 	void net_Move_Stop(CPacket* pPacket, _float3& _pStartPos);
+    static 	void mp_CS_Move_Stop(CPacket* pPacket, _float3& Pos);
+    static 	void net_Move_Stop(CPacket* pPacket, _float3& Pos);
 public:
-    static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, int iX, int iY);
-    static 	void net_CreateMyCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
+    static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);
+    static 	void net_CreateMyCharacter(CPacket* pPacket, int& iID, _float3& Pos);
 
-    static 	void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, int iX, int iY);
-    static 	void net_CreateOtherCharacter(CPacket* pPacket, int& iID, int& iX, int& iY);
+    static 	void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, _float3& Pos);
+    static 	void net_CreateOtherCharacter(CPacket* pPacket, int& iID, _float3& Pos);
 
     static void mp_SC_DeleteCharacter(CPacket* pPacket, int iID);
     static void net_DeleteCharacter(CPacket* pPacket, int& iID);
