@@ -40,6 +40,9 @@
     <Filter Include="02.GameObjects\Camera\Free">
       <UniqueIdentifier>{9a579ff3-968b-4937-b82a-dcf470db3132}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Cube">
+      <UniqueIdentifier>{069e6cbc-cfb6-4f05-8251-96e163a22c2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -84,6 +87,9 @@
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Cube.h">
+      <Filter>02.GameObjects\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -125,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\Camera\Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cube.cpp">
+      <Filter>02.GameObjects\Cube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
