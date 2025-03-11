@@ -33,13 +33,28 @@ void CCube::Priority_Update(_float fTimeDelta)
 
 void CCube::Update(_float fTimeDelta)
 {
-	int a = 10;
+	if (GetKeyState(VK_UP) & 0x8000)
+	{
+		m_pTransformCom->Go_Straight(0.016f);
+	}
+	if (GetKeyState(VK_DOWN) & 0x8000)
+	{
+		m_pTransformCom->Go_Backward(0.016f);
+	}
+	if (GetKeyState(VK_LEFT) & 0x8000)
+	{
+		m_pTransformCom->Go_Left(0.016f);
+	}
+	if (GetKeyState(VK_RIGHT) & 0x8000)
+	{
+		m_pTransformCom->Go_Right(0.016f);
+	}
 }
 
 void CCube::Late_Update(_float fTimeDelta)
 {
 
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;
 
 
@@ -47,11 +62,12 @@ void CCube::Late_Update(_float fTimeDelta)
 
 HRESULT CCube::Render()
 {
-
-
 	/* 장치에 텍스쳐를 하나 저장해 놓는다. */
 	/* 추후 렌더링하는데 이용하는 정점이 텍스쿠드를 들고 있다면 */
 	/* 해당 정점으로 인해 생성된 픽셀에게 샘플링되기위한 텍스쳐다. */
+	if (FAILED(m_pTransformCom->Bind_Resource()))
+		return E_FAIL;
+
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
@@ -78,11 +94,19 @@ HRESULT CCube::Ready_Components()
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 
-	/* For.Com_Transform */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
-		return E_FAIL;
+	///* For.Com_Transform */
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+	//	TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
+	//	return E_FAIL;
 
+	CTransform::TRANSFORM_DESC		TransformDesc{};
+
+	TransformDesc.fSpeedPerSec = 30.f;
+	TransformDesc.fRotationPerSec = D3DXToRadian(180.f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
+		return E_FAIL;
 
 
 

@@ -17,7 +17,7 @@ HRESULT CCamera_Free::Initialize_Prototype()
 
 HRESULT CCamera_Free::Initialize(void* pArg)
 {
- 	if (FAILED(Ready_Components()))
+	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
 	CAMERA_FREE_DESC	Desc{};
