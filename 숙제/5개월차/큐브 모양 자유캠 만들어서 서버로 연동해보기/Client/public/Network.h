@@ -24,7 +24,7 @@ public:
 	HRESULT Initialize();
 	void Update();
 public:
-	void mp_CS_Move_Start(_float3 MoveStartPos);
+	void mp_CS_Move_Start(_float3 MoveStartPos, _float3& MoveDir);
 	void mp_CS_Move_Stop(_float3 MoveStartPos);
 public:
 	void Send_To_Server(/*const _byte* pMSG, const int iSize*/);

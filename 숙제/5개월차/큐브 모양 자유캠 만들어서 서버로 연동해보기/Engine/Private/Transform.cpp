@@ -90,6 +90,14 @@ void CTransform::Go_Right(_float fTimeDelta)
 	Set_State(STATE_POSITION, vPosition);
 }
 
+void CTransform::Go_Direction(_float fTimeDelta, _float3 vDirection)
+{
+	_float3		vPosition = Get_State(STATE_POSITION);
+
+	vPosition += vDirection * m_fSpeedPerSec * fTimeDelta;
+	Set_State(STATE_POSITION, vPosition);
+}
+
 void CTransform::LookAt(const _float3& vTargetPos)
 {
 	_float3		vScaled = Compute_Scaled();

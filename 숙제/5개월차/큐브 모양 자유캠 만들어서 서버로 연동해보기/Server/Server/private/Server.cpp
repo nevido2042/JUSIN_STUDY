@@ -115,8 +115,8 @@ void CServer::AcceptProc()
 
         cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
-        int iRandX{ rand() % 100 };
-        int iRandZ{ rand() % 100 };
+        int iRandX{ rand() % 3 };
+        int iRandZ{ rand() % 3 };
 
         _float3 Position{ static_cast<_float>(iRandX) , 0.f, static_cast<_float>(iRandZ) };
 
@@ -139,19 +139,16 @@ void CServer::AcceptProc()
         );
         Send_Broadcast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
-        ////신입에게 기존 유저 뿌리기
-        //for (CSession* pSession : m_vecSession)
-        //{
-        //    //신입 뿌리기
-        //    CPacketHandler::SC_CreateOtherCharacter(&m_Packet,
-        //        pSession->Get_SessionInfo().iID,
-        //        pSession->Get_SessionInfo().iX,
-        //        pSession->Get_SessionInfo().iY
-        //    );
-        //    Send_Unicast(pNewSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
-
-
-        //}
+        //신입에게 기존 유저 뿌리기
+        for (CSession* pSession : m_vecSession)
+        {
+            //신입 뿌리기
+            CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+                pSession->Get_SessionInfo().iID,
+                pSession->Get_SessionInfo().Position
+            );
+            Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+        }
 
         m_vecSession.push_back(pNewSession);
         m_iID++;
@@ -296,11 +293,13 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
         //wprintf_s(L"PACKET_CS_MOVE_START\n");
 
         _float3 MoveStartPos;
-        CPacketHandler::net_Move_Start(&m_Packet, MoveStartPos);
+        _float3 MoveDir;
+        CPacketHandler::net_Move_Start(&m_Packet, MoveStartPos, MoveDir);
 
-        wprintf_s(L"MoveStartPos:(%.2f, %.2f, %.2f)\n", MoveStartPos.x, MoveStartPos.y, MoveStartPos.z);
+        wprintf_s(L"Move_Dir:(%.2f, %.2f, %.2f)\n", MoveDir.x, MoveDir.y, MoveDir.z);
 
-        //Send_Broadcast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+        CPacketHandler::mp_SC_Move_Start(&m_Packet, MoveStartPos, MoveDir, _pSession->Get_SessionInfo().iID);
+        Send_Broadcast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
         break;
     }
@@ -376,10 +375,8 @@ void CServer::Recieve_Message()
                         if (result <= 0) // 연결 종료되었거나 오류 발생
                         {
                             wprintf_s(L"클라이언트 종료 ID:%d, WSAGetLastError:%d\n", (*iter)->Get_SessionInfo().iID, WSAGetLastError());
-                            /*MSG_DELETE_PLAYER tMSG;
-                            tMSG.type = DELETE_PLAYER;
-                            tMSG.id = (*it)->iID;
-                            Send_Broadcast(NULL, (_byte*)&tMSG, sizeof(MSG_BASE));*/
+                            CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, (*iter)->Get_SessionInfo().iID);
+                            Send_Broadcast(*iter, m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
                             // 클라이언트 소켓 종료 처리
                             closesocket((*iter)->Get_Socket());

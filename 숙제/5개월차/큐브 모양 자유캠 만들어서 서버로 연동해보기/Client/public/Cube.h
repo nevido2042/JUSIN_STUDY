@@ -15,6 +15,13 @@ BEGIN(Client)
 
 class CCube final : public CGameObject
 {
+public:
+	typedef struct tagCubeDesc
+	{
+		int iID{ 0 };
+		_float3 Postion{};
+	}CUBE_DESC;
+
 private:
 	CCube(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CCube(const CCube& Prototype);
@@ -31,10 +38,14 @@ public:
 public:
 	int Get_ID();
 	CTransform* Get_TransformCom(); //뭔가 아닌것 같지만 임시로
-
+	void Set_Move(bool _bool);
+	void Set_MoveDirection(_float3& vMoveDir);
 private:
-	CNetwork* m_pNetwork{ nullptr };
+	CNetwork*	m_pNetwork{ nullptr };
 	int			m_iMyID;
+	_float3		m_OldPosition;
+	bool		m_IsMove{ false };
+	_float3		m_vMoveDir{};
 
 
 private:

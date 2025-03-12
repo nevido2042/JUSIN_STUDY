@@ -1,7 +1,7 @@
 #include "PacketHandler.h"
 #include "Packet.h"
 
-void CPacketHandler::mp_CS_Move_Start(CPacket* pPacket, _float3& _Pos)
+void CPacketHandler::mp_CS_Move_Start(CPacket* pPacket, _float3& _Pos, _float3& _Dir)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
@@ -12,12 +12,40 @@ void CPacketHandler::mp_CS_Move_Start(CPacket* pPacket, _float3& _Pos)
 
     pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
     *pPacket << _Pos;
+    *pPacket << _Dir;
     pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
 }
 
-void CPacketHandler::net_Move_Start(CPacket* pPacket, _float3& _Pos)
+void CPacketHandler::net_Move_Start(CPacket* pPacket, _float3& _Pos, _float3& _Dir)
 {
     *pPacket >> _Pos;
+    *pPacket >> _Dir;
+
+    pPacket->Clear();
+}
+
+void CPacketHandler::mp_SC_Move_Start(CPacket* pPacket, _float3& Pos, _float3& Dir, int& iID)
+{
+    
+    tagPACKET_HEADER tHeader{};
+    tHeader.byCode = PACKET_CODE;
+    //tHeader.BYTEbySize = 0;//일단 고정 길이로
+    tHeader.byType = PACKET_SC_MOVE_START;
+
+    //wprintf_s(L"mp_headerSize:%d\n", sizeof(header));
+
+    pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
+    *pPacket << Pos;
+    *pPacket << Dir;
+    *pPacket << iID;
+    pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::net_Move_Start(CPacket* pPacket, _float3& Pos, _float3& Dir, int& iID)
+{
+    *pPacket >> Pos;
+    *pPacket >> Dir;
+    *pPacket >> iID;
 
     pPacket->Clear();
 }

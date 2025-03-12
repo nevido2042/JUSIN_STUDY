@@ -133,9 +133,9 @@ void CNetwork::Send_Packet()
 	m_sendQ.Move_Front(retSend);
 }
 
-void CNetwork::mp_CS_Move_Start(_float3 MoveStartPos)
+void CNetwork::mp_CS_Move_Start(_float3 MoveStartPos, _float3& MoveDir)
 {
-	CPacketHandler::mp_CS_Move_Start(&m_Packet, MoveStartPos);
+	CPacketHandler::mp_CS_Move_Start(&m_Packet, MoveStartPos, MoveDir);
 	Send_To_Server();
 }
 
@@ -261,11 +261,13 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
 	{
-		_float3 Postion;
-		CPacketHandler::net_CreateMyCharacter(&m_Packet, m_iMyID, Postion);
+		CCube::CUBE_DESC tDesc;
+		CPacketHandler::net_CreateMyCharacter(&m_Packet, tDesc.iID, tDesc.Postion);
+
+		m_iMyID = tDesc.iID;
 
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Cube"),
-			LEVEL_GAMEPLAY, TEXT("Layer_Cube"), &m_iMyID)))
+			LEVEL_GAMEPLAY, TEXT("Layer_Cube"), &tDesc)))
 			return;
 		//CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
 		//static_cast<CPlayer*>(pObj)->Set_ID(m_iMyID);
@@ -275,12 +277,11 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	}
 	case PACKET_SC_CREATE_OTHER_CHARACTER:
 	{
-		int iID;
-		_float3 Postion;
-		CPacketHandler::net_CreateOtherCharacter(&m_Packet, iID, Postion);
+		CCube::CUBE_DESC tDesc;
+		CPacketHandler::net_CreateOtherCharacter(&m_Packet, tDesc.iID, tDesc.Postion);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Cube"),
-			LEVEL_GAMEPLAY, TEXT("Layer_Cube"), &iID)))
+			LEVEL_GAMEPLAY, TEXT("Layer_Cube"), &tDesc)))
 			return;
 
 		/*CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
@@ -288,6 +289,32 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);*/
 
 		//wprintf_s(L"Create ID: %d\n", iID);
+		break;
+	}
+	case PACKET_SC_MOVE_START:
+	{
+		int iID;
+		_float3 Postion;
+		_float3 Dir;
+		CPacketHandler::net_Move_Start(&m_Packet, Postion, Dir, iID);
+
+		//해당 아이디를 가지고있는 큐브의 위치를 바꾼다
+		class CLayer* pLayer = m_pGameInstance->Get_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Cube"));
+		if (pLayer)
+		{
+			for (auto iter : pLayer->Get_GameObjects())
+			{
+				CCube* pCube = dynamic_cast<CCube*>(iter);
+				if (pCube->Get_ID() == iID)
+				{
+					//방향으로 이동시작해라
+					pCube->Set_Move(true);
+					pCube->Set_MoveDirection(Dir);
+					break;
+				}
+			}
+		}
+
 		break;
 	}
 	case PACKET_SC_MOVE_STOP:
@@ -305,6 +332,8 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 				CCube* pCube = dynamic_cast<CCube*>(iter);
 				if (pCube->Get_ID() == iID)
 				{
+					pCube->Set_Move(false);
+					//pCube->Set_MoveDirection({ 0.f,0.f, 0.f });
 					pCube->Get_TransformCom()->Set_State(CTransform::STATE_POSITION, Postion);
 					break;
 				}
@@ -315,15 +344,23 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	}
 	case PACKET_SC_DELETE_CHARACTER:
 	{
-		/*int iID;
-		CPacketHandler::Recive_DeleteCharacter(&m_Packet, iID);
+		int iID;
+		CPacketHandler::net_DeleteCharacter(&m_Packet, iID);
 
-		cout << "Delete Player ID: " << iID << endl;
-		CObj* pPlayer = CObjMgr::Get_Instance()->Find_Player(iID);
-		if (pPlayer)
+		//해당 아이디를 가지고있는 큐브의 위치를 바꾼다
+		class CLayer* pLayer = m_pGameInstance->Get_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Cube"));
+		if (pLayer)
 		{
-			pPlayer->Set_Dead();
-		}*/
+			for (auto iter : pLayer->Get_GameObjects())
+			{
+				CCube* pCube = dynamic_cast<CCube*>(iter);
+				if (pCube->Get_ID() == iID)
+				{
+					//pCube->삭제
+					break;
+				}
+			}
+		}
 		break;
 	}
 	}
