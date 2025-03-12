@@ -55,34 +55,51 @@ void CCube::Update(_float fTimeDelta)
 	
 	if (g_hWnd != GetForegroundWindow()) return;
 
-	if(CGameInstance::Get_Instance()->Key_Pressing(VK_UP))
+	// 이동 속도 상수 (필요에 따라 fTimeDelta를 곱해도 됩니다)
+	//const _float fSpeed = 0.016f;
+	_float3 vDirection = { 0.f, 0.f, 0.f };
+
+	if (m_pGameInstance->Key_Pressing(VK_UP))
 	{
-		m_pTransformCom->Go_Straight(0.016f);
+		// 전진 방향 (예: z축 양의 방향)
+		vDirection.z += 1.f;
 	}
-	if (CGameInstance::Get_Instance()->Key_Pressing(VK_DOWN))
+	if (m_pGameInstance->Key_Pressing(VK_DOWN))
 	{
-		m_pTransformCom->Go_Backward(0.016f);
+		// 후진 방향 (예: z축 음의 방향)
+		vDirection.z -= 1.f;
 	}
-	if (CGameInstance::Get_Instance()->Key_Pressing(VK_LEFT))
+	if (m_pGameInstance->Key_Pressing(VK_LEFT))
 	{
-		m_pTransformCom->Go_Left(0.016f);
+		// 좌측 이동 (예: x축 음의 방향)
+		vDirection.x -= 1.f;
 	}
-	if (CGameInstance::Get_Instance()->Key_Pressing(VK_RIGHT))
+	if (m_pGameInstance->Key_Pressing(VK_RIGHT))
 	{
-		m_pTransformCom->Go_Right(0.016f);
+		// 우측 이동 (예: x축 양의 방향)
+		vDirection.x += 1.f;
+	}
+
+	// 만약 입력이 있다면
+	if (D3DXVec3Length(&vDirection) > 0.f)
+	{
+		// 방향 벡터 정규화
+		D3DXVec3Normalize(&vDirection, &vDirection);
+		// 정규화된 방향 벡터에 속도를 곱해 이동 (Go_Direction 함수가 이를 처리한다고 가정)
+		m_pTransformCom->Go_Direction(fTimeDelta, vDirection);
 	}
 
 	//키를 땟을 때
-	if (CGameInstance::Get_Instance()->Key_Up(VK_UP) ||
-		CGameInstance::Get_Instance()->Key_Up(VK_DOWN) ||
-		CGameInstance::Get_Instance()->Key_Up(VK_LEFT) ||
-		CGameInstance::Get_Instance()->Key_Up(VK_RIGHT))
+	if (m_pGameInstance->Key_Up(VK_UP) ||
+		m_pGameInstance->Key_Up(VK_DOWN) ||
+		m_pGameInstance->Key_Up(VK_LEFT) ||
+		m_pGameInstance->Key_Up(VK_RIGHT))
 	{
 		//아무것도 안눌렀을 때 스탑을 보내는게 맞음.
-		if (!CGameInstance::Get_Instance()->Key_Pressing(VK_UP) &&
-			!CGameInstance::Get_Instance()->Key_Pressing(VK_DOWN) &&
-			!CGameInstance::Get_Instance()->Key_Pressing(VK_LEFT) &&
-			!CGameInstance::Get_Instance()->Key_Pressing(VK_RIGHT))
+		if (!m_pGameInstance->Key_Pressing(VK_UP) &&
+			!m_pGameInstance->Key_Pressing(VK_DOWN) &&
+			!m_pGameInstance->Key_Pressing(VK_LEFT) &&
+			!m_pGameInstance->Key_Pressing(VK_RIGHT))
 		{
 			m_pNetwork->mp_CS_Move_Stop(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 		}
@@ -106,10 +123,15 @@ void CCube::Late_Update(_float fTimeDelta)
 	D3DXVec3Normalize(&MoveDirection, &MoveDirection);
 
 	//이걸 레이트업데이트 호출 해서 (oldPos - currentPos)방향을 전달하는게 맞을지도
-	if (CGameInstance::Get_Instance()->Key_Down(VK_UP)||
-		CGameInstance::Get_Instance()->Key_Down(VK_DOWN)||
-		CGameInstance::Get_Instance()->Key_Down(VK_LEFT)||
-		CGameInstance::Get_Instance()->Key_Down(VK_RIGHT))
+	//Key_Up 할때도 움직이는 방향이 바뀌었을 수도있음 그래서 패킷 전송해야함
+	if (m_pGameInstance->Key_Down(VK_UP)||
+		m_pGameInstance->Key_Down(VK_DOWN)||
+		m_pGameInstance->Key_Down(VK_LEFT)||
+		m_pGameInstance->Key_Down(VK_RIGHT)||
+		m_pGameInstance->Key_Up(VK_UP) ||
+		m_pGameInstance->Key_Up(VK_DOWN) ||
+		m_pGameInstance->Key_Up(VK_LEFT) ||
+		m_pGameInstance->Key_Up(VK_RIGHT))
 	{
 		//VK_UP 시작
 		//현재위치 전달, 움직이는 방향 전달
