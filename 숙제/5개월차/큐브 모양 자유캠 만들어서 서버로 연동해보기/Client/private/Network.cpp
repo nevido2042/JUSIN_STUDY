@@ -21,6 +21,8 @@ CNetwork::CNetwork()
 
 HRESULT CNetwork::Initialize()
 {
+	m_tServerConfig = Load_Config_File(TEXT("config.txt"));
+
 	WSADATA wsaData;
 	SOCKADDR_IN servAdr;
 
@@ -43,13 +45,13 @@ HRESULT CNetwork::Initialize()
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
 	/*servAdr.sin_addr.s_addr = inet_pton(AF_INET, IP, &servAdr.sin_addr);*/
-	if (InetPton(AF_INET, IP, &servAdr.sin_addr) != 1)
+	if (InetPton(AF_INET, m_tServerConfig.strIP.c_str(), &servAdr.sin_addr) != 1)
 	{
 		MSG_BOX("Invalid address or address not supported");
 		return E_FAIL;
 	}
 
-	servAdr.sin_port = htons(PORT);
+	servAdr.sin_port = htons(m_tServerConfig.iPort);
 
 	if (connect(m_hSocket, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
@@ -370,6 +372,33 @@ bool CNetwork::Compare_ID(const int iID) const
 {
 	return m_iMyID == iID;
 }
+
+CNetwork::SERVER_CONFIG CNetwork::Load_Config_File(const std::wstring& filename)
+{
+	SERVER_CONFIG tConfig;
+	wifstream inFile(filename);
+	if (!inFile.is_open())
+	{
+		MSG_BOX("Can't Open ServerConfigFile");
+		tConfig.strIP = L"127.0.0.1";
+		tConfig.iPort = 2042;
+		return tConfig;
+	}
+
+	// 첫 줄에서 IP 읽기 (wstring으로 읽음)
+	wstring ip;
+	getline(inFile, ip);
+	tConfig.strIP = ip;
+
+	// 두 번째 줄에서 포트 번호 읽기
+	wstring portLine;
+	getline(inFile, portLine);
+	wstringstream wss(portLine);
+	wss >> tConfig.iPort;
+
+	return tConfig;
+}
+
 
 void CNetwork::Free()
 {

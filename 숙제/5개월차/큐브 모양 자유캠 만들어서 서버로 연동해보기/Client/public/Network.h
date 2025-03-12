@@ -6,16 +6,26 @@
 #include "RingBuffer.h"
 #include "Packet.h"
 #include <locale>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 #define BUF_SIZE 1024
-#define IP L"127.0.0.1"
-#define PORT 2042
+//#define IP L"127.0.0.1"
+//#define PORT 2042
 
 BEGIN(Client)
 
 class CNetwork : public CBase
 {
 	DECLARE_SINGLETON(CNetwork);
+
+	typedef struct tagServerConfig
+	{
+		wstring		strIP{};
+		int			iPort{};
+	}SERVER_CONFIG;
 
 private:
 	CNetwork();
@@ -34,6 +44,7 @@ private:
 	void Decode_Packet(const tagPACKET_HEADER& _tHeader);
 public:
 	bool Compare_ID(const int iID) const;
+	SERVER_CONFIG Load_Config_File(const wstring& filename);
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;
@@ -41,7 +52,8 @@ private:
 	CRingBuffer m_sendQ;
 	CRingBuffer m_recvQ;
 
-	CPacket		m_Packet;
+	CPacket			m_Packet;
+	SERVER_CONFIG	m_tServerConfig;
 private:
 	CGameInstance* m_pGameInstance = { nullptr };
 
