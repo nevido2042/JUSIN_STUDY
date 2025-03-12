@@ -6,7 +6,7 @@
 
 BEGIN(Engine)
 
-class CLayer final : public CBase
+class ENGINE_DLL CLayer final : public CBase
 {
 private:
 	CLayer();
@@ -14,6 +14,7 @@ private:
 
 public:
 	HRESULT Add_GameObject(class CGameObject* pGameObject);
+	const list<class CGameObject*>& Get_GameObjects();
 	void Priority_Update(_float fTimeDelta);
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);

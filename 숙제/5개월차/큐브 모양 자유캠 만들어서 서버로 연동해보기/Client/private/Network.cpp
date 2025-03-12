@@ -1,6 +1,14 @@
 #include "Network.h"
 #include "Packet.h"
 #include "PacketHandler.h"
+#include "Layer.h"
+#include "Cube.h"
+
+//BEGIN(Engine)
+//class CLayer;
+//class CGameObject;
+//END
+
 
 IMPLEMENT_SINGLETON(CNetwork);
 
@@ -253,12 +261,11 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	{
 	case PACKET_SC_CREATE_MY_CHARACTER:
 	{
-		int iID;
 		_float3 Postion;
 		CPacketHandler::net_CreateMyCharacter(&m_Packet, m_iMyID, Postion);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Cube"),
-			LEVEL_GAMEPLAY, TEXT("Layer_Cube"))))
+			LEVEL_GAMEPLAY, TEXT("Layer_Cube"), &m_iMyID)))
 			return;
 		//CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
 		//static_cast<CPlayer*>(pObj)->Set_ID(m_iMyID);
@@ -273,7 +280,7 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 		CPacketHandler::net_CreateOtherCharacter(&m_Packet, iID, Postion);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Cube"),
-			LEVEL_GAMEPLAY, TEXT("Layer_Cube"))))
+			LEVEL_GAMEPLAY, TEXT("Layer_Cube"), &iID)))
 			return;
 
 		/*CObj* pObj = CAbstractFactory<CPlayer>::Create((float)iX, (float)iY);
@@ -281,6 +288,29 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pObj);*/
 
 		//wprintf_s(L"Create ID: %d\n", iID);
+		break;
+	}
+	case PACKET_SC_MOVE_STOP:
+	{
+		int iID;
+		_float3 Postion;
+		CPacketHandler::net_Move_Stop(&m_Packet, Postion, iID);
+
+		//해당 아이디를 가지고있는 큐브의 위치를 바꾼다
+		class CLayer* pLayer = m_pGameInstance->Get_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Cube"));
+		if (pLayer)
+		{
+			for (auto iter : pLayer->Get_GameObjects())
+			{
+				CCube* pCube = dynamic_cast<CCube*>(iter);
+				if (pCube->Get_ID() == iID)
+				{
+					pCube->Get_TransformCom()->Set_State(CTransform::STATE_POSITION, Postion);
+					break;
+				}
+			}
+		}
+
 		break;
 	}
 	case PACKET_SC_DELETE_CHARACTER:
@@ -297,6 +327,11 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 		break;
 	}
 	}
+}
+
+bool CNetwork::Compare_ID(const int iID) const
+{
+	return m_iMyID == iID;
 }
 
 void CNetwork::Free()

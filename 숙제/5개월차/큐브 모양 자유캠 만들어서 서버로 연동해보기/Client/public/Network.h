@@ -32,6 +32,8 @@ private:
 	void Send_Packet();
 	void Receive_Packet();
 	void Decode_Packet(const tagPACKET_HEADER& _tHeader);
+public:
+	bool Compare_ID(const int iID) const;
 private:
 	SOCKET  m_hSocket;
 	fd_set	m_ReadSet;

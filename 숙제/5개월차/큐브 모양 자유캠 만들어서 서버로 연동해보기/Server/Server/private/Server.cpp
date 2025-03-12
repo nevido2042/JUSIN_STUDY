@@ -300,7 +300,7 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
 
         wprintf_s(L"MoveStartPos:(%.2f, %.2f, %.2f)\n", MoveStartPos.x, MoveStartPos.y, MoveStartPos.z);
 
-        //Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        //Send_Broadcast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
         break;
     }
@@ -312,9 +312,12 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
         _float3 MoveStopPos;
         CPacketHandler::net_Move_Stop(&m_Packet, MoveStopPos);
 
+        _pSession->Get_SessionInfo().Position = MoveStopPos;
+
         wprintf_s(L"MoveStopPos:(%.2f, %.2f, %.2f)\n", MoveStopPos.x, MoveStopPos.y, MoveStopPos.z);
 
-        //Send_Broadcast(_pSession, (_byte*)m_Packet.GetBufferPtr(), m_Packet.GetDataSize());
+        CPacketHandler::mp_SC_Move_Stop(&m_Packet, MoveStopPos, _pSession->Get_SessionInfo().iID);
+        Send_Broadcast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
         break;
     }

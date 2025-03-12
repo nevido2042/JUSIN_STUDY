@@ -28,12 +28,19 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+public:
+	int Get_ID();
+	CTransform* Get_TransformCom(); //뭔가 아닌것 같지만 임시로
+
+private:
+	CNetwork* m_pNetwork{ nullptr };
+	int			m_iMyID;
+
+
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
-private:
-	CNetwork* m_pNetwork{ nullptr };
 
 private:
 	HRESULT Ready_Components();

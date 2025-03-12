@@ -1,4 +1,5 @@
 #include "Camera_Free.h"
+#include "GameInstance.h"
 
 CCamera_Free::CCamera_Free(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CCamera { pGraphic_Device }
@@ -42,25 +43,31 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
+	if (g_hWnd != GetForegroundWindow()) return;
+
 	POINT		ptMouse{};
 
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
 	/* 카메라의 움직임 제어 */
-	if (GetKeyState('W') & 0x8000)
+
+	//CGameInstance::Get_Instance()->Key_Down(VK_UP);
+	
+
+	if (m_pGameInstance->Key_Pressing('W')/*GetKeyState('W') & 0x8000*/)
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	}
-	if (GetKeyState('S') & 0x8000)
+	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
 	}
-	if (GetKeyState('A') & 0x8000)
+	if (m_pGameInstance->Key_Pressing('A'))
 	{
 		m_pTransformCom->Go_Left(fTimeDelta);
 	}
-	if (GetKeyState('D') & 0x8000)
+	if (m_pGameInstance->Key_Pressing('D'))
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
 	}
@@ -69,12 +76,12 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 	if (iMouseMove = ptMouse.x - m_ptOldMousePos.x)
 	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f)/*m_pTransformCom->Get_State(CTransform::STATE_UP)*/, fTimeDelta * iMouseMove * m_fMouseSensor);
+		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f)/*m_pTransformCom->Get_State(CTransform::STATE_UP)*/, fTimeDelta * iMouseMove * m_fMouseSensor);
 	}
 
 	if (iMouseMove = ptMouse.y - m_ptOldMousePos.y)
 	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * iMouseMove * m_fMouseSensor);
+		//m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * iMouseMove * m_fMouseSensor);
 	}
 
 	

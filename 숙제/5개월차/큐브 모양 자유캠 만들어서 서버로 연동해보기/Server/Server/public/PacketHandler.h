@@ -7,7 +7,8 @@ enum SC_PacketType
 {
     PACKET_SC_CREATE_MY_CHARACTER = 0,
     PACKET_SC_CREATE_OTHER_CHARACTER = 1,
-    PACKET_SC_DELETE_CHARACTER = 2
+    PACKET_SC_DELETE_CHARACTER = 2,
+    PACKET_SC_MOVE_STOP,
 };
 
 enum CS_PacketType
@@ -25,6 +26,11 @@ public:
 public:
     static 	void mp_CS_Move_Stop(CPacket* pPacket, _float3& Pos);
     static 	void net_Move_Stop(CPacket* pPacket, _float3& Pos);
+
+    static 	void mp_SC_Move_Stop(CPacket* pPacket, _float3& Pos, int iID);
+    static 	void net_Move_Stop(CPacket* pPacket, _float3& Pos, int& iID);
+
+
 public:
     static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);
     static 	void net_CreateMyCharacter(CPacket* pPacket, int& iID, _float3& Pos);

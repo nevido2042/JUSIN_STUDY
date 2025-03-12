@@ -15,6 +15,11 @@ HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 	return S_OK;
 }
 
+const list<class CGameObject*>& CLayer::Get_GameObjects()
+{
+	return m_GameObjects;
+}
+
 void CLayer::Priority_Update(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)

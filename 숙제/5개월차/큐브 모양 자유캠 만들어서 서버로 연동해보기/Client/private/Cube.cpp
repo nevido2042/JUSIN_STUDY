@@ -11,9 +11,10 @@ CCube::CCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CCube::CCube(const CCube& Prototype)
-	: CGameObject{ Prototype }
+	: CGameObject{ Prototype },
+	m_pNetwork{ CNetwork::Get_Instance() }
 {
-	m_pNetwork = { CNetwork::Get_Instance() };
+	Safe_AddRef(m_pNetwork);
 }
 
 HRESULT CCube::Initialize_Prototype()
@@ -24,6 +25,8 @@ HRESULT CCube::Initialize_Prototype()
 HRESULT CCube::Initialize(void* pArg)
 {
 	//m_pNetwork = CNetwork::Create();
+
+	m_iMyID = *static_cast<int*>(pArg);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -38,6 +41,14 @@ void CCube::Priority_Update(_float fTimeDelta)
 
 void CCube::Update(_float fTimeDelta)
 {
+	//네트워크ID와 큐브의 아이디가 다르면 입력 받지 못하게
+	if (!m_pNetwork->Compare_ID(m_iMyID))
+	{
+		return;
+	}
+	
+	if (g_hWnd != GetForegroundWindow()) return;
+
 	if (CGameInstance::Get_Instance()->Key_Down(VK_UP))
 	{
 		//VK_UP 시작
@@ -58,18 +69,79 @@ void CCube::Update(_float fTimeDelta)
 		m_pNetwork->mp_CS_Move_Stop(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 
-	if (GetKeyState(VK_DOWN) & 0x8000)
+	if (CGameInstance::Get_Instance()->Key_Down(VK_DOWN))
+	{
+		//VK_UP 시작
+		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Start(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		//m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Pressing(VK_DOWN))
 	{
 		m_pTransformCom->Go_Backward(0.016f);
 	}
-	if (GetKeyState(VK_LEFT) & 0x8000)
+
+	if (CGameInstance::Get_Instance()->Key_Up(VK_DOWN))
+	{
+		//VK_UP 끝
+		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Stop(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Down(VK_LEFT))
+	{
+		//VK_UP 시작
+		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Start(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		//m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Pressing(VK_LEFT))
+	{
+		m_pTransformCom->Go_Left(0.016f);
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Up(VK_LEFT))
+	{
+		//VK_UP 끝
+		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Stop(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Down(VK_RIGHT))
+	{
+		//VK_UP 시작
+		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Start(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		//m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Pressing(VK_RIGHT))
+	{
+		m_pTransformCom->Go_Right(0.016f);
+	}
+
+	if (CGameInstance::Get_Instance()->Key_Up(VK_RIGHT))
+	{
+		//VK_UP 끝
+		//현재위치 전달
+		m_pNetwork->mp_CS_Move_Stop(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+
+
+	/*if (GetKeyState(VK_DOWN) & 0x8000)
+	{
+		m_pTransformCom->Go_Backward(0.016f);
+	}*/
+	/*if (GetKeyState(VK_LEFT) & 0x8000)
 	{
 		m_pTransformCom->Go_Left(0.016f);
 	}
 	if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
 		m_pTransformCom->Go_Right(0.016f);
-	}
+	}*/
 }
 
 void CCube::Late_Update(_float fTimeDelta)
@@ -101,6 +173,16 @@ HRESULT CCube::Render()
 
 
 	return S_OK;
+}
+
+int CCube::Get_ID()
+{
+	return m_iMyID;
+}
+
+CTransform* CCube::Get_TransformCom()
+{
+	return m_pTransformCom;
 }
 
 HRESULT CCube::Ready_Components()
@@ -169,5 +251,8 @@ void CCube::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
+
+	Safe_Release(m_pNetwork);
+
 
 }
