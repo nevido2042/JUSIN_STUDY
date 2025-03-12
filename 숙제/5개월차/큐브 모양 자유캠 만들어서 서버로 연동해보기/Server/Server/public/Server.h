@@ -9,7 +9,7 @@
 using namespace std;
 
 #define BUF_SIZE 1024
-#define PORT L"2042"
+//#define PORT L"2042"
 
 class CServer final
 {
@@ -30,6 +30,7 @@ private:
 	void Recieve_Message();
 	void Send_Message();
 	void Delete_Session(CSession* pSession);
+	int Load_Config_File(const wstring& filename);
 
 private:
 	SOCKET						m_ServSock;
@@ -37,5 +38,6 @@ private:
 	int							m_iID;
 	fd_set						m_tReadSet;
 	CPacket						m_Packet;
+	int							m_iPort;
 };
 

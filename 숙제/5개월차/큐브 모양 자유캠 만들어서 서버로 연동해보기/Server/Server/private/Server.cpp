@@ -1,5 +1,9 @@
 #include "Server.h"
 #include "PacketHandler.h"
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 
 CServer::CServer()
@@ -16,6 +20,8 @@ CServer::~CServer()
 
 bool CServer::Initialize()
 {
+    m_iPort = Load_Config_File(TEXT("config.txt"));
+
     setlocale(LC_ALL, "KOREAN");
 
     // 윈속 초기화
@@ -45,7 +51,7 @@ bool CServer::Initialize()
     ZeroMemory(&servAdr, sizeof(servAdr));
     servAdr.sin_family = AF_INET;
     servAdr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servAdr.sin_port = htons(_wtoi(PORT));
+    servAdr.sin_port = htons(m_iPort);
 
     // 바인드
     if (bind(m_ServSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
@@ -480,4 +486,22 @@ void CServer::Delete_Session(CSession* _pSession)
             ++iter;
         }
     }
+}
+
+int CServer::Load_Config_File(const wstring& filename)
+{
+    wifstream inFile(filename);
+    if (!inFile.is_open())
+    {
+        cout << "Can't Open ServerConfigFile" << endl;
+        return 2042;
+    }
+
+    // 파일의 첫 줄에서 포트 번호 읽기
+    wstring PortLine;
+    getline(inFile, PortLine);
+    wstringstream wss(PortLine);
+    int iPort;
+    wss >> iPort;
+    return iPort;
 }
