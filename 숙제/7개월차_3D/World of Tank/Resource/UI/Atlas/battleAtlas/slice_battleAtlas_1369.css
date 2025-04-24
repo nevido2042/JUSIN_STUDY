@@ -1,0 +1,5 @@
+.battleAtlas {
+	border-style: solid;
+	border-width: 21px 16px 0px 17px;
+	border-image: url(slice_battleAtlas_1369.png) 21 16 0 17 fill stretch;
+}
