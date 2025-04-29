@@ -1,0 +1,13 @@
+# Exported by wot-python-lib 2.0.0
+
+newmtl set_0_group_0
+newmtl set_0_group_1
+map_Kd content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_AM.dds
+map_norm content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_ANM.dds
+newmtl set_0_group_2
+map_Kd content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_AM.dds
+map_norm content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_ANM.dds
+newmtl set_0_group_3
+map_Kd content/Environment/00_Atlases/atlas_flowers_01_AM.dds
+map_norm content/Environment/00_Atlases/atlas_flowers_01_ANM.dds
+newmtl set_0_group_4
