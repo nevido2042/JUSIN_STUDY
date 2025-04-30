@@ -1,9 +1,0 @@
-# Exported by wot-python-lib 2.0.0
-
-newmtl set_0_group_0
-map_Kd content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_AM.dds
-map_norm content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_ANM.dds
-newmtl set_0_group_1
-map_Kd content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_AM.dds
-map_norm content/Environment/env_19_07_Flowerbed/env_19_07_Flowerbed_ANM.dds
-newmtl set_0_group_2

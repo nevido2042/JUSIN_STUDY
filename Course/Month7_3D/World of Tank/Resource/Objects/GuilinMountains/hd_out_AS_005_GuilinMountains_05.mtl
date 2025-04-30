@@ -1,8 +1,0 @@
-# Exported by wot-python-lib 2.0.0
-
-newmtl set_0_group_0
-map_Kd content/Outland/hd_out_AS_005_GuilinMountains/hd_out_AS_005_GuilinMountains_PL_05_AM.dds
-map_norm content/Outland/hd_out_AS_005_GuilinMountains/hd_out_AS_005_GuilinMountains_PL_05_ANM.dds
-newmtl set_0_group_1
-map_Kd content/Outland/hd_out_AS_005_GuilinMountains/hd_out_AS_005_GuilinMountains_05_AM.dds
-map_norm content/Outland/hd_out_AS_005_GuilinMountains/hd_out_AS_005_GuilinMountains_05_ANM.dds
