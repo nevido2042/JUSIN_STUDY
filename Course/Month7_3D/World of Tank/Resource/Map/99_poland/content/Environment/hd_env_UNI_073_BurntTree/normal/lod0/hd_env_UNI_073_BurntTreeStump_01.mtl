@@ -1,0 +1,6 @@
+# Exported by wot-python-lib 2.0.0
+
+newmtl set_0_group_0
+newmtl set_0_group_1
+map_Kd content/Environment/hd_env_UNI_073_BurntTree/hd_env_UNI_073_BurntTree_AM.dds
+map_norm content/Environment/hd_env_UNI_073_BurntTree/hd_env_UNI_073_BurntTree_ANM.dds
