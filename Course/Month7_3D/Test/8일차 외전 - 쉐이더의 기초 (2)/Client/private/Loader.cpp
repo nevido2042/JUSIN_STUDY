@@ -134,7 +134,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 		return E_FAIL;*/
 
  	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Poland.bmp")))))
+		CVIBuffer_Terrain::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/height_map_cascade_0.png")))))
 		return E_FAIL;
 	/* For.Prototype_Component_VIBuffer_Cube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
@@ -142,7 +142,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 		return E_FAIL;
 
 
-	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
+ 	lstrcpy(m_szLoadingText, TEXT("사운z드을(를) 로딩중입니다."));
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));

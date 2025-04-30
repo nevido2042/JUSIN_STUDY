@@ -1,5 +1,8 @@
 #include "VIBuffer_Terrain.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 CVIBuffer_Terrain::CVIBuffer_Terrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer { pGraphic_Device }
 {
@@ -122,66 +125,54 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(_uint iNumVerticesX, _uint iNumV
 
 HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath)
 {
-	_ulong      dwByte = { };
-	HANDLE      hFile = CreateFile(pHeightMapFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	if (hFile == INVALID_HANDLE_VALUE)
+	int width = 0, height = 0, channels = 0;
+
+	// PNG는 UTF-8 경로만 받으므로 TCHAR → multibyte 변환
+	char szPath[MAX_PATH]{};
+	WideCharToMultiByte(CP_ACP, 0, pHeightMapFilePath, -1, szPath, MAX_PATH, 0, 0);
+
+	// 3채널로 강제 (R, G, B)
+	stbi_uc* pImage = stbi_load(szPath, &width, &height, &channels, 3);
+	if (!pImage)
 		return E_FAIL;
 
-	BITMAPFILEHEADER fh{};
-	BITMAPINFOHEADER ih{};
-
-	ReadFile(hFile, &fh, sizeof(fh), &dwByte, nullptr);
-	ReadFile(hFile, &ih, sizeof(ih), &dwByte, nullptr);
-
-	// 32bit = 픽셀당 4바이트
-	_uint* pPixels = new _uint[ih.biWidth * ih.biHeight];
-	ReadFile(hFile, pPixels, sizeof(_uint) * ih.biWidth * ih.biHeight, &dwByte, nullptr);
-
-	CloseHandle(hFile);
-
-	m_iNumVerticesX = ih.biWidth;
-	m_iNumVerticesZ = ih.biHeight;
-	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
+#pragma region VERTEX_BUFFER
+	m_iNumVerticesX = width;
+	m_iNumVerticesZ = height;
+	m_iNumVertices = width * height;
 	m_iVertexStride = sizeof(VTXNORTEX);
 	m_iFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;
-	m_iNumPritimive = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
+	m_iNumPritimive = (width - 1) * (height - 1) * 2;
 	m_iNumIndices = m_iNumPritimive * 3;
 	m_iIndexStride = 4;
 	m_eIndexFormat = D3DFMT_INDEX32;
 
-#pragma region VERTEX_BUFFER
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
 
 	m_pVertexPositions = new _float3[m_iNumVertices];
 
-	VTXNORTEX* pVertices = { nullptr };
-
+	VTXNORTEX* pVertices = nullptr;
 	m_pVB->Lock(0, 0, reinterpret_cast<void**>(&pVertices), 0);
 
-	for (size_t i = 0; i < m_iNumVerticesZ; i++)
+	for (int z = 0; z < height; ++z)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX; j++)
+		for (int x = 0; x < width; ++x)
 		{
-			_uint iIndex = i * m_iNumVerticesX + j;
+			int iIndex = z * width + x;
+			int pixelIndex = iIndex * 3; // 3 channels (R, G, B)
 
-			_uint pixel = pPixels[iIndex];
-			BYTE gray = pixel & 0x000000FF;   // 하위 1바이트만 사용 (R 채널 기준)
-			float fHeight = gray / 3.f;        // 밝기 → 높이 변환
+			BYTE r = pImage[pixelIndex];
+			float fHeight = r /** 2.0f*/; // 밝기 → 높이 변환
 
-			m_pVertexPositions[iIndex] = pVertices[iIndex].vPosition = _float3(j, fHeight, i);
+			m_pVertexPositions[iIndex] = pVertices[iIndex].vPosition = _float3(x, fHeight, z);
 			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
-			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
+			pVertices[iIndex].vTexcoord = _float2(x / (width - 1.f) * 3.f, z / (height - 1.f) * 3.f);
 		}
 	}
 
 	m_pVB->Unlock();
-#pragma endregion
-
-	Safe_Delete_Array(pPixels);
-
-
-
+	stbi_image_free(pImage); // 메모리 해제
 #pragma endregion
 
 #pragma region INDEX_BUFFER
