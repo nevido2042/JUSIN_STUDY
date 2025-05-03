@@ -5,6 +5,42 @@
 #include "PacketHandler.h"
 #include "Packet.h"
 
+void CPacketHandler::mp_CS_Position(CPacket* pPacket, _float3& Pos)
+{
+	tagPACKET_HEADER tHeader{};
+	tHeader.byCode = PACKET_CODE;
+	tHeader.byType = PACKET_CS_POSITION;
+
+	pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
+	*pPacket << Pos;
+	pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::net_Position(CPacket* pPacket, _float3& Pos, int& iID)
+{
+	*pPacket >> Pos;
+	*pPacket >> iID;
+	pPacket->Clear();
+}
+
+void CPacketHandler::mp_SC_Position(CPacket* pPacket, _float3& Pos, int& iID)
+{
+    tagPACKET_HEADER tHeader{};
+    tHeader.byCode = PACKET_CODE;
+    tHeader.byType = PACKET_SC_POSITION;
+
+    pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
+    *pPacket << Pos;
+	*pPacket << iID;
+    pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::net_Position(CPacket* pPacket, _float3& Pos)
+{
+    *pPacket >> Pos;
+    pPacket->Clear();
+}
+
 void CPacketHandler::mp_CS_Move_Start(CPacket* pPacket, _float3& _Pos, _float3& _Dir)
 {
     tagPACKET_HEADER tHeader{};

@@ -36,6 +36,7 @@ public:
 public:
 	void mp_CS_Move_Start(_float3 MoveStartPos, _float3& MoveDir);
 	void mp_CS_Move_Stop(_float3 MoveStartPos);
+	void mp_CS_Position(_float3 Pos);
 public:
 	void Send_To_Server(/*const _byte* pMSG, const int iSize*/);
 private:

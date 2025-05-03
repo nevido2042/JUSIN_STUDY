@@ -124,20 +124,22 @@ void CCube::Late_Update(_float fTimeDelta)
 
 	//이걸 레이트업데이트 호출 해서 (oldPos - currentPos)방향을 전달하는게 맞을지도
 	//Key_Up 할때도 움직이는 방향이 바뀌었을 수도있음 그래서 패킷 전송해야함
-	if (m_pGameInstance->Key_Down(VK_UP)||
-		m_pGameInstance->Key_Down(VK_DOWN)||
-		m_pGameInstance->Key_Down(VK_LEFT)||
-		m_pGameInstance->Key_Down(VK_RIGHT)||
-		m_pGameInstance->Key_Up(VK_UP) ||
-		m_pGameInstance->Key_Up(VK_DOWN) ||
-		m_pGameInstance->Key_Up(VK_LEFT) ||
-		m_pGameInstance->Key_Up(VK_RIGHT))
-	{
-		//VK_UP 시작
-		//현재위치 전달, 움직이는 방향 전달
-		m_pNetwork->mp_CS_Move_Start(m_pTransformCom->Get_State(CTransform::STATE_POSITION), MoveDirection);
-		//m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-	}
+	//if (m_pGameInstance->Key_Down(VK_UP)||
+	//	m_pGameInstance->Key_Down(VK_DOWN)||
+	//	m_pGameInstance->Key_Down(VK_LEFT)||
+	//	m_pGameInstance->Key_Down(VK_RIGHT)||
+	//	m_pGameInstance->Key_Up(VK_UP) ||
+	//	m_pGameInstance->Key_Up(VK_DOWN) ||
+	//	m_pGameInstance->Key_Up(VK_LEFT) ||
+	//	m_pGameInstance->Key_Up(VK_RIGHT))
+	//{
+	//	//VK_UP 시작
+	//	//현재위치 전달, 움직이는 방향 전달
+	//	m_pNetwork->mp_CS_Move_Start(m_pTransformCom->Get_State(CTransform::STATE_POSITION), MoveDirection);
+	//	//m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	//}
+
+	m_pNetwork->mp_CS_Position(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 	m_OldPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 

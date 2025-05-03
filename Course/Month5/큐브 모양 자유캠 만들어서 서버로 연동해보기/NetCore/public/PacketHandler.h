@@ -10,6 +10,7 @@ enum SC_PacketType
     PACKET_SC_DELETE_CHARACTER = 2,
     PACKET_SC_MOVE_START,
     PACKET_SC_MOVE_STOP,
+    PACKET_SC_POSITION
 };
 
 enum CS_PacketType
@@ -17,10 +18,18 @@ enum CS_PacketType
     PACKET_CS_DELETE_MY_CHARACTER = 100,
     PACKET_CS_MOVE_START,
     PACKET_CS_MOVE_STOP,
+    PACKET_CS_POSITION,
 };
 
 class CPacketHandler
 {
+public:
+    static 	void mp_CS_Position(CPacket* pPacket, _float3& Pos);
+	static 	void net_Position(CPacket* pPacket, _float3& Pos, int& iID);
+
+	static 	void mp_SC_Position(CPacket* pPacket, _float3& Pos, int& iID);
+	static  void net_Position(CPacket* pPacket, _float3& Pos);
+
 public:
     static 	void mp_CS_Move_Start(CPacket* pPacket, _float3& Pos, _float3& _Dir);
     static 	void net_Move_Start(CPacket* pPacket, _float3& Pos, _float3& _Dir);

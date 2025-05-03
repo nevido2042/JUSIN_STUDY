@@ -147,6 +147,12 @@ void CNetwork::mp_CS_Move_Stop(_float3 MoveStartPos)
 	Send_To_Server();
 }
 
+void CNetwork::mp_CS_Position(_float3 Pos)
+{
+	CPacketHandler::mp_CS_Position(&m_Packet, Pos);
+	Send_To_Server();
+}
+
 void CNetwork::Send_To_Server(/*const _byte* pMSG, const int iSize*/)
 {
 	int iResult{ 0 };
@@ -359,6 +365,28 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 				if (pCube->Get_ID() == iID)
 				{
 					//pCube->삭제
+					break;
+				}
+			}
+		}
+		break;
+	}
+	case PACKET_SC_POSITION:
+	{
+		int iID; 
+		_float3 vPos;
+		CPacketHandler::net_Position(&m_Packet, vPos, iID);
+
+		//해당 아이디를 가지고있는 큐브의 위치를 바꾼다
+		class CLayer* pLayer = m_pGameInstance->Get_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Cube"));
+		if (pLayer)
+		{
+			for (auto iter : pLayer->Get_GameObjects())
+			{
+				CCube* pCube = dynamic_cast<CCube*>(iter);
+				if (pCube->Get_ID() == iID)
+				{
+					pCube->Get_TransformCom()->Set_State(CTransform::STATE_POSITION, vPos);
 					break;
 				}
 			}

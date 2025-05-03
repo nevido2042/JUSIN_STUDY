@@ -327,6 +327,21 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
 
         break;
     }
+    case PACKET_CS_POSITION:
+    {
+        _float3 Pos;
+
+        CPacketHandler::net_Position(&m_Packet, Pos);
+
+        _pSession->Get_SessionInfo().Position = Pos;
+        wprintf_s(L"Pos:(%.2f, %.2f, %.2f)\n", Pos.x, Pos.y, Pos.z);
+
+		CPacketHandler::mp_SC_Position(&m_Packet, Pos, _pSession->Get_SessionInfo().iID);
+
+        Send_Broadcast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+
+        break;
+    }
     }
 }
 
