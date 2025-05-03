@@ -7,20 +7,8 @@
     <Filter Include="Server">
       <UniqueIdentifier>{3b136189-3b30-4471-a2bb-e858226787d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RingBuffer">
-      <UniqueIdentifier>{32fe9ac6-d174-44b0-a9c8-b063544a00a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Session">
       <UniqueIdentifier>{9e849597-44b2-4ada-9db3-9940c518dd3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Packet">
-      <UniqueIdentifier>{325ec520-dd09-4e71-8b64-797f2f80c40e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Packet\PacketHandler">
-      <UniqueIdentifier>{9af2971e-d804-4a58-8a38-b622a903613b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Define">
-      <UniqueIdentifier>{015d37a9-8dbd-4972-bf36-56577042e386}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,15 +21,6 @@
     <ClCompile Include="..\private\Session.cpp">
       <Filter>Session</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\RingBuffer.cpp">
-      <Filter>RingBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Packet.cpp">
-      <Filter>Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\PacketHandler.cpp">
-      <Filter>Packet\PacketHandler</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Server.h">
@@ -52,15 +31,6 @@
     </ClInclude>
     <ClInclude Include="..\public\SessionInfo.h">
       <Filter>Session</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RingBuffer.h">
-      <Filter>RingBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Packet.h">
-      <Filter>Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\PacketHandler.h">
-      <Filter>Packet\PacketHandler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

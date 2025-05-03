@@ -46,15 +46,6 @@
     <Filter Include="100.Network">
       <UniqueIdentifier>{e01cbf66-3e7f-4bff-a021-8e62ae840753}</UniqueIdentifier>
     </Filter>
-    <Filter Include="100.Network\RingBuffer">
-      <UniqueIdentifier>{d9489910-5657-4b93-bfea-e87fcfd52fc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="100.Network\Packet">
-      <UniqueIdentifier>{21c5eada-98a6-4b0d-b451-96788b0988a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="100.Network\Packet\PacketHandler">
-      <UniqueIdentifier>{5a036e6e-aaa7-464a-bb2d-46a4665cd8b1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -105,15 +96,6 @@
     <ClInclude Include="..\public\Network.h">
       <Filter>100.Network</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Packet.h">
-      <Filter>100.Network\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RingBuffer.h">
-      <Filter>100.Network\RingBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\PacketHandler.h">
-      <Filter>100.Network\Packet\PacketHandler</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -161,15 +143,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Network.cpp">
       <Filter>100.Network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Packet.cpp">
-      <Filter>100.Network\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\RingBuffer.cpp">
-      <Filter>100.Network\RingBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\PacketHandler.cpp">
-      <Filter>100.Network\Packet\PacketHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

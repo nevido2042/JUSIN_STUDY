@@ -108,7 +108,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_2D, TEXT("../Bin/Resources/Textures/Terrain/flora_tint_map.dds"), 1))))
+		CTexture::Create(m_pGraphic_Device, CTexture::TYPE_2D, TEXT("../Bin/Resources/Textures/Terrain/global_AM.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Player */

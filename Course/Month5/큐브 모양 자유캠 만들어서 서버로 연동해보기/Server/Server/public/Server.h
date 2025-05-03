@@ -1,5 +1,5 @@
 #pragma once
-#include "Packet.h"
+#include "../../NetCore/public/Packet.h"
 #include "Session.h"
 
 #include <vector>

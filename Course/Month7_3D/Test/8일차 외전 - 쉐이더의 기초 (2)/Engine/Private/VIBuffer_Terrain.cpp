@@ -163,11 +163,11 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 			int pixelIndex = iIndex * 3; // 3 channels (R, G, B)
 
 			BYTE r = pImage[pixelIndex];
-			float fHeight = r /** 2.0f*/; // 밝기 → 높이 변환
+			float fHeight = r * 0.1f; // 밝기 → 높이 변환
 
-			m_pVertexPositions[iIndex] = pVertices[iIndex].vPosition = _float3(x, fHeight, z);
+			m_pVertexPositions[iIndex] = pVertices[iIndex].vPosition = _float3(x, fHeight , z);
 			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
-			pVertices[iIndex].vTexcoord = _float2(x / (width - 1.f) * 3.f, z / (height - 1.f) * 3.f);
+			pVertices[iIndex].vTexcoord = _float2(x / (width - 1.f) * 1.f, z / (height - 1.f) * 1.f);
 		}
 	}
 

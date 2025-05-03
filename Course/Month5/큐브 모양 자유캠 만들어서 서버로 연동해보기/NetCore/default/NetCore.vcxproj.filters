@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="02.PacketHandler">
+      <UniqueIdentifier>{e05b9a51-c0dd-4234-bb0b-c23872891e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Packet">
+      <UniqueIdentifier>{0bc29fdd-2285-48c8-92e4-30d77b6ab89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.RingBuffer">
+      <UniqueIdentifier>{c297fa07-5ab3-4a77-8067-735cfeb27729}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\Packet.h">
+      <Filter>01.Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PacketHandler.h">
+      <Filter>02.PacketHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RingBuffer.h">
+      <Filter>03.RingBuffer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\private\RingBuffer.cpp">
+      <Filter>03.RingBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Packet.cpp">
+      <Filter>01.Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PacketHandler.cpp">
+      <Filter>02.PacketHandler</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
