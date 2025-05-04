@@ -1,6 +1,7 @@
 #include "BackGround.h"
 
 #include "GameInstance.h"
+#include "SoundController.h"
 
 CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -9,7 +10,7 @@ CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CBackGround::CBackGround(const CBackGround& Prototype)
-	: CUIObject{ Prototype }
+	: CUIObject(Prototype)
 {
 
 }
@@ -29,6 +30,8 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+ 	m_pSoundCom->Play("19. Studzianki");
+
 	return S_OK;
 }
 
@@ -39,7 +42,15 @@ void CBackGround::Priority_Update(_float fTimeDelta)
 
 void CBackGround::Update(_float fTimeDelta)
 {
-	
+	if (m_pGameInstance->Key_Down(DIK_A))
+	{
+		m_pSoundCom->SetVolume("19. Studzianki", 0.0f);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_D))
+	{
+		m_pSoundCom->SetVolume("19. Studzianki", 1.0f);
+	}
 }
 
 void CBackGround::Late_Update(_float fTimeDelta)
@@ -86,6 +97,10 @@ HRESULT CBackGround::Ready_Components()
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::LEVEL_LOGO), TEXT("Prototype_Component_Texture_BackGround"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::LEVEL_LOGO), TEXT("Prototype_Component_Sound_Test"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -123,4 +138,5 @@ void CBackGround::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pSoundCom);
 }

@@ -8,6 +8,7 @@
 //#include "player.h"
 //#include "Effect.h"
 //#include "Sky.h"
+#include "SoundController.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -89,7 +90,9 @@ HRESULT CLoader::Loading_For_Logo()
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-	
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), _wstring(TEXT("Prototype_Component_Sound_Test")), CSoundController::Create("../Bin/WOT_Resource/Sound/Soundtrack/19. Studzianki.mp3"))))															\
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 

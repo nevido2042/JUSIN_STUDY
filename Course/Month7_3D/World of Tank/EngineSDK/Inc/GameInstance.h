@@ -62,6 +62,21 @@ public:
 	// 전체 볼륨 제어
 	void Set_Master_Volume(_float volume);
 #pragma endregion
+
+#pragma region INPUT_DEVICE
+	_byte Get_DIKState(_ubyte eKeyID);
+	_byte Get_DIMKeyState(DIMK eMouseKeyID);
+	_long Get_DIMMoveState(DIMM eMouseMoveID);
+
+	_bool Mouse_Down(_ubyte eKeyID);
+	_bool Mouse_Pressing(_ubyte eKeyID);
+	_bool Mouse_Up(_ubyte eKeyID);
+
+	_bool		Key_Pressing(_ubyte eKeyID);
+	_bool		Key_Up(_ubyte eKeyID);
+	_bool		Key_Down(_ubyte eKeyID);
+#pragma endregion
+
 //
 //#pragma region PICKING
 //	void Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse);
@@ -77,6 +92,8 @@ private:
 	class CRenderer*			m_pRenderer = { nullptr };
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CSound_Device*		m_pSound_Device = { nullptr };
+	class CInput_Device* 		m_pInputDevice = { nullptr };
+	class CKey_Manager*			m_pKeyManager = { nullptr };
 
 	// class CPicking*				m_pPicking = { nullptr };
 

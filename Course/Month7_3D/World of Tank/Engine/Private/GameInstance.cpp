@@ -8,6 +8,7 @@
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
 #include "Sound_Device.h"
+#include "Input_Device.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -20,6 +21,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 {
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, ppDeviceOut, ppContextOut);
 	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
+	m_pInputDevice = CInput_Device::Create(EngineDesc.hInst, EngineDesc.hWnd);
+	if (nullptr == m_pInputDevice)
 		return E_FAIL;
 
 	m_pTimer_Manager = CTimer_Manager::Create();
@@ -58,9 +63,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
-	m_pObject_Manager->Priority_Update(fTimeDelta);
-
+	m_pInputDevice->Update();
 	m_pSound_Device->Update();
+
+
+	m_pObject_Manager->Priority_Update(fTimeDelta);
 	//m_pPicking->Update();
 
 	m_pObject_Manager->Update(fTimeDelta);	
@@ -212,6 +219,63 @@ void CGameInstance::Set_Master_Volume(_float volume)
 }
 #pragma endregion
 
+#pragma region INPUT_DEVICE
+
+FORCEINLINE
+_byte CGameInstance::Get_DIKState(_ubyte eKeyID)
+{
+	return m_pInputDevice->Get_DIKState(eKeyID);
+}
+
+FORCEINLINE
+_byte CGameInstance::Get_DIMKeyState(DIMK eMouseKeyID)
+{
+	return m_pInputDevice->Get_DIMKeyState(eMouseKeyID);
+}
+
+FORCEINLINE
+_long CGameInstance::Get_DIMMoveState(DIMM eMouseMoveID)
+{
+	return m_pInputDevice->Get_DIMMoveState(eMouseMoveID);
+}
+
+FORCEINLINE
+_bool CGameInstance::Mouse_Down(_ubyte eKeyID)
+{
+	return m_pInputDevice->Mouse_Down(eKeyID);
+}
+
+FORCEINLINE
+_bool CGameInstance::Mouse_Pressing(_ubyte eKeyID)
+{
+	return m_pInputDevice->Mouse_Pressing(eKeyID);
+}
+
+FORCEINLINE
+_bool CGameInstance::Mouse_Up(_ubyte eKeyID)
+{
+	return m_pInputDevice->Mouse_Up(eKeyID);
+}
+#pragma endregion
+
+FORCEINLINE
+_bool CGameInstance::Key_Pressing(_ubyte eKeyID)
+{
+	return m_pInputDevice->Key_Pressing(eKeyID);
+}
+
+FORCEINLINE
+_bool CGameInstance::Key_Up(_ubyte eKeyID)
+{
+	return m_pInputDevice->Key_Up(eKeyID);
+}
+
+FORCEINLINE
+_bool CGameInstance::Key_Down(_ubyte eKeyID)
+{
+	return m_pInputDevice->Key_Down(eKeyID);
+}
+
 //#pragma region PICKING
 //void CGameInstance::Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse)
 //{
@@ -243,6 +307,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 
 	Safe_Release(m_pSound_Device);
+
+	Safe_Release(m_pInputDevice);
 
 	Safe_Release(m_pGraphic_Device);
 
