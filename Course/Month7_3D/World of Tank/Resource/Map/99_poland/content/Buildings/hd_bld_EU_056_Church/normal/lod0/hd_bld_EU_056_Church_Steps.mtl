@@ -1,7 +1,0 @@
-# Exported by wot-python-lib 2.0.0
-
-newmtl set_0_group_0
-newmtl set_0_group_1
-newmtl set_0_group_2
-map_Kd content/Buildings/00_Detail_Sets/Detail_Set_Church_01_AM.dds
-map_norm content/Buildings/00_Detail_Sets/Detail_Set_Church_01_ANM.dds
