@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="main">
+      <UniqueIdentifier>{748ba28d-31db-4a4f-8661-6553eda36a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{3b136189-3b30-4471-a2bb-e858226787d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Session">
+      <UniqueIdentifier>{9e849597-44b2-4ada-9db3-9940c518dd3b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\private\main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Server.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Session.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\Server.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Session.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SessionInfo.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

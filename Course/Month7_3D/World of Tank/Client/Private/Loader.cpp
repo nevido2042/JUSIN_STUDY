@@ -8,7 +8,9 @@
 //#include "player.h"
 //#include "Effect.h"
 //#include "Sky.h"
-#include "SoundController.h"
+
+#include "Network.h"
+#include "StatusLight.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -74,6 +76,7 @@ HRESULT CLoader::Loading()
 	return S_OK;
 }
 
+
 HRESULT CLoader::Loading_For_Logo()
 {
 	
@@ -81,6 +84,11 @@ HRESULT CLoader::Loading_For_Logo()
 	/* For.Prototype_Component_Texture_BackGround*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), TEXT("Prototype_Component_Texture_BackGround"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_StatusLight*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_Component_Texture_StatusLight"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resource/UI/00.StatusLight/StatusLight%d.png"), 3))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -91,7 +99,7 @@ HRESULT CLoader::Loading_For_Logo()
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), _wstring(TEXT("Prototype_Component_Sound_Test")), CSoundController::Create("../Bin/WOT_Resource/Sound/Soundtrack/19. Studzianki.mp3"))))															\
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), _wstring(TEXT("Prototype_Component_Sound_Test")), CSoundController::Create("../Bin/WOT_Resource/Sound/01.Engine/"))))															\
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
@@ -99,6 +107,16 @@ HRESULT CLoader::Loading_For_Logo()
 	/* For.Prototype_GameObject_BackGround */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Network */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_Network"),
+		CNetwork::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_StatusLight */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_StatusLight"),
+		CStatusLight::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

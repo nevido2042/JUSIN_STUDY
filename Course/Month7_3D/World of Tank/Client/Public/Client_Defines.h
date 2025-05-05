@@ -5,10 +5,19 @@
 
 /* 특정 헤더파일에 소속되지 않는 전역정보들을 선언해두는 역활 */
 /* 기타 다른 정의파일(.h)들을 인클루드하는 역활. */
+
+#include <WinSock2.h>
+#include <ws2tcpip.h>
+#include <locale>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 #include "../Default/framework.h"
 #include <process.h>
 #include "Client_Enum.h"
 
+#include "DebugUtils.h"
 
 namespace Client
 {

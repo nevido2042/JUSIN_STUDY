@@ -156,10 +156,14 @@ HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
+CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex)
+{
+	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, iIndex);
+}
+
 CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
 {
-	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);
-	
+	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);	
 }
 
 #pragma endregion

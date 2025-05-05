@@ -14,7 +14,7 @@ private:
 
 public:
 	class CComponent* Get_Component(const _wstring& strComponentTag, _uint iIndex);
-
+	class CGameObject* Get_GameObject(_uint iIndex = 0);
 public:
 	HRESULT Add_GameObject(class CGameObject* pGameObject);
 	void Priority_Update(_float fTimeDelta);

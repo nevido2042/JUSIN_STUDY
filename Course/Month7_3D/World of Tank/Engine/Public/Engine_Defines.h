@@ -14,6 +14,7 @@
 using namespace DirectX;
 
 #define DIRECTINPUT_VERSION 0x0800
+
 #include <dinput.h>
 
 #include <string>
@@ -22,8 +23,8 @@ using namespace DirectX;
 #include <list>
 #include <vector>
 #include <memory>
-using namespace std;
 
+using namespace std;
 
 
 #include "Engine_Struct.h"

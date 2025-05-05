@@ -4,6 +4,8 @@
 
 #include "Level_Loading.h"
 
+#include "DebugUtils.h"
+
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
 {
@@ -14,6 +16,10 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
+//#if defined(_DEBUG)
+//	DebugUtils::ShowConsole();
+//#endif
+
 	ENGINE_DESC			EngineDesc{};
 
 	EngineDesc.hInst = g_hInst;
@@ -47,7 +53,6 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Draw();
 
 	m_pGameInstance->End_Draw();
-
 
     return S_OK;
 }
@@ -106,5 +111,7 @@ void CMainApp::Free()
 
 	Safe_Release(m_pGameInstance);
 
-	
+//#if defined(_DEBUG)
+//	DebugUtils::CloseConsole();
+//#endif
 }
