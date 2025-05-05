@@ -88,7 +88,7 @@ HRESULT CLoader::Loading_For_Logo()
 
 	/* For.Prototype_Component_Texture_StatusLight*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_Component_Texture_StatusLight"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resource/UI/00.StatusLight/StatusLight%d.png"), 3))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/00.StatusLight/StatusLight%d.png"), 3))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -99,7 +99,7 @@ HRESULT CLoader::Loading_For_Logo()
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), _wstring(TEXT("Prototype_Component_Sound_Test")), CSoundController::Create("../Bin/WOT_Resource/Sound/01.Engine/"))))															\
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_LOGO), _wstring(TEXT("Prototype_Component_Sound_Test")), CSoundController::Create("../Bin/WOT_Resources/Sound/01.Engine/"))))															\
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
