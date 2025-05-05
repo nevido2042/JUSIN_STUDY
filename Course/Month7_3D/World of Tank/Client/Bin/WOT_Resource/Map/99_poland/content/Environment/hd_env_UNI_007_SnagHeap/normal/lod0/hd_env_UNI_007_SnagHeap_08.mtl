@@ -1,0 +1,9 @@
+# Exported by wot-python-lib 2.0.0
+
+newmtl set_0_group_0
+newmtl set_0_group_1
+map_Kd content/Environment/hd_env_UNI_007_SnagHeap/hd_env_UNI_007_SnagHeap_Burnt_AM.dds
+map_norm content/Environment/hd_env_UNI_007_SnagHeap/hd_env_UNI_007_SnagHeap_Burnt_ANM.dds
+newmtl set_0_group_2
+map_Kd content/Environment/hd_env_UNI_007_SnagHeap/hd_env_UNI_007_SnagHeap_Burnt_AM.dds
+map_norm content/Environment/hd_env_UNI_007_SnagHeap/hd_env_UNI_007_SnagHeap_Burnt_ANM.dds
