@@ -30,7 +30,8 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
- 	m_pSoundCom->Play("19. Studzianki");
+ 	m_pSoundCom->Play("engines_650");
+	m_pSoundCom->Set_Loop("engines_650");
 
 	return S_OK;
 }
@@ -42,14 +43,21 @@ void CBackGround::Priority_Update(_float fTimeDelta)
 
 void CBackGround::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_A))
+	static _float fSpeed = 0.f;
+
+	if (m_pGameInstance->Key_Pressing(DIK_A))
 	{
-		m_pSoundCom->SetVolume("19. Studzianki", 0.0f);
+		fSpeed -= 0.01f;
+
+		m_pSoundCom->Set_Pitch("engines_650", fSpeed);
+		//m_pSoundCom->SetVolume("engines_650", 0.0f);
 	}
 
-	if (m_pGameInstance->Key_Down(DIK_D))
+	if (m_pGameInstance->Key_Pressing(DIK_D))
 	{
-		m_pSoundCom->SetVolume("19. Studzianki", 1.0f);
+		fSpeed += 0.01f;
+		m_pSoundCom->Set_Pitch("engines_650", fSpeed);
+		//m_pSoundCom->SetVolume("engines_650", 1.0f);
 	}
 }
 
@@ -111,7 +119,7 @@ CBackGround* CBackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CMainApp");
+		MSG_BOX("Failed to Created : CBackGround");
 		Safe_Release(pInstance);
 	}
 
