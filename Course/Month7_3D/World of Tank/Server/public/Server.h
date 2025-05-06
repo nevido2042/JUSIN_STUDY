@@ -17,11 +17,11 @@ public:
 	CServer();
 	~CServer();
 public:
-	bool Initialize();
-	bool Update();
+	_bool Initialize();
+	_bool Update();
 	void Release();
 private:
-	bool Network();
+	_bool Network();
 	void AcceptProc();
 	void Read_Proc(CSession* pSession);
 private:

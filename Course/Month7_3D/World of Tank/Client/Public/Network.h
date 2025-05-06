@@ -6,7 +6,7 @@
 #include "RingBuffer.h"
 #include "Packet.h"
 
-
+#define PING_TIME 1.f
 #define BUF_SIZE 1024
 //#define IP L"127.0.0.1"
 //#define PORT 2042
@@ -49,7 +49,7 @@ public:
 	SERVER_CONFIG Load_Config_File(const wstring& filename);
 
 public:
-	_bool Get_isConnected() const { return m_bConnected; }
+	NETWORK_STATUS Get_isConnected() const { return m_eStatus; }
 
 private:
 	void	Send_Packet();
@@ -64,12 +64,13 @@ private:
 	_uint				m_iMyID;
 	CRingBuffer			m_sendQ;
 	CRingBuffer			m_recvQ;
-	_bool				m_bConnected = { false };
+	NETWORK_STATUS		m_eStatus = NETWORK_STATUS::DISCONNECTED;
 
 	CPacket				m_Packet;
 	SERVER_CONFIG		m_tServerConfig;
 
-	_float				m_fPingTime = { 0.f };
+	_float				m_fPingElapsed = { 0.f };
+	_bool				m_isPing = { false };
 
 private:
 	//HRESULT Ready_Components();

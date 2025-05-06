@@ -16,7 +16,7 @@ CServer::~CServer()
 {
 }
 
-bool CServer::Initialize()
+_bool CServer::Initialize()
 {
     m_iPort = Load_Config_File(TEXT("../bin/config.txt"));
 
@@ -72,8 +72,15 @@ bool CServer::Initialize()
     return true;
 }
 
-bool CServer::Update()
+_bool CServer::Update()
 {
+    // ESC와 S가 동시에 눌렸을 때만 종료
+    if ((GetAsyncKeyState(VK_ESCAPE) & 0x8000) &&
+        (GetAsyncKeyState('S') & 0x8000))
+    {
+        return false;
+    }
+
     return Network();
 }
 
@@ -89,7 +96,7 @@ void CServer::Release()
 	WSACleanup();
 }
 
-bool CServer::Network()
+_bool CServer::Network()
 {
     Recieve_Message();
     Send_Message();

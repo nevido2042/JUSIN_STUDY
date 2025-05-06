@@ -46,14 +46,7 @@ void CStatusLight::Priority_Update(_float fTimeDelta)
 
 void CStatusLight::Update(_float fTimeDelta)
 {
-	if (m_pNetwork->Get_isConnected())
-	{
-		m_eStatus = NETWORK_STATUS::CONNECTED;
-	}
-	else
-	{
-		m_eStatus = NETWORK_STATUS::DISCONNECTED;
-	}
+	m_eStatus = m_pNetwork->Get_isConnected();
 }
 
 void CStatusLight::Late_Update(_float fTimeDelta)

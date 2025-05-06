@@ -36,7 +36,7 @@ public:
 private:
 	class CNetwork* m_pNetwork = { nullptr };
 
-	NETWORK_STATUS m_eStatus = NETWORK_STATUS::NETWORK_STATUS_END;
+	NETWORK_STATUS m_eStatus = NETWORK_STATUS::DISCONNECTED;
 
 private:
 	CShader* m_pShaderCom = { nullptr };

@@ -71,7 +71,7 @@ void CNetwork::Priority_Update(_float fTimeDelta)
 
 void CNetwork::Update(_float fTimeDelta)
 {
-	if (!m_bConnected)
+	if (m_eStatus != NETWORK_STATUS::CONNECTED && m_eStatus != NETWORK_STATUS::WARNING)
 	{
 		Try_Connect();
 		//cout << "Try_Connect()" << endl;
@@ -79,11 +79,11 @@ void CNetwork::Update(_float fTimeDelta)
 
 	Receive_Packet();
 
-	m_fPingTime += fTimeDelta;
-	if (m_fPingTime  > 1.f)
+	m_fPingElapsed += fTimeDelta;
+	if (m_fPingElapsed  > PING_TIME && m_isPing == false)
 	{
 		//서버와 연결이 안될 때 SendQ가 꽉차서 터짐
-		m_fPingTime = 0.f;
+		//m_fPingElapsed = 0.f;
 		Send_Ping();
 	}
 
@@ -110,8 +110,8 @@ void CNetwork::Send_Packet()
 	int retSelect = select(0, NULL, &writeSet, NULL, &timeout);
 	if (retSelect == SOCKET_ERROR)
 	{
+		m_eStatus = NETWORK_STATUS::DISCONNECTED;
 		wprintf_s(L"select() error: %d\n", WSAGetLastError());
-		m_bConnected = false;
 	}
 
 	if (retSelect == 0)
@@ -125,8 +125,8 @@ void CNetwork::Send_Packet()
 	int retSend = send(m_hSocket, (char*)sendBuffer, retPeek, 0);
 	if (retSend == SOCKET_ERROR)
 	{
+		m_eStatus = NETWORK_STATUS::DISCONNECTED;
 		wprintf_s(L"send() error: %d\n", WSAGetLastError());
-		m_bConnected = false;
 		return;
 	}
 
@@ -179,7 +179,7 @@ void CNetwork::Receive_Packet()
 
 	if (retSelect == SOCKET_ERROR)
 	{
-		m_bConnected = false;
+		m_eStatus = NETWORK_STATUS::DISCONNECTED;
 		wprintf_s(L"select() error:%d\n", WSAGetLastError());
 		return;
 	}
@@ -189,7 +189,7 @@ void CNetwork::Receive_Packet()
 		int iResultRecv = recv(m_hSocket, (char*)Buffer, sizeof(Buffer), 0);
 		if (iResultRecv == SOCKET_ERROR)
 		{
-			m_bConnected = false;
+			m_eStatus = NETWORK_STATUS::DISCONNECTED;
 			wprintf_s(L"recv() error:%d\n", WSAGetLastError());
 			return;
 		}
@@ -210,13 +210,11 @@ void CNetwork::Receive_Packet()
 			int retPeek = m_recvQ.Peek((_byte*)&tHeader, sizeof(tagPACKET_HEADER));
 			if (retPeek != sizeof(tHeader))
 			{
-				m_bConnected = false;
 				wprintf_s(L"Peek() Error:%d\n", retPeek);
 				return;
 			}
 			if (tHeader.byCode != PACKET_CODE)
 			{
-				m_bConnected = false;
 				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.byCode);
 				return;
 			}
@@ -245,15 +243,17 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	switch (_tHeader.byType)
 	{
 	case ENUM_CLASS(PacketType::SC_PING):
-		m_bConnected = true;
-		cout << "SC_PING" << endl;
+		m_eStatus = NETWORK_STATUS::CONNECTED;
+		cout << "SC_PING" << '[' << m_fPingElapsed - PING_TIME << ']' << endl;
+		m_fPingElapsed = 0.f;
+		m_isPing = false;
 		break;
 	}
 }
 
 _bool CNetwork::Try_Connect()
 {
-	if (m_bConnected) return true;
+	if (m_eStatus == NETWORK_STATUS::CONNECTED) return true;
 
 	SOCKADDR_IN servAdr{};
 	servAdr.sin_family = AF_INET;
@@ -274,6 +274,7 @@ void CNetwork::Send_Ping()
 {
 	CPacketHandler::mp_CS_Ping(&m_Packet);
 	Enqueue_To_SendQ();
+	m_isPing = true;
 }
 
 bool CNetwork::Compare_ID(const int iID) const
