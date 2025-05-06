@@ -244,7 +244,7 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	{
 	case ENUM_CLASS(PacketType::SC_PING):
 		m_eStatus = NETWORK_STATUS::CONNECTED;
-		cout << "SC_PING" << '[' << m_fPingElapsed - PING_TIME << ']' << endl;
+		cout << "SC_PING" << '[' << (m_fPingElapsed - PING_TIME) * 1000.f << "ms]" << endl;
 		m_fPingElapsed = 0.f;
 		m_isPing = false;
 		break;
