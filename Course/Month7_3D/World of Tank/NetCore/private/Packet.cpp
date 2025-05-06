@@ -26,7 +26,12 @@ CPacket::CPacket(int iSize)
 
 CPacket::~CPacket()
 {
-	free(m_pAlloc);
+	if (m_pAlloc)
+	{
+		free(m_pAlloc);
+		m_pAlloc = nullptr;
+	}
+
 }
 
 void CPacket::Clear()

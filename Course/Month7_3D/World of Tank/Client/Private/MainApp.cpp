@@ -7,18 +7,19 @@
 #include "DebugUtils.h"
 
 CMainApp::CMainApp()
-	: m_pGameInstance { CGameInstance::Get_Instance() }
+	: m_pGameInstance { CGameInstance::Get_Instance() },
+	m_pNetwork{ CNetwork::Get_Instance() }
 {
 	Safe_AddRef(m_pGameInstance);
-
+	Safe_AddRef(m_pNetwork);
 
 }
 
 HRESULT CMainApp::Initialize()
 {
-//#if defined(_DEBUG)
-//	DebugUtils::ShowConsole();
-//#endif
+#if defined(_DEBUG)
+	DebugUtils::ShowConsole();
+#endif
 
 	ENGINE_DESC			EngineDesc{};
 
@@ -38,12 +39,15 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Start_Level(LEVEL::LEVEL_LOGO)))
 		return E_FAIL;
 
+	m_pNetwork->Initialize();
+
     return S_OK;
 }
 
 void CMainApp::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Update_Engine(fTimeDelta);
+	m_pNetwork->Update(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -107,11 +111,13 @@ void CMainApp::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 
+	Safe_Release(m_pNetwork);
+
 	m_pGameInstance->Release_Engine();
 
 	Safe_Release(m_pGameInstance);
 
-//#if defined(_DEBUG)
-//	DebugUtils::CloseConsole();
-//#endif
+#if defined(_DEBUG)
+	DebugUtils::CloseConsole();
+#endif
 }

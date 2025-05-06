@@ -23,14 +23,19 @@ public:
 private:
 	bool Network();
 	void AcceptProc();
-	void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
-	void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
 	void Read_Proc(CSession* pSession);
-	void Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession);
+private:
 	void Recieve_Message();
 	void Send_Message();
-	void Check_Session();
-	void Delete_Session(CSession* pSession);
+private:
+	void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
+	void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
+private:
+	void Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession);
+	void Delete_Dead_Session();
+	void Check_Session_State(SOCKET sock);
+	void Set_Session_Dead(CSession* pSession);
+private:
 	_int Load_Config_File(const wstring& filename);
 private:
 	SOCKET						m_ServSock = { INVALID_SOCKET };

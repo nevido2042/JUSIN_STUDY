@@ -30,7 +30,8 @@ HRESULT CStatusLight::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pNetwork = static_cast<CNetwork*>(m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Layer_Network")));
+	//m_pNetwork = static_cast<CNetwork*>(m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Layer_Network")));
+	m_pNetwork = CNetwork::Get_Instance();
 	if(nullptr == m_pNetwork)
 		return E_FAIL;
 	Safe_AddRef(m_pNetwork);

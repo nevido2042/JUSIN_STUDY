@@ -1,28 +1,16 @@
+#include "Engine_Defines.h"
 #include "Server.h"
 
 int main()
 {
 #ifdef _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	CServer Server;
+    CServer Server;
+    if (!Server.Initialize())
+        return 0;
 
-	if (Server.Initialize() == false)
-	{
-		return 0;
-	}
+    while (Server.Update());
 
-	while (true)
-	{
-		/*if (GetKeyState(VK_ESCAPE) & 0x8000)
-		{
-			break;
-		}*/
-
-		if (Server.Update() == false)
-		{
-			break;
-		}
-	}
 }

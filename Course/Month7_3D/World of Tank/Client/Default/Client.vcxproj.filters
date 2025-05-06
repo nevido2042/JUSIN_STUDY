@@ -34,14 +34,14 @@
     <Filter Include="02.GameObjects\00.BackGround">
       <UniqueIdentifier>{2a95d670-b78b-4365-888f-45a6815fed54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Network">
-      <UniqueIdentifier>{50d0e932-fd02-4c24-84cf-2b27497140cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.DebugUtils">
       <UniqueIdentifier>{e38edd34-2e47-4900-8c06-2ecf4f89fa19}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.StatusLight">
       <UniqueIdentifier>{9f5d5229-5fa6-4a83-8f2a-ee3f77dd730c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10.Network">
+      <UniqueIdentifier>{50d0e932-fd02-4c24-84cf-2b27497140cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -82,7 +82,7 @@
       <Filter>02.GameObjects\00.BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Network.h">
-      <Filter>02.GameObjects\01.Network</Filter>
+      <Filter>10.Network</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DebugUtils.h">
       <Filter>96.DebugUtils</Filter>
@@ -127,7 +127,7 @@
       <Filter>02.GameObjects\00.BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Network.cpp">
-      <Filter>02.GameObjects\01.Network</Filter>
+      <Filter>10.Network</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugUtils.cpp">
       <Filter>96.DebugUtils</Filter>

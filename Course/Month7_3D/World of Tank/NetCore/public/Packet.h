@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../EngineSDK/Inc/Engine_Defines.h"
-
+#include "Engine_Defines.h"
 
 #define PACKET_CODE (_byte)0x20
 

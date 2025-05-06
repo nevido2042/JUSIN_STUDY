@@ -3,27 +3,33 @@
 #include "PacketHandler.h"
 #include "Layer.h"
 
-CNetwork::CNetwork(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject{ pDevice, pContext }
-{
+IMPLEMENT_SINGLETON(CNetwork);
 
- }
+//CNetwork::CNetwork(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+//	:CGameObject{ pDevice, pContext }
+//{
+//
+// }
+//
+//CNetwork::CNetwork(const CNetwork& Prototype)
+//	:CGameObject(Prototype),
+//	m_iMyID(Prototype.m_iMyID),
+//	m_hSocket(Prototype.m_hSocket),
+//	m_sendQ(Prototype.m_sendQ),
+//	m_recvQ(Prototype.m_recvQ),
+//	m_Packet(Prototype.m_Packet),
+//	m_tServerConfig(Prototype.m_tServerConfig)
+//{
+//	ZeroMemory(&m_ReadSet, sizeof(fd_set));
+//}
 
-CNetwork::CNetwork(const CNetwork& Prototype)
-	:CGameObject(Prototype),
-	m_iMyID(Prototype.m_iMyID),
-	m_hSocket(Prototype.m_hSocket),
-	m_sendQ(Prototype.m_sendQ),
-	m_recvQ(Prototype.m_recvQ),
-	m_Packet(Prototype.m_Packet),
-	m_tServerConfig(Prototype.m_tServerConfig)
-{
-	ZeroMemory(&m_ReadSet, sizeof(fd_set));
-}
+//HRESULT CNetwork::Initialize_Prototype()
+//{
+//	return S_OK;
+//}
 
-HRESULT CNetwork::Initialize_Prototype()
+CNetwork::CNetwork()
 {
-	return S_OK;
 }
 
 HRESULT CNetwork::Initialize(void* pArg)
@@ -54,10 +60,10 @@ HRESULT CNetwork::Initialize(void* pArg)
 }
 
 
-HRESULT CNetwork::Ready_Components()
-{
-	return S_OK;
-}
+//HRESULT CNetwork::Ready_Components()
+//{
+//	return S_OK;
+//}
 
 void CNetwork::Priority_Update(_float fTimeDelta)
 {
@@ -68,13 +74,19 @@ void CNetwork::Update(_float fTimeDelta)
 	if (!m_bConnected)
 	{
 		Try_Connect();
-
-		cout << "Try_Connect()" << endl;
-
-		return; // 아직 연결 안 됨
+		//cout << "Try_Connect()" << endl;
 	}
 
 	Receive_Packet();
+
+	m_fPingTime += fTimeDelta;
+	if (m_fPingTime  > 1.f)
+	{
+		//서버와 연결이 안될 때 SendQ가 꽉차서 터짐
+		m_fPingTime = 0.f;
+		Send_Ping();
+	}
+
 	Send_Packet();
 }
 
@@ -99,7 +111,7 @@ void CNetwork::Send_Packet()
 	if (retSelect == SOCKET_ERROR)
 	{
 		wprintf_s(L"select() error: %d\n", WSAGetLastError());
-		exit(1);
+		m_bConnected = false;
 	}
 
 	if (retSelect == 0)
@@ -114,6 +126,7 @@ void CNetwork::Send_Packet()
 	if (retSend == SOCKET_ERROR)
 	{
 		wprintf_s(L"send() error: %d\n", WSAGetLastError());
+		m_bConnected = false;
 		return;
 	}
 
@@ -124,13 +137,13 @@ void CNetwork::Send_Packet()
 void CNetwork::mp_CS_Move_Start(_float3 MoveStartPos, _float3& MoveDir)
 {
 	//CPacketHandler::mp_CS_Move_Start(&m_Packet, MoveStartPos, MoveDir);
-	Send_To_Server();
+	Enqueue_To_SendQ();
 }
 
 void CNetwork::mp_CS_Move_Stop(_float3 MoveStartPos)
 {
 	//CPacketHandler::mp_CS_Move_Stop(&m_Packet, MoveStartPos);
-	Send_To_Server();
+	Enqueue_To_SendQ();
 }
 
 void CNetwork::mp_CS_Position(_float3 Pos)
@@ -139,9 +152,9 @@ void CNetwork::mp_CS_Position(_float3 Pos)
 	//Send_To_Server();
 }
 
-void CNetwork::Send_To_Server()
+void CNetwork::Enqueue_To_SendQ()
 {
-	int iResult{ 0 };
+	_int iResult{ 0 };
 	iResult = m_sendQ.Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 	if (iResult < m_Packet.Get_DataSize())
 	{
@@ -166,6 +179,7 @@ void CNetwork::Receive_Packet()
 
 	if (retSelect == SOCKET_ERROR)
 	{
+		m_bConnected = false;
 		wprintf_s(L"select() error:%d\n", WSAGetLastError());
 		return;
 	}
@@ -175,6 +189,7 @@ void CNetwork::Receive_Packet()
 		int iResultRecv = recv(m_hSocket, (char*)Buffer, sizeof(Buffer), 0);
 		if (iResultRecv == SOCKET_ERROR)
 		{
+			m_bConnected = false;
 			wprintf_s(L"recv() error:%d\n", WSAGetLastError());
 			return;
 		}
@@ -195,13 +210,15 @@ void CNetwork::Receive_Packet()
 			int retPeek = m_recvQ.Peek((_byte*)&tHeader, sizeof(tagPACKET_HEADER));
 			if (retPeek != sizeof(tHeader))
 			{
+				m_bConnected = false;
 				wprintf_s(L"Peek() Error:%d\n", retPeek);
-				return;// exit(1);
+				return;
 			}
 			if (tHeader.byCode != PACKET_CODE)
 			{
+				m_bConnected = false;
 				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.byCode);
-				return;// exit(1);
+				return;
 			}
 			if (tHeader.bySize + sizeof(tagPACKET_HEADER) > size_t(m_recvQ.Get_UseSize()))
 			{
@@ -225,10 +242,13 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 	}
 	m_Packet.Move_WritePos(iResult);
 
-	//switch (_tHeader.byType)
-	//{
-
-	//}
+	switch (_tHeader.byType)
+	{
+	case ENUM_CLASS(PacketType::SC_PING):
+		m_bConnected = true;
+		cout << "SC_PING" << endl;
+		break;
+	}
 }
 
 _bool CNetwork::Try_Connect()
@@ -241,39 +261,20 @@ _bool CNetwork::Try_Connect()
 	servAdr.sin_port = htons(m_tServerConfig.iPort);
 
 	_int ret = connect(m_hSocket, (SOCKADDR*)&servAdr, sizeof(servAdr));
-	if (ret == 0)
+	_int err = WSAGetLastError();
+	if (err == WSAEWOULDBLOCK)
 	{
-		m_bConnected = true;
-		return true;
+		return false;
 	}
-	else
-	{
-		_int err = WSAGetLastError();
-		if (err == WSAEWOULDBLOCK || err == WSAEALREADY || err == WSAEINPROGRESS)
-		{
-			// 아직 연결 중. select()로 확인하거나 다음 프레임에 재시도
-			return false;
-		}
-		else if (err == WSAEISCONN)
-		{
-			// 이미 연결됨
-			m_bConnected = true;
-			return true;
-		}
-		else
-		{
-			// 다른 에러 -> 실패했으므로 소켓 다시 만들 준비
-			closesocket(m_hSocket);
-			m_hSocket = socket(PF_INET, SOCK_STREAM, 0);
-			u_long mode = 1;
-			ioctlsocket(m_hSocket, FIONBIO, &mode);
-			FD_ZERO(&m_ReadSet);
-			FD_SET(m_hSocket, &m_ReadSet);
-			return false;
-		}
-	}
+
+	return false;
 }
 
+void CNetwork::Send_Ping()
+{
+	CPacketHandler::mp_CS_Ping(&m_Packet);
+	Enqueue_To_SendQ();
+}
 
 bool CNetwork::Compare_ID(const int iID) const
 {
@@ -306,31 +307,31 @@ CNetwork::SERVER_CONFIG CNetwork::Load_Config_File(const std::wstring& filename)
 	return tConfig;
 }
 
-CNetwork* CNetwork::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	CNetwork* pInstance = new CNetwork(pDevice, pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : CNetwork");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-CGameObject* CNetwork::Clone(void* pArg)
-{
-	CNetwork* pInstance = new CNetwork(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Cloned : CNetwork");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
+//CNetwork* CNetwork::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+//{
+//	CNetwork* pInstance = new CNetwork(pDevice, pContext);
+//
+//	if (FAILED(pInstance->Initialize_Prototype()))
+//	{
+//		MSG_BOX("Failed to Created : CNetwork");
+//		Safe_Release(pInstance);
+//	}
+//
+//	return pInstance;
+//}
+//
+//CGameObject* CNetwork::Clone(void* pArg)
+//{
+//	CNetwork* pInstance = new CNetwork(*this);
+//
+//	if (FAILED(pInstance->Initialize(pArg)))
+//	{
+//		MSG_BOX("Failed to Cloned : CNetwork");
+//		Safe_Release(pInstance);
+//	}
+//
+//	return pInstance;
+//}
 
 void CNetwork::Free()
 {

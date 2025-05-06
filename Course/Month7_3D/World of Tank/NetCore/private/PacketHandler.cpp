@@ -3,17 +3,40 @@
 
 
 
-#include "../public/PacketHandler.h"
-#include "../public/Packet.h"
+#include "PacketHandler.h"
+#include "Packet.h"
+
+void CPacketHandler::mp_CS_Ping(CPacket* pPacket)
+{
+    pPacket->Clear();
+
+    tagPACKET_HEADER tHeader{};
+    tHeader.byCode = PACKET_CODE;
+    tHeader.byType = ENUM_CLASS(PacketType::CS_PING);
+
+    pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
+
+    pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::mp_SC_Ping(CPacket* pPacket)
+{
+    pPacket->Clear();
+
+    tagPACKET_HEADER tHeader{};
+    tHeader.byCode = PACKET_CODE;
+    tHeader.byType = ENUM_CLASS(PacketType::SC_PING);
+
+    pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
+
+    pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
 
 void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& _pStartPos)
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
-    //tHeader.BYTEbySize = 0;//일단 고정 길이로
     tHeader.byType = ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER);
-
-    //wprintf_s(L"mp_headerSize:%d\n", sizeof(header));
 
     pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
     *pPacket << iID;
@@ -34,7 +57,6 @@ void CPacketHandler::mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, _floa
 {
     tagPACKET_HEADER tHeader{};
     tHeader.byCode = PACKET_CODE;
-    //tHeader.BYTEbySize = 0;//일단 고정 길이로
     tHeader.byType = ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER);
 
     pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));

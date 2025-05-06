@@ -5,6 +5,9 @@
 
 enum class PacketType
 {
+    CS_PING,
+    SC_PING,
+
 	CS_CREATE_MY_CHARACTER,
     SC_CREATE_MY_CHARACTER,
 
@@ -18,11 +21,14 @@ enum class PacketType
 class CPacketHandler
 {
 public:
-    static 	void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);
-    static 	void net_CreateMyCharacter(CPacket* pPacket, int& iID, _float3& Pos);
+    static void mp_CS_Ping(CPacket* pPacket);
+    static void mp_SC_Ping(CPacket* pPacket);
 
-    static 	void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, _float3& Pos);
-    static 	void net_CreateOtherCharacter(CPacket* pPacket, int& iID, _float3& Pos);
+    static void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);
+    static void net_CreateMyCharacter(CPacket* pPacket, int& iID, _float3& Pos);
+
+    static void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, _float3& Pos);
+    static void net_CreateOtherCharacter(CPacket* pPacket, int& iID, _float3& Pos);
 
     static void mp_SC_DeleteCharacter(CPacket* pPacket, int iID);
     static void net_DeleteCharacter(CPacket* pPacket, int& iID);

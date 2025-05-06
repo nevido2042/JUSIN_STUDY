@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "Base.h"
 
+#include "Network.h"
+
 BEGIN(Engine)
 class CGameInstance;
 END
@@ -21,6 +23,7 @@ public:
 	HRESULT Render();
 
 private:
+	CNetwork*					m_pNetwork = { nullptr };
 	CGameInstance*				m_pGameInstance = { };
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };

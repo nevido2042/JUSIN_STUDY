@@ -1,6 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Base.h"
 #include "GameInstance.h"
 
 #include "RingBuffer.h"
@@ -13,8 +13,10 @@
 
 BEGIN(Client)
 
-class CNetwork : public CGameObject
+class CNetwork final : public CBase
 {
+	DECLARE_SINGLETON(CNetwork);
+
 	typedef struct tagServerConfig
 	{
 		wstring		strIP{};
@@ -22,13 +24,14 @@ class CNetwork : public CGameObject
 	}SERVER_CONFIG;
 
 private:
-	CNetwork(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CNetwork(const CNetwork& Prototype);
+	CNetwork();
+	//CNetwork(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	//CNetwork(const CNetwork& Prototype);
 	virtual ~CNetwork() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
+	//virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* pArg = nullptr);
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
@@ -38,8 +41,8 @@ public:
 	void mp_CS_Move_Start(_float3 MoveStartPos, _float3& MoveDir);
 	void mp_CS_Move_Stop(_float3 MoveStartPos);
 	void mp_CS_Position(_float3 Pos);
-public:
-	void Send_To_Server();
+private:
+	void Enqueue_To_SendQ();
 
 public:
 	bool Compare_ID(const int iID) const;
@@ -49,10 +52,11 @@ public:
 	_bool Get_isConnected() const { return m_bConnected; }
 
 private:
-	void Send_Packet();
-	void Receive_Packet();
-	void Decode_Packet(const tagPACKET_HEADER& _tHeader);
-	_bool Try_Connect();
+	void	Send_Packet();
+	void	Receive_Packet();
+	void	Decode_Packet(const tagPACKET_HEADER& _tHeader);
+	_bool	Try_Connect();
+	void	Send_Ping();
 
 private:
 	SOCKET				m_hSocket;
@@ -62,21 +66,17 @@ private:
 	CRingBuffer			m_recvQ;
 	_bool				m_bConnected = { false };
 
-
 	CPacket				m_Packet;
 	SERVER_CONFIG		m_tServerConfig;
-private:
-	CShader*			m_pShaderCom = { nullptr };
-	CTexture*			m_pTextureCom = { nullptr };
-	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 
+	_float				m_fPingTime = { 0.f };
 
 private:
-	HRESULT Ready_Components();
+	//HRESULT Ready_Components();
 
 public:
-	static CNetwork* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
+	//static CNetwork* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	//virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 
 };

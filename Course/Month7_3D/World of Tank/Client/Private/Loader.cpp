@@ -110,9 +110,9 @@ HRESULT CLoader::Loading_For_Logo()
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Network */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_Network"),
-		CNetwork::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_Network"),
+	//	CNetwork::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	/* For.Prototype_GameObject_StatusLight */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_StatusLight"),

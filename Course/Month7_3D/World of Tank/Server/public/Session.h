@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "RingBuffer.h"
 #include "Packet.h"
 #include "SessionInfo.h"

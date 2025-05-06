@@ -93,7 +93,7 @@ bool CServer::Network()
 {
     Recieve_Message();
     Send_Message();
-    Check_Session();
+    Delete_Dead_Session();
 
     return true;
 }
@@ -201,7 +201,7 @@ void CServer::Read_Proc(CSession* _pSession)
 
         if (retRecv == 0)
         {
-            Delete_Session(_pSession);
+            Set_Session_Dead(_pSession);
             return;
         }
         if (retRecv == SOCKET_ERROR)
@@ -209,7 +209,7 @@ void CServer::Read_Proc(CSession* _pSession)
             if (WSAGetLastError() == WSAEWOULDBLOCK)
                 return;
 
-            Delete_Session(_pSession);
+            Set_Session_Dead(_pSession);
             wprintf_s(L"recv() Error:%d(Line:%d)\n", WSAGetLastError(), __LINE__);
             return;
         }
@@ -271,8 +271,7 @@ void CServer::Read_Proc(CSession* _pSession)
 
 void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession)
 {
-    //_pSession->Recive((_byte*)m_Packet.GetBufferPtr(), _Header.bySize);
-    int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);//_pSession->m_RecvQ.Dequeue((char*)m_Packet.GetBufferPtr(), _Header.bySize);
+    int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);
     if (iResult != _Header.bySize)
     {
         wprintf_s(L"Dequeue() Error:%d\n", iResult);
@@ -280,10 +279,14 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
     }
     m_Packet.Move_WritePos(iResult);
 
-    //switch (_Header.byType)
-    //{
-
-    //}
+    switch (_Header.byType)
+    {
+	case ENUM_CLASS(PacketType::CS_PING):
+        cout << "CS_PING" << endl;
+		CPacketHandler::mp_SC_Ping(&m_Packet);
+        Send_Unicast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+		break;
+    }
 }
 
 void CServer::Recieve_Message()
@@ -328,36 +331,7 @@ void CServer::Recieve_Message()
             }
             else
             {
-                for (auto iter = m_vecSession.begin(); iter != m_vecSession.end(); )
-                {
-                    if ((*iter)->Get_Socket() == currentSock)
-                    {
-                        // 데이터 수신 전 소켓 상태 확인
-                        _byte buffer[1];
-                        int result = recv(currentSock, (char*)buffer, sizeof(buffer), MSG_PEEK);
-                        if (result <= 0) // 연결 종료되었거나 오류 발생
-                        {
-                            wprintf_s(L"클라이언트 종료 ID:%d, WSAGetLastError:%d\n", (*iter)->Get_SessionInfo().iID, WSAGetLastError());
-                            CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, (*iter)->Get_SessionInfo().iID);
-                            Send_Broadcast(*iter, m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-
-                            // 클라이언트 소켓 종료 처리
-                            closesocket((*iter)->Get_Socket());
-                            Safe_Delete(*iter);
-                            // 세션 제거
-                            iter = m_vecSession.erase(iter); // erase는 삭제된 다음 요소의 iterator를 반환함
-                        }
-                        else
-                        {
-                            Read_Proc(*iter);
-                            ++iter;
-                        }
-                    }
-                    else
-                    {
-                        ++iter;
-                    }
-                }
+				Check_Session_State(currentSock);
             }
         }
     }
@@ -419,7 +393,7 @@ void CServer::Send_Message()
 
 }
 
-void CServer::Check_Session()
+void CServer::Delete_Dead_Session()
 {
     //세션 정리
     for (auto iter = m_vecSession.begin(); iter != m_vecSession.end();)
@@ -437,7 +411,41 @@ void CServer::Check_Session()
     }
 }
 
-void CServer::Delete_Session(CSession* _pSession)
+void CServer::Check_Session_State(SOCKET sock)
+{
+    for (auto iter = m_vecSession.begin(); iter != m_vecSession.end(); )
+    {
+        if ((*iter)->Get_Socket() == sock)
+        {
+            // 데이터 수신 전 소켓 상태 확인
+            _byte buffer[1];
+            int result = recv(sock, (char*)buffer, sizeof(buffer), MSG_PEEK);
+            if (result <= 0) // 연결 종료되었거나 오류 발생
+            {
+                wprintf_s(L"클라이언트 종료 ID:%d, WSAGetLastError:%d\n", (*iter)->Get_SessionInfo().iID, WSAGetLastError());
+                CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, (*iter)->Get_SessionInfo().iID);
+                Send_Broadcast(*iter, m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+
+                // 클라이언트 소켓 종료 처리
+                closesocket((*iter)->Get_Socket());
+                Safe_Delete(*iter);
+                // 세션 제거
+                iter = m_vecSession.erase(iter); // erase는 삭제된 다음 요소의 iterator를 반환함
+            }
+            else
+            {
+                Read_Proc(*iter);
+                ++iter;
+            }
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+}
+
+void CServer::Set_Session_Dead(CSession* _pSession)
 {
     _pSession->Set_IsDead();
 }
