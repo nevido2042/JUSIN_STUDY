@@ -4,7 +4,7 @@
 #include "fmod.hpp"
 #include "fmod_studio.hpp"
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 
 class CSound_Device : public CBase
 {
@@ -33,4 +33,4 @@ public:
     static CSound_Device* Create();
     virtual void Free();
 };
-END
+NS_END

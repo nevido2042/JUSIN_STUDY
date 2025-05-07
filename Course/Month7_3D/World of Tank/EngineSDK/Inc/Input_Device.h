@@ -4,7 +4,7 @@
 
 #include "Engine_Enum.h"
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 
 class CInput_Device final : public CBase
 {
@@ -76,4 +76,4 @@ public:
 	virtual void Free();
 };
 
-END
+NS_END

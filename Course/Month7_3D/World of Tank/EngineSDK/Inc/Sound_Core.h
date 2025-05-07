@@ -1,14 +1,14 @@
 #pragma once
 #include "Base.h"
 
-BEGIN(FMOD)
+NS_BEGIN(FMOD)
 class System;
 class Sound;
 class Channel;
 class ChannelGroup;
-END
+NS_END
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 
 // FMOD_CORE_API 기반 래핑 클래스
 class ENGINE_DLL CSound_Core : public CBase
@@ -50,4 +50,4 @@ public:
 	virtual void Free() override;
 };
 
-END
+NS_END

@@ -30,8 +30,8 @@ void CLevel_Logo::Update(_float fTimeDelta)
 {
 	if (GetKeyState(VK_RETURN) & 0x8000)
 	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LEVEL_LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LEVEL_GAMEPLAY))))
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::GAMEPLAY))))
 			return;
 	}
 }
@@ -52,8 +52,8 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring strLayerTag)
 	BackGroundDesc.fSizeX = 200.0f;
 	BackGroundDesc.fSizeY = 200.0f;	
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LEVEL_LOGO), TEXT("Prototype_GameObject_BackGround"),
-		ENUM_CLASS(LEVEL::LEVEL_LOGO), strLayerTag, &BackGroundDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_BackGround"),
+		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &BackGroundDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -61,8 +61,8 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_Network(const _wstring strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_Network"),
-		ENUM_CLASS(LEVEL::LEVEL_STATIC), strLayerTag)))
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Network"),
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;
@@ -77,8 +77,8 @@ HRESULT CLevel_Logo::Ready_Layer_StatusLight(const _wstring strLayerTag)
 	StatusLightDesc.fSizeX = 40.0f;
 	StatusLightDesc.fSizeY = 50.0f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LEVEL_STATIC), TEXT("Prototype_GameObject_StatusLight"),
-		ENUM_CLASS(LEVEL::LEVEL_STATIC), strLayerTag, &StatusLightDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag, &StatusLightDesc)))
 		return E_FAIL;
 
 	return S_OK;

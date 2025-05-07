@@ -11,7 +11,7 @@
 //#define IP L"127.0.0.1"
 //#define PORT 2042
 
-BEGIN(Client)
+NS_BEGIN(Client)
 
 class CNetwork final : public CBase
 {
@@ -82,5 +82,5 @@ public:
 
 };
 
-END
+NS_END
 

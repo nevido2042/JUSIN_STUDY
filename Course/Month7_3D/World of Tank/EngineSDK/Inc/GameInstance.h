@@ -5,7 +5,7 @@
 /* 엔진 개발자가 클라개밫자에게 보여주고싶은 함수를 ... */
 #include "Prototype_Manager.h"
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 
 
 class ENGINE_DLL CGameInstance final : public CBase
@@ -103,4 +103,4 @@ public:
 	virtual void Free() override;
 };
 
-END
+NS_END

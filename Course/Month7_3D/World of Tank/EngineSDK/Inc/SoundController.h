@@ -1,13 +1,13 @@
 #pragma once
 #include "Component.h"
 
-BEGIN(FMOD)
+NS_BEGIN(FMOD)
 class ChannelGroup;
 class DSP;
 class Sound;
-END
+NS_END
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 
 class ENGINE_DLL CSoundController : public CComponent
 {
@@ -50,4 +50,4 @@ public:
     virtual void Free() override;
 };
 
-END
+NS_END

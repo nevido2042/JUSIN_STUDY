@@ -5,11 +5,11 @@
 
 #include "Network.h"
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 class CGameInstance;
-END
+NS_END
 
-BEGIN(Client)
+NS_BEGIN(Client)
 
 class CMainApp final : public CBase
 {
@@ -39,4 +39,4 @@ public:
 
 };
 
-END
+NS_END

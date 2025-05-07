@@ -2,7 +2,7 @@
 
 #include "Base.h"
 
-BEGIN(Engine)
+NS_BEGIN(Engine)
 
 class ENGINE_DLL CComponent abstract : public CBase
 {
@@ -28,4 +28,4 @@ public:
 	virtual void Free() override;
 };
 
-END
+NS_END
