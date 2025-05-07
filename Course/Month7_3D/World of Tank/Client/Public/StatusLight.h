@@ -14,12 +14,6 @@ NS_BEGIN(Client)
 
 class CStatusLight final : public CUIObject
 {
-public:
-	typedef struct tagCStatusLightDesc : public CUIObject::UIOBJECT_DESC
-	{
-
-	}STATUSLIGHT_DESC;
-
 private:
 	CStatusLight(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CStatusLight(const CStatusLight& Prototype);

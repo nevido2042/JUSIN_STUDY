@@ -1,9 +1,12 @@
 #include "Level_Loading.h"
 
-
-#include "Level_GamePlay.h"
 #include "Level_Logo.h"
+#include "Level_Hanger.h"
+#include "Level_GamePlay.h"
+
 #include "Loader.h"
+
+#include "BackGround.h"
 
 #include "GameInstance.h"
 
@@ -25,6 +28,12 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	m_pLoader = CLoader::Create(m_pDevice, m_pContext, m_eNextLevelID);
 	if (nullptr == m_pLoader)
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Background(TEXT("Layer_Background"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"))))
+		return E_FAIL;
 	
 	return S_OK;
 }
@@ -43,6 +52,9 @@ void CLevel_Loading::Update(_float fTimeDelta)
 			case LEVEL::LOGO:
 				pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 				break;
+			case LEVEL::HANGER:
+				pLevel = CLevel_Hanger::Create(m_pDevice, m_pContext);
+				break;
 			case LEVEL::GAMEPLAY:
 				pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
 				break;
@@ -51,7 +63,7 @@ void CLevel_Loading::Update(_float fTimeDelta)
 			if (nullptr == pLevel)
 				return;
 
-			if (FAILED(m_pGameInstance->Change_Level(static_cast<_uint>(m_eNextLevelID), pLevel)))
+			if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(m_eNextLevelID), pLevel)))
 				return;
 							
 		}
@@ -61,6 +73,39 @@ void CLevel_Loading::Update(_float fTimeDelta)
 HRESULT CLevel_Loading::Render()
 {
 	m_pLoader->Output_LoadingText();
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_Background(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObjectDesc{};
+
+	UIObjectDesc.fX = g_iWinSizeX * 0.5f;
+	UIObjectDesc.fY = g_iWinSizeY * 0.5f;
+	UIObjectDesc.fDepth = DEPTH_BACKGROUND;
+	UIObjectDesc.fSizeX = g_iWinSizeX;
+	UIObjectDesc.fSizeY = g_iWinSizeY;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Background_Loading"),
+		ENUM_CLASS(LEVEL::LOADING), strLayerTag, &UIObjectDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_Loading_Spinner(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObjectDesc{};
+
+	UIObjectDesc.fX = g_iWinSizeX * 0.5f;
+	UIObjectDesc.fY = g_iWinSizeY * 0.5f;
+	UIObjectDesc.fSizeX = 260.0f;
+	UIObjectDesc.fSizeY = 260.0f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Loading_Spinner"),
+		ENUM_CLASS(LEVEL::LOADING), strLayerTag, &UIObjectDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

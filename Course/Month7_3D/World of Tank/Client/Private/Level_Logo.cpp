@@ -17,6 +17,9 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Logo(TEXT("Layer_Logo"))))
+		return E_FAIL;
+
 	//if (FAILED(Ready_Layer_Network(TEXT("Layer_Network"))))
 	//	return E_FAIL;
 
@@ -24,14 +27,14 @@ HRESULT CLevel_Logo::Initialize()
 		return E_FAIL;
 
 	return S_OK;
-}
+ }
 
 void CLevel_Logo::Update(_float fTimeDelta)
 {
 	if (GetKeyState(VK_RETURN) & 0x8000)
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::GAMEPLAY))))
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
 			return;
 	}
 }
@@ -49,8 +52,9 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring strLayerTag)
 
 	BackGroundDesc.fX = g_iWinSizeX * 0.5f;
 	BackGroundDesc.fY = g_iWinSizeY * 0.5f;
-	BackGroundDesc.fSizeX = 200.0f;
-	BackGroundDesc.fSizeY = 200.0f;	
+	BackGroundDesc.fDepth = DEPTH_BACKGROUND;
+	BackGroundDesc.fSizeX = g_iWinSizeX;
+	BackGroundDesc.fSizeY = g_iWinSizeY;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_BackGround"),
 		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &BackGroundDesc)))
@@ -70,15 +74,31 @@ HRESULT CLevel_Logo::Ready_Layer_Network(const _wstring strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_StatusLight(const _wstring strLayerTag)
 {
-	CStatusLight::STATUSLIGHT_DESC				StatusLightDesc{};
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	StatusLightDesc.fX = g_iWinSizeX * 0.05f;
-	StatusLightDesc.fY = g_iWinSizeY * 0.05f;
-	StatusLightDesc.fSizeX = 40.0f;
-	StatusLightDesc.fSizeY = 50.0f;
+	UIObject_Desc.fX = g_iWinSizeX * 0.05f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.05f;
+	UIObject_Desc.fSizeX = 40.0f;
+	UIObject_Desc.fSizeY = 50.0f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),
-		ENUM_CLASS(LEVEL::STATIC), strLayerTag, &StatusLightDesc)))
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
+	UIObject_Desc.fSizeX = 400.f;
+	UIObject_Desc.fSizeY = 200.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Logo"),
+		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
 	return S_OK;

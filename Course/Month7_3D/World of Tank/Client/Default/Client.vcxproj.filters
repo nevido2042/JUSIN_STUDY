@@ -16,18 +16,6 @@
     <Filter Include="01.Levels">
       <UniqueIdentifier>{3b3aeff7-5170-4d23-a6bc-ca661d804d84}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\Logo">
-      <UniqueIdentifier>{fc8ef11a-d4da-4fb2-acd6-da87cf54da78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\Loading">
-      <UniqueIdentifier>{d77e9a5c-f9dd-469f-9e4a-e102f2dc83a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\Loading\Loader">
-      <UniqueIdentifier>{09b33f93-851a-4e38-8e8a-83626e4878cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\GamePlay">
-      <UniqueIdentifier>{a3f64273-696d-4106-b58f-efef5e5d53fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{db82fc83-d01c-41cf-8115-cfc65328ad5c}</UniqueIdentifier>
     </Filter>
@@ -45,6 +33,33 @@
     </Filter>
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{768645b9-a508-418d-8d7d-9431033e5719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.BackGround_Loading">
+      <UniqueIdentifier>{8ec9cd4c-5161-4e33-94a6-d8798f09d340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Loading_Spinner">
+      <UniqueIdentifier>{c9873731-d3be-4497-9f1d-e3a3482266cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\00.Loading">
+      <UniqueIdentifier>{d77e9a5c-f9dd-469f-9e4a-e102f2dc83a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\00.Loading\Loader">
+      <UniqueIdentifier>{09b33f93-851a-4e38-8e8a-83626e4878cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Logo">
+      <UniqueIdentifier>{fc8ef11a-d4da-4fb2-acd6-da87cf54da78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\03.GamePlay">
+      <UniqueIdentifier>{a3f64273-696d-4106-b58f-efef5e5d53fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02.Hanger">
+      <UniqueIdentifier>{1c864d49-67df-4e12-885b-1ae6883a1fb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Logo">
+      <UniqueIdentifier>{32dfd49a-6d67-4d17-ab5f-d282349339c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\03.Practice">
+      <UniqueIdentifier>{d78da1d3-316b-49ba-b39e-3209c09e2e12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,13 +82,13 @@
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Levels\GamePlay</Filter>
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Loader.h">
-      <Filter>01.Levels\Loading\Loader</Filter>
+      <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Logo.h">
-      <Filter>01.Levels\Logo</Filter>
+      <Filter>01.Levels\01.Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MainApp.h">
       <Filter>00.MainApp</Filter>
@@ -94,7 +109,19 @@
       <Filter>02.GameObjects\01.Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
-      <Filter>01.Levels\Loading</Filter>
+      <Filter>01.Levels\00.Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BackGround_Loading.h">
+      <Filter>02.GameObjects\03.BackGround_Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loading_Spinner.h">
+      <Filter>02.GameObjects\04.Loading_Spinner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo.h">
+      <Filter>02.GameObjects\05.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Hanger.h">
+      <Filter>01.Levels\02.Hanger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -115,13 +142,13 @@
       <Filter>98.Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Levels\GamePlay</Filter>
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loader.cpp">
-      <Filter>01.Levels\Loading\Loader</Filter>
+      <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Logo.cpp">
-      <Filter>01.Levels\Logo</Filter>
+      <Filter>01.Levels\01.Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\00.BackGround</Filter>
@@ -139,14 +166,29 @@
       <Filter>02.GameObjects\01.Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
-      <Filter>01.Levels\Loading</Filter>
+      <Filter>01.Levels\00.Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BackGround_Loading.cpp">
+      <Filter>02.GameObjects\03.BackGround_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loading_Spinner.cpp">
+      <Filter>02.GameObjects\04.Loading_Spinner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo.cpp">
+      <Filter>02.GameObjects\05.Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Hanger.cpp">
+      <Filter>01.Levels\02.Hanger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -31,6 +31,9 @@ private:
 public:
 	HRESULT Ready_Prototype_Component();
 
+	//로딩씬에 사용할 프로토타입 만들어두기...스태틱으로
+	HRESULT Ready_Prototype_For_Loading();
+
 	HRESULT Start_Level(LEVEL eStartLevel);
 
 public:

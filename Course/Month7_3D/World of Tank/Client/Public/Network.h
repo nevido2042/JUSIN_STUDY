@@ -69,6 +69,7 @@ private:
 	CPacket				m_Packet;
 	SERVER_CONFIG		m_tServerConfig;
 
+	_float				m_fConnectTryElapsed = { 0.f };
 	_float				m_fPingElapsed = { 0.f };
 	_bool				m_isPing = { false };
 

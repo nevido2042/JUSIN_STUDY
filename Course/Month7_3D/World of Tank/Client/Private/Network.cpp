@@ -67,31 +67,32 @@ HRESULT CNetwork::Initialize(void* pArg)
 
 void CNetwork::Priority_Update(_float fTimeDelta)
 {
+	Receive_Packet();
 }
 
 void CNetwork::Update(_float fTimeDelta)
 {
 	if (m_eStatus != NETWORK_STATUS::CONNECTED && m_eStatus != NETWORK_STATUS::WARNING)
 	{
-		Try_Connect();
-		//cout << "Try_Connect()" << endl;
+		m_fConnectTryElapsed += fTimeDelta;
+		if (m_fConnectTryElapsed > 1.f)
+		{
+			m_fConnectTryElapsed = 0.f;
+			Try_Connect();
+			cout << "Try_Connect()" << endl;
+		}
 	}
-
-	Receive_Packet();
 
 	m_fPingElapsed += fTimeDelta;
 	if (m_fPingElapsed  > PING_TIME && m_isPing == false)
 	{
-		//서버와 연결이 안될 때 SendQ가 꽉차서 터짐
-		//m_fPingElapsed = 0.f;
 		Send_Ping();
 	}
-
-	Send_Packet();
 }
 
 void CNetwork::Late_Update(_float fTimeDelta)
 {
+	Send_Packet();
 }
 
 HRESULT CNetwork::Render()

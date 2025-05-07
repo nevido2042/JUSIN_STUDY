@@ -20,7 +20,7 @@ private:
 	HRESULT Ready_Layer_BackGround(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Network(const _wstring strLayerTag);
 	HRESULT Ready_Layer_StatusLight(const _wstring strLayerTag);
-
+	HRESULT Ready_Layer_Logo(const _wstring strLayerTag);
 
 public:
 	static CLevel_Logo* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

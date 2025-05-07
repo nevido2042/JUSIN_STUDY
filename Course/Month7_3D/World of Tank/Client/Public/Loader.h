@@ -43,6 +43,7 @@ private:
 
 public:
 	HRESULT Loading_For_Logo();
+	HRESULT Loading_For_Hanger();
 	HRESULT Loading_For_GamePlay();
 
 

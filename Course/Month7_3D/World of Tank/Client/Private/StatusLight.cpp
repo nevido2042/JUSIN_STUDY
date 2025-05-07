@@ -22,7 +22,7 @@ HRESULT CStatusLight::Initialize_Prototype()
 
 HRESULT CStatusLight::Initialize(void* pArg)
 {
-	STATUSLIGHT_DESC* pDesc = static_cast<STATUSLIGHT_DESC*>(pArg);
+	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

@@ -17,6 +17,11 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	HRESULT Ready_Layer_Background(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Loading_Spinner(const _wstring strLayerTag);
+
+
+private:
 	LEVEL				m_eNextLevelID = { LEVEL::END };
 	class CLoader*		m_pLoader = { nullptr };
 

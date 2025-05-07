@@ -26,7 +26,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -84,7 +83,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         if (fTimeAcc >= 1.f / 60.f)
         {
-            pGameInstance->Update_Timer(TEXT("Timer_60"));      
+            pGameInstance->Update_Timer(TEXT("Timer_60"));
 
             pMainApp->Update(pGameInstance->Get_TimeDelta(TEXT("Timer_60")));
             pMainApp->Render();
