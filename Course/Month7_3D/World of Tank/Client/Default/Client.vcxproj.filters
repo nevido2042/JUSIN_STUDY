@@ -61,6 +61,12 @@
     <Filter Include="01.Levels\03.Practice">
       <UniqueIdentifier>{d78da1d3-316b-49ba-b39e-3209c09e2e12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.Camera">
+      <UniqueIdentifier>{f760765c-2eba-4f64-87c5-558223af53d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Camera\Camera_Free">
+      <UniqueIdentifier>{e6ab15b5-ff75-4a49-b7e4-983a60d972cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -123,6 +129,9 @@
     <ClInclude Include="..\Public\Level_Hanger.h">
       <Filter>01.Levels\02.Hanger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02.GameObjects\06.Camera\Camera_Free</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -182,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Hanger.cpp">
       <Filter>01.Levels\02.Hanger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02.GameObjects\06.Camera\Camera_Free</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

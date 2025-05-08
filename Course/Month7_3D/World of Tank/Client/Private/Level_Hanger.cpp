@@ -12,6 +12,9 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -30,6 +33,15 @@ HRESULT CLevel_Hanger::Render()
 HRESULT CLevel_Hanger::Ready_Layer_BackGround(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Terrain"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Camera_Free"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
 		return E_FAIL;
 

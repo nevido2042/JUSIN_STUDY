@@ -9,6 +9,7 @@
 #include "Prototype_Manager.h"
 #include "Sound_Device.h"
 #include "Input_Device.h"
+#include "PipeLine.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -50,6 +51,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	m_pSound_Device = CSound_Device::Create();
 	if (nullptr == m_pSound_Device)
 		return E_FAIL;
+
+	m_pPipeLine = CPipeLine::Create();
+	if (nullptr == m_pPipeLine)
+		return E_FAIL;
+
+	
 
 	//m_pPicking = CPicking::Create(*ppOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
 	//if (nullptr == m_pPicking)
@@ -238,7 +245,7 @@ _byte CGameInstance::Get_DIMKeyState(DIMK eMouseKeyID)
 }
 
 FORCEINLINE
-_long CGameInstance::Get_DIMMoveState(DIMM eMouseMoveID)
+_int CGameInstance::Get_DIMMoveState(DIMM eMouseMoveID)
 {
 	return m_pInputDevice->Get_DIMMoveState(eMouseMoveID);
 }
@@ -280,6 +287,30 @@ _bool CGameInstance::Key_Down(_ubyte eKeyID)
 	return m_pInputDevice->Key_Down(eKeyID);
 }
 
+#pragma region PIPELINE
+
+void CGameInstance::Set_Transform(D3DTS eState, _fmatrix TransformMatrix)
+{
+	m_pPipeLine->Set_Transform(eState, TransformMatrix);
+}
+
+const _float4x4* CGameInstance::Get_Transform_Float4x4(D3DTS eState) const
+{
+	return m_pPipeLine->Get_Transform_Float4x4(eState);
+}
+
+_matrix CGameInstance::Get_Transform_Matrix(D3DTS eState) const
+{
+	return m_pPipeLine->Get_Transform_Matrix(eState);
+}
+
+const _float4* CGameInstance::Get_CamPosition() const
+{
+	return m_pPipeLine->Get_CamPosition();
+}
+
+#pragma endregion
+
 //#pragma region PICKING
 //void CGameInstance::Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse)
 //{
@@ -313,6 +344,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pSound_Device);
 
 	Safe_Release(m_pInputDevice);
+
+	Safe_Release(m_pPipeLine);
 
 	Safe_Release(m_pGraphic_Device);
 

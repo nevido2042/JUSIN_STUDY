@@ -67,7 +67,7 @@ public:
 #pragma region INPUT_DEVICE
 	_byte Get_DIKState(_ubyte eKeyID);
 	_byte Get_DIMKeyState(DIMK eMouseKeyID);
-	_long Get_DIMMoveState(DIMM eMouseMoveID);
+	_int Get_DIMMoveState(DIMM eMouseMoveID);
 
 	_bool Mouse_Down(_ubyte eKeyID);
 	_bool Mouse_Pressing(_ubyte eKeyID);
@@ -76,6 +76,13 @@ public:
 	_bool		Key_Pressing(_ubyte eKeyID);
 	_bool		Key_Up(_ubyte eKeyID);
 	_bool		Key_Down(_ubyte eKeyID);
+#pragma endregion
+
+#pragma region 	PIPELINE
+	void Set_Transform(D3DTS eState, _fmatrix TransformMatrix);
+	const _float4x4* Get_Transform_Float4x4(D3DTS eState) const;
+	_matrix Get_Transform_Matrix(D3DTS eState) const;
+	const _float4* Get_CamPosition() const;
 #pragma endregion
 
 //
@@ -95,6 +102,7 @@ private:
 	class CSound_Device*		m_pSound_Device = { nullptr };
 	class CInput_Device* 		m_pInputDevice = { nullptr };
 	class CKey_Manager*			m_pKeyManager = { nullptr };
+	class CPipeLine*			m_pPipeLine = { nullptr };
 
 	// class CPicking*				m_pPicking = { nullptr };
 

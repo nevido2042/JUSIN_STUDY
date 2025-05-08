@@ -21,9 +21,9 @@ public:
 		return m_MouseState.rgbButtons[ENUM_CLASS(eMouseKeyID)];
 	}
 
-	_long Get_DIMMoveState(DIMM eMouseMoveID) {
-		// return *(((_long*)&m_MouseState) + eMouseMoveID);
-		return ((_long*)&m_MouseState)[ENUM_CLASS(eMouseMoveID)];
+	_int Get_DIMMoveState(DIMM eMouseMoveID) {
+		// return *(((_int*)&m_MouseState) + eMouseMoveID);
+		return ((_int*)&m_MouseState)[ENUM_CLASS(eMouseMoveID)];
 	}
 
 	_bool Key_Down(_ubyte eKeyID)
