@@ -37,6 +37,15 @@ private:
 	void Set_Session_Dead(CSession* pSession);
 private:
 	_int Load_Config_File(const wstring& filename);
+
+public:
+	HRESULT Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg);
+	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
+public:
+	HRESULT	Clear_Packet();
+	HRESULT	Input_Data(_byte* pByte, _int iSize);
+	HRESULT	Update_Header();
+
 private:
 	SOCKET						m_ServSock = { INVALID_SOCKET };
 	_int						m_iPort = {};
@@ -46,6 +55,8 @@ private:
 
 	fd_set						m_tReadSet;
 	CPacket						m_Packet;
+
+	unordered_map<_uint, function<void(void*)>> m_PacketTypes;
 
 };
 

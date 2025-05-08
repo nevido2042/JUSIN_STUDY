@@ -2,8 +2,6 @@
 #include "Packet.h"
 #include "Layer.h"
 
-//#include "PacketHandler.h"
-
 //CNetwork::CNetwork(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 //	:CGameObject{ pDevice, pContext }
 //{
@@ -33,6 +31,8 @@ CNetwork::CNetwork()
 
 HRESULT CNetwork::Initialize(void* pArg)
 {
+	Clear_Packet();
+
 	m_tServerConfig = Load_Config_File(TEXT("../bin/config.txt"));
 
 	WSADATA wsaData;
@@ -142,21 +142,21 @@ HRESULT CNetwork::Send_Packet(_uint iPacketType, void* pArg)
 	if (it == m_PacketTypes.end())
 		return E_FAIL;
 
-	it->second(&m_Packet, pArg);
+	it->second(pArg);
 	Enqueue_SendBuffer();
 	return S_OK;
 }
 
-HRESULT CNetwork::Define_Packet(_uint iPacketType, PacketFunc packetFunc)
+HRESULT CNetwork::Define_Packet(_uint iPacketType, function<void(void*)> pFunction)
 {
-	if (!packetFunc)
+	if (!pFunction)
 		return E_INVALIDARG;
 
 	// 중복 등록 방지 (선택적)
 	if (m_PacketTypes.find(iPacketType) != m_PacketTypes.end())
 		return E_FAIL;
 
-	m_PacketTypes[iPacketType] = std::move(packetFunc);
+	m_PacketTypes[iPacketType] = std::move(pFunction);
 	return S_OK;
 }
 
@@ -251,25 +251,18 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 
 	//클라쪽에서 해석해야함, 어떤 타입의 패킷이 왔는지, 어떤 물건이 왔는지 반환?
 
+#pragma message ("여기서 데이터를 빼서 클라에 전달해주는게 나을라나")
+	//CPacketHandler::PACKET_DESC Desc{};
+
 	auto it = m_PacketTypes.find(_tHeader.byType);
 	if (it != m_PacketTypes.end())
 	{
-		it->second(&m_Packet, nullptr); // 실제 패킷 처리 함수 호출
+		it->second(nullptr/*&Desc*/); // 실제 패킷 처리 함수 호출
 	}
 	else
 	{
 		wprintf_s(L"Unknown packet type: %d\n", _tHeader.byType);
 	}
-
-	/*switch (_tHeader.byType)
-	{
-	case ENUM_CLASS(PacketType::SC_PING):
-		m_eStatus = NETWORK_STATUS::CONNECTED;
-		cout << "SC_PING" << '[' << (m_fPingElapsed - PING_TIME) * 1000.f << "ms]" << endl;
-		m_fPingElapsed = 0.f;
-		m_isPing = false;
-		break;
-	}*/
 }
 
 _bool CNetwork::Try_Connect()
@@ -289,6 +282,30 @@ _bool CNetwork::Try_Connect()
 	}
 
 	return false;
+}
+
+HRESULT CNetwork::Clear_Packet()
+{
+	m_Packet.Clear();
+	return S_OK;
+}
+
+HRESULT CNetwork::Input_Data(_byte* pByte, _int iSize)
+{
+	m_Packet.Enqueue(pByte, iSize);
+	return S_OK;
+}
+
+HRESULT CNetwork::Output_Data(_byte* pByte, _int iSize)
+{
+	m_Packet.Dequeue(pByte, iSize);
+	return S_OK;
+}
+
+HRESULT CNetwork::Update_Header()
+{
+	m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(tagPACKET_HEADER));
+	return S_OK;
 }
 
 bool CNetwork::Compare_ID(const int iID) const

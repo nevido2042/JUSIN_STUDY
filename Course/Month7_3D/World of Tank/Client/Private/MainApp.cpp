@@ -75,25 +75,50 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Define_Packets()
 {
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), CPacketHandler::mp_CS_Ping);
+	//m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), CPacketHandler::mp_CS_Ping);
 
-	//m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg) 
-	//	{
-	//		//
-	//		//
-	//		// 헤더 넣기
-	//		// 데이터 넣기
-	//		// 헤더에 데이터 사이즈 갱신하기 
-	//	});
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg) 
+		{
+			m_pGameInstance->Clear_Packet();
 
-#pragma message ("이런 느낌")
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](CPacket* pPacket, void* pArg) {
+			tagPACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_PING);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+			m_pGameInstance->Update_Header();
+		});
+
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg) 
+		{
 		m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
 		cout << "SC_PING" << endl;
 		m_bSendPing = false;
 		});
 
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), CPacketHandler::mp_CS_Position);
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			tagPACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_POSITION);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+
+			CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
+			m_pGameInstance->Update_Header();
+		});
+
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
+		{
+			CPacketHandler::POSITION_DESC pDesc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&pDesc), sizeof(CPacketHandler::POSITION_DESC));
+
+			cout << pDesc.vPos.x << ' ' << pDesc.vPos.y << ' ' << pDesc.vPos.z << endl;
+		});
 
 	return S_OK;
 }

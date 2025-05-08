@@ -33,6 +33,8 @@ using namespace Client;
 
 #define DEPTH_BACKGROUND 0.1f
 
+#define PING_TIME 1.f
+
 
 
 

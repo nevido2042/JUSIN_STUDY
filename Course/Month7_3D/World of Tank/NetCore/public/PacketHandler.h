@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../EngineSDK/Inc/Engine_Defines.h"
+#include "Engine_Defines.h"
 #include "Packet.h"
 
 enum class PacketType
@@ -9,6 +9,7 @@ enum class PacketType
     SC_PING,
 
     CS_POSITION,
+    SC_POSITION,
 
 	CS_CREATE_MY_CHARACTER,
     SC_CREATE_MY_CHARACTER,
@@ -23,14 +24,18 @@ enum class PacketType
 class CPacketHandler
 {
 public:
-    static void mp_CS_Ping(CPacket* pPacket, void* pArg);
     static void mp_SC_Ping(CPacket* pPacket);
 
-    typedef struct tagPostion_Desc
+    typedef struct tagPacket_Desc
+    {
+
+    }PACKET_DESC;
+
+    typedef struct tagPostion_Desc : PACKET_DESC
     {
         _float3 vPos{};
     }POSITION_DESC;
-    static void mp_CS_Position(CPacket* pPacket, void* pArg);
+
     static void net_Position(CPacket* pPacket, _float3& vPos);
 
     static void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);

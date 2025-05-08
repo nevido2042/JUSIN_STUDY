@@ -26,7 +26,7 @@ private:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-#pragma message ("임시")
+#pragma message ("여기가 나을지도?")
 	_float						m_fPingElapsed = { 0.f };
 	_bool						m_bSendPing = { false };
 

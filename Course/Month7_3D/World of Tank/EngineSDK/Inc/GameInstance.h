@@ -5,9 +5,6 @@
 /* 엔진 개발자가 클라개밫자에게 보여주고싶은 함수를 ... */
 #include "Prototype_Manager.h"
 
-#pragma message ("이거 빼야함")
-#include "Network.h"
-
 NS_BEGIN(Engine)
 
 
@@ -90,9 +87,14 @@ public:
 
 #pragma region 	NETWORK
 	HRESULT Send_Packet(_uint iPacketType, void* pArg);
-	HRESULT Define_Packet(_uint iPacketType, PacketFunc packetFunc);
+	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 	NETWORK_STATUS	Get_Network_Status();
 	void			Set_Network_Status(NETWORK_STATUS eStatus);
+
+	HRESULT	Clear_Packet();
+	HRESULT	Input_Data(_byte* pByte, _int iSize);
+	HRESULT	Output_Data(_byte* pByte, _int iSize);
+	HRESULT	Update_Header();
 #pragma endregion
 
 //

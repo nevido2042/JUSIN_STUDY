@@ -66,7 +66,7 @@ public:
 
     void Update_HeaderSize(int iSize);
 
-private:
+public:
     void Enqueue(const _byte* pData, int iSize);
     void Dequeue(_byte* pBuf, int iSize);
 

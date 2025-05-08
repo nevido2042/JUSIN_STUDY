@@ -10,8 +10,8 @@
 
 NS_BEGIN(Engine)
 
-#pragma message ("패킷* 빼보는 방향으로")
-typedef function<void(CPacket*, void*)> PacketFunc;
+//#pragma message ("패킷* 빼보는 방향으로")
+//typedef function<void(CPacket*, void*)> PacketFunc;
 
 class CNetwork final : public CBase
 {
@@ -35,7 +35,7 @@ public:
 
 public:
 	HRESULT Send_Packet(_uint iPacketType, void* pArg);
-	HRESULT Define_Packet(_uint iPacketType, PacketFunc packetFunc);
+	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 private:
 	void Enqueue_SendBuffer();
 
@@ -53,6 +53,12 @@ private:
 	void	Decode_Packet(const tagPACKET_HEADER& _tHeader);
 	_bool	Try_Connect();
 
+public:
+	HRESULT	Clear_Packet();
+	HRESULT	Input_Data(_byte* pByte, _int iSize);
+	HRESULT	Output_Data(_byte* pByte, _int iSize);
+	HRESULT	Update_Header();
+
 private:
 	SOCKET				m_hSocket;
 	fd_set				m_ReadSet;
@@ -68,7 +74,7 @@ private:
 	_float				m_fPingElapsed = { 0.f };
 	_bool				m_isPing = { false };
 
-	unordered_map<_uint, PacketFunc> m_PacketTypes;
+	unordered_map<_uint, function<void(void*)>> m_PacketTypes;
 
 private:
 	//HRESULT Ready_Components();

@@ -321,9 +321,9 @@ HRESULT CGameInstance::Send_Packet(_uint iPacketType, void* pArg)
 	return m_pNetwork->Send_Packet(iPacketType, pArg);
 }
 
-HRESULT CGameInstance::Define_Packet(_uint iPacketType, PacketFunc packetFunc)
+HRESULT CGameInstance::Define_Packet(_uint iPacketType, function<void(void*)> pFunction)
 {
-	return m_pNetwork->Define_Packet(iPacketType, packetFunc);
+	return m_pNetwork->Define_Packet(iPacketType, pFunction);
 }
 
 NETWORK_STATUS CGameInstance::Get_Network_Status()
@@ -334,6 +334,26 @@ NETWORK_STATUS CGameInstance::Get_Network_Status()
 void CGameInstance::Set_Network_Status(NETWORK_STATUS eStatus)
 {
 	return m_pNetwork->Set_Network_Status(eStatus);
+}
+
+HRESULT CGameInstance::Clear_Packet()
+{
+	return m_pNetwork->Clear_Packet();
+}
+
+HRESULT CGameInstance::Input_Data(_byte* pByte, _int iSize)
+{
+	return m_pNetwork->Input_Data(pByte, iSize);
+}
+
+HRESULT CGameInstance::Output_Data(_byte* pByte, _int iSize)
+{
+	return m_pNetwork->Output_Data(pByte, iSize);
+}
+
+HRESULT CGameInstance::Update_Header()
+{
+	return m_pNetwork->Update_Header();
 }
 
 #pragma endregion

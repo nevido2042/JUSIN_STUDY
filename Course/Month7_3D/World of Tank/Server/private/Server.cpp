@@ -18,6 +18,24 @@ CServer::~CServer()
 
 _bool CServer::Initialize()
 {
+    Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            tagPACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_POSITION);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+
+            CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
+
+            Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
+            Update_Header();
+        });
+
+
+
     m_iPort = Load_Config_File(TEXT("../bin/config.txt"));
 
     setlocale(LC_ALL, "KOREAN");
@@ -300,6 +318,11 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
         CPacketHandler::net_Position(&m_Packet, vPos);
 
         cout << vPos.x << ' ' << vPos.y << ' ' << vPos.z << endl;
+
+        CPacketHandler::POSITION_DESC Desc{};
+        Desc.vPos = vPos;
+        Send_Packet_Unicast(_pSession, ENUM_CLASS(PacketType::SC_POSITION), &Desc);
+
         break;
     }
 }
@@ -481,4 +504,58 @@ int CServer::Load_Config_File(const wstring& filename)
     int iPort;
     wss >> iPort;
     return iPort;
+}
+
+HRESULT CServer::Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg)
+{
+    auto it = m_PacketTypes.find(iPacketType);
+    if (it == m_PacketTypes.end())
+        return E_FAIL;
+
+    it->second(pArg);
+
+#pragma message ("이거 따로 함수 만들면 좋을듯")
+    int iResult{ 0 };
+    iResult = pSession->Get_SendQ().Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+    if (iResult < m_Packet.Get_DataSize())
+    {
+        wprintf_s(L"sendQ.Enqueue() error\n");
+        exit(1);
+    }
+#pragma message ("이거 따로 함수 만들면 좋을듯")
+
+    m_Packet.Clear();
+
+    return S_OK;
+}
+
+HRESULT CServer::Define_Packet(_uint iPacketType, function<void(void*)> pFunction)
+{
+    if (!pFunction)
+        return E_INVALIDARG;
+
+    // 중복 등록 방지 (선택적)
+    if (m_PacketTypes.find(iPacketType) != m_PacketTypes.end())
+        return E_FAIL;
+
+    m_PacketTypes[iPacketType] = std::move(pFunction);
+    return S_OK;
+}
+
+HRESULT CServer::Clear_Packet()
+{
+    m_Packet.Clear();
+    return S_OK;
+}
+
+HRESULT CServer::Input_Data(_byte * pByte, _int iSize)
+{
+    m_Packet.Enqueue(pByte, iSize);
+    return S_OK;
+}
+
+HRESULT CServer::Update_Header()
+{
+    m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(tagPACKET_HEADER));
+    return S_OK;
 }
