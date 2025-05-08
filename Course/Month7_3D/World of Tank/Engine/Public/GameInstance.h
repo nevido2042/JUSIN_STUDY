@@ -5,6 +5,9 @@
 /* 엔진 개발자가 클라개밫자에게 보여주고싶은 함수를 ... */
 #include "Prototype_Manager.h"
 
+#pragma message ("이거 빼야함")
+#include "Network.h"
+
 NS_BEGIN(Engine)
 
 
@@ -85,6 +88,13 @@ public:
 	const _float4* Get_CamPosition() const;
 #pragma endregion
 
+#pragma region 	NETWORK
+	HRESULT Send_Packet(_uint iPacketType, void* pArg);
+	HRESULT Define_Packet(_uint iPacketType, PacketFunc packetFunc);
+	NETWORK_STATUS	Get_Network_Status();
+	void			Set_Network_Status(NETWORK_STATUS eStatus);
+#pragma endregion
+
 //
 //#pragma region PICKING
 //	void Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse);
@@ -103,6 +113,7 @@ private:
 	class CInput_Device* 		m_pInputDevice = { nullptr };
 	class CKey_Manager*			m_pKeyManager = { nullptr };
 	class CPipeLine*			m_pPipeLine = { nullptr };
+	class CNetwork*				m_pNetwork = { nullptr };
 
 	// class CPicking*				m_pPicking = { nullptr };
 

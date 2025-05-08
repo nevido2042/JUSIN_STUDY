@@ -71,14 +71,16 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(STATE::RIGHT), MouseMove * fTimeDelta * m_fSensor);
 	}
 
-
-
 	__super::Bind_Matrices();
 }
 
+#include "PacketHandler.h"
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	CPacketHandler::POSITION_DESC Desc;
+	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
+	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)

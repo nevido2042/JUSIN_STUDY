@@ -8,4 +8,5 @@ namespace Engine
 	enum class STATE { RIGHT, UP, LOOK, POSITION, END };
 	enum class DIMK { LBUTTON, RBUTTON, WHEEL, END };
 	enum class DIMM { X, Y, WHEEL, END };
+	enum class NETWORK_STATUS { CONNECTED, WARNING, DISCONNECTED };
 }

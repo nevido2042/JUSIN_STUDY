@@ -28,9 +28,6 @@
     <Filter Include="02.GameObjects\02.StatusLight">
       <UniqueIdentifier>{9f5d5229-5fa6-4a83-8f2a-ee3f77dd730c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="10.Network">
-      <UniqueIdentifier>{50d0e932-fd02-4c24-84cf-2b27497140cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{768645b9-a508-418d-8d7d-9431033e5719}</UniqueIdentifier>
     </Filter>
@@ -102,9 +99,6 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\00.BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Network.h">
-      <Filter>10.Network</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\DebugUtils.h">
       <Filter>96.DebugUtils</Filter>
     </ClInclude>
@@ -161,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\00.BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Network.cpp">
-      <Filter>10.Network</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugUtils.cpp">
       <Filter>96.DebugUtils</Filter>

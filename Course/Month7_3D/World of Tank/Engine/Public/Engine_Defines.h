@@ -2,6 +2,12 @@
 
 #pragma warning (disable : 4251)
 
+#include <WinSock2.h>
+#include <ws2tcpip.h>
+#include <locale>
+#include <fstream>
+#include <sstream>
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -23,6 +29,8 @@ using namespace DirectX;
 #include <list>
 #include <vector>
 #include <memory>
+#include <iostream>
+#include <functional>
 
 using namespace std;
 

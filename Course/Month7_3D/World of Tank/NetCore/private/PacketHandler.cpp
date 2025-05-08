@@ -6,7 +6,7 @@
 #include "PacketHandler.h"
 #include "Packet.h"
 
-void CPacketHandler::mp_CS_Ping(CPacket* pPacket)
+void CPacketHandler::mp_CS_Ping(CPacket* pPacket, void* pArg)
 {
     pPacket->Clear();
 
@@ -30,6 +30,27 @@ void CPacketHandler::mp_SC_Ping(CPacket* pPacket)
     pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
 
     pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::mp_CS_Position(CPacket* pPacket, void* pArg)
+{
+    tagPACKET_HEADER tHeader{};
+    tHeader.byCode = PACKET_CODE;
+    tHeader.byType = ENUM_CLASS(PacketType::CS_POSITION);
+
+    POSITION_DESC* Position_Desc = static_cast<POSITION_DESC*>(pArg);
+
+    pPacket->Put_Data((_byte*)&tHeader, sizeof(tHeader));
+    *pPacket << Position_Desc->vPos;
+
+    pPacket->Update_HeaderSize(pPacket->Get_DataSize() - sizeof(tHeader));
+}
+
+void CPacketHandler::net_Position(CPacket* pPacket, _float3& vPos)
+{
+    *pPacket >> vPos;
+
+    pPacket->Clear();
 }
 
 void CPacketHandler::mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& _pStartPos)

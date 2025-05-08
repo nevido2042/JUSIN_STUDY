@@ -1,17 +1,18 @@
 #include "MainApp.h"
 
 #include "GameInstance.h"
-#include "Level_Loading.h"
 #include "DebugUtils.h"
+
+#include "Level_Loading.h"
 #include "BackGround_Loading.h"
 #include "Loading_Spinner.h"
 
+#include "PacketHandler.h"
+
 CMainApp::CMainApp()
-	: m_pGameInstance { CGameInstance::Get_Instance() },
-	m_pNetwork{ CNetwork::Get_Instance() }
+	: m_pGameInstance { CGameInstance::Get_Instance() }
 {
 	Safe_AddRef(m_pGameInstance);
-	Safe_AddRef(m_pNetwork);
 
 }
 
@@ -42,19 +43,23 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Start_Level(LEVEL::LOGO)))
 		return E_FAIL;
 
-	m_pNetwork->Initialize();
+	if(FAILED(Define_Packets()))
+		return E_FAIL;
 
     return S_OK;
 }
 
 void CMainApp::Update(_float fTimeDelta)
 {
-	m_pNetwork->Priority_Update(fTimeDelta);
+	m_fPingElapsed += fTimeDelta;
+	if (m_fPingElapsed > PING_TIME && m_bSendPing == false)
+	{
+		m_fPingElapsed = 0.f;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PING), nullptr);
+		m_bSendPing = true;
+	}
 
 	m_pGameInstance->Update_Engine(fTimeDelta);
-	m_pNetwork->Update(fTimeDelta);
-
-	m_pNetwork->Late_Update(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -66,6 +71,31 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->End_Draw();
 
     return S_OK;
+}
+
+HRESULT CMainApp::Define_Packets()
+{
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), CPacketHandler::mp_CS_Ping);
+
+	//m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg) 
+	//	{
+	//		//
+	//		//
+	//		// 헤더 넣기
+	//		// 데이터 넣기
+	//		// 헤더에 데이터 사이즈 갱신하기 
+	//	});
+
+#pragma message ("이런 느낌")
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](CPacket* pPacket, void* pArg) {
+		m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
+		cout << "SC_PING" << endl;
+		m_bSendPing = false;
+		});
+
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), CPacketHandler::mp_CS_Position);
+
+	return S_OK;
 }
 
 HRESULT CMainApp::Ready_Prototype_Component()
@@ -150,8 +180,6 @@ void CMainApp::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
-
-	Safe_Release(m_pNetwork);
 
 	m_pGameInstance->Release_Engine();
 

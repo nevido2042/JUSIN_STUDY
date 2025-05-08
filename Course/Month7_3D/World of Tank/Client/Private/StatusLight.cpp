@@ -31,10 +31,10 @@ HRESULT CStatusLight::Initialize(void* pArg)
 		return E_FAIL;
 
 	//m_pNetwork = static_cast<CNetwork*>(m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_Network")));
-	m_pNetwork = CNetwork::Get_Instance();
-	if(nullptr == m_pNetwork)
-		return E_FAIL;
-	Safe_AddRef(m_pNetwork);
+	//m_pNetwork = CNetwork::Get_Instance();
+	//if(nullptr == m_pNetwork)
+	//	return E_FAIL;
+	//Safe_AddRef(m_pNetwork);
 
 	return S_OK;
 }
@@ -46,7 +46,7 @@ void CStatusLight::Priority_Update(_float fTimeDelta)
 
 void CStatusLight::Update(_float fTimeDelta)
 {
-	m_eStatus = m_pNetwork->Get_isConnected();
+	m_eStatus = m_pGameInstance->Get_Network_Status();
 }
 
 void CStatusLight::Late_Update(_float fTimeDelta)
@@ -131,5 +131,5 @@ void CStatusLight::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
 
-	Safe_Release(m_pNetwork);
+	//Safe_Release(m_pNetwork);
 }

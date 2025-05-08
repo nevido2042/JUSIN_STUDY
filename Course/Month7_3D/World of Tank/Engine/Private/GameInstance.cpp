@@ -10,6 +10,7 @@
 #include "Sound_Device.h"
 #include "Input_Device.h"
 #include "PipeLine.h"
+#include "Network.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -56,6 +57,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pPipeLine)
 		return E_FAIL;
 
+	m_pNetwork = CNetwork::Create();
+	if (nullptr == m_pNetwork)
+		return E_FAIL;
+
 	
 
 	//m_pPicking = CPicking::Create(*ppOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
@@ -73,12 +78,14 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pInputDevice->Update();
 	m_pSound_Device->Update();
 
-
+	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	//m_pPicking->Update();
 
+	m_pNetwork->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);	
 
+	m_pNetwork->Late_Update(fTimeDelta);
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
@@ -307,6 +314,26 @@ _matrix CGameInstance::Get_Transform_Matrix(D3DTS eState) const
 const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
+}
+
+HRESULT CGameInstance::Send_Packet(_uint iPacketType, void* pArg)
+{
+	return m_pNetwork->Send_Packet(iPacketType, pArg);
+}
+
+HRESULT CGameInstance::Define_Packet(_uint iPacketType, PacketFunc packetFunc)
+{
+	return m_pNetwork->Define_Packet(iPacketType, packetFunc);
+}
+
+NETWORK_STATUS CGameInstance::Get_Network_Status()
+{
+	return m_pNetwork->Get_Network_Status();
+}
+
+void CGameInstance::Set_Network_Status(NETWORK_STATUS eStatus)
+{
+	return m_pNetwork->Set_Network_Status(eStatus);
 }
 
 #pragma endregion

@@ -28,7 +28,7 @@ public:
 	virtual HRESULT Render();
 
 private:
-	class CNetwork* m_pNetwork = { nullptr };
+	//class CNetwork* m_pNetwork = { nullptr };
 
 	NETWORK_STATUS m_eStatus = NETWORK_STATUS::DISCONNECTED;
 

@@ -52,7 +52,7 @@ _bool CServer::Initialize()
     servAdr.sin_port = htons(m_iPort);
 
     // πŸ¿ŒµÂ
-    if (bind(m_ServSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
+    if (::bind(m_ServSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
     {
         wprintf_s(L"bind() error:%d\n", WSAGetLastError());
         return false;
@@ -293,6 +293,14 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
 		CPacketHandler::mp_SC_Ping(&m_Packet);
         Send_Unicast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 		break;
+
+    case ENUM_CLASS(PacketType::CS_POSITION):
+
+        _float3 vPos;
+        CPacketHandler::net_Position(&m_Packet, vPos);
+
+        cout << vPos.x << ' ' << vPos.y << ' ' << vPos.z << endl;
+        break;
     }
 }
 

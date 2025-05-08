@@ -3,7 +3,6 @@
 #include "Client_Defines.h"
 #include "Base.h"
 
-#include "Network.h"
 
 NS_BEGIN(Engine)
 class CGameInstance;
@@ -23,12 +22,17 @@ public:
 	HRESULT Render();
 
 private:
-	CNetwork*					m_pNetwork = { nullptr };
 	CGameInstance*				m_pGameInstance = { };
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
+#pragma message ("임시")
+	_float						m_fPingElapsed = { 0.f };
+	_bool						m_bSendPing = { false };
+
 public:
+	HRESULT Define_Packets();
+
 	HRESULT Ready_Prototype_Component();
 
 	//로딩씬에 사용할 프로토타입 만들어두기...스태틱으로
