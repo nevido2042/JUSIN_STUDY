@@ -5,6 +5,8 @@
 
 enum class PacketType
 {
+    SC_GIVE_ID,
+
     CS_PING,
     SC_PING,
 
@@ -21,14 +23,13 @@ enum class PacketType
     SC_DELETE_CHARACTER,
 };
 
+#pragma message ("패킷핸들러 꼭 없앤다.  패킷으로 이동하면 좋을 듯?")
 class CPacketHandler
 {
 public:
-    static void mp_SC_Ping(CPacket* pPacket);
-
     typedef struct tagPacket_Desc
     {
-
+        _uint iID{ /*SESSION_MAX*/ 10 }; //SESSION_MAX 은 서버
     }PACKET_DESC;
 
     typedef struct tagPostion_Desc : PACKET_DESC
@@ -36,15 +37,15 @@ public:
         _float3 vPos{};
     }POSITION_DESC;
 
-    static void net_Position(CPacket* pPacket, _float3& vPos);
+    //static void net_Position(CPacket* pPacket, _float3& vPos);
 
-    static void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);
-    static void net_CreateMyCharacter(CPacket* pPacket, int& iID, _float3& Pos);
+    //static void mp_SC_CreateMyCharacter(CPacket* pPacket, int iID, _float3& Pos);
+    //static void net_CreateMyCharacter(CPacket* pPacket, int& iID, _float3& Pos);
 
-    static void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, _float3& Pos);
-    static void net_CreateOtherCharacter(CPacket* pPacket, int& iID, _float3& Pos);
+    //static void mp_SC_CreateOtherCharacter(CPacket* pPacket, int iID, _float3& Pos);
+    //static void net_CreateOtherCharacter(CPacket* pPacket, int& iID, _float3& Pos);
 
-    static void mp_SC_DeleteCharacter(CPacket* pPacket, int iID);
-    static void net_DeleteCharacter(CPacket* pPacket, int& iID);
+    //static void mp_SC_DeleteCharacter(CPacket* pPacket, int iID);
+    //static void net_DeleteCharacter(CPacket* pPacket, int& iID);
 };
 

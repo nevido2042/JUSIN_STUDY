@@ -54,6 +54,8 @@ private:
 	_bool	Try_Connect();
 
 public:
+	void	Set_ID(_uint iID) { m_iMyID = iID; }
+	_uint	Get_ID() { return m_iMyID; }
 	HRESULT	Clear_Packet();
 	HRESULT	Input_Data(_byte* pByte, _int iSize);
 	HRESULT	Output_Data(_byte* pByte, _int iSize);

@@ -51,12 +51,15 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Update(_float fTimeDelta)
 {
-	m_fPingElapsed += fTimeDelta;
-	if (m_fPingElapsed > PING_TIME && m_bSendPing == false)
+	if (m_pGameInstance->Get_Network_Status() != NETWORK_STATUS::DISCONNECTED)
 	{
-		m_fPingElapsed = 0.f;
-		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PING), nullptr);
-		m_bSendPing = true;
+		m_fPingElapsed += fTimeDelta;
+		if (m_fPingElapsed > PING_TIME && m_bSendPing == false)
+		{
+			m_fPingElapsed = 0.f;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PING), nullptr);
+			m_bSendPing = true;
+		}
 	}
 
 	m_pGameInstance->Update_Engine(fTimeDelta);
@@ -75,10 +78,26 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Define_Packets()
 {
-	//m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), CPacketHandler::mp_CS_Ping);
+	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
+		{
+			CPacketHandler::PACKET_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::PACKET_DESC));
+			m_pGameInstance->Set_ID(Desc.iID);
+
+			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
+		});
 
 	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg) 
 		{
+			CPacketHandler::PACKET_DESC Desc{};
+			Desc.iID = m_pGameInstance->Get_ID();
+			
+#pragma message ("최대 세션 갯수")
+			if (Desc.iID == 10)
+			{
+				return;
+			}
+
 			m_pGameInstance->Clear_Packet();
 
 			tagPACKET_HEADER tHeader{};
@@ -86,18 +105,23 @@ HRESULT CMainApp::Define_Packets()
 			tHeader.byType = ENUM_CLASS(PacketType::CS_PING);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::PACKET_DESC));
+
 			m_pGameInstance->Update_Header();
 		});
 
 	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg) 
 		{
-		m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
-		cout << "SC_PING" << endl;
-		m_bSendPing = false;
+			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
+			cout << "SC_PING" << endl;
+			m_bSendPing = false;
 		});
 
 	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
 		{
+			if (m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
+				return;
+
 			m_pGameInstance->Clear_Packet();
 
 			tagPACKET_HEADER tHeader{};
@@ -107,6 +131,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
 
 			CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
+			Position_Desc->iID = m_pGameInstance->Get_ID();
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
 			m_pGameInstance->Update_Header();

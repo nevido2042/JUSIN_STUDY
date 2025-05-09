@@ -18,23 +18,7 @@ CServer::~CServer()
 
 _bool CServer::Initialize()
 {
-    Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
-        {
-            Clear_Packet();
-
-            tagPACKET_HEADER tHeader{};
-            tHeader.byCode = PACKET_CODE;
-            tHeader.byType = ENUM_CLASS(PacketType::SC_POSITION);
-
-            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
-
-            CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
-
-            Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
-            Update_Header();
-        });
-
-
+    Define_Packets();
 
     m_iPort = Load_Config_File(TEXT("../bin/config.txt"));
 
@@ -150,34 +134,41 @@ void CServer::AcceptProc()
         _float3 Position{ static_cast<_float>(iRandX) , 0.f, static_cast<_float>(iRandZ) };
 
         CSession* pNewSession = new CSession(clntAdr, clntSock, m_iID, Position);
+
+        //아이디 부여
+
+		CPacketHandler::PACKET_DESC Desc{};
+        Desc.iID = m_iID;
+        Send_Packet_Unicast(pNewSession, ENUM_CLASS(PacketType::SC_GIVE_ID), &Desc);
+
         //링버퍼 초기화
         /*pNewSession->m_RecvQ = CRingBuffer(5000);
         pNewSession->m_SendQ = CRingBuffer(5000);*/
 
-        //신입 자기 캐릭 생성
-        CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
-            pNewSession->Get_SessionInfo().iID,
-            pNewSession->Get_SessionInfo().Position
-        );
-        Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+        ////신입 자기 캐릭 생성
+        //CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
+        //    pNewSession->Get_SessionInfo().iID,
+        //    pNewSession->Get_SessionInfo().Position
+        //);
+        //Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
-        //신입 뿌리기
-        CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
-            pNewSession->Get_SessionInfo().iID,
-            pNewSession->Get_SessionInfo().Position
-        );
-        Send_Broadcast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+        ////신입 뿌리기
+        //CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+        //    pNewSession->Get_SessionInfo().iID,
+        //    pNewSession->Get_SessionInfo().Position
+        //);
+        //Send_Broadcast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
-        //신입에게 기존 유저 뿌리기
-        for (CSession* pSession : m_vecSession)
-        {
-            //신입 뿌리기
-            CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
-                pSession->Get_SessionInfo().iID,
-                pSession->Get_SessionInfo().Position
-            );
-            Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-        }
+        ////신입에게 기존 유저 뿌리기
+        //for (CSession* pSession : m_vecSession)
+        //{
+        //    //신입 뿌리기
+        //    CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
+        //        pSession->Get_SessionInfo().iID,
+        //        pSession->Get_SessionInfo().Position
+        //    );
+        //    Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+        //}
 
         m_vecSession.push_back(pNewSession);
         m_iID++;
@@ -304,27 +295,36 @@ void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSessio
     }
     m_Packet.Move_WritePos(iResult);
 
-    switch (_Header.byType)
+    auto it = m_PacketTypes.find(_Header.byType);
+    if (it != m_PacketTypes.end())
     {
-	case ENUM_CLASS(PacketType::CS_PING):
-        cout << "CS_PING" << endl;
-		CPacketHandler::mp_SC_Ping(&m_Packet);
-        Send_Unicast(_pSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-		break;
-
-    case ENUM_CLASS(PacketType::CS_POSITION):
-
-        _float3 vPos;
-        CPacketHandler::net_Position(&m_Packet, vPos);
-
-        cout << vPos.x << ' ' << vPos.y << ' ' << vPos.z << endl;
-
-        CPacketHandler::POSITION_DESC Desc{};
-        Desc.vPos = vPos;
-        Send_Packet_Unicast(_pSession, ENUM_CLASS(PacketType::SC_POSITION), &Desc);
-
-        break;
+        it->second(nullptr/*&Desc*/); // 실제 패킷 처리 함수 호출
     }
+    else
+    {
+        wprintf_s(L"Unknown packet type: %d\n", _Header.byType);
+    }
+
+ //   switch (_Header.byType)
+ //   {
+	//case ENUM_CLASS(PacketType::CS_PING):
+ //       cout << "CS_PING" << endl;
+	//	Send_Packet_Unicast(_pSession, ENUM_CLASS(PacketType::SC_PING), nullptr);
+
+	//	break;
+
+ //   case ENUM_CLASS(PacketType::CS_POSITION):
+
+ //       //_float3 vPos;
+ //       //CPacketHandler::net_Position(&m_Packet, vPos);
+
+ //       //cout << vPos.x << ' ' << vPos.y << ' ' << vPos.z << endl;
+
+ //       //CPacketHandler::POSITION_DESC Desc{};
+ //       //Desc.vPos = vPos;
+
+ //       break;
+ //   }
 }
 
 void CServer::Recieve_Message()
@@ -461,8 +461,8 @@ void CServer::Check_Session_State(SOCKET sock)
             if (result <= 0) // 연결 종료되었거나 오류 발생
             {
                 wprintf_s(L"클라이언트 종료 ID:%d, WSAGetLastError:%d\n", (*iter)->Get_SessionInfo().iID, WSAGetLastError());
-                CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, (*iter)->Get_SessionInfo().iID);
-                Send_Broadcast(*iter, m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+                //CPacketHandler::mp_SC_DeleteCharacter(&m_Packet, (*iter)->Get_SessionInfo().iID);
+                //Send_Broadcast(*iter, m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
 
                 // 클라이언트 소켓 종료 처리
                 closesocket((*iter)->Get_Socket());
@@ -554,8 +554,107 @@ HRESULT CServer::Input_Data(_byte * pByte, _int iSize)
     return S_OK;
 }
 
+HRESULT CServer::Output_Data(_byte* pByte, _int iSize)
+{
+    m_Packet.Dequeue(pByte, iSize);
+    return S_OK;
+}
+
 HRESULT CServer::Update_Header()
 {
     m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(tagPACKET_HEADER));
     return S_OK;
+}
+
+HRESULT CServer::Define_Packets()
+{
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            CPacketHandler::PACKET_DESC* pDesc = static_cast<CPacketHandler::PACKET_DESC*>(pArg);
+
+            tagPACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_GIVE_ID);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pDesc), sizeof(CPacketHandler::PACKET_DESC));
+
+            Update_Header();
+
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
+    {
+        Clear_Packet();
+
+        tagPACKET_HEADER tHeader{};
+        tHeader.byCode = PACKET_CODE;
+        tHeader.byType = ENUM_CLASS(PacketType::SC_POSITION);
+
+        Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+
+        CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
+
+        Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
+        Update_Header();
+    })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
+        {
+            CPacketHandler::POSITION_DESC Desc{};
+			Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::POSITION_DESC));
+
+            cout << Desc.vPos.x << ' ' << Desc.vPos.y << ' ' << Desc.vPos.z << endl;
+
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+            pSession->Get_SessionInfo().Position = Desc.vPos;
+
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_POSITION), &Desc);
+
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg)
+        {
+            CPacketHandler::PACKET_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::PACKET_DESC));
+            CSession* pSession = Find_Session(Desc.iID);
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_PING), &Desc);
+            cout << "CS_PING: ID_" << Desc.iID << endl;
+            Clear_Packet();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            tagPACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_PING);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+CSession* CServer::Find_Session(_uint iID)
+{
+    for (CSession* pSession : m_vecSession)
+    {
+		if (pSession->Get_SessionInfo().iID == iID)
+			return pSession;
+    }
+
+    return nullptr;
 }

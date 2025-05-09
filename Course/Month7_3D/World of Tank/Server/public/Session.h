@@ -21,6 +21,7 @@ public:
 	_bool				Get_IsDead() { return m_bIsDead; }
 	void				Set_IsDead() { m_bIsDead = true; }
 
+
 private:
 	SOCKADDR_IN			m_ClientAddress{};
 	SOCKET				m_ClientSocket = INVALID_SOCKET;

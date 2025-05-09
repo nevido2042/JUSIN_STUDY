@@ -316,6 +316,16 @@ const _float4* CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
+void CGameInstance::Set_ID(_uint iID)
+{
+	m_pNetwork->Set_ID(iID);
+}
+
+_uint CGameInstance::Get_ID()
+{
+	return m_pNetwork->Get_ID();
+}
+
 HRESULT CGameInstance::Send_Packet(_uint iPacketType, void* pArg)
 {
 	return m_pNetwork->Send_Packet(iPacketType, pArg);

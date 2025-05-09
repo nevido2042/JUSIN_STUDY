@@ -8,6 +8,7 @@
 
 using namespace std;
 
+#define SESSION_MAX 10
 #define BUF_SIZE 1024
 //#define PORT L"2042"
 
@@ -44,7 +45,12 @@ public:
 public:
 	HRESULT	Clear_Packet();
 	HRESULT	Input_Data(_byte* pByte, _int iSize);
+	HRESULT	Output_Data(_byte* pByte, _int iSize);
 	HRESULT	Update_Header();
+private:
+	HRESULT Define_Packets();
+private:
+	CSession* Find_Session(_uint iID);
 
 private:
 	SOCKET						m_ServSock = { INVALID_SOCKET };

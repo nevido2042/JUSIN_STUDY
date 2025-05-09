@@ -86,6 +86,8 @@ public:
 #pragma endregion
 
 #pragma region 	NETWORK
+	void	Set_ID(_uint iID);
+	_uint	Get_ID();
 	HRESULT Send_Packet(_uint iPacketType, void* pArg);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 	NETWORK_STATUS	Get_Network_Status();

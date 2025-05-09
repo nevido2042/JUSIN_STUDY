@@ -251,9 +251,6 @@ void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
 
 	//클라쪽에서 해석해야함, 어떤 타입의 패킷이 왔는지, 어떤 물건이 왔는지 반환?
 
-#pragma message ("여기서 데이터를 빼서 클라에 전달해주는게 나을라나")
-	//CPacketHandler::PACKET_DESC Desc{};
-
 	auto it = m_PacketTypes.find(_tHeader.byType);
 	if (it != m_PacketTypes.end())
 	{
