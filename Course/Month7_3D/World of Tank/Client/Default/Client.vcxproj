@@ -73,10 +73,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>../Bin/</OutDir>
     <LibraryPath>../../NetCore/bin/;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>../ThirdParty/imgui/backends/;../ThirdParty/imgui/;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>../Bin/</OutDir>
     <LibraryPath>../../NetCore/bin/;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>../ThirdParty/imgui/backends/;../ThirdParty/imgui/;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -114,6 +116,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../public/;../../NetCore/public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,6 +141,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../public/;../../NetCore/public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,12 +169,15 @@
     <ClInclude Include="..\Public\Level_Hanger.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
+    <ClInclude Include="..\Public\Level_MapTool.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Loading_Spinner.h" />
     <ClInclude Include="..\Public\Logo.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\StatusLight.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -185,12 +192,19 @@
     <ClCompile Include="..\Private\Level_Hanger.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\Private\Level_MapTool.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Loading_Spinner.cpp" />
     <ClCompile Include="..\Private\Logo.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\private\StatusLight.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\imgui.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>

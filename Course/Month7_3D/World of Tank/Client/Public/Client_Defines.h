@@ -21,6 +21,10 @@
 
 #include "PacketType.h"
 
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
+
 namespace Client
 {
 	const unsigned int			g_iWinSizeX = 1280;

@@ -27,8 +27,8 @@ public:
 	_float Compute_Random_Normal();
 	_float Compute_Random(_float fMin, _float fMax);
 
-#pragma region LEVEL_MANAGER
 public:
+#pragma region LEVEL_MANAGER
 	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 #pragma endregion
 

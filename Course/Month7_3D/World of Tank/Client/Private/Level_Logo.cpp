@@ -31,10 +31,16 @@ HRESULT CLevel_Logo::Initialize()
 
 void CLevel_Logo::Update(_float fTimeDelta)
 {
-	if (GetKeyState(VK_RETURN) & 0x8000)
+	if (m_pGameInstance->Key_Down(DIK_RETURN))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
+			return;
+	}
+	else if (m_pGameInstance->Key_Down(DIK_T)/*m_pGameInstance->Key_Down(DIK_F3)*/)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::MAPTOOL))))
 			return;
 	}
 }

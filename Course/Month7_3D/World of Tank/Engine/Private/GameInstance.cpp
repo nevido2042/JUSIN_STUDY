@@ -291,7 +291,7 @@ _bool CGameInstance::Key_Up(_ubyte eKeyID)
 FORCEINLINE
 _bool CGameInstance::Key_Down(_ubyte eKeyID)
 {
-	return m_pInputDevice->Key_Down(eKeyID);
+ 	return m_pInputDevice->Key_Down(eKeyID);
 }
 
 #pragma region PIPELINE
