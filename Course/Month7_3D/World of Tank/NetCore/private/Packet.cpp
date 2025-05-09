@@ -1,6 +1,7 @@
 
-#include"../public/Packet.h"
-#include<stdio.h>
+#include"Packet.h"
+#include "PacketType.h"
+
 CPacket::CPacket()
 {
 	m_pAlloc = (_byte*)malloc(eBUFFER_DEFAULT + 1);
@@ -154,6 +155,6 @@ void CPacket::Update_HeaderSize(int iSize)
 	//*(GetBufferPtr() + 1) = static_cast<char>(packetSize);
 
 	// PACKET_HEADER 구조체를 버퍼의 처음에 위치한다고 가정
-	tagPACKET_HEADER* pHeader = reinterpret_cast<tagPACKET_HEADER*>(Get_BufferPtr());
+	PACKET_HEADER* pHeader = reinterpret_cast<PACKET_HEADER*>(Get_BufferPtr());
 	pHeader->bySize = static_cast<_byte>(iSize);
 }

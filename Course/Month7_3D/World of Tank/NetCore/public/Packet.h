@@ -1,18 +1,6 @@
 #pragma once
 
 #include "Engine_Defines.h"
-
-#define PACKET_CODE (_byte)0x20
-
-#pragma pack(push, 1)
-struct tagPACKET_HEADER
-{
-    _byte byCode;
-    _byte bySize;
-    _byte byType;
-};
-#pragma pack(pop)
-
 class CPacket
 {
 public:

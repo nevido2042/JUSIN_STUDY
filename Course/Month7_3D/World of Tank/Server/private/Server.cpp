@@ -1,10 +1,10 @@
-#include "PacketHandler.h"
 #include "Server.h"
-
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <iostream>
+
+#include "PacketType.h"
 
 
 CServer::CServer()
@@ -137,7 +137,7 @@ void CServer::AcceptProc()
 
         //아이디 부여
 
-		CPacketHandler::PACKET_DESC Desc{};
+		PACKET_DESC Desc{};
         Desc.iID = m_iID;
         Send_Packet_Unicast(pNewSession, ENUM_CLASS(PacketType::SC_GIVE_ID), &Desc);
 
@@ -175,38 +175,38 @@ void CServer::AcceptProc()
     }
 }
 
-void CServer::Send_Unicast(CSession* pSession, const _byte* pMSG, const int iSize)
-{
-    int iResult{ 0 };
-    iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
-    if (iResult < iSize)
-    {
-        wprintf_s(L"sendQ.Enqueue() error\n");
-        exit(1);
-    }
-
-    m_Packet.Clear();
-}
-
-void CServer::Send_Broadcast(CSession* _pSession, const _byte* pMSG, const int iSize)
-{
-    int iResult{ 0 };
-
-    for (CSession* pSession : m_vecSession)
-    {
-        if (pSession == _pSession)
-            continue;
-
-        iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
-        if (iResult < iSize)
-        {
-            wprintf_s(L"sendQ.Enqueue() error\n");
-            exit(1);
-        }
-    }
-
-    m_Packet.Clear();
-}
+//void CServer::Send_Unicast(CSession* pSession, const _byte* pMSG, const int iSize)
+//{
+//    int iResult{ 0 };
+//    iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
+//    if (iResult < iSize)
+//    {
+//        wprintf_s(L"sendQ.Enqueue() error\n");
+//        exit(1);
+//    }
+//
+//    m_Packet.Clear();
+//}
+//
+//void CServer::Send_Broadcast(CSession* _pSession, const _byte* pMSG, const int iSize)
+//{
+//    int iResult{ 0 };
+//
+//    for (CSession* pSession : m_vecSession)
+//    {
+//        if (pSession == _pSession)
+//            continue;
+//
+//        iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
+//        if (iResult < iSize)
+//        {
+//            wprintf_s(L"sendQ.Enqueue() error\n");
+//            exit(1);
+//        }
+//    }
+//
+//    m_Packet.Clear();
+//}
 
 void CServer::Read_Proc(CSession* _pSession)
 {
@@ -256,7 +256,7 @@ void CServer::Read_Proc(CSession* _pSession)
     while (true)
     {
         //메시지 분석
-        tagPACKET_HEADER tHeader;
+        PACKET_HEADER tHeader;
 
         //헤더도 못 뽑는 정도 밖에 안들어왔다면
         if (sizeof(tHeader) > _pSession->Get_RecvQ().Get_UseSize())
@@ -285,7 +285,7 @@ void CServer::Read_Proc(CSession* _pSession)
     }
 }
 
-void CServer::Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession)
+void CServer::Decode_Message(const PACKET_HEADER& _Header, CSession* _pSession)
 {
     int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);
     if (iResult != _Header.bySize)
@@ -514,17 +514,29 @@ HRESULT CServer::Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void
 
     it->second(pArg);
 
-#pragma message ("이거 따로 함수 만들면 좋을듯")
-    int iResult{ 0 };
-    iResult = pSession->Get_SendQ().Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-    if (iResult < m_Packet.Get_DataSize())
-    {
-        wprintf_s(L"sendQ.Enqueue() error\n");
-        exit(1);
-    }
-#pragma message ("이거 따로 함수 만들면 좋을듯")
+	Flush_SendBuffer(pSession);
 
     m_Packet.Clear();
+
+    return S_OK;
+}
+
+HRESULT CServer::Send_Packet_Broadcast(CSession* pSession, _uint iPacketType, void* pArg)
+{
+#pragma message ("일단 만들었지만 사용 해본적 없음")
+    auto it = m_PacketTypes.find(iPacketType);
+    if (it == m_PacketTypes.end())
+        return E_FAIL;
+
+    for (CSession* pSession : m_vecSession)
+        {
+            if (pSession == pSession)
+                continue;
+
+            it->second(pArg);
+            Flush_SendBuffer(pSession);
+            m_Packet.Clear();
+        }
 
     return S_OK;
 }
@@ -562,7 +574,7 @@ HRESULT CServer::Output_Data(_byte* pByte, _int iSize)
 
 HRESULT CServer::Update_Header()
 {
-    m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(tagPACKET_HEADER));
+    m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(PACKET_HEADER));
     return S_OK;
 }
 
@@ -572,14 +584,14 @@ HRESULT CServer::Define_Packets()
         {
             Clear_Packet();
 
-            CPacketHandler::PACKET_DESC* pDesc = static_cast<CPacketHandler::PACKET_DESC*>(pArg);
+            PACKET_DESC* pDesc = static_cast<PACKET_DESC*>(pArg);
 
-            tagPACKET_HEADER tHeader{};
+            PACKET_HEADER tHeader{};
             tHeader.byCode = PACKET_CODE;
             tHeader.byType = ENUM_CLASS(PacketType::SC_GIVE_ID);
 
-            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pDesc), sizeof(CPacketHandler::PACKET_DESC));
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pDesc), sizeof(PACKET_DESC));
 
             Update_Header();
 
@@ -590,23 +602,23 @@ HRESULT CServer::Define_Packets()
     {
         Clear_Packet();
 
-        tagPACKET_HEADER tHeader{};
+        PACKET_HEADER tHeader{};
         tHeader.byCode = PACKET_CODE;
         tHeader.byType = ENUM_CLASS(PacketType::SC_POSITION);
 
-        Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+        Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
-        CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
+        POSITION_DESC* Position_Desc = static_cast<POSITION_DESC*>(pArg);
 
-        Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
+        Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(POSITION_DESC));
         Update_Header();
     })))
         return E_FAIL;
 
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
         {
-            CPacketHandler::POSITION_DESC Desc{};
-			Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::POSITION_DESC));
+            POSITION_DESC Desc{};
+			Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
 
             cout << Desc.vPos.x << ' ' << Desc.vPos.y << ' ' << Desc.vPos.z << endl;
 
@@ -622,8 +634,8 @@ HRESULT CServer::Define_Packets()
 
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg)
         {
-            CPacketHandler::PACKET_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::PACKET_DESC));
+            PACKET_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
             CSession* pSession = Find_Session(Desc.iID);
             Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_PING), &Desc);
             cout << "CS_PING: ID_" << Desc.iID << endl;
@@ -635,11 +647,11 @@ HRESULT CServer::Define_Packets()
         {
             Clear_Packet();
 
-            tagPACKET_HEADER tHeader{};
+            PACKET_HEADER tHeader{};
             tHeader.byCode = PACKET_CODE;
             tHeader.byType = ENUM_CLASS(PacketType::SC_PING);
 
-            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
             Update_Header();
         })))
@@ -657,4 +669,17 @@ CSession* CServer::Find_Session(_uint iID)
     }
 
     return nullptr;
+}
+
+HRESULT CServer::Flush_SendBuffer(CSession* pSession)
+{
+    _int iResult{ 0 };
+    iResult = pSession->Get_SendQ().Enqueue((_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
+    if (iResult < m_Packet.Get_DataSize())
+    {
+        wprintf_s(L"sendQ.Enqueue() error\n");
+        return E_FAIL;
+    }
+
+	return S_OK;
 }

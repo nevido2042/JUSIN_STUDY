@@ -2,17 +2,12 @@
 #include "Base.h"
 #include "RingBuffer.h"
 #include "Packet.h"
+#include "NetCore_Define.h"
 
 #define PING_TIME 1.f
 #define BUF_SIZE 1024
-//#define IP L"127.0.0.1"
-//#define PORT 2042
 
 NS_BEGIN(Engine)
-
-//#pragma message ("패킷* 빼보는 방향으로")
-//typedef function<void(CPacket*, void*)> PacketFunc;
-
 class CNetwork final : public CBase
 {
 	typedef struct tagServerConfig
@@ -26,7 +21,6 @@ private:
 	virtual ~CNetwork() = default;
 
 public:
-	//virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg = nullptr);
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
@@ -37,7 +31,7 @@ public:
 	HRESULT Send_Packet(_uint iPacketType, void* pArg);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 private:
-	void Enqueue_SendBuffer();
+	void	Enqueue_SendBuffer();
 
 public:
 	bool Compare_ID(const int iID) const;
@@ -50,7 +44,7 @@ public:
 private:
 	void	Flush_SendBuffer();
 	void	Flush_ReceiveBuffer();
-	void	Decode_Packet(const tagPACKET_HEADER& _tHeader);
+	void	Decode_Packet(const PACKET_HEADER& _tHeader);
 	_bool	Try_Connect();
 
 public:
@@ -62,10 +56,12 @@ public:
 	HRESULT	Update_Header();
 
 private:
-	SOCKET				m_hSocket;
-	fd_set				m_ReadSet;
-#pragma message ("최대 세션 갯수 = 서버 = 아이디 부여 안받음")
-	_uint				m_iMyID{10};
+	SOCKET				m_hSocket{};
+	fd_set				m_ReadSet{};
+
+	//"최대 세션 갯수 = 서버 = 아이디 부여 안받음"
+	_uint				m_iMyID{ SESSION_MAX };
+
 	CRingBuffer			m_sendQ;
 	CRingBuffer			m_recvQ;
 	NETWORK_STATUS		m_eStatus = NETWORK_STATUS::DISCONNECTED;

@@ -7,8 +7,6 @@
 #include "BackGround_Loading.h"
 #include "Loading_Spinner.h"
 
-#include "PacketHandler.h"
-
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
 {
@@ -78,72 +76,74 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Define_Packets()
 {
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
 		{
-			CPacketHandler::PACKET_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::PACKET_DESC));
+			PACKET_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
 			m_pGameInstance->Set_ID(Desc.iID);
 
 			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
-		});
+		})))
+		return E_FAIL;
 
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg) 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg)
 		{
-			CPacketHandler::PACKET_DESC Desc{};
-			Desc.iID = m_pGameInstance->Get_ID();
-			
-#pragma message ("최대 세션 갯수")
-			if (Desc.iID == 10)
-			{
+			if(m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
 				return;
-			}
+
+			PACKET_DESC Desc{};
+			Desc.iID = m_pGameInstance->Get_ID();
 
 			m_pGameInstance->Clear_Packet();
 
-			tagPACKET_HEADER tHeader{};
+			PACKET_HEADER tHeader{};
 			tHeader.byCode = PACKET_CODE;
 			tHeader.byType = ENUM_CLASS(PacketType::CS_PING);
 
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&Desc), sizeof(CPacketHandler::PACKET_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
 
 			m_pGameInstance->Update_Header();
-		});
+		})))
+		return E_FAIL;
 
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg) 
+	if(FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg) 
 		{
 			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
-			cout << "SC_PING" << endl;
+			::cout << "SC_PING" << endl;
 			m_bSendPing = false;
-		});
+		})))
+		return E_FAIL;
 
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
 		{
 			if (m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
 				return;
 
 			m_pGameInstance->Clear_Packet();
 
-			tagPACKET_HEADER tHeader{};
+			PACKET_HEADER tHeader{};
 			tHeader.byCode = PACKET_CODE;
 			tHeader.byType = ENUM_CLASS(PacketType::CS_POSITION);
 
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(tagPACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
-			CPacketHandler::POSITION_DESC* Position_Desc = static_cast<CPacketHandler::POSITION_DESC*>(pArg);
+			POSITION_DESC* Position_Desc = static_cast<POSITION_DESC*>(pArg);
 			Position_Desc->iID = m_pGameInstance->Get_ID();
 
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(CPacketHandler::POSITION_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Position_Desc), sizeof(POSITION_DESC));
 			m_pGameInstance->Update_Header();
-		});
+		})))
+		return E_FAIL;
 
-	m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
+	if(FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
 		{
-			CPacketHandler::POSITION_DESC pDesc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&pDesc), sizeof(CPacketHandler::POSITION_DESC));
+			POSITION_DESC pDesc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&pDesc), sizeof(POSITION_DESC));
 
-			cout << pDesc.vPos.x << ' ' << pDesc.vPos.y << ' ' << pDesc.vPos.z << endl;
-		});
+			::cout << pDesc.vPos.x << ' ' << pDesc.vPos.y << ' ' << pDesc.vPos.z << endl;
+		})))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -230,10 +230,9 @@ void CMainApp::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
-
 	m_pGameInstance->Release_Engine();
 
-	Safe_Release(m_pGameInstance);
+	//Safe_Release(m_pGameInstance);
 
 #if defined(_DEBUG)
 	DebugUtils::CloseConsole();

@@ -144,13 +144,13 @@
     <Lib />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\public\NetCore_Define.h" />
     <ClInclude Include="..\public\Packet.h" />
-    <ClInclude Include="..\public\PacketHandler.h" />
+    <ClInclude Include="..\public\PacketType.h" />
     <ClInclude Include="..\public\RingBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Packet.cpp" />
-    <ClCompile Include="..\private\PacketHandler.cpp" />
     <ClCompile Include="..\private\RingBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

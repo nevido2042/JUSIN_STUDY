@@ -74,10 +74,9 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 	__super::Bind_Matrices();
 }
 
-#include "PacketHandler.h"
 void CCamera_Free::Update(_float fTimeDelta)
 {
-	CPacketHandler::POSITION_DESC Desc;
+	POSITION_DESC Desc;
 	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);

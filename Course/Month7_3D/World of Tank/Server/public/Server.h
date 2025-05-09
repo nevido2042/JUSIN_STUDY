@@ -1,14 +1,13 @@
 #pragma once
 #include "Packet.h"
 #include "Session.h"
-
+#include "PacketType.h"
 #include <vector>
 #include <locale>
 #include <iostream>
 
 using namespace std;
 
-#define SESSION_MAX 10
 #define BUF_SIZE 1024
 //#define PORT L"2042"
 
@@ -29,10 +28,10 @@ private:
 	void Recieve_Message();
 	void Send_Message();
 private:
-	void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
-	void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
+	//void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
+	//void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
 private:
-	void Decode_Message(const tagPACKET_HEADER& _Header, CSession* _pSession);
+	void Decode_Message(const PACKET_HEADER& _Header, CSession* _pSession);
 	void Delete_Dead_Session();
 	void Check_Session_State(SOCKET sock);
 	void Set_Session_Dead(CSession* pSession);
@@ -41,6 +40,7 @@ private:
 
 public:
 	HRESULT Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg);
+	HRESULT Send_Packet_Broadcast(CSession* pSession, _uint iPacketType, void* pArg);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 public:
 	HRESULT	Clear_Packet();
@@ -50,7 +50,8 @@ public:
 private:
 	HRESULT Define_Packets();
 private:
-	CSession* Find_Session(_uint iID);
+	CSession*	Find_Session(_uint iID);
+	HRESULT		Flush_SendBuffer(CSession* pSession);
 
 private:
 	SOCKET						m_ServSock = { INVALID_SOCKET };

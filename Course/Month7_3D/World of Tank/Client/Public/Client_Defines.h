@@ -19,6 +19,8 @@
 
 #include "DebugUtils.h"
 
+#include "PacketType.h"
+
 namespace Client
 {
 	const unsigned int			g_iWinSizeX = 1280;

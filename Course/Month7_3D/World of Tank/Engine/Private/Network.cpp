@@ -207,15 +207,15 @@ void CNetwork::Flush_ReceiveBuffer()
 		while (true)
 		{
 			//메시지 분석
-			tagPACKET_HEADER tHeader;
+			PACKET_HEADER tHeader;
 
 			//헤더도 못 뽑는 정도 밖에 안들어왔다면
-			if (sizeof(tagPACKET_HEADER) > m_recvQ.Get_UseSize())
+			if (sizeof(PACKET_HEADER) > m_recvQ.Get_UseSize())
 			{
 				break;
 			}
 
-			int retPeek = m_recvQ.Peek((_byte*)&tHeader, sizeof(tagPACKET_HEADER));
+			int retPeek = m_recvQ.Peek((_byte*)&tHeader, sizeof(PACKET_HEADER));
 			if (retPeek != sizeof(tHeader))
 			{
 				wprintf_s(L"Peek() Error:%d\n", retPeek);
@@ -226,35 +226,33 @@ void CNetwork::Flush_ReceiveBuffer()
 				wprintf_s(L"BYTEbyCode Error:%d\n", tHeader.byCode);
 				return;
 			}
-			if (tHeader.bySize + sizeof(tagPACKET_HEADER) > size_t(m_recvQ.Get_UseSize()))
+			if (tHeader.bySize + sizeof(PACKET_HEADER) > size_t(m_recvQ.Get_UseSize()))
 			{
 				break;
 			}
 
-			m_recvQ.Move_Front(sizeof(tagPACKET_HEADER));
+			m_recvQ.Move_Front(sizeof(PACKET_HEADER));
 
 			Decode_Packet(tHeader);
 		}
 	}
 }
 
-#pragma message ( "디코드 해서 반환을 하자" )
-void CNetwork::Decode_Packet(const tagPACKET_HEADER& _tHeader)
+void CNetwork::Decode_Packet(const PACKET_HEADER& _tHeader)
 {
 	int iResult = m_recvQ.Dequeue((_byte*)m_Packet.Get_BufferPtr(), _tHeader.bySize);
 	if (iResult != _tHeader.bySize)
 	{
 		wprintf_s(L"Dequeue() Error:%d\n", iResult);
-		exit(1);
+		MSG_BOX("Dequeue() Error");
 	}
 	m_Packet.Move_WritePos(iResult);
-
-	//클라쪽에서 해석해야함, 어떤 타입의 패킷이 왔는지, 어떤 물건이 왔는지 반환?
 
 	auto it = m_PacketTypes.find(_tHeader.byType);
 	if (it != m_PacketTypes.end())
 	{
-		it->second(nullptr/*&Desc*/); // 실제 패킷 처리 함수 호출
+		//들어온 패킷 데이터는 OutPutData()에서 처리
+		it->second(nullptr);
 	}
 	else
 	{
@@ -301,7 +299,7 @@ HRESULT CNetwork::Output_Data(_byte* pByte, _int iSize)
 
 HRESULT CNetwork::Update_Header()
 {
-	m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(tagPACKET_HEADER));
+	m_Packet.Update_HeaderSize(m_Packet.Get_DataSize() - sizeof(PACKET_HEADER));
 	return S_OK;
 }
 
@@ -364,15 +362,15 @@ CNetwork::SERVER_CONFIG CNetwork::Load_Config_File(const std::wstring& filename)
 
 CNetwork* CNetwork::Create()
 {
-		CNetwork* pInstance = new CNetwork();
+	CNetwork* pInstance = new CNetwork();
+#pragma message ("나중에 전투시작 같은 거 누르면 접속하게끔 Initialize를 겜인스턴스로 호출할 수 있도록 하면 좋을 듯?")
+	if (FAILED(pInstance->Initialize()))
+	{
+		MSG_BOX("Failed to Created : CNetwork");
+		Safe_Release(pInstance);
+	}
 	
-		if (FAILED(pInstance->Initialize()))
-		{
-			MSG_BOX("Failed to Created : CNetwork");
-			Safe_Release(pInstance);
-		}
-	
-		return pInstance;
+	return pInstance;
 }
 
 void CNetwork::Free()

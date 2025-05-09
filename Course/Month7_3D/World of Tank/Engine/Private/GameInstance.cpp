@@ -386,25 +386,35 @@ HRESULT CGameInstance::Update_Header()
 
 void CGameInstance::Release_Engine()
 {
-	//Safe_Release(m_pPicking);
+	if (0 != Safe_Release(m_pTimer_Manager))
+		MSG_BOX("Failed to Release : m_pTimer_Manager");
 
-	Safe_Release(m_pTimer_Manager);
+	if (0 != Safe_Release(m_pRenderer))
+		MSG_BOX("Failed to Release : m_pRenderer");
 
-	Safe_Release(m_pRenderer);
+	if (0 != Safe_Release(m_pObject_Manager))
+		MSG_BOX("Failed to Release : m_pObject_Manager");
 
-	Safe_Release(m_pObject_Manager);
+	if (0 != Safe_Release(m_pPrototype_Manager))
+		MSG_BOX("Failed to Release : m_pPrototype_Manager");
 
-	Safe_Release(m_pPrototype_Manager);
+	if (0 != Safe_Release(m_pLevel_Manager))
+		MSG_BOX("Failed to Release : m_pLevel_Manager");
 
-	Safe_Release(m_pLevel_Manager);
+	if (0 != Safe_Release(m_pSound_Device))
+		MSG_BOX("Failed to Release : m_pSound_Device");
 
-	Safe_Release(m_pSound_Device);
+	if (0 != Safe_Release(m_pInputDevice))
+		MSG_BOX("Failed to Release : m_pInputDevice");
 
-	Safe_Release(m_pInputDevice);
+	if (0 != Safe_Release(m_pPipeLine))
+		MSG_BOX("Failed to Release : m_pPipeLine");
 
-	Safe_Release(m_pPipeLine);
+	if (0 != Safe_Release(m_pNetwork))
+		MSG_BOX("Failed to Release : m_pNetwork");
 
-	Safe_Release(m_pGraphic_Device);
+	if (0 != Safe_Release(m_pGraphic_Device))
+		MSG_BOX("Failed to Release : m_pGraphic_Device");
 
 	Destroy_Instance();
 }
