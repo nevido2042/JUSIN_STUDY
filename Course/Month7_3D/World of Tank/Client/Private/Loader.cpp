@@ -12,6 +12,7 @@
 #include "Network.h"
 #include "StatusLight.h"
 #include "Logo.h"
+#include "MapTool.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -291,6 +292,12 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 HRESULT CLoader::Loading_For_MapTool()
 {
+	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+	/* For.Prototype_GameObject_MapTool */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTool"),
+		CMapTool::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;

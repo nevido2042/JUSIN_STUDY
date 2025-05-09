@@ -28,7 +28,8 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	
+protected:
+	_bool m_bCloned = { false };
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

@@ -73,12 +73,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>../Bin/</OutDir>
     <LibraryPath>../../NetCore/bin/;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>../ThirdParty/imgui/backends/;../ThirdParty/imgui/;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>../ThirdParty/imGuizmo/;../ThirdParty/imgui/backends/;../ThirdParty/imgui/;$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>../Bin/</OutDir>
     <LibraryPath>../../NetCore/bin/;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>../ThirdParty/imgui/backends/;../ThirdParty/imgui/;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>../ThirdParty/imGuizmo/;../ThirdParty/imgui/backends/;../ThirdParty/imgui/;$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -174,10 +176,18 @@
     <ClInclude Include="..\Public\Loading_Spinner.h" />
     <ClInclude Include="..\Public\Logo.h" />
     <ClInclude Include="..\public\MainApp.h" />
+    <ClInclude Include="..\Public\MapTool.h" />
     <ClInclude Include="..\public\StatusLight.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="..\ThirdParty\imgui\imconfig.h" />
+    <ClInclude Include="..\ThirdParty\imgui\imgui.h" />
+    <ClInclude Include="..\ThirdParty\imgui\imgui_internal.h" />
+    <ClInclude Include="..\ThirdParty\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\ThirdParty\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\ThirdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -197,11 +207,14 @@
     <ClCompile Include="..\Private\Loading_Spinner.cpp" />
     <ClCompile Include="..\Private\Logo.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
+    <ClCompile Include="..\Private\MapTool.cpp" />
     <ClCompile Include="..\private\StatusLight.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\imgui.cpp" />
+    <ClCompile Include="..\ThirdParty\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\imgui_widgets.cpp" />

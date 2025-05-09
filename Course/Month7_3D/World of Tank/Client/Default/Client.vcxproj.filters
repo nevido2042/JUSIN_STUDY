@@ -19,23 +19,11 @@
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{db82fc83-d01c-41cf-8115-cfc65328ad5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.BackGround">
-      <UniqueIdentifier>{2a95d670-b78b-4365-888f-45a6815fed54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.DebugUtils">
       <UniqueIdentifier>{e38edd34-2e47-4900-8c06-2ecf4f89fa19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\02.StatusLight">
-      <UniqueIdentifier>{9f5d5229-5fa6-4a83-8f2a-ee3f77dd730c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{768645b9-a508-418d-8d7d-9431033e5719}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.BackGround_Loading">
-      <UniqueIdentifier>{8ec9cd4c-5161-4e33-94a6-d8798f09d340}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Loading_Spinner">
-      <UniqueIdentifier>{c9873731-d3be-4497-9f1d-e3a3482266cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\00.Loading">
       <UniqueIdentifier>{d77e9a5c-f9dd-469f-9e4a-e102f2dc83a4}</UniqueIdentifier>
@@ -52,26 +40,50 @@
     <Filter Include="01.Levels\02.Hanger">
       <UniqueIdentifier>{1c864d49-67df-4e12-885b-1ae6883a1fb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\05.Logo">
-      <UniqueIdentifier>{32dfd49a-6d67-4d17-ab5f-d282349339c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Camera">
-      <UniqueIdentifier>{f760765c-2eba-4f64-87c5-558223af53d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Camera\Camera_Free">
-      <UniqueIdentifier>{e6ab15b5-ff75-4a49-b7e4-983a60d972cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\04.Practice">
       <UniqueIdentifier>{d78da1d3-316b-49ba-b39e-3209c09e2e12}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\05.MapTool">
       <UniqueIdentifier>{d5a017b1-6a30-47bf-b472-0960143692dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Imgui">
+    <Filter Include="02.GameObjects\UIObject">
+      <UniqueIdentifier>{0b062109-8ea6-489d-b955-2a856ff8098a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\05.Logo">
+      <UniqueIdentifier>{32dfd49a-6d67-4d17-ab5f-d282349339c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\04.Loading_Spinner">
+      <UniqueIdentifier>{c9873731-d3be-4497-9f1d-e3a3482266cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\03.BackGround_Loading">
+      <UniqueIdentifier>{8ec9cd4c-5161-4e33-94a6-d8798f09d340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\02.StatusLight">
+      <UniqueIdentifier>{9f5d5229-5fa6-4a83-8f2a-ee3f77dd730c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\00.BackGround">
+      <UniqueIdentifier>{2a95d670-b78b-4365-888f-45a6815fed54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\01.MapTool">
+      <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera">
+      <UniqueIdentifier>{f760765c-2eba-4f64-87c5-558223af53d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Camera_Free">
+      <UniqueIdentifier>{e6ab15b5-ff75-4a49-b7e4-983a60d972cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.ThirdParty">
+      <UniqueIdentifier>{5edbfdaa-3221-4128-887f-da7a8dff63e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.ThirdParty\imgui">
       <UniqueIdentifier>{07126027-1fb0-445d-b780-de97dfb44382}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Imgui\backends">
+    <Filter Include="96.ThirdParty\imgui\backends">
       <UniqueIdentifier>{6b38f90a-891d-44d4-aaa2-b1439ed95ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.ThirdParty\imGuizmo">
+      <UniqueIdentifier>{ea0687af-f771-48b2-91e0-755c1d518b3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,13 +118,13 @@
       <Filter>00.MainApp</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\00.BackGround</Filter>
+      <Filter>02.GameObjects\UIObject\00.BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DebugUtils.h">
       <Filter>96.DebugUtils</Filter>
     </ClInclude>
     <ClInclude Include="..\public\StatusLight.h">
-      <Filter>02.GameObjects\02.StatusLight</Filter>
+      <Filter>02.GameObjects\UIObject\02.StatusLight</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\01.Terrain</Filter>
@@ -121,28 +133,52 @@
       <Filter>01.Levels\00.Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BackGround_Loading.h">
-      <Filter>02.GameObjects\03.BackGround_Loading</Filter>
+      <Filter>02.GameObjects\UIObject\03.BackGround_Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Loading_Spinner.h">
-      <Filter>02.GameObjects\04.Loading_Spinner</Filter>
+      <Filter>02.GameObjects\UIObject\04.Loading_Spinner</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Logo.h">
-      <Filter>02.GameObjects\05.Logo</Filter>
+      <Filter>02.GameObjects\UIObject\05.Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Hanger.h">
       <Filter>01.Levels\02.Hanger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Free.h">
-      <Filter>02.GameObjects\06.Camera\Camera_Free</Filter>
+      <Filter>02.GameObjects\02.Camera\Camera_Free</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_MapTool.h">
       <Filter>01.Levels\05.MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.h">
-      <Filter>03.Imgui\backends</Filter>
+      <Filter>96.ThirdParty\imgui\backends</Filter>
     </ClInclude>
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_win32.h">
-      <Filter>03.Imgui\backends</Filter>
+      <Filter>96.ThirdParty\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imgui\imconfig.h">
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imgui\imgui.h">
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imgui\imgui_internal.h">
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imgui\imstb_rectpack.h">
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imgui\imstb_textedit.h">
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imgui\imstb_truetype.h">
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapTool.h">
+      <Filter>02.GameObjects\UIObject\01.MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h">
+      <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,13 +208,13 @@
       <Filter>01.Levels\01.Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02.GameObjects\00.BackGround</Filter>
+      <Filter>02.GameObjects\UIObject\00.BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugUtils.cpp">
       <Filter>96.DebugUtils</Filter>
     </ClCompile>
     <ClCompile Include="..\private\StatusLight.cpp">
-      <Filter>02.GameObjects\02.StatusLight</Filter>
+      <Filter>02.GameObjects\UIObject\02.StatusLight</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\01.Terrain</Filter>
@@ -190,40 +226,49 @@
       <Filter>00.MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround_Loading.cpp">
-      <Filter>02.GameObjects\03.BackGround_Loading</Filter>
+      <Filter>02.GameObjects\UIObject\03.BackGround_Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loading_Spinner.cpp">
-      <Filter>02.GameObjects\04.Loading_Spinner</Filter>
+      <Filter>02.GameObjects\UIObject\04.Loading_Spinner</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Logo.cpp">
-      <Filter>02.GameObjects\05.Logo</Filter>
+      <Filter>02.GameObjects\UIObject\05.Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Hanger.cpp">
       <Filter>01.Levels\02.Hanger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Free.cpp">
-      <Filter>02.GameObjects\06.Camera\Camera_Free</Filter>
+      <Filter>02.GameObjects\02.Camera\Camera_Free</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_MapTool.cpp">
       <Filter>01.Levels\05.MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.cpp">
-      <Filter>03.Imgui\backends</Filter>
+      <Filter>96.ThirdParty\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_win32.cpp">
-      <Filter>03.Imgui\backends</Filter>
+      <Filter>96.ThirdParty\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\imgui.cpp">
-      <Filter>03.Imgui</Filter>
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\imgui\imgui_demo.cpp">
+      <Filter>96.ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\imgui_draw.cpp">
-      <Filter>03.Imgui</Filter>
+      <Filter>96.ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\imgui_tables.cpp">
-      <Filter>03.Imgui</Filter>
+      <Filter>96.ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\imgui_widgets.cpp">
-      <Filter>03.Imgui</Filter>
+      <Filter>96.ThirdParty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapTool.cpp">
+      <Filter>02.GameObjects\UIObject\01.MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp">
+      <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

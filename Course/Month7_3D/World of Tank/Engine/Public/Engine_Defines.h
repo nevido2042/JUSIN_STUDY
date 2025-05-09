@@ -48,9 +48,7 @@ namespace Engine
 
 using namespace Engine;
 
-
-
-#pragma message("아임구이에서 이거 인클루드 하는건가?")
+//아임구이에 있음
 //#ifdef _DEBUG
 //
 //#define _CRTDBG_MAP_ALLOC

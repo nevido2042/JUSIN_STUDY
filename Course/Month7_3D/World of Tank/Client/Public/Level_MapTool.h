@@ -17,12 +17,8 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	HRESULT Ready_Layer_BackGround(const _wstring strLayerTag);
-	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
+	HRESULT Ready_Layer_MapTool(const _wstring strLayerTag);
 
-private:
-	HRESULT Ready_Imgui();
-	HRESULT Ready_Imgui_Example();
 
 public:
 	static CLevel_MapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

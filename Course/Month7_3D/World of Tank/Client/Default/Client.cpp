@@ -185,6 +185,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_SIZE:
+        if (wParam != SIZE_MINIMIZED) {
+            //ImGui_ImplDX11_InvalidateDeviceObjects();
+            //ImGui_ImplDX11_CreateDeviceObjects();
+        }
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);

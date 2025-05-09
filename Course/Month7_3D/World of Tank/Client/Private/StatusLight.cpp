@@ -1,7 +1,6 @@
 #include "StatusLight.h"
 
 #include "GameInstance.h"
-#include "Network.h"
 
 CStatusLight::CStatusLight(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -29,12 +28,6 @@ HRESULT CStatusLight::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-
-	//m_pNetwork = static_cast<CNetwork*>(m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_Network")));
-	//m_pNetwork = CNetwork::Get_Instance();
-	//if(nullptr == m_pNetwork)
-	//	return E_FAIL;
-	//Safe_AddRef(m_pNetwork);
 
 	return S_OK;
 }
@@ -130,6 +123,4 @@ void CStatusLight::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
-
-	//Safe_Release(m_pNetwork);
 }
