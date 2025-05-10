@@ -41,7 +41,9 @@ private:
 	CRITICAL_SECTION			m_CriticalSection = {};
 	_tchar						m_szLoadingText[MAX_PATH] = {};
 
+	static _bool				bLoadStatic;
 public:
+	HRESULT Loading_For_Static();
 	HRESULT Loading_For_Logo();
 	HRESULT Loading_For_Hanger();
 	HRESULT Loading_For_GamePlay();

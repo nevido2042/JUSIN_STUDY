@@ -1,6 +1,5 @@
 #include "GameInstance.h"
 
-//#include "Picking.h"
 #include "Renderer.h"
 #include "Level_Manager.h"
 #include "Timer_Manager.h"
@@ -11,6 +10,7 @@
 #include "Input_Device.h"
 #include "PipeLine.h"
 #include "Network.h"
+#include "Picking.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -61,14 +61,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pNetwork)
 		return E_FAIL;
 
-	
-
-	//m_pPicking = CPicking::Create(*ppOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
-	//if (nullptr == m_pPicking)
-	//	return E_FAIL;
-
-
-
+	m_pPicking = CPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
+	if (nullptr == m_pPicking)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -80,8 +75,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
-	//m_pPicking->Update();
 
+	m_pPicking->Update();
 	m_pNetwork->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);	
 
@@ -211,6 +206,22 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 #pragma endregion
 
 #pragma region SOUND_DEVICE
+
+#pragma region PICKING
+void CGameInstance::Transform_Picking_ToLocalSpace(const _matrix& WorldMatrixInverse)
+{
+	m_pPicking->Transform_ToLocalSpace(WorldMatrixInverse);
+}
+_bool CGameInstance::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	return m_pPicking->Picking_InWorld(vPickedPos, vPointA, vPointB, vPointC);
+}
+_bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
+}
+
+#pragma endregion
 
 FORCEINLINE
 HRESULT CGameInstance::LoadSound(const string& Path, _bool is3D, _bool loop, _bool stream, unordered_map<string, class CSound_Core*>* _Out_ pOut)

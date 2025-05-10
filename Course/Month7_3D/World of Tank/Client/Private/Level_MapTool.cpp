@@ -12,6 +12,11 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_MapTool(TEXT("Layer_MapTool"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -31,6 +36,24 @@ HRESULT CLevel_MapTool::Render()
 HRESULT CLevel_MapTool::Ready_Layer_MapTool(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTool"),
+		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_MapTool::Ready_Layer_BackGround(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Terrain"),
+		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_MapTool::Ready_Layer_Camera(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
 		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
 		return E_FAIL;
 

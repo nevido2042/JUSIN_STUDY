@@ -17,6 +17,7 @@
 
 #include "Fx11/d3dx11effect.h"
 #include <d3dcompiler.h>
+
 using namespace DirectX;
 
 #define DIRECTINPUT_VERSION 0x0800

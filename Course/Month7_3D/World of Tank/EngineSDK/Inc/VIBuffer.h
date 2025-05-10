@@ -18,6 +18,10 @@ public:
 	virtual HRESULT Bind_Buffers();
 	virtual HRESULT Render();
 
+public:
+	virtual _float3 Compute_HeightPosition(const _float3& vPosition) { return vPosition; }
+	_float3 Compute_PickedPosition(const _matrix& pWorldMatrixInverse);
+
 protected:
 	ID3D11Buffer* m_pVB = { nullptr };
 	ID3D11Buffer* m_pIB = { nullptr };
@@ -31,6 +35,10 @@ protected:
 	_uint						m_iNumIndices = {};
 	_uint						m_iIndexStride = {};
 	_uint						m_iNumVertexBuffers = {};
+	_uint						m_iNumPritimive = {};
+
+	void*						m_pIndices = {};
+
 	DXGI_FORMAT					m_eIndexFormat = {};
 	D3D11_PRIMITIVE_TOPOLOGY	m_ePrimitiveTopology = {};
 

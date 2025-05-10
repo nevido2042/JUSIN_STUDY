@@ -53,6 +53,12 @@ public:
 	void Update_Timer(const _wstring& strTimerTag);
 #pragma endregion
 
+#pragma region PICKING
+	void Transform_Picking_ToLocalSpace(const _matrix& WorldMatrixInverse);
+	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+#pragma endregion
+
 #pragma region SOUND_DEVICE
 	// Out에 nullptr 넣으면 싱글사운드로 등록됨
 	HRESULT LoadSound(const string& Path, _bool is3D = FALSE, _bool loop = FALSE, _bool stream = FALSE, unordered_map<string, class CSound_Core*>* _Out_ pOut = nullptr);
@@ -118,8 +124,7 @@ private:
 	class CKey_Manager*			m_pKeyManager = { nullptr };
 	class CPipeLine*			m_pPipeLine = { nullptr };
 	class CNetwork*				m_pNetwork = { nullptr };
-
-	// class CPicking*				m_pPicking = { nullptr };
+	class CPicking*				m_pPicking = { nullptr };
 
 public:
 	void Release_Engine();

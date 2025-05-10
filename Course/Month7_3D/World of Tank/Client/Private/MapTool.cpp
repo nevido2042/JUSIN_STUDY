@@ -86,9 +86,9 @@ void CMapTool::Update(_float fTimeDelta)
 	ImGui::Begin("Detail", nullptr);
 	ImGui::End();
 
-	//ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 
-
+#pragma region 기즈모
 	// viewMatrix = 카메라 View 행렬
 	// projMatrix = 카메라 Projection 행렬
 	// objectMatrix = 조작 대상 행렬
@@ -119,11 +119,12 @@ void CMapTool::Update(_float fTimeDelta)
 
 	// 3. 결과를 다시 XMMATRIX로 가져오기 (선택 사항)
 	worldMatrix = XMMatrixTranspose(XMLoadFloat4x4(&worldMatrixF));
+#pragma endregion
 }
 
 void CMapTool::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 
 	// 렌더링 처리
 	ImGui::Render();  // 렌더링 처리

@@ -1,4 +1,5 @@
 #include "VIBuffer.h"
+#include "GameInstance.h"
 
 CVIBuffer::CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent{ pDevice, pContext }
@@ -6,7 +7,7 @@ CVIBuffer::CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CVIBuffer::CVIBuffer(const CVIBuffer& Prototype)
-	: CComponent{ Prototype }
+	: CComponent(Prototype)
 	, m_pVB { Prototype.m_pVB }
 	, m_pIB { Prototype.m_pIB }
 	, m_iNumVertices { Prototype.m_iNumVertices }
@@ -17,6 +18,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer& Prototype)
 	, m_iNumVertexBuffers { Prototype.m_iNumVertexBuffers }
 	, m_eIndexFormat{ Prototype.m_eIndexFormat }
 	, m_ePrimitiveTopology{ Prototype.m_ePrimitiveTopology }
+	, m_iNumPritimive{ Prototype.m_iNumPritimive }
+	, m_pIndices{ Prototype.m_pIndices }
 {
 	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pIB);
@@ -84,12 +87,39 @@ HRESULT CVIBuffer::Render()
 	return S_OK;
 }
 
+_float3 CVIBuffer::Compute_PickedPosition(const _matrix& pWorldMatrixInverse)
+{
+	_uint   iIndices[3] = {};
+	_float3 vPickedPos = {};
+
+	/* 컴퓨트 포지션을 호출 할 때 객체의 월드매트릭스의 역행렬을 받도록 해서, */
+	/* 마우스 좌표를 로컬로 바꿔준 후에 피킹함수를 호출 해 준다 */
+	m_pGameInstance->Transform_Picking_ToLocalSpace(pWorldMatrixInverse);
+
+	for (size_t i = 0; i < m_iNumPritimive; i++)
+	{
+		_byte* pIndices = static_cast<_byte*>(m_pIndices) + m_iIndexStride * i * 3;
+
+		memcpy(&iIndices[0], pIndices, m_iIndexStride);
+		memcpy(&iIndices[1], pIndices + m_iIndexStride, m_iIndexStride);
+		memcpy(&iIndices[2], pIndices + m_iIndexStride * 2, m_iIndexStride);
+
+		if (true == m_pGameInstance->Picking_InLocal(vPickedPos, m_pVertexPositions[iIndices[0]], m_pVertexPositions[iIndices[1]], m_pVertexPositions[iIndices[2]]))
+			break;
+	}
+
+	return vPickedPos;
+}
+
 void CVIBuffer::Free()
 {
 	__super::Free();
 
 	if (false == m_isCloned)
+	{
 		Safe_Delete_Array(m_pVertexPositions);
+		Safe_Delete_Array(m_pIndices);
+	}
 
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);

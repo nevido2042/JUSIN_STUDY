@@ -100,6 +100,9 @@
     <ClInclude Include="..\Public\Network.h">
       <Filter>01.Utility\10.Network</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Picking.h">
+      <Filter>01.Utility\07.Picking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Network.cpp">
       <Filter>01.Utility\10.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\Picking.cpp">
+      <Filter>01.Utility\07.Picking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +304,9 @@
     </Filter>
     <Filter Include="01.Utility\10.Network">
       <UniqueIdentifier>{15c279b3-0f6a-4350-9e38-e986d60338be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Picking">
+      <UniqueIdentifier>{d2593f03-d516-4388-8af0-93fb90f1b0c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

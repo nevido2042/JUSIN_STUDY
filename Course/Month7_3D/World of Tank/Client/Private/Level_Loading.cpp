@@ -30,11 +30,14 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Background(TEXT("Layer_Background"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Background(TEXT("Layer_Background"))))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"))))
+	//	return E_FAIL;
+
+	Ready_Layer_Background(TEXT("Layer_Background"));
+	Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"));
 	
 	return S_OK;
 }
