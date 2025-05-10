@@ -1,6 +1,8 @@
 #include "MapTool.h"
 #include "GameInstance.h"
 
+#include "Terrain.h"
+
 CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
 {
@@ -23,6 +25,11 @@ HRESULT CMapTool::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	m_pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_Terrain"), 0));
+	if (nullptr == m_pTerrain)
+		return E_FAIL;
+	Safe_AddRef(m_pTerrain);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -84,6 +91,9 @@ void CMapTool::Update(_float fTimeDelta)
 
 	//Detail â
 	ImGui::Begin("Detail", nullptr);
+	ImGui::Text("Terrain_PickedPos");
+	_float3 vPos = m_pTerrain->Get_PickedPos();
+	ImGui::Text("x:%.2f, y:%.2f, z:%.2f", vPos.x, vPos.y, vPos.z);
 	ImGui::End();
 
 	ImGui::ShowDemoWindow();
@@ -178,6 +188,8 @@ void CMapTool::Free()
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
 	}
+
+	Safe_Release(m_pTerrain);
 
 	__super::Free();
 }

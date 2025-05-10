@@ -427,6 +427,9 @@ void CGameInstance::Release_Engine()
 	if (0 != Safe_Release(m_pGraphic_Device))
 		MSG_BOX("Failed to Release : m_pGraphic_Device");
 
+	if (0 != Safe_Release(m_pPicking))
+		MSG_BOX("Failed to Release : m_pPicking");
+
 	Destroy_Instance();
 }
 

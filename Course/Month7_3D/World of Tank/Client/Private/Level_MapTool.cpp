@@ -9,13 +9,13 @@ CLevel_MapTool::CLevel_MapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 HRESULT CLevel_MapTool::Initialize()
 {
-	if (FAILED(Ready_Layer_MapTool(TEXT("Layer_MapTool"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_MapTool(TEXT("Layer_MapTool"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -42,7 +42,7 @@ HRESULT CLevel_MapTool::Ready_Layer_MapTool(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_MapTool::Ready_Layer_BackGround(const _wstring strLayerTag)
+HRESULT CLevel_MapTool::Ready_Layer_Terrain(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Terrain"),
 		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))

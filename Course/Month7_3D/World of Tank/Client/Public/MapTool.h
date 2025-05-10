@@ -21,6 +21,9 @@ public:
 	virtual HRESULT Render();
 
 private:
+	class CTerrain* m_pTerrain = { nullptr };
+
+private:
 	HRESULT Ready_Components();
 
 private:

@@ -19,7 +19,7 @@ public:
 private:
 	HRESULT Ready_Layer_MapTool(const _wstring strLayerTag);
 
-	HRESULT Ready_Layer_BackGround(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
 
 public:

@@ -26,6 +26,12 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	_float3				Get_PickedPos() const { return m_vPickedPos; }
+
+private:
+	_float3				m_vPickedPos = { 0.f, 0.f, 0.f };
+
 private:
 	CShader*			m_pShaderCom = { nullptr };
 	CTexture*			m_pTextureCom = { nullptr };

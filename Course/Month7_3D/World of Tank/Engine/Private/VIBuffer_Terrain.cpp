@@ -23,15 +23,23 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 	BITMAPFILEHEADER			fh{};
 	BITMAPINFOHEADER			ih{};
 
-	ReadFile(hFile, &fh, sizeof fh, &dwByte, nullptr);
-	ReadFile(hFile, &ih, sizeof ih, &dwByte, nullptr);
+	_bool bResult = { false };
+
+	bResult = ReadFile(hFile, &fh, sizeof fh, &dwByte, nullptr);
+	if (bResult == false)
+		return E_FAIL;
+	bResult = ReadFile(hFile, &ih, sizeof ih, &dwByte, nullptr);
+	if (bResult == false)
+		return E_FAIL;
 
 	m_iNumVerticesX = ih.biWidth;
 	m_iNumVerticesZ = ih.biHeight;
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
 
 	_uint* pPixels = new _uint[m_iNumVertices];	
-	ReadFile(hFile, pPixels, sizeof(_uint) * m_iNumVertices, &dwByte, nullptr);
+	bResult = ReadFile(hFile, pPixels, sizeof(_uint) * m_iNumVertices, &dwByte, nullptr);
+	if (bResult == false)
+		return E_FAIL;
 
 	
 	m_iNumVertexBuffers = 1;
@@ -64,7 +72,11 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 		{
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			pVertices[iIndex].vPosition = _float3(static_cast<_float>(j), (pPixels[iIndex] & 0x000000ff) / 10.0f, static_cast<_float>(i));
+			pVertices[iIndex].vPosition = _float3(
+				static_cast<_float>(j), 
+				static_cast<_float>((pPixels[iIndex] & 0x000000ff) * 0.1f), 
+				static_cast<_float>(i));
+
 			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
 			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesX - 1.f));
 		}
@@ -89,10 +101,8 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 	IBBufferDesc.StructureByteStride = m_iIndexStride;
 	IBBufferDesc.MiscFlags = 0;
 
-#pragma message ("두배 할당하는거 별론데")
 	m_pIndices = new _uint[m_iNumIndices];
-	_uint* pIndices = new _uint[m_iNumIndices];
-	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
+	ZeroMemory(m_pIndices, sizeof(_uint) * m_iNumIndices);
 
 	_uint	iNumIndices = { 0 };
 
@@ -109,25 +119,21 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 				iIndex
 			};
 
-			pIndices[iNumIndices++] = iIndices[0];
-			pIndices[iNumIndices++] = iIndices[1];
-			pIndices[iNumIndices++] = iIndices[2];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[1];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
 
-			pIndices[iNumIndices++] = iIndices[0];
-			pIndices[iNumIndices++] = iIndices[2];
-			pIndices[iNumIndices++] = iIndices[3];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[3];
 		}
 	}
-	memcpy(m_pIndices, pIndices, m_iIndexStride * m_iNumIndices);
 
 	D3D11_SUBRESOURCE_DATA		IBInitialData{};
-	IBInitialData.pSysMem = pIndices;
+	IBInitialData.pSysMem = m_pIndices;
 
 	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
 		return E_FAIL;
-
-	Safe_Delete_Array(pIndices);
-
 
 	CloseHandle(hFile);
 	Safe_Delete_Array(pPixels);
