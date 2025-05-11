@@ -14,6 +14,7 @@
 #include "Camera_Free.h"
 #include "Terrain.h"
 #include "Engine.h"
+#include "Tool_Base.h"
 #pragma endregion
 
 #pragma region LOGO
@@ -28,7 +29,7 @@
 #pragma endregion
 
 #pragma region PRACTICE
-
+#include "Tool_Engine_Sound.h"
 #pragma endregion
 
 #pragma region GAMEPLAY
@@ -159,6 +160,11 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tool_Base */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
+		CTool_Base::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 #pragma endregion
 
 	bLoadStatic = true;
@@ -252,6 +258,11 @@ HRESULT CLoader::Loading_For_Practice()
 	/* For.Prototype_GameObject_Engine */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"),
 		CEngine::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tool_EngineSound */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
+		CTool_Engine_Sound::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

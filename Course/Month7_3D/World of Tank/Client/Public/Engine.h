@@ -7,8 +7,8 @@ NS_BEGIN(Engine)
 class CSoundController;
 NS_END
 
-#define RPM_MAX 600
-#define RPM_MIN 0
+//#define RPM_MAX 10.f
+#define RPM_MIN 1.f
 
 NS_BEGIN(Client)
 
@@ -30,11 +30,30 @@ public:
 public:
 	void Start_Engine();
 	void Press_Accelerator(_float fTimeDelta);
+public:
+	_float	Get_RPM() { return m_fRPM; }
+	_float*	Get_RPM_Ptr() { return &m_fRPM; }
+	void	Set_RPM(_float _fValue);
+
+	_float	Get_RPM_Max() { return m_fRPM_Max; }
+	void	Set_RPM_Max(_float _fValue);
+
+	_float* Get_PitchValue_Ptr() { return &m_fPitchValue; }
+	_float* Get_VolumeValue_Ptr() { return &m_fVolumeValue; }
 private:
-	void Set_RPM(_float _fValue);
-private:
-	_bool	m_bIsEngineOn = { false };
-	_float	m_fRPM = { 0.f };
+	string		m_EngineSound_Start = {};
+	string		m_EngineSound_Loop = {};
+	string		m_EngineSound_Accel = {};
+	string		m_EngineSound_End = {};
+
+	_bool		m_bIsPressAccel = { false };
+	_bool		m_bIsEngineOn = { false };
+	_bool		m_bIsEngineSoundLoopOn = { false };
+	_float		m_fRPM = { 0.f };
+	_float		m_fRPM_Max = { 10.f };
+
+	_float		m_fPitchValue = { 2.f };
+	_float		m_fVolumeValue = { 0.1f };
 private:
 	CSoundController* m_pSoundCom{ nullptr };
 private:

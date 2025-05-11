@@ -19,7 +19,10 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Engine_Sound_Tool()))
+	if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
+		return E_FAIL;
+	
+	if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -27,13 +30,13 @@ HRESULT CLevel_Practice::Initialize()
 
 void CLevel_Practice::Update(_float fTimeDelta)
 {
-	m_pEngine_Sound_Tool->Update(fTimeDelta);
+	//m_pEngine_Sound_Tool->Update(fTimeDelta);
 }
 
 HRESULT CLevel_Practice::Render()
 {
 	SetWindowText(g_hWnd, TEXT("연습 레벨입니다."));
-	m_pEngine_Sound_Tool->Render();
+	//m_pEngine_Sound_Tool->Render();
 	return S_OK;
 }
 
@@ -64,10 +67,19 @@ HRESULT CLevel_Practice::Ready_Layer_Engine(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Engine_Sound_Tool()
+HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
 {
-	m_pEngine_Sound_Tool = CEngin_Sound_Tool::Create(m_pDevice, m_pContext);
-	if (nullptr == m_pEngine_Sound_Tool)
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Tool_EngineSound(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;
@@ -91,6 +103,6 @@ void CLevel_Practice::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pEngine_Sound_Tool);
+	//Safe_Release(m_pEngine_Sound_Tool);
 
 }

@@ -2,16 +2,21 @@
 #include "GameInstance.h"
 
 CTool::CTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: m_pDevice{ pDevice }
-	, m_pContext{ pContext }
-	, m_pGameInstance{ CGameInstance::Get_Instance() }
+	:CUIObject(pDevice, pContext)
 {
-	Safe_AddRef(m_pGameInstance);
-	Safe_AddRef(m_pContext);
-	Safe_AddRef(m_pDevice);
 }
 
-HRESULT CTool::Initialize()
+CTool::CTool(const CTool& Prototype)
+	:CUIObject(Prototype)
+{
+}
+
+HRESULT CTool::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CTool::Initialize(void* pArg)
 {
 
 	return S_OK;
@@ -24,11 +29,11 @@ void CTool::Priority_Update(_float fTimeDelta)
 
 void CTool::Update(_float fTimeDelta)
 {
-
 }
 
 void CTool::Late_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 
 }
 
@@ -41,9 +46,4 @@ HRESULT CTool::Render()
 void CTool::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pGameInstance);
-
-	Safe_Release(m_pContext);
-	Safe_Release(m_pDevice);
 }

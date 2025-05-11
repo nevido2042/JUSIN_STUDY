@@ -88,11 +88,14 @@
     <Filter Include="02.GameObjects\03.Engine">
       <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Tool">
+    <Filter Include="02.GameObjects\UIObject\99.Tool">
       <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Tool\Engine_Sound_Tool">
+    <Filter Include="02.GameObjects\UIObject\99.Tool\01.Tool_Engine_Sound">
       <UniqueIdentifier>{5e57e32d-f1a0-49a3-8eaa-8fb9fa867c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\99.Tool\00.Base_Tool">
+      <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -196,10 +199,13 @@
       <Filter>01.Levels\04.Practice</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
-      <Filter>03.Tool</Filter>
+      <Filter>02.GameObjects\UIObject\99.Tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Engin_Sound_Tool.h">
-      <Filter>03.Tool\Engine_Sound_Tool</Filter>
+    <ClInclude Include="..\public\Tool_Engine_Sound.h">
+      <Filter>02.GameObjects\UIObject\99.Tool\01.Tool_Engine_Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tool_Base.h">
+      <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,10 +304,13 @@
       <Filter>01.Levels\04.Practice</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
-      <Filter>03.Tool</Filter>
+      <Filter>02.GameObjects\UIObject\99.Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Engin_Sound_Tool.cpp">
-      <Filter>03.Tool\Engine_Sound_Tool</Filter>
+    <ClCompile Include="..\private\Tool_Engine_Sound.cpp">
+      <Filter>02.GameObjects\UIObject\99.Tool\01.Tool_Engine_Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tool_Base.cpp">
+      <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
