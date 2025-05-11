@@ -32,7 +32,8 @@ private:
 
 public:
 	HRESULT Define_Packets();
-
+	HRESULT Ready_Prototype_Component();
+	HRESULT Ready_Prototype_For_Loading();
 	HRESULT Start_Level(LEVEL eStartLevel);
 
 public:

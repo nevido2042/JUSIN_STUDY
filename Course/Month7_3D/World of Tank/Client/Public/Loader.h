@@ -46,6 +46,7 @@ public:
 	HRESULT Loading_For_Static();
 	HRESULT Loading_For_Logo();
 	HRESULT Loading_For_Hanger();
+	HRESULT Loading_For_Practice();
 	HRESULT Loading_For_GamePlay();
 	HRESULT Loading_For_MapTool();
 

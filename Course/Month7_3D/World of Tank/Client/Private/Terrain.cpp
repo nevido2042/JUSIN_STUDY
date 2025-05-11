@@ -38,15 +38,15 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 void CTerrain::Priority_Update(_float fTimeDelta)
 {
-
+	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
+	{
+		m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
+	}
 }
 
 void CTerrain::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
-	{
-		m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
-	}
+
 }
 
 void CTerrain::Late_Update(_float fTimeDelta)
@@ -108,7 +108,7 @@ CTerrain* CTerrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CMainApp");
+		MSG_BOX("Failed to Created : CTerrain");
 		Safe_Release(pInstance);
 	}
 

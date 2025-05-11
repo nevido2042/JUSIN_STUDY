@@ -2,6 +2,7 @@
 
 #include "Level_Logo.h"
 #include "Level_Hanger.h"
+#include "Level_Practice.h"
 #include "Level_GamePlay.h"
 #include "Level_MapTool.h"
 
@@ -30,14 +31,14 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Background(TEXT("Layer_Background"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Background(TEXT("Layer_Background"))))
+		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"))))
+		return E_FAIL;
 
-	Ready_Layer_Background(TEXT("Layer_Background"));
-	Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"));
+	//Ready_Layer_Background(TEXT("Layer_Background"));
+	//Ready_Layer_Loading_Spinner(TEXT("Layer_Loading_Spinner"));
 	
 	return S_OK;
 }
@@ -45,8 +46,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 void CLevel_Loading::Update(_float fTimeDelta)
 {
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
-	{
+	//if (GetKeyState(VK_SPACE) & 0x8000)
+	//{
 		if (true == m_pLoader->isFinished())
 		{
 			CLevel* pLevel = { nullptr };
@@ -58,6 +59,9 @@ void CLevel_Loading::Update(_float fTimeDelta)
 				break;
 			case LEVEL::HANGER:
 				pLevel = CLevel_Hanger::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL::PRACTICE:
+				pLevel = CLevel_Practice::Create(m_pDevice, m_pContext);
 				break;
 			case LEVEL::GAMEPLAY:
 				pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
@@ -74,7 +78,7 @@ void CLevel_Loading::Update(_float fTimeDelta)
 				return;
 							
 		}
-	}	
+	//}	
 }
 
 HRESULT CLevel_Loading::Render()

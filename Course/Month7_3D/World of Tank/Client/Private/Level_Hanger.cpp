@@ -1,5 +1,7 @@
 #include "Level_Hanger.h"
+
 #include "GameInstance.h"
+#include "Level_Loading.h"
 
 CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -20,7 +22,12 @@ HRESULT CLevel_Hanger::Initialize()
 
 void CLevel_Hanger::Update(_float fTimeDelta)
 {
-	int a = 10;
+	if (m_pGameInstance->Key_Down(DIK_P))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::PRACTICE))))
+			return;
+	}
 }
 
 HRESULT CLevel_Hanger::Render()

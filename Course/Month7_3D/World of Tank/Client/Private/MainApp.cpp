@@ -5,8 +5,8 @@
 
 #include "Level_Loading.h"
 
-//#include "BackGround_Loading.h"
-//#include "Loading_Spinner.h"
+#include "BackGround_Loading.h"
+#include "Loading_Spinner.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -32,7 +32,10 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
-	
+
+	Ready_Prototype_Component();
+	Ready_Prototype_For_Loading();
+
 	if (FAILED(Start_Level(LEVEL::LOGO)))
 		return E_FAIL;
 
@@ -139,6 +142,64 @@ HRESULT CMainApp::Define_Packets()
 			::cout << pDesc.vPos.x << ' ' << pDesc.vPos.y << ' ' << pDesc.vPos.z << endl;
 		})))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Prototype_Component()
+{
+#pragma region 컴포넌트
+	/* For.Prototype_Component_VIBuffer_Rect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Rect"),
+		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxPosTex */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxPosTex */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_SoundController */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/01.Engine/"))))															\
+		return E_FAIL;
+#pragma endregion
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Prototype_For_Loading()
+{
+#pragma region 텍스쳐
+	/* For.Prototype_Component_Texture_Background_Loading*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Background_Loading"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Loading/Background/99_poland.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Loading_Spinner*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Loading_Spinner"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Loading/Spinner/0.dds"), 1))))
+		return E_FAIL;
+
+#pragma endregion
+
+
+#pragma region 원형 객체
+	/* For.Prototype_GameObject_Background_Loading */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Background_Loading"),
+		CBackGround_Loading::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Loading_Spinner */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Loading_Spinner"),
+		CLoading_Spinner::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+#pragma endregion
 
 	return S_OK;
 }

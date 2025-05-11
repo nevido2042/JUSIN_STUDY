@@ -85,6 +85,15 @@
     <Filter Include="96.ThirdParty\imGuizmo">
       <UniqueIdentifier>{ea0687af-f771-48b2-91e0-755c1d518b3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Engine">
+      <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Tool">
+      <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Tool\Engine_Sound_Tool">
+      <UniqueIdentifier>{5e57e32d-f1a0-49a3-8eaa-8fb9fa867c9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -180,6 +189,18 @@
     <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h">
       <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Engine.h">
+      <Filter>02.GameObjects\03.Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Practice.h">
+      <Filter>01.Levels\04.Practice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tool.h">
+      <Filter>03.Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Engin_Sound_Tool.h">
+      <Filter>03.Tool\Engine_Sound_Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -269,6 +290,18 @@
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp">
       <Filter>96.ThirdParty\imGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Engine.cpp">
+      <Filter>02.GameObjects\03.Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Practice.cpp">
+      <Filter>01.Levels\04.Practice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tool.cpp">
+      <Filter>03.Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Engin_Sound_Tool.cpp">
+      <Filter>03.Tool\Engine_Sound_Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

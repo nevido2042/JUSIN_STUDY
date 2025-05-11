@@ -92,6 +92,7 @@ void CMapTool::Update(_float fTimeDelta)
 	//Detail â
 	ImGui::Begin("Detail", nullptr);
 	ImGui::Text("Terrain_PickedPos");
+
 	_float3 vPos = m_pTerrain->Get_PickedPos();
 	ImGui::Text("x:%.2f, y:%.2f, z:%.2f", vPos.x, vPos.y, vPos.z);
 	ImGui::End();

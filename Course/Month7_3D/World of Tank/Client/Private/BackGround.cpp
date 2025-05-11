@@ -30,8 +30,8 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
- 	m_pSoundCom->Play("engines_650");
-	m_pSoundCom->Set_Loop("engines_650");
+ //	m_pSoundCom->Play("engines_650");
+	//m_pSoundCom->Set_Loop("engines_650");
 
 	return S_OK;
 }
@@ -43,22 +43,22 @@ void CBackGround::Priority_Update(_float fTimeDelta)
 
 void CBackGround::Update(_float fTimeDelta)
 {
-	static _float fSpeed = 0.f;
+	//static _float fSpeed = 0.f;
 
-	if (m_pGameInstance->Key_Pressing(DIK_A))
-	{
-		fSpeed -= 0.01f;
+	//if (m_pGameInstance->Key_Pressing(DIK_A))
+	//{
+	//	fSpeed -= 0.01f;
 
-		m_pSoundCom->Set_Pitch("engines_650", fSpeed);
-		//m_pSoundCom->SetVolume("engines_650", 0.0f);
-	}
+	//	m_pSoundCom->Set_Pitch("engines_650", fSpeed);
+	//	//m_pSoundCom->SetVolume("engines_650", 0.0f);
+	//}
 
-	if (m_pGameInstance->Key_Pressing(DIK_D))
-	{
-		fSpeed += 0.01f;
-		m_pSoundCom->Set_Pitch("engines_650", fSpeed);
-		//m_pSoundCom->SetVolume("engines_650", 1.0f);
-	}
+	//if (m_pGameInstance->Key_Pressing(DIK_D))
+	//{
+	//	fSpeed += 0.01f;
+	//	m_pSoundCom->Set_Pitch("engines_650", fSpeed);
+	//	//m_pSoundCom->SetVolume("engines_650", 1.0f);
+	//}
 }
 
 void CBackGround::Late_Update(_float fTimeDelta)
@@ -105,10 +105,10 @@ HRESULT CBackGround::Ready_Components()
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Texture_BackGround"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
-	/* For.Com_Sound */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Sound_Test"),
-		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
-		return E_FAIL;
+	///* For.Com_Sound */
+	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Sound_Engine"),
+	//	TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -146,5 +146,5 @@ void CBackGround::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pSoundCom);
+	//Safe_Release(m_pSoundCom);
 }

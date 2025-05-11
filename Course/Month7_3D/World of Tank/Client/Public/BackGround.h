@@ -7,7 +7,7 @@ NS_BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Rect;
-class CSoundController;
+//class CSoundController;
 NS_END
 
 NS_BEGIN(Client)
@@ -37,7 +37,7 @@ private:
 	CShader*			m_pShaderCom = { nullptr };
 	CTexture*			m_pTextureCom = { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
-	CSoundController*	m_pSoundCom{ nullptr };
+	//CSoundController*	m_pSoundCom{ nullptr };
 
 
 private:

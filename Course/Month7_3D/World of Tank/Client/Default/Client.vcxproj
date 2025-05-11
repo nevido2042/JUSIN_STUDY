@@ -167,11 +167,14 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\DebugUtils.h" />
+    <ClInclude Include="..\public\Engine.h" />
+    <ClInclude Include="..\public\Engin_Sound_Tool.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Hanger.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Level_MapTool.h" />
+    <ClInclude Include="..\public\Level_Practice.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Loading_Spinner.h" />
     <ClInclude Include="..\Public\Logo.h" />
@@ -179,6 +182,7 @@
     <ClInclude Include="..\Public\MapTool.h" />
     <ClInclude Include="..\public\StatusLight.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_win32.h" />
@@ -198,11 +202,14 @@
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\DebugUtils.cpp" />
+    <ClCompile Include="..\private\Engine.cpp" />
+    <ClCompile Include="..\private\Engin_Sound_Tool.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Hanger.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Level_MapTool.cpp" />
+    <ClCompile Include="..\private\Level_Practice.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Loading_Spinner.cpp" />
     <ClCompile Include="..\Private\Logo.cpp" />
@@ -210,6 +217,7 @@
     <ClCompile Include="..\Private\MapTool.cpp" />
     <ClCompile Include="..\private\StatusLight.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_win32.cpp" />
