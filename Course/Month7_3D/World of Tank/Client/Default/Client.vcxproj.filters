@@ -97,6 +97,9 @@
     <Filter Include="02.GameObjects\UIObject\99.Tool\00.Base_Tool">
       <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\04.Fury">
+      <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -207,6 +210,9 @@
     <ClInclude Include="..\public\Tool_Base.h">
       <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Fury.h">
+      <Filter>02.GameObjects\04.Fury</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -312,12 +318,18 @@
     <ClCompile Include="..\private\Tool_Base.cpp">
       <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Fury.cpp">
+      <Filter>02.GameObjects\04.Fury</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

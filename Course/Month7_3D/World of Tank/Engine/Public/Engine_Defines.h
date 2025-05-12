@@ -22,6 +22,8 @@ using namespace DirectX;
 
 #define DIRECTINPUT_VERSION 0x0800
 
+#define AI_TEXTURE_TYPE_MAX aiTextureType_GLTF_METALLIC_ROUGHNESS
+
 #include <dinput.h>
 
 #include <string>

@@ -36,10 +36,7 @@ HRESULT CEngine::Initialize(void* pArg)
 
 	m_EngineSound_Start = "engines_87~start_engine";
 	m_EngineSound_Loop = "engines_13";
-	m_EngineSound_Accel = "engines_650";//"engines_33";
 	m_EngineSound_End = "engines_14";
-
-	Start_Engine();
 
 	return S_OK;
 }
@@ -50,11 +47,17 @@ void CEngine::Start_Engine()
 	m_bIsEngineOn = true;
 	m_pSoundCom->Play(m_EngineSound_Start);
 
-	//m_pSoundCom->Play(m_EngineSound_Loop);
-	//m_pSoundCom->Set_Loop(m_EngineSound_Loop);
+	m_pSoundCom->Play(m_EngineSound_Loop);
+	m_pSoundCom->Set_Loop(m_EngineSound_Loop);
+}
 
-	m_pSoundCom->Play(m_EngineSound_Accel);
-	m_pSoundCom->Set_Loop(m_EngineSound_Accel);
+void CEngine::End_Engine()
+{
+	Set_RPM(RPM_MIN);
+	m_bIsEngineOn = false;
+	m_pSoundCom->Stop(m_EngineSound_Loop);
+
+	m_pSoundCom->Play(m_EngineSound_End);
 }
 
 void CEngine::Priority_Update(_float fTimeDelta)
@@ -64,6 +67,16 @@ void CEngine::Priority_Update(_float fTimeDelta)
 
 void CEngine::Update(_float fTimeDelta)
 {
+	if (!m_bIsEngineOn && m_pGameInstance->Key_Pressing(DIK_W))
+	{
+		Start_Engine();
+	}
+
+	if (m_bIsEngineOn && m_pGameInstance->Key_Pressing(DIK_SPACE))
+	{
+		End_Engine();
+	}
+
 	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		Press_Accelerator(fTimeDelta);
@@ -74,24 +87,12 @@ void CEngine::Update(_float fTimeDelta)
 		Set_RPM(m_fRPM -= fTimeDelta * 2.f);
 	}
 
-
-	if (m_bIsPressAccel && m_fRPM > m_fRPM_Max * 0.5f)
-	{
-		m_pSoundCom->Stop(m_EngineSound_Loop);
-	}
-	else if(!m_pSoundCom->IsPlaying(m_EngineSound_Loop))
-	{
-		m_pSoundCom->Play(m_EngineSound_Loop);
-		m_pSoundCom->Set_Loop(m_EngineSound_Loop);
-	}
-
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
-	m_pSoundCom->SetVolume(m_EngineSound_Accel, m_fRPM * m_fVolumeValue);
-	m_pSoundCom->Set_Pitch(m_EngineSound_Accel, m_fRPM * m_fPitchValue);
-
+	m_pSoundCom->SetVolume(m_EngineSound_Loop, m_fRPM * m_fVolumeValue);
+	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + m_fRPM * m_fPitchValue);
 }
 
 HRESULT CEngine::Render()
@@ -103,7 +104,7 @@ HRESULT CEngine::Render()
 void CEngine::Press_Accelerator(_float fTimeDelta)
 {
 	m_bIsPressAccel = true;
-	Set_RPM(m_fRPM += fTimeDelta);
+	Set_RPM(m_fRPM += fTimeDelta * 2.f);
 }
 
 void CEngine::Set_RPM(_float _fValue)

@@ -24,6 +24,7 @@ HRESULT CLevel_MapTool::Initialize()
 void CLevel_MapTool::Update(_float fTimeDelta)
 {
 
+
 }
 
 HRESULT CLevel_MapTool::Render()

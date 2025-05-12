@@ -103,6 +103,15 @@
     <ClInclude Include="..\Public\Picking.h">
       <Filter>01.Utility\07.Picking</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>01.Utility\04.Components\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Material.h">
+      <Filter>01.Utility\04.Components\Model\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mesh.h">
+      <Filter>01.Utility\04.Components\Model\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -191,6 +200,15 @@
     </ClCompile>
     <ClCompile Include="..\Public\Picking.cpp">
       <Filter>01.Utility\07.Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>01.Utility\04.Components\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Material.cpp">
+      <Filter>01.Utility\04.Components\Model\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mesh.cpp">
+      <Filter>01.Utility\04.Components\Model\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +325,15 @@
     </Filter>
     <Filter Include="01.Utility\07.Picking">
       <UniqueIdentifier>{d2593f03-d516-4388-8af0-93fb90f1b0c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model">
+      <UniqueIdentifier>{77fdeaaa-b537-4311-a5db-62f84979280f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model\Mesh">
+      <UniqueIdentifier>{d1f88997-f43f-4ee3-951c-dee4600ecee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model\Material">
+      <UniqueIdentifier>{cfdfd42b-437c-43db-836b-4273f237ce0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

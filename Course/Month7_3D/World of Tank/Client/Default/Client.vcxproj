@@ -168,6 +168,7 @@
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\DebugUtils.h" />
     <ClInclude Include="..\public\Engine.h" />
+    <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\public\Tool_Engine_Sound.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\DebugUtils.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
+    <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
@@ -238,6 +240,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>

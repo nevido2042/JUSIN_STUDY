@@ -26,6 +26,7 @@ private:
 	HRESULT Ready_Layer_BackGround(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Engine(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Fury(const _wstring strLayerTag);
 
 	HRESULT Ready_Layer_Tool_Base(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Tool_EngineSound(const _wstring strLayerTag);

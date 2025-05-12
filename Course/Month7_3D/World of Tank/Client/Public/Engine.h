@@ -29,6 +29,7 @@ public:
 
 public:
 	void Start_Engine();
+	void End_Engine();
 	void Press_Accelerator(_float fTimeDelta);
 public:
 	_float	Get_RPM() { return m_fRPM; }
@@ -43,17 +44,17 @@ public:
 private:
 	string		m_EngineSound_Start = {};
 	string		m_EngineSound_Loop = {};
-	string		m_EngineSound_Accel = {};
 	string		m_EngineSound_End = {};
 
 	_bool		m_bIsPressAccel = { false };
 	_bool		m_bIsEngineOn = { false };
-	_bool		m_bIsEngineSoundLoopOn = { false };
+
 	_float		m_fRPM = { 0.f };
 	_float		m_fRPM_Max = { 10.f };
 
-	_float		m_fPitchValue = { 2.f };
-	_float		m_fVolumeValue = { 0.1f };
+	_float		m_fVolumeValue = { 1.2f };
+	_float		m_fPitchValue = { 0.2f };
+
 private:
 	CSoundController* m_pSoundCom{ nullptr };
 private:

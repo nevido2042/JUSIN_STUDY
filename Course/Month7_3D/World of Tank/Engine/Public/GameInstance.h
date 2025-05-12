@@ -28,6 +28,10 @@ public:
 	_float Compute_Random(_float fMin, _float fMax);
 
 public:
+#pragma region GRAPHIC_DEVICE
+	HRESULT Resize(_uint iWinResizeX, _uint iWinResizeY);
+#pragma endregion
+
 #pragma region LEVEL_MANAGER
 	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 #pragma endregion

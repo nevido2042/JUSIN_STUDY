@@ -17,6 +17,10 @@ HWND g_hWnd;
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
+_uint g_iWinResizeX;
+_uint g_iWinResizeY;
+_bool g_SwapChainNeedsResize = false;
+
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -81,6 +85,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
             }
+        }
+
+        if (g_SwapChainNeedsResize)
+        {
+            pGameInstance->Resize(g_iWinResizeX, g_iWinResizeY);
+            g_SwapChainNeedsResize = false;
         }
 
         pGameInstance->Update_Timer(TEXT("Timer_Default"));
@@ -178,6 +188,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
@@ -186,9 +198,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_SIZE:
-        if (wParam != SIZE_MINIMIZED) {
-            //ImGui_ImplDX11_InvalidateDeviceObjects();
-            //ImGui_ImplDX11_CreateDeviceObjects();
+        if (wParam != SIZE_MINIMIZED) // 최소화 상태가 아닐 때만 처리
+        { 
+            g_iWinResizeX = LOWORD(lParam); // 새 너비
+            g_iWinResizeY = HIWORD(lParam); // 새 높이
+            g_SwapChainNeedsResize = true;    // 리사이즈 필요 플래그 설정
         }
         break;
     case WM_COMMAND:
