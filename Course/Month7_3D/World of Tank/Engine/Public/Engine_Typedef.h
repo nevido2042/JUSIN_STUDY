@@ -37,4 +37,6 @@ namespace Engine
 	typedef XMMATRIX					_matrix;
 	typedef FXMMATRIX					_fmatrix;
 	typedef CXMMATRIX					_cmatrix;
+
+	typedef map<const _wstring, class CBase*>	PROTOTYPES;
 }

@@ -21,10 +21,6 @@ HRESULT CLevel_Practice::Initialize()
 
 	if (FAILED(Ready_Layer_Fury(TEXT("Layer_Fury"))))
 		return E_FAIL;
-
-
-	if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
-		return E_FAIL;
 	
 	if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
 		return E_FAIL;
@@ -80,14 +76,14 @@ HRESULT CLevel_Practice::Ready_Layer_Fury(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
-{
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
+//{
+//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
+//		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
 
 HRESULT CLevel_Practice::Ready_Layer_Tool_EngineSound(const _wstring strLayerTag)
 {

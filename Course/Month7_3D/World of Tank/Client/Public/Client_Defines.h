@@ -13,6 +13,8 @@
 #include <sstream>
 #include <iostream>
 
+#include <cstdlib>
+
 #include "../Default/framework.h"
 #include <process.h>
 #include "Client_Enum.h"

@@ -4,12 +4,12 @@
 #include "Terrain.h"
 
 CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUIObject{ pDevice, pContext }
+	: CTool{ pDevice, pContext }
 {
 }
 
 CMapTool::CMapTool(const CMapTool& Prototype)
-	: CUIObject(Prototype)
+	: CTool(Prototype)
 {
 }
 
@@ -26,68 +26,57 @@ HRESULT CMapTool::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if (FAILED(Get_Asset()))
+		return E_FAIL;
+
 	m_pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_Terrain"), 0));
 	if (nullptr == m_pTerrain)
 		return E_FAIL;
 	Safe_AddRef(m_pTerrain);
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	// 스타일 설정 (선택)
-	ImGui::StyleColorsDark();
-
-	// Win32 + DX11 백엔드 초기화
-	ImGui_ImplWin32_Init(g_hWnd); // ← 기존에 만든 윈도우 핸들 사용
-	ImGui_ImplDX11_Init(m_pDevice, m_pContext); // DX11 초기화 때 만든 device/context
 
 	return S_OK;
 }
 
 void CMapTool::Priority_Update(_float fTimeDelta)
 {
-	// ImGui 새 프레임 시작
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CMapTool::Update(_float fTimeDelta)
 {
-	// 뷰포트 기준 위치와 크기 설정 (메뉴바 등 고려된 안전한 방식)
-	ImGuiViewport* viewport = ImGui::GetMainViewport();
-	ImGui::SetNextWindowPos(viewport->WorkPos);
-	ImGui::SetNextWindowSize(viewport->WorkSize);
-
-	// Base 창 시작 - 항상 뒤에 있고 완전 투명
-	ImGui::Begin("Base", nullptr,
-		ImGuiWindowFlags_NoBringToFrontOnFocus |  // 클릭해도 앞으로 안 옴
-		ImGuiWindowFlags_NoBackground |           // 배경 안 그림 (투명)
-		ImGuiWindowFlags_NoTitleBar |             // 제목 없음
-		ImGuiWindowFlags_NoResize |               // 크기 고정
-		ImGuiWindowFlags_NoMove |                 // 이동 불가
-		ImGuiWindowFlags_NoScrollbar |            // 스크롤바 제거
-		ImGuiWindowFlags_NoCollapse |             // 축소 비활성화
-		ImGuiWindowFlags_NoSavedSettings          // 설정 저장 안 함
-	);
-
-	// DockSpace 생성 - 중앙 영역도 투명
-	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-	ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
-
-	ImGui::End();
-	
 	//하이어라키 창
 	ImGui::Begin("Hierarchy", nullptr);
 
 	ImGui::End();
 
-	//Asset 창
+#pragma region Asset
 	ImGui::Begin("Asset", nullptr);
+
+	if (ImGui::BeginListBox("##AssetList", ImVec2(-FLT_MIN, 200)))
+	{
+		for (_int i = 0; i < m_AssetNames.size(); ++i)
+		{
+			string strAssetName;
+			strAssetName.resize(MAX_PATH);  // 버퍼 확보
+			size_t convertedChars = 0;
+			wcstombs_s(&convertedChars, &strAssetName[0], MAX_PATH, m_AssetNames[i].c_str(), _TRUNCATE);
+			strAssetName.resize(convertedChars > 0 ? convertedChars - 1 : 0);  // 널 문자 제외하고 자르기
+
+			const _bool isSelected = (m_iSelectedAssetIndex == i);
+			if (ImGui::Selectable(strAssetName.c_str(), isSelected))
+			{
+				m_iSelectedAssetIndex = i;
+			}
+
+			// 선택된 항목에 포커스
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndListBox();
+	}
+
 	ImGui::End();
+#pragma endregion
 
 	//Detail 창
 	ImGui::Begin("Detail", nullptr);
@@ -143,8 +132,21 @@ void CMapTool::Late_Update(_float fTimeDelta)
 
 HRESULT CMapTool::Render()
 {
-	// ImGui 그리기
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());  // ImGui 그리기
+
+
+	return S_OK;
+}
+
+HRESULT CMapTool::Get_Asset()
+{
+	const PROTOTYPES map_Prototypes = m_pGameInstance->Get_Prototypes(ENUM_CLASS(LEVEL::STATIC));
+	m_AssetNames.reserve(map_Prototypes.size());
+	wstring wstrGameObject = L"GameObject";
+	for (auto& prototype : map_Prototypes)
+	{
+		if(prototype.first.find(wstrGameObject) != wstring::npos)
+			m_AssetNames.push_back(prototype.first);
+	}
 
 	return S_OK;
 }
@@ -183,13 +185,6 @@ CGameObject* CMapTool::Clone(void* pArg)
 
 void CMapTool::Free()
 {
-	if (m_bCloned)
-	{
-		ImGui_ImplDX11_Shutdown();
-		ImGui_ImplWin32_Shutdown();
-		ImGui::DestroyContext();
-	}
-
 	Safe_Release(m_pTerrain);
 
 	__super::Free();

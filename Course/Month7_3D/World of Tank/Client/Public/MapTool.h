@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "UIObject.h"
+#include "Tool.h"
 
 NS_BEGIN(Client)
 
-class CMapTool final : public CUIObject
+class CMapTool final : public CTool
 {
 private:
 	CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -24,11 +24,12 @@ private:
 	class CTerrain* m_pTerrain = { nullptr };
 
 private:
-	HRESULT Ready_Components();
+	vector<wstring> m_AssetNames = {};
+	_int m_iSelectedAssetIndex = -1; // 선택된 항목 인덱스
 
 private:
-	_bool m_bShowDemoWindow = true;
-	ImVec4 m_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	HRESULT Get_Asset();
+	HRESULT Ready_Components();
 
 public:
 	static CMapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

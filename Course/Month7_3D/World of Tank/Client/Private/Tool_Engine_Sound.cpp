@@ -20,8 +20,8 @@ HRESULT CTool_Engine_Sound::Initialize_Prototype()
 
 HRESULT CTool_Engine_Sound::Initialize(void* pArg)
 {
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
+	//if (FAILED(__super::Initialize(pArg)))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -37,12 +37,12 @@ HRESULT CTool_Engine_Sound::Initialize(void* pArg)
 
 void CTool_Engine_Sound::Priority_Update(_float fTimeDelta)
 {
-	__super::Priority_Update(fTimeDelta);
+
 }
 
 void CTool_Engine_Sound::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+
 
 
 	//하이어라키 창
@@ -66,7 +66,7 @@ void CTool_Engine_Sound::Late_Update(_float fTimeDelta)
 
 HRESULT CTool_Engine_Sound::Render()
 {
-	__super::Render();
+
 
 	return S_OK;
 }

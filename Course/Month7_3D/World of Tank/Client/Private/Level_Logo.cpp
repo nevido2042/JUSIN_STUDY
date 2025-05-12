@@ -20,8 +20,8 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_Logo(TEXT("Layer_Logo"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Network(TEXT("Layer_Network"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_StatusLight(TEXT("Layer_StatusLight"))))
 		return E_FAIL;
@@ -105,6 +105,15 @@ HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Logo"),
 		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_Tool_Base(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;
