@@ -95,8 +95,8 @@ HRESULT CLevel_Loading::Ready_Layer_Background(const _wstring strLayerTag)
 	UIObjectDesc.fX = g_iWinSizeX * 0.5f;
 	UIObjectDesc.fY = g_iWinSizeY * 0.5f;
 	UIObjectDesc.fDepth = DEPTH_BACKGROUND;
-	UIObjectDesc.fSizeX = g_iWinSizeX;
-	UIObjectDesc.fSizeY = g_iWinSizeY;
+	UIObjectDesc.fSizeX = static_cast<_float>(g_iWinSizeX);
+	UIObjectDesc.fSizeY = static_cast<_float>(g_iWinSizeY);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Background_Loading"),
 		ENUM_CLASS(LEVEL::LOADING), strLayerTag, &UIObjectDesc)))

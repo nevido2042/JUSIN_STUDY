@@ -15,6 +15,9 @@
 
 #include <cstdlib>
 
+#include <filesystem>
+#include <fstream>
+
 #include "../Default/framework.h"
 #include <process.h>
 #include "Client_Enum.h"

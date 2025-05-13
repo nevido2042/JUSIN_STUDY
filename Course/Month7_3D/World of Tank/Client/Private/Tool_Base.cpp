@@ -29,8 +29,13 @@ HRESULT CTool_Base::Initialize(void* pArg)
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	// 스타일 설정 (선택)
 	ImGui::StyleColorsDark();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	// 윈도우 배경만 투명하게
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.3f); // Window 배경 투명
+
 
 	// Win32 + DX11 백엔드 초기화
 	ImGui_ImplWin32_Init(g_hWnd); // ← 기존에 만든 윈도우 핸들 사용

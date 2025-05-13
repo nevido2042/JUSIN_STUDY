@@ -61,14 +61,14 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pNetwork)
 		return E_FAIL;
 
-	m_pPicking = CPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
+	m_pPicking = CPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd/*, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY*/);
 	if (nullptr == m_pPicking)
 		return E_FAIL;
 
 	return S_OK;
 }
 
-void CGameInstance::Update_Engine(_float fTimeDelta)
+void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWinSizeY)
 {
 	m_pInputDevice->Update();
 	m_pSound_Device->Update();
@@ -76,7 +76,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 
-	m_pPicking->Update();
+	m_pPicking->Update(iWinSizeX, iWinSizeY);
 	m_pNetwork->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);	
 
@@ -182,9 +182,19 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _wstring& st
 	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, iIndex);
 }
 
+CGameObject* CGameInstance::Get_Last_GameObject(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Get_Last_GameObject(iLevelIndex, strLayerTag);
+}
+
 CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex)
 {
 	return m_pObject_Manager->Get_Component(iLevelIndex, strLayerTag, strComponentTag, iIndex);	
+}
+
+const map<const _wstring, class CLayer*>& CGameInstance::Get_Layers(_uint iLevelIndex) const
+{
+	return m_pObject_Manager->Get_Layers(iLevelIndex);
 }
 
 #pragma endregion

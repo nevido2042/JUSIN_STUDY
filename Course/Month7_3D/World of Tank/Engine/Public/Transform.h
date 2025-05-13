@@ -29,6 +29,14 @@ public:
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
 	}
 
+	_matrix Get_WorldMatrix() {
+		return XMLoadFloat4x4(&m_WorldMatrix);
+	}
+
+	void Set_WorldMatrix(_float4x4 mWorldMatrix) {
+		m_WorldMatrix = mWorldMatrix;
+	}
+
 	void Set_State(STATE eState, _fvector vState)
 	{
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[ENUM_CLASS(eState)]), vState);

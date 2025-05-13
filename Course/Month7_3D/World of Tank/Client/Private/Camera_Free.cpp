@@ -28,7 +28,7 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 	Desc.fNear = 0.1f;
 	Desc.fFar = 500.f;
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 10.0f;
+	Desc.fSpeedPerSec = 50.0f;
 	lstrcpy(Desc.szName, TEXT("Camera"));
 
 	m_fSensor = 0.1f;
@@ -59,16 +59,19 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 		m_pTransformCom->Go_Backward(fTimeDelta);
 	}
 
-	_int			MouseMove = {};
-
-	if (MouseMove = m_pGameInstance->Get_DIMMoveState(DIMM::X))
+	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
 	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), MouseMove * fTimeDelta * m_fSensor);
-	}
+		_int			MouseMove = {};
 
-	if (MouseMove = m_pGameInstance->Get_DIMMoveState(DIMM::Y))
-	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(STATE::RIGHT), MouseMove * fTimeDelta * m_fSensor);
+		if (MouseMove = m_pGameInstance->Get_DIMMoveState(DIMM::X))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), MouseMove * fTimeDelta * m_fSensor);
+		}
+
+		if (MouseMove = m_pGameInstance->Get_DIMMoveState(DIMM::Y))
+		{
+			m_pTransformCom->Turn(m_pTransformCom->Get_State(STATE::RIGHT), MouseMove * fTimeDelta * m_fSensor);
+		}
 	}
 
 	__super::Bind_Matrices();

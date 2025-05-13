@@ -21,14 +21,25 @@ public:
 	virtual HRESULT Render();
 
 private:
+	CGameObject* Get_Selected_GameObject(vector<string>& HierarchyNames);
+
+private:
 	class CTerrain* m_pTerrain = { nullptr };
 
 private:
 	vector<wstring> m_AssetNames = {};
 	_int m_iSelectedAssetIndex = -1; // 선택된 항목 인덱스
 
+	//vector<wstring> m_HierarchyNames = {};
+	_int m_iSelectedHierarchyIndex = -1; // 선택된 항목 인덱스
+
 private:
-	HRESULT Get_Asset();
+	HRESULT Delete_All();
+
+	HRESULT Save_Map();
+	HRESULT Load_Map();
+
+	HRESULT Get_Assets();
 	HRESULT Ready_Components();
 
 public:

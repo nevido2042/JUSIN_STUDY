@@ -15,8 +15,8 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Fury(TEXT("Layer_Fury"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Fury(TEXT("Layer_Fury"))))
+	//	return E_FAIL;
 
 
 

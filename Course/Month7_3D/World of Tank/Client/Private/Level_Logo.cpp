@@ -59,8 +59,8 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring strLayerTag)
 	BackGroundDesc.fX = g_iWinSizeX * 0.5f;
 	BackGroundDesc.fY = g_iWinSizeY * 0.5f;
 	BackGroundDesc.fDepth = DEPTH_BACKGROUND;
-	BackGroundDesc.fSizeX = g_iWinSizeX;
-	BackGroundDesc.fSizeY = g_iWinSizeY;
+	BackGroundDesc.fSizeX = static_cast<_float>(g_iWinSizeX);
+	BackGroundDesc.fSizeY = static_cast<_float>(g_iWinSizeY);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_BackGround"),
 		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &BackGroundDesc)))

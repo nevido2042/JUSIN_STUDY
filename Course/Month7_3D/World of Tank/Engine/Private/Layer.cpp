@@ -38,12 +38,28 @@ HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 
 void CLayer::Priority_Update(_float fTimeDelta)
 {
-	for (auto& pGameObject : m_GameObjects)
+	for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end(); )
 	{
-		if (nullptr != pGameObject)
-			pGameObject->Priority_Update(fTimeDelta);
+		if (true == (*iter)->Get_IsDestroyed())
+		{
+			Safe_Release(*iter);
+			iter = m_GameObjects.erase(iter);
+			continue;
+		}
+
+		if (nullptr != *iter)
+		{
+			(*iter)->Priority_Update(fTimeDelta);
+			++iter;
+		}
 
 	}
+
+	//for (auto& pGameObject : m_GameObjects)
+	//{
+	//	if (nullptr != pGameObject)
+	//		pGameObject->Priority_Update(fTimeDelta);
+	//}
 		
 }
 

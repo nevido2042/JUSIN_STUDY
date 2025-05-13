@@ -58,7 +58,10 @@ void CMainApp::Update(_float fTimeDelta)
 		}
 	}
 
-	m_pGameInstance->Update_Engine(fTimeDelta);
+
+	extern _uint g_iWinResizeX;
+	extern _uint g_iWinResizeY;
+	m_pGameInstance->Update_Engine(fTimeDelta, g_iWinResizeX, g_iWinResizeY);
 }
 
 HRESULT CMainApp::Render()

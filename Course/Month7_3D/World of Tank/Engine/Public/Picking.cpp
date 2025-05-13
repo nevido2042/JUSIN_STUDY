@@ -12,17 +12,17 @@ CPicking::CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
+HRESULT CPicking::Initialize(HWND hWnd/*, _uint iWinSizeX, _uint iWinSizeY*/)
 {
 
 	m_hWnd = hWnd;
-	m_iWinSizeX = iWinSizeX;
-	m_iWinSizeY = iWinSizeY;
+	//m_iWinSizeX = iWinSizeX;
+	//m_iWinSizeY = iWinSizeY;
 
 	return S_OK;
 }
 
-void CPicking::Update()
+void CPicking::Update(_uint iWinSizeX, _uint iWinSizeY)
 {
 	POINT		ptMouse = {};
 
@@ -33,8 +33,8 @@ void CPicking::Update()
 	/*2. 투영스페이스로 옮기자. 로컬위치 * 월드행렬 * 뷰행렬 * 투영행렬 * 1/w */
 	_float4			vPosition = { };
 
-	vPosition.x = ptMouse.x / (m_iWinSizeX * 0.5f) - 1.f;
-	vPosition.y = ptMouse.y / (m_iWinSizeY * -0.5f) + 1.f;
+	vPosition.x = ptMouse.x / (iWinSizeX * 0.5f) - 1.f;
+	vPosition.y = ptMouse.y / (iWinSizeY * -0.5f) + 1.f;
 	vPosition.z = 0.0f;
 	vPosition.w = 1.f;
 
@@ -145,11 +145,11 @@ void CPicking::Transform_ToLocalSpace(const _matrix& WorldMatrixInverse)
 
 }
 
-CPicking* CPicking::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
+CPicking* CPicking::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd/*, _uint iWinSizeX, _uint iWinSizeY*/)
 {
 	CPicking* pInstance = new CPicking(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(hWnd, iWinSizeX, iWinSizeY)))
+	if (FAILED(pInstance->Initialize(hWnd/*, iWinSizeX, iWinSizeY*/)))
 	{
 		MSG_BOX("Failed to Created : CPicking");
 		Safe_Release(pInstance);

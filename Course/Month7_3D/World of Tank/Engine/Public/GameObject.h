@@ -28,8 +28,13 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	_bool	Get_IsDestroyed() { return m_bDestroyed; }
+	void	Destroy() { m_bDestroyed = true; }
+
 protected:
 	_bool m_bCloned = { false };
+	_bool m_bDestroyed = { false };
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

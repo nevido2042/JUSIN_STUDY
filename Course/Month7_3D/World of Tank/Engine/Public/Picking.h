@@ -11,12 +11,12 @@ private:
 	virtual ~CPicking() = default;
 
 public:
-	HRESULT Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
+	HRESULT Initialize(HWND hWnd/*, _uint iWinSizeX, _uint iWinSizeY*/);
 
 	/* 마우스의 윈도우상의 위치를 구하고 */
 	/* 뷰스페이스 상에서 마우스 레이로 변형하여 */
 	/* 월드까지 변환시켜서 보관하자. */
-	void Update();
+	void Update(_uint iWinSizeX, _uint iWinSizeY);
 
 	/* 기존의 그냥 피킹함수를 로컬과 월드에서 각각 해주기 위해, InWorld와 InLocal로 함수를 나눠줬다 */
 	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
@@ -32,7 +32,7 @@ private:
 
 private:
 	HWND			m_hWnd = {};
-	_uint			m_iWinSizeX{}, m_iWinSizeY{};
+	//_uint			m_iWinSizeX{}, m_iWinSizeY{};
 	
 	_float3			m_vMouseRay = {};
 	_float3			m_vMousePos = {};
@@ -42,7 +42,7 @@ private:
 	_float3			m_vLocalMousePos = {};
 
 public:
-	static CPicking* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
+	static CPicking* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd/*, _uint iWinSizeX, _uint iWinSizeY*/);
 	virtual void Free() override;
 };
 

@@ -14,15 +14,20 @@ private:
 	virtual ~CObject_Manager() = default;
 
 public:
+	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg);
 	class CComponent* Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex);
 	class CGameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex = 0);
+	class CGameObject* Get_Last_GameObject(_uint iLevelIndex, const _wstring& strLayerTag);
 public:
 	HRESULT Initialize(_uint iNumLevels);
-	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg);
 	void Priority_Update(_float fTimeDelta);
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
+
+public:
+	const map<const _wstring, class CLayer*>& Get_Layers(_uint iLevelIndex) const { return m_pLayers[iLevelIndex]; }
+
 private:	
 	_uint								m_iNumLevels = {};
 	map<const _wstring, class CLayer*>* m_pLayers = { nullptr };

@@ -18,7 +18,7 @@ private:
 
 public:
 	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppContextOut);
-	void Update_Engine(_float fTimeDelta);
+	void Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWinSizeY);
 	void Clear(_uint iLevelIndex);
 	HRESULT Begin_Draw();
 	HRESULT Draw();
@@ -45,7 +45,9 @@ public:
 #pragma region OBJECT_MANAGER
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	class CGameObject* Get_GameObject(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex = 0);
+	class CGameObject* Get_Last_GameObject(_uint iLevelIndex, const _wstring& strLayerTag);
 	CComponent* Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+	const map<const _wstring, class CLayer*>& Get_Layers(_uint iLevelIndex) const;
 #pragma endregion
 
 #pragma region RENDERER
