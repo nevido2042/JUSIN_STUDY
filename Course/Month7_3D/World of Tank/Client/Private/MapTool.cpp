@@ -4,6 +4,8 @@
 #include "Terrain.h"
 #include "Layer.h"
 
+#include "MapObject.h"
+
 CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTool{ pDevice, pContext }
 {
@@ -57,46 +59,62 @@ void CMapTool::Update(_float fTimeDelta)
 		_uint i = 0;
 		for (auto& pLayer : m_pGameInstance->Get_Layers(ENUM_CLASS(LEVEL::MAPTOOL)))
 		{
-			string strLayerName;
-			strLayerName.resize(MAX_PATH);
-			size_t convertedChars = 0;
-			wcstombs_s(&convertedChars, &strLayerName[0], MAX_PATH, pLayer.first.c_str(), _TRUNCATE);
-			strLayerName.resize(convertedChars > 0 ? convertedChars - 1 : 0);
+			if (pLayer.first.find(L"MapObject") == wstring::npos)
+				continue;
 
-			//  TreeNode로 접기 / 펼치기 만들기
-			if (ImGui::TreeNode(strLayerName.c_str()))
+			// 모델 이름별로 그룹화
+			map<string, vector<CGameObject*>> ModelGroups;
+
+			for (auto pGameObject : pLayer.second->Get_GameObjects())
 			{
-				_uint j = 0;
-				for (auto pGameObject : pLayer.second->Get_GameObjects())
+				wstring prefix = L"Prototype_Component_Model_";
+				wstring wstrModelCom = static_cast<CMapObject*>(pGameObject)->Get_ModelCom();
+
+				size_t PosPrefix = wstrModelCom.find(prefix);
+
+				if (PosPrefix == wstring::npos)
+					continue;
+
+				string ModelName = WStringToString(wstrModelCom.substr(PosPrefix + prefix.length()));
+				ModelGroups[ModelName].push_back(pGameObject);
+			}
+
+			// 모델 이름별 TreeNode
+			for (auto& group : ModelGroups)
+			{
+				const string& ModelName = group.first;
+
+				if (ImGui::TreeNode(ModelName.c_str()))
 				{
-					string strHierachyName = strLayerName + '_' + to_string(j);
-					++j;
-
-					// "Prototype_GameObject_" 필터링 (원하면 주석 풀고)
-					// if (strHierachyName.find("Prototype_GameObject_") == string::npos)
-					//     continue;
-
-					const _bool isSelected = (m_iSelectedHierarchyIndex == i);
-					HierarchyNames.push_back(strHierachyName);
-
-					if (ImGui::Selectable(strHierachyName.c_str(), isSelected))
+					_uint j = 0;
+					for (auto pGameObject : group.second)
 					{
-						m_iSelectedHierarchyIndex = i;
+						string strHierarchyName = ModelName + '_' + to_string(j);
+						++j;
+
+						const _bool isSelected = (m_iSelectedHierarchyIndex == i);
+
+						HierarchyNames.push_back(strHierarchyName);
+
+						if (ImGui::Selectable(strHierarchyName.c_str(), isSelected))
+						{
+							m_iSelectedHierarchyIndex = i;
+						}
+
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+
+						++i;
 					}
 
-					if (isSelected)
-						ImGui::SetItemDefaultFocus();
-
-					++i;
+					ImGui::TreePop(); // ModelName 닫기
 				}
-
-				ImGui::TreePop(); // 접기 닫기
 			}
 		}
+
 		ImGui::EndListBox();
 	}
 
-	
 	if (ImGui::Button("Delete"))
 	{
 		CGameObject* pGameObject = Get_Selected_GameObject(HierarchyNames);
@@ -105,7 +123,7 @@ void CMapTool::Update(_float fTimeDelta)
 	}
 	if (ImGui::Button("Save Map"))
 	{
-		Save_Map();
+		Save_Map(HierarchyNames);
 	}
 	if (ImGui::Button("Load Map"))
 	{
@@ -122,7 +140,14 @@ void CMapTool::Update(_float fTimeDelta)
 	{
 		if (m_iSelectedAssetIndex != -1 && m_iSelectedAssetIndex < m_AssetNames.size())
 		{
-			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), m_AssetNames[m_iSelectedAssetIndex].c_str(), ENUM_CLASS(LEVEL::MAPTOOL), m_AssetNames[m_iSelectedAssetIndex].c_str());
+			CMapObject::MAPOBJECT_DESC Desc = {};
+			Desc.wstrModelCom = m_AssetNames[m_iSelectedAssetIndex]; //Prototype_Component_Model_Fury
+
+			wstring PreFix = L"Prototype_Component_Model";
+			wstring Name = Desc.wstrModelCom.substr(PreFix.length());
+
+			//Layer_MapObject_Fury
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapObject"), ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapObject") + Name, &Desc);
 		}
 	}
 
@@ -248,37 +273,49 @@ HRESULT CMapTool::Render()
 
 CGameObject* CMapTool::Get_Selected_GameObject(vector<string>& HierarchyNames)
 {
-	const string prefix = "Prototype_GameObject_";
-
 	if (m_iSelectedHierarchyIndex < HierarchyNames.size())
 	{
-		// prefix 제거
-		size_t prefixPos = HierarchyNames[m_iSelectedHierarchyIndex].find(prefix);
-		if (prefixPos != string::npos) {
-			string remain = HierarchyNames[m_iSelectedHierarchyIndex].substr(prefixPos + prefix.length());
-
-			// remain 은 이제 "XXX_0" 형태
-			size_t underscorePos = remain.rfind('_');
-			string objectName;
-			string objectNumber;
-			if (underscorePos != string::npos)
-			{
-				objectName = remain.substr(0, underscorePos);  // XXX
-				objectNumber = remain.substr(underscorePos + 1);  // 0
-			}
-
-			string LayerName = prefix + objectName;
-
-			return m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), wstring(LayerName.begin(), LayerName.end()), stoi(objectNumber));
-		}
+		return Get_GameObject(HierarchyNames[m_iSelectedHierarchyIndex]);
 	}
 
 	return nullptr;
 }
 
+CGameObject* CMapTool::Get_GameObject(string HierarchyName)
+{
+	// 예: "Fury_0"
+
+	size_t UnderbarPos = HierarchyName.find('_');
+	if (UnderbarPos == string::npos)
+		return nullptr; // 언더바 없으면 잘못된 이름
+
+	// 모델 이름 : Fury
+	string ModelName = HierarchyName.substr(0, UnderbarPos);
+
+	// 넘버 : 0
+	string ObjectNumberStr = HierarchyName.substr(UnderbarPos + 1);
+
+	if (ObjectNumberStr.empty())
+		return nullptr; // 넘버가 비어있으면 에러
+
+	_int iObjectNumber = stoi(ObjectNumberStr);
+
+	// 최종 레이어 이름 : Layer_MapObject_Fury
+	string LayerName = "Layer_MapObject_" + ModelName;
+
+	return m_pGameInstance->Get_GameObject(
+		ENUM_CLASS(LEVEL::MAPTOOL),
+		wstring(LayerName.begin(), LayerName.end()),
+		iObjectNumber
+	);
+
+	return nullptr;
+}
+
+
 HRESULT CMapTool::Delete_All()
 {
-	const wstring wstrPrefix = L"Prototype_GameObject_";
+	const wstring wstrPrefix = L"Layer_MapObject";
 
 	for (auto& pLayer : m_pGameInstance->Get_Layers(ENUM_CLASS(LEVEL::MAPTOOL)))
 	{
@@ -295,7 +332,7 @@ HRESULT CMapTool::Delete_All()
 }
 
 
-HRESULT CMapTool::Save_Map()
+HRESULT CMapTool::Save_Map(vector<string>& HierarchyNames)
 {
 	// 폴더 없으면 생성 (안해도 된다면 생략 가능)
 	if (!filesystem::exists("../Bin/Map/"))
@@ -308,39 +345,33 @@ HRESULT CMapTool::Save_Map()
 	if (!fp)
 		return E_FAIL;
 
-	// GameObject 루프
-	for (auto& pLayer : m_pGameInstance->Get_Layers(ENUM_CLASS(LEVEL::MAPTOOL)))
+	for (string HierarchyName : HierarchyNames)
 	{
-		for (auto pGameObject : pLayer.second->Get_GameObjects())
+		//Fury_0
+		CGameObject* pGameObject = Get_GameObject(HierarchyName);
+
+		// Transform 위치 가져오기
+		CTransform* pTransform = static_cast<CTransform*>(pGameObject->Get_Component(g_strTransformTag));
+		_float3 vPos = {};
+		if (pTransform != nullptr)
 		{
-			// 이름 (Layer 이름 기반)
-			string strHierachyName;
-			strHierachyName.resize(MAX_PATH);  // 버퍼 확보
-			size_t convertedChars = 0;
-			wcstombs_s(&convertedChars, &strHierachyName[0], MAX_PATH, pLayer.first.c_str(), _TRUNCATE);
-			strHierachyName.resize(convertedChars > 0 ? convertedChars - 1 : 0);  // 널 문자 제외
-
-			if (strHierachyName.find("Prototype_GameObject_") == string::npos)
-				continue;
-
-			// Transform 위치 가져오기
-			CTransform* pTransform = static_cast<CTransform*>(pGameObject->Get_Component(g_strTransformTag));
-			_float3 vPos = {};
-			if (pTransform != nullptr)
-			{
-				XMStoreFloat3(&vPos, pTransform->Get_State(STATE::POSITION));
-			}
-
-			// 이름 길이 먼저 저장
-			_uint iNameLength = static_cast<_uint>(strHierachyName.length());
-			fwrite(&iNameLength, sizeof(_uint), 1, fp);
-
-			// 이름 데이터 저장
-			fwrite(strHierachyName.c_str(), sizeof(char), iNameLength, fp);
-
-			// 위치 데이터 저장
-			fwrite(&vPos, sizeof(_float3), 1, fp);
+			XMStoreFloat3(&vPos, pTransform->Get_State(STATE::POSITION));
 		}
+
+		size_t UnderbarPos = HierarchyName.find('_');
+
+		// 모델 이름 : Fury
+		string ModelName = HierarchyName.substr(0, UnderbarPos);
+
+		// 이름 길이 먼저 저장
+		_uint iNameLength = static_cast<_uint>(ModelName.length());
+		fwrite(&iNameLength, sizeof(_uint), 1, fp);
+
+		// 이름 데이터 저장
+		fwrite(ModelName.c_str(), sizeof(char), iNameLength, fp);
+
+		// 위치 데이터 저장
+		fwrite(&vPos, sizeof(_float3), 1, fp);
 	}
 
 	fclose(fp);
@@ -370,19 +401,25 @@ HRESULT CMapTool::Load_Map()
 			break;
 
 		// 이름 읽기
-		string strHierachyName;
-		strHierachyName.resize(iNameLength);
-		fread(&strHierachyName[0], sizeof(char), iNameLength, fp);
+		string Name;
+		Name.resize(iNameLength);
+		fread(&Name[0], sizeof(char), iNameLength, fp);
 
 		// 위치 읽기
 		_float3 vPos = {};
 		fread(&vPos, sizeof(_float3), 1, fp);
 
-		wstring GameObjectName = { strHierachyName.begin(), strHierachyName.end() };
+		//"Layer_MapObject_Fury"
+		wstring LayerName = L"Layer_MapObject_" + wstring(Name.begin(), Name.end());
+		//"Prototype_Component_Model_Fury"
+		wstring ModelComName = L"Prototype_Component_Model_" + wstring(Name.begin(), Name.end());
 
 		// GameObject 생성
-		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), GameObjectName.c_str(), ENUM_CLASS(LEVEL::MAPTOOL), GameObjectName.c_str());
-		CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), GameObjectName.c_str());
+		CMapObject::MAPOBJECT_DESC Desc = {};
+		Desc.wstrModelCom = ModelComName;
+
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapObject"), ENUM_CLASS(LEVEL::MAPTOOL), LayerName, &Desc);
+		CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), LayerName);
 		if (pGameObject == nullptr)
 			continue;
 
@@ -402,10 +439,10 @@ HRESULT CMapTool::Load_Map()
 
 HRESULT CMapTool::Get_Assets()
 {
-#pragma message ("스태틱에 있는거 몽땅 가져오는거 뭔가 별론데 방법 없나")
+#pragma message ("모델 컴포넌트만 가져온다")
 	const PROTOTYPES map_Prototypes = m_pGameInstance->Get_Prototypes(ENUM_CLASS(LEVEL::STATIC));
 	m_AssetNames.reserve(map_Prototypes.size());
-	wstring wstrGameObject = L"GameObject";
+	wstring wstrGameObject = L"Model";
 	for (auto& prototype : map_Prototypes)
 	{
 		if(prototype.first.find(wstrGameObject) != wstring::npos)
@@ -419,6 +456,16 @@ HRESULT CMapTool::Ready_Components()
 {
 	// 필요한 컴포넌트들 준비
 	return S_OK;
+}
+
+string CMapTool::WStringToString(const wstring& wstr)
+{
+	string str;
+	size_t convertedChars = 0;
+	str.resize(MAX_PATH);
+	wcstombs_s(&convertedChars, &str[0], MAX_PATH, wstr.c_str(), _TRUNCATE);
+	str.resize(convertedChars > 0 ? convertedChars - 1 : 0);
+	return str;
 }
 
 CMapTool* CMapTool::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -210,7 +210,7 @@
     <ClInclude Include="..\public\Tool_Base.h">
       <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Fury.h">
+    <ClInclude Include="..\public\MapObject.h">
       <Filter>02.GameObjects\04.Fury</Filter>
     </ClInclude>
   </ItemGroup>
@@ -318,7 +318,7 @@
     <ClCompile Include="..\private\Tool_Base.cpp">
       <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Fury.cpp">
+    <ClCompile Include="..\private\MapObject.cpp">
       <Filter>02.GameObjects\04.Fury</Filter>
     </ClCompile>
   </ItemGroup>

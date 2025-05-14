@@ -30,7 +30,7 @@
 
 #pragma region PRACTICE
 #include "Tool_Engine_Sound.h"
-#include "Fury.h"
+#include "MapObject.h"
 #pragma endregion
 
 #pragma region GAMEPLAY
@@ -172,10 +172,6 @@ HRESULT CLoader::Loading_For_Static()
 		CTool_Base::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Fury */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
-		CFury::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 #pragma endregion
 
 	bLoadStatic = true;
@@ -323,6 +319,11 @@ HRESULT CLoader::Loading_For_MapTool()
 	/* For.Prototype_GameObject_MapTool */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTool"),
 		CMapTool::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_MapObject */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapObject"),
+		CMapObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

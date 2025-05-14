@@ -22,6 +22,7 @@ public:
 
 private:
 	CGameObject* Get_Selected_GameObject(vector<string>& HierarchyNames);
+	CGameObject* Get_GameObject(string HierarchyName);
 
 private:
 	class CTerrain* m_pTerrain = { nullptr };
@@ -36,11 +37,14 @@ private:
 private:
 	HRESULT Delete_All();
 
-	HRESULT Save_Map();
+	HRESULT Save_Map(vector<string>& HierarchyNames);
 	HRESULT Load_Map();
 
 	HRESULT Get_Assets();
 	HRESULT Ready_Components();
+
+public:
+	static string WStringToString(const wstring& wstr);
 
 public:
 	static CMapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

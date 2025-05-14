@@ -1,59 +1,60 @@
-#include "Fury.h"
+#include "MapObject.h"
 
 #include "GameInstance.h"
 
-CFury::CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CMapObject::CMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
 {
 
 }
 
-CFury::CFury(const CFury& Prototype)
+CMapObject::CMapObject(const CMapObject& Prototype)
 	: CGameObject(Prototype)
 {
-
+	
 }
 
-HRESULT CFury::Initialize_Prototype()
+HRESULT CMapObject::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CFury::Initialize(void* pArg)
+HRESULT CMapObject::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC			Desc{};
+	MAPOBJECT_DESC*			pDesc{};
+	pDesc = static_cast<MAPOBJECT_DESC*>(pArg);
+	pDesc->fRotationPerSec = 0.f;
+	pDesc->fSpeedPerSec = 0.f;
+	lstrcpy(pDesc->szName, TEXT("MapObject"));
+	m_wstrComModel = pDesc->wstrModelCom;
 
-	Desc.fRotationPerSec = 0.f;
-	Desc.fSpeedPerSec = 0.f;
-	lstrcpy(Desc.szName, TEXT("Fury"));
-
-	if (FAILED(__super::Initialize(&Desc)))
+	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components()))
+	if (FAILED(Ready_Components(pDesc->wstrModelCom)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
 
-void CFury::Priority_Update(_float fTimeDelta)
+void CMapObject::Priority_Update(_float fTimeDelta)
 {
 
 }
 
-void CFury::Update(_float fTimeDelta)
+void CMapObject::Update(_float fTimeDelta)
 {
 
 }
 
-void CFury::Late_Update(_float fTimeDelta)
+void CMapObject::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 }
 
-HRESULT CFury::Render()
+HRESULT CMapObject::Render()
 {
 	// 기존 RasterizerState 저장
 	ID3D11RasterizerState* pOldRasterState = nullptr;
@@ -81,18 +82,21 @@ HRESULT CFury::Render()
 		return E_FAIL;
 
 
-	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
-
-	for (_uint i = 0; i < iNumMesh; i++)
+	if (m_pModelCom)
 	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-			return E_FAIL;
+		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
-		if (FAILED(m_pShaderCom->Begin(0)))
-			return E_FAIL;
+		for (_uint i = 0; i < iNumMesh; i++)
+		{
+			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+				return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(i)))
-			return E_FAIL;
+			if (FAILED(m_pShaderCom->Begin(0)))
+				return E_FAIL;
+
+			if (FAILED(m_pModelCom->Render(i)))
+				return E_FAIL;
+		}
 	}
 
 	// 다시 원상복구
@@ -105,7 +109,7 @@ HRESULT CFury::Render()
 	return S_OK;
 }
 
-HRESULT CFury::Ready_Components()
+HRESULT CMapObject::Ready_Components(wstring wstrComModel)
 {
 
 	/* For.Com_Shader */
@@ -114,40 +118,40 @@ HRESULT CFury::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fury"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), wstrComModel,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-CFury* CFury::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CMapObject* CMapObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CFury* pInstance = new CFury(pDevice, pContext);
+	CMapObject* pInstance = new CMapObject(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CFury");
+		MSG_BOX("Failed to Created : CMapObject");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CFury::Clone(void* pArg)
+CGameObject* CMapObject::Clone(void* pArg)
 {
-	CFury* pInstance = new CFury(*this);
+	CMapObject* pInstance = new CMapObject(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CFury");
+		MSG_BOX("Failed to Cloned : CMapObject");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CFury::Free()
+void CMapObject::Free()
 {
 	__super::Free();
 
