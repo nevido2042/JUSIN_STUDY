@@ -2,6 +2,18 @@
 
 int main()
 {
-	CAssimpBinaryConverter Converter;
-	Converter.Initialize("../../../ World of Tank/Client/ Bin / Resources / Models / BurntTree / hd_env_UNI_073_BurntTree_01.fbx");
+    _int argc = 0;
+    LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+
+    //wstring wPath = L"../bin/Fury.fbx";
+    wstring wPath = argv[1];
+
+    CAssimpBinaryConverter Converter;
+    if (FAILED(Converter.Initialize(wPath)))
+    {
+        cout << "Initialize failed" << endl;
+    }
+
+
+    return 0;
 }
