@@ -150,7 +150,12 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Model_Fury */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fury"),
-		CModel::Create(m_pDevice, m_pContext, "../Bin/WOT_Resources/Tank/America/A104_M4A3E8A/Fury.fbx"))))
+		CModel::Create(m_pDevice, m_pContext, "../Bin/WOT_Resources/Tank/America/A104_M4A3E8A/Fury.bin"))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_BurntTree */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_BurntTree"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/WOT_Resources/Map/99_poland/content/Environment/hd_env_UNI_073_BurntTree/hd_env_UNI_073_BurntTree_01.bin"))))
 		return E_FAIL;
 #pragma endregion
 

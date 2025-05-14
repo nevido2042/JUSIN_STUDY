@@ -251,8 +251,6 @@ void CMapTool::Update(_float fTimeDelta)
 
 #pragma endregion
 
-
-
 	ImGui::ShowDemoWindow();
 }
 

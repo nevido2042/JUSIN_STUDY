@@ -36,7 +36,6 @@ private:
 
 private:
 	HRESULT LoadBinaryModel(const _char* pModelFilePath);
-	_bool IsBinaryModelAvailable();
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath);
