@@ -125,9 +125,13 @@ void CMapTool::Update(_float fTimeDelta)
 	{
 		Save_Map(HierarchyNames);
 	}
+
+	// 남은 공간 Dummy로 채워서 Load Map 버튼을 아래로 밀기
+	ImVec2 available = ImGui::GetContentRegionAvail();
+	ImGui::Dummy(ImVec2(0, available.y - 30)); // 30은 버튼 높이 여유값 (적당히 조절)
+
 	if (ImGui::Button("Load Map"))
 	{
-		//프로토타입 어쩌구 다 삭제하고
 		Load_Map();
 	}
 	ImGui::End();
@@ -190,7 +194,7 @@ void CMapTool::Update(_float fTimeDelta)
 	ImGui::Separator();
 
 	// 선택된 GameObject 가져오기
-	ImGui::Text("Position");
+	ImGui::Text("Transform");
 	CGameObject* pGameObject = Get_Selected_GameObject(HierarchyNames);
 
 	if (pGameObject != nullptr)
@@ -225,8 +229,8 @@ void CMapTool::Update(_float fTimeDelta)
 		ImVec2 displaySize = ImGui::GetIO().DisplaySize;
 		ImGuizmo::SetRect(0, 0, displaySize.x, displaySize.y);
 
-		// Guizmo 조작 (Translate / Rotate / Scale)
-		ImGuizmo::Manipulate(viewMatrix, projMatrix, ImGuizmo::TRANSLATE, ImGuizmo::LOCAL, matrix);
+		// Guizmo 조작 (Translate / Rotate / Scale 중 선택된 것만 동작)
+		ImGuizmo::Manipulate(viewMatrix, projMatrix, m_currentOperation, ImGuizmo::LOCAL, matrix);
 
 		// Guizmo 사용중이면 Transform 반영
 		if (ImGuizmo::IsUsing())
@@ -235,19 +239,43 @@ void CMapTool::Update(_float fTimeDelta)
 			pTransform->Set_WorldMatrix(WorldMatrix);
 		}
 #pragma endregion
-#pragma region Input Position
-		// 현재 Position 값 얻기
-		XMStoreFloat3(&vPos, pTransform->Get_State(STATE::POSITION));
 
-		//Position을 직접 입력받기 (InputFloat3)
-		if (ImGui::InputFloat3("", reinterpret_cast<_float*>(&vPos), "%.2f"))
+
+#pragma region Input Position
+		XMStoreFloat3(&vPos, pTransform->Get_State(STATE::POSITION));
+		if (ImGui::InputFloat3("##Position", reinterpret_cast<_float*>(&vPos), "%.2f"))
 		{
-			// 입력된 값으로 Transform 포지션 다시 설정
 			pTransform->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vPos), 1.f));
 		}
-	}
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Position", m_currentOperation == ImGuizmo::TRANSLATE)) m_currentOperation = ImGuizmo::TRANSLATE;
+
 #pragma endregion
+
+#pragma region Input Rotation
+		_float3 vRot = pTransform->Get_RotationEuler();
+		if (ImGui::InputFloat3("##Rotation", reinterpret_cast<_float*>(&vRot), "%.2f"))
+		{
+			
+		}
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Rotation", m_currentOperation == ImGuizmo::ROTATE)) m_currentOperation = ImGuizmo::ROTATE;
+
+#pragma endregion
+
+#pragma region Input Scale
+		_float3 vScale = pTransform->Get_RotationEuler();
+		if (ImGui::InputFloat3("##Scale", reinterpret_cast<_float*>(&vScale), "%.2f"))
+		{
+
+		}
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Scale", m_currentOperation == ImGuizmo::SCALE)) m_currentOperation = ImGuizmo::SCALE;
+
+#pragma endregion
+	}
 	ImGui::End();
+
 
 #pragma endregion
 
@@ -332,7 +360,7 @@ HRESULT CMapTool::Delete_All()
 
 HRESULT CMapTool::Save_Map(vector<string>& HierarchyNames)
 {
-	// 폴더 없으면 생성 (안해도 된다면 생략 가능)
+	// 폴더 없으면 생성
 	if (!filesystem::exists("../Bin/Map/"))
 		filesystem::create_directories("../Bin/Map/");
 

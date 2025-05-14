@@ -41,11 +41,13 @@ HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uin
 	return m_Materials[iMaterialIndex]->Bind_ShaderResource(pShader, pConstantName, eType, iTextureIndex);	
 }
 
-HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath)
+HRESULT CModel::Initialize_Prototype(MODEL eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	m_ModelFilePath = pModelFilePath;  // 경로 저장
 
-	if (FAILED(LoadBinaryModel(m_ModelFilePath.c_str())))
+	XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
+
+	if (FAILED(Load_Binary_Model(eType, m_ModelFilePath.c_str())))
 		return E_FAIL;
 
 	return S_OK;
@@ -64,7 +66,7 @@ HRESULT CModel::Render(_uint iMeshIndex)
 	return S_OK;
 }
 
-HRESULT CModel::LoadBinaryModel(const _char* pModelFilePath)
+HRESULT CModel::Load_Binary_Model(MODEL eType, const _char* pModelFilePath)
 {
 	FILE* fp = nullptr;
 
@@ -95,26 +97,27 @@ HRESULT CModel::LoadBinaryModel(const _char* pModelFilePath)
 		fread(&vertexCount, sizeof(_uint), 1, fp);
 		fread(&indexCount, sizeof(_uint), 1, fp);
 
-		vector<_float3> positions(vertexCount);
-		vector<_float3> normals(vertexCount);
-		vector<_float3> tangents(vertexCount);
-		vector<_float2> uvs(vertexCount);
-		vector<_uint> indices(indexCount);
+		MESH_DESC Desc;
+		Desc.Positions.resize(vertexCount);
+		Desc.Normals.resize(vertexCount);
+		Desc.Tangents.resize(vertexCount);
+		Desc.TexCoords.resize(vertexCount);
+		Desc.Indices.resize(indexCount);
 
-		fread(positions.data(), sizeof(_float3), vertexCount, fp);
-		fread(normals.data(), sizeof(_float3), vertexCount, fp);
-		fread(tangents.data(), sizeof(_float3), vertexCount, fp);
+		fread(Desc.Positions.data(), sizeof(_float3), vertexCount, fp);
+		fread(Desc.Normals.data(), sizeof(_float3), vertexCount, fp);
+		fread(Desc.Tangents.data(), sizeof(_float3), vertexCount, fp);
 
 		for (_uint v = 0; v < vertexCount; ++v)
 		{
-			fread(&uvs[v].x, sizeof(_float), 1, fp);
-			fread(&uvs[v].y, sizeof(_float), 1, fp);
+			fread(&Desc.TexCoords[v].x, sizeof(_float), 1, fp);
+			fread(&Desc.TexCoords[v].y, sizeof(_float), 1, fp);
 		}
 
-		fread(indices.data(), sizeof(_uint), indexCount, fp);
+		fread(Desc.Indices.data(), sizeof(_uint), indexCount, fp);
 
-		_uint materialIndex;
-		fread(&materialIndex, sizeof(_uint), 1, fp);
+		//_uint materialIndex;
+		fread(&Desc.MaterialIndex, sizeof(_uint), 1, fp);
 
 		_char texPath[256] = {};
 		fread(texPath, sizeof(_char), 256, fp);
@@ -128,15 +131,15 @@ HRESULT CModel::LoadBinaryModel(const _char* pModelFilePath)
 
 		string texFilePath = modelDirPath + texFileName + texExt;
 
-		CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, texFilePath.c_str());
-		if (nullptr == pMaterial)
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, Desc, eType, XMLoadFloat4x4(&m_PreTransformMatrix));
+		if (nullptr == pMesh)
 		{
 			fclose(fp);
 			return E_FAIL;
 		}
 
-		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, positions, normals, tangents, uvs, indices, materialIndex);
-		if (nullptr == pMesh)
+		CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, texFilePath.c_str());
+		if (nullptr == pMaterial)
 		{
 			fclose(fp);
 			return E_FAIL;
@@ -151,11 +154,11 @@ HRESULT CModel::LoadBinaryModel(const _char* pModelFilePath)
 }
 
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	CModel* pInstance = new CModel(pDevice, pContext, pModelFilePath);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath)))
+	if (FAILED(pInstance->Initialize_Prototype(eType, pModelFilePath, PreTransformMatrix)))
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);

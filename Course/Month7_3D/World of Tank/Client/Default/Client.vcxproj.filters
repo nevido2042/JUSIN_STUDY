@@ -91,14 +91,14 @@
     <Filter Include="02.GameObjects\UIObject\99.Tool\00.Base_Tool">
       <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\04.Fury">
-      <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UIObject\99.Tool\01.MapTool">
       <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UIObject\99.Tool\02.Tool_Engine_Sound">
       <UniqueIdentifier>{5e57e32d-f1a0-49a3-8eaa-8fb9fa867c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.MapObject">
+      <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +211,7 @@
       <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapObject.h">
-      <Filter>02.GameObjects\04.Fury</Filter>
+      <Filter>02.GameObjects\04.MapObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -319,7 +319,7 @@
       <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapObject.cpp">
-      <Filter>02.GameObjects\04.Fury</Filter>
+      <Filter>02.GameObjects\04.MapObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

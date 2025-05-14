@@ -6,40 +6,50 @@ namespace Engine
 	{
 		HINSTANCE		hInst;
 		HWND			hWnd;
-		bool			isWindowed;
-		unsigned int	iWinSizeX;
-		unsigned int	iWinSizeY;
-		unsigned int	iNumLevels;		
+		_bool			isWindowed;
+		_uint			iWinSizeX;
+		_uint			iWinSizeY;
+		_uint			iNumLevels;
 	}ENGINE_DESC;
+
+	typedef struct tagMeshDesc
+	{
+		vector<_float3> Positions;
+		vector<_float3> Normals;
+		vector<_float3> Tangents;
+		vector<_float2> TexCoords;
+		vector<_uint> Indices;
+		_uint MaterialIndex = 0;
+	}MESH_DESC;
+
 
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord
 	{
-		XMFLOAT3		vPosition;
-		XMFLOAT2		vTexcoord;
+		_float3		vPosition;
+		_float2		vTexcoord;
 
-		static const unsigned int					iNumElements = { 2 };
-
+		static const _uint							iNumElements = { 2 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXPOSTEX;
 
 	typedef struct ENGINE_DLL tagVertexPositionNormalTexcoord
 	{
-		XMFLOAT3		vPosition;
-		XMFLOAT3		vNormal;
-		XMFLOAT2		vTexcoord;
+		_float3		vPosition;
+		_float3		vNormal;
+		_float2		vTexcoord;
 
-		static const unsigned int					iNumElements = { 3 };
+		static const _uint							iNumElements = { 3 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXNORTEX;
 
 	typedef struct ENGINE_DLL tagVertexMesh
 	{
-		XMFLOAT3		vPosition;
-		XMFLOAT3		vNormal;
-		XMFLOAT3		vTangent;
-		XMFLOAT2		vTexcoord;
+		_float3		vPosition;
+		_float3		vNormal;
+		_float3		vTangent;
+		_float2		vTexcoord;
 
-		static const unsigned int					iNumElements = { 4 };
+		static const _uint							iNumElements = { 4 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXMESH;
 }

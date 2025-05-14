@@ -34,6 +34,7 @@ private:
 	//vector<wstring> m_HierarchyNames = {};
 	_int m_iSelectedHierarchyIndex = -1; // 선택된 항목 인덱스
 
+	ImGuizmo::OPERATION m_currentOperation = { ImGuizmo::TRANSLATE };
 private:
 	HRESULT Delete_All();
 

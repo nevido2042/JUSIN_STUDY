@@ -20,6 +20,37 @@ _float3 CTransform::Get_Scaled()
 		XMVectorGetX(XMVector3Length(Get_State(STATE::LOOK))));		
 }
 
+_float3 CTransform::Get_RotationEuler() const
+{
+	XMVECTOR scale, rotQuat, translation;
+	XMMatrixDecompose(&scale, &rotQuat, &translation, XMLoadFloat4x4(&m_WorldMatrix));
+
+	XMFLOAT4 q;
+	XMStoreFloat4(&q, rotQuat);
+
+	_float3 eulerAngles;
+
+	// Roll (X축 회전)
+	float sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
+	float cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
+	eulerAngles.x = atan2f(sinr_cosp, cosr_cosp);
+
+	// Pitch (Y축 회전)
+	float sinp = 2 * (q.w * q.y - q.z * q.x);
+	if (fabs(sinp) >= 1)
+		eulerAngles.y = copysignf(XM_PIDIV2, sinp);
+	else
+		eulerAngles.y = asinf(sinp);
+
+	// Yaw (Z축 회전)
+	float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+	float cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
+	eulerAngles.z = atan2f(siny_cosp, cosy_cosp);
+
+	return eulerAngles;
+}
+
+
 HRESULT CTransform::Initialize_Prototype()
 {
 	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());

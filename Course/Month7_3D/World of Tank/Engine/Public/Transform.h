@@ -42,6 +42,7 @@ public:
 		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[ENUM_CLASS(eState)]), vState);
 	}
 
+	_float3 Get_RotationEuler() const;
 
 
 public:
