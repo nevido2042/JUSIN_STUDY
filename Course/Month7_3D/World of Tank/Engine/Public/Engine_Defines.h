@@ -7,6 +7,8 @@
 #include <locale>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
+#include <wincodec.h>
 
 #include <d3d11.h>
 #include <DirectXMath.h>

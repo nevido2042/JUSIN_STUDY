@@ -29,7 +29,7 @@ HRESULT CLandObject::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTargetBuffer = static_cast<CVIBuffer*>(m_pGameInstance->Get_Component(pDesc->iLevelIndex, pDesc->strLayerTag, pDesc->strComponentTag, pDesc->iIndex));
-
+	Safe_AddRef(m_pTargetBuffer);
 	if (nullptr == m_pTargetBuffer)
 		return E_FAIL;
 

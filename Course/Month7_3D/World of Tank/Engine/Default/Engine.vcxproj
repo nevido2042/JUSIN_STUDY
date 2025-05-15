@@ -124,7 +124,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>ws2_32.lib;d3d11.lib;dInput8.lib;dxguid.lib;NetCore.lib;DirectXTKd.lib;Effects11d.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;windowscodecs.lib;d3d11.lib;dInput8.lib;dxguid.lib;NetCore.lib;DirectXTKd.lib;Effects11d.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -146,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>ws2_32.lib;d3d11.lib;dInput8.lib;dxguid.lib;NetCore.lib;DirectXTK.lib;Effects11.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;windowscodecs.lib;d3d11.lib;dInput8.lib;dxguid.lib;NetCore.lib;DirectXTK.lib;Effects11.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
