@@ -163,12 +163,16 @@
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\BackGround_Loading.h" />
+    <ClInclude Include="..\public\BurntTree.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
+    <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\DebugUtils.h" />
     <ClInclude Include="..\public\Engine.h" />
+    <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\MapObject.h" />
+    <ClInclude Include="..\public\Skydome.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\public\Tool_Engine_Sound.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -202,10 +206,14 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
+    <ClCompile Include="..\private\BurntTree.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\Private\DebugUtils.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
+    <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
+    <ClCompile Include="..\private\Skydome.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />

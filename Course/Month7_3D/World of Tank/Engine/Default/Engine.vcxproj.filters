@@ -112,6 +112,9 @@
     <ClInclude Include="..\Public\Mesh.h">
       <Filter>01.Utility\04.Components\Model\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\LandObject.h">
+      <Filter>01.Utility\03.GameObject\LandObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Mesh.cpp">
       <Filter>01.Utility\04.Components\Model\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LandObject.cpp">
+      <Filter>01.Utility\03.GameObject\LandObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

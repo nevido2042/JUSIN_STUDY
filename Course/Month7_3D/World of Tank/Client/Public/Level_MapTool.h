@@ -17,8 +17,10 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	HRESULT Ready_Layer_Tool_Base(const _wstring strLayerTag);
 	HRESULT Ready_Layer_MapTool(const _wstring strLayerTag);
 
+	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
 

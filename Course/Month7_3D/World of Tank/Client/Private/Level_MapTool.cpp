@@ -1,5 +1,6 @@
 #include "Level_MapTool.h"
 #include "GameInstance.h"
+#include "Level_Loading.h"
 
 CLevel_MapTool::CLevel_MapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -9,6 +10,9 @@ CLevel_MapTool::CLevel_MapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 HRESULT CLevel_MapTool::Initialize()
 {
+	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -19,6 +23,9 @@ HRESULT CLevel_MapTool::Initialize()
 	//	return E_FAIL;
 
 
+	
+	//if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_MapTool(TEXT("Layer_MapTool"))))
 		return E_FAIL;
@@ -28,7 +35,12 @@ HRESULT CLevel_MapTool::Initialize()
 
 void CLevel_MapTool::Update(_float fTimeDelta)
 {
-
+	if (m_pGameInstance->Key_Down(DIK_H))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
+			return;
+	}
 
 }
 
@@ -39,9 +51,27 @@ HRESULT CLevel_MapTool::Render()
 	return S_OK;
 }
 
+HRESULT CLevel_MapTool::Ready_Layer_Tool_Base(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
+		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
+		return E_FAIL;
+	
+	return S_OK;
+}
+
 HRESULT CLevel_MapTool::Ready_Layer_MapTool(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTool"),
+		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_MapTool::Ready_Layer_Skydome(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
 		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
 		return E_FAIL;
 

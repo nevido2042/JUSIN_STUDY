@@ -15,7 +15,8 @@ class CMapObject final : public CGameObject
 public:
 	typedef struct tagMapObject : public GAMEOBJECT_DESC
 	{
-		wstring wstrModelCom = {};
+		wstring				wstrModelCom = {};
+		D3D11_CULL_MODE		eCullMode = { D3D11_CULL_BACK };
 	}MAPOBJECT_DESC;
 
 private:
@@ -33,8 +34,12 @@ public:
 
 public:
 	const wstring& Get_ModelCom() const { return m_wstrComModel; }
+
 private:
-	wstring		m_wstrComModel = {};
+	HRESULT Render_Cull_Front();
+private:
+	wstring				m_wstrComModel = {};
+	D3D11_CULL_MODE		m_eCullMode = { D3D11_CULL_BACK };
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };

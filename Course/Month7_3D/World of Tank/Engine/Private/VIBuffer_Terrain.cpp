@@ -146,6 +146,61 @@ HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
     return S_OK;
 }
 
+_vector CVIBuffer_Terrain::Compute_HeightPosition(const _vector& vPosition)
+{
+	_uint iIndex = static_cast<_uint>(XMVectorGetZ(vPosition)) * m_iNumVerticesX + static_cast<_uint>(XMVectorGetX(vPosition));
+
+	_uint iIndices[4] = {
+		iIndex + m_iNumVerticesX,
+		iIndex + m_iNumVerticesX + 1,
+		iIndex + 1,
+		iIndex
+	};
+
+	_float fWidth = XMVectorGetX(vPosition) - m_pVertexPositions[iIndices[0]].x;
+	_float fDepth = m_pVertexPositions[iIndices[0]].z - XMVectorGetZ(vPosition);
+
+	// Plane 계산용 Vector
+	_vector v0 = XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+	_vector v1, v2;
+
+	// 오른쪽 위 삼각형
+	if (fWidth > fDepth)
+	{
+		v1 = XMLoadFloat3(&m_pVertexPositions[iIndices[1]]);
+		v2 = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+	}
+	// 왼쪽 아래 삼각형
+	else
+	{
+		v1 = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+		v2 = XMLoadFloat3(&m_pVertexPositions[iIndices[3]]);
+	}
+
+	// 평면 정의 (직선적 변환)
+	_vector vEdge1 = v1 - v0;
+	_vector vEdge2 = v2 - v0;
+
+	// 법선 벡터 구하기 (Cross Product)
+	_vector vNormal = XMVector3Normalize(XMVector3Cross(vEdge1, vEdge2));
+
+	// 평면 방정식의 d값 계산
+	_float d = -XMVectorGetX(XMVector3Dot(vNormal, v0));
+
+	// 높이(y) 계산 : y = (-a*x - c*z - d) / b
+	_float a = XMVectorGetX(vNormal);
+	_float b = XMVectorGetY(vNormal);
+	_float c = XMVectorGetZ(vNormal);
+
+	_float x = XMVectorGetX(vPosition);
+	_float z = XMVectorGetZ(vPosition);
+
+	_float y = (-a * x - c * z - d) / b;
+
+	return XMVectorSet(x, y, z, 1.f);
+}
+
+
 CVIBuffer_Terrain* CVIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMapFilePath)
 {
 	CVIBuffer_Terrain* pInstance = new CVIBuffer_Terrain(pDevice, pContext);

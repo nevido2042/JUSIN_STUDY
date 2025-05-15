@@ -32,6 +32,8 @@ public:
 	_bool	Get_IsDestroyed() { return m_bDestroyed; }
 	void	Destroy() { m_bDestroyed = true; }
 
+	class CTransform* const Get_Transform() { return m_pTransformCom; }
+
 protected:
 	_bool m_bCloned = { false };
 	_bool m_bDestroyed = { false };

@@ -113,7 +113,7 @@ HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring strLayerTag)
 HRESULT CLevel_Logo::Ready_Layer_Tool_Base(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

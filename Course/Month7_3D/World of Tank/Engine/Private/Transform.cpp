@@ -20,34 +20,57 @@ _float3 CTransform::Get_Scaled()
 		XMVectorGetX(XMVector3Length(Get_State(STATE::LOOK))));		
 }
 
+
+
 _float3 CTransform::Get_RotationEuler() const
 {
-	XMVECTOR scale, rotQuat, translation;
+	_vector scale, rotQuat, translation;
 	XMMatrixDecompose(&scale, &rotQuat, &translation, XMLoadFloat4x4(&m_WorldMatrix));
 
-	XMFLOAT4 q;
+	_float4 q;
 	XMStoreFloat4(&q, rotQuat);
 
 	_float3 eulerAngles;
 
 	// Roll (X축 회전)
-	float sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
-	float cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
+	_float sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
+	_float cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
 	eulerAngles.x = atan2f(sinr_cosp, cosr_cosp);
 
 	// Pitch (Y축 회전)
-	float sinp = 2 * (q.w * q.y - q.z * q.x);
+	_float sinp = 2 * (q.w * q.y - q.z * q.x);
 	if (fabs(sinp) >= 1)
 		eulerAngles.y = copysignf(XM_PIDIV2, sinp);
 	else
 		eulerAngles.y = asinf(sinp);
 
 	// Yaw (Z축 회전)
-	float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
-	float cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
+	_float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+	_float cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
 	eulerAngles.z = atan2f(siny_cosp, cosy_cosp);
 
 	return eulerAngles;
+}
+
+void CTransform::Set_RotationEuler(const _vector& vEulerRadian)
+{
+	// 오일러 각 → 회전행렬 (XYZ 순서 기준)
+	_matrix matRotation =
+		XMMatrixRotationX(XMVectorGetX(vEulerRadian)) *
+		XMMatrixRotationY(XMVectorGetY(vEulerRadian)) *
+		XMMatrixRotationZ(XMVectorGetZ(vEulerRadian));
+
+	// 현재 Scale, Position 값은 유지해야 하므로 분해
+	_vector vScale, vRotationQuat, vTranslation;
+	XMMatrixDecompose(&vScale, &vRotationQuat, &vTranslation, XMLoadFloat4x4(&m_WorldMatrix));
+
+	// 최종 월드행렬 = Scale * Rotation * Translation
+	_matrix matScale = XMMatrixScalingFromVector(vScale);
+	_matrix matTranslation = XMMatrixTranslationFromVector(vTranslation);
+
+	_matrix matWorld = matScale * matRotation * matTranslation;
+
+	XMStoreFloat4x4(&m_WorldMatrix, matWorld);
 }
 
 

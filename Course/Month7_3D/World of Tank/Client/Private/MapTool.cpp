@@ -46,6 +46,15 @@ HRESULT CMapTool::Initialize(void* pArg)
 void CMapTool::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
+
+	if (m_pGameInstance->Key_Down(DIK_E))
+		m_currentOperation = ImGuizmo::ROTATE;
+	else if (m_pGameInstance->Key_Down(DIK_R))
+		m_currentOperation = ImGuizmo::SCALE;
+	else if (m_pGameInstance->Key_Down(DIK_T))
+		m_currentOperation = ImGuizmo::TRANSLATE;
+	else if (m_pGameInstance->Key_Down(DIK_ESCAPE))
+		m_iSelectedHierarchyIndex = -1;
 }
 
 void CMapTool::Update(_float fTimeDelta)
@@ -54,9 +63,11 @@ void CMapTool::Update(_float fTimeDelta)
 	ImGui::Begin("Hierarchy", nullptr);
 
 	vector<string> HierarchyNames = {};
+
 	if (ImGui::BeginListBox("##HierarchyList", ImVec2(-FLT_MIN, 300)))
 	{
 		_uint i = 0;
+
 		for (auto& pLayer : m_pGameInstance->Get_Layers(ENUM_CLASS(LEVEL::MAPTOOL)))
 		{
 			if (pLayer.first.find(L"MapObject") == wstring::npos)
@@ -84,18 +95,23 @@ void CMapTool::Update(_float fTimeDelta)
 			{
 				const string& ModelName = group.first;
 
-				if (ImGui::TreeNode(ModelName.c_str()))
+				// 일단 TreeNode 상태 확인
+				_bool bOpen = ImGui::TreeNodeEx(ModelName.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+
+				_uint j = 0;
+				for (auto pGameObject : group.second)
 				{
-					_uint j = 0;
-					for (auto pGameObject : group.second)
+					string strHierarchyName = ModelName + '_' + to_string(j);
+					++j;
+
+					// **항상 HierarchyNames는 채워준다 (그림 여부와 무관하게)**
+					HierarchyNames.push_back(strHierarchyName);
+
+					const _bool isSelected = (m_iSelectedHierarchyIndex == i);
+
+					if (bOpen)
 					{
-						string strHierarchyName = ModelName + '_' + to_string(j);
-						++j;
-
-						const _bool isSelected = (m_iSelectedHierarchyIndex == i);
-
-						HierarchyNames.push_back(strHierarchyName);
-
+						// 열렸을 때만 Selectable 출력
 						if (ImGui::Selectable(strHierarchyName.c_str(), isSelected))
 						{
 							m_iSelectedHierarchyIndex = i;
@@ -103,17 +119,19 @@ void CMapTool::Update(_float fTimeDelta)
 
 						if (isSelected)
 							ImGui::SetItemDefaultFocus();
-
-						++i;
 					}
 
-					ImGui::TreePop(); // ModelName 닫기
+					++i;
 				}
+
+				if (bOpen)
+					ImGui::TreePop(); // ModelName 닫기
 			}
 		}
 
 		ImGui::EndListBox();
 	}
+
 
 	if (ImGui::Button("Delete"))
 	{
@@ -121,6 +139,7 @@ void CMapTool::Update(_float fTimeDelta)
 		if (nullptr != pGameObject)
 			pGameObject->Destroy();
 	}
+
 	if (ImGui::Button("Save Map"))
 	{
 		Save_Map(HierarchyNames);
@@ -256,7 +275,9 @@ void CMapTool::Update(_float fTimeDelta)
 		_float3 vRot = pTransform->Get_RotationEuler();
 		if (ImGui::InputFloat3("##Rotation", reinterpret_cast<_float*>(&vRot), "%.2f"))
 		{
-			
+#pragma message("값을 입력했을 때 다른 축들이 0으로 초기화 되는 현상 있음")
+			_vector vRotation = XMVectorSet(XMConvertToRadians(vRot.x), XMConvertToRadians(vRot.y), XMConvertToRadians(vRot.z), 0.f);
+			pTransform->Set_RotationEuler(vRotation);
 		}
 		ImGui::SameLine();
 		if (ImGui::RadioButton("Rotation", m_currentOperation == ImGuizmo::ROTATE)) m_currentOperation = ImGuizmo::ROTATE;
@@ -264,10 +285,10 @@ void CMapTool::Update(_float fTimeDelta)
 #pragma endregion
 
 #pragma region Input Scale
-		_float3 vScale = pTransform->Get_RotationEuler();
+		_float3 vScale = pTransform->Get_Scaled();
 		if (ImGui::InputFloat3("##Scale", reinterpret_cast<_float*>(&vScale), "%.2f"))
 		{
-
+			pTransform->Scaling(vScale);
 		}
 		ImGui::SameLine();
 		if (ImGui::RadioButton("Scale", m_currentOperation == ImGuizmo::SCALE)) m_currentOperation = ImGuizmo::SCALE;
@@ -284,10 +305,11 @@ void CMapTool::Update(_float fTimeDelta)
 
 void CMapTool::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	__super::Late_Update(fTimeDelta);
+	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 
-	// 렌더링 처리
-	ImGui::Render();  // 렌더링 처리
+	//// 렌더링 처리
+	//ImGui::Render();  // 렌더링 처리
 }
 
 HRESULT CMapTool::Render()
@@ -378,10 +400,10 @@ HRESULT CMapTool::Save_Map(vector<string>& HierarchyNames)
 
 		// Transform 위치 가져오기
 		CTransform* pTransform = static_cast<CTransform*>(pGameObject->Get_Component(g_strTransformTag));
-		_float3 vPos = {};
+		_float4x4 WorldMatrix = {};
 		if (pTransform != nullptr)
 		{
-			XMStoreFloat3(&vPos, pTransform->Get_State(STATE::POSITION));
+			XMStoreFloat4x4(&WorldMatrix, pTransform->Get_WorldMatrix());
 		}
 
 		size_t UnderbarPos = HierarchyName.find('_');
@@ -397,7 +419,7 @@ HRESULT CMapTool::Save_Map(vector<string>& HierarchyNames)
 		fwrite(ModelName.c_str(), sizeof(char), iNameLength, fp);
 
 		// 위치 데이터 저장
-		fwrite(&vPos, sizeof(_float3), 1, fp);
+		fwrite(&WorldMatrix, sizeof(_float4x4), 1, fp);
 	}
 
 	fclose(fp);
@@ -415,7 +437,7 @@ HRESULT CMapTool::Load_Map()
 	FILE* fp = nullptr;
 	fopen_s(&fp, MapPath.string().c_str(), "rb");
 	if (!fp)
-		return E_FAIL;
+		return S_OK;
 
 	while (true)
 	{
@@ -432,8 +454,8 @@ HRESULT CMapTool::Load_Map()
 		fread(&Name[0], sizeof(char), iNameLength, fp);
 
 		// 위치 읽기
-		_float3 vPos = {};
-		fread(&vPos, sizeof(_float3), 1, fp);
+		_float4x4 mWorldMatrix = {};
+		fread(&mWorldMatrix, sizeof(_float4x4), 1, fp);
 
 		//"Layer_MapObject_Fury"
 		wstring LayerName = L"Layer_MapObject_" + wstring(Name.begin(), Name.end());
@@ -453,7 +475,7 @@ HRESULT CMapTool::Load_Map()
 		CTransform* pTransform = static_cast<CTransform*>(pGameObject->Get_Component(g_strTransformTag));
 		if (pTransform != nullptr)
 		{
-			pTransform->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vPos), 1.f));
+			pTransform->Set_WorldMatrix(mWorldMatrix);
 		}
 	}
 

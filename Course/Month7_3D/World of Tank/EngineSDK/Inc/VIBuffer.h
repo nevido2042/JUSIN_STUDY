@@ -19,7 +19,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual _float3 Compute_HeightPosition(const _float3& vPosition) { return vPosition; }
+	virtual _vector Compute_HeightPosition(const _vector& vPosition) { return vPosition; }
 	_float3 Compute_PickedPosition(const _matrix& pWorldMatrixInverse);
 
 protected:

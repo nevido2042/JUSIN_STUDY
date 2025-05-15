@@ -100,6 +100,21 @@
     <Filter Include="02.GameObjects\04.MapObject">
       <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Skydome">
+      <UniqueIdentifier>{f2ac6b87-9feb-427d-9cd4-64a57cb94d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject">
+      <UniqueIdentifier>{8701e789-29a7-42b8-8b6b-993f153311d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\06.Fury">
+      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.BurntTree">
+      <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
+      <UniqueIdentifier>{52b79f24-254c-4073-8656-4284c5087249}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -213,6 +228,18 @@
     <ClInclude Include="..\public\MapObject.h">
       <Filter>02.GameObjects\04.MapObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Skydome.h">
+      <Filter>02.GameObjects\05.Skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Fury.h">
+      <Filter>02.GameObjects\LandObject\06.Fury</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BurntTree.h">
+      <Filter>02.GameObjects\06.BurntTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_TPS.h">
+      <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -320,6 +347,18 @@
     </ClCompile>
     <ClCompile Include="..\private\MapObject.cpp">
       <Filter>02.GameObjects\04.MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Skydome.cpp">
+      <Filter>02.GameObjects\05.Skydome</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Fury.cpp">
+      <Filter>02.GameObjects\LandObject\06.Fury</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BurntTree.cpp">
+      <Filter>02.GameObjects\06.BurntTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_TPS.cpp">
+      <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

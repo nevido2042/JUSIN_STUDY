@@ -44,6 +44,8 @@ public:
 
 	_float3 Get_RotationEuler() const;
 
+	void Set_RotationEuler(const _vector& vEulerRadian);
+
 
 public:
 	virtual HRESULT Initialize_Prototype();

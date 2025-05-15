@@ -87,7 +87,6 @@ void CTool_Base::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 
-	ImGui::Render();  // ·»´õ¸µ Ã³¸®
 }
 
 HRESULT CTool_Base::Render()

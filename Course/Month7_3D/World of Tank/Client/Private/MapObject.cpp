@@ -56,6 +56,48 @@ void CMapObject::Late_Update(_float fTimeDelta)
 
 HRESULT CMapObject::Render()
 {
+	if (m_eCullMode == D3D11_CULL_FRONT)
+	{
+#pragma message("컬모드 프론트 어떻게 구분해야할지 고민")
+		Render_Cull_Front();
+	}
+	else
+	{
+		if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+			return E_FAIL;
+
+		/* dx9 : 장치에 뷰, 투영행렬을 저장해두면 렌더링시 알아서 정점에 Transform해주었다. */
+		/* dx11 : 셰이더에 뷰, 투영행렬을 저장해두고 우리가 직접 변환해주어야한다. */
+
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+			return E_FAIL;
+
+
+		if (m_pModelCom)
+		{
+			_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+			for (_uint i = 0; i < iNumMesh; i++)
+			{
+				if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+					return E_FAIL;
+
+				if (FAILED(m_pShaderCom->Begin(0)))
+					return E_FAIL;
+
+				if (FAILED(m_pModelCom->Render(i)))
+					return E_FAIL;
+			}
+		}
+	}
+
+	return S_OK;
+}
+
+HRESULT CMapObject::Render_Cull_Front()
+{
 	// 기존 RasterizerState 저장
 	ID3D11RasterizerState* pOldRasterState = nullptr;
 	m_pContext->RSGetState(&pOldRasterState);
@@ -63,12 +105,14 @@ HRESULT CMapObject::Render()
 	// 새 RasterizerState 설정 (컬링 안 함)
 	D3D11_RASTERIZER_DESC rasterDesc = {};
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_NONE;
+	rasterDesc.CullMode = D3D11_CULL_FRONT;
 	rasterDesc.FrontCounterClockwise = FALSE;
 
 	ID3D11RasterizerState* pRasterState = nullptr;
 	m_pDevice->CreateRasterizerState(&rasterDesc, &pRasterState);
 	m_pContext->RSSetState(pRasterState);
+
+
 
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -105,6 +149,7 @@ HRESULT CMapObject::Render()
 	// 해제
 	Safe_Release(pRasterState);
 	Safe_Release(pOldRasterState);
+
 
 	return S_OK;
 }

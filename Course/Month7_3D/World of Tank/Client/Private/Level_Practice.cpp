@@ -1,6 +1,9 @@
 #include "Level_Practice.h"
 
 #include "GameInstance.h"
+#include "GameObject.h"
+#include "Level_Loading.h"
+#include "Camera_TPS.h"
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -10,18 +13,30 @@ CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 HRESULT CLevel_Practice::Initialize()
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+
+	if (FAILED(Load_Map()))
+		return E_FAIL;
+
+	//if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera_TPS"))))
+	//	return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Fury(TEXT("Layer_Fury"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Layer_Fury(TEXT("Layer_Fury"))))
+		return E_FAIL;*/
 	
+	//if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
+	//	return E_FAIL;
+
 	if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
 		return E_FAIL;
 
@@ -30,7 +45,12 @@ HRESULT CLevel_Practice::Initialize()
 
 void CLevel_Practice::Update(_float fTimeDelta)
 {
-	//m_pEngine_Sound_Tool->Update(fTimeDelta);
+	if (m_pGameInstance->Key_Down(DIK_H))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
+			return;
+	}
 }
 
 HRESULT CLevel_Practice::Render()
@@ -40,7 +60,7 @@ HRESULT CLevel_Practice::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_BackGround(const _wstring strLayerTag)
+HRESULT CLevel_Practice::Ready_Layer_Terrain(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Terrain"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
@@ -49,10 +69,22 @@ HRESULT CLevel_Practice::Ready_Layer_BackGround(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Camera(const _wstring strLayerTag)
+HRESULT CLevel_Practice::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
+{
+	CCamera_TPS::CAMERA_TPS_DESC Desc{};
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE),TEXT("Layer_Fury"));
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -76,6 +108,15 @@ HRESULT CLevel_Practice::Ready_Layer_Fury(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Practice::Ready_Layer_Skydome(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 //HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
 //{
 //	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
@@ -85,11 +126,70 @@ HRESULT CLevel_Practice::Ready_Layer_Fury(const _wstring strLayerTag)
 //	return S_OK;
 //}
 
+HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Practice::Ready_Layer_Tool_EngineSound(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Load_Map()
+{
+	filesystem::path MapPath = "../Bin/Map/Map.bin";
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, MapPath.string().c_str(), "rb");
+	if (!fp)
+		return S_OK;
+
+	while (true)
+	{
+		_uint iNameLength = 0;
+		size_t readCount = fread(&iNameLength, sizeof(_uint), 1, fp);
+
+		// 더 이상 읽을게 없으면 종료
+		if (readCount != 1)
+			break;
+
+		// 이름 읽기
+		string Name;
+		Name.resize(iNameLength);
+		fread(&Name[0], sizeof(char), iNameLength, fp);
+
+		// 위치 읽기
+		_float4x4 mWorldMatrix = {};
+		fread(&mWorldMatrix, sizeof(_float4x4), 1, fp);
+
+		//"Layer_Fury"
+		wstring LayerName = L"Layer_" + wstring(Name.begin(), Name.end());
+		//"Prototype_GameObject_Fury"
+		wstring PrototypeName = L"Prototype_GameObject_" + wstring(Name.begin(), Name.end());
+
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::PRACTICE), LayerName);
+		CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), LayerName);
+		if (pGameObject == nullptr)
+			continue;
+
+		// Transform 위치 설정
+		CTransform* pTransform = static_cast<CTransform*>(pGameObject->Get_Component(g_strTransformTag));
+		if (pTransform != nullptr)
+		{
+			pTransform->Set_WorldMatrix(mWorldMatrix);
+		}
+	}
+
+	fclose(fp);
 
 	return S_OK;
 }
