@@ -115,6 +115,9 @@
     <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
       <UniqueIdentifier>{52b79f24-254c-4073-8656-4284c5087249}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\LandObject\06.Fury\FuryTurret">
+      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -240,6 +243,9 @@
     <ClInclude Include="..\public\Camera_TPS.h">
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\FuryTurret.h">
+      <Filter>02.GameObjects\LandObject\06.Fury\FuryTurret</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -359,6 +365,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_TPS.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FuryTurret.cpp">
+      <Filter>02.GameObjects\LandObject\06.Fury\FuryTurret</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

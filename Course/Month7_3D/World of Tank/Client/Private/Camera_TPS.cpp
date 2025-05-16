@@ -25,9 +25,9 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 	pDesc->vAt = _float3(0.f, 0.f, 0.f);
 	pDesc->fFov = XMConvertToRadians(60.0f);
 	pDesc->fNear = 0.1f;
-	pDesc->fFar = 800.f;
-	pDesc->fRotationPerSec = XMConvertToRadians(180.0f);
-	pDesc->fSpeedPerSec = 50.0f;
+	pDesc->fFar = 40000.f;
+	pDesc->fRotationPerSec = XMConvertToRadians(0.0f);
+	pDesc->fSpeedPerSec = 0.0f;
 	lstrcpy(pDesc->szName, TEXT("Camera"));
 
 	m_fSensor = pDesc->fSensor;

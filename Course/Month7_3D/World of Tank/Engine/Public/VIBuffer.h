@@ -20,6 +20,7 @@ public:
 
 public:
 	virtual _vector Compute_HeightPosition(const _vector& vPosition) { return vPosition; }
+	virtual _vector Compute_NormalPosition(const _vector& vPosition) { return vPosition; }
 	_float3 Compute_PickedPosition(const _matrix& pWorldMatrixInverse);
 
 protected:

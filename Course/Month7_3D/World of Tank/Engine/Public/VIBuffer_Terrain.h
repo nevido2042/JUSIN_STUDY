@@ -17,6 +17,8 @@ public:
 
 public:
 	virtual _vector Compute_HeightPosition(const _vector& vPosition) override;
+	virtual _vector Compute_NormalPosition(const _vector& vPosition) override;
+
 
 private:
 	HRESULT Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset);

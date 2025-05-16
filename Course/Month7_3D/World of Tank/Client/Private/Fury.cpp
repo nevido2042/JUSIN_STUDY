@@ -23,7 +23,7 @@ HRESULT CFury::Initialize(void* pArg)
 {
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 5.f;
-	Desc.fSpeedPerSec = 10.f;
+	Desc.fSpeedPerSec = 100.f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
 	Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
@@ -65,7 +65,7 @@ void CFury::Update(_float fTimeDelta)
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f,0.f), fTimeDelta);
 	}
 
-	__super::SetUp_HeightPosition(m_pTransformCom, 0.5f);
+	__super::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 }
 
 void CFury::Late_Update(_float fTimeDelta)
@@ -149,7 +149,7 @@ HRESULT CFury::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fury"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_FuryBody"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

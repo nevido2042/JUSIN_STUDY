@@ -171,6 +171,7 @@
     <ClInclude Include="..\Public\DebugUtils.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Fury.h" />
+    <ClInclude Include="..\public\FuryTurret.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\Skydome.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="..\Private\DebugUtils.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
+    <ClCompile Include="..\private\FuryTurret.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />

@@ -87,6 +87,48 @@ _vector CVIBuffer_Terrain::Compute_HeightPosition(const _vector& vPosition)
 	return XMVectorSet(x, y, z, 1.f);
 }
 
+_vector CVIBuffer_Terrain::Compute_NormalPosition(const _vector& vPosition)
+{
+	// 기준 인덱스 계산
+	_uint iIndex = static_cast<_uint>(XMVectorGetZ(vPosition) / m_Offset.x) * m_iNumVerticesX
+		+ static_cast<_uint>(XMVectorGetX(vPosition) / m_Offset.x);
+
+	// 주변 정점 인덱스 (사각형 4개)
+	_uint iIndices[4] = {
+		iIndex + m_iNumVerticesX,         // 0: 좌하단
+		iIndex + m_iNumVerticesX + 1,     // 1: 우하단
+		iIndex + 1,                       // 2: 우상단
+		iIndex                             // 3: 좌상단
+	};
+
+	// 정점 위치에서 가로/세로 거리 측정
+	_float fWidth = XMVectorGetX(vPosition) - m_pVertexPositions[iIndices[0]].x;
+	_float fDepth = m_pVertexPositions[iIndices[0]].z - XMVectorGetZ(vPosition);
+
+	// 기준 삼각형 선택
+	_vector v0 = XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+	_vector v1, v2;
+
+	if (fWidth > fDepth) // 오른쪽 위 삼각형 (0, 1, 2)
+	{
+		v1 = XMLoadFloat3(&m_pVertexPositions[iIndices[1]]);
+		v2 = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+	}
+	else // 왼쪽 아래 삼각형 (0, 2, 3)
+	{
+		v1 = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+		v2 = XMLoadFloat3(&m_pVertexPositions[iIndices[3]]);
+	}
+
+	// 두 벡터로부터 노말 계산
+	_vector vEdge1 = v1 - v0;
+	_vector vEdge2 = v2 - v0;
+
+	_vector vNormal = XMVector3Normalize(XMVector3Cross(vEdge1, vEdge2));
+	return vNormal; // w값은 안 씀
+}
+
+
 HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset)
 {
 	HANDLE			hFile = CreateFile(pHeightMapFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
