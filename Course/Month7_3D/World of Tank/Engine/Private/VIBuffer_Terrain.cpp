@@ -9,16 +9,19 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype)
     : CVIBuffer(Prototype)
 	, m_iNumVerticesX { Prototype.m_iNumVerticesX }
 	, m_iNumVerticesZ { Prototype.m_iNumVerticesZ }
+	, m_Offset{ Prototype.m_Offset }
 {
 }
 
-HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath, _float fOffset)
+HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath, _float2 Offset)
 {	
+	m_Offset = Offset;
+
 	filesystem::path path = pHeightMapFilePath;
 	if (path.extension().wstring() == L".bmp")
-		Read_HeightMap_BMP(pHeightMapFilePath, fOffset);
+		Read_HeightMap_BMP(pHeightMapFilePath, Offset);
 	else if (path.extension().wstring() == L".png")
-		Read_HeightMap_PNG(pHeightMapFilePath, fOffset);
+		Read_HeightMap_PNG(pHeightMapFilePath, Offset);
 	else
 		return E_FAIL;
 
@@ -32,7 +35,7 @@ HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 
 _vector CVIBuffer_Terrain::Compute_HeightPosition(const _vector& vPosition)
 {
-	_uint iIndex = static_cast<_uint>(XMVectorGetZ(vPosition)) * m_iNumVerticesX + static_cast<_uint>(XMVectorGetX(vPosition));
+	_uint iIndex = static_cast<_uint>(XMVectorGetZ(vPosition) / m_Offset.x) * m_iNumVerticesX + static_cast<_uint>(XMVectorGetX(vPosition) / m_Offset.x);
 
 	_uint iIndices[4] = {
 		iIndex + m_iNumVerticesX,
@@ -84,7 +87,7 @@ _vector CVIBuffer_Terrain::Compute_HeightPosition(const _vector& vPosition)
 	return XMVectorSet(x, y, z, 1.f);
 }
 
-HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float fOffset)
+HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset)
 {
 	HANDLE			hFile = CreateFile(pHeightMapFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (0 == hFile)
@@ -145,9 +148,9 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, 
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
 			pVertices[iIndex].vPosition = _float3(
-				static_cast<_float>(j),
-				static_cast<_float>((pPixels[iIndex] & 0x000000ff) * fOffset),
-				static_cast<_float>(i));
+				static_cast<_float>(j * Offset.x),
+				static_cast<_float>((pPixels[iIndex] & 0x000000ff) * Offset.y),
+				static_cast<_float>(i * Offset.x));
 
 			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
 			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesX - 1.f));
@@ -213,7 +216,7 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, 
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, _float fOffset)
+HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, _float2 Offset)
 {
     IWICImagingFactory* pWICFactory = nullptr;
     IWICBitmapDecoder* pDecoder = nullptr;
@@ -296,12 +299,12 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, 
 			_uint pixelIndex = index * 4; // RGBA
 
             _ubyte r = pPixels[pixelIndex];  // R 값 사용 (높이)
-            _float heightValue = static_cast<_float>(r) * fOffset;
+            _float heightValue = static_cast<_float>(r);
 
             pVertices[index].vPosition = _float3(
-                static_cast<_float>(j),
-                heightValue,
-                static_cast<_float>(i));
+                static_cast<_float>(j * Offset.x),
+                heightValue * Offset.y,
+                static_cast<_float>(i * Offset.x));
 
             pVertices[index].vNormal = _float3(0.f, 0.f, 0.f);
             pVertices[index].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
@@ -380,7 +383,7 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, 
 
 
 
-CVIBuffer_Terrain* CVIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMapFilePath, _float fOffset)
+CVIBuffer_Terrain* CVIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMapFilePath, _float2 fOffset)
 {
 	CVIBuffer_Terrain* pInstance = new CVIBuffer_Terrain(pDevice, pContext);
 

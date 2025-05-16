@@ -22,11 +22,11 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera_TPS"))))
-	//	return E_FAIL;
-
-	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
+	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera_TPS"))))
 		return E_FAIL;
+
+	/*if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
+		return E_FAIL;*/
 
 	if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
 		return E_FAIL;

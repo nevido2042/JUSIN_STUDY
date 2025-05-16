@@ -42,61 +42,48 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
 #pragma message ("카메라 수정해야함: static")
-	// Orbit 회전용 변수 (Yaw: 좌우, Pitch: 상하)
-	static _float fYaw = 0.f;
-	static _float fPitch = 0.f;
-
-	_int MouseMoveX = m_pGameInstance->Get_DIMMoveState(DIMM::X);
-	_int MouseMoveY = m_pGameInstance->Get_DIMMoveState(DIMM::Y);
-
-	fYaw += MouseMoveX * fTimeDelta * m_fSensor;
-	fPitch += MouseMoveY * fTimeDelta * m_fSensor;
-
-	// Pitch 제한
-	fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, fPitch));
-
 	// 타겟 위치
 	_vector vTargetPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
 
-	// 기본 거리 (오프셋 크기)
+	// 타겟의 Look 방향 (정규화)
+	_vector vLookDir = m_pTarget->Get_Transform()->Get_State(STATE::LOOK);
+	vLookDir = XMVector3Normalize(vLookDir);
+
+	// 월드 업 벡터
+	_vector vWorldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+	// 타겟의 Right 벡터
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vWorldUp, vLookDir));
+
+	// 타겟의 Up 벡터
+	_vector vUp = XMVector3Cross(vLookDir, vRight);
+
+	// 기본 거리 및 높이
 	_float fDistance = 20.f;
+	_float fHeight = 10.f;
 
-	// ----------------------
-	// Yaw 회전 (World Up 기준)
-	_matrix matRotYaw = XMMatrixRotationY(fYaw);
-
-	// Pitch 회전 축 : Yaw 적용 후의 Local Right 벡터
-	_vector vRight = XMVector3TransformNormal(XMVectorSet(1.f, 0.f, 0.f, 0.f), matRotYaw);
-
-	// Pitch 회전 (Local Right 기준)
-	_matrix matRotPitch = XMMatrixRotationAxis(vRight, fPitch);
-
-	// ----------------------
-	// 오프셋 적용
-	_vector vDefaultOffset = XMVectorSet(0.f, 5.f, -fDistance, 0.f);
-	_vector vRotatedOffset = XMVector3TransformCoord(vDefaultOffset, matRotPitch * matRotYaw);
+	// 오프셋 계산 (뒤로 fDistance만큼, 위로 fHeight만큼)
+	_vector vOffset = (-vLookDir * fDistance) + (vWorldUp * fHeight);
 
 	// 카메라 위치 = 타겟 위치 + 오프셋
-	_vector vCamPos = vTargetPos + vRotatedOffset;
+	_vector vCamPos = vTargetPos + vOffset;
 
-	// 카메라 위치 설정
+	// 위치 설정
 	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
 
-	// Look 벡터 계산 (타겟을 바라봄)
+	// 카메라 방향 벡터 계산
 	_vector vLook = XMVector3Normalize(vTargetPos - vCamPos);
-
-	// Right, Up 벡터 계산
-	_vector vWorldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 	vRight = XMVector3Normalize(XMVector3Cross(vWorldUp, vLook));
-	_vector vUp = XMVector3Cross(vLook, vRight);
+	vUp = XMVector3Cross(vLook, vRight);
 
-	// 방향 벡터 세팅
+	// 방향 벡터 설정
 	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
 	m_pTransformCom->Set_State(STATE::UP, vUp);
 	m_pTransformCom->Set_State(STATE::LOOK, vLook);
 
-	// 뷰, 프로젝션 갱신
+	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
+
 }
 
 void CCamera_TPS::Update(_float fTimeDelta)
