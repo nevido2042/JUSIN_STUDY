@@ -34,6 +34,18 @@ HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
     return S_OK;
 }
 
+HRESULT CVIBuffer_Terrain::Render()
+{
+	if (m_pGameInstance->Is_In_Frustum(XMLoadFloat3(&m_pVertexPositions[0])))
+	{
+		m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
+	}
+
+
+
+	return S_OK;
+}
+
 _vector CVIBuffer_Terrain::Compute_HeightPosition(const _vector& vPosition)
 {
 	_uint iIndex = static_cast<_uint>(XMVectorGetZ(vPosition) / m_Offset.x) * m_iNumVerticesX + static_cast<_uint>(XMVectorGetX(vPosition) / m_Offset.x);

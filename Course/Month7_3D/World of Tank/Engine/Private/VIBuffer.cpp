@@ -84,49 +84,6 @@ HRESULT CVIBuffer::Render()
 {
 	m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
 
-	//// ===== 선 렌더링 추가 =====
-	//if (m_pVertexPositions && m_iNumVertices >= 2)
-	//{
-	//	struct LineVertex
-	//	{
-	//		DirectX::XMFLOAT3 vPos;
-	//		DirectX::XMFLOAT4 vColor;
-	//	};
-
-	//	// 첫 번째와 마지막 정점을 사용
-	//	LineVertex lineVertices[2] =
-	//	{
-	//		{ m_pVertexPositions[0], {1.f, 0.f, 0.f, 1.f} }, // 빨간색
-	//		{ m_pVertexPositions[m_iNumVertices - 1], {1.f, 0.f, 0.f, 1.f} }
-	//	};
-
-	//	// 버텍스 버퍼 생성
-	//	D3D11_BUFFER_DESC bufferDesc = {};
-	//	bufferDesc.ByteWidth = sizeof(lineVertices);
-	//	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	//	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-	//	D3D11_SUBRESOURCE_DATA initData = {};
-	//	initData.pSysMem = lineVertices;
-
-	//	ID3D11Buffer* pLineVB = nullptr;
-	//	if (FAILED(m_pDevice->CreateBuffer(&bufferDesc, &initData, &pLineVB)))
-	//		return E_FAIL;
-
-	//	UINT stride = sizeof(LineVertex);
-	//	UINT offset = 0;
-
-	//	// IA 설정
-	//	m_pContext->IASetVertexBuffers(0, 1, &pLineVB, &stride, &offset);
-	//	m_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-
-	//	// 셰이더 및 입력 레이아웃은 따로 설정되어 있다고 가정
-	//	m_pContext->Draw(2, 0); // 선 1개: 정점 2개
-
-	//	Safe_Release(pLineVB);
-	//}
-	//// ==========================
-
 	return S_OK;
 }
 

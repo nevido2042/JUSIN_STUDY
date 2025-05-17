@@ -115,6 +115,9 @@
     <ClInclude Include="..\public\LandObject.h">
       <Filter>01.Utility\03.GameObject\LandObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Frustum.h">
+      <Filter>01.Utility\08.Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -215,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="..\private\LandObject.cpp">
       <Filter>01.Utility\03.GameObject\LandObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Frustum.cpp">
+      <Filter>01.Utility\08.Frustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +346,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Model\Material">
       <UniqueIdentifier>{cfdfd42b-437c-43db-836b-4273f237ce0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.Frustum">
+      <UniqueIdentifier>{0fda5ef0-4518-41fd-94f0-0249bd58fc0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

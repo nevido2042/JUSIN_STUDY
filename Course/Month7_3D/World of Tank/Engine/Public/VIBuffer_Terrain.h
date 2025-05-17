@@ -14,6 +14,7 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pHeightMapFilePath, _float2 Offset);
 	virtual HRESULT Initialize(void* pArg);
+	virtual HRESULT Render() override;
 
 public:
 	virtual _vector Compute_HeightPosition(const _vector& vPosition) override;

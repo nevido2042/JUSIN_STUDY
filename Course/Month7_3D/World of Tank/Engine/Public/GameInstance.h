@@ -112,6 +112,10 @@ public:
 	HRESULT	Update_Header();
 #pragma endregion
 
+#pragma region 	Frustum
+	_bool   Is_In_Frustum(_fvector vPos);
+	_bool   Is_In_Frustum(_fvector vPos, _float fRadius);
+#pragma endregion
 //
 //#pragma region PICKING
 //	void Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse);
@@ -132,6 +136,7 @@ private:
 	class CPipeLine*			m_pPipeLine = { nullptr };
 	class CNetwork*				m_pNetwork = { nullptr };
 	class CPicking*				m_pPicking = { nullptr };
+	class CFrustum*				m_pFrustum = { nullptr };
 
 public:
 	void Release_Engine();

@@ -11,6 +11,7 @@
 #include "PipeLine.h"
 #include "Network.h"
 #include "Picking.h"
+#include "Frustum.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -65,6 +66,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pPicking)
 		return E_FAIL;
 
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -76,6 +81,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 
+	m_pFrustum->Update();
 	m_pPicking->Update(iWinSizeX, iWinSizeY);
 	m_pNetwork->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);	
@@ -399,6 +405,16 @@ HRESULT CGameInstance::Update_Header()
 	return m_pNetwork->Update_Header();
 }
 
+_bool CGameInstance::Is_In_Frustum(_fvector vPos)
+{
+	return m_pFrustum->Is_In_Frustum(vPos);
+}
+
+_bool CGameInstance::Is_In_Frustum(_fvector vPos, _float fRadius)
+{
+	return m_pFrustum->Is_In_Frustum(vPos, fRadius);
+}
+
 #pragma endregion
 
 //#pragma region PICKING
@@ -451,6 +467,10 @@ void CGameInstance::Release_Engine()
 
 	if (0 != Safe_Release(m_pPicking))
 		MSG_BOX("Failed to Release : m_pPicking");
+
+	if (0 != Safe_Release(m_pFrustum))
+		MSG_BOX("Failed to Release : m_pFrustum");
+
 
 	Destroy_Instance();
 }
