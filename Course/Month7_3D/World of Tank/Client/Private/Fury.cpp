@@ -23,7 +23,7 @@ HRESULT CFury::Initialize(void* pArg)
 {
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 5.f;
-	Desc.fSpeedPerSec = 100.f;
+	Desc.fSpeedPerSec = 10.f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
 	Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
@@ -36,6 +36,14 @@ HRESULT CFury::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	// 새 RasterizerState 설정
+	D3D11_RASTERIZER_DESC rasterDesc = {};
+	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.CullMode = D3D11_CULL_FRONT;
+	rasterDesc.FrontCounterClockwise = FALSE;
+
+	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
 
 	return S_OK;
 }
@@ -74,22 +82,9 @@ void CFury::Late_Update(_float fTimeDelta)
 }
 
 HRESULT CFury::Render()
-{
-	// 기존 RasterizerState 저장
-	ID3D11RasterizerState* pOldRasterState = nullptr;
-	m_pContext->RSGetState(&pOldRasterState);
-
-	// 새 RasterizerState 설정
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_FRONT;
-	rasterDesc.FrontCounterClockwise = FALSE;
-
-	ID3D11RasterizerState* pRasterState = nullptr;
-	m_pDevice->CreateRasterizerState(&rasterDesc, &pRasterState);
-	m_pContext->RSSetState(pRasterState);
-
-
+{	
+	if (FAILED(SetUp_RenderState()))
+		return E_FAIL;
 
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -120,12 +115,8 @@ HRESULT CFury::Render()
 		}
 	}
 
-	// 다시 원상복구
-	m_pContext->RSSetState(pOldRasterState);
-
-	// 해제
-	Safe_Release(pRasterState);
-	Safe_Release(pOldRasterState);
+	if (FAILED(Release_RenderState()))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -133,12 +124,17 @@ HRESULT CFury::Render()
 
 HRESULT CFury::SetUp_RenderState()
 {
-	return E_NOTIMPL;
+	m_pContext->RSGetState(&m_pOldRasterState);
+	m_pContext->RSSetState(m_pRasterState);
+
+	return S_OK;
 }
 
 HRESULT CFury::Release_RenderState()
 {
-	return E_NOTIMPL;
+	m_pContext->RSSetState(m_pOldRasterState);
+
+	return S_OK;
 }
 
 HRESULT CFury::Ready_Components()
@@ -185,6 +181,9 @@ CGameObject* CFury::Clone(void* pArg)
 void CFury::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pRasterState);
+	Safe_Release(m_pOldRasterState);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);

@@ -67,6 +67,14 @@ HRESULT CTerrain::Render()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 
+	//_float2 TexOffset = { -0.1f, 0.01f };
+	//if (FAILED(m_pShaderCom->Bind_TexOffset("g_TexOffset", &TexOffset)))
+	//	return E_FAIL;
+
+	_float2 TexScale = { 1.f, 1.f };
+	if (FAILED(m_pShaderCom->Bind_TexScale("g_TexScale", &TexScale)))
+		return E_FAIL;
+
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 

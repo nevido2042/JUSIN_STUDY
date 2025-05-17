@@ -32,6 +32,15 @@ HRESULT CSkydome::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+#pragma message ("이거 넣으니까 ui가 안보임")
+
+	D3D11_DEPTH_STENCIL_DESC depthDesc = {};
+	depthDesc.DepthEnable = FALSE;  // 깊이 테스트 완전 비활성화
+	depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	depthDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;  // 비교는 무조건 통과
+	depthDesc.StencilEnable = FALSE;
+	m_pDevice->CreateDepthStencilState(&depthDesc, &m_pDSState);
+
 	return S_OK;
 }
 
@@ -52,7 +61,7 @@ void CSkydome::Update(_float fTimeDelta)
 	_vector vCamPos = mInvViewMatrix.r[3]; // r[3] == m[3][0~3]
 
 	// Y축 내리기
-	vCamPos = XMVectorSetY(vCamPos, XMVectorGetY(vCamPos) - 200.0f);
+	vCamPos = XMVectorSetY(vCamPos, XMVectorGetY(vCamPos) - 0.1f);
 
 	// Transform Position 세팅
 	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
@@ -66,6 +75,9 @@ void CSkydome::Late_Update(_float fTimeDelta)
 
 HRESULT CSkydome::Render()
 {
+	if (FAILED(SetUp_RenderState()))
+		return E_FAIL;
+
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
@@ -94,6 +106,25 @@ HRESULT CSkydome::Render()
 				return E_FAIL;
 		}
 	}
+
+	if (FAILED(Release_RenderState()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSkydome::SetUp_RenderState()
+{
+	m_pContext->OMGetDepthStencilState(&m_pOldDSState, 0);
+
+	m_pContext->OMSetDepthStencilState(m_pDSState, 0);
+
+	return S_OK;
+}
+
+HRESULT CSkydome::Release_RenderState()
+{
+	m_pContext->OMSetDepthStencilState(m_pOldDSState, 0);
 
 	return S_OK;
 }
@@ -142,6 +173,9 @@ CGameObject* CSkydome::Clone(void* pArg)
 void CSkydome::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pDSState);
+	Safe_Release(m_pOldDSState);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);

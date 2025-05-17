@@ -26,13 +26,15 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
-
-private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
+
+private:
+	ID3D11RasterizerState*	m_pRasterState = { nullptr };
+	ID3D11RasterizerState*	m_pOldRasterState = { nullptr };
+private:
+	CShader* m_pShaderCom = { nullptr };
+	CModel* m_pModelCom = { nullptr };
 
 	HRESULT Ready_Components();
 

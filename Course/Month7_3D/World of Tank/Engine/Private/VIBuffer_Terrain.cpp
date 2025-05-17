@@ -1,4 +1,5 @@
 ﻿#include "VIBuffer_Terrain.h"
+#include "GameInstance.h"
 
 CVIBuffer_Terrain::CVIBuffer_Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CVIBuffer { pDevice, pContext }
@@ -128,6 +129,55 @@ _vector CVIBuffer_Terrain::Compute_NormalPosition(const _vector& vPosition)
 	return vNormal; // w값은 안 씀
 }
 
+_float3 CVIBuffer_Terrain::Compute_PickedPosition(const _matrix& pWorldMatrixInverse)
+{
+	
+	//터레인 꼭짓점이 카메라 내에 들어왔는가?
+	//m_pVertexPositions[0], m_pVertexPositions[m_iNumVerticesX -1]
+	//m_pVertexPositions[m_iNumVerticesX * (m_iNumVerticesZ - 1)], m_pVertexPositions[m_iNumVerticesX * m_iNumVerticesZ - 1]
+
+	//return Pick_Quad(m_pVertexPositions[0], m_pVertexPositions[m_iNumVerticesX - 1], m_pVertexPositions[m_iNumVerticesX * (m_iNumVerticesZ - 1)], m_pVertexPositions[m_iNumVerticesX * m_iNumVerticesZ - 1], pWorldMatrixInverse);
+
+	_uint   iIndices[3] = {};
+	_float3 vPickedPos = {};
+
+	/* 컴퓨트 포지션을 호출 할 때 객체의 월드매트릭스의 역행렬을 받도록 해서, */
+	/* 마우스 좌표를 로컬로 바꿔준 후에 피킹함수를 호출 해 준다 */
+	m_pGameInstance->Transform_Picking_ToLocalSpace(pWorldMatrixInverse);
+
+	for (size_t i = 0; i < m_iNumPritimive; i++)
+	{
+		_byte* pIndices = static_cast<_byte*>(m_pIndices) + m_iIndexStride * i * 3;
+
+		memcpy(&iIndices[0], pIndices, m_iIndexStride);
+		memcpy(&iIndices[1], pIndices + m_iIndexStride, m_iIndexStride);
+		memcpy(&iIndices[2], pIndices + m_iIndexStride * 2, m_iIndexStride);
+
+		if (true == m_pGameInstance->Picking_InLocal(vPickedPos, m_pVertexPositions[iIndices[0]], m_pVertexPositions[iIndices[1]], m_pVertexPositions[iIndices[2]]))
+			break;
+	}
+
+	return vPickedPos;
+}
+
+_float3 CVIBuffer_Terrain::Pick_Quad(_float3 vLB, _float3 vRB, _float3 vLT, _float3 vRT, const _matrix& worldInv)
+{
+	//// 사분면 재귀 검사
+	//_float3 res;
+	//res = Pick_Quad(startX, startZ, midX, midZ, worldInv);
+	//if (IsValid(res)) return res;
+
+	//res = Pick_Quad(midX, startZ, endX, midZ, worldInv);
+	//if (IsValid(res)) return res;
+
+	//res = Pick_Quad(startX, midZ, midX, endZ, worldInv);
+	//if (IsValid(res)) return res;
+
+	//res = Pick_Quad(midX, midZ, endX, endZ, worldInv);
+	//if (IsValid(res)) return res;
+
+	return {}; // 못 찾음
+}
 
 HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset)
 {

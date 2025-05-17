@@ -18,7 +18,10 @@ public:
 public:
 	virtual _vector Compute_HeightPosition(const _vector& vPosition) override;
 	virtual _vector Compute_NormalPosition(const _vector& vPosition) override;
+	virtual _float3 Compute_PickedPosition(const _matrix& pWorldMatrixInverse) override;
 
+private:
+	_float3 Pick_Quad(_float3 vLB, _float3 vRB, _float3 vLT, _float3 vRT, const _matrix& worldInv);
 
 private:
 	HRESULT Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset);
