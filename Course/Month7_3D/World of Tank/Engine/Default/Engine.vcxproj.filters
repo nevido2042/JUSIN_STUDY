@@ -118,6 +118,7 @@
     <ClInclude Include="..\public\Frustum.h">
       <Filter>01.Utility\08.Frustum</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\QuadTreeRoot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -222,6 +223,7 @@
     <ClCompile Include="..\private\Frustum.cpp">
       <Filter>01.Utility\08.Frustum</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\QuadTreeRoot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.System">

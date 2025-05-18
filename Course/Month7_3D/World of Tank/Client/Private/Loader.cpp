@@ -153,7 +153,7 @@ HRESULT CLoader::Loading_For_Static()
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/outland/height_map_cut_128.png"), {5.f, 1.f}))))
 		return E_FAIL;
 
-
+	//height_map_cut_128
 	//"../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/outland/height_map_cascade_0.png"
 	//"../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/outland/height_map_cascade_9_16.png"
 	//"../Bin/Resources/Textures/Terrain/Height.bmp"

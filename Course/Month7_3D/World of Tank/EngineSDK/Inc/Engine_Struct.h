@@ -52,4 +52,18 @@ namespace Engine
 		static const _uint							iNumElements = { 4 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXMESH;
+
+	struct QuadTreeNode
+	{
+		_float3 vMin, vMax; // AABB
+		vector<_uint> Indices; // »ï°¢Çü ÀÎµ¦½º ¸ñ·Ï
+		QuadTreeNode* pChildren[4] = { nullptr, nullptr, nullptr, nullptr };
+		_bool IsLeaf = false;
+
+		~QuadTreeNode()
+		{
+			for (int i = 0; i < 4; ++i)
+				if (pChildren[i]) delete pChildren[i];
+		}
+	};
 }
