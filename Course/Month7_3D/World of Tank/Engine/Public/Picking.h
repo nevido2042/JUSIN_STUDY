@@ -25,6 +25,9 @@ public:
 	/* 마우스의 방향과 좌표를 월드에서 로컬로 보내주기 위한 함수 */
 	void Transform_ToLocalSpace(const _matrix& WorldMatrixInverse);
 
+	const _float3& Get_MousePos()	{ return m_vMousePos; }
+	const _float3& Get_MouseRay()	{ return m_vMouseRay; }
+
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };

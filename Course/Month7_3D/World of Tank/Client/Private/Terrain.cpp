@@ -45,52 +45,13 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
 	{
-		// 뷰, 프로젝션 행렬
-		_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
-		_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
-
-		// 역행렬 (뷰 → 월드)
-		_matrix matViewInv = XMMatrixInverse(nullptr, matView);
-
-		// 윈도우 크기
-		LONG iWinCX = g_iWinResizeX;
-		LONG iWinCY = g_iWinResizeY;
-
-		// 마우스 좌표 (스크린 기준)
-		POINT ptMouse;
-		GetCursorPos(&ptMouse);
-		ScreenToClient(g_hWnd, &ptMouse); // DX11에서도 클라이언트 기준으로 보통 변환 필요
-
-		// NDC 좌표로 변환
-		_float fNDC_X = (2.0f * ptMouse.x / iWinCX - 1.0f);
-		_float fNDC_Y = (1.0f - 2.0f * ptMouse.y / iWinCY);
-
-		// 뷰 공간에서의 Ray 방향
-		_vector vRayDirView = XMVectorSet(
-			fNDC_X / matProj.r[0].m128_f32[0],   // matProj._11
-			fNDC_Y / matProj.r[1].m128_f32[1],   // matProj._22
-			1.0f,
-			0.0f
-		);
-
-		// 월드 공간으로 변환
-		_vector vRayOrigin = matViewInv.r[3];  // 카메라 위치 (w=1.0)
-		_vector vRayDir = XMVector3TransformNormal(vRayDirView, matViewInv);
-		vRayDir = XMVector3Normalize(vRayDir);
-
-		// 결과 저장 (선택)
-		_float3 rayOrigin, rayDir;
-		XMStoreFloat3(&rayOrigin, vRayOrigin);
-		XMStoreFloat3(&rayDir, vRayDir);
-
-
 		// 쿼드트리 픽킹
-		_float fNearestDist = FLT_MAX;
-		_uint iPickedTri = 0;
-		if (m_pVIBufferCom->PickQuadTreeNode(rayOrigin, rayDir, fNearestDist, iPickedTri))
+		_float fDist = { 0 }; //거리
+		_uint iPickedTri = { 0 }; //피킹된 인덱스
+		_float3 vPos = {}; //포지션
+		if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri))
 		{
-			// 충돌 위치 계산
-			XMStoreFloat3(&m_vPickedPos, XMLoadFloat3(&rayOrigin) + XMLoadFloat3(&rayDir) * fNearestDist);
+			m_vPickedPos = vPos;
 		}
 	}
 }

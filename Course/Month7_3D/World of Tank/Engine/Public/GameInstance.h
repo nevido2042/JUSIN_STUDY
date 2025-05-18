@@ -64,6 +64,9 @@ public:
 	void Transform_Picking_ToLocalSpace(const _matrix& WorldMatrixInverse);
 	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+
+	const _float3& Get_MousePos();
+	const _float3& Get_MouseRay();
 #pragma endregion
 
 #pragma region SOUND_DEVICE

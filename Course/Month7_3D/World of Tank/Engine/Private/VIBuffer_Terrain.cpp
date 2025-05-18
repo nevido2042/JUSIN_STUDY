@@ -179,10 +179,12 @@ _float3 CVIBuffer_Terrain::Compute_PickedPosition(const _matrix& pWorldMatrixInv
 	return vPickedPos;
 }
 
-_bool CVIBuffer_Terrain::PickQuadTreeNode(const _float3& rayOrigin, const _float3& rayDir, _float& outNearestDist, _uint& outPickedTriangleIndex)
+_bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex)
 {
-	_float distAABB;
-	if (!RayIntersectAABB(rayOrigin, rayDir, m_pQuadTreeRoot->Get_Min(), m_pQuadTreeRoot->Get_Max(), distAABB))
+	_float fNearestDist = FLT_MAX;
+
+	_float fDistAABB;
+	if (!RayIntersectAABB(m_pQuadTreeRoot->Get_Min(), m_pQuadTreeRoot->Get_Max(), fDistAABB))
 		return false;
 
 	_bool bHit = false;
@@ -197,12 +199,12 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(const _float3& rayOrigin, const _float
 			const _float3& v2 = m_pVertexPositions[reinterpret_cast<_uint*>(m_pIndices)[triIdx * 3 + 2]];
 
 			_float distTri;
-			if (RayIntersectTriangle(rayOrigin, rayDir, v0, v1, v2, distTri))
+			if (RayIntersectTriangle(v0, v1, v2, distTri))
 			{
-				if (distTri < outNearestDist)
+				if (distTri < fNearestDist)
 				{
-					outNearestDist = distTri;
-					outPickedTriangleIndex = triIdx;
+					fNearestDist = distTri;
+					iOutPickedTriangleIndex = triIdx;
 					bHit = true;
 				}
 			}
@@ -215,8 +217,13 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(const _float3& rayOrigin, const _float
 		{
 			if (m_pQuadTreeRoot->Get_Children()[i])
 			{
-				if (PickQuadTreeNode(m_pQuadTreeRoot->Get_Children()[i], rayOrigin, rayDir, m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), outNearestDist, outPickedTriangleIndex))
+				if (PickQuadTreeNode(m_pQuadTreeRoot->Get_Children()[i], m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), fNearestDist, iOutPickedTriangleIndex))
+				{
 					bHit = true;
+					vOutNearestDist = fNearestDist;
+					XMStoreFloat3(&vOutPos, XMLoadFloat3(&m_pGameInstance->Get_MousePos()) + XMLoadFloat3(&m_pGameInstance->Get_MouseRay()) * fNearestDist);
+				}
+
 			}
 		}
 	}
@@ -240,16 +247,16 @@ void CVIBuffer_Terrain::ComputeTriangleAABB(const _float3& v0, const _float3& v1
 
 }
 
-_bool CVIBuffer_Terrain::AABBOverlap(const _float3& minA, const _float3& maxA, const _float3& minB, const _float3& maxB)
+_bool CVIBuffer_Terrain::AABBOverlap(const _float3& vMinA, const _float3& vMaxA, const _float3& vMinB, const _float3& vMaxB)
 {
-	return !(minA.x > maxB.x || maxA.x < minB.x ||
-		minA.y > maxB.y || maxA.y < minB.y ||
-		minA.z > maxB.z || maxA.z < minB.z);
+	return !(vMinA.x > vMaxB.x || vMaxA.x < vMinB.x ||
+		vMinA.y > vMaxB.y || vMaxA.y < vMinB.y ||
+		vMinA.z > vMaxB.z || vMaxA.z < vMinB.z);
 }
 
-void CVIBuffer_Terrain::BuildQuadTree(CQuadTreeNode* pNode, _int depth, const _float3* pPositions, const _uint* pIndices, _int numIndices)
+void CVIBuffer_Terrain::BuildQuadTree(CQuadTreeNode* pNode, _uint iDepth, const _float3* pPositions, const _uint* pIndices, _uint iNumIndices)
 {
-	if (depth >= MAX_QUADTREE_DEPTH || pNode->Get_Indices().size() <= MAX_TRIANGLES_PER_NODE)
+	if (iDepth >= iMax_QuadTree_Depth || pNode->Get_Indices().size() <= iMax_Triangles_Per_Node)
 	{
 		pNode->Set_Leaf();
 		return;
@@ -300,7 +307,7 @@ void CVIBuffer_Terrain::BuildQuadTree(CQuadTreeNode* pNode, _int depth, const _f
 
 		if (!pChild->Get_Indices().empty())
 		{
-			BuildQuadTree(pChild, depth + 1, pPositions, pIndices, numIndices);
+			BuildQuadTree(pChild, iDepth + 1, pPositions, pIndices, iNumIndices);
 			pNode->Get_Children()[i] = pChild;
 		}
 		else
@@ -312,80 +319,98 @@ void CVIBuffer_Terrain::BuildQuadTree(CQuadTreeNode* pNode, _int depth, const _f
 	pNode->Get_Indices().clear(); // 자식으로 분산 후 비움
 }
 
-CQuadTreeNode* CVIBuffer_Terrain::CreateTerrainQuadTree(const _float3* pPositions, const _uint* pIndices, _int numVertices, _int numIndices)
+CQuadTreeNode* CVIBuffer_Terrain::CreateTerrainQuadTree(const _float3* pPositions, const _uint* pIndices, _uint iNumVertices, _uint iNumIndices)
 {
 	// 전체 지형 AABB 계산
-	_float3 minPos = pPositions[0];
-	_float3 maxPos = pPositions[0];
+	_float3 vMinPos = pPositions[0];
+	_float3 vMaxPos = pPositions[0];
 
-	for (_int i = 1; i < numVertices; ++i)
+	for (_uint i = 1; i < iNumVertices; ++i)
 	{
-		const _float3& v = pPositions[i];
+		const _float3& vPos = pPositions[i];
 
 		// minPos 업데이트
-		if (v.x < minPos.x) minPos.x = v.x;
-		if (v.y < minPos.y) minPos.y = v.y;
-		if (v.z < minPos.z) minPos.z = v.z;
+		if (vPos.x < vMinPos.x) vMinPos.x = vPos.x;
+		if (vPos.y < vMinPos.y) vMinPos.y = vPos.y;
+		if (vPos.z < vMinPos.z) vMinPos.z = vPos.z;
 
 		// maxPos 업데이트
-		if (v.x > maxPos.x) maxPos.x = v.x;
-		if (v.y > maxPos.y) maxPos.y = v.y;
-		if (v.z > maxPos.z) maxPos.z = v.z;
+		if (vPos.x > vMaxPos.x) vMaxPos.x = vPos.x;
+		if (vPos.y > vMaxPos.y) vMaxPos.y = vPos.y;
+		if (vPos.z > vMaxPos.z) vMaxPos.z = vPos.z;
 
 	}
 
 	CQuadTreeNode* pRoot = CQuadTreeNode::Create();
-	pRoot->Get_Min() = minPos;
-	pRoot->Get_Max() = maxPos;
+	pRoot->Get_Min() = vMinPos;
+	pRoot->Get_Max() = vMaxPos;
 
-	_int numTriangles = numIndices / 3;
-	pRoot->Get_Indices().resize(numTriangles);
-	for (_int i = 0; i < numTriangles; ++i)
+	_uint iNumTriangles = iNumIndices / 3;
+	pRoot->Get_Indices().resize(iNumTriangles);
+	for (_uint i = 0; i < iNumTriangles; ++i)
 		pRoot->Get_Indices()[i] = i;
 
-	BuildQuadTree(pRoot, 0, pPositions, pIndices, numIndices);
+	BuildQuadTree(pRoot, 0, pPositions, pIndices, iNumIndices);
 	return pRoot;
 }
 
-_bool CVIBuffer_Terrain::RayIntersectAABB(const _float3& rayOrigin, const _float3& rayDir, const _float3& boxMin, const _float3& boxMax, float& outDistance)
+_bool CVIBuffer_Terrain::RayIntersectAABB(const _float3& vBoxMin, const _float3& vBoxMax, _float& vOutDistance)
 {
-	_float tmin = (boxMin.x - rayOrigin.x) / rayDir.x;
-	_float tmax = (boxMax.x - rayOrigin.x) / rayDir.x;
-	if (tmin > tmax) std::swap(tmin, tmax);
+	// 레이 시작점과 방향 벡터를 가져옴
+	const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
+	const _float3 vRayDir = m_pGameInstance->Get_MouseRay();
 
-	_float tymin = (boxMin.y - rayOrigin.y) / rayDir.y;
-	_float tymax = (boxMax.y - rayOrigin.y) / rayDir.y;
-	if (tymin > tymax) std::swap(tymin, tymax);
+	// X축에서의 진입(fTMin)과 이탈(fTMax) 거리 계산
+	_float fTMin = (vBoxMin.x - vRayOrigin.x) / vRayDir.x;
+	_float fTMax = (vBoxMax.x - vRayOrigin.x) / vRayDir.x;
+	if (fTMin > fTMax) swap(fTMin, fTMax); // 방향이 반대일 수 있으므로 정렬
 
-	if ((tmin > tymax) || (tymin > tmax))
+	// Y축에서의 진입과 이탈 거리 계산
+	_float tymin = (vBoxMin.y - vRayOrigin.y) / vRayDir.y;
+	_float tymax = (vBoxMax.y - vRayOrigin.y) / vRayDir.y;
+	if (tymin > tymax) swap(tymin, tymax); // 정렬
+
+	// X축과 Y축의 간격이 겹치지 않으면 AABB와 충돌 안 함
+	if ((fTMin > tymax) || (tymin > fTMax))
 		return false;
 
-	if (tymin > tmin)
-		tmin = tymin;
-	if (tymax < tmax)
-		tmax = tymax;
+	// X, Y축 결과 통합
+	if (tymin > fTMin)
+		fTMin = tymin;
+	if (tymax < fTMax)
+		fTMax = tymax;
 
-	_float tzmin = (boxMin.z - rayOrigin.z) / rayDir.z;
-	_float tzmax = (boxMax.z - rayOrigin.z) / rayDir.z;
-	if (tzmin > tzmax) std::swap(tzmin, tzmax);
+	// Z축에서의 진입과 이탈 거리 계산
+	_float fTZMin = (vBoxMin.z - vRayOrigin.z) / vRayDir.z;
+	_float fTZMax = (vBoxMax.z - vRayOrigin.z) / vRayDir.z;
+	if (fTZMin > fTZMax) swap(fTZMin, fTZMax); // 정렬
 
-	if ((tmin > tzmax) || (tzmin > tmax))
+	// X, Y, Z축의 간격이 겹치지 않으면 충돌 안 함
+	if ((fTMin > fTZMax) || (fTZMin > fTMax))
 		return false;
 
-	if (tzmin > tmin)
-		tmin = tzmin;
-	if (tzmax < tmax)
-		tmax = tzmax;
+	// X, Y, Z 결과 통합
+	if (fTZMin > fTMin)
+		fTMin = fTZMin;
+	if (fTZMax < fTMax)
+		fTMax = fTZMax;
 
-	if (tmax < 0) return false;  // 뒤쪽에 있음
+	// AABB가 레이 뒤쪽에 있음
+	if (fTMax < 0)
+		return false;
 
-	outDistance = (tmin >= 0) ? tmin : tmax;
-	return true;
+	// 최종 충돌 거리 저장 (앞쪽이면 tmin, 내부에서 시작하면 tmax)
+	vOutDistance = (fTMin >= 0) ? fTMin : fTMax;
+
+	return true; // 충돌 있음
 }
 
-_bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& rayOrigin, const _float3& rayDir, const _float3& v0, const _float3& v1, const _float3& v2, _float& outDistance)
+_bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& v0, const _float3& v1, const _float3& v2, _float& vOutDistance)
 {
-	const _float EPSILON = 1e-6f;
+	const _float3& rayOrigin = m_pGameInstance->Get_MousePos();
+	const _float3& rayDir = m_pGameInstance->Get_MouseRay();
+
+	const _float fEPSILON = numeric_limits<_float>::epsilon();
 
 	// 벡터 로딩
 	_vector vecOrigin = XMLoadFloat3(&rayOrigin);
@@ -402,7 +427,7 @@ _bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& rayOrigin, const _f
 	_vector h = XMVector3Cross(vecDir, edge2);
 	_float a = XMVectorGetX(XMVector3Dot(edge1, h));
 
-	if (fabs(a) < EPSILON)
+	if (fabs(a) < fEPSILON)
 		return false;  // 레이와 삼각형이 평행
 
 	_float f = 1.0f / a;
@@ -420,19 +445,22 @@ _bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& rayOrigin, const _f
 
 	_float t = f * XMVectorGetX(XMVector3Dot(edge2, q));
 
-	if (t > EPSILON)
+	if (t > fEPSILON)
 	{
-		outDistance = t;
+		vOutDistance = t;
 		return true;
 	}
 
 	return false;
 }
 
-_bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3& rayOrigin, const _float3& rayDir, const _float3* pPositions, const _uint* pIndices, _float& outNearestDist, _uint& outPickedTriangleIndex)
+_bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3* pPositions, const _uint* pIndices, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex)
 {
-	_float distAABB;
-	if (!RayIntersectAABB(rayOrigin, rayDir, pNode->Get_Min(), pNode->Get_Max(), distAABB))
+	const _float3& vRayOrigin = m_pGameInstance->Get_MousePos();
+	const _float3& vRayDir = m_pGameInstance->Get_MouseRay();
+
+	_float fDistAABB;
+	if (!RayIntersectAABB(pNode->Get_Min(), pNode->Get_Max(), fDistAABB))
 		return false;
 
 	_bool bHit = false;
@@ -440,19 +468,19 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3& r
 	if (pNode->Is_Leaf())
 	{
 		// 삼각형 하나씩 검사
-		for (auto triIdx : pNode->Get_Indices())
+		for (auto iTri_Index : pNode->Get_Indices())
 		{
-			const _float3& v0 = pPositions[pIndices[triIdx * 3 + 0]];
-			const _float3& v1 = pPositions[pIndices[triIdx * 3 + 1]];
-			const _float3& v2 = pPositions[pIndices[triIdx * 3 + 2]];
+			const _float3& v0 = pPositions[pIndices[iTri_Index * 3 + 0]];
+			const _float3& v1 = pPositions[pIndices[iTri_Index * 3 + 1]];
+			const _float3& v2 = pPositions[pIndices[iTri_Index * 3 + 2]];
 
-			_float distTri;
-			if (RayIntersectTriangle(rayOrigin, rayDir, v0, v1, v2, distTri))
+			_float fDistTri;
+			if (RayIntersectTriangle(v0, v1, v2, fDistTri))
 			{
-				if (distTri < outNearestDist)
+				if (fDistTri < vOutNearestDist)
 				{
-					outNearestDist = distTri;
-					outPickedTriangleIndex = triIdx;
+					vOutNearestDist = fDistTri;
+					iOutPickedTriangleIndex = iTri_Index;
 					bHit = true;
 				}
 			}
@@ -461,11 +489,11 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3& r
 	else
 	{
 		// 자식 노드 재귀 검사
-		for (_int i = 0; i < 4; ++i)
+		for (_uint i = 0; i < 4; ++i)
 		{
 			if (pNode->Get_Children()[i])
 			{
-				if (PickQuadTreeNode(pNode->Get_Children()[i], rayOrigin, rayDir, pPositions, pIndices, outNearestDist, outPickedTriangleIndex))
+				if (PickQuadTreeNode(pNode->Get_Children()[i], pPositions, pIndices, vOutNearestDist, iOutPickedTriangleIndex))
 					bHit = true;
 			}
 		}

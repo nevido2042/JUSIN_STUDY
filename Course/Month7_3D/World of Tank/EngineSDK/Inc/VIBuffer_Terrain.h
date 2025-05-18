@@ -23,7 +23,7 @@ public:
 	virtual _vector Compute_HeightPosition(const _vector& vPosition) override;
 	virtual _vector Compute_NormalPosition(const _vector& vPosition) override;
 	virtual _float3 Compute_PickedPosition(const _matrix& pWorldMatrixInverse) override;
-	_bool PickQuadTreeNode(const _float3& rayOrigin, const _float3& rayDir, _float& outNearestDist, _uint& outPickedTriangleIndex);
+	_bool PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex);
 
 private:
 	void ComputeTriangleAABB(const _float3& v0, const _float3& v1, const _float3& v2, _float3& outMin, _float3& outMax);
@@ -31,9 +31,9 @@ private:
 	void BuildQuadTree(class CQuadTreeNode* pNode, _int depth, const _float3* pPositions, const _uint* pIndices, _int numIndices);
 	class CQuadTreeNode* CreateTerrainQuadTree(const _float3* pPositions, const _uint* pIndices, _int numVertices, _int numIndices);
 	//_float3 Pick_Quad(_float3 vLB, _float3 vRB, _float3 vLT, _float3 vRT, const _matrix& worldInv);
-	_bool RayIntersectAABB(const _float3& rayOrigin, const _float3& rayDir, const _float3& boxMin, const _float3& boxMax, float& outDistance);
-	_bool RayIntersectTriangle(const _float3& rayOrigin, const _float3& rayDir, const _float3& v0, const _float3& v1, const _float3& v2, _float& outDistance);
-	_bool PickQuadTreeNode(class CQuadTreeNode* pNode, const _float3& rayOrigin, const _float3& rayDir, const _float3* pPositions, const _uint* pIndices, _float& outNearestDist, _uint& outPickedTriangleIndex);
+	_bool RayIntersectAABB(const _float3& boxMin, const _float3& boxMax, float& outDistance);
+	_bool RayIntersectTriangle(const _float3& v0, const _float3& v1, const _float3& v2, _float& outDistance);
+	_bool PickQuadTreeNode(class CQuadTreeNode* pNode, const _float3* pPositions, const _uint* pIndices, _float& outNearestDist, _uint& outPickedTriangleIndex);
 
 private:
 	HRESULT Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset);
