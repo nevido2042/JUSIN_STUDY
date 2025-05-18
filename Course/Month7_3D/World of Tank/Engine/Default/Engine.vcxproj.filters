@@ -118,7 +118,9 @@
     <ClInclude Include="..\public\Frustum.h">
       <Filter>01.Utility\08.Frustum</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\QuadTreeRoot.h" />
+    <ClInclude Include="..\public\QuadTreeNode.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Terrain\QuadTreeRoot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -223,7 +225,9 @@
     <ClCompile Include="..\private\Frustum.cpp">
       <Filter>01.Utility\08.Frustum</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\QuadTreeRoot.cpp" />
+    <ClCompile Include="..\private\QuadTreeNode.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Terrain\QuadTreeRoot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.System">
@@ -351,6 +355,9 @@
     </Filter>
     <Filter Include="01.Utility\08.Frustum">
       <UniqueIdentifier>{0fda5ef0-4518-41fd-94f0-0249bd58fc0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Terrain\QuadTreeRoot">
+      <UniqueIdentifier>{ea06f473-548d-4f14-8742-eac038a490b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

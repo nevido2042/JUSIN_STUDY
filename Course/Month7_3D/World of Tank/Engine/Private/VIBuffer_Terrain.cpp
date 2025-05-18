@@ -1,5 +1,6 @@
 ﻿#include "VIBuffer_Terrain.h"
 #include "GameInstance.h"
+#include "QuadTreeNode.h"
 
 CVIBuffer_Terrain::CVIBuffer_Terrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CVIBuffer { pDevice, pContext }
@@ -181,15 +182,15 @@ _float3 CVIBuffer_Terrain::Compute_PickedPosition(const _matrix& pWorldMatrixInv
 _bool CVIBuffer_Terrain::PickQuadTreeNode(const _float3& rayOrigin, const _float3& rayDir, _float& outNearestDist, _uint& outPickedTriangleIndex)
 {
 	_float distAABB;
-	if (!RayIntersectAABB(rayOrigin, rayDir, m_pQuadTreeRoot->vMin, m_pQuadTreeRoot->vMax, distAABB))
+	if (!RayIntersectAABB(rayOrigin, rayDir, m_pQuadTreeRoot->Get_Min(), m_pQuadTreeRoot->Get_Max(), distAABB))
 		return false;
 
 	_bool bHit = false;
 
-	if (m_pQuadTreeRoot->IsLeaf)
+	if (m_pQuadTreeRoot->Is_Leaf())
 	{
 		// 삼각형 하나씩 검사
-		for (auto triIdx : m_pQuadTreeRoot->Indices)
+		for (auto triIdx : m_pQuadTreeRoot->Get_Indices())
 		{
 			const _float3& v0 = m_pVertexPositions[reinterpret_cast<_uint*>(m_pIndices)[triIdx * 3 + 0]];
 			const _float3& v1 = m_pVertexPositions[reinterpret_cast<_uint*>(m_pIndices)[triIdx * 3 + 1]];
@@ -212,9 +213,9 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(const _float3& rayOrigin, const _float
 		// 자식 노드 재귀 검사
 		for (_int i = 0; i < 4; ++i)
 		{
-			if (m_pQuadTreeRoot->pChildren[i])
+			if (m_pQuadTreeRoot->Get_Children()[i])
 			{
-				if (PickQuadTreeNode(m_pQuadTreeRoot->pChildren[i], rayOrigin, rayDir, m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), outNearestDist, outPickedTriangleIndex))
+				if (PickQuadTreeNode(m_pQuadTreeRoot->Get_Children()[i], rayOrigin, rayDir, m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), outNearestDist, outPickedTriangleIndex))
 					bHit = true;
 			}
 		}
@@ -246,22 +247,22 @@ _bool CVIBuffer_Terrain::AABBOverlap(const _float3& minA, const _float3& maxA, c
 		minA.z > maxB.z || maxA.z < minB.z);
 }
 
-void CVIBuffer_Terrain::BuildQuadTree(QuadTreeNode* pNode, _int depth, const _float3* pPositions, const _uint* pIndices, _int numIndices)
+void CVIBuffer_Terrain::BuildQuadTree(CQuadTreeNode* pNode, _int depth, const _float3* pPositions, const _uint* pIndices, _int numIndices)
 {
-	if (depth >= MAX_QUADTREE_DEPTH || pNode->Indices.size() <= MAX_TRIANGLES_PER_NODE)
+	if (depth >= MAX_QUADTREE_DEPTH || pNode->Get_Indices().size() <= MAX_TRIANGLES_PER_NODE)
 	{
-		pNode->IsLeaf = true;
+		pNode->Set_Leaf();
 		return;
 	}
 
 	
 
 	_float3 center = {};
-	XMStoreFloat3(&center, XMLoadFloat3(&pNode->vMin) + XMLoadFloat3(&pNode->vMax) * 0.5f);
+	XMStoreFloat3(&center, XMLoadFloat3(&pNode->Get_Min()) + XMLoadFloat3(&pNode->Get_Max()) * 0.5f);
 
 	// 자식 영역 AABB 설정
-	_float3 min = pNode->vMin;
-	_float3 max = pNode->vMax;
+	_float3 min = pNode->Get_Min();
+	_float3 max = pNode->Get_Max();
 
 	_float3 childMins[4] = {
 		{min.x, min.y, min.z},            // 좌상
@@ -280,11 +281,11 @@ void CVIBuffer_Terrain::BuildQuadTree(QuadTreeNode* pNode, _int depth, const _fl
 	// 자식 노드 생성
 	for (int i = 0; i < 4; ++i)
 	{
-		QuadTreeNode* pChild = new QuadTreeNode();
-		pChild->vMin = childMins[i];
-		pChild->vMax = childMaxs[i];
+		CQuadTreeNode* pChild = CQuadTreeNode::Create();
+		pChild->Get_Min() = childMins[i];
+		pChild->Get_Max() = childMaxs[i];
 
-		for (auto triIdx : pNode->Indices)
+		for (auto triIdx : pNode->Get_Indices())
 		{
 			_float3 v0 = pPositions[pIndices[triIdx * 3 + 0]];
 			_float3 v1 = pPositions[pIndices[triIdx * 3 + 1]];
@@ -293,25 +294,25 @@ void CVIBuffer_Terrain::BuildQuadTree(QuadTreeNode* pNode, _int depth, const _fl
 			_float3 triMin, triMax;
 			ComputeTriangleAABB(v0, v1, v2, triMin, triMax);
 
-			if (AABBOverlap(pChild->vMin, pChild->vMax, triMin, triMax))
-				pChild->Indices.push_back(triIdx);
+			if (AABBOverlap(pChild->Get_Min(), pChild->Get_Max(), triMin, triMax))
+				pChild->Get_Indices().push_back(triIdx);
 		}
 
-		if (!pChild->Indices.empty())
+		if (!pChild->Get_Indices().empty())
 		{
 			BuildQuadTree(pChild, depth + 1, pPositions, pIndices, numIndices);
-			pNode->pChildren[i] = pChild;
+			pNode->Get_Children()[i] = pChild;
 		}
 		else
 		{
-			delete pChild;
+			Safe_Release(pChild);
 		}
 	}
 
-	pNode->Indices.clear(); // 자식으로 분산 후 비움
+	pNode->Get_Indices().clear(); // 자식으로 분산 후 비움
 }
 
-QuadTreeNode* CVIBuffer_Terrain::CreateTerrainQuadTree(const _float3* pPositions, const _uint* pIndices, _int numVertices, _int numIndices)
+CQuadTreeNode* CVIBuffer_Terrain::CreateTerrainQuadTree(const _float3* pPositions, const _uint* pIndices, _int numVertices, _int numIndices)
 {
 	// 전체 지형 AABB 계산
 	_float3 minPos = pPositions[0];
@@ -333,14 +334,14 @@ QuadTreeNode* CVIBuffer_Terrain::CreateTerrainQuadTree(const _float3* pPositions
 
 	}
 
-	QuadTreeNode* pRoot = new QuadTreeNode();
-	pRoot->vMin = minPos;
-	pRoot->vMax = maxPos;
+	CQuadTreeNode* pRoot = CQuadTreeNode::Create();
+	pRoot->Get_Min() = minPos;
+	pRoot->Get_Max() = maxPos;
 
 	_int numTriangles = numIndices / 3;
-	pRoot->Indices.resize(numTriangles);
+	pRoot->Get_Indices().resize(numTriangles);
 	for (_int i = 0; i < numTriangles; ++i)
-		pRoot->Indices[i] = i;
+		pRoot->Get_Indices()[i] = i;
 
 	BuildQuadTree(pRoot, 0, pPositions, pIndices, numIndices);
 	return pRoot;
@@ -428,18 +429,18 @@ _bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& rayOrigin, const _f
 	return false;
 }
 
-_bool CVIBuffer_Terrain::PickQuadTreeNode(QuadTreeNode* pNode, const _float3& rayOrigin, const _float3& rayDir, const _float3* pPositions, const _uint* pIndices, _float& outNearestDist, _uint& outPickedTriangleIndex)
+_bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3& rayOrigin, const _float3& rayDir, const _float3* pPositions, const _uint* pIndices, _float& outNearestDist, _uint& outPickedTriangleIndex)
 {
 	_float distAABB;
-	if (!RayIntersectAABB(rayOrigin, rayDir, pNode->vMin, pNode->vMax, distAABB))
+	if (!RayIntersectAABB(rayOrigin, rayDir, pNode->Get_Min(), pNode->Get_Max(), distAABB))
 		return false;
 
 	_bool bHit = false;
 
-	if (pNode->IsLeaf)
+	if (pNode->Is_Leaf())
 	{
 		// 삼각형 하나씩 검사
-		for (auto triIdx : pNode->Indices)
+		for (auto triIdx : pNode->Get_Indices())
 		{
 			const _float3& v0 = pPositions[pIndices[triIdx * 3 + 0]];
 			const _float3& v1 = pPositions[pIndices[triIdx * 3 + 1]];
@@ -462,9 +463,9 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(QuadTreeNode* pNode, const _float3& ra
 		// 자식 노드 재귀 검사
 		for (_int i = 0; i < 4; ++i)
 		{
-			if (pNode->pChildren[i])
+			if (pNode->Get_Children()[i])
 			{
-				if (PickQuadTreeNode(pNode->pChildren[i], rayOrigin, rayDir, pPositions, pIndices, outNearestDist, outPickedTriangleIndex))
+				if (PickQuadTreeNode(pNode->Get_Children()[i], rayOrigin, rayDir, pPositions, pIndices, outNearestDist, outPickedTriangleIndex))
 					bHit = true;
 			}
 		}
@@ -594,6 +595,8 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, 
 
 	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
 		return E_FAIL;
+
+	m_pQuadTreeRoot = CreateTerrainQuadTree(m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), m_iNumVertices, m_iNumIndices);
 
 	CloseHandle(hFile);
 	Safe_Delete_Array(pPixels);
@@ -803,6 +806,6 @@ void CVIBuffer_Terrain::Free()
 {
     __super::Free();
 
-	delete m_pQuadTreeRoot;
-
+	if(!m_isCloned)
+		Safe_Release(m_pQuadTreeRoot);
 }

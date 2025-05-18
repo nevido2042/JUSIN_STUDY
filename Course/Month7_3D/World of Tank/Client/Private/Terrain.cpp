@@ -46,15 +46,15 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
 	{
 		// 뷰, 프로젝션 행렬
-		XMMATRIX matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
-		XMMATRIX matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
+		_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+		_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
 
 		// 역행렬 (뷰 → 월드)
-		XMMATRIX matViewInv = XMMatrixInverse(nullptr, matView);
+		_matrix matViewInv = XMMatrixInverse(nullptr, matView);
 
 		// 윈도우 크기
-		LONG iWinCX = g_iWinSizeX;
-		LONG iWinCY = g_iWinSizeY;
+		LONG iWinCX = g_iWinResizeX;
+		LONG iWinCY = g_iWinResizeY;
 
 		// 마우스 좌표 (스크린 기준)
 		POINT ptMouse;
@@ -62,11 +62,11 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 		ScreenToClient(g_hWnd, &ptMouse); // DX11에서도 클라이언트 기준으로 보통 변환 필요
 
 		// NDC 좌표로 변환
-		float fNDC_X = (2.0f * ptMouse.x / iWinCX - 1.0f);
-		float fNDC_Y = (1.0f - 2.0f * ptMouse.y / iWinCY);
+		_float fNDC_X = (2.0f * ptMouse.x / iWinCX - 1.0f);
+		_float fNDC_Y = (1.0f - 2.0f * ptMouse.y / iWinCY);
 
 		// 뷰 공간에서의 Ray 방향
-		XMVECTOR vRayDirView = XMVectorSet(
+		_vector vRayDirView = XMVectorSet(
 			fNDC_X / matProj.r[0].m128_f32[0],   // matProj._11
 			fNDC_Y / matProj.r[1].m128_f32[1],   // matProj._22
 			1.0f,
@@ -74,8 +74,8 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 		);
 
 		// 월드 공간으로 변환
-		XMVECTOR vRayOrigin = matViewInv.r[3];  // 카메라 위치 (w=1.0)
-		XMVECTOR vRayDir = XMVector3TransformNormal(vRayDirView, matViewInv);
+		_vector vRayOrigin = matViewInv.r[3];  // 카메라 위치 (w=1.0)
+		_vector vRayDir = XMVector3TransformNormal(vRayDirView, matViewInv);
 		vRayDir = XMVector3Normalize(vRayDir);
 
 		// 결과 저장 (선택)
@@ -91,9 +91,6 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 		{
 			// 충돌 위치 계산
 			XMStoreFloat3(&m_vPickedPos, XMLoadFloat3(&rayOrigin) + XMLoadFloat3(&rayDir) * fNearestDist);
-
-			// (선택) 디버그용 출력
-			// m_pGameInstance->Draw_Sphere(m_vPickedPos, 0.2f, D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
 		}
 	}
 }

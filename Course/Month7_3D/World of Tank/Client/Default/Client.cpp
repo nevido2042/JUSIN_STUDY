@@ -19,6 +19,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 
 _uint g_iWinResizeX = g_iWinSizeX;
 _uint g_iWinResizeY = g_iWinSizeY;
+
 _bool g_SwapChainNeedsResize = false;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
