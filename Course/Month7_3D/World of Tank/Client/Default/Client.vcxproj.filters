@@ -118,6 +118,9 @@
     <Filter Include="02.GameObjects\LandObject\06.Fury\FuryTurret">
       <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.VHouse01A">
+      <UniqueIdentifier>{a2135a6c-4067-4158-a479-61462e2152de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -246,6 +249,9 @@
     <ClInclude Include="..\public\FuryTurret.h">
       <Filter>02.GameObjects\LandObject\06.Fury\FuryTurret</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VHouse01A.h">
+      <Filter>02.GameObjects\07.VHouse01A</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -368,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FuryTurret.cpp">
       <Filter>02.GameObjects\LandObject\06.Fury\FuryTurret</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VHouse01A.cpp">
+      <Filter>02.GameObjects\07.VHouse01A</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,8 +17,10 @@ HRESULT CMaterial::Initialize(const _char* pTexPath)
     ID3D11ShaderResourceView* pSRV = nullptr;
 
     // 확장자 구분 (.dds면 DDS, 나머지는 WIC)
-    char szExt[_MAX_EXT] = {};
+    _char szExt[_MAX_EXT] = {};
     _splitpath_s(pTexPath, nullptr, 0, nullptr, 0, nullptr, 0, szExt, _MAX_EXT);
+
+#pragma message ("메테리얼 없는 메쉬가 있으면 터짐, 무조건 넣어줘야함")
 
     // 문자열을 wchar로 변환
     _tchar szWidePath[MAX_PATH] = {};

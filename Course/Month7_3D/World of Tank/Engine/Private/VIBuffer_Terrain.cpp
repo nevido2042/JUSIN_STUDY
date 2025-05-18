@@ -38,17 +38,7 @@ HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 
 HRESULT CVIBuffer_Terrain::Render()
 {
-	//터레인 꼭짓점이 카메라 내에 들어왔는가?
-	//m_pVertexPositions[0], m_pVertexPositions[m_iNumVerticesX -1]
-	//m_pVertexPositions[m_iNumVerticesX * (m_iNumVerticesZ - 1)], m_pVertexPositions[m_iNumVerticesX * m_iNumVerticesZ - 1]
-
-
-	/*if (m_pGameInstance->Is_In_Frustum(XMLoadFloat3(&m_pVertexPositions[0])))
-	{
-		
-	}*/
 	m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
-
 
 	return S_OK;
 }

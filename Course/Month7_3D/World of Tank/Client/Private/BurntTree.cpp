@@ -48,7 +48,9 @@ void CBurntTree::Update(_float fTimeDelta)
 
 void CBurntTree::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 1.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
 }
 
 HRESULT CBurntTree::Render()
