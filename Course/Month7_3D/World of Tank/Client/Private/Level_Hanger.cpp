@@ -3,8 +3,8 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
-#include "GameObject.h"
 #include "Camera_Free.h"
+#include "UIObject.h"
 
 CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -20,6 +20,9 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button_Start"))))
+		return E_FAIL;
+
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
@@ -28,7 +31,13 @@ HRESULT CLevel_Hanger::Initialize()
 
 void CLevel_Hanger::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_P))
+	if (m_bLevelChanged)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, static_cast<LEVEL>(m_iNewLevelIndex)))))
+			return;
+	}
+	else if (m_pGameInstance->Key_Down(DIK_P))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::PRACTICE))))
@@ -63,11 +72,11 @@ HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
 	CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 300.0f;
+	Desc.fSpeedPerSec = 0.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(300.f, 100.f, 480.f);
-	Desc.vAt = _float3(383.f, 87.f, 481.f);
+	Desc.vEye = _float3(312.f, 100.f, 292.f);
+	Desc.vAt = _float3(322.f, 87.f, 286.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
 	Desc.fFar = 4000.f;
@@ -78,6 +87,22 @@ HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.2f;
+	UIObject_Desc.fSizeX = 200.f;
+	UIObject_Desc.fSizeY = 50.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Start"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
 	return S_OK;

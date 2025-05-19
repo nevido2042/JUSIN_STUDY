@@ -1,0 +1,135 @@
+#include "Button_Start.h"
+
+#include "GameInstance.h"
+#include "Level_Loading.h"
+
+CButton_Start::CButton_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CUIObject{ pDevice, pContext }
+{
+
+}
+
+CButton_Start::CButton_Start(const CButton_Start& Prototype)
+	: CUIObject(Prototype)
+{
+
+}
+
+HRESULT CButton_Start::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CButton_Start::Initialize(void* pArg)
+{
+	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
+
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+void CButton_Start::Priority_Update(_float fTimeDelta)
+{
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
+}
+
+void CButton_Start::Update(_float fTimeDelta)
+{
+	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
+	{
+		//현재 레벨아 레벨 체인지 될거야~
+		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE));
+	}
+
+}
+
+void CButton_Start::Late_Update(_float fTimeDelta)
+{
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+}
+
+HRESULT CButton_Start::Render()
+{
+
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Begin(0)))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CButton_Start::Ready_Components()
+{
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+	/* For.Com_VIBuffer */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Button_Login"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+CButton_Start* CButton_Start::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CButton_Start* pInstance = new CButton_Start(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CButton_Start");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CButton_Start::Clone(void* pArg)
+{
+	CButton_Start* pInstance = new CButton_Start(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CButton_Start");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CButton_Start::Free()
+{
+	__super::Free();
+
+	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pTextureCom);
+}

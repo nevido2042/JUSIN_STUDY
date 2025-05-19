@@ -19,6 +19,7 @@ public:
 private:
 	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Button_Start(const _wstring strLayerTag);
 
 private:
 	HRESULT Load_Map();

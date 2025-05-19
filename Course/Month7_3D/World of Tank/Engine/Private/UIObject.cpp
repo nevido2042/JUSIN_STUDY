@@ -20,17 +20,6 @@ HRESULT CUIObject::Initialize(void* pArg)
 	if (nullptr == pArg)
 		return S_OK;
 
-	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
-
-	m_fX = pDesc->fX;
-	m_fY = pDesc->fY;
-	m_fDepth = pDesc->fDepth;
-	m_fSizeX = pDesc->fSizeX;
-	m_fSizeY = pDesc->fSizeY;
-
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
-
 	D3D11_VIEWPORT			ViewportDesc{};
 	_uint					iNumViewports = { 1 };
 
@@ -39,15 +28,38 @@ HRESULT CUIObject::Initialize(void* pArg)
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.0f, 1.f));
 
-	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY);
+	//const _float scaleX = ViewportDesc.Width / g_iBase_WinSizeX;
+	//const _float scaleY = ViewportDesc.Height / g_iBase_WinSizeY;
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, m_fDepth, 1.f));
+	//// 스케일을 일관성 있게 적용 (선택: X 기준 or Y 기준)
+	//const _float uniformScale = min(scaleX, scaleY);
 
+	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
+
+	m_fX = pDesc->fX;
+	m_fY = pDesc->fY;
+	m_fDepth = pDesc->fDepth;
+	m_fSizeX = pDesc->fSizeX;
+	m_fSizeY = pDesc->fSizeY;
+
+	/*m_fDepth = pDesc->fDepth;
+	m_fX = pDesc->fX * scaleX;
+	m_fY = pDesc->fY * scaleY;
+	m_fSizeX = pDesc->fSizeX * uniformScale;
+	m_fSizeY = pDesc->fSizeY * uniformScale;*/
+
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
 
 	m_fXRatio = m_fX / ViewportDesc.Width;
 	m_fYRatio = m_fY / ViewportDesc.Height;
 	m_fSizeXRatio = m_fSizeX / ViewportDesc.Width;
 	m_fSizeYRatio = m_fSizeY / ViewportDesc.Height;
+
+	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY);
+
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, m_fDepth, 1.f));
+
 
 	return S_OK;
 }

@@ -133,6 +133,9 @@
     <Filter Include="02.GameObjects\UIObject\07.Button_Login">
       <UniqueIdentifier>{ac2512d4-5aec-4055-a0d9-7d5bc79210a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\08.Button_Start">
+      <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -276,6 +279,9 @@
     <ClInclude Include="..\public\Button_Login.h">
       <Filter>02.GameObjects\UIObject\07.Button_Login</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Button_Start.h">
+      <Filter>02.GameObjects\UIObject\08.Button_Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -413,6 +419,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Button_Login.cpp">
       <Filter>02.GameObjects\UIObject\07.Button_Login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Start.cpp">
+      <Filter>02.GameObjects\UIObject\08.Button_Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

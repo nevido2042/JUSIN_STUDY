@@ -36,6 +36,7 @@ using namespace DirectX;
 #include <memory>
 #include <iostream>
 #include <functional>
+#include <algorithm>
 
 using namespace std;
 
@@ -51,6 +52,8 @@ namespace Engine
 {
 	const _wstring	g_strTransformTag = TEXT("Com_Transform");
 
+	constexpr _uint g_iBase_WinSizeX = 1920;
+	constexpr _uint g_iBase_WinSizeY = 1080;
 }
 
 using namespace Engine;

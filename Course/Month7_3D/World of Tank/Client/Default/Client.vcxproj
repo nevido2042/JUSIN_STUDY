@@ -165,6 +165,7 @@
     <ClInclude Include="..\Public\BackGround_Loading.h" />
     <ClInclude Include="..\public\BurntTree.h" />
     <ClInclude Include="..\public\Button_Login.h" />
+    <ClInclude Include="..\public\Button_Start.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\ChurchA.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
     <ClCompile Include="..\private\BurntTree.cpp" />
     <ClCompile Include="..\private\Button_Login.cpp" />
+    <ClCompile Include="..\private\Button_Start.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />

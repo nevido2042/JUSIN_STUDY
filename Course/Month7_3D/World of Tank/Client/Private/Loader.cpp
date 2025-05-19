@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Button_Start.h"
 #include "DamagePanel.h"
 #include "Minimap.h"
 #include "StatusLight.h"
@@ -142,6 +143,11 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_Button_Login */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Button_Login"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/back_primary_red.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Terrain"),
@@ -327,11 +333,6 @@ HRESULT CLoader::Loading_For_Logo()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Logo/login_logo_big.dds"), 1))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_Button_Login */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Texture_Button_Login"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/back_primary_red.dds"), 1))))
-		return E_FAIL;
-
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
 
@@ -377,6 +378,10 @@ HRESULT CLoader::Loading_For_Hanger()
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
+	/* For.Prototype_GameObject_Button_Start */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Start"),
+		CButton_Start::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
