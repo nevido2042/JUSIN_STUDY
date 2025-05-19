@@ -92,7 +92,7 @@ HRESULT CTransform::Initialize(void* pArg)
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
 	if (pDesc->vInitPosition.x != 0.f || pDesc->vInitPosition.y != 0.f || pDesc->vInitPosition.z != 0.f)
-		Set_State(STATE::POSITION, XMLoadFloat3(&pDesc->vInitPosition));
+		Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vInitPosition), 1.f));
 
 	return S_OK;
 }

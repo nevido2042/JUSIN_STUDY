@@ -33,11 +33,17 @@ public:
 	_bool	Get_IsDestroyed() { return m_bDestroyed; }
 	void	Destroy() { m_bDestroyed = true; }
 
+	const _bool		Get_isActive() const		{ return m_bActive; }
+	void			Set_Active(_bool bActive)	{ m_bActive = bActive; }
+
 	class CTransform* const Get_Transform() { return m_pTransformCom; }
 
 protected:
 	_bool m_bCloned = { false };
+
+private:
 	_bool m_bDestroyed = { false };
+	_bool m_bActive = { true };
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

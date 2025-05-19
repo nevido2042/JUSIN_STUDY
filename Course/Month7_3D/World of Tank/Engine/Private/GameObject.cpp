@@ -39,22 +39,22 @@ HRESULT CGameObject::Initialize_Prototype()
 
 HRESULT CGameObject::Initialize(void* pArg)
 {
+	m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pTransformCom)
+		return E_FAIL;
+
+	Safe_AddRef(m_pTransformCom);
+
+	m_Components.emplace(g_strTransformTag, m_pTransformCom);
+
 	if (nullptr == pArg)
 		return S_OK;
 
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);	
 	lstrcpy(m_szName, pDesc->szName);
 
-	m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
-	if (nullptr == m_pTransformCom)
-		return E_FAIL;	
-
 	if (FAILED(m_pTransformCom->Initialize(pArg)))
 		return E_FAIL;
-
-	m_Components.emplace(g_strTransformTag, m_pTransformCom);
-
-	Safe_AddRef(m_pTransformCom);
 
 
 	return S_OK;

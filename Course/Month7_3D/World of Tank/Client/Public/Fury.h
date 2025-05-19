@@ -26,15 +26,21 @@ public:
 	virtual HRESULT Render();
 
 private:
+	void Destroyed();
+
+private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
 private:
+	_bool	m_bDestroyed = { false };
+private:
 	ID3D11RasterizerState*	m_pRasterState = { nullptr };
 	ID3D11RasterizerState*	m_pOldRasterState = { nullptr };
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	CShader*	m_pShaderCom = { nullptr };
+	CModel*		m_pModelCom = { nullptr };
+	CModel*		m_pModelCom_Destroyed = { nullptr };
 
 	HRESULT Ready_Components();
 

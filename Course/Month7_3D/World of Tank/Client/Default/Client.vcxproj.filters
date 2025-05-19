@@ -109,9 +109,6 @@
     <Filter Include="02.GameObjects\LandObject\01.Fury">
       <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTurret">
-      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UIObject\Tool">
       <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
     </Filter>
@@ -135,6 +132,24 @@
     </Filter>
     <Filter Include="02.GameObjects\UIObject\08.Button_Start">
       <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\09.Button_Fury">
+      <UniqueIdentifier>{c0424797-a47c-4f09-b6bd-2a5e0d6ae945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Fury_Hanger">
+      <UniqueIdentifier>{ec85730a-92fe-466a-a2b0-1fec193c6994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\10.Tiger_Hanger">
+      <UniqueIdentifier>{535103fa-551b-45e6-ac80-5caff1375a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\10.Button_Tiger">
+      <UniqueIdentifier>{131c3715-2a1a-4997-abed-8e51f83a3333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\PartObject">
+      <UniqueIdentifier>{2129901a-9050-4363-bef6-7b909f303355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\PartObject\FuryTurret">
+      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,7 +277,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTurret.h">
-      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret</Filter>
+      <Filter>02.GameObjects\PartObject\FuryTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VHouse01A.h">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
@@ -281,6 +296,18 @@
     </ClInclude>
     <ClInclude Include="..\public\Button_Start.h">
       <Filter>02.GameObjects\UIObject\08.Button_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Fury.h">
+      <Filter>02.GameObjects\UIObject\09.Button_Fury</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Fury_Hanger.h">
+      <Filter>02.GameObjects\09.Fury_Hanger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tiger_Hanger.h">
+      <Filter>02.GameObjects\10.Tiger_Hanger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Tiger.h">
+      <Filter>02.GameObjects\UIObject\10.Button_Tiger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -403,7 +430,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTurret.cpp">
-      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret</Filter>
+      <Filter>02.GameObjects\PartObject\FuryTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VHouse01A.cpp">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
@@ -422,6 +449,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Button_Start.cpp">
       <Filter>02.GameObjects\UIObject\08.Button_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Fury.cpp">
+      <Filter>02.GameObjects\UIObject\09.Button_Fury</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Fury_Hanger.cpp">
+      <Filter>02.GameObjects\09.Fury_Hanger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tiger_Hanger.cpp">
+      <Filter>02.GameObjects\10.Tiger_Hanger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Tiger.cpp">
+      <Filter>02.GameObjects\UIObject\10.Button_Tiger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

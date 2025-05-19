@@ -47,7 +47,7 @@ void CLoading_Spinner::Update(_float fTimeDelta)
 
 void CLoading_Spinner::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CLoading_Spinner::Render()

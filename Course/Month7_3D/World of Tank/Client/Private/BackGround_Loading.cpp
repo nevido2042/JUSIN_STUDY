@@ -46,7 +46,7 @@ void CBackGround_Loading::Update(_float fTimeDelta)
 
 void CBackGround_Loading::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CBackGround_Loading::Render()

@@ -110,6 +110,42 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     if (0 != Safe_Release(pMainApp))
         MSG_BOX("Failed to Release : CMainApp");
 
+#pragma region ReportLiveObjects
+
+    //typedef HRESULT(WINAPI* LPDXGIGETDEBUGINTERFACE)(REFIID, void**);
+    //HMODULE dxgiDebugDll = LoadLibraryW(L"dxgidebug.dll");
+    //if (!dxgiDebugDll)
+    //{
+    //    OutputDebugStringW(L"[ReportLiveObjects] dxgidebug.dll 로드 실패\n");
+    //}
+
+    //auto GetDebugInterface = (LPDXGIGETDEBUGINTERFACE)GetProcAddress(dxgiDebugDll, "DXGIGetDebugInterface");
+    //if (!GetDebugInterface)
+    //{
+    //    OutputDebugStringW(L"[ReportLiveObjects] GetProcAddress 실패\n");
+    //}
+    //if (!GetDebugInterface)
+    //{
+    //    FreeLibrary(dxgiDebugDll);
+    //    //return;
+    //}
+
+    //IDXGIDebug* pDebug = nullptr;
+    //if (SUCCEEDED(GetDebugInterface(__uuidof(IDXGIDebug), (void**)&pDebug)))
+    //{
+    //    if (!pDebug)
+    //    {
+    //        OutputDebugStringW(L"[ReportLiveObjects] IDXGIDebug 인터페이스 획득 실패\n");
+    //    }
+
+    //    DXGI_DEBUG_RLO_FLAGS flags = static_cast<DXGI_DEBUG_RLO_FLAGS>(DXGI_DEBUG_RLO_SUMMARY | DXGI_DEBUG_RLO_IGNORE_INTERNAL);
+    //    pDebug->ReportLiveObjects(DXGI_DEBUG_ALL, flags);
+    //    pDebug->Release();
+    //}
+
+    //FreeLibrary(dxgiDebugDll);
+#pragma endregion
+
     return (int) msg.wParam;
 }
 

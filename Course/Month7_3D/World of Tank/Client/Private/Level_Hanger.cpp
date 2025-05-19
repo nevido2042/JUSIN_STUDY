@@ -17,13 +17,28 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
+	if (FAILED(Load_Map()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button_Start"))))
 		return E_FAIL;
 
-	if (FAILED(Load_Map()))
+	if (FAILED(Ready_Layer_Button_Fury(TEXT("Layer_Button_Fury"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Fury_Hanger(TEXT("Layer_Fury_Hanger"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_Tiger(TEXT("Layer_Button_Tiger"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Tiger_Hanger(TEXT("Layer_Tiger_Hanger"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -103,6 +118,77 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Start"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Fury(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
+	UIObject_Desc.fSizeX = 420.f * 0.5f;
+	UIObject_Desc.fSizeY = 307.f * 0.5f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Fury"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Fury_Hanger(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc = {};
+	Desc.fRotationPerSec = 0.f;
+	Desc.fSpeedPerSec = 0.f;
+	lstrcpy(Desc.szName, TEXT("Fury_Hanger"));
+	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Fury_Hanger"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Tiger(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fX = g_iWinSizeX * 0.7f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
+	UIObject_Desc.fSizeX = 420.f * 0.5f;
+	UIObject_Desc.fSizeY = 307.f * 0.5f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Tiger"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc = {};
+	Desc.fRotationPerSec = 0.f;
+	Desc.fSpeedPerSec = 0.f;
+	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
+	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Tiger_Hanger"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Skydome(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

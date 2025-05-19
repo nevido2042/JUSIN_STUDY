@@ -75,6 +75,11 @@ void CFury::Update(_float fTimeDelta)
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f,0.f), fTimeDelta);
 	}
 
+	if (m_pGameInstance->Key_Down(DIK_F1))
+	{
+		Destroyed();
+	}
+
 	__super::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 }
 
@@ -100,7 +105,7 @@ HRESULT CFury::Render()
 		return E_FAIL;
 
 
-	if (m_pModelCom)
+	if (m_pModelCom && !m_bDestroyed)
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
@@ -116,12 +121,33 @@ HRESULT CFury::Render()
 				return E_FAIL;
 		}
 	}
+	else if(m_pModelCom_Destroyed)
+	{
+		_uint		iNumMesh = m_pModelCom_Destroyed->Get_NumMeshes();
+
+		for (_uint i = 0; i < iNumMesh; i++)
+		{
+			if (FAILED(m_pModelCom_Destroyed->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+				return E_FAIL;
+
+			if (FAILED(m_pShaderCom->Begin(0)))
+				return E_FAIL;
+
+			if (FAILED(m_pModelCom_Destroyed->Render(i)))
+				return E_FAIL;
+		}
+	}
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
 
 	return S_OK;
+}
+
+void CFury::Destroyed()
+{
+	m_bDestroyed = true;
 }
 
 HRESULT CFury::SetUp_RenderState()
@@ -149,6 +175,11 @@ HRESULT CFury::Ready_Components()
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_FuryBody"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Model_Destroyed */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_FuryDestroyed"),
+		TEXT("Com_Model_Destroyed"), reinterpret_cast<CComponent**>(&m_pModelCom_Destroyed))))
 		return E_FAIL;
 
 	return S_OK;
@@ -187,6 +218,7 @@ void CFury::Free()
 	Safe_Release(m_pRasterState);
 	Safe_Release(m_pOldRasterState);
 
+	Safe_Release(m_pModelCom_Destroyed);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 }

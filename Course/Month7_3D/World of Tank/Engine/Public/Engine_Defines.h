@@ -11,6 +11,7 @@
 #include <wincodec.h>
 
 #include <d3d11.h>
+#include <dxgidebug.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 

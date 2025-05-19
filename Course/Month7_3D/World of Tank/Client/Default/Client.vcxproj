@@ -164,8 +164,10 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\BackGround_Loading.h" />
     <ClInclude Include="..\public\BurntTree.h" />
+    <ClInclude Include="..\public\Button_Fury.h" />
     <ClInclude Include="..\public\Button_Login.h" />
     <ClInclude Include="..\public\Button_Start.h" />
+    <ClInclude Include="..\public\Button_Tiger.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\ChurchA.h" />
@@ -176,9 +178,11 @@
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\FuryTurret.h" />
+    <ClInclude Include="..\public\Fury_Hanger.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Skydome.h" />
+    <ClInclude Include="..\public\Tiger_Hanger.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\public\Tool_Engine_Sound.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -214,8 +218,10 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
     <ClCompile Include="..\private\BurntTree.cpp" />
+    <ClCompile Include="..\private\Button_Fury.cpp" />
     <ClCompile Include="..\private\Button_Login.cpp" />
     <ClCompile Include="..\private\Button_Start.cpp" />
+    <ClCompile Include="..\private\Button_Tiger.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />
@@ -224,9 +230,11 @@
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\FuryTurret.cpp" />
+    <ClCompile Include="..\private\Fury_Hanger.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
+    <ClCompile Include="..\private\Tiger_Hanger.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />

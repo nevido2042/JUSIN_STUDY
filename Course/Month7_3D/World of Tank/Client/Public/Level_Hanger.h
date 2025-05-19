@@ -21,6 +21,14 @@ private:
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Start(const _wstring strLayerTag);
 
+	HRESULT Ready_Layer_Button_Fury(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Fury_Hanger(const _wstring strLayerTag);
+
+	HRESULT Ready_Layer_Button_Tiger(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Tiger_Hanger(const _wstring strLayerTag);
+
+	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
+
 private:
 	HRESULT Load_Map();
 
