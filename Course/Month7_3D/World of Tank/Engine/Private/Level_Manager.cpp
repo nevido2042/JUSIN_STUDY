@@ -9,6 +9,14 @@ CLevel_Manager::CLevel_Manager()
     Safe_AddRef(m_pGameInstance);
 }
 
+HRESULT CLevel_Manager::Change_Level(_uint iNewLevelIndex)
+{
+    if (FAILED(m_pCurrentLevel->Change_Level(iNewLevelIndex)))
+        return E_FAIL;
+    
+    return S_OK;
+}
+
 HRESULT CLevel_Manager::Change_Level(_uint iLevelIndex, CLevel* pNewLevel)
 {
     /* 기존 레벨용 자원을 파괴해준다.*/

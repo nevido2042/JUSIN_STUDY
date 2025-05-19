@@ -10,6 +10,7 @@ public:
 	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
 		_tchar		szName[MAX_PATH];
+		_uint		iLevelIndex;
 	}GAMEOBJECT_DESC;
 
 protected:

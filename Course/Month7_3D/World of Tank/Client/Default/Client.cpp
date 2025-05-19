@@ -17,11 +17,6 @@ HWND g_hWnd;
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-_uint g_iWinResizeX = g_iWinSizeX;
-_uint g_iWinResizeY = g_iWinSizeY;
-
-_bool g_SwapChainNeedsResize = false;
-
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -37,6 +32,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
+    g_iWinSizeX = 1280;
+    g_iWinSizeY = 720;
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -88,11 +85,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
         }
 
-        if (g_SwapChainNeedsResize)
-        {
-            pGameInstance->Resize(g_iWinResizeX, g_iWinResizeY);
-            g_SwapChainNeedsResize = false;
-        }
+        //if (g_bWindowResizeRequired)
+        //{
+        //    pGameInstance->Resize(g_iWinSizeX, g_iWinSizeY);
+        //}
 
         pGameInstance->Update_Timer(TEXT("Timer_Default"));
 
@@ -159,7 +155,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    g_hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   RECT     rcWindowed = { 0, 0, g_iWinSizeX, g_iWinSizeY };
+   RECT     rcWindowed = { 0, 0, static_cast<LONG>(g_iWinSizeX), static_cast<LONG>(g_iWinSizeY) };
 
    AdjustWindowRect(&rcWindowed, WS_OVERLAPPEDWINDOW, true);
 
@@ -201,9 +197,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_SIZE:
         if (wParam != SIZE_MINIMIZED) // 최소화 상태가 아닐 때만 처리
         { 
-            g_iWinResizeX = LOWORD(lParam); // 새 너비
-            g_iWinResizeY = HIWORD(lParam); // 새 높이
-            g_SwapChainNeedsResize = true;    // 리사이즈 필요 플래그 설정
+            g_iWinSizeX = LOWORD(lParam); // 새 너비
+            g_iWinSizeY = HIWORD(lParam); // 새 높이
+            g_bWindowResizeRequired = true;    // 리사이즈 필요 플래그 설정
         }
         break;
     case WM_COMMAND:

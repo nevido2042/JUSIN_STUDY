@@ -21,12 +21,14 @@ HRESULT CFury::Initialize_Prototype()
 
 HRESULT CFury::Initialize(void* pArg)
 {
+	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 5.f;
 	Desc.fSpeedPerSec = 10.f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
-	Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
+	Desc.iLevelIndex = pDesc->iLevelIndex;
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.strComponentTag = TEXT("Com_VIBuffer");
 	Desc.iIndex = 0;

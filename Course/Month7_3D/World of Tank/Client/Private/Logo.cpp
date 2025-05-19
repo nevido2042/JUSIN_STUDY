@@ -35,7 +35,8 @@ HRESULT CLogo::Initialize(void* pArg)
 
 void CLogo::Priority_Update(_float fTimeDelta)
 {
-
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
 }
 
 void CLogo::Update(_float fTimeDelta)

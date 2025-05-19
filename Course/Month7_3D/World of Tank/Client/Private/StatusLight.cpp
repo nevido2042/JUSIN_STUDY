@@ -34,7 +34,8 @@ HRESULT CStatusLight::Initialize(void* pArg)
 
 void CStatusLight::Priority_Update(_float fTimeDelta)
 {
-
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
 }
 
 void CStatusLight::Update(_float fTimeDelta)

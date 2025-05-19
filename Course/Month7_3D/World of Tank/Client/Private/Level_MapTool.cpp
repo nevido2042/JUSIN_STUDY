@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
+#include "Camera_Free.h"
+
 CLevel_MapTool::CLevel_MapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
 {
@@ -89,8 +91,22 @@ HRESULT CLevel_MapTool::Ready_Layer_Terrain(const _wstring strLayerTag)
 
 HRESULT CLevel_MapTool::Ready_Layer_Camera(const _wstring strLayerTag)
 {
+	CCamera_Free::CAMERA_FREE_DESC Desc = {};
+
+	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
+	Desc.fSpeedPerSec = 300.0f;
+	lstrcpy(Desc.szName, TEXT("Camera_Free"));
+
+	Desc.vEye = _float3(150.f, 100.f, 100.f);
+	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.fFov = XMConvertToRadians(60.0f);
+	Desc.fNear = 0.1f;
+	Desc.fFar = 4000.f;
+
+	Desc.fSensor = 0.1f;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
-		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag)))
+		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

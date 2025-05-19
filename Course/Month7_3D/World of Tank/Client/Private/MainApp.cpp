@@ -25,6 +25,7 @@ HRESULT CMainApp::Initialize()
 
 	EngineDesc.hInst = g_hInst;
 	EngineDesc.hWnd = g_hWnd;
+#pragma message ("윈사이즈 엔진에 던져주는거 필요 없겠는데? 어차피 계속 바뀌니깐")
 	EngineDesc.iWinSizeX = g_iWinSizeX;
 	EngineDesc.iWinSizeY = g_iWinSizeY;
 	EngineDesc.isWindowed = true;
@@ -59,9 +60,9 @@ void CMainApp::Update(_float fTimeDelta)
 	}
 
 
-	extern _uint g_iWinResizeX;
-	extern _uint g_iWinResizeY;
-	m_pGameInstance->Update_Engine(fTimeDelta, g_iWinResizeX, g_iWinResizeY);
+	//extern _uint g_iWinResizeX;
+	//extern _uint g_iWinResizeY;
+	m_pGameInstance->Update_Engine(fTimeDelta, g_iWinSizeX, g_iWinSizeY);
 }
 
 HRESULT CMainApp::Render()

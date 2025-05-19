@@ -17,6 +17,13 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	HRESULT Change_Level(_uint iNewLevelIndex);
+
+protected:
+	_bool					m_bLevelChanged = { false };
+	_uint					m_iNewLevelIndex = {};
+
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };

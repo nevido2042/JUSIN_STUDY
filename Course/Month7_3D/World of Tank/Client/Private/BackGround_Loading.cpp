@@ -35,7 +35,8 @@ HRESULT CBackGround_Loading::Initialize(void* pArg)
 
 void CBackGround_Loading::Priority_Update(_float fTimeDelta)
 {
-
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
 }
 
 void CBackGround_Loading::Update(_float fTimeDelta)

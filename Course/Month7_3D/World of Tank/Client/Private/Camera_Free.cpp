@@ -20,20 +20,11 @@ HRESULT CCamera_Free::Initialize_Prototype()
 
 HRESULT CCamera_Free::Initialize(void* pArg)
 {
-	CCamera::CAMERA_DESC			Desc{};
+	CAMERA_FREE_DESC* pDesc = static_cast<CAMERA_FREE_DESC*>(pArg);
 
-	Desc.vEye = _float3(0.f, 20.f, -15.f);
-	Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Desc.fFov = XMConvertToRadians(60.0f);
-	Desc.fNear = 0.1f;
-	Desc.fFar = 4000.f;
-	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 300.0f;
-	lstrcpy(Desc.szName, TEXT("Camera"));
+	m_fSensor = pDesc->fSensor;
 
-	m_fSensor = 0.1f;
-
-	if (FAILED(__super::Initialize(&Desc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	return S_OK;

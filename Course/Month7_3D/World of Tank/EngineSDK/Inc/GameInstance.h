@@ -7,7 +7,6 @@
 
 NS_BEGIN(Engine)
 
-
 class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance);
@@ -33,7 +32,8 @@ public:
 #pragma endregion
 
 #pragma region LEVEL_MANAGER
-	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	HRESULT		Change_Level(_uint iNewLevelIndex);
+	HRESULT		Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER

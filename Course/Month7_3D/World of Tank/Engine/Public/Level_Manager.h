@@ -15,10 +15,12 @@ private:
 	virtual ~CLevel_Manager() = default;
 
 public:
-	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 	void Update(_float fTimeDelta);
 	HRESULT Render();
 
+public:
+	HRESULT		Change_Level(_uint iNewLevelIndex);
+	HRESULT		Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 
 private:
 	_uint					m_iCurrentLevelIndex = {};

@@ -27,6 +27,14 @@ HRESULT CLevel::Render()
     return S_OK;
 }
 
+HRESULT CLevel::Change_Level(_uint iNewLevelIndex)
+{
+    m_bLevelChanged = true;
+    m_iNewLevelIndex = iNewLevelIndex;
+
+    return S_OK;
+}
+
 void CLevel::Free()
 {
     __super::Free();

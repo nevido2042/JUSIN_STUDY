@@ -14,6 +14,10 @@
 #include "Frustum.h"
 
 
+_uint g_iWinSizeX;
+_uint g_iWinSizeY;
+_bool g_bWindowResizeRequired = false;
+
 IMPLEMENT_SINGLETON(CGameInstance);
 
 CGameInstance::CGameInstance()
@@ -75,6 +79,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWinSizeY)
 {
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
+
 	m_pInputDevice->Update();
 	m_pSound_Device->Update();
 
@@ -90,6 +97,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
 	m_pLevel_Manager->Update(fTimeDelta);
+
+	g_bWindowResizeRequired = false;
 }
 
 HRESULT CGameInstance::Begin_Draw()
@@ -153,6 +162,11 @@ HRESULT CGameInstance::Resize(_uint iWinResizeX, _uint iWinResizeY)
 }
 
 #pragma region LEVEL_MANAGER
+
+HRESULT CGameInstance::Change_Level(_uint iNewLevelIndex)
+{
+	return m_pLevel_Manager->Change_Level(iNewLevelIndex);
+}
 
 HRESULT CGameInstance::Change_Level(_uint iLevelIndex, CLevel* pNewLevel)
 {

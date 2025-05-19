@@ -24,7 +24,7 @@ HRESULT CVHouse01A::Initialize(void* pArg)
 	GAMEOBJECT_DESC			Desc{};
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
-	lstrcpy(Desc.szName, TEXT("BurntTree"));
+	lstrcpy(Desc.szName, TEXT("VHouse01A"));
 
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;

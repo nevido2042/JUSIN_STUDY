@@ -4,6 +4,9 @@
 #include "GameObject.h"
 #include "Level_Loading.h"
 #include "Camera_TPS.h"
+#include "Camera_Free.h"
+
+#include "UIObject.h"
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -23,6 +26,13 @@ HRESULT CLevel_Practice::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera_TPS"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
+		return E_FAIL;
+
+	
+	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))
 		return E_FAIL;
 
 	/*if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
@@ -71,8 +81,22 @@ HRESULT CLevel_Practice::Ready_Layer_Terrain(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 {
+	CCamera_Free::CAMERA_FREE_DESC Desc = {};
+
+	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
+	Desc.fSpeedPerSec = 300.0f;
+	lstrcpy(Desc.szName, TEXT("Camera_Free"));
+
+	Desc.vEye = _float3(150.f, 100.f, 100.f);
+	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.fFov = XMConvertToRadians(60.0f);
+	Desc.fNear = 0.1f;
+	Desc.fFar = 4000.f;
+
+	Desc.fSensor = 0.1f;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -112,6 +136,38 @@ HRESULT CLevel_Practice::Ready_Layer_Skydome(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Minimap(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 256.0f;
+	UIObject_Desc.fSizeY = 256.0f;
+	UIObject_Desc.fX = g_iWinSizeX - UIObject_Desc.fSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Minimap"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 229.0f;
+	UIObject_Desc.fSizeY = 228.0f;
+	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamagePanel"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -176,7 +232,10 @@ HRESULT CLevel_Practice::Load_Map()
 		//"Prototype_GameObject_Fury"
 		wstring PrototypeName = L"Prototype_GameObject_" + wstring(Name.begin(), Name.end());
 
-		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::PRACTICE), LayerName);
+		CGameObject::GAMEOBJECT_DESC Desc = {};
+		Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
+
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::PRACTICE), LayerName, &Desc);
 		CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), LayerName);
 		if (pGameObject == nullptr)
 			continue;

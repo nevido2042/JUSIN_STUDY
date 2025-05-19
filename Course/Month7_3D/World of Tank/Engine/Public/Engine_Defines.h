@@ -50,24 +50,14 @@ using namespace std;
 namespace Engine
 {
 	const _wstring	g_strTransformTag = TEXT("Com_Transform");
+
 }
 
 using namespace Engine;
 
-//아임구이에 있음
-//#ifdef _DEBUG
-//
-//#define _CRTDBG_MAP_ALLOC
-//#include <stdlib.h>
-//#include <crtdbg.h>
-//
-//#ifndef DBG_NEW 
-//
-//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
-//#define new DBG_NEW 
-//
-//#endif
-//#endif
+ENGINE_DLL extern _bool g_bWindowResizeRequired;
+ENGINE_DLL extern _uint g_iWinSizeX;
+ENGINE_DLL extern _uint g_iWinSizeY;
 
 
 

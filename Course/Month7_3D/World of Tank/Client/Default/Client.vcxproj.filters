@@ -85,18 +85,6 @@
     <Filter Include="02.GameObjects\03.Engine">
       <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UIObject\99.Tool">
-      <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObject\99.Tool\00.Base_Tool">
-      <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObject\99.Tool\01.MapTool">
-      <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObject\99.Tool\02.Tool_Engine_Sound">
-      <UniqueIdentifier>{5e57e32d-f1a0-49a3-8eaa-8fb9fa867c9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\04.MapObject">
       <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
     </Filter>
@@ -106,20 +94,44 @@
     <Filter Include="02.GameObjects\LandObject">
       <UniqueIdentifier>{8701e789-29a7-42b8-8b6b-993f153311d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LandObject\06.Fury">
-      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.BurntTree">
       <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
       <UniqueIdentifier>{52b79f24-254c-4073-8656-4284c5087249}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LandObject\06.Fury\FuryTurret">
-      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.VHouse01A">
       <UniqueIdentifier>{a2135a6c-4067-4158-a479-61462e2152de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.ChurchA">
+      <UniqueIdentifier>{f2b153c0-5025-47e7-beb4-4d377b99a662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury">
+      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTurret">
+      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Tool">
+      <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Tool\00.Base_Tool">
+      <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Tool\01.MapTool">
+      <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Tool\02.Tool_Engine_Sound">
+      <UniqueIdentifier>{5e57e32d-f1a0-49a3-8eaa-8fb9fa867c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\06.Minimap">
+      <UniqueIdentifier>{ede4b587-ace5-4334-b137-e6f178c3b60b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\01.DamagePannel">
+      <UniqueIdentifier>{9c88118f-4f5c-4b51-8835-3aed34339ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\07.Button_Login">
+      <UniqueIdentifier>{ac2512d4-5aec-4055-a0d9-7d5bc79210a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +223,7 @@
       <Filter>96.ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapTool.h">
-      <Filter>02.GameObjects\UIObject\99.Tool\01.MapTool</Filter>
+      <Filter>02.GameObjects\UIObject\Tool\01.MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h">
       <Filter>96.ThirdParty\imGuizmo</Filter>
@@ -223,13 +235,13 @@
       <Filter>01.Levels\04.Practice</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
-      <Filter>02.GameObjects\UIObject\99.Tool</Filter>
+      <Filter>02.GameObjects\UIObject\Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool_Engine_Sound.h">
-      <Filter>02.GameObjects\UIObject\99.Tool\02.Tool_Engine_Sound</Filter>
+      <Filter>02.GameObjects\UIObject\Tool\02.Tool_Engine_Sound</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool_Base.h">
-      <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
+      <Filter>02.GameObjects\UIObject\Tool\00.Base_Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapObject.h">
       <Filter>02.GameObjects\04.MapObject</Filter>
@@ -238,7 +250,7 @@
       <Filter>02.GameObjects\05.Skydome</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Fury.h">
-      <Filter>02.GameObjects\LandObject\06.Fury</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BurntTree.h">
       <Filter>02.GameObjects\06.BurntTree</Filter>
@@ -247,10 +259,22 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTurret.h">
-      <Filter>02.GameObjects\LandObject\06.Fury\FuryTurret</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VHouse01A.h">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ChurchA.h">
+      <Filter>02.GameObjects\08.ChurchA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Minimap.h">
+      <Filter>02.GameObjects\UIObject\06.Minimap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DamagePanel.h">
+      <Filter>02.GameObjects\UIObject\01.DamagePannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Login.h">
+      <Filter>02.GameObjects\UIObject\07.Button_Login</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,7 +361,7 @@
       <Filter>96.ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MapTool.cpp">
-      <Filter>02.GameObjects\UIObject\99.Tool\01.MapTool</Filter>
+      <Filter>02.GameObjects\UIObject\Tool\01.MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp">
       <Filter>96.ThirdParty\imGuizmo</Filter>
@@ -349,13 +373,13 @@
       <Filter>01.Levels\04.Practice</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
-      <Filter>02.GameObjects\UIObject\99.Tool</Filter>
+      <Filter>02.GameObjects\UIObject\Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp">
-      <Filter>02.GameObjects\UIObject\99.Tool\02.Tool_Engine_Sound</Filter>
+      <Filter>02.GameObjects\UIObject\Tool\02.Tool_Engine_Sound</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool_Base.cpp">
-      <Filter>02.GameObjects\UIObject\99.Tool\00.Base_Tool</Filter>
+      <Filter>02.GameObjects\UIObject\Tool\00.Base_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapObject.cpp">
       <Filter>02.GameObjects\04.MapObject</Filter>
@@ -364,7 +388,7 @@
       <Filter>02.GameObjects\05.Skydome</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Fury.cpp">
-      <Filter>02.GameObjects\LandObject\06.Fury</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BurntTree.cpp">
       <Filter>02.GameObjects\06.BurntTree</Filter>
@@ -373,10 +397,22 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTurret.cpp">
-      <Filter>02.GameObjects\LandObject\06.Fury\FuryTurret</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VHouse01A.cpp">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ChurchA.cpp">
+      <Filter>02.GameObjects\08.ChurchA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Minimap.cpp">
+      <Filter>02.GameObjects\UIObject\06.Minimap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamagePanel.cpp">
+      <Filter>02.GameObjects\UIObject\01.DamagePannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Login.cpp">
+      <Filter>02.GameObjects\UIObject\07.Button_Login</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

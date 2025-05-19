@@ -26,9 +26,13 @@ private:
 	HRESULT Ready_Layer_Engine(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Fury(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Minimap(const _wstring strLayerTag);
+	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
+
 
 	HRESULT Ready_Layer_Tool_Base(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Tool_EngineSound(const _wstring strLayerTag);
+
 private:
 	HRESULT Load_Map();
 

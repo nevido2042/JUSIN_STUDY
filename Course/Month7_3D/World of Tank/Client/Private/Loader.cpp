@@ -11,6 +11,10 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "DamagePanel.h"
+#include "Minimap.h"
+#include "StatusLight.h"
+#include "ChurchA.h"
 #include "BurntTree.h"
 #include "VHouse01A.h"
 #include "Fury.h"
@@ -25,8 +29,8 @@
 #pragma region LOGO
 #include "BackGround.h"
 #include "Network.h"
-#include "StatusLight.h"
 #include "Logo.h"
+#include "Button_Login.h"
 #pragma endregion
 
 #pragma region MAPTOOL
@@ -145,6 +149,22 @@ HRESULT CLoader::Loading_For_Static()
 		return E_FAIL;
 	//"../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/global_AM.dds"
 	//"../Bin/Resources/Textures/Terrain/Tile0.dds"
+
+		/* For.Prototype_Component_Texture_StatusLight*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_StatusLight"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/00.StatusLight/StatusLight%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Minimap */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Minimap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/mmap.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_DamagePanel */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamagePanel"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/output/DamagePanel_bg.dds"), 1))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region 모델
@@ -222,6 +242,21 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 원형 객체
 	lstrcpy(m_szLoadingText, TEXT("원형 객체을(를) 로딩중입니다."));
 
+	/* For.Prototype_GameObject_DamagePanel */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamagePanel"),
+		CDamagePanel::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Minimap */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Minimap"),
+		CMinimap::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_StatusLight */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),
+		CStatusLight::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Engine */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"),
 		CEngine::Create(m_pDevice, m_pContext))))
@@ -235,6 +270,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_VHouse01A */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_VHouse01A"),
 		CVHouse01A::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ChurchA */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ChurchA"),
+		CChurchA::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Fury */
@@ -282,14 +322,14 @@ HRESULT CLoader::Loading_For_Logo()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Logo/login_bg.dds"), 1))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_StatusLight*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_StatusLight"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/00.StatusLight/StatusLight%d.dds"), 3))))
-		return E_FAIL;
-
 	/* For.Prototype_Component_Texture_Logo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Texture_Logo"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Logo/login_logo_big.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Button_Login */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Texture_Button_Login"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/back_primary_red.dds"), 1))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -307,14 +347,14 @@ HRESULT CLoader::Loading_For_Logo()
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_StatusLight */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),
-		CStatusLight::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_Logo */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Logo"),
 		CLogo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Button_Login */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Button_Login"),
+		CButton_Login::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

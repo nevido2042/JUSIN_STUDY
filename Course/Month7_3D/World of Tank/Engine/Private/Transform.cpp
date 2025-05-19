@@ -91,6 +91,9 @@ HRESULT CTransform::Initialize(void* pArg)
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
+	if (pDesc->vInitPosition.x != 0.f || pDesc->vInitPosition.y != 0.f || pDesc->vInitPosition.z != 0.f)
+		Set_State(STATE::POSITION, XMLoadFloat3(&pDesc->vInitPosition));
+
 	return S_OK;
 }
 

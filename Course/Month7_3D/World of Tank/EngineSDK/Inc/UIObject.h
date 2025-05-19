@@ -27,12 +27,23 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	HRESULT Resize(_uint iNewWidth, _uint iNewHeight);
+
+protected:
+	_bool isPick(HWND hWnd);
+
 protected:
 	/* 뷰포트 상의 유아이의 중심위치 fX, fY, 사이즈 fSiuzeX, fSizeY */
 	_float			m_fX{}, m_fY{}, m_fDepth{}, m_fSizeX{}, m_fSizeY{};
 
 	/* 직교 투영을 위한 행렬. */
 	_float4x4		m_ViewMatrix{}, m_ProjMatrix{};
+
+	_float m_fXRatio;      // m_fX / OldWidth
+	_float m_fYRatio;      // m_fY / OldHeight
+	_float m_fSizeXRatio;  // m_fSizeX / OldWidth
+	_float m_fSizeYRatio;  // m_fSizeY / OldHeight
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

@@ -35,7 +35,8 @@ HRESULT CLoading_Spinner::Initialize(void* pArg)
 
 void CLoading_Spinner::Priority_Update(_float fTimeDelta)
 {
-
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
 }
 
 void CLoading_Spinner::Update(_float fTimeDelta)

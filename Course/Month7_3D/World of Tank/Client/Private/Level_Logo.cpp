@@ -3,8 +3,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
-#include "BackGround.h"
-#include "StatusLight.h"
+#include "UIObject.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -20,6 +19,12 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_Logo(TEXT("Layer_Logo"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Button_Login(TEXT("Layer_Button_Login"))))
+		return E_FAIL;
+
+
+
+	//스태틱
 	if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
 		return E_FAIL;
 
@@ -31,7 +36,13 @@ HRESULT CLevel_Logo::Initialize()
 
 void CLevel_Logo::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_RETURN))
+	if (m_bLevelChanged)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, static_cast<LEVEL>(m_iNewLevelIndex)))))
+			return;
+	}
+	else if (m_pGameInstance->Key_Down(DIK_RETURN))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
@@ -54,16 +65,16 @@ HRESULT CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring strLayerTag)
 {
-	CBackGround::BACKGROUND_DESC				BackGroundDesc{};
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	BackGroundDesc.fX = g_iWinSizeX * 0.5f;
-	BackGroundDesc.fY = g_iWinSizeY * 0.5f;
-	BackGroundDesc.fDepth = DEPTH_BACKGROUND;
-	BackGroundDesc.fSizeX = static_cast<_float>(g_iWinSizeX);
-	BackGroundDesc.fSizeY = static_cast<_float>(g_iWinSizeY);
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND;
+	UIObject_Desc.fSizeX = static_cast<_float>(g_iWinSizeX);
+	UIObject_Desc.fSizeY = static_cast<_float>(g_iWinSizeY);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_BackGround"),
-		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &BackGroundDesc)))
+		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -84,6 +95,7 @@ HRESULT CLevel_Logo::Ready_Layer_StatusLight(const _wstring strLayerTag)
 
 	UIObject_Desc.fX = g_iWinSizeX * 0.05f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.05f;
+#pragma message ("UI 크기도 WinSize 비례해서 하면 좋겠지만. 툴 없이는 힘들지도, 왜냐하면 화면비율 망가진 상태에서 생성하면 비율 망가짐")
 	UIObject_Desc.fSizeX = 40.0f;
 	UIObject_Desc.fSizeY = 50.0f;
 
@@ -104,6 +116,22 @@ HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring strLayerTag)
 	UIObject_Desc.fSizeY = 200.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Logo"),
+		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_Button_Login(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
+	UIObject_Desc.fSizeX = 200.f;
+	UIObject_Desc.fSizeY = 50.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Button_Login"),
 		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
