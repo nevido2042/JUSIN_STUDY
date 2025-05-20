@@ -13,6 +13,8 @@ HRESULT CLevel_Manager::Change_Level(_uint iNewLevelIndex)
 {
     if (FAILED(m_pCurrentLevel->Change_Level(iNewLevelIndex)))
         return E_FAIL;
+
+    m_iNewLevelIndex = iNewLevelIndex;
     
     return S_OK;
 }

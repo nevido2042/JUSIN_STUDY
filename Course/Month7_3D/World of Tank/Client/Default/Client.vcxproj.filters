@@ -82,9 +82,6 @@
     <Filter Include="96.ThirdParty\imGuizmo">
       <UniqueIdentifier>{ea0687af-f771-48b2-91e0-755c1d518b3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Engine">
-      <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\04.MapObject">
       <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
     </Filter>
@@ -145,17 +142,23 @@
     <Filter Include="02.GameObjects\UIObject\10.Button_Tiger">
       <UniqueIdentifier>{131c3715-2a1a-4997-abed-8e51f83a3333}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\PartObject">
-      <UniqueIdentifier>{2129901a-9050-4363-bef6-7b909f303355}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\PartObject\FuryTurret">
-      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.GameManager">
       <UniqueIdentifier>{d14d0158-33b2-4b8a-9fd7-0a41b253eafc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\LandObject\02.Tiger">
       <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTurret">
+      <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTrackLeft">
+      <UniqueIdentifier>{5e2aea67-3b9f-4600-80e1-f85fe27c4a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury\Engine">
+      <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTrackRight">
+      <UniqueIdentifier>{e8cf1c38-c868-41a9-81cb-e942e0853879}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,7 +256,7 @@
       <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Engine.h">
-      <Filter>02.GameObjects\03.Engine</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Practice.h">
       <Filter>01.Levels\04.Practice</Filter>
@@ -283,7 +286,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTurret.h">
-      <Filter>02.GameObjects\PartObject\FuryTurret</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VHouse01A.h">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
@@ -320,6 +323,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Tiger.h">
       <Filter>02.GameObjects\LandObject\02.Tiger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FuryTrackLeft.h">
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTrackLeft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FuryTrackRight.h">
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTrackRight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -412,7 +421,7 @@
       <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Engine.cpp">
-      <Filter>02.GameObjects\03.Engine</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Practice.cpp">
       <Filter>01.Levels\04.Practice</Filter>
@@ -442,7 +451,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTurret.cpp">
-      <Filter>02.GameObjects\PartObject\FuryTurret</Filter>
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VHouse01A.cpp">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
@@ -479,6 +488,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Tiger.cpp">
       <Filter>02.GameObjects\LandObject\02.Tiger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FuryTrackLeft.cpp">
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTrackLeft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FuryTrackRight.cpp">
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTrackRight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

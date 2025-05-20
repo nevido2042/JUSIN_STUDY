@@ -27,8 +27,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
@@ -46,8 +46,8 @@ HRESULT CLevel_Practice::Initialize()
 	/*if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -156,6 +156,10 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 	default:
 		break;
 	}
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
+	//	ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

@@ -29,13 +29,7 @@ private:
 	void Destroyed();
 
 private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-
-private:
-	class CEngine*	m_pEngine = { nullptr };
-	_float			m_fSpeed = {};
-	_float			m_fUVScrollY = {};
+	void Move(_float fTimeDelta);
 
 private:
 	_bool	m_bDestroyed = { false };
@@ -47,7 +41,13 @@ private:
 	CModel*		m_pModelCom = { nullptr };
 	CModel*		m_pModelCom_Destroyed = { nullptr };
 
+private:
+	HRESULT SetUp_RenderState();
+	HRESULT Release_RenderState();
+
+private:
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects();
 
 public:
 	static CFury* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

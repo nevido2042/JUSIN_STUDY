@@ -19,10 +19,12 @@ public:
 	HRESULT Render();
 
 public:
+	_uint		Get_NewLevel_Index() const { return m_iNewLevelIndex; }
 	HRESULT		Change_Level(_uint iNewLevelIndex);
 	HRESULT		Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 
 private:
+	_uint					m_iNewLevelIndex = {};
 	_uint					m_iCurrentLevelIndex = {};
 	class CLevel*			m_pCurrentLevel = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };

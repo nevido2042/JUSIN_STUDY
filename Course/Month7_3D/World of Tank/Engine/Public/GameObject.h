@@ -9,8 +9,10 @@ class ENGINE_DLL CGameObject abstract : public CBase
 public:
 	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
-		_tchar		szName[MAX_PATH];
-		_uint		iLevelIndex;
+		_tchar				szName[MAX_PATH];
+#pragma	message("레벨 인덱스 전달하는거 없애도 될듯")
+		_uint				iLevelIndex;
+		const _float4x4*	pParentWorldMatrix = { nullptr };
 	}GAMEOBJECT_DESC;
 
 protected:
@@ -55,6 +57,18 @@ protected:
 	_tchar										m_szName[MAX_PATH] = {};
 	map<const _wstring, class CComponent*>		m_Components;
 	class CTransform*							m_pTransformCom = { nullptr };
+
+protected:
+	map<const _wstring, class CGameObject*>				m_PartObjects;
+
+protected:
+	const _float4x4*		m_pParentWorldMatrix = { nullptr };
+	_float4x4				m_CombinedWorldMatrix = {};
+
+protected:
+	CGameObject*	Find_PartObject(const _wstring& strPartObjectTag);
+	CComponent*		Find_Part_Component(const _wstring& strPartObjectTag, const _wstring& strComponentTag);
+	HRESULT			Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg = nullptr);
 
 protected:
 	HRESULT Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

@@ -163,6 +163,11 @@ HRESULT CGameInstance::Resize(_uint iWinResizeX, _uint iWinResizeY)
 
 #pragma region LEVEL_MANAGER
 
+_uint CGameInstance::Get_NewLevel_Index() const
+{
+	return m_pLevel_Manager->Get_NewLevel_Index();
+}
+
 HRESULT CGameInstance::Change_Level(_uint iNewLevelIndex)
 {
 	return m_pLevel_Manager->Change_Level(iNewLevelIndex);

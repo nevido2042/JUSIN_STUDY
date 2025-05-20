@@ -2,6 +2,9 @@
 
 #include "GameInstance.h"
 #include "Engine.h"
+#include "FuryTurret.h"
+#include "FuryTrackLeft.h"
+#include "FuryTrackRight.h"
 
 CFury::CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -25,8 +28,8 @@ HRESULT CFury::Initialize(void* pArg)
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
 	LANDOBJECT_DESC		Desc{};
-	Desc.fRotationPerSec = 5.f;
-	Desc.fSpeedPerSec = 1.f;
+	Desc.fRotationPerSec = 0.1f;
+	Desc.fSpeedPerSec = 1.5f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
 	Desc.iLevelIndex = pDesc->iLevelIndex;
@@ -41,6 +44,9 @@ HRESULT CFury::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if (FAILED(Ready_PartObjects()))
+		return E_FAIL;
+
 	// 새 RasterizerState 설정
 	D3D11_RASTERIZER_DESC rasterDesc = {};
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
@@ -49,44 +55,28 @@ HRESULT CFury::Initialize(void* pArg)
 
 	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
 
-	m_pEngine = static_cast<CEngine*>(m_pGameInstance->Get_Last_GameObject(Desc.iLevelIndex, TEXT("Layer_Engine")));
-	Safe_AddRef(m_pEngine);
-
 	return S_OK;
 }
 
 
 void CFury::Priority_Update(_float fTimeDelta)
 {
-
+	for (auto& Pair : m_PartObjects)
+	{
+		if (nullptr != Pair.second)
+			Pair.second->Priority_Update(fTimeDelta);
+	}
 }
 
 void CFury::Update(_float fTimeDelta)
 {
-	m_fSpeed = { fTimeDelta * (m_pEngine->Get_RPM() - RPM_MIN) };
+	for (auto& Pair : m_PartObjects)
+	{
+		if (nullptr != Pair.second)
+			Pair.second->Update(fTimeDelta);
+	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_W))
-	{
-		m_pTransformCom->Go_Straight(m_fSpeed);
-
-		m_fUVScrollY -= m_fSpeed;
-		m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_S))
-	{
-		m_pTransformCom->Go_Backward(m_fSpeed);
-
-		m_fUVScrollY += m_fSpeed;
-		m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_A))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_D))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f,0.f), fTimeDelta);
-	}
+	Move(fTimeDelta);
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
 	{
@@ -98,7 +88,13 @@ void CFury::Update(_float fTimeDelta)
 
 void CFury::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	for (auto& Pair : m_PartObjects)
+	{
+		if (nullptr != Pair.second)
+			Pair.second->Late_Update(fTimeDelta);
+	}
+
+	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 }
 
@@ -122,19 +118,10 @@ HRESULT CFury::Render()
 
 	if (m_pModelCom && !m_bDestroyed)
 	{
-		_float2 zeroOffset = { 0.f, 0.f };
-		_float2 Offset{ 0.f, m_fUVScrollY };
-
-
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
 		for (_uint i = 0; i < iNumMesh; i++)
 		{
-			if (i == 1)
-			{
-				m_pShaderCom->Bind_Float2("g_UVOffset", &Offset);
-			}
-
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
@@ -143,29 +130,7 @@ HRESULT CFury::Render()
 
 			if (FAILED(m_pModelCom->Render(i)))
 				return E_FAIL;
-
-			if (i == 1)
-			{
-
-				//_float zeroRotation = 0.f;
-				//_int notTread = 0;
-
-				m_pShaderCom->Bind_Float2("g_UVOffset", &zeroOffset);
-			}
 		}
-
-		/*m_pShaderCom->Bind_Float2("g_UVOffset", &Offset);
-
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", 1, aiTextureType_DIFFUSE, 0)))
-			return E_FAIL;
-
-		if (FAILED(m_pShaderCom->Begin(0)))
-			return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(1)))
-			return E_FAIL;
-
-		m_pShaderCom->Bind_Float2("g_UVOffset", &zeroOffset);*/
 	}
 	else if(m_pModelCom_Destroyed)
 	{
@@ -194,6 +159,79 @@ HRESULT CFury::Render()
 void CFury::Destroyed()
 {
 	m_bDestroyed = true;
+}
+
+void CFury::Move(_float fTimeDelta)
+{
+	CEngine*	pEngin = static_cast<CEngine*>(Find_PartObject(TEXT("Part_Engine")));
+
+	if (!pEngin->Get_isOn())
+		return;
+
+	CFuryTrackLeft* pTrackLeft = static_cast<CFuryTrackLeft*>(Find_PartObject(TEXT("Part_TrackLeft")));
+	CFuryTrackRight* pTrackRight = static_cast<CFuryTrackRight*>(Find_PartObject(TEXT("Part_TrackRight")));
+
+	pTrackLeft->Set_Speed(0.f);
+	pTrackRight->Set_Speed(0.f);
+
+	_float fMoveSpeed = { fTimeDelta * (pEngin->Get_RPM()) };
+
+	_float SpeedTrackLeft = 0.f;
+	_float SpeedTrackRight = 0.f;
+
+	if (m_pGameInstance->Key_Pressing(DIK_W))
+	{
+		m_pTransformCom->Go_Straight(fMoveSpeed);
+
+		SpeedTrackLeft += -fMoveSpeed;
+		SpeedTrackRight += -fMoveSpeed;
+
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
+			SpeedTrackRight += -fMoveSpeed;
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMoveSpeed;
+		}
+	}
+	else if (m_pGameInstance->Key_Pressing(DIK_S))
+	{
+		m_pTransformCom->Go_Straight(fMoveSpeed);
+		SpeedTrackLeft += -fMoveSpeed;
+		SpeedTrackRight += -fMoveSpeed;
+
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
+			SpeedTrackRight += -fMoveSpeed;
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMoveSpeed;
+		}
+	}
+	else
+	{
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMoveSpeed * 0.5f;
+			SpeedTrackRight += fMoveSpeed;
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMoveSpeed;
+			SpeedTrackRight += fMoveSpeed * 0.5f;
+		}
+	}
+
+	pTrackLeft->Set_Speed(SpeedTrackLeft);
+	pTrackRight->Set_Speed(SpeedTrackRight);
 }
 
 HRESULT CFury::SetUp_RenderState()
@@ -231,6 +269,34 @@ HRESULT CFury::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CFury::Ready_PartObjects()
+{
+	/* 포탑을 추가한다. */
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	lstrcpy(Desc.szName, TEXT("Turret"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"), TEXT("Part_Turret"), &Desc)))
+		return E_FAIL;
+
+	/* 엔진을 추가한다. */
+	lstrcpy(Desc.szName, TEXT("Engine"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"), TEXT("Part_Engine"), &Desc)))
+		return E_FAIL;
+
+	/* 왼쪽 궤도를 추가한다. */
+	lstrcpy(Desc.szName, TEXT("TrackLeft"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTrackLeft"), TEXT("Part_TrackLeft"), &Desc)))
+		return E_FAIL;
+
+	/* 오른쪽 궤도를 추가한다. */
+	lstrcpy(Desc.szName, TEXT("TrackRight"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTrackRight"), TEXT("Part_TrackRight"), &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CFury* CFury::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CFury* pInstance = new CFury(pDevice, pContext);
@@ -261,7 +327,9 @@ void CFury::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pEngine);
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
 
 	Safe_Release(m_pRasterState);
 	Safe_Release(m_pOldRasterState);

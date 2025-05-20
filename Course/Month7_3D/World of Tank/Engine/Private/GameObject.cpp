@@ -81,6 +81,43 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+CGameObject* CGameObject::Find_PartObject(const _wstring& strPartObjectTag)
+{
+	auto	iter = m_PartObjects.find(strPartObjectTag);
+
+	if (iter == m_PartObjects.end())
+		return nullptr;
+
+	return iter->second;
+}
+
+CComponent* CGameObject::Find_Part_Component(const _wstring& strPartObjectTag, const _wstring& strComponentTag)
+{
+	CGameObject* pPartObject = Find_PartObject(strPartObjectTag);
+	if (nullptr == pPartObject)
+		return nullptr;
+
+	CComponent* pPartComponent = pPartObject->Get_Component(strComponentTag);
+	if (nullptr == pPartComponent)
+		return nullptr;
+
+	return pPartComponent;
+}
+
+HRESULT CGameObject::Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg)
+{
+	if (nullptr != Find_PartObject(strPartObjectTag))
+		return E_FAIL;
+
+	CGameObject* pPartObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
+	if (nullptr == pPartObject)
+		return E_FAIL;
+
+	m_PartObjects.emplace(strPartObjectTag, pPartObject);
+
+	return S_OK;
+}
+
 HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg)
 {
 	CComponent*	pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_COMPONENT, iPrototypeLevelIndex, strPrototypeTag, pArg));
