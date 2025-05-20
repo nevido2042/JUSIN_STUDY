@@ -32,6 +32,9 @@ private:
 	void Move(_float fTimeDelta);
 
 private:
+	_float	m_fTurnDirection = { 0.f };
+
+private:
 	_bool	m_bDestroyed = { false };
 private:
 	ID3D11RasterizerState*	m_pRasterState = { nullptr };

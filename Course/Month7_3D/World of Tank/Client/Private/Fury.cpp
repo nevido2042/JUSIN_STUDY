@@ -29,7 +29,7 @@ HRESULT CFury::Initialize(void* pArg)
 
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 0.1f;
-	Desc.fSpeedPerSec = 1.5f;
+	Desc.fSpeedPerSec = 0.5f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
 	Desc.iLevelIndex = pDesc->iLevelIndex;
@@ -173,62 +173,69 @@ void CFury::Move(_float fTimeDelta)
 
 	pTrackLeft->Set_Speed(0.f);
 	pTrackRight->Set_Speed(0.f);
+	m_fTurnDirection = 0.f;
 
-	_float fMoveSpeed = { fTimeDelta * (pEngin->Get_RPM()) };
+	_float fMovePower = { pEngin->Get_MovePower() };
 
 	_float SpeedTrackLeft = 0.f;
 	_float SpeedTrackRight = 0.f;
 
 	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
-		m_pTransformCom->Go_Straight(fMoveSpeed);
+		
+		//m_pTransformCom->Go_Straight(fMoveSpeed);
 
-		SpeedTrackLeft += -fMoveSpeed;
-		SpeedTrackRight += -fMoveSpeed;
+		SpeedTrackLeft += -fMovePower;
+		SpeedTrackRight += -fMovePower;
 
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
-			SpeedTrackRight += -fMoveSpeed;
+			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
+			SpeedTrackRight += -fMovePower;
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_D))
 		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMoveSpeed;
+			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMovePower;
 		}
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_S))
 	{
-		m_pTransformCom->Go_Straight(fMoveSpeed);
-		SpeedTrackLeft += -fMoveSpeed;
-		SpeedTrackRight += -fMoveSpeed;
+		//m_pTransformCom->Go_Straight(fMoveSpeed);
+		SpeedTrackLeft += -fMovePower;
+		SpeedTrackRight += -fMovePower;
 
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
-			SpeedTrackRight += -fMoveSpeed;
+			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
+			SpeedTrackRight += -fMovePower;
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_D))
 		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMoveSpeed;
+			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMovePower;
 		}
 	}
 	else
 	{
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMoveSpeed * 0.5f;
-			SpeedTrackRight += fMoveSpeed;
+			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMovePower * 0.5f;
+			SpeedTrackRight += fMovePower;
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_D))
 		{
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMoveSpeed;
-			SpeedTrackRight += fMoveSpeed * 0.5f;
+			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
+			SpeedTrackLeft += -fMovePower;
+			SpeedTrackRight += fMovePower * 0.5f;
 		}
 	}
+
+	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), pEngin->Get_TurnPower());
+
+	//if(pEngin->Get_Gear() != GEAR::LEFT && pEngin->Get_Gear() != GEAR::RIGHT)
+		m_pTransformCom->Go_Straight(fMovePower);
 
 	pTrackLeft->Set_Speed(SpeedTrackLeft);
 	pTrackRight->Set_Speed(SpeedTrackRight);

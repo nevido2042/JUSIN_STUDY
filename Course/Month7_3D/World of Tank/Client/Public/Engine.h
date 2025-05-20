@@ -7,8 +7,9 @@ NS_BEGIN(Engine)
 class CSoundController;
 NS_END
 
-#define RPM_MAX 10.f
-#define RPM_MIN -10.f
+#define TURN_POWER_MAX 0.2f
+#define MOVE_POWER_MAX 1.f
+#define RPM_MAX 1.f
 
 NS_BEGIN(Client)
 
@@ -30,12 +31,20 @@ public:
 public:
 	void Start_Engine();
 	void End_Engine();
-	void Press_Accelerator(_float fTimeDelta);
+
+	void Accel_Move(_float fTimeDelta);
+	void Accel_Turn(_float fTimeDelta);
+	void Accel_RPM(_float fTimeDelta);
+
 public:
 	_bool	Get_isOn() const { return m_IsOn; }
+	GEAR	Get_Gear() const { return m_eGear; }
 
-	_float	Get_RPM() { return m_fRPM; }
-	_float*	Get_RPM_Ptr() { return &m_fRPM; }
+	_float	Get_TurnPower() const { return m_fTurnSpeed; }
+	_float	Get_MovePower() const { return m_fMoveSpeed; }
+	_float	Get_RPM() const { return m_fRPM; }
+
+	_float*	Get_RPM_Ptr() { return &m_fMoveSpeed; }
 	void	Set_RPM(_float _fValue);
 
 	_float	Get_RPM_Max() { return 0.f; }//m_fRPM_Max; }
@@ -52,6 +61,9 @@ private:
 	_bool		m_IsOn = { false };
 
 	_float		m_fRPM = { 0.f };
+	_float		m_fMoveSpeed = { 0.f };
+	_float		m_fTurnSpeed = { 0.f };
+
 	//_float		m_fRPM_Max = { 10.f };
 	GEAR		m_eGear = { GEAR::END };
 

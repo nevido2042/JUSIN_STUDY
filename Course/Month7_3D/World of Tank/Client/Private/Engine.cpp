@@ -43,7 +43,6 @@ HRESULT CEngine::Initialize(void* pArg)
 
 void CEngine::Start_Engine()
 {
-	Set_RPM(RPM_MIN);
 	m_IsOn = true;
 	m_pSoundCom->Play(m_EngineSound_Start);
 
@@ -53,7 +52,6 @@ void CEngine::Start_Engine()
 
 void CEngine::End_Engine()
 {
-	Set_RPM(RPM_MIN);
 	m_IsOn = false;
 	m_pSoundCom->Stop(m_EngineSound_Loop);
 
@@ -74,60 +72,62 @@ void CEngine::Update(_float fTimeDelta)
 
 	if (m_IsOn)
 	{
-		if (m_pGameInstance->Key_Pressing(DIK_W) )
+		
+		if (m_pGameInstance->Key_Pressing(DIK_W))
 		{
-			if (m_eGear != GEAR::DRIVE)
-			{
-				m_fRPM = 0.f;
-				m_eGear = GEAR::DRIVE;
-			}
-				
-			Press_Accelerator(fTimeDelta);
+			m_eGear = GEAR::DRIVE;
+
+			Accel_Move(fTimeDelta);
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_S))
 		{
-			if (m_eGear != GEAR::REVERSE)
-			{
-				m_fRPM = 0.f;
-				m_eGear = GEAR::REVERSE;
-			}
+			m_eGear = GEAR::REVERSE;
 
-			Press_Accelerator(-fTimeDelta);
-		}
-		else if (m_pGameInstance->Key_Pressing(DIK_D) )
-		{
-			if (m_eGear != GEAR::RIGHT)
-			{
-				m_eGear = GEAR::RIGHT;
-				m_fRPM = 0.f;
-			}
-
-
-			Press_Accelerator(fTimeDelta * 2.f);
-		}
-		else if (m_pGameInstance->Key_Pressing(DIK_A))
-		{
-			if (m_eGear != GEAR::LEFT)
-			{
-				m_eGear = GEAR::LEFT;
-				m_fRPM = 0.f;
-			}
-
-			Press_Accelerator(-fTimeDelta * 2.f);
+			Accel_Move(-fTimeDelta);
 		}
 		else
 		{
 			m_eGear = GEAR::END;
 
-			m_bIsPressAccel = false;
+			const _float fLerpSpeed = 10.f;
+			m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
 
-			const _float fLerpSpeed = 3.f;
+			if (fabsf(m_fMoveSpeed) < 0.05f)
+				m_fMoveSpeed = 0.f;
+		}
+
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			if(m_eGear == GEAR::REVERSE)
+				Accel_Turn(fTimeDelta);
+			else
+				Accel_Turn(-fTimeDelta);
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			if (m_eGear == GEAR::REVERSE)
+				Accel_Turn(-fTimeDelta);
+			else
+				Accel_Turn(fTimeDelta);
+		}
+		else
+		{
+			const _float fLerpSpeed = 10.f;
+			m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+
+			if (fabsf(m_fTurnSpeed) < 0.05f)
+				m_fTurnSpeed = 0.f;
+		}
+
+		if (!m_pGameInstance->Key_Pressing(DIK_W) && !m_pGameInstance->Key_Pressing(DIK_A) && !m_pGameInstance->Key_Pressing(DIK_S) && !m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			const _float fLerpSpeed = 10.f;
 			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
 
-			if (fabsf(m_fRPM) < 0.1f)
+			if (fabsf(m_fRPM) < 0.05f)
 				m_fRPM = 0.f;
-
 		}
+
 
 		if (m_pGameInstance->Key_Pressing(DIK_SPACE))
 		{
@@ -149,18 +149,48 @@ HRESULT CEngine::Render()
 	return S_OK;
 }
 
-void CEngine::Press_Accelerator(_float fTimeDelta)
+void CEngine::Accel_Move(_float fTimeDelta)
 {
 	m_bIsPressAccel = true;
-	Set_RPM(m_fRPM += fTimeDelta * 10.f);
+
+	m_fMoveSpeed += fTimeDelta * 1.f;
+
+	if (m_fMoveSpeed > MOVE_POWER_MAX)
+		m_fMoveSpeed = MOVE_POWER_MAX;
+	else if (m_fMoveSpeed < -MOVE_POWER_MAX)
+		m_fMoveSpeed = -MOVE_POWER_MAX;
+
+	Accel_RPM(fTimeDelta);
+}
+
+void CEngine::Accel_Turn(_float fTimeDelta)
+{
+	m_fTurnSpeed += fTimeDelta;
+
+	if (m_fTurnSpeed > TURN_POWER_MAX)
+		m_fTurnSpeed = TURN_POWER_MAX;
+	else if (m_fTurnSpeed < -TURN_POWER_MAX)
+		m_fTurnSpeed = -TURN_POWER_MAX;
+
+	Accel_RPM(fTimeDelta);
+}
+
+void CEngine::Accel_RPM(_float fTimeDelta)
+{
+	m_fRPM += abs(fTimeDelta) * 1.f;
+
+	if (m_fRPM > RPM_MAX)
+		m_fRPM = RPM_MAX;
+	else if (m_fRPM < 0.f)
+		m_fRPM = 0.f;
 }
 
 void CEngine::Set_RPM(_float _fValue)
 {
-	if (m_fRPM > RPM_MAX)
-		m_fRPM = RPM_MAX;
-	else if (m_fRPM < RPM_MIN)
-		m_fRPM = RPM_MIN;
+	if (m_fMoveSpeed > RPM_MAX)
+		m_fMoveSpeed = RPM_MAX;
+	else if (m_fMoveSpeed < -RPM_MAX)
+		m_fMoveSpeed = -RPM_MAX;
 }
 
 void CEngine::Set_RPM_Max(_float _fValue)
