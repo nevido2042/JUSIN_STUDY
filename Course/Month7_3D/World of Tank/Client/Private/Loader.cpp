@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "GameManager.h"
 #include "Button_Start.h"
 #include "DamagePanel.h"
 #include "Minimap.h"
@@ -19,6 +20,7 @@
 #include "BurntTree.h"
 #include "VHouse01A.h"
 #include "Fury.h"
+#include "Tiger.h"
 #include "Skydome.h"
 #include "Camera_Free.h"
 #include "Camera_TPS.h"
@@ -216,6 +218,20 @@ HRESULT CLoader::Loading_For_Static()
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I.bin", PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_TigerBody */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_TigerBody"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I_Body.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_TigerDestroyed */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_TigerDestroyed"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I_CRASHED.bin", PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_FuryDestroyed */
 	PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -234,7 +250,7 @@ HRESULT CLoader::Loading_For_Static()
 	PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_FuryBody"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/America/A104_M4A3E8A/FuryBody.bin", PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/America/A104_M4A3E8A/Fury_Body.bin", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_FuryTurret */
@@ -268,6 +284,11 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 원형 객체
 	lstrcpy(m_szLoadingText, TEXT("원형 객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_GameManager */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
+		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_DamagePanel */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamagePanel"),
@@ -307,6 +328,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_Fury */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		CFury::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tiger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
+		CTiger::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Skydome */

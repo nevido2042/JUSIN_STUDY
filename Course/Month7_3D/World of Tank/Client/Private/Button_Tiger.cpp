@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "GameManager.h"
 
 CButton_Tiger::CButton_Tiger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -44,6 +45,7 @@ void CButton_Tiger::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
+		static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Set_Select_Tank(TANK::TIGER);
 		Active_This_Tank_Solo();
 	}
 }

@@ -81,10 +81,14 @@ void CEngine::Update(_float fTimeDelta)
 	{
 		Press_Accelerator(fTimeDelta);
 	}
+	else if (m_pGameInstance->Key_Pressing(DIK_S))
+	{
+		Press_Accelerator(fTimeDelta);
+	}
 	else
 	{
 		m_bIsPressAccel = false;
-		Set_RPM(m_fRPM -= fTimeDelta * 2.f);
+		Set_RPM(m_fRPM -= fTimeDelta * 10.f);
 	}
 
 }

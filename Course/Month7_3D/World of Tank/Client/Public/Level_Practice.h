@@ -24,13 +24,14 @@ private:
 	HRESULT Ready_Layer_Camera_Free(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera_TPS(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Engine(const _wstring strLayerTag);
-	HRESULT Ready_Layer_Fury(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
+	HRESULT Ready_Layer_PlayerTank(const _wstring strLayerTag);
+
+	//UI
 	HRESULT Ready_Layer_Minimap(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
 
-
-	HRESULT Ready_Layer_Tool_Base(const _wstring strLayerTag);
+	//TOOL
 	HRESULT Ready_Layer_Tool_EngineSound(const _wstring strLayerTag);
 
 private:

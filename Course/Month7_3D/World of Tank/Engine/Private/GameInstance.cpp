@@ -217,6 +217,11 @@ const map<const _wstring, class CLayer*>& CGameInstance::Get_Layers(_uint iLevel
 	return m_pObject_Manager->Get_Layers(iLevelIndex);
 }
 
+CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Find_Layer(iLevelIndex, strLayerTag);
+}
+
 #pragma endregion
 
 #pragma region RENDERER
@@ -377,6 +382,11 @@ _matrix CGameInstance::Get_Transform_Matrix(D3DTS eState) const
 const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
+}
+
+HRESULT CGameInstance::Login()
+{
+	return m_pNetwork->Login();
 }
 
 void CGameInstance::Set_ID(_uint iID)

@@ -84,7 +84,7 @@ HRESULT CTerrain::Render()
 	//	return E_FAIL;
 
 	_float2 TexScale = { 1.f, 1.f };
-	if (FAILED(m_pShaderCom->Bind_TexScale("g_TexScale", &TexScale)))
+	if (FAILED(m_pShaderCom->Bind_Float2("g_TexScale", &TexScale)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))

@@ -6,7 +6,7 @@ CShader::CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CShader::CShader(const CShader& Prototype)
-	: CComponent{ Prototype }
+	: CComponent(Prototype)
 	, m_pEffect { Prototype.m_pEffect }
 	, m_InputLayouts { Prototype.m_InputLayouts }
 {
@@ -93,25 +93,52 @@ HRESULT CShader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatri
 	return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(pMatrix));	
 }
 
-HRESULT CShader::Bind_TexOffset(const _char* pConstantName, const _float2* pTexOffset)
+HRESULT CShader::Bind_Float2(const _char* pConstantName, _float2* pFloat2)
 {
 	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable || !pVariable->IsValid())
 		return E_FAIL;
 
-	// float2는 SetRawValue로 설정 (SetFloat도 가능하지만 일반적으로 RawValue로 처리)
-	return pVariable->SetRawValue(pTexOffset, 0, sizeof(_float2));
+	return pVariable->SetRawValue(pFloat2, 0, sizeof(_float2));
 }
 
-HRESULT CShader::Bind_TexScale(const _char* pConstantName, const _float2* pTexScale)
+HRESULT CShader::Bind_Float(const _char* pConstantName, _float* pFloat)
 {
 	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable || !pVariable->IsValid())
 		return E_FAIL;
 
-	// float2는 SetRawValue로 설정 (SetFloat도 가능하지만 일반적으로 RawValue로 처리)
-	return pVariable->SetRawValue(pTexScale, 0, sizeof(_float2));
+	return pVariable->SetRawValue(pFloat, 0, sizeof(_float));
 }
+
+HRESULT CShader::Bind_Int(const _char* pConstantName, _int* pInt)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable || !pVariable->IsValid())
+		return E_FAIL;
+
+	return pVariable->SetRawValue(pInt, 0, sizeof(_int));
+}
+
+//HRESULT CShader::Bind_TexOffset(const _char* pConstantName, const _float2* pTexOffset)
+//{
+//	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+//	if (nullptr == pVariable || !pVariable->IsValid())
+//		return E_FAIL;
+//
+//	// float2는 SetRawValue로 설정 (SetFloat도 가능하지만 일반적으로 RawValue로 처리)
+//	return pVariable->SetRawValue(pTexOffset, 0, sizeof(_float2));
+//}
+//
+//HRESULT CShader::Bind_TexScale(const _char* pConstantName, const _float2* pTexScale)
+//{
+//	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+//	if (nullptr == pVariable || !pVariable->IsValid())
+//		return E_FAIL;
+//
+//	// float2는 SetRawValue로 설정 (SetFloat도 가능하지만 일반적으로 RawValue로 처리)
+//	return pVariable->SetRawValue(pTexScale, 0, sizeof(_float2));
+//}
 
 HRESULT CShader::Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
 {

@@ -18,8 +18,8 @@ public:
 
 private:
 	HRESULT Ready_Layer_BackGround(const _wstring strLayerTag);
-	HRESULT Ready_Layer_Network(const _wstring strLayerTag);
-	HRESULT Ready_Layer_StatusLight(const _wstring strLayerTag);
+	//HRESULT Ready_Layer_Network(const _wstring strLayerTag);
+
 	HRESULT Ready_Layer_Logo(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Login(const _wstring strLayerTag);
 

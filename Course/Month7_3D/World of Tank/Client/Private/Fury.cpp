@@ -1,6 +1,7 @@
 #include "Fury.h"
 
 #include "GameInstance.h"
+#include "Engine.h"
 
 CFury::CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -25,13 +26,14 @@ HRESULT CFury::Initialize(void* pArg)
 
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 5.f;
-	Desc.fSpeedPerSec = 10.f;
+	Desc.fSpeedPerSec = 1.f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
 	Desc.iLevelIndex = pDesc->iLevelIndex;
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.strComponentTag = TEXT("Com_VIBuffer");
 	Desc.iIndex = 0;
+	Desc.vInitPosition = pDesc->vInitPosition;
 
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
@@ -47,6 +49,9 @@ HRESULT CFury::Initialize(void* pArg)
 
 	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
 
+	m_pEngine = static_cast<CEngine*>(m_pGameInstance->Get_Last_GameObject(Desc.iLevelIndex, TEXT("Layer_Engine")));
+	Safe_AddRef(m_pEngine);
+
 	return S_OK;
 }
 
@@ -58,13 +63,21 @@ void CFury::Priority_Update(_float fTimeDelta)
 
 void CFury::Update(_float fTimeDelta)
 {
+	m_fSpeed = { fTimeDelta * (m_pEngine->Get_RPM() - RPM_MIN) };
+
 	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
+		m_pTransformCom->Go_Straight(m_fSpeed);
+
+		m_fUVScrollY -= m_fSpeed;
+		m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
 	}
 	if (m_pGameInstance->Key_Pressing(DIK_S))
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
+		m_pTransformCom->Go_Backward(m_fSpeed);
+
+		m_fUVScrollY += m_fSpeed;
+		m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
 	}
 	if (m_pGameInstance->Key_Pressing(DIK_A))
 	{
@@ -86,7 +99,9 @@ void CFury::Update(_float fTimeDelta)
 void CFury::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
 }
+
 
 HRESULT CFury::Render()
 {	
@@ -107,10 +122,19 @@ HRESULT CFury::Render()
 
 	if (m_pModelCom && !m_bDestroyed)
 	{
+		_float2 zeroOffset = { 0.f, 0.f };
+		_float2 Offset{ 0.f, m_fUVScrollY };
+
+
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
 		for (_uint i = 0; i < iNumMesh; i++)
 		{
+			if (i == 1)
+			{
+				m_pShaderCom->Bind_Float2("g_UVOffset", &Offset);
+			}
+
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
@@ -119,7 +143,29 @@ HRESULT CFury::Render()
 
 			if (FAILED(m_pModelCom->Render(i)))
 				return E_FAIL;
+
+			if (i == 1)
+			{
+
+				//_float zeroRotation = 0.f;
+				//_int notTread = 0;
+
+				m_pShaderCom->Bind_Float2("g_UVOffset", &zeroOffset);
+			}
 		}
+
+		/*m_pShaderCom->Bind_Float2("g_UVOffset", &Offset);
+
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", 1, aiTextureType_DIFFUSE, 0)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Begin(0)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(1)))
+			return E_FAIL;
+
+		m_pShaderCom->Bind_Float2("g_UVOffset", &zeroOffset);*/
 	}
 	else if(m_pModelCom_Destroyed)
 	{
@@ -214,6 +260,8 @@ CGameObject* CFury::Clone(void* pArg)
 void CFury::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pEngine);
 
 	Safe_Release(m_pRasterState);
 	Safe_Release(m_pOldRasterState);

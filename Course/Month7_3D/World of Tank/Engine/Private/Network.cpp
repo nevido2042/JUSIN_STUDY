@@ -31,6 +31,87 @@ CNetwork::CNetwork()
 
 HRESULT CNetwork::Initialize(void* pArg)
 {
+	//Clear_Packet();
+
+	//m_tServerConfig = Load_Config_File(TEXT("../bin/config.txt"));
+
+	//WSADATA wsaData;
+	//if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+	//{
+	//	MSG_BOX("WSAStartup() error!");
+	//	return E_FAIL;
+	//}
+
+	//m_hSocket = socket(PF_INET, SOCK_STREAM, 0);
+	//if (m_hSocket == INVALID_SOCKET)
+	//{
+	//	MSG_BOX("sock() error");
+	//	return E_FAIL;
+	//}
+
+	//u_long mode = 1;  // ºñµ¿±â
+	//ioctlsocket(m_hSocket, FIONBIO, &mode);
+
+	//FD_ZERO(&m_ReadSet);
+	//FD_SET(m_hSocket, &m_ReadSet);
+
+	return S_OK;
+}
+
+
+//HRESULT CNetwork::Ready_Components()
+//{
+//	return S_OK;
+//}
+
+void CNetwork::Priority_Update(_float fTimeDelta)
+{
+	if (!m_isLogin)
+		return;
+
+	Flush_ReceiveBuffer();
+}
+
+void CNetwork::Update(_float fTimeDelta)
+{
+	if (!m_isLogin)
+		return;
+
+	if (m_eStatus != NETWORK_STATUS::CONNECTED && m_eStatus != NETWORK_STATUS::WARNING)
+	{
+		m_fConnectTryElapsed += fTimeDelta;
+		if (m_fConnectTryElapsed > 1.f)
+		{
+			m_fConnectTryElapsed = 0.f;
+			Try_Connect();
+			cout << "Try_Connect()" << endl;
+		}
+	}
+
+	//m_fPingElapsed += fTimeDelta;
+	//if (m_fPingElapsed  > PING_TIME && m_isPing == false)
+	//{
+	//	Send_Packet(CPacketHandler::mp_CS_Ping);
+	//	m_isPing = true;
+	//	//Send_Ping();
+	//}
+}
+
+void CNetwork::Late_Update(_float fTimeDelta)
+{
+	if (!m_isLogin)
+		return;
+
+	Flush_SendBuffer();
+}
+
+HRESULT CNetwork::Render()
+{
+	return S_OK;
+}
+
+HRESULT CNetwork::Login()
+{
 	Clear_Packet();
 
 	m_tServerConfig = Load_Config_File(TEXT("../bin/config.txt"));
@@ -55,49 +136,8 @@ HRESULT CNetwork::Initialize(void* pArg)
 	FD_ZERO(&m_ReadSet);
 	FD_SET(m_hSocket, &m_ReadSet);
 
-	return S_OK;
-}
+	m_isLogin = true;
 
-
-//HRESULT CNetwork::Ready_Components()
-//{
-//	return S_OK;
-//}
-
-void CNetwork::Priority_Update(_float fTimeDelta)
-{
-	Flush_ReceiveBuffer();
-}
-
-void CNetwork::Update(_float fTimeDelta)
-{
-	if (m_eStatus != NETWORK_STATUS::CONNECTED && m_eStatus != NETWORK_STATUS::WARNING)
-	{
-		m_fConnectTryElapsed += fTimeDelta;
-		if (m_fConnectTryElapsed > 1.f)
-		{
-			m_fConnectTryElapsed = 0.f;
-			Try_Connect();
-			cout << "Try_Connect()" << endl;
-		}
-	}
-
-	//m_fPingElapsed += fTimeDelta;
-	//if (m_fPingElapsed  > PING_TIME && m_isPing == false)
-	//{
-	//	Send_Packet(CPacketHandler::mp_CS_Ping);
-	//	m_isPing = true;
-	//	//Send_Ping();
-	//}
-}
-
-void CNetwork::Late_Update(_float fTimeDelta)
-{
-	Flush_SendBuffer();
-}
-
-HRESULT CNetwork::Render()
-{
 	return S_OK;
 }
 

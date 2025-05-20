@@ -5,8 +5,10 @@
 #include "Level_Loading.h"
 #include "Camera_TPS.h"
 #include "Camera_Free.h"
+#include "GameManager.h"
 
 #include "UIObject.h"
+
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -25,6 +27,12 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera_TPS"))))
 		return E_FAIL;
 
@@ -37,15 +45,6 @@ HRESULT CLevel_Practice::Initialize()
 
 	/*if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
 		return E_FAIL;*/
-
-	if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
-		return E_FAIL;
-
-	/*if (FAILED(Ready_Layer_Fury(TEXT("Layer_Fury"))))
-		return E_FAIL;*/
-	
-	//if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
-	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
 		return E_FAIL;
@@ -105,7 +104,7 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 {
 	CCamera_TPS::CAMERA_TPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE),TEXT("Layer_Fury"));
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE),TEXT("Layer_PlayerTank"));
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
@@ -123,20 +122,40 @@ HRESULT CLevel_Practice::Ready_Layer_Engine(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Fury(const _wstring strLayerTag)
+HRESULT CLevel_Practice::Ready_Layer_Skydome(const _wstring strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Skydome(const _wstring strLayerTag)
+HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
-		return E_FAIL;
+	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
+
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
+	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
+
+	switch (eSelectTank)
+	{
+	case Client::TANK::FURY:
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+			ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+			return E_FAIL;
+		break;
+	case Client::TANK::TIGER:
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
+			ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+			return E_FAIL;
+		break;
+	case Client::TANK::END:
+		break;
+	default:
+		break;
+	}
 
 	return S_OK;
 }
@@ -168,24 +187,6 @@ HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamagePanel"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-//HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
-//{
-//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
-//		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
-//		return E_FAIL;
-//
-//	return S_OK;
-//}
-
-HRESULT CLevel_Practice::Ready_Layer_Tool_Base(const _wstring strLayerTag)
-{
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tool_Base"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

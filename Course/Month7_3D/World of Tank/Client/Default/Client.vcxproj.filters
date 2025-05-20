@@ -151,6 +151,12 @@
     <Filter Include="02.GameObjects\PartObject\FuryTurret">
       <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.GameManager">
+      <UniqueIdentifier>{d14d0158-33b2-4b8a-9fd7-0a41b253eafc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\02.Tiger">
+      <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -309,6 +315,12 @@
     <ClInclude Include="..\public\Button_Tiger.h">
       <Filter>02.GameObjects\UIObject\10.Button_Tiger</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\GameManager.h">
+      <Filter>02.GameObjects\00.GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tiger.h">
+      <Filter>02.GameObjects\LandObject\02.Tiger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -461,6 +473,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Button_Tiger.cpp">
       <Filter>02.GameObjects\UIObject\10.Button_Tiger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameManager.cpp">
+      <Filter>02.GameObjects\00.GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tiger.cpp">
+      <Filter>02.GameObjects\LandObject\02.Tiger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -179,9 +179,11 @@
     <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\FuryTurret.h" />
     <ClInclude Include="..\public\Fury_Hanger.h" />
+    <ClInclude Include="..\public\GameManager.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Skydome.h" />
+    <ClInclude Include="..\public\Tiger.h" />
     <ClInclude Include="..\public\Tiger_Hanger.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\public\Tool_Engine_Sound.h" />
@@ -231,9 +233,11 @@
     <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\FuryTurret.cpp" />
     <ClCompile Include="..\private\Fury_Hanger.cpp" />
+    <ClCompile Include="..\private\GameManager.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
+    <ClCompile Include="..\private\Tiger.cpp" />
     <ClCompile Include="..\private\Tiger_Hanger.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />

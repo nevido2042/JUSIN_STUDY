@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "GameManager.h"
 
 CButton_Fury::CButton_Fury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -44,7 +45,8 @@ void CButton_Fury::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
-		Active_This_Tank_Solo();	
+		static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Set_Select_Tank(TANK::FURY);
+		Active_This_Tank_Solo();
 	}
 }
 

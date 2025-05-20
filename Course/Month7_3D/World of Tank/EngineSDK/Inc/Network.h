@@ -28,6 +28,9 @@ public:
 	virtual HRESULT Render();
 
 public:
+	HRESULT Login();
+
+public:
 	HRESULT Send_Packet(_uint iPacketType, void* pArg);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 private:
@@ -54,6 +57,9 @@ public:
 	HRESULT	Input_Data(_byte* pByte, _int iSize);
 	HRESULT	Output_Data(_byte* pByte, _int iSize);
 	HRESULT	Update_Header();
+
+private:
+	_bool	m_isLogin = { false };
 
 private:
 	SOCKET				m_hSocket{};

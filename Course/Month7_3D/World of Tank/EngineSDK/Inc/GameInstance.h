@@ -48,6 +48,7 @@ public:
 	class CGameObject* Get_Last_GameObject(_uint iLevelIndex, const _wstring& strLayerTag);
 	CComponent* Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
 	const map<const _wstring, class CLayer*>& Get_Layers(_uint iLevelIndex) const;
+	class CLayer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER
@@ -102,6 +103,7 @@ public:
 #pragma endregion
 
 #pragma region 	NETWORK
+	HRESULT Login();
 	void	Set_ID(_uint iID);
 	_uint	Get_ID();
 	HRESULT Send_Packet(_uint iPacketType, void* pArg);

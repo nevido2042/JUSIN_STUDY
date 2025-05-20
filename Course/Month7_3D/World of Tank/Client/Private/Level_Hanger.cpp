@@ -14,6 +14,12 @@ CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 HRESULT CLevel_Hanger::Initialize()
 {
+	if (FAILED(Ready_Layer_GameManger(TEXT("Layer_GameManager"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_StatusLight(TEXT("Layer_StatusLight"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -189,6 +195,40 @@ HRESULT CLevel_Hanger::Ready_Layer_Skydome(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_StatusLight(const _wstring strLayerTag)
+{
+	//이미 있으면 안만듬
+	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_StatusLight")))
+		return S_OK;
+
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fX = g_iWinSizeX * 0.05f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.05f;
+#pragma message ("UI 크기도 WinSize 비례해서 하면 좋겠지만. 툴 없이는 힘들지도, 왜냐하면 화면비율 망가진 상태에서 생성하면 비율 망가짐")
+	UIObject_Desc.fSizeX = 40.0f;
+	UIObject_Desc.fSizeY = 50.0f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_GameManger(const _wstring strLayerTag)
+{
+	//이미 있으면 안만듬
+	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))
+		return S_OK;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

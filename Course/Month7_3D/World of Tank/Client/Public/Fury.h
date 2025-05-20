@@ -33,6 +33,11 @@ private:
 	HRESULT Release_RenderState();
 
 private:
+	class CEngine*	m_pEngine = { nullptr };
+	_float			m_fSpeed = {};
+	_float			m_fUVScrollY = {};
+
+private:
 	_bool	m_bDestroyed = { false };
 private:
 	ID3D11RasterizerState*	m_pRasterState = { nullptr };

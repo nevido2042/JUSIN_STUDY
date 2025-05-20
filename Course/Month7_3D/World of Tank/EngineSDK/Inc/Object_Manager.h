@@ -26,15 +26,15 @@ public:
 	void Clear(_uint iLevelIndex);
 
 public:
+	class CLayer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
+
+public:
 	const map<const _wstring, class CLayer*>& Get_Layers(_uint iLevelIndex) const { return m_pLayers[iLevelIndex]; }
 
 private:	
 	_uint								m_iNumLevels = {};
 	map<const _wstring, class CLayer*>* m_pLayers = { nullptr };
 	class CGameInstance*				m_pGameInstance = { nullptr };
-
-private:
-	class CLayer* Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag);
 
 public:
 	static CObject_Manager* Create(_uint iNumLevels);
