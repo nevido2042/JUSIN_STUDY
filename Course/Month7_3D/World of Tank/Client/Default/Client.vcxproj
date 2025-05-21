@@ -188,6 +188,10 @@
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Skydome.h" />
     <ClInclude Include="..\public\Tiger.h" />
+    <ClInclude Include="..\public\TigerGun.h" />
+    <ClInclude Include="..\public\TigerTrackLeft.h" />
+    <ClInclude Include="..\public\TigerTrackRight.h" />
+    <ClInclude Include="..\public\TigerTurret.h" />
     <ClInclude Include="..\public\Tiger_Hanger.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\public\Tool_Engine_Sound.h" />
@@ -246,6 +250,10 @@
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
     <ClCompile Include="..\private\Tiger.cpp" />
+    <ClCompile Include="..\private\TigerGun.cpp" />
+    <ClCompile Include="..\private\TigerTrackLeft.cpp" />
+    <ClCompile Include="..\private\TigerTrackRight.cpp" />
+    <ClCompile Include="..\private\TigerTurret.cpp" />
     <ClCompile Include="..\private\Tiger_Hanger.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />

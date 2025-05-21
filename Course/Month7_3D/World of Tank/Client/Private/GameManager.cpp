@@ -41,7 +41,7 @@ void CGameManager::Priority_Update(_float fTimeDelta)
 
 void CGameManager::Update(_float fTimeDelta)
 {
-
+		
 }
 
 void CGameManager::Late_Update(_float fTimeDelta)

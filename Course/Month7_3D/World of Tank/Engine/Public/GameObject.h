@@ -37,7 +37,14 @@ public:
 	const _bool		Get_isActive() const		{ return m_bActive; }
 	void			Set_Active(_bool bActive)	{ m_bActive = bActive; }
 
+	const _bool		Get_isVisible() const { return m_bVisible; }
+	void			Set_Visible(_bool bVisible) { m_bVisible = bVisible; }
+
 	class CTransform* const Get_Transform() { return m_pTransformCom; }
+
+public:
+	CGameObject*	Find_PartObject(const _wstring& strPartObjectTag);
+	_matrix			Get_CombinedWorldMatrix() const { return XMLoadFloat4x4(&m_CombinedWorldMatrix); }
 
 protected:
 	_bool m_bCloned = { false };
@@ -45,6 +52,7 @@ protected:
 private:
 	_bool m_bDestroyed = { false };
 	_bool m_bActive = { true };
+	_bool m_bVisible = { true };
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
@@ -65,7 +73,6 @@ protected:
 	_float4x4				m_CombinedWorldMatrix = {};
 
 protected:
-	CGameObject*	Find_PartObject(const _wstring& strPartObjectTag);
 	CComponent*		Find_Part_Component(const _wstring& strPartObjectTag, const _wstring& strComponentTag);
 	HRESULT			Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strPartObjectTag, void* pArg = nullptr);
 

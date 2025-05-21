@@ -2,7 +2,6 @@
 
 #include "GameInstance.h"
 #include "Engine.h"
-#include "FuryTurret.h"
 #include "FuryTrackLeft.h"
 #include "FuryTrackRight.h"
 
@@ -165,7 +164,7 @@ void CFury::Move(_float fTimeDelta)
 
 	pTrackLeft->Set_Speed(0.f);
 	pTrackRight->Set_Speed(0.f);
-	m_fTurnDirection = 0.f;
+	//m_fTurnDirection = 0.f;
 
 	_float fMovePower = { pEngin->Get_MovePower() };
 	_float fRPMPower = { pEngin->Get_RPM() };

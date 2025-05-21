@@ -1,6 +1,9 @@
 #include "Tiger.h"
 
 #include "GameInstance.h"
+#include "Engine.h"
+#include "TigerTrackLeft.h"
+#include "TigerTrackRight.h"
 
 CTiger::CTiger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -24,8 +27,8 @@ HRESULT CTiger::Initialize(void* pArg)
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
 	LANDOBJECT_DESC		Desc{};
-	Desc.fRotationPerSec = 5.f;
-	Desc.fSpeedPerSec = 10.f;
+	Desc.fRotationPerSec = 0.1f;
+	Desc.fSpeedPerSec = 0.5f;
 	lstrcpy(Desc.szName, TEXT("Tiger"));
 
 	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
@@ -38,6 +41,9 @@ HRESULT CTiger::Initialize(void* pArg)
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
 	// 새 RasterizerState 설정
@@ -54,27 +60,15 @@ HRESULT CTiger::Initialize(void* pArg)
 
 void CTiger::Priority_Update(_float fTimeDelta)
 {
+	CGameObject::Priority_Update(fTimeDelta);
 
 }
 
 void CTiger::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Pressing(DIK_W))
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_S))
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_A))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_D))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
-	}
+	CGameObject::Update(fTimeDelta);
+
+	Move(fTimeDelta);
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
 	{
@@ -87,6 +81,11 @@ void CTiger::Update(_float fTimeDelta)
 void CTiger::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+	if (m_bDestroyed)
+		return;
+
+	CGameObject::Late_Update(fTimeDelta);
 }
 
 HRESULT CTiger::Render()
@@ -151,6 +150,75 @@ void CTiger::Destroyed()
 	m_bDestroyed = true;
 }
 
+void CTiger::Move(_float fTimeDelta)
+{
+	CEngine* pEngin = static_cast<CEngine*>(Find_PartObject(TEXT("Part_Engine")));
+
+	if (!pEngin->Get_isOn())
+		return;
+
+	CTigerTrackLeft* pTrackLeft = static_cast<CTigerTrackLeft*>(Find_PartObject(TEXT("Part_TrackLeft")));
+	CTigerTrackRight* pTrackRight = static_cast<CTigerTrackRight*>(Find_PartObject(TEXT("Part_TrackRight")));
+
+	pTrackLeft->Set_Speed(0.f);
+	pTrackRight->Set_Speed(0.f);
+
+	_float fMovePower = { pEngin->Get_MovePower() };
+	_float fRPMPower = { pEngin->Get_RPM() };
+
+	_float SpeedTrackLeft = 0.f;
+	_float SpeedTrackRight = 0.f;
+
+	if (m_pGameInstance->Key_Pressing(DIK_W))
+	{
+		SpeedTrackLeft += -fRPMPower;
+		SpeedTrackRight += -fRPMPower;
+
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			SpeedTrackRight += -fRPMPower;
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			SpeedTrackLeft += -fRPMPower;
+		}
+	}
+	else if (m_pGameInstance->Key_Pressing(DIK_S))
+	{
+		SpeedTrackLeft += fRPMPower;
+		SpeedTrackRight += fRPMPower;
+
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			SpeedTrackRight += fRPMPower;
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			SpeedTrackLeft += fRPMPower;
+		}
+	}
+	else
+	{
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			SpeedTrackLeft += fRPMPower * 0.3f;
+			SpeedTrackRight += -fRPMPower;
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			SpeedTrackLeft += -fRPMPower;
+			SpeedTrackRight += fRPMPower * 0.3f;
+		}
+	}
+
+	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), pEngin->Get_TurnPower());
+
+	m_pTransformCom->Go_Straight(fMovePower);
+
+	pTrackLeft->Set_Speed(SpeedTrackLeft);
+	pTrackRight->Set_Speed(SpeedTrackRight);
+}
+
 HRESULT CTiger::SetUp_RenderState()
 {
 	m_pContext->RSGetState(&m_pOldRasterState);
@@ -186,6 +254,35 @@ HRESULT CTiger::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CTiger::Ready_PartObjects()
+{
+	/* 포탑을 추가한다. */
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	Desc.fRotationPerSec = 1.f;
+
+	lstrcpy(Desc.szName, TEXT("Turret"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTurret"), TEXT("Part_Turret"), &Desc)))
+		return E_FAIL;
+
+	/* 엔진을 추가한다. */
+	lstrcpy(Desc.szName, TEXT("Engine"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"), TEXT("Part_Engine"), &Desc)))
+		return E_FAIL;
+
+	/* 왼쪽 궤도를 추가한다. */
+	lstrcpy(Desc.szName, TEXT("TrackLeft"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTrackLeft"), TEXT("Part_TrackLeft"), &Desc)))
+		return E_FAIL;
+
+	/* 오른쪽 궤도를 추가한다. */
+	lstrcpy(Desc.szName, TEXT("TrackRight"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTrackRight"), TEXT("Part_TrackRight"), &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CTiger* CTiger::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTiger* pInstance = new CTiger(pDevice, pContext);
@@ -215,6 +312,10 @@ CGameObject* CTiger::Clone(void* pArg)
 void CTiger::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
 
 	Safe_Release(m_pRasterState);
 	Safe_Release(m_pOldRasterState);

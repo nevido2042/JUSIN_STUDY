@@ -42,44 +42,38 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 
 void CCamera_FPS::Priority_Update(_float fTimeDelta)
 {
-	// 타겟 위치
-	_vector vTargetPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
+	//// 결과 저장용 벡터
+	//_vector vScale;
+	//_vector vRotationQuat;
+	//_vector vTargetPos;
 
-	// 타겟의 Look 방향 (정규화)
-	_vector vLookDir = m_pTarget->Get_Transform()->Get_State(STATE::LOOK);
-	vLookDir = XMVector3Normalize(vLookDir);
+	//// 분해 수행
+	//XMMatrixDecompose(&vScale, &vRotationQuat, &vTargetPos, m_pTarget->Get_CombinedWorldMatrix());
+	//vTargetPos = XMVectorAdd(vTargetPos, XMVectorSet(0.f, 2.2863f, 0.f, 0.f));
 
-	// 월드 업 벡터
-	_vector vWorldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	// 타겟의 Right
+	_vector vTargetRight = m_pTarget->Get_CombinedWorldMatrix().r[0];
+	vTargetRight = XMVector3Normalize(vTargetRight);
 
-	// 타겟의 Right 벡터
-	_vector vRight = XMVector3Normalize(XMVector3Cross(vWorldUp, vLookDir));
+	// 타겟의 UP
+	_vector vTargetUp = m_pTarget->Get_CombinedWorldMatrix().r[1];
+	vTargetUp = XMVector3Normalize(vTargetUp);
 
-	// 타겟의 Up 벡터
-	_vector vUp = XMVector3Cross(vLookDir, vRight);
+	// 타겟의 Look
+	_vector vTargetLook = m_pTarget->Get_CombinedWorldMatrix().r[2];
+	vTargetLook = XMVector3Normalize(vTargetLook);
 
-	// 기본 거리 및 높이
-	_float fDistance = 0.f;
-	_float fHeight = 0.f;
-
-	// 오프셋 계산 (뒤로 fDistance만큼, 위로 fHeight만큼)
-	_vector vOffset = (-vLookDir * fDistance) + (vWorldUp * fHeight);
-
-	// 카메라 위치 = 타겟 위치 + 오프셋
-	_vector vCamPos = vTargetPos + vOffset;
+	// 타겟의 Pos
+	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
+	//vTargetPos = XMVectorAdd(vTargetPos, XMVectorSet(0.f, 2.2863f, 0.f, 0.f));
 
 	// 위치 설정
-	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
-
-	// 카메라 방향 벡터 계산
-	_vector vLook = XMVector3Normalize(vTargetPos - vCamPos);
-	vRight = XMVector3Normalize(XMVector3Cross(vWorldUp, vLook));
-	vUp = XMVector3Cross(vLook, vRight);
+	m_pTransformCom->Set_State(STATE::POSITION, vTargetPos);
 
 	// 방향 벡터 설정
-	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
-	m_pTransformCom->Set_State(STATE::UP, vUp);
-	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+	m_pTransformCom->Set_State(STATE::RIGHT, vTargetRight);
+	m_pTransformCom->Set_State(STATE::UP, vTargetUp);
+	m_pTransformCom->Set_State(STATE::LOOK, vTargetLook);
 
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
@@ -88,6 +82,9 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_FPS::Update(_float fTimeDelta)
 {
+#pragma message ("계속 끄는거 맘에안들지만 일단")
+	m_pTarget->Set_Visible(false);
+
 	POSITION_DESC Desc;
 	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
@@ -96,7 +93,8 @@ void CCamera_FPS::Update(_float fTimeDelta)
 
 void CCamera_FPS::Late_Update(_float fTimeDelta)
 {
-
+	//if (Get_isActive() == false)
+	//	m_pTarget->Set_Visible(true);
 }
 
 HRESULT CCamera_FPS::Render()

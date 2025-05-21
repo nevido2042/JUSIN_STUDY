@@ -8,7 +8,7 @@ class CSoundController;
 NS_END
 
 #define TURN_POWER_MAX 0.2f
-#define MOVE_POWER_MAX 0.8f
+#define MOVE_POWER_MAX 0.5f
 #define RPM_MAX 1.f
 
 NS_BEGIN(Client)

@@ -1,4 +1,3 @@
-#include "Tiger.h"
 #include "FuryGun.h"
 
 #include "GameInstance.h"

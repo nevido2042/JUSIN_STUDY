@@ -166,6 +166,18 @@
     <Filter Include="02.GameObjects\02.Camera\Camera_FPS">
       <UniqueIdentifier>{338c494c-1d2d-4fc0-ad8d-88c6ae972446}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\LandObject\02.Tiger\TigerTurret">
+      <UniqueIdentifier>{79be9bcd-ddf2-4384-8f1c-8a6e107f9359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\02.Tiger\TigerTurret\TigerGun">
+      <UniqueIdentifier>{78632613-37c4-45b2-91ad-3d7fdb18de74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\02.Tiger\TigerTrackLeft">
+      <UniqueIdentifier>{7dd21582-d3a0-4dcd-83d4-7b469a64f426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\02.Tiger\TigerTrackRight">
+      <UniqueIdentifier>{e676163c-c9a7-4ac4-8f62-759493d2d5a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -342,6 +354,18 @@
     <ClInclude Include="..\public\Camera_FPS.h">
       <Filter>02.GameObjects\02.Camera\Camera_FPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TigerTurret.h">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTurret</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TigerGun.h">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTurret\TigerGun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TigerTrackLeft.h">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTrackLeft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TigerTrackRight.h">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTrackRight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -512,6 +536,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_FPS.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TigerTurret.cpp">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTurret</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TigerGun.cpp">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTurret\TigerGun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TigerTrackLeft.cpp">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTrackLeft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TigerTrackRight.cpp">
+      <Filter>02.GameObjects\LandObject\02.Tiger\TigerTrackRight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

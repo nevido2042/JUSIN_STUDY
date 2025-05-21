@@ -29,6 +29,9 @@ private:
 	void Destroyed();
 
 private:
+	void Move(_float fTimeDelta);
+
+private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
@@ -43,6 +46,7 @@ private:
 	CModel* m_pModelCom_Destroyed = { nullptr };
 
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects();
 
 public:
 	static CTiger* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

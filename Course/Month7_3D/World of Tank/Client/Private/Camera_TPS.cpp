@@ -43,10 +43,10 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
 	// 타겟 위치
-	_vector vTargetPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
+	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
 
 	// 타겟의 Look 방향 (정규화)
-	_vector vLookDir = m_pTarget->Get_Transform()->Get_State(STATE::LOOK);
+	_vector vLookDir = m_pTarget->Get_CombinedWorldMatrix().r[2];
 	vLookDir = XMVector3Normalize(vLookDir);
 
 	// 월드 업 벡터
@@ -88,6 +88,9 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_TPS::Update(_float fTimeDelta)
 {
+#pragma message ("계속 켜는거 맘에안들지만 일단")
+	m_pTarget->Set_Visible(true);
+
 	POSITION_DESC Desc;
 	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
 

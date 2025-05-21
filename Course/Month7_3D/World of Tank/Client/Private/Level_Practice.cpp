@@ -135,7 +135,7 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 {
 	CCamera_TPS::CAMERA_TPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE),TEXT("Layer_PlayerTank"));
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
 
 	Desc.bActive = true;
 
@@ -149,7 +149,7 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 {
 	CCamera_FPS::CAMERA_FPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"));
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
 
 	Desc.bActive = false;
 
