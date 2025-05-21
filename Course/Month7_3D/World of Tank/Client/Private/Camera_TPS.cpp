@@ -32,6 +32,7 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 	m_fSensor = pDesc->fSensor;
 	m_pTarget = pDesc->pTarget;
+	Safe_AddRef(m_pTarget);
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -41,7 +42,6 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
-#pragma message ("카메라 수정해야함: static")
 	// 타겟 위치
 	_vector vTargetPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
 
@@ -134,6 +134,5 @@ CGameObject* CCamera_TPS::Clone(void* pArg)
 void CCamera_TPS::Free()
 {
 	__super::Free();
-
-
+	Safe_Release(m_pTarget);
 }

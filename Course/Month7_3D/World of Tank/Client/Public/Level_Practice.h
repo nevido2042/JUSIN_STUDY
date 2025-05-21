@@ -23,6 +23,7 @@ private:
 	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera_Free(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera_TPS(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Camera_FPS(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Engine(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
 	HRESULT Ready_Layer_PlayerTank(const _wstring strLayerTag);

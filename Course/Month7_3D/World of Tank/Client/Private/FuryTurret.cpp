@@ -64,10 +64,10 @@ void CFuryTurret::Update(_float fTimeDelta)
 
 void CFuryTurret::Late_Update(_float fTimeDelta)
 {
-	CGameObject::Late_Update(fTimeDelta);
-
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+	CGameObject::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }

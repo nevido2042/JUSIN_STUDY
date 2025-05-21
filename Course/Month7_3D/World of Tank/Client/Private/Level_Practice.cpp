@@ -5,9 +5,11 @@
 #include "Level_Loading.h"
 #include "Camera_TPS.h"
 #include "Camera_Free.h"
+#include "Camera_FPS.h"
 #include "GameManager.h"
 
 #include "UIObject.h"
+#include "Layer.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -33,7 +35,13 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera_TPS"))))
+	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
@@ -43,8 +51,7 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))
 		return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera_Free"))))
-		return E_FAIL;*/
+
 
 	//if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
 	//	return E_FAIL;
@@ -59,6 +66,28 @@ void CLevel_Practice::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
 			return;
+	}
+	else if (m_pGameInstance->Key_Down(DIK_C))
+	{
+		CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_Camera"));
+		if (!pLayer) return;
+
+		//카메라들 중 켜져있는거 끄고 다음꺼 킨다.
+		auto& GameObjects = pLayer->Get_GameObjects();
+		for (auto iter = GameObjects.begin(); iter != GameObjects.end(); ++iter)
+		{
+			if (true == (*iter)->Get_isActive())
+			{
+				(*iter)->Set_Active(false);
+
+				if (++iter != GameObjects.end())
+					(*iter)->Set_Active(true);
+				else
+					(*GameObjects.begin())->Set_Active(true);
+
+				break;
+			}
+		}
 	}
 }
 
@@ -83,16 +112,18 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 	CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 300.0f;
+	Desc.fSpeedPerSec = 100.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
 	Desc.vEye = _float3(150.f, 100.f, 100.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
-	Desc.fFar = 4000.f;
+	Desc.fFar = 400.f;
 
 	Desc.fSensor = 0.1f;
+
+	Desc.bActive = false;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
@@ -106,7 +137,23 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 	CCamera_TPS::CAMERA_TPS_DESC Desc{};
 	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE),TEXT("Layer_PlayerTank"));
 
+	Desc.bActive = true;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
+{
+	CCamera_FPS::CAMERA_FPS_DESC Desc{};
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"));
+
+	Desc.bActive = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_FPS"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
@@ -136,7 +183,6 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
 
 	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
 	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
 
 	switch (eSelectTank)
@@ -237,10 +283,7 @@ HRESULT CLevel_Practice::Load_Map()
 		//"Prototype_GameObject_Fury"
 		wstring PrototypeName = L"Prototype_GameObject_" + wstring(Name.begin(), Name.end());
 
-		CGameObject::GAMEOBJECT_DESC Desc = {};
-		Desc.iLevelIndex = ENUM_CLASS(LEVEL::PRACTICE);
-
-		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::PRACTICE), LayerName, &Desc);
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::PRACTICE), LayerName);
 		CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), LayerName);
 		if (pGameObject == nullptr)
 			continue;

@@ -163,6 +163,9 @@
     <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTurret\FuryGun">
       <UniqueIdentifier>{1b856865-9148-4643-b184-8bb9560daba2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Camera_FPS">
+      <UniqueIdentifier>{338c494c-1d2d-4fc0-ad8d-88c6ae972446}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -336,6 +339,9 @@
     <ClInclude Include="..\public\FuryGun.h">
       <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret\FuryGun</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Camera_FPS.h">
+      <Filter>02.GameObjects\02.Camera\Camera_FPS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -503,6 +509,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FuryGun.cpp">
       <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret\FuryGun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_FPS.cpp">
+      <Filter>02.GameObjects\02.Camera\Camera_FPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

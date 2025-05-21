@@ -32,26 +32,27 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	if(m_pGameInstance->Key_Pressing(DIK_A))
-	{
-		m_pTransformCom->Go_Left(fTimeDelta);
-	}
-
-	if (m_pGameInstance->Key_Pressing(DIK_D))
-	{
-		m_pTransformCom->Go_Right(fTimeDelta);
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_W))
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-	}
-	if (m_pGameInstance->Key_Pressing(DIK_S))
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
 
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
 	{
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			m_pTransformCom->Go_Left(fTimeDelta);
+		}
+
+		if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			m_pTransformCom->Go_Right(fTimeDelta);
+		}
+		if (m_pGameInstance->Key_Pressing(DIK_W))
+		{
+			m_pTransformCom->Go_Straight(fTimeDelta);
+		}
+		if (m_pGameInstance->Key_Pressing(DIK_S))
+		{
+			m_pTransformCom->Go_Backward(fTimeDelta);
+		}
+
 		_int			MouseMove = {};
 
 		if (MouseMove = m_pGameInstance->Get_DIMMoveState(DIMM::X))

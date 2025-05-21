@@ -28,7 +28,7 @@ HRESULT CTiger::Initialize(void* pArg)
 	Desc.fSpeedPerSec = 10.f;
 	lstrcpy(Desc.szName, TEXT("Tiger"));
 
-	Desc.iLevelIndex = pDesc->iLevelIndex;
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.strComponentTag = TEXT("Com_VIBuffer");
 	Desc.iIndex = 0;

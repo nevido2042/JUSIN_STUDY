@@ -5,6 +5,7 @@
 
 #include "Camera_Free.h"
 #include "UIObject.h"
+#include "GameManager.h"
 
 CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -16,6 +17,8 @@ HRESULT CLevel_Hanger::Initialize()
 {
 	if (FAILED(Ready_Layer_GameManger(TEXT("Layer_GameManager"))))
 		return E_FAIL;
+
+	static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Set_Select_Tank(TANK::FURY);
 
 	if (FAILED(Ready_Layer_StatusLight(TEXT("Layer_StatusLight"))))
 		return E_FAIL;
@@ -263,15 +266,10 @@ HRESULT CLevel_Hanger::Load_Map()
 
 		//"Layer_Fury"
 		wstring LayerName = L"Layer_" + wstring(Name.begin(), Name.end());
+
 		//"Prototype_GameObject_Fury"
 		wstring PrototypeName = L"Prototype_GameObject_" + wstring(Name.begin(), Name.end());
-
-#pragma message("만들어질 오브젝트에게 클론될 레벨인덱스를 전달하자: Fury 가 터레인을 못찾음")
-		
-		CGameObject::GAMEOBJECT_DESC Desc = {};
-		Desc.iLevelIndex = ENUM_CLASS(LEVEL::HANGER);
-
-		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::HANGER), LayerName, &Desc);
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), PrototypeName, ENUM_CLASS(LEVEL::HANGER), LayerName);
 		CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::HANGER), LayerName);
 		if (pGameObject == nullptr)
 			continue;

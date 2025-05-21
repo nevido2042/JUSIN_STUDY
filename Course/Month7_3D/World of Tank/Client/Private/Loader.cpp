@@ -28,6 +28,7 @@
 #include "Skydome.h"
 #include "Camera_Free.h"
 #include "Camera_TPS.h"
+#include "Camera_FPS.h"
 #include "Terrain.h"
 #include "Engine.h"
 #include "Tool_Base.h"
@@ -395,6 +396,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_Camera_TPS */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
 		CCamera_TPS::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_FPS */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_FPS"),
+		CCamera_FPS::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Tool_Base */

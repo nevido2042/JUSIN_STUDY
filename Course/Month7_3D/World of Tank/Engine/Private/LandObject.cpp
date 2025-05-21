@@ -73,7 +73,7 @@ void CLandObject::SetUp_Height_Normal(CTransform* pTransform, _float fTimeDelta,
 
 	// 4개 위치 노말 평균
 	_vector vNormalSum = XMVectorZero();
-	for (int i = 0; i < 4; ++i)
+	for (_int i = 0; i < 4; ++i)
 	{
 		_vector vSamplePos = vPosition + vOffsets[i];
 		vSamplePos = m_pTargetBuffer->Compute_HeightPosition(vSamplePos);
@@ -105,8 +105,6 @@ void CLandObject::SetUp_Height_Normal(CTransform* pTransform, _float fTimeDelta,
 	pTransform->Set_State(STATE::RIGHT, vRight);
 	pTransform->Set_State(STATE::UP, vTargetUp);
 	pTransform->Set_State(STATE::LOOK, vLook);
-
-
 }
 
 void CLandObject::Free()

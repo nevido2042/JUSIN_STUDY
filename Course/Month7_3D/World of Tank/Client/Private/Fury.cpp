@@ -32,7 +32,7 @@ HRESULT CFury::Initialize(void* pArg)
 	Desc.fSpeedPerSec = 0.5f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
-	Desc.iLevelIndex = pDesc->iLevelIndex;
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.strComponentTag = TEXT("Com_VIBuffer");
 	Desc.iIndex = 0;
@@ -82,11 +82,12 @@ void CFury::Update(_float fTimeDelta)
 
 void CFury::Late_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+	if (m_bDestroyed)
+		return;
+
 	CGameObject::Late_Update(fTimeDelta);
-
-
-	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
-
 }
 
 

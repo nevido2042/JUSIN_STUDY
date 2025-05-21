@@ -52,6 +52,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);	
 	lstrcpy(m_szName, pDesc->szName);
+	m_bActive = pDesc->bActive;
 
 	if (FAILED(m_pTransformCom->Initialize(pArg)))
 		return E_FAIL;
