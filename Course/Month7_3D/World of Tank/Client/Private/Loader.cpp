@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "FuryGun.h"
 #include "FuryTrackRight.h"
 #include "FuryTrackLeft.h"
 #include "FuryTurret.h"
@@ -353,6 +354,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_FuryTurret */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
 		CFuryTurret::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_FuryGun */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryGun"),
+		CFuryGun::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_FuryTrackLeft */

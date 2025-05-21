@@ -8,7 +8,7 @@ class CSoundController;
 NS_END
 
 #define TURN_POWER_MAX 0.2f
-#define MOVE_POWER_MAX 1.f
+#define MOVE_POWER_MAX 0.8f
 #define RPM_MAX 1.f
 
 NS_BEGIN(Client)
@@ -44,14 +44,6 @@ public:
 	_float	Get_MovePower() const { return m_fMoveSpeed; }
 	_float	Get_RPM() const { return m_fRPM; }
 
-	_float*	Get_RPM_Ptr() { return &m_fMoveSpeed; }
-	void	Set_RPM(_float _fValue);
-
-	_float	Get_RPM_Max() { return 0.f; }//m_fRPM_Max; }
-	void	Set_RPM_Max(_float _fValue);
-
-	_float* Get_PitchValue_Ptr() { return &m_fPitchValue; }
-	_float* Get_VolumeValue_Ptr() { return &m_fVolumeValue; }
 private:
 	string		m_EngineSound_Start = {};
 	string		m_EngineSound_Loop = {};
@@ -64,11 +56,10 @@ private:
 	_float		m_fMoveSpeed = { 0.f };
 	_float		m_fTurnSpeed = { 0.f };
 
-	//_float		m_fRPM_Max = { 10.f };
 	GEAR		m_eGear = { GEAR::END };
 
-	_float		m_fVolumeValue = { 0.3f };
-	_float		m_fPitchValue = { 0.08f };
+	_float		m_fVolumeValue = { 0.4f };
+	_float		m_fPitchValue = { 1.1f };
 
 private:
 	CSoundController* m_pSoundCom{ nullptr };

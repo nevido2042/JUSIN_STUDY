@@ -31,6 +31,9 @@ HRESULT CFuryTurret::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if (FAILED(Ready_PartObjects()))
+		return E_FAIL;
+
 	// 새 RasterizerState 설정
 	D3D11_RASTERIZER_DESC rasterDesc = {};
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
@@ -45,17 +48,27 @@ HRESULT CFuryTurret::Initialize(void* pArg)
 
 void CFuryTurret::Priority_Update(_float fTimeDelta)
 {
-
+	CGameObject::Priority_Update(fTimeDelta);
 }
 
 void CFuryTurret::Update(_float fTimeDelta)
 {
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+	CGameObject::Update(fTimeDelta);
+
+	if (m_pGameInstance->Key_Pressing(DIK_Q))
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta);
+	else if(m_pGameInstance->Key_Pressing(DIK_E))
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+
 }
 
 void CFuryTurret::Late_Update(_float fTimeDelta)
 {
+	CGameObject::Late_Update(fTimeDelta);
+
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
@@ -125,6 +138,20 @@ HRESULT CFuryTurret::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CFuryTurret::Ready_PartObjects()
+{
+	/* 주포을 추가한다. */
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.pParentWorldMatrix = &m_CombinedWorldMatrix;
+	Desc.fRotationPerSec = 1.f;
+
+	lstrcpy(Desc.szName, TEXT("FuryGun"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryGun"), TEXT("Part_Gun"), &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CFuryTurret* CFuryTurret::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CFuryTurret* pInstance = new CFuryTurret(pDevice, pContext);
@@ -154,6 +181,10 @@ CGameObject* CFuryTurret::Clone(void* pArg)
 void CFuryTurret::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
 
 	Safe_Release(m_pRasterState);
 	Safe_Release(m_pOldRasterState);

@@ -50,15 +50,17 @@ void CFuryTrackRight::Priority_Update(_float fTimeDelta)
 
 void CFuryTrackRight::Update(_float fTimeDelta)
 {
-	m_fUVScrollY += m_fSpeed * 0.3f;
-	m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
 
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+	m_fUVScrollY += m_fSpeed * 0.05f;
+	m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
 }
 
 void CFuryTrackRight::Late_Update(_float fTimeDelta)
 {
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 

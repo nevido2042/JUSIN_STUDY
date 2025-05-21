@@ -65,10 +65,10 @@ void CLandObject::SetUp_Height_Normal(CTransform* pTransform, _float fTimeDelta,
 	const _float fSampleOffset = 1.0f;
 
 	_vector vOffsets[4] = {
-		XMVectorSet(+fSampleOffset, 0.f, +fSampleOffset, 0.f),
-		XMVectorSet(-fSampleOffset, 0.f, +fSampleOffset, 0.f),
-		XMVectorSet(+fSampleOffset, 0.f, -fSampleOffset, 0.f),
-		XMVectorSet(-fSampleOffset, 0.f, -fSampleOffset, 0.f)
+	XMVectorSet(+fSampleOffset, 0.f, +fSampleOffset * 2.f, 0.f),
+	XMVectorSet(-fSampleOffset, 0.f, +fSampleOffset * 2.f, 0.f),
+	XMVectorSet(+fSampleOffset, 0.f, -fSampleOffset * 2.f, 0.f),
+	XMVectorSet(-fSampleOffset, 0.f, -fSampleOffset * 2.f, 0.f)
 	};
 
 	// 4개 위치 노말 평균

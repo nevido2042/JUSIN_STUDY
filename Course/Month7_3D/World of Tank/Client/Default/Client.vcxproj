@@ -177,6 +177,7 @@
     <ClInclude Include="..\Public\DebugUtils.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Fury.h" />
+    <ClInclude Include="..\public\FuryGun.h" />
     <ClInclude Include="..\public\FuryTrackLeft.h" />
     <ClInclude Include="..\public\FuryTrackRight.h" />
     <ClInclude Include="..\public\FuryTurret.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="..\Private\DebugUtils.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
+    <ClCompile Include="..\private\FuryGun.cpp" />
     <ClCompile Include="..\private\FuryTrackLeft.cpp" />
     <ClCompile Include="..\private\FuryTrackRight.cpp" />
     <ClCompile Include="..\private\FuryTurret.cpp" />

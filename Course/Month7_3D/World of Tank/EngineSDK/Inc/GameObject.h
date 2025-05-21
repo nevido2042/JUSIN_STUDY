@@ -10,6 +10,7 @@ public:
 	typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
 	{
 		_tchar				szName[MAX_PATH];
+#pragma	message("레벨 인덱스 전달하는거 없애도 될듯")
 		_uint				iLevelIndex;
 		const _float4x4*	pParentWorldMatrix = { nullptr };
 	}GAMEOBJECT_DESC;

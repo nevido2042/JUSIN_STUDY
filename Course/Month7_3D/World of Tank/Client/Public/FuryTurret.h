@@ -36,6 +36,7 @@ private:
 	CModel* m_pModelCom = { nullptr };
 
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects();
 
 public:
 	static CFuryTurret* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

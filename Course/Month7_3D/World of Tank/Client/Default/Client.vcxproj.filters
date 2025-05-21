@@ -160,6 +160,9 @@
     <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTrackRight">
       <UniqueIdentifier>{e8cf1c38-c868-41a9-81cb-e942e0853879}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\LandObject\01.Fury\FuryTurret\FuryGun">
+      <UniqueIdentifier>{1b856865-9148-4643-b184-8bb9560daba2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -330,6 +333,9 @@
     <ClInclude Include="..\public\FuryTrackRight.h">
       <Filter>02.GameObjects\LandObject\01.Fury\FuryTrackRight</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\FuryGun.h">
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret\FuryGun</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -494,6 +500,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FuryTrackRight.cpp">
       <Filter>02.GameObjects\LandObject\01.Fury\FuryTrackRight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FuryGun.cpp">
+      <Filter>02.GameObjects\LandObject\01.Fury\FuryTurret\FuryGun</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

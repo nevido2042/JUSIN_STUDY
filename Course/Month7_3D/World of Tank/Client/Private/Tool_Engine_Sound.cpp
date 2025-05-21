@@ -47,9 +47,9 @@ void CTool_Engine_Sound::Update(_float fTimeDelta)
 
 	//하이어라키 창
 	ImGui::Begin("Tool_Engine_Sound", nullptr);
-	ImGui::SliderFloat("RPM", m_pEngine->Get_RPM_Ptr(), 0.0f, m_pEngine->Get_RPM_Max());
-	ImGui::SliderFloat("Volume Value", m_pEngine->Get_VolumeValue_Ptr(), 0.0f, 2.f);
-	ImGui::SliderFloat("Pitch Value", m_pEngine->Get_PitchValue_Ptr(), 0.0f, 2.f);
+	//ImGui::SliderFloat("RPM", m_pEngine->Get_RPM_Ptr(), 0.0f, m_pEngine->Get_RPM_Max());
+	//ImGui::SliderFloat("Volume Value", m_pEngine->Get_VolumeValue_Ptr(), 0.0f, 2.f);
+	//ImGui::SliderFloat("Pitch Value", m_pEngine->Get_PitchValue_Ptr(), 0.0f, 2.f);
 	ImGui::End();
 
 

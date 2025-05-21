@@ -61,20 +61,14 @@ HRESULT CFury::Initialize(void* pArg)
 
 void CFury::Priority_Update(_float fTimeDelta)
 {
-	for (auto& Pair : m_PartObjects)
-	{
-		if (nullptr != Pair.second)
-			Pair.second->Priority_Update(fTimeDelta);
-	}
+	CGameObject::Priority_Update(fTimeDelta);
+
 }
 
 void CFury::Update(_float fTimeDelta)
 {
-	for (auto& Pair : m_PartObjects)
-	{
-		if (nullptr != Pair.second)
-			Pair.second->Update(fTimeDelta);
-	}
+	CGameObject::Update(fTimeDelta);
+
 
 	Move(fTimeDelta);
 
@@ -88,11 +82,8 @@ void CFury::Update(_float fTimeDelta)
 
 void CFury::Late_Update(_float fTimeDelta)
 {
-	for (auto& Pair : m_PartObjects)
-	{
-		if (nullptr != Pair.second)
-			Pair.second->Late_Update(fTimeDelta);
-	}
+	CGameObject::Late_Update(fTimeDelta);
+
 
 	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
@@ -176,59 +167,50 @@ void CFury::Move(_float fTimeDelta)
 	m_fTurnDirection = 0.f;
 
 	_float fMovePower = { pEngin->Get_MovePower() };
+	_float fRPMPower = { pEngin->Get_RPM() };
 
 	_float SpeedTrackLeft = 0.f;
 	_float SpeedTrackRight = 0.f;
 
 	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
-		
-		//m_pTransformCom->Go_Straight(fMoveSpeed);
-
-		SpeedTrackLeft += -fMovePower;
-		SpeedTrackRight += -fMovePower;
+		SpeedTrackLeft += -fRPMPower;
+		SpeedTrackRight += -fRPMPower;
 
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
-			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
-			SpeedTrackRight += -fMovePower;
+			SpeedTrackRight += -fRPMPower;
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_D))
 		{
-			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMovePower;
+			SpeedTrackLeft += -fRPMPower;
 		}
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_S))
 	{
-		//m_pTransformCom->Go_Straight(fMoveSpeed);
-		SpeedTrackLeft += -fMovePower;
-		SpeedTrackRight += -fMovePower;
+		SpeedTrackLeft += fRPMPower;
+		SpeedTrackRight += fRPMPower;
 
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
-			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fMoveSpeed);
-			SpeedTrackRight += -fMovePower;
+			SpeedTrackRight += fRPMPower;
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_D))
 		{
-			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMovePower;
+			SpeedTrackLeft += fRPMPower;
 		}
 	}
 	else
 	{
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
-			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMovePower * 0.5f;
-			SpeedTrackRight += fMovePower;
+			SpeedTrackLeft += fRPMPower * 0.3f;
+			SpeedTrackRight += -fRPMPower;
 		}
 		else if (m_pGameInstance->Key_Pressing(DIK_D))
 		{
-			//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fMoveSpeed);
-			SpeedTrackLeft += -fMovePower;
-			SpeedTrackRight += fMovePower * 0.5f;
+			SpeedTrackLeft += -fRPMPower;
+			SpeedTrackRight += fRPMPower * 0.3f;
 		}
 	}
 
@@ -281,6 +263,7 @@ HRESULT CFury::Ready_PartObjects()
 	/* 포탑을 추가한다. */
 	CGameObject::GAMEOBJECT_DESC Desc{};
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	Desc.fRotationPerSec = 1.f;
 
 	lstrcpy(Desc.szName, TEXT("Turret"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"), TEXT("Part_Turret"), &Desc)))

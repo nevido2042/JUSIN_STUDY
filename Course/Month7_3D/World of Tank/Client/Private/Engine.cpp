@@ -139,7 +139,7 @@ void CEngine::Update(_float fTimeDelta)
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
-	m_pSoundCom->SetVolume(m_EngineSound_Loop, 1.f + abs(m_fRPM) * m_fVolumeValue);
+	m_pSoundCom->SetVolume(m_EngineSound_Loop, 0.7f + abs(m_fRPM) * m_fVolumeValue);
 	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + abs(m_fRPM) * m_fPitchValue);
 }
 
@@ -183,19 +183,6 @@ void CEngine::Accel_RPM(_float fTimeDelta)
 		m_fRPM = RPM_MAX;
 	else if (m_fRPM < 0.f)
 		m_fRPM = 0.f;
-}
-
-void CEngine::Set_RPM(_float _fValue)
-{
-	if (m_fMoveSpeed > RPM_MAX)
-		m_fMoveSpeed = RPM_MAX;
-	else if (m_fMoveSpeed < -RPM_MAX)
-		m_fMoveSpeed = -RPM_MAX;
-}
-
-void CEngine::Set_RPM_Max(_float _fValue)
-{
-	//m_fRPM_Max = _fValue;
 }
 
 HRESULT CEngine::Ready_Components()

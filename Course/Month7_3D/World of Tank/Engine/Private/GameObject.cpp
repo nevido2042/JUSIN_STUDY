@@ -62,17 +62,29 @@ HRESULT CGameObject::Initialize(void* pArg)
 
 void CGameObject::Priority_Update(_float fTimeDelta)
 {
-
+	for (auto& Pair : m_PartObjects)
+	{
+		if (nullptr != Pair.second)
+			Pair.second->Priority_Update(fTimeDelta);
+	}
 }
 
 void CGameObject::Update(_float fTimeDelta)
 {
-
+	for (auto& Pair : m_PartObjects)
+	{
+		if (nullptr != Pair.second)
+			Pair.second->Update(fTimeDelta);
+	}
 }
 
 void CGameObject::Late_Update(_float fTimeDelta)
 {
-
+	for (auto& Pair : m_PartObjects)
+	{
+		if (nullptr != Pair.second)
+			Pair.second->Late_Update(fTimeDelta);
+	}
 }
 
 HRESULT CGameObject::Render()
