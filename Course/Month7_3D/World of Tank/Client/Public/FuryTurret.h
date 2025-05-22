@@ -27,6 +27,7 @@ public:
 private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
+	HRESULT Bind_ShaderResources();
 
 private:
 	ID3D11RasterizerState* m_pRasterState = { nullptr };

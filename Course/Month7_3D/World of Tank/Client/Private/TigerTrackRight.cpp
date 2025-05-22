@@ -68,12 +68,7 @@ HRESULT CTigerTrackRight::Render()
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	//파트 오브젝트는 자기 트랜스폼 안써야한다
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
 	if (m_pModelCom)
@@ -85,7 +80,7 @@ HRESULT CTigerTrackRight::Render()
 			if (i == 1)
 			{
 				_float2 Offset{ 0.f, m_fUVScrollY };
-				m_pShaderCom->Bind_Float2("g_UVOffset", &Offset);
+				m_pShaderCom->Bind_RawValue("g_UVOffset", &Offset, sizeof(_float2));
 			}
 
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
@@ -100,7 +95,7 @@ HRESULT CTigerTrackRight::Render()
 			if (i == 1)
 			{
 				_float2 zeroOffset = { 0.f, 0.f };
-				m_pShaderCom->Bind_Float2("g_UVOffset", &zeroOffset);
+				m_pShaderCom->Bind_RawValue("g_UVOffset", &zeroOffset, sizeof(_float2));
 			}
 		}
 	}
@@ -122,6 +117,30 @@ HRESULT CTigerTrackRight::SetUp_RenderState()
 HRESULT CTigerTrackRight::Release_RenderState()
 {
 	m_pContext->RSSetState(m_pOldRasterState);
+
+	return S_OK;
+}
+
+HRESULT CTigerTrackRight::Bind_ShaderResources()
+{
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+
+	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_Light(0);
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
+		return E_FAIL;
 
 	return S_OK;
 }

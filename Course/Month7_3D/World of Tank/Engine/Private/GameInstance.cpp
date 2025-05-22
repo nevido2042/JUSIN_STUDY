@@ -12,6 +12,7 @@
 #include "Network.h"
 #include "Picking.h"
 #include "Frustum.h"
+#include "Light_Manager.h"
 
 
 _uint g_iWinSizeX;
@@ -72,6 +73,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 	m_pFrustum = CFrustum::Create();
 	if (nullptr == m_pFrustum)
+		return E_FAIL;
+
+	m_pLight_Manager = CLight_Manager::Create();
+	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
 	return S_OK;
@@ -142,7 +147,6 @@ void CGameInstance::Clear(_uint iLevelIndex)
 	m_pPrototype_Manager->Clear(iLevelIndex);
 }
 
-
 _float CGameInstance::Compute_Random_Normal()
 {
 	return rand() / static_cast<_float>(RAND_MAX);	
@@ -153,6 +157,7 @@ _float CGameInstance::Compute_Random(_float fMin, _float fMax)
 	return fMin + (fMax - fMin) * Compute_Random_Normal();	
 }
 
+#pragma region Graphic_Device
 HRESULT CGameInstance::Resize(_uint iWinResizeX, _uint iWinResizeY)
 {
 	if (m_pGraphic_Device)
@@ -160,6 +165,7 @@ HRESULT CGameInstance::Resize(_uint iWinResizeX, _uint iWinResizeY)
 
 	return S_OK;
 }
+#pragma endregion
 
 #pragma region LEVEL_MANAGER
 
@@ -257,8 +263,6 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 
 #pragma endregion
 
-#pragma region SOUND_DEVICE
-
 #pragma region PICKING
 void CGameInstance::Transform_Picking_ToLocalSpace(const _matrix& WorldMatrixInverse)
 {
@@ -285,6 +289,7 @@ const _float3& CGameInstance::Get_MouseRay()
 
 #pragma endregion
 
+#pragma region Sound_Device
 FORCEINLINE
 HRESULT CGameInstance::LoadSound(const string& Path, _bool is3D, _bool loop, _bool stream, unordered_map<string, class CSound_Core*>* _Out_ pOut)
 {
@@ -347,7 +352,7 @@ _bool CGameInstance::Mouse_Up(_ubyte eKeyID)
 {
 	return m_pInputDevice->Mouse_Up(eKeyID);
 }
-#pragma endregion
+
 
 FORCEINLINE
 _bool CGameInstance::Key_Pressing(_ubyte eKeyID)
@@ -366,6 +371,7 @@ _bool CGameInstance::Key_Down(_ubyte eKeyID)
 {
  	return m_pInputDevice->Key_Down(eKeyID);
 }
+#pragma endregion
 
 #pragma region PIPELINE
 
@@ -388,7 +394,9 @@ const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
 }
+#pragma endregion
 
+#pragma region Network
 HRESULT CGameInstance::Login()
 {
 	return m_pNetwork->Login();
@@ -443,7 +451,9 @@ HRESULT CGameInstance::Update_Header()
 {
 	return m_pNetwork->Update_Header();
 }
+#pragma endregion
 
+#pragma region Frustum
 _bool CGameInstance::Is_In_Frustum(_fvector vPos)
 {
 	return m_pFrustum->Is_In_Frustum(vPos);
@@ -453,24 +463,20 @@ _bool CGameInstance::Is_In_Frustum(_fvector vPos, _float fRadius)
 {
 	return m_pFrustum->Is_In_Frustum(vPos, fRadius);
 }
-
 #pragma endregion
 
-//#pragma region PICKING
-//void CGameInstance::Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse)
-//{
-//	m_pPicking->Transform_ToLocalSpace(WorldMatrixInverse);
-//}
-//_bool CGameInstance::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
-//{
-//	return m_pPicking->Picking_InWorld(vPickedPos, vPointA, vPointB, vPointC);
-//}
-//_bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
-//{
-//	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
-//}
-//
-//#pragma endregion
+#pragma region Light_Manager
+const LIGHT_DESC* CGameInstance::Get_Light(_uint iIndex)
+{
+	return m_pLight_Manager->Get_Light(iIndex);
+}
+
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
+{
+	return m_pLight_Manager->Add_Light(LightDesc);
+}
+#pragma endregion
+
 
 void CGameInstance::Release_Engine()
 {
@@ -509,6 +515,9 @@ void CGameInstance::Release_Engine()
 
 	if (0 != Safe_Release(m_pFrustum))
 		MSG_BOX("Failed to Release : m_pFrustum");
+
+	if (0 != Safe_Release(m_pLight_Manager))
+		MSG_BOX("Failed to Release : m_pLight_Manager");
 
 
 	Destroy_Instance();

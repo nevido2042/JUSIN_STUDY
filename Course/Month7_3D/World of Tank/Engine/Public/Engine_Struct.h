@@ -12,6 +12,20 @@ namespace Engine
 		_uint			iNumLevels;
 	}ENGINE_DESC;
 
+	typedef struct tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE				eType;
+		_float4			vDirection;
+		_float4			vPosition;
+		float				fRange;
+
+		_float4			vDiffuse;
+		_float4			vAmbient;
+		_float4			vSpecular;
+	}LIGHT_DESC;
+
 	typedef struct tagMeshDesc
 	{
 		vector<_float3> Positions;

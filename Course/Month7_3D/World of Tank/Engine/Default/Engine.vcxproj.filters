@@ -121,6 +121,12 @@
     <ClInclude Include="..\public\QuadTreeNode.h">
       <Filter>01.Utility\04.Components\VIBuffer\Terrain\QuadTreeNode</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Light.h">
+      <Filter>01.Utility\09.Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Light_Manager.h">
+      <Filter>01.Utility\09.Lights\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -227,6 +233,12 @@
     </ClCompile>
     <ClCompile Include="..\private\QuadTreeNode.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Terrain\QuadTreeNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Light.cpp">
+      <Filter>01.Utility\09.Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Light_Manager.cpp">
+      <Filter>01.Utility\09.Lights\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +370,12 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Terrain\QuadTreeNode">
       <UniqueIdentifier>{ea06f473-548d-4f14-8742-eac038a490b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.Lights">
+      <UniqueIdentifier>{d688be44-4f84-4805-8698-59b3b0fdaa13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.Lights\Manager">
+      <UniqueIdentifier>{c64c7505-8a63-4a40-8715-394959d73e06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

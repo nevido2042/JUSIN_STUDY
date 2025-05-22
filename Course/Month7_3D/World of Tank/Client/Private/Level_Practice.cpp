@@ -20,6 +20,9 @@ CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 HRESULT CLevel_Practice::Initialize()
 {
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
 		return E_FAIL;
 
@@ -38,11 +41,12 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
-		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
 		return E_FAIL;
@@ -95,6 +99,22 @@ HRESULT CLevel_Practice::Render()
 {
 	SetWindowText(g_hWnd, TEXT("연습 레벨입니다."));
 	//m_pEngine_Sound_Tool->Render();
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Lights()
+{
+	LIGHT_DESC			LightDesc{};
+
+	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

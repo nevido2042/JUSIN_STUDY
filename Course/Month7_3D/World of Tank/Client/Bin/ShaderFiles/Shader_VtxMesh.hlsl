@@ -1,7 +1,13 @@
-
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D g_DiffuseTexture;
+
+float4 g_vLightDir;
+float4 g_vLightDiffuse;
+float4 g_vLightAmbient;
+float4 g_vLightSpecular;
+
+float4 g_vMtrlAmibient = float4(0.5f, 0.5f, 0.5f, 1.f);
 
 sampler DefaultSampler = sampler_state
 {
@@ -28,6 +34,7 @@ struct VS_IN
 struct VS_OUT
 {      
     float4 vPosition : SV_POSITION;
+    float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;    
 };
 
@@ -59,7 +66,7 @@ VS_OUT VS_MAIN(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
     
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    
+    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     float2 uv = In.vTexcoord;
     //if (g_IsTread == 1)
     //{
@@ -76,6 +83,7 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
+    float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
 };
 
@@ -88,10 +96,12 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out;    
     
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
     
-    //if(Out.vColor.a < 0.3f)
-    //    discard;
+    float4 vShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f) +
+        (g_vLightAmbient * g_vMtrlAmibient);
+    
+    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * vShade;
     
     return Out;    
 }

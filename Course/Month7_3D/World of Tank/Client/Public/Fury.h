@@ -47,7 +47,7 @@ private:
 private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
-
+	HRESULT Bind_ShaderResources();
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();

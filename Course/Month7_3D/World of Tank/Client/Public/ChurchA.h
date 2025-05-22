@@ -30,7 +30,7 @@ private:
 	CModel* m_pModelCom = { nullptr };
 private:
 	HRESULT Ready_Components();
-
+	HRESULT Bind_ShaderResources();
 public:
 	static CChurchA* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

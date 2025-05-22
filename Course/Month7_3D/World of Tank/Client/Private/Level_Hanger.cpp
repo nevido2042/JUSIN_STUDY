@@ -15,6 +15,9 @@ CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 HRESULT CLevel_Hanger::Initialize()
 {
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_GameManger(TEXT("Layer_GameManager"))))
 		return E_FAIL;
 
@@ -63,21 +66,41 @@ void CLevel_Hanger::Update(_float fTimeDelta)
 	}
 	else if (m_pGameInstance->Key_Down(DIK_P))
 	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE));
+
+		/*if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::PRACTICE))))
-			return;
+			return;*/
 	}
 	else if (m_pGameInstance->Key_Down(DIK_T)/*m_pGameInstance->Key_Down(DIK_F3)*/)
 	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::MAPTOOL));
+
+		/*if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::MAPTOOL))))
-			return;
+			return;*/
 	}
 }
 
 HRESULT CLevel_Hanger::Render()
 {
 	SetWindowText(g_hWnd, TEXT("격납고 레벨입니다."));
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Lights()
+{
+	LIGHT_DESC			LightDesc{};
+
+	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

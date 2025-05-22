@@ -20,6 +20,7 @@ public:
 
 
 private:
+	HRESULT Ready_Lights();
 	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera_Free(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera_TPS(const _wstring strLayerTag);

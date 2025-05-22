@@ -122,12 +122,11 @@ public:
 	_bool   Is_In_Frustum(_fvector vPos);
 	_bool   Is_In_Frustum(_fvector vPos, _float fRadius);
 #pragma endregion
-//
-//#pragma region PICKING
-//	void Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse);
-//	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
-//	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
-//#pragma endregion
+
+#pragma region LIGHT_MANAGER
+	const LIGHT_DESC* Get_Light(_uint iIndex);
+	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
+#pragma endregion
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -143,6 +142,7 @@ private:
 	class CNetwork*				m_pNetwork = { nullptr };
 	class CPicking*				m_pPicking = { nullptr };
 	class CFrustum*				m_pFrustum = { nullptr };
+	class CLight_Manager*		m_pLight_Manager = { nullptr };
 
 public:
 	void Release_Engine();

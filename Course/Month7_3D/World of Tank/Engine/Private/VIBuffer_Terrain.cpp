@@ -561,16 +561,10 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, 
 		}
 	}
 
-
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 		m_pVertexPositions[i] = pVertices[i].vPosition;
 
 	VBInitialData.pSysMem = pVertices;
-
-	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
-		return E_FAIL;
-
-	Safe_Delete_Array(pVertices);
 
 	D3D11_BUFFER_DESC			IBBufferDesc{};
 	IBBufferDesc.ByteWidth = m_iNumIndices * m_iIndexStride;
@@ -598,18 +592,53 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, 
 				iIndex
 			};
 
+			_vector		vSourDir, vDestDir, vNormal;
+
 			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
 			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[1];
 			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
 
+			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[1]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[1]]);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
+
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[1]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+
 			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
 			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
 			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[3];
+
+			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[3]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
+
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[3]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
 		}
+	}
+
+	for (size_t i = 0; i < m_iNumVertices; i++)
+	{
+		XMStoreFloat3(&pVertices[i].vNormal
+			, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
 	}
 
 	D3D11_SUBRESOURCE_DATA		IBInitialData{};
 	IBInitialData.pSysMem = m_pIndices;
+
+	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
 
 	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
 		return E_FAIL;
@@ -731,11 +760,6 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, 
     D3D11_SUBRESOURCE_DATA VBInitialData{};
     VBInitialData.pSysMem = pVertices;
 
-    if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
-        return E_FAIL;
-
-    Safe_Delete_Array(pVertices);
-
     // Index Buffer 생성 (원래랑 동일)
     D3D11_BUFFER_DESC IBBufferDesc{};
     IBBufferDesc.ByteWidth = m_iNumIndices * m_iIndexStride;
@@ -754,25 +778,59 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, 
         {
 			_uint iIndex = i * m_iNumVerticesX + j;
 
-			_uint indices[4] = {
+			_uint iIndices[4] = {
                 iIndex + m_iNumVerticesX,
                 iIndex + m_iNumVerticesX + 1,
                 iIndex + 1,
                 iIndex
             };
 
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = indices[0];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = indices[1];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = indices[2];
+			_vector		vSourDir, vDestDir, vNormal;
 
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = indices[0];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = indices[2];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = indices[3];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[1];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
+
+			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[1]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[1]]);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
+
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[1]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
+			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[3];
+
+			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[3]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
+
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[3]].vNormal
+				, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
         }
     }
 
+	for (size_t i = 0; i < m_iNumVertices; i++)
+	{
+		XMStoreFloat3(&pVertices[i].vNormal
+			, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
+	}
+
     D3D11_SUBRESOURCE_DATA IBInitialData{};
     IBInitialData.pSysMem = m_pIndices;
+
+	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
+		return E_FAIL;
+	Safe_Delete_Array(pVertices);
 
     if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
         return E_FAIL;
