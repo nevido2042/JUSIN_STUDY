@@ -155,7 +155,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 {
 	CCamera_TPS::CAMERA_TPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));// ->Find_PartObject(TEXT("Part_Gun"));
 
 	Desc.bActive = true;
 

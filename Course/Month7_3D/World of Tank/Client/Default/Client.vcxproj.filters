@@ -178,6 +178,9 @@
     <Filter Include="02.GameObjects\LandObject\02.Tiger\TigerTrackRight">
       <UniqueIdentifier>{e676163c-c9a7-4ac4-8f62-759493d2d5a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\11.WOT_Icon">
+      <UniqueIdentifier>{53b430a7-444b-4542-930c-ffc6365de69c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -366,6 +369,9 @@
     <ClInclude Include="..\public\TigerTrackRight.h">
       <Filter>02.GameObjects\LandObject\02.Tiger\TigerTrackRight</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\WOT_Icon.h">
+      <Filter>02.GameObjects\UIObject\11.WOT_Icon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -548,6 +554,9 @@
     </ClCompile>
     <ClCompile Include="..\private\TigerTrackRight.cpp">
       <Filter>02.GameObjects\LandObject\02.Tiger\TigerTrackRight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WOT_Icon.cpp">
+      <Filter>02.GameObjects\UIObject\11.WOT_Icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

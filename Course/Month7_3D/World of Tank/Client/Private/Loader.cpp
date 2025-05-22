@@ -1,9 +1,9 @@
 #include "Loader.h"
 
 #include "GameInstance.h"
-//#include "player.h"
-//#include "Effect.h"
-//#include "Sky.h"
+
+#include "PacketType.h"
+
 #pragma region LODING
 #include "Level_Loading.h"
 #include "BackGround_Loading.h"
@@ -54,11 +54,11 @@
 
 #pragma region MAPTOOL
 #include "MapTool.h"
+#include "MapObject.h"
 #pragma endregion
 
 #pragma region PRACTICE
 #include "Tool_Engine_Sound.h"
-#include "MapObject.h"
 #pragma endregion
 
 #pragma region GAMEPLAY
@@ -593,6 +593,17 @@ HRESULT CLoader::Loading_For_GamePlay()
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	//Send Wait Game
+
+	PACKET_DESC Desc;
+	Desc.iID = m_pGameInstance->Get_ID();
+	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
+
+	while (true)
+	{
+		//여기서 패킷을 기다릴수 있을까?
+	}
 
 	m_isFinished = true;
 

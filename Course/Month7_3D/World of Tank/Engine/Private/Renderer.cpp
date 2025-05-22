@@ -13,7 +13,7 @@ CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
-	if (eRenderGroup >=	RENDERGROUP::RG_END ||
+	if (eRenderGroup >=	RENDERGROUP::RG_END || ENUM_CLASS(eRenderGroup) < 0 ||
 		nullptr == pRenderObject)
 		return E_FAIL;
 

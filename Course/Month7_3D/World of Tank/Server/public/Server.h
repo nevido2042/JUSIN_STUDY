@@ -31,7 +31,7 @@ private:
 	//void Send_Unicast(CSession* pSession, const _byte* tMSG, const int iSize);
 	//void Send_Broadcast(CSession* pSession, const _byte* tMSG, const int iSize);
 private:
-	void Decode_Message(const PACKET_HEADER& _Header, CSession* _pSession);
+	void Decode_Packet(const PACKET_HEADER& _Header, CSession* _pSession);
 	void Delete_Dead_Session();
 	void Check_Session_State(SOCKET sock);
 	void Set_Session_Dead(CSession* pSession);

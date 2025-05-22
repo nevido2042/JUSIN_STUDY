@@ -42,6 +42,12 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
+	
+
+}
+
+void CCamera_TPS::Update(_float fTimeDelta)
+{
 	// 타겟 위치
 	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
 
@@ -84,22 +90,14 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
 
-}
-
-void CCamera_TPS::Update(_float fTimeDelta)
-{
 #pragma message ("계속 켜는거 맘에안들지만 일단")
 	m_pTarget->Set_Visible(true);
 
-	POSITION_DESC Desc;
-	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
-
-	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
 }
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
-
+	
 }
 
 HRESULT CCamera_TPS::Render()

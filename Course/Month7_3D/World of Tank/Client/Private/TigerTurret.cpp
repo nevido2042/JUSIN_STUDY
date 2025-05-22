@@ -47,6 +47,14 @@ HRESULT CTigerTurret::Initialize(void* pArg)
 
 void CTigerTurret::Priority_Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Pressing(DIK_Q))
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta);
+	else if (m_pGameInstance->Key_Pressing(DIK_E))
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
 	CGameObject::Priority_Update(fTimeDelta);
 }
 
@@ -54,17 +62,10 @@ void CTigerTurret::Update(_float fTimeDelta)
 {
 	CGameObject::Update(fTimeDelta);
 
-	if (m_pGameInstance->Key_Pressing(DIK_Q))
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta);
-	else if (m_pGameInstance->Key_Pressing(DIK_E))
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
-
 }
 
 void CTigerTurret::Late_Update(_float fTimeDelta)
 {
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 	CGameObject::Late_Update(fTimeDelta);
 

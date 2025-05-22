@@ -41,8 +41,7 @@ void CLoading_Spinner::Priority_Update(_float fTimeDelta)
 
 void CLoading_Spinner::Update(_float fTimeDelta)
 {
-#pragma message ( "로딩스피너 돌려야함" )
-	//m_pTransformCom->
+	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), fTimeDelta);
 }
 
 void CLoading_Spinner::Late_Update(_float fTimeDelta)
@@ -52,8 +51,6 @@ void CLoading_Spinner::Late_Update(_float fTimeDelta)
 
 HRESULT CLoading_Spinner::Render()
 {
-#pragma message ( "월탱 아이콘도 위에 덧붙여야함" )
-
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 	

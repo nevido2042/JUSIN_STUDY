@@ -60,14 +60,6 @@ HRESULT CFury::Initialize(void* pArg)
 
 void CFury::Priority_Update(_float fTimeDelta)
 {
-	CGameObject::Priority_Update(fTimeDelta);
-
-}
-
-void CFury::Update(_float fTimeDelta)
-{
-	CGameObject::Update(fTimeDelta);
-
 
 	Move(fTimeDelta);
 
@@ -77,6 +69,14 @@ void CFury::Update(_float fTimeDelta)
 	}
 
 	__super::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
+
+	CGameObject::Priority_Update(fTimeDelta);
+
+}
+
+void CFury::Update(_float fTimeDelta)
+{
+	CGameObject::Update(fTimeDelta);
 }
 
 void CFury::Late_Update(_float fTimeDelta)
@@ -87,6 +87,7 @@ void CFury::Late_Update(_float fTimeDelta)
 		return;
 
 	CGameObject::Late_Update(fTimeDelta);
+
 }
 
 

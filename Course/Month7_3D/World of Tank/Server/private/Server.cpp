@@ -281,11 +281,11 @@ void CServer::Read_Proc(CSession* _pSession)
         }
 
         _pSession->Get_RecvQ().Move_Front(sizeof(tHeader));
-        Decode_Message(tHeader, _pSession);
+        Decode_Packet(tHeader, _pSession);
     }
 }
 
-void CServer::Decode_Message(const PACKET_HEADER& _Header, CSession* _pSession)
+void CServer::Decode_Packet(const PACKET_HEADER& _Header, CSession* _pSession)
 {
     int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);
     if (iResult != _Header.bySize)
@@ -595,6 +595,32 @@ HRESULT CServer::Define_Packets()
 
             Update_Header();
 
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH_QUEUE), [this](void* pArg)
+        {
+            PACKET_DESC Desc{};
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_START_GAME), &Desc);
+
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_START_GAME);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+            Update_Header();
         })))
         return E_FAIL;
 

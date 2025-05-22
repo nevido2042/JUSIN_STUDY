@@ -60,14 +60,6 @@ HRESULT CTiger::Initialize(void* pArg)
 
 void CTiger::Priority_Update(_float fTimeDelta)
 {
-	CGameObject::Priority_Update(fTimeDelta);
-
-}
-
-void CTiger::Update(_float fTimeDelta)
-{
-	CGameObject::Update(fTimeDelta);
-
 	Move(fTimeDelta);
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
@@ -76,6 +68,15 @@ void CTiger::Update(_float fTimeDelta)
 	}
 
 	__super::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
+
+	CGameObject::Priority_Update(fTimeDelta);
+
+}
+
+void CTiger::Update(_float fTimeDelta)
+{
+	CGameObject::Update(fTimeDelta);
+
 }
 
 void CTiger::Late_Update(_float fTimeDelta)

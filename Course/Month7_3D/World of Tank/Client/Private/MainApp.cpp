@@ -7,6 +7,7 @@
 
 #include "BackGround_Loading.h"
 #include "Loading_Spinner.h"
+#include "WOT_Icon.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -117,6 +118,30 @@ HRESULT CMainApp::Define_Packets()
 		})))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH_QUEUE), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_JOIN_MATCH_QUEUE);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+			/*PACKET_DESC* Position_Desc = static_cast<PACKET_DESC*>(pArg);
+			Position_Desc->iID = m_pGameInstance->Get_ID();*/
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
+		{
+			
+		})))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
 		{
 			if (m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
@@ -195,6 +220,11 @@ HRESULT CMainApp::Ready_Prototype_For_Loading()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Loading/Spinner/0.dds"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_WOT_Icon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_WOT_Icon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Loading/Spinner/1.dds"), 1))))
+		return E_FAIL;
+
 #pragma endregion
 
 
@@ -207,6 +237,11 @@ HRESULT CMainApp::Ready_Prototype_For_Loading()
 	/* For.Prototype_GameObject_Loading_Spinner */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Loading_Spinner"),
 		CLoading_Spinner::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_WOT_Icon */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_WOT_Icon"),
+		CWOT_Icon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

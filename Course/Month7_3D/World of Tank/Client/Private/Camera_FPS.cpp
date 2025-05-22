@@ -42,14 +42,11 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 
 void CCamera_FPS::Priority_Update(_float fTimeDelta)
 {
-	//// 결과 저장용 벡터
-	//_vector vScale;
-	//_vector vRotationQuat;
-	//_vector vTargetPos;
 
-	//// 분해 수행
-	//XMMatrixDecompose(&vScale, &vRotationQuat, &vTargetPos, m_pTarget->Get_CombinedWorldMatrix());
-	//vTargetPos = XMVectorAdd(vTargetPos, XMVectorSet(0.f, 2.2863f, 0.f, 0.f));
+}
+
+void CCamera_FPS::Update(_float fTimeDelta)
+{
 
 	// 타겟의 Right
 	_vector vTargetRight = m_pTarget->Get_CombinedWorldMatrix().r[0];
@@ -78,17 +75,10 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
 
-}
-
-void CCamera_FPS::Update(_float fTimeDelta)
-{
 #pragma message ("계속 끄는거 맘에안들지만 일단")
 	m_pTarget->Set_Visible(false);
 
-	POSITION_DESC Desc;
-	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
-	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
 }
 
 void CCamera_FPS::Late_Update(_float fTimeDelta)

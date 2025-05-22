@@ -52,11 +52,6 @@ HRESULT CTigerGun::Initialize(void* pArg)
 
 void CTigerGun::Priority_Update(_float fTimeDelta)
 {
-
-}
-
-void CTigerGun::Update(_float fTimeDelta)
-{
 	if (m_pGameInstance->Key_Pressing(DIK_R))
 	{
 		m_pTransformCom->Turn(XMVectorSet(1.f, 0.f, 0.f, 0.f), -fTimeDelta);
@@ -65,13 +60,19 @@ void CTigerGun::Update(_float fTimeDelta)
 	{
 		m_pTransformCom->Turn(XMVectorSet(1.f, 0.f, 0.f, 0.f), fTimeDelta);
 	}
+
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+}
+
+void CTigerGun::Update(_float fTimeDelta)
+{
+
 }
 
 void CTigerGun::Late_Update(_float fTimeDelta)
 {
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
-
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 

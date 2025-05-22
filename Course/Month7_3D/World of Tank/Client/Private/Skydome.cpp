@@ -52,6 +52,12 @@ void CSkydome::Priority_Update(_float fTimeDelta)
 
 void CSkydome::Update(_float fTimeDelta)
 {
+
+
+}
+
+void CSkydome::Late_Update(_float fTimeDelta)
+{
 	_matrix mViewMatrix = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
 
 	// ViewMatrix 역행렬 → 카메라 월드행렬
@@ -66,10 +72,6 @@ void CSkydome::Update(_float fTimeDelta)
 	// Transform Position 세팅
 	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
 
-}
-
-void CSkydome::Late_Update(_float fTimeDelta)
-{
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_PRIORITY, this);
 }
 

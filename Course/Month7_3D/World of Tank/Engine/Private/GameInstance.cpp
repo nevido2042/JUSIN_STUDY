@@ -507,9 +507,6 @@ void CGameInstance::Release_Engine()
 	if (0 != Safe_Release(m_pNetwork))
 		MSG_BOX("Failed to Release : m_pNetwork");
 
-	if (0 != Safe_Release(m_pGraphic_Device))
-		MSG_BOX("Failed to Release : m_pGraphic_Device");
-
 	if (0 != Safe_Release(m_pPicking))
 		MSG_BOX("Failed to Release : m_pPicking");
 
@@ -519,6 +516,8 @@ void CGameInstance::Release_Engine()
 	if (0 != Safe_Release(m_pLight_Manager))
 		MSG_BOX("Failed to Release : m_pLight_Manager");
 
+	if (0 != Safe_Release(m_pGraphic_Device))
+		MSG_BOX("Failed to Release : m_pGraphic_Device");
 
 	Destroy_Instance();
 }
