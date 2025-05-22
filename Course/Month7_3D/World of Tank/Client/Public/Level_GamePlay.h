@@ -16,9 +16,23 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+
 private:
-	HRESULT Ready_Layer_BackGround(const _wstring strLayerTag);
-	//HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
+	HRESULT Ready_Lights();
+	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Camera_Free(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Camera_TPS(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Camera_FPS(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Engine(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
+	HRESULT Ready_Layer_PlayerTank(const _wstring strLayerTag);
+
+	//UI
+	HRESULT Ready_Layer_Minimap(const _wstring strLayerTag);
+	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
+
+private:
+	HRESULT Load_Map();
 
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

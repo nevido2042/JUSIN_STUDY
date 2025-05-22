@@ -571,15 +571,9 @@ HRESULT CLoader::Loading_For_Practice()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
-
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
-
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-	/* For.Prototype_GameObject_Tool_EngineSound */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
-		CTool_Engine_Sound::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -591,31 +585,12 @@ HRESULT CLoader::Loading_For_Practice()
 HRESULT CLoader::Loading_For_GamePlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
-	/* For.Prototype_Component_Texture_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice,m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
-		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
-	/* For.Prototype_Component_VIBuffer_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pDevice,m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-		return E_FAIL;
-
-	///* For.Prototype_Component_VIBuffer_Cube */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
-	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
-
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-	/* For.Prototype_GameObject_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Terrain"),
-		CTerrain::Create(m_pDevice,m_pContext))))
-		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

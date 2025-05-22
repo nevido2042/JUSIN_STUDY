@@ -33,6 +33,7 @@ public:
 
 #pragma region LEVEL_MANAGER
 	_uint		Get_NewLevel_Index() const;
+	//이걸로 레벨 변경하면 한프레임 파랗게 보였다가 로딩시작함, 하지만 게임오브젝트에서 호출해도 이터레이터 안터짐
 	HRESULT		Change_Level(_uint iNewLevelIndex);
 	HRESULT		Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 #pragma endregion

@@ -262,14 +262,14 @@ HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Tool_EngineSound(const _wstring strLayerTag)
-{
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CLevel_Practice::Ready_Layer_Tool_EngineSound(const _wstring strLayerTag)
+//{
+//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
+//		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
 
 HRESULT CLevel_Practice::Load_Map()
 {

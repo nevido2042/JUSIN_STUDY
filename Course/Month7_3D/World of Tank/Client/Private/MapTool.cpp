@@ -314,7 +314,7 @@ void CMapTool::Late_Update(_float fTimeDelta)
 
 HRESULT CMapTool::Render()
 {
-
+	__super::Render();
 
 	return S_OK;
 }

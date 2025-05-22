@@ -66,19 +66,18 @@ void CLevel_Hanger::Update(_float fTimeDelta)
 	}
 	else if (m_pGameInstance->Key_Down(DIK_P))
 	{
-		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE));
-
-		/*if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::PRACTICE))))
-			return;*/
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE))))
+			return;
 	}
-	else if (m_pGameInstance->Key_Down(DIK_T)/*m_pGameInstance->Key_Down(DIK_F3)*/)
+	else if (m_pGameInstance->Key_Down(DIK_G))
 	{
-		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::MAPTOOL));
-
-		/*if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::MAPTOOL))))
-			return;*/
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::GAMEPLAY))))
+			return;
+	}
+	else if (m_pGameInstance->Key_Down(DIK_T))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::MAPTOOL))))
+			return;
 	}
 }
 

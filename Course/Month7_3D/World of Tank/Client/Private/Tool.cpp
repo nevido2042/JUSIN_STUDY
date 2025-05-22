@@ -34,12 +34,12 @@ void CTool::Update(_float fTimeDelta)
 void CTool::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
-	ImGui::Render();  // ·»´õ¸µ Ã³¸®
+
 }
 
 HRESULT CTool::Render()
 {
-
+	ImGui::Render();  // ·»´õ¸µ Ã³¸®
 	return S_OK;
 }
 
