@@ -598,7 +598,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	PACKET_DESC Desc;
 	Desc.iID = m_pGameInstance->Get_ID();
-	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
+	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), &Desc);
 
 	CGameManager* pGameManager = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")));
 

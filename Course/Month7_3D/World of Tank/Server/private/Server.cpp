@@ -642,26 +642,27 @@ HRESULT CServer::Define_Packets()
             Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(PACKET_DESC));
             Clear_Packet();
 
-            cout << "Packet_Desc ID: " << Packet_Desc.iID << endl;
-
             CSession* pSession = Find_Session(Packet_Desc.iID);
             //로딩이 완료되면 상대 캐릭터 만들어라
 
-            /*for (CSession* pOther : m_vecSession)
+            for (CSession* pOther : m_vecSession)
             {
                 if (pOther == pSession)
                     continue;
 
+                POSITION_DESC Pos_Desc = {};
+                Pos_Desc.iID = pOther->Get_SessionInfo().iID;
+                Pos_Desc.vPos = { 312.f, 100.f, 292.f };
 
-            }*/
+                cout << "Send_Packet_Unicast(SC_CREATE_OTHER_CHARACTER)" << endl;
+                cout << "ID: " << Pos_Desc.iID << endl;
+                cout << "Pos: " << Pos_Desc.vPos.x << endl;
 
-            POSITION_DESC Pos_Desc = {};
-            Pos_Desc.iID = 0;// pOther->Get_SessionInfo().iID;
-            Pos_Desc.vPos = { 312.f, 100.f, 292.f };
+                Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Pos_Desc);
+                Clear_Packet();
+            }
 
             
-            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Pos_Desc);
-            Clear_Packet();
         })))
         return E_FAIL;
 
@@ -675,14 +676,7 @@ HRESULT CServer::Define_Packets()
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
-            //POSITION_DESC* pPosition_Desc = static_cast<POSITION_DESC*>(pArg);
-            POSITION_DESC Position_Desc{};
-            Position_Desc.iID = 3;
-            Position_Desc.vPos = _float3{ 300.f, 300.f, 300.f };
-            //Position_Desc.iID = pPosition_Desc->iID;
-            //Position_Desc.vPos = pPosition_Desc->vPos;
-
-            Input_Data(reinterpret_cast<_byte*>(&Position_Desc), sizeof(POSITION_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
 
             Update_Header();
         })))

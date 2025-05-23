@@ -91,6 +91,8 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
 			m_pGameInstance->Set_ID(Desc.iID);
 
+			cout << "My ID:" << Desc.iID << endl;
+
 			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
 		})))
 		return E_FAIL;
@@ -119,7 +121,7 @@ HRESULT CMainApp::Define_Packets()
 	if(FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg) 
 		{
 			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
-			::cout << "SC_PING" << endl;
+			//::cout << "SC_PING" << endl;
 			m_bSendPing = false;
 		})))
 		return E_FAIL;
@@ -165,6 +167,8 @@ HRESULT CMainApp::Define_Packets()
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Desc), sizeof(PACKET_DESC));
 			m_pGameInstance->Update_Header();
+
+			cout << "CS_LOAD_COMPLETE" << endl;
 		})))
 		return E_FAIL;
 
@@ -172,16 +176,15 @@ HRESULT CMainApp::Define_Packets()
 		{
 			POSITION_DESC Desc{};
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
-			
-			cout << "ID" << Desc.iID << endl;
 
 			CFury::FURY_DESC FuryDesc = {};
 			FuryDesc.iID = Desc.iID;
 			FuryDesc.vInitPosition = Desc.vPos;
-			FuryDesc.iID = 1;// Desc.iID;
-			FuryDesc.vInitPosition = { 312.f, 100.f, 292.f };// Desc.vPos;
 
-			//cout << "ID" << FuryDesc.iID << endl;
+			cout << "SC_CREATE_OTHER_CHARACTER" << endl;
+			cout << "ID: " << Desc.iID << endl;
+			cout << "Pos: " << Desc.vPos.x << endl;
+
 			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"), &FuryDesc);
 		})))
 		return E_FAIL;
