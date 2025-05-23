@@ -2,6 +2,10 @@
 
 #include "GameInstance.h"
 
+#include "Fury.h"
+#include "Camera_TPS.h"
+#include "Camera_FPS.h"
+
 CGameManager::CGameManager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
 {
@@ -51,6 +55,79 @@ void CGameManager::Late_Update(_float fTimeDelta)
 
 HRESULT CGameManager::Render()
 {
+
+	return S_OK;
+}
+
+HRESULT CGameManager::Create_My_Tank(_float3 vPos)
+{
+	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"), vPos)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3 vPos)
+{
+	CFury::FURY_DESC Desc{};
+	Desc.iID = m_pGameInstance->Get_ID();
+	Desc.vInitPosition = vPos;
+
+	switch (m_eSelectTank)
+	{
+	case Client::TANK::FURY:
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+			ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+			return E_FAIL;
+		break;
+	case Client::TANK::TIGER:
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
+			ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+			return E_FAIL;
+		break;
+	case Client::TANK::END:
+		break;
+	default:
+		break;
+	}
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
+	//	ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGameManager::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
+{
+	CCamera_TPS::CAMERA_TPS_DESC Desc{};
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));// ->Find_PartObject(TEXT("Part_Gun"));
+
+	Desc.bActive = true;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGameManager::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
+{
+	CCamera_FPS::CAMERA_FPS_DESC Desc{};
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+
+	Desc.bActive = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_FPS"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

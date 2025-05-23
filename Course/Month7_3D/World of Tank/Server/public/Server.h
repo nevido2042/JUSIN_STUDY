@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define BUF_SIZE 1024
+#define BUF_SIZE 2048
 //#define PORT L"2042"
 
 class CServer final
@@ -39,7 +39,7 @@ private:
 	_int Load_Config_File(const wstring& filename);
 
 public:
-	HRESULT Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg);
+	HRESULT Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg = nullptr);
 	HRESULT Send_Packet_Broadcast(CSession* pSession, _uint iPacketType, void* pArg = nullptr);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 public:

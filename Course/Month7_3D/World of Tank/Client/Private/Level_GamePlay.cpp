@@ -32,17 +32,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
-		return E_FAIL;
+
 
 	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
-		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
-		return E_FAIL;
 
 
 	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
@@ -156,34 +151,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
-{
-	CCamera_TPS::CAMERA_TPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));// ->Find_PartObject(TEXT("Part_Gun"));
-
-	Desc.bActive = true;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
-		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_GamePlay::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
-{
-	CCamera_FPS::CAMERA_FPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-
-	Desc.bActive = false;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_FPS"),
-		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
 HRESULT CLevel_GamePlay::Ready_Layer_Engine(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"),
@@ -198,38 +165,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Skydome(const _wstring strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
 		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_GamePlay::Ready_Layer_PlayerTank(const _wstring strLayerTag)
-{
-	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
-
-	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
-
-	switch (eSelectTank)
-	{
-	case Client::TANK::FURY:
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
-			ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
-			return E_FAIL;
-		break;
-	case Client::TANK::TIGER:
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
-			ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
-			return E_FAIL;
-		break;
-	case Client::TANK::END:
-		break;
-	default:
-		break;
-	}
-
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
-	//	ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
-	//	return E_FAIL;
 
 	return S_OK;
 }

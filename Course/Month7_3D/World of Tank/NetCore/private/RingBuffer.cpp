@@ -1,5 +1,5 @@
 
-#define DEFAULT_BUF_SIZE 1024
+#define DEFAULT_BUF_SIZE 500000
 //#include "RingBuffer.h"
 
 #include "RingBuffer.h"

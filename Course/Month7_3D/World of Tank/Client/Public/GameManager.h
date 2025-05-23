@@ -28,6 +28,12 @@ public:
 	_bool		Get_isGameStart() const { return m_isGameStart; }
 	void		Set_isGameStart(_bool isGameStart) { m_isGameStart = isGameStart; }
 
+public:
+	HRESULT		Create_My_Tank(_float3 vPos);
+	HRESULT		Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3 vPos);
+	HRESULT		Ready_Layer_Camera_TPS(const _wstring strLayerTag);
+	HRESULT		Ready_Layer_Camera_FPS(const _wstring strLayerTag);
+
 private:
 	TANK		m_eSelectTank = { TANK::FURY };
 	_bool		m_isGameStart = { false };

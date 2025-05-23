@@ -198,12 +198,17 @@ HRESULT CLevel_Practice::Ready_Layer_Skydome(const _wstring strLayerTag)
 	return S_OK;
 }
 
+#include "Fury.h"
 HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 {
 	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
 
-	CGameObject::GAMEOBJECT_DESC Desc{};
+	/*CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);*/
+
+	CFury::FURY_DESC Desc{};
 	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
+	Desc.iID = m_pGameInstance->Get_ID();
 
 	switch (eSelectTank)
 	{

@@ -14,6 +14,12 @@ enum class PacketType
     SC_START_GAME,
     CS_LOAD_COMPLETE,
 
+    CS_MATRIX,
+    SC_MATRIX,
+
+    CS_TANK_MATRIX,
+    SC_TANK_MATRIX,
+
     CS_POSITION,
     SC_POSITION,
 
@@ -36,4 +42,16 @@ typedef struct tagPostion_Desc : PACKET_DESC
 {
     _float3 vPos{};
 }POSITION_DESC;
+
+typedef struct tagMatrix_Desc : PACKET_DESC
+{
+    _float4x4 Matrix{};
+}MATRIX_DESC;
+
+typedef struct tagTankMatrix_Desc : PACKET_DESC
+{
+    _float4x4 Matrix_Body{};
+    //_float4x4 Matrix_Turret{};
+    //_float4x4 Matrix_Gun{};
+}TANK_MATRIX_DESC;
 

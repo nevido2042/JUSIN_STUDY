@@ -48,8 +48,7 @@ using namespace Client;
 
 #define PING_TIME 1.f
 
-
-
+#define GET_GAMEMANAGER static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))
 
 
 

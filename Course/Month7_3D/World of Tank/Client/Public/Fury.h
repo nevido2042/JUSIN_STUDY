@@ -13,6 +13,7 @@ NS_BEGIN(Client)
 class CFury final : public CLandObject
 {
 public:
+#pragma message ("탱크 디스크립션으로 바꾸면 좋을듯 티거랑 공용으로 쓰게")
 	typedef struct tagFuryDesc : public GAMEOBJECT_DESC
 	{
 		_uint	iID = { SESSION_MAX };
@@ -30,9 +31,11 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+
+public:
+	_uint	Get_ID() const { return m_iID; }
 private:
 	void Destroyed();
-
 private:
 	void Move(_float fTimeDelta);
 

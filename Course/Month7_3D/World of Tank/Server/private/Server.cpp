@@ -136,77 +136,14 @@ void CServer::AcceptProc()
         CSession* pNewSession = new CSession(clntAdr, clntSock, m_iID, Position);
 
         //아이디 부여
-
 		PACKET_DESC Desc{};
         Desc.iID = m_iID;
         Send_Packet_Unicast(pNewSession, ENUM_CLASS(PacketType::SC_GIVE_ID), &Desc);
-
-        //링버퍼 초기화
-        /*pNewSession->m_RecvQ = CRingBuffer(5000);
-        pNewSession->m_SendQ = CRingBuffer(5000);*/
-
-        ////신입 자기 캐릭 생성
-        //CPacketHandler::mp_SC_CreateMyCharacter(&m_Packet,
-        //    pNewSession->Get_SessionInfo().iID,
-        //    pNewSession->Get_SessionInfo().Position
-        //);
-        //Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-
-        ////신입 뿌리기
-        //CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
-        //    pNewSession->Get_SessionInfo().iID,
-        //    pNewSession->Get_SessionInfo().Position
-        //);
-        //Send_Broadcast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-
-        ////신입에게 기존 유저 뿌리기
-        //for (CSession* pSession : m_vecSession)
-        //{
-        //    //신입 뿌리기
-        //    CPacketHandler::mp_SC_CreateOtherCharacter(&m_Packet,
-        //        pSession->Get_SessionInfo().iID,
-        //        pSession->Get_SessionInfo().Position
-        //    );
-        //    Send_Unicast(pNewSession, (_byte*)m_Packet.Get_BufferPtr(), m_Packet.Get_DataSize());
-        //}
 
         m_vecSession.push_back(pNewSession);
         m_iID++;
     }
 }
-
-//void CServer::Send_Unicast(CSession* pSession, const _byte* pMSG, const int iSize)
-//{
-//    int iResult{ 0 };
-//    iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
-//    if (iResult < iSize)
-//    {
-//        wprintf_s(L"sendQ.Enqueue() error\n");
-//        exit(1);
-//    }
-//
-//    m_Packet.Clear();
-//}
-//
-//void CServer::Send_Broadcast(CSession* _pSession, const _byte* pMSG, const int iSize)
-//{
-//    int iResult{ 0 };
-//
-//    for (CSession* pSession : m_vecSession)
-//    {
-//        if (pSession == _pSession)
-//            continue;
-//
-//        iResult = pSession->Get_SendQ().Enqueue((_byte*)pMSG, iSize);
-//        if (iResult < iSize)
-//        {
-//            wprintf_s(L"sendQ.Enqueue() error\n");
-//            exit(1);
-//        }
-//    }
-//
-//    m_Packet.Clear();
-//}
 
 void CServer::Read_Proc(CSession* _pSession)
 {
@@ -616,6 +553,12 @@ HRESULT CServer::Define_Packets()
 
             if (iPlayerCount_JoinMatch == 2) //두명이 ready 상태면 시작시키기
             {
+                for (CSession* _pSession : m_vecSession)
+                {
+                    //일단 랜덤 배치
+                    _pSession->Get_SessionInfo().vPosition = _float3{ 300.f + rand() % 30, 100.f + +rand() % 30, 292.f + rand() % 30 };
+                }
+
                 //게임 씬 전환 해라
                 Send_Packet_Broadcast(nullptr, ENUM_CLASS(PacketType::SC_START_GAME), pArg);
             }
@@ -638,13 +581,21 @@ HRESULT CServer::Define_Packets()
 
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
         {
+            //로딩이 완료되면
             PACKET_DESC Packet_Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(PACKET_DESC));
             Clear_Packet();
 
             CSession* pSession = Find_Session(Packet_Desc.iID);
-            //로딩이 완료되면 상대 캐릭터 만들어라
+            
+            POSITION_DESC My_Pos_Desc = {};
+            My_Pos_Desc.iID = Packet_Desc.iID;
+            My_Pos_Desc.vPos = pSession->Get_SessionInfo().vPosition;
 
+            //1. 내 캐릭터와
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), &My_Pos_Desc);
+
+            //2. 상대 캐릭터 만들어라
             for (CSession* pOther : m_vecSession)
             {
                 if (pOther == pSession)
@@ -652,17 +603,32 @@ HRESULT CServer::Define_Packets()
 
                 POSITION_DESC Pos_Desc = {};
                 Pos_Desc.iID = pOther->Get_SessionInfo().iID;
-                Pos_Desc.vPos = { 312.f, 100.f, 292.f };
+                Pos_Desc.vPos = pOther->Get_SessionInfo().vPosition;
 
                 cout << "Send_Packet_Unicast(SC_CREATE_OTHER_CHARACTER)" << endl;
                 cout << "ID: " << Pos_Desc.iID << endl;
                 cout << "Pos: " << Pos_Desc.vPos.x << endl;
 
                 Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Pos_Desc);
-                Clear_Packet();
             }
 
             
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
+
+            Update_Header();
         })))
         return E_FAIL;
 
@@ -678,6 +644,70 @@ HRESULT CServer::Define_Packets()
 
             Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
 
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), [this](void* pArg)
+        {
+            cout << "CS_TANK_MATRIX" << endl;
+
+            TANK_MATRIX_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(TANK_MATRIX_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix_Body;
+            //pSession->Get_SessionInfo().Matrix_Turret = Desc.Matrix_Turret;
+            //pSession->Get_SessionInfo().Matrix_Gun = Desc.Matrix_Gun;
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_TANK_MATRIX), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_TANK_MATRIX), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_TANK_MATRIX);
+
+            cout << "SC_TANK_MATRIX" << endl;
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(TANK_MATRIX_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX), [this](void* pArg)
+        {
+            MATRIX_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX), &Desc);
+        })))
+        return E_FAIL;
+
+    
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_MATRIX);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
             Update_Header();
         })))
         return E_FAIL;
@@ -709,7 +739,7 @@ HRESULT CServer::Define_Packets()
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
-            pSession->Get_SessionInfo().Position = Desc.vPos;
+            pSession->Get_SessionInfo().vPosition = Desc.vPos;
 
             Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_POSITION), &Desc);
 

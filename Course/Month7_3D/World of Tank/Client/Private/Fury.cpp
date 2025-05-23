@@ -4,6 +4,8 @@
 #include "Engine.h"
 #include "FuryTrackLeft.h"
 #include "FuryTrackRight.h"
+#include "FuryTurret.h"
+#include "FuryGun.h"
 
 CFury::CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLandObject{ pDevice, pContext }
@@ -62,8 +64,8 @@ HRESULT CFury::Initialize(void* pArg)
 
 void CFury::Priority_Update(_float fTimeDelta)
 {
-
-	Move(fTimeDelta);
+	if(m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd)
+		Move(fTimeDelta);
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
 	{
@@ -72,13 +74,40 @@ void CFury::Priority_Update(_float fTimeDelta)
 
 	__super::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
-	CGameObject::Priority_Update(fTimeDelta);
+	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd)
+		CGameObject::Priority_Update(fTimeDelta);
 
 }
 
 void CFury::Update(_float fTimeDelta)
 {
+
 	CGameObject::Update(fTimeDelta);
+
+	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
+	{
+		MATRIX_DESC Desc{};
+		Desc.iID = m_pGameInstance->Get_ID();
+		XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
+
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX), &Desc);
+	}
+
+	//if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
+	//{
+	//	TANK_MATRIX_DESC Desc{};
+	//	Desc.iID = m_pGameInstance->Get_ID();
+	//	XMStoreFloat4x4(&Desc.Matrix_Body, m_pTransformCom->Get_WorldMatrix());
+
+	//	/*CFuryTurret* pTurret = static_cast<CFuryTurret*>(Find_PartObject(TEXT("Part_Turret")));
+	//	XMStoreFloat4x4(&Desc.Matrix_Turret, pTurret->Get_Transform()->Get_WorldMatrix());*/
+
+	//	/*CFuryGun* pFuryGun = static_cast<CFuryGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+	//	XMStoreFloat4x4(&Desc.Matrix_Gun, pFuryGun->Get_Transform()->Get_WorldMatrix());*/
+
+	//	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), &Desc);
+	//}
+	
 }
 
 void CFury::Late_Update(_float fTimeDelta)
@@ -87,6 +116,7 @@ void CFury::Late_Update(_float fTimeDelta)
 
 	if (m_bDestroyed)
 		return;
+
 
 	CGameObject::Late_Update(fTimeDelta);
 
