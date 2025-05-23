@@ -31,7 +31,7 @@ public:
 	HRESULT Login();
 
 public:
-	HRESULT Send_Packet(_uint iPacketType, void* pArg);
+	HRESULT Send_Packet(_uint iPacketType, void* pArg = nullptr);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 private:
 	void	Enqueue_SendBuffer();

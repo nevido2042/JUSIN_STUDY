@@ -108,7 +108,7 @@ public:
 	HRESULT Login();
 	void	Set_ID(_uint iID);
 	_uint	Get_ID();
-	HRESULT Send_Packet(_uint iPacketType, void* pArg);
+	HRESULT Send_Packet(_uint iPacketType, void* pArg = nullptr);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 	NETWORK_STATUS	Get_Network_Status();
 	void			Set_Network_Status(NETWORK_STATUS eStatus);

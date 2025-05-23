@@ -22,8 +22,11 @@ HRESULT CEngine::Initialize_Prototype()
 
 HRESULT CEngine::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC			Desc{};
+	ENGINE_DESC* pDesc = static_cast<ENGINE_DESC*>(pArg);
+	m_iID = pDesc->iID;
 
+	GAMEOBJECT_DESC			Desc{};
+	
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Engine"));
@@ -60,81 +63,32 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		if (m_pGameInstance->Key_Pressing(DIK_W))
+		{
+			PRESS_W_DESC Desc{};
+			Desc.bPressW = true;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W),&Desc);
+		}
+		else
+		{
+			PRESS_W_DESC Desc{};
+			Desc.bPressW = false;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
+		}
+	}
 
 }
 
 void CEngine::Update(_float fTimeDelta)
 {
-	if (!m_IsOn && m_pGameInstance->Key_Pressing(DIK_W))
-	{
-		Start_Engine();
-	}
-
-	if (m_IsOn)
-	{
-		
-		if (m_pGameInstance->Key_Pressing(DIK_W))
-		{
-			m_eGear = GEAR::DRIVE;
-
-			Accel_Move(fTimeDelta);
-		}
-		else if (m_pGameInstance->Key_Pressing(DIK_S))
-		{
-			m_eGear = GEAR::REVERSE;
-
-			Accel_Move(-fTimeDelta);
-		}
-		else
-		{
-			m_eGear = GEAR::END;
-
-			const _float fLerpSpeed = 10.f;
-			m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
-
-			if (fabsf(m_fMoveSpeed) < 0.05f)
-				m_fMoveSpeed = 0.f;
-		}
-
-		if (m_pGameInstance->Key_Pressing(DIK_A))
-		{
-			if(m_eGear == GEAR::REVERSE)
-				Accel_Turn(fTimeDelta);
-			else
-				Accel_Turn(-fTimeDelta);
-		}
-		else if (m_pGameInstance->Key_Pressing(DIK_D))
-		{
-			if (m_eGear == GEAR::REVERSE)
-				Accel_Turn(-fTimeDelta);
-			else
-				Accel_Turn(fTimeDelta);
-		}
-		else
-		{
-			const _float fLerpSpeed = 10.f;
-			m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
-
-			if (fabsf(m_fTurnSpeed) < 0.05f)
-				m_fTurnSpeed = 0.f;
-		}
-
-		if (!m_pGameInstance->Key_Pressing(DIK_W) && !m_pGameInstance->Key_Pressing(DIK_A) && !m_pGameInstance->Key_Pressing(DIK_S) && !m_pGameInstance->Key_Pressing(DIK_D))
-		{
-			const _float fLerpSpeed = 10.f;
-			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
-
-			if (fabsf(m_fRPM) < 0.05f)
-				m_fRPM = 0.f;
-		}
-
-
-		if (m_pGameInstance->Key_Pressing(DIK_SPACE))
-		{
-			End_Engine();
-		}
-	}
-
+	if (m_pGameInstance->Get_ID() == m_iID)
+		Input(fTimeDelta);
+	else
+		Input_Network(fTimeDelta);
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
@@ -183,6 +137,124 @@ void CEngine::Accel_RPM(_float fTimeDelta)
 		m_fRPM = RPM_MAX;
 	else if (m_fRPM < 0.f)
 		m_fRPM = 0.f;
+}
+
+void CEngine::Input(_float fTimeDelta)
+{
+	if (!m_IsOn && m_pGameInstance->Key_Pressing(DIK_W))
+	{
+		Start_Engine();
+	}
+
+	if (m_IsOn)
+	{
+
+		if (m_pGameInstance->Key_Pressing(DIK_W))
+		{
+			m_eGear = GEAR::DRIVE;
+
+			Accel_Move(fTimeDelta);
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_S))
+		{
+			m_eGear = GEAR::REVERSE;
+
+			Accel_Move(-fTimeDelta);
+		}
+		else
+		{
+			m_eGear = GEAR::END;
+
+			const _float fLerpSpeed = 10.f;
+			m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
+
+			if (fabsf(m_fMoveSpeed) < 0.05f)
+				m_fMoveSpeed = 0.f;
+		}
+
+		if (m_pGameInstance->Key_Pressing(DIK_A))
+		{
+			if (m_eGear == GEAR::REVERSE)
+				Accel_Turn(fTimeDelta);
+			else
+				Accel_Turn(-fTimeDelta);
+		}
+		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			if (m_eGear == GEAR::REVERSE)
+				Accel_Turn(-fTimeDelta);
+			else
+				Accel_Turn(fTimeDelta);
+		}
+		else
+		{
+			const _float fLerpSpeed = 10.f;
+			m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+
+			if (fabsf(m_fTurnSpeed) < 0.05f)
+				m_fTurnSpeed = 0.f;
+		}
+
+		if (!m_pGameInstance->Key_Pressing(DIK_W) && !m_pGameInstance->Key_Pressing(DIK_A) && !m_pGameInstance->Key_Pressing(DIK_S) && !m_pGameInstance->Key_Pressing(DIK_D))
+		{
+			const _float fLerpSpeed = 10.f;
+			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
+
+			if (fabsf(m_fRPM) < 0.05f)
+				m_fRPM = 0.f;
+		}
+
+
+		if (m_pGameInstance->Key_Pressing(DIK_SPACE))
+		{
+			End_Engine();
+		}
+	}
+}
+
+void CEngine::Input_Network(_float fTimeDelta)
+{
+	if (!m_IsOn && m_bPressW)
+	{
+		Start_Engine();
+	}
+
+	if (m_IsOn)
+	{
+
+		if (m_bPressW)
+		{
+			m_eGear = GEAR::DRIVE;
+
+			Accel_Move(fTimeDelta);
+		}
+
+		m_eGear = GEAR::END;
+
+		const _float fLerpSpeed = 10.f;
+		m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
+
+		if (fabsf(m_fMoveSpeed) < 0.05f)
+			m_fMoveSpeed = 0.f;
+
+
+
+		//const _float fLerpSpeed = 10.f;
+		m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+
+		if (fabsf(m_fTurnSpeed) < 0.05f)
+			m_fTurnSpeed = 0.f;
+
+
+		if (!m_bPressW)
+		{
+			//const _float fLerpSpeed = 10.f;
+			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
+
+			if (fabsf(m_fRPM) < 0.05f)
+				m_fRPM = 0.f;
+		}
+	}
 }
 
 HRESULT CEngine::Ready_Components()

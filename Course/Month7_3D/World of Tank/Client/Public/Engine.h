@@ -15,6 +15,11 @@ NS_BEGIN(Client)
 
 class CEngine final : public CGameObject
 {
+public:
+	typedef struct tagEngineDesc : public GAMEOBJECT_DESC
+	{
+		_uint	iID = { SESSION_MAX };
+	}ENGINE_DESC;
 private:
 	CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEngine(const CEngine& Prototype);
@@ -44,6 +49,15 @@ public:
 	_float	Get_MovePower() const { return m_fMoveSpeed; }
 	_float	Get_RPM() const { return m_fRPM; }
 
+	void	Set_PressW(_bool bPressW) { m_bPressW = bPressW; }
+
+private:
+	void	Input(_float fTimeDelta);
+	void	Input_Network(_float fTimeDelta);
+
+private:
+	_bool	m_bPressW = { false };
+	_uint	m_iID = { SESSION_MAX };
 private:
 	string		m_EngineSound_Start = {};
 	string		m_EngineSound_Loop = {};
