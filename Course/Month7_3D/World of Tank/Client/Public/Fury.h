@@ -12,6 +12,11 @@ NS_BEGIN(Client)
 
 class CFury final : public CLandObject
 {
+public:
+	typedef struct tagFuryDesc : public GAMEOBJECT_DESC
+	{
+		_uint	iID = { SESSION_MAX };
+	}FURY_DESC;
 private:
 	CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CFury(const CFury& Prototype);
@@ -32,7 +37,7 @@ private:
 	void Move(_float fTimeDelta);
 
 private:
-	//_float	m_fTurnDirection = { 0.f };
+	_uint	m_iID = { SESSION_MAX };
 
 private:
 	_bool	m_bDestroyed = { false };

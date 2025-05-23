@@ -10,8 +10,9 @@ enum class PacketType
     CS_PING,
     SC_PING,
 
-    CS_JOIN_MATCH_QUEUE,
+    CS_JOIN_MATCH,
     SC_START_GAME,
+    CS_LOAD_COMPLETE,
 
     CS_POSITION,
     SC_POSITION,

@@ -24,13 +24,15 @@ HRESULT CFury::Initialize_Prototype()
 
 HRESULT CFury::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+	FURY_DESC* pDesc = static_cast<FURY_DESC*>(pArg);
+	m_iID = pDesc->iID;
 
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 0.1f;
 	Desc.fSpeedPerSec = 0.5f;
 	lstrcpy(Desc.szName, TEXT("Fury"));
 
+#pragma message ("New레벨에 소환한다는게 위험할 수도 있겠다. 다른 플레이어 소환할때...지금은 괜찮지만")
 	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.strComponentTag = TEXT("Com_VIBuffer");

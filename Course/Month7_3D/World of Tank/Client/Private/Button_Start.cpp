@@ -42,12 +42,18 @@ void CButton_Start::Priority_Update(_float fTimeDelta)
 
 void CButton_Start::Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
+		return;
+
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
-		//현재 레벨아 레벨 체인지 될거야~
-		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE));
-	}
+		PACKET_DESC Desc{};
+		Desc.iID = m_pGameInstance->Get_ID();
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), &Desc);
 
+		//현재 레벨아 레벨 체인지 될거야~
+		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::GAMEPLAY));
+	}
 }
 
 void CButton_Start::Late_Update(_float fTimeDelta)

@@ -40,7 +40,7 @@ private:
 
 public:
 	HRESULT Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg);
-	HRESULT Send_Packet_Broadcast(CSession* pSession, _uint iPacketType, void* pArg);
+	HRESULT Send_Packet_Broadcast(CSession* pSession, _uint iPacketType, void* pArg = nullptr);
 	HRESULT Define_Packet(_uint iPacketType, function<void(void*)> pFunction);
 public:
 	HRESULT	Clear_Packet();
@@ -55,8 +55,8 @@ private:
 
 private:
 	SOCKET						m_ServSock = { INVALID_SOCKET };
-	_int						m_iPort = {};
-	_int						m_iID = {};
+	_uint						m_iPort = {};
+	_uint						m_iID = {};
 
 	vector<CSession*>			m_vecSession;
 

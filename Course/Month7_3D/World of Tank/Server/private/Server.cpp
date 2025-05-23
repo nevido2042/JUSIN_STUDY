@@ -521,16 +521,15 @@ HRESULT CServer::Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void
     return S_OK;
 }
 
-HRESULT CServer::Send_Packet_Broadcast(CSession* pSession, _uint iPacketType, void* pArg)
+HRESULT CServer::Send_Packet_Broadcast(CSession* _pSession, _uint iPacketType, void* pArg)
 {
-#pragma message ("일단 만들었지만 사용 해본적 없음")
     auto it = m_PacketTypes.find(iPacketType);
     if (it == m_PacketTypes.end())
         return E_FAIL;
 
     for (CSession* pSession : m_vecSession)
         {
-            if (pSession == pSession)
+            if (pSession == _pSession)
                 continue;
 
             it->second(pArg);
@@ -598,15 +597,28 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH_QUEUE), [this](void* pArg)
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), [this](void* pArg)
         {
             PACKET_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
             Clear_Packet();
 
-            CSession* pSession = Find_Session(Desc.iID);
+            Find_Session(Desc.iID)->Get_SessionInfo().isJoinMatch = true;
 
-            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_START_GAME), &Desc);
+            //대기중인 플레이어 갯수 확인 후 있는 애들 게임 스타트 시작시키기
 
+            _uint iPlayerCount_JoinMatch = 0;
+             for (CSession* pSession : m_vecSession)
+             {
+                 if(true == pSession->Get_SessionInfo().isJoinMatch)
+                     ++iPlayerCount_JoinMatch;
+             }
+
+            if (iPlayerCount_JoinMatch == 2) //두명이 ready 상태면 시작시키기
+            {
+                //게임 씬 전환 해라
+                Send_Packet_Broadcast(nullptr, ENUM_CLASS(PacketType::SC_START_GAME), pArg);
+            }
         })))
         return E_FAIL;
 
@@ -619,6 +631,58 @@ HRESULT CServer::Define_Packets()
             tHeader.byType = ENUM_CLASS(PacketType::SC_START_GAME);
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
+        {
+            PACKET_DESC Packet_Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(PACKET_DESC));
+            Clear_Packet();
+
+            cout << "Packet_Desc ID: " << Packet_Desc.iID << endl;
+
+            CSession* pSession = Find_Session(Packet_Desc.iID);
+            //로딩이 완료되면 상대 캐릭터 만들어라
+
+            /*for (CSession* pOther : m_vecSession)
+            {
+                if (pOther == pSession)
+                    continue;
+
+
+            }*/
+
+            POSITION_DESC Pos_Desc = {};
+            Pos_Desc.iID = 0;// pOther->Get_SessionInfo().iID;
+            Pos_Desc.vPos = { 312.f, 100.f, 292.f };
+
+            
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Pos_Desc);
+            Clear_Packet();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+            //POSITION_DESC* pPosition_Desc = static_cast<POSITION_DESC*>(pArg);
+            POSITION_DESC Position_Desc{};
+            Position_Desc.iID = 3;
+            Position_Desc.vPos = _float3{ 300.f, 300.f, 300.f };
+            //Position_Desc.iID = pPosition_Desc->iID;
+            //Position_Desc.vPos = pPosition_Desc->vPos;
+
+            Input_Data(reinterpret_cast<_byte*>(&Position_Desc), sizeof(POSITION_DESC));
 
             Update_Header();
         })))
@@ -646,7 +710,7 @@ HRESULT CServer::Define_Packets()
             POSITION_DESC Desc{};
 			Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
 
-            cout << Desc.vPos.x << ' ' << Desc.vPos.y << ' ' << Desc.vPos.z << endl;
+            //cout << Desc.vPos.x << ' ' << Desc.vPos.y << ' ' << Desc.vPos.z << endl;
 
             Clear_Packet();
 
@@ -664,7 +728,7 @@ HRESULT CServer::Define_Packets()
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
             CSession* pSession = Find_Session(Desc.iID);
             Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_PING), &Desc);
-            cout << "CS_PING: ID_" << Desc.iID << endl;
+            //cout << "CS_PING: ID_" << Desc.iID << endl;
             Clear_Packet();
         })))
         return E_FAIL;

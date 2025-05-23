@@ -600,9 +600,12 @@ HRESULT CLoader::Loading_For_GamePlay()
 	Desc.iID = m_pGameInstance->Get_ID();
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
 
+	CGameManager* pGameManager = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")));
+
 	while (true)
 	{
-		//여기서 패킷을 기다릴수 있을까?
+		if (pGameManager->Get_isGameStart())
+			break;
 	}
 
 	m_isFinished = true;

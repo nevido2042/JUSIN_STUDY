@@ -71,10 +71,10 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
-	POSITION_DESC Desc;
-	XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
+	//POSITION_DESC Desc;
+	//XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
-	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
+	//m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)

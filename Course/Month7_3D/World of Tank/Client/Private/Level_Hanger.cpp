@@ -69,11 +69,11 @@ void CLevel_Hanger::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE))))
 			return;
 	}
-	else if (m_pGameInstance->Key_Down(DIK_G))
+	/*else if (m_pGameInstance->Key_Down(DIK_G))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::GAMEPLAY))))
 			return;
-	}
+	}*/
 	else if (m_pGameInstance->Key_Down(DIK_T))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::MAPTOOL))))

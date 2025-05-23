@@ -52,6 +52,10 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))
 		return E_FAIL;
 
+	PACKET_DESC Desc = {};
+	Desc.iID = m_pGameInstance->Get_ID();
+	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), &Desc);
+	m_pGameInstance->Clear_Packet();
 
 	return S_OK;
 }

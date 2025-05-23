@@ -291,8 +291,6 @@ void CNetwork::Decode_Packet(const PACKET_HEADER& _tHeader)
 	auto it = m_PacketTypes.find(_tHeader.byType);
 	if (it != m_PacketTypes.end())
 	{
-#pragma message ("여기서 디스크립션 넣어서 데이터 받아오면 좋을듯?")
-
 		//들어온 패킷 데이터는 OutPutData()에서 처리
 		it->second(nullptr);
 	}

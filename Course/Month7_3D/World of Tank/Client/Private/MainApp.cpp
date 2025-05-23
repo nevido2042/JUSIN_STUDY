@@ -9,6 +9,12 @@
 #include "Loading_Spinner.h"
 #include "WOT_Icon.h"
 
+#pragma region For_Packet
+#include "GameManager.h"
+#include "Fury.h"
+#pragma endregion
+
+
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
 {
@@ -118,13 +124,13 @@ HRESULT CMainApp::Define_Packets()
 		})))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH_QUEUE), [this](void* pArg)
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
 
 			PACKET_HEADER tHeader{};
 			tHeader.byCode = PACKET_CODE;
-			tHeader.byType = ENUM_CLASS(PacketType::CS_JOIN_MATCH_QUEUE);
+			tHeader.byType = ENUM_CLASS(PacketType::CS_JOIN_MATCH);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
@@ -138,7 +144,45 @@ HRESULT CMainApp::Define_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
 		{
+			CGameManager* pGameManager = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")));
+			pGameManager->Set_isGameStart(true);
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
+		{
+
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_LOAD_COMPLETE);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+			PACKET_DESC* Desc = static_cast<PACKET_DESC*>(pArg);
+			Desc->iID = m_pGameInstance->Get_ID();
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Desc), sizeof(PACKET_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
+		{
+			POSITION_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
 			
+			cout << "ID" << Desc.iID << endl;
+
+			CFury::FURY_DESC FuryDesc = {};
+			FuryDesc.iID = Desc.iID;
+			FuryDesc.vInitPosition = Desc.vPos;
+			FuryDesc.iID = 1;// Desc.iID;
+			FuryDesc.vInitPosition = { 312.f, 100.f, 292.f };// Desc.vPos;
+
+			//cout << "ID" << FuryDesc.iID << endl;
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"), &FuryDesc);
 		})))
 		return E_FAIL;
 
@@ -165,10 +209,10 @@ HRESULT CMainApp::Define_Packets()
 
 	if(FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
 		{
-			POSITION_DESC pDesc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&pDesc), sizeof(POSITION_DESC));
+			POSITION_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
 
-			::cout << pDesc.vPos.x << ' ' << pDesc.vPos.y << ' ' << pDesc.vPos.z << endl;
+			::cout << Desc.vPos.x << ' ' << Desc.vPos.y << ' ' << Desc.vPos.z << endl;
 		})))
 		return E_FAIL;
 

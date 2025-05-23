@@ -24,8 +24,13 @@ public:
 	void		Set_Select_Tank(TANK eTank) { m_eSelectTank = eTank; }
 	TANK		Get_Select_Tank() { return m_eSelectTank; }
 
+public:
+	_bool		Get_isGameStart() const { return m_isGameStart; }
+	void		Set_isGameStart(_bool isGameStart) { m_isGameStart = isGameStart; }
+
 private:
 	TANK		m_eSelectTank = { TANK::FURY };
+	_bool		m_isGameStart = { false };
 
 public:
 	static CGameManager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
