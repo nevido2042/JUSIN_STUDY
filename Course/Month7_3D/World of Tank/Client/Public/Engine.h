@@ -51,6 +51,8 @@ public:
 
 	void	Set_PressW(_bool bPress) { m_bPressW = bPress; }
 	void	Set_PressS(_bool bPress) { m_bPressS = bPress; }
+	void	Set_PressA(_bool bPress) { m_bPressA = bPress; }
+	void	Set_PressD(_bool bPress) { m_bPressD = bPress; }
 
 private:
 	void	Input(_float fTimeDelta);
@@ -59,6 +61,8 @@ private:
 private:
 	_bool	m_bPressW = { false };
 	_bool	m_bPressS = { false };
+	_bool	m_bPressA = { false };
+	_bool	m_bPressD = { false };
 	_uint	m_iID = { SESSION_MAX };
 private:
 	string		m_EngineSound_Start = {};

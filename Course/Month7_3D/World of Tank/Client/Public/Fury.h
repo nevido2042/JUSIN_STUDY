@@ -43,6 +43,10 @@ private:
 	_uint	m_iID = { SESSION_MAX };
 
 private:
+	const _float	m_fSyncInterval = { 0.5f };
+	_float			m_fTimeAcc = { 0 };
+
+private:
 	_bool	m_bDestroyed = { false };
 private:
 	ID3D11RasterizerState*	m_pRasterState = { nullptr };

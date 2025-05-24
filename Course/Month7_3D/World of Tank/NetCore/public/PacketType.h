@@ -26,6 +26,12 @@ enum class PacketType
     CS_PRESS_S,
     SC_PRESS_S,
 
+    CS_PRESS_A,
+    SC_PRESS_A,
+
+    CS_PRESS_D,
+    SC_PRESS_D,
+
 
     CS_MATRIX,
     SC_MATRIX,

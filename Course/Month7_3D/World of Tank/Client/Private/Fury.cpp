@@ -83,29 +83,21 @@ void CFury::Update(_float fTimeDelta)
 
 	CGameObject::Update(fTimeDelta);
 
-	/*if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
+	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
 	{
-		MATRIX_DESC Desc{};
-		Desc.iID = m_pGameInstance->Get_ID();
-		XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
+		if (m_fTimeAcc > m_fSyncInterval)
+		{
+			m_fTimeAcc = 0.f;
 
-		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX), &Desc);
-	}*/
+			MATRIX_DESC Desc{};
+			Desc.iID = m_pGameInstance->Get_ID();
+			XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
 
-	//if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
-	//{
-	//	TANK_MATRIX_DESC Desc{};
-	//	Desc.iID = m_pGameInstance->Get_ID();
-	//	XMStoreFloat4x4(&Desc.Matrix_Body, m_pTransformCom->Get_WorldMatrix());
-
-	//	/*CFuryTurret* pTurret = static_cast<CFuryTurret*>(Find_PartObject(TEXT("Part_Turret")));
-	//	XMStoreFloat4x4(&Desc.Matrix_Turret, pTurret->Get_Transform()->Get_WorldMatrix());*/
-
-	//	/*CFuryGun* pFuryGun = static_cast<CFuryGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
-	//	XMStoreFloat4x4(&Desc.Matrix_Gun, pFuryGun->Get_Transform()->Get_WorldMatrix());*/
-
-	//	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), &Desc);
-	//}
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX), &Desc);
+		}
+		else
+			m_fTimeAcc += fTimeDelta;
+	}
 	
 }
 

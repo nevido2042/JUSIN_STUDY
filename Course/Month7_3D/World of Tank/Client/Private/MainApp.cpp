@@ -274,6 +274,72 @@ HRESULT CMainApp::Define_Packets()
 		})))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_PRESS_A);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_A), [this](void* pArg)
+		{
+			PRESS_KEY_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << " Press A " << Desc.bPressKey << endl;
+					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressA(Desc.bPressKey);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_PRESS_D);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_D), [this](void* pArg)
+		{
+			PRESS_KEY_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << " Press D " << Desc.bPressKey << endl;
+					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressD(Desc.bPressKey);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();

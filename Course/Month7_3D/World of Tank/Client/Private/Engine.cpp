@@ -63,7 +63,10 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd))
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
+		return;
+
+	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd)
 	{
 		if (m_pGameInstance->Key_Down(DIK_W))
 		{
@@ -93,6 +96,36 @@ void CEngine::Priority_Update(_float fTimeDelta)
 			Desc.bPressKey = false;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
+		}
+
+		if (m_pGameInstance->Key_Down(DIK_A))
+		{
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = true;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
+		}
+		else if (m_pGameInstance->Key_Up(DIK_A))
+		{
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = false;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
+		}
+
+		if (m_pGameInstance->Key_Down(DIK_D))
+		{
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = true;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
+		}
+		else if (m_pGameInstance->Key_Up(DIK_D))
+		{
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = false;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
 		}
 	}
 
@@ -261,14 +294,29 @@ void CEngine::Input_Network(_float fTimeDelta)
 		}
 
 		
-		//const _float fLerpSpeed = 10.f;
-		/*m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+		if (m_bPressA)
+		{
+			if (m_eGear == GEAR::REVERSE)
+				Accel_Turn(fTimeDelta);
+			else
+				Accel_Turn(-fTimeDelta);
+		}
+		else if (m_bPressD)
+		{
+			if (m_eGear == GEAR::REVERSE)
+				Accel_Turn(-fTimeDelta);
+			else
+				Accel_Turn(fTimeDelta);
+		}
+		else
+		{
+			m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
 
-		if (fabsf(m_fTurnSpeed) < 0.05f)
-			m_fTurnSpeed = 0.f;*/
+			if (fabsf(m_fTurnSpeed) < 0.05f)
+				m_fTurnSpeed = 0.f;
+		}
 
-
-		if (!m_bPressW && !m_bPressS)
+		if (!m_bPressW && !m_bPressS && !m_bPressA && !m_bPressD)
 		{
 			//const _float fLerpSpeed = 10.f;
 			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
