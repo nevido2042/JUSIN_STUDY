@@ -3,6 +3,8 @@
 #include "Engine_Defines.h"
 #include "NetCore_Define.h"
 
+enum class TANK { FURY, TIGER, END };
+
 enum class PacketType
 {
     SC_GIVE_ID,
@@ -67,7 +69,7 @@ enum class PacketType
 #pragma pack(push, 1)
 typedef struct tagPacket_Desc
 {
-    _uint iID{ SESSION_MAX }; //SESSION_MAX Àº ¼­¹ö
+    _int iID{ -1 };
 }PACKET_DESC;
 
 typedef struct tagBool_Desc : PACKET_DESC
@@ -76,14 +78,20 @@ typedef struct tagBool_Desc : PACKET_DESC
 }BOOL_DESC;
 
 
-
-
-
-
 typedef struct tagPostion_Desc : PACKET_DESC
 {
     _float3 vPos{};
 }POSITION_DESC;
+
+typedef struct tagJoinMatch_Desc : PACKET_DESC
+{
+    TANK eTank{ TANK::END };
+}JOIN_MATCH_DESC;
+
+typedef struct tagCreateOtherTank_Desc : POSITION_DESC
+{
+    TANK eTank{ TANK::END };
+}CREATE_OTHER_TANK_DESC;
 
 typedef struct tagMatrix_Desc : PACKET_DESC
 {

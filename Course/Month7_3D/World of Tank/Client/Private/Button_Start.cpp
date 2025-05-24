@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
+#include "GameManager.h"
+
 CButton_Start::CButton_Start(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
 {
@@ -47,7 +49,10 @@ void CButton_Start::Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
-		PACKET_DESC Desc{};
+
+		JOIN_MATCH_DESC Desc{};
+		CGameManager* pGameManager = GET_GAMEMANAGER;
+		Desc.eTank = pGameManager->Get_Select_Tank();
 		Desc.iID = m_pGameInstance->Get_ID();
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), &Desc);
 

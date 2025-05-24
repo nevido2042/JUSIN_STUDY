@@ -81,17 +81,17 @@ HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3
 
 	switch (m_eSelectTank)
 	{
-	case Client::TANK::FURY:
+	case TANK::FURY:
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 			ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 			return E_FAIL;
 		break;
-	case Client::TANK::TIGER:
+	case TANK::TIGER:
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 			ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 			return E_FAIL;
 		break;
-	case Client::TANK::END:
+	case TANK::END:
 		break;
 	default:
 		break;

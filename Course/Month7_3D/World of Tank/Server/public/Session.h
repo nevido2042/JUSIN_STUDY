@@ -7,7 +7,7 @@
 class CSession
 {
 public:
-	CSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, int _id, _float3 _Position);
+	CSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, _int _id, _float3 _Position);
 	~CSession();
 public:
 	void				Initialize();

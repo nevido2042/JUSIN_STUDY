@@ -1,6 +1,6 @@
 #include "Session.h"
 
-CSession::CSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, int _id, _float3 _Position)
+CSession::CSession(SOCKADDR_IN _clntAdr, SOCKET _clntSock, _int _id, _float3 _Position)
 	:m_ClientAddress(_clntAdr), m_ClientSocket(_clntSock)
 {
 	//추후에 플레이어 정보를 따로 저장하는 클래스를 만드는 것이 좋을 것 같음

@@ -536,11 +536,15 @@ HRESULT CServer::Define_Packets()
 
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), [this](void* pArg)
         {
-            PACKET_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
+            JOIN_MATCH_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(JOIN_MATCH_DESC));
             Clear_Packet();
 
-            Find_Session(Desc.iID)->Get_SessionInfo().isJoinMatch = true;
+            CSession* pSession = Find_Session(Desc.iID);
+            pSession->Get_SessionInfo().isJoinMatch = true;
+            pSession->Get_SessionInfo().eTank = Desc.eTank;
+
+            cout << "ID: " << Desc.iID << " TankType: " << ENUM_CLASS(pSession->Get_SessionInfo().eTank) << endl;
 
             //대기중인 플레이어 갯수 확인 후 있는 애들 게임 스타트 시작시키기
 
@@ -601,15 +605,16 @@ HRESULT CServer::Define_Packets()
                 if (pOther == pSession)
                     continue;
 
-                POSITION_DESC Pos_Desc = {};
-                Pos_Desc.iID = pOther->Get_SessionInfo().iID;
-                Pos_Desc.vPos = pOther->Get_SessionInfo().vPosition;
+                CREATE_OTHER_TANK_DESC Other_Desc = {};
+                Other_Desc.iID = pOther->Get_SessionInfo().iID;
+                Other_Desc.vPos = pOther->Get_SessionInfo().vPosition;
+                Other_Desc.eTank = pOther->Get_SessionInfo().eTank;
 
                 cout << "Send_Packet_Unicast(SC_CREATE_OTHER_CHARACTER)" << endl;
-                cout << "ID: " << Pos_Desc.iID << endl;
-                cout << "Pos: " << Pos_Desc.vPos.x << endl;
+                cout << "ID: " << Other_Desc.iID << endl;
+                cout << "Pos: " << Other_Desc.vPos.x << endl;
 
-                Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Pos_Desc);
+                Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Other_Desc);
             }
 
             
@@ -635,15 +640,11 @@ HRESULT CServer::Define_Packets()
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
         {
             Clear_Packet();
-
             PACKET_HEADER tHeader{};
             tHeader.byCode = PACKET_CODE;
             tHeader.byType = ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER);
-
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
-
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(CREATE_OTHER_TANK_DESC));
             Update_Header();
         })))
         return E_FAIL;
@@ -1053,7 +1054,7 @@ HRESULT CServer::Define_Packets()
     return S_OK;
 }
 
-CSession* CServer::Find_Session(_uint iID)
+CSession* CServer::Find_Session(_int iID)
 {
     for (CSession* pSession : m_vecSession)
     {

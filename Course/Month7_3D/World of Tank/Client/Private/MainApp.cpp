@@ -133,17 +133,11 @@ HRESULT CMainApp::Define_Packets()
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
-
 			PACKET_HEADER tHeader{};
 			tHeader.byCode = PACKET_CODE;
 			tHeader.byType = ENUM_CLASS(PacketType::CS_JOIN_MATCH);
-
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-
-			/*PACKET_DESC* Position_Desc = static_cast<PACKET_DESC*>(pArg);
-			Position_Desc->iID = m_pGameInstance->Get_ID();*/
-
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(JOIN_MATCH_DESC));
 			m_pGameInstance->Update_Header();
 		})))
 		return E_FAIL;
@@ -157,21 +151,15 @@ HRESULT CMainApp::Define_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
 		{
-
 			m_pGameInstance->Clear_Packet();
-
 			PACKET_HEADER tHeader{};
 			tHeader.byCode = PACKET_CODE;
 			tHeader.byType = ENUM_CLASS(PacketType::CS_LOAD_COMPLETE);
-
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-
 			PACKET_DESC* Desc = static_cast<PACKET_DESC*>(pArg);
 			Desc->iID = m_pGameInstance->Get_ID();
-
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(Desc), sizeof(PACKET_DESC));
 			m_pGameInstance->Update_Header();
-
 			cout << "CS_LOAD_COMPLETE" << endl;
 		})))
 		return E_FAIL;
@@ -192,8 +180,8 @@ HRESULT CMainApp::Define_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
 		{
-			POSITION_DESC Packet_Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(POSITION_DESC));
+			CREATE_OTHER_TANK_DESC Packet_Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(CREATE_OTHER_TANK_DESC));
 			m_pGameInstance->Clear_Packet();
 
 			CGameObject::GAMEOBJECT_DESC Desc = {};
@@ -202,9 +190,12 @@ HRESULT CMainApp::Define_Packets()
 
 			cout << "SC_CREATE_OTHER_CHARACTER" << endl;
 			cout << "ID: " << Packet_Desc.iID << endl;
-			cout << "Pos: " << Packet_Desc.vPos.x << endl;
 
-			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"), &Desc);
+			if(Packet_Desc.eTank == TANK::FURY)
+				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"), &Desc);
+			else if (Packet_Desc.eTank == TANK::TIGER)
+				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"), &Desc);
+
 		})))
 		return E_FAIL;
 
@@ -228,7 +219,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -261,7 +252,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -294,7 +285,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -327,7 +318,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -360,7 +351,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -393,7 +384,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -426,7 +417,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -459,7 +450,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -494,7 +485,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(TANK_MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -530,7 +521,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -562,7 +553,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
@@ -595,7 +586,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())

@@ -50,13 +50,13 @@ public:
 private:
 	HRESULT Define_Packets();
 private:
-	CSession*	Find_Session(_uint iID);
+	CSession*	Find_Session(_int iID);
 	HRESULT		Flush_SendBuffer(CSession* pSession);
 
 private:
 	SOCKET						m_ServSock = { INVALID_SOCKET };
 	_uint						m_iPort = {};
-	_uint						m_iID = {};
+	_int						m_iID = {0};
 
 	vector<CSession*>			m_vecSession;
 
