@@ -85,11 +85,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
         }
 
-        //if (g_bWindowResizeRequired)
-        //{
-        //    pGameInstance->Resize(g_iWinSizeX, g_iWinSizeY);
-        //}
-
         pGameInstance->Update_Timer(TEXT("Timer_Default"));
 
         fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));        

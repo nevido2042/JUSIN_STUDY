@@ -11,9 +11,9 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, _bool isWindowed, _uint iWinSizeX
 {
 	_uint		iFlag = 0;
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
-#endif
+//#endif
 	D3D_FEATURE_LEVEL			FeatureLV;
 
 	/* dx9 : 장치 초기화를 하기위한 설정을 쭈욱 하고나서 최종적으로 장치객체를 생성한다. */
@@ -316,7 +316,7 @@ void CGraphic_Device::Free()
 	Safe_Release(m_pDeviceContext);
 
 
-#if defined(DEBUG) || defined(_DEBUG)
+//#if defined(DEBUG) || defined(_DEBUG)
 	ID3D11Debug* d3dDebug;
 	HRESULT hr = m_pDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
 	if (SUCCEEDED(hr))
@@ -332,7 +332,7 @@ void CGraphic_Device::Free()
 		OutputDebugStringW(L"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- \r ");
 	}
 	if (d3dDebug != nullptr)            d3dDebug->Release();
-#endif
+//#endif
 
 
 	Safe_Release(m_pDevice);

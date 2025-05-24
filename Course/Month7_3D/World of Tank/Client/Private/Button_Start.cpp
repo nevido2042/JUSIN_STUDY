@@ -49,9 +49,10 @@ void CButton_Start::Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
+		CGameManager* pGameManager = GET_GAMEMANAGER;
+		pGameManager->Set_isGameStart(false);
 
 		JOIN_MATCH_DESC Desc{};
-		CGameManager* pGameManager = GET_GAMEMANAGER;
 		Desc.eTank = pGameManager->Get_Select_Tank();
 		Desc.iID = m_pGameInstance->Get_ID();
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), &Desc);

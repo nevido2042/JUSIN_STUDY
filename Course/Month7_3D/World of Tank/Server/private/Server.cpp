@@ -548,12 +548,16 @@ HRESULT CServer::Define_Packets()
 
             //대기중인 플레이어 갯수 확인 후 있는 애들 게임 스타트 시작시키기
 
-            _uint iPlayerCount_JoinMatch = 0;
+            _uint iPlayerCount_JoinMatch = { 0 };
              for (CSession* pSession : m_vecSession)
              {
+                 cout << "iPlayerCount_JoinMatch:" << iPlayerCount_JoinMatch << endl;
                  if(true == pSession->Get_SessionInfo().isJoinMatch)
                      ++iPlayerCount_JoinMatch;
              }
+
+             cout << "Total iPlayerCount_JoinMatch: " << iPlayerCount_JoinMatch << endl;
+
 
             if (iPlayerCount_JoinMatch == 2) //두명이 ready 상태면 시작시키기
             {
@@ -563,6 +567,7 @@ HRESULT CServer::Define_Packets()
                     _pSession->Get_SessionInfo().vPosition = _float3{ 300.f + rand() % 10, 100.f + +rand() % 10, 292.f + rand() % 10 };
                 }
 
+                cout << "Start_Game" << endl;
                 //게임 씬 전환 해라
                 Send_Packet_Broadcast(nullptr, ENUM_CLASS(PacketType::SC_START_GAME), pArg);
             }
@@ -598,6 +603,10 @@ HRESULT CServer::Define_Packets()
 
             //1. 내 캐릭터와
             Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), &My_Pos_Desc);
+
+            cout << "Send_Packet_Unicast(SC_CREATE_MY_CHARACTER)" << endl;
+            cout << "ID: " << My_Pos_Desc.iID << endl;
+            cout << "Pos: " << My_Pos_Desc.vPos.x << endl;
 
             //2. 상대 캐릭터 만들어라
             for (CSession* pOther : m_vecSession)
@@ -881,9 +890,6 @@ HRESULT CServer::Define_Packets()
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
-            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix_Body;
-            pSession->Get_SessionInfo().Matrix_Turret = Desc.Matrix_Turret;
-            pSession->Get_SessionInfo().Matrix_Gun = Desc.Matrix_Gun;
 
             //나를 제외한 모든 사람들에게 알려야함
             Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_TANK_MATRIX), &Desc);
@@ -913,7 +919,6 @@ HRESULT CServer::Define_Packets()
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
-            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
 
             //나를 제외한 모든 사람들에게 알려야함
             Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX_BODY), &Desc);
@@ -943,7 +948,6 @@ HRESULT CServer::Define_Packets()
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
-            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
 
             //나를 제외한 모든 사람들에게 알려야함
             Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX_TURRET), &Desc);
@@ -971,7 +975,6 @@ HRESULT CServer::Define_Packets()
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
-            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
 
             //나를 제외한 모든 사람들에게 알려야함
             Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX_GUN), &Desc);

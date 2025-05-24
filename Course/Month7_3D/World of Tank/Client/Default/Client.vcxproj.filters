@@ -19,9 +19,6 @@
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{db82fc83-d01c-41cf-8115-cfc65328ad5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96.DebugUtils">
-      <UniqueIdentifier>{e38edd34-2e47-4900-8c06-2ecf4f89fa19}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{768645b9-a508-418d-8d7d-9431033e5719}</UniqueIdentifier>
     </Filter>
@@ -228,9 +225,6 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\UIObject\00.BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\DebugUtils.h">
-      <Filter>96.DebugUtils</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\StatusLight.h">
       <Filter>02.GameObjects\UIObject\02.StatusLight</Filter>
     </ClInclude>
@@ -419,9 +413,6 @@
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\UIObject\00.BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\DebugUtils.cpp">
-      <Filter>96.DebugUtils</Filter>
     </ClCompile>
     <ClCompile Include="..\private\StatusLight.cpp">
       <Filter>02.GameObjects\UIObject\02.StatusLight</Filter>

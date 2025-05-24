@@ -27,9 +27,19 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
-#if defined(_DEBUG)
-	DebugUtils::ShowConsole();
-#endif
+
+//#if defined(_DEBUG)
+	AllocConsole();
+	SetConsoleTitleW(L"Debug Console");
+
+	FILE* fp;
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+	freopen_s(&fp, "CONOUT$", "w", stderr);
+	freopen_s(&fp, "CONIN$", "r", stdin);
+
+	SetConsoleOutputCP(CP_UTF8);
+	std::ios::sync_with_stdio();
+//#endif
 
 	ENGINE_DESC			EngineDesc{};
 
@@ -52,6 +62,8 @@ HRESULT CMainApp::Initialize()
 
 	if(FAILED(Define_Packets()))
 		return E_FAIL;
+
+	//int* p = new int[4];
 
     return S_OK;
 }
@@ -724,7 +736,7 @@ void CMainApp::Free()
 
 	//Safe_Release(m_pGameInstance);
 
-#if defined(_DEBUG)
-	DebugUtils::CloseConsole();
-#endif
+//#if defined(_DEBUG)
+	FreeConsole();
+//#endif
 }

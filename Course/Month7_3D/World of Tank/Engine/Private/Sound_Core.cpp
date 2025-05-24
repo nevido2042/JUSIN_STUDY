@@ -1,6 +1,11 @@
 #include "Sound_Core.h"
+
+#undef new
 #include "fmod.hpp"
 #include "Transform.h"
+#ifdef _DEBUG
+#define new DBG_NEW
+#endif // DEBUG
 
 // 채널 중복접근 방지를 위한 포인터 초기화용 콜백
 FMOD_RESULT F_CALLBACK OnChannelEnd(

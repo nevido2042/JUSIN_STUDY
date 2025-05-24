@@ -75,7 +75,7 @@ void CCamera_FPS::Update(_float fTimeDelta)
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
 
-#pragma message ("계속 끄는거 맘에안들지만 일단")
+#pragma message ("계속 끄는거 맘에안들지만 일단, 타겟 건")
 	m_pTarget->Set_Visible(false);
 
 

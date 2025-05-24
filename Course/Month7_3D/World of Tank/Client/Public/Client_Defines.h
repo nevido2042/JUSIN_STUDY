@@ -19,15 +19,20 @@
 #include <process.h>
 #include "Client_Enum.h"
 
-#include "DebugUtils.h"
-
 #include "PacketType.h"
 
+// ------ 여기서부터 ImGui 전용 안전 구역 -------
+#undef new
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #define IMGUI_API
 #include "ImGuizmo.h"
+
+#ifdef _DEBUG
+#define new DBG_NEW
+#endif // DEBUG
+// ------ 안전 구역 끝 --------
 
 namespace Client
 {

@@ -144,6 +144,7 @@
       <AdditionalIncludeDirectories>../public/;../../NetCore/public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -175,7 +176,6 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\public\DamagePanel.h" />
-    <ClInclude Include="..\Public\DebugUtils.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\FuryGun.h" />
@@ -240,7 +240,6 @@
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />
     <ClCompile Include="..\private\DamagePanel.cpp" />
-    <ClCompile Include="..\Private\DebugUtils.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\FuryGun.cpp" />

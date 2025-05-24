@@ -605,7 +605,11 @@ HRESULT CLoader::Loading_For_GamePlay()
 	while (true)
 	{
 		if (pGameManager->Get_isGameStart())
+		{
+			cout << "Game_Start" << endl;
 			break;
+		}
+			
 	}
 
 	m_isFinished = true;

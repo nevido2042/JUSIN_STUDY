@@ -4,6 +4,7 @@
 #include "fmod.hpp"
 #include "fmod_studio.hpp"
 
+
 NS_BEGIN(Engine)
 
 class CSound_Device : public CBase

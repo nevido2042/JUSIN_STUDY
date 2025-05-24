@@ -72,6 +72,9 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 	}
 	else if (m_pGameInstance->Key_Down(DIK_C))
 	{
+		if (GetForegroundWindow() != g_hWnd)
+			return;
+
 		CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Camera"));
 		if (!pLayer) return;
 
