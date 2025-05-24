@@ -49,7 +49,8 @@ public:
 	_float	Get_MovePower() const { return m_fMoveSpeed; }
 	_float	Get_RPM() const { return m_fRPM; }
 
-	void	Set_PressW(_bool bPressW) { m_bPressW = bPressW; }
+	void	Set_PressW(_bool bPress) { m_bPressW = bPress; }
+	void	Set_PressS(_bool bPress) { m_bPressS = bPress; }
 
 private:
 	void	Input(_float fTimeDelta);
@@ -57,6 +58,7 @@ private:
 
 private:
 	_bool	m_bPressW = { false };
+	_bool	m_bPressS = { false };
 	_uint	m_iID = { SESSION_MAX };
 private:
 	string		m_EngineSound_Start = {};

@@ -64,8 +64,7 @@ HRESULT CFury::Initialize(void* pArg)
 
 void CFury::Priority_Update(_float fTimeDelta)
 {
-	if(m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd)
-		Move(fTimeDelta);
+	Move(fTimeDelta);
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
 	{
@@ -74,8 +73,8 @@ void CFury::Priority_Update(_float fTimeDelta)
 
 	__super::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
-	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd)
-		CGameObject::Priority_Update(fTimeDelta);
+
+	CGameObject::Priority_Update(fTimeDelta);
 
 }
 

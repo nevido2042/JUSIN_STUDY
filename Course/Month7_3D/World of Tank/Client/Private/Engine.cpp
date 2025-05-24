@@ -63,21 +63,36 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_ID() == m_iID)
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd))
 	{
-		if (m_pGameInstance->Key_Pressing(DIK_W))
+		if (m_pGameInstance->Key_Down(DIK_W))
 		{
-			PRESS_W_DESC Desc{};
-			Desc.bPressW = true;
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = true;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W),&Desc);
 		}
-		else
+		else if(m_pGameInstance->Key_Up(DIK_W))
 		{
-			PRESS_W_DESC Desc{};
-			Desc.bPressW = false;
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = false;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
+		}
+
+		if (m_pGameInstance->Key_Down(DIK_S))
+		{
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = true;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
+		}
+		else if (m_pGameInstance->Key_Up(DIK_S))
+		{
+			PRESS_KEY_DESC Desc{};
+			Desc.bPressKey = false;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
 		}
 	}
 
@@ -85,7 +100,7 @@ void CEngine::Priority_Update(_float fTimeDelta)
 
 void CEngine::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_ID() == m_iID)
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd) )
 		Input(fTimeDelta);
 	else
 		Input_Network(fTimeDelta);
@@ -221,6 +236,7 @@ void CEngine::Input_Network(_float fTimeDelta)
 
 	if (m_IsOn)
 	{
+		const _float fLerpSpeed = 10.f;
 
 		if (m_bPressW)
 		{
@@ -228,25 +244,31 @@ void CEngine::Input_Network(_float fTimeDelta)
 
 			Accel_Move(fTimeDelta);
 		}
+		else if (m_bPressS)
+		{
+			m_eGear = GEAR::REVERSE;
 
-		m_eGear = GEAR::END;
+			Accel_Move(-fTimeDelta);
+		}
+		else
+		{
+			m_eGear = GEAR::END;
 
-		const _float fLerpSpeed = 10.f;
-		m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
+			m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
 
-		if (fabsf(m_fMoveSpeed) < 0.05f)
-			m_fMoveSpeed = 0.f;
+			if (fabsf(m_fMoveSpeed) < 0.05f)
+				m_fMoveSpeed = 0.f;
+		}
 
-
-
+		
 		//const _float fLerpSpeed = 10.f;
-		m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+		/*m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
 
 		if (fabsf(m_fTurnSpeed) < 0.05f)
-			m_fTurnSpeed = 0.f;
+			m_fTurnSpeed = 0.f;*/
 
 
-		if (!m_bPressW)
+		if (!m_bPressW && !m_bPressS)
 		{
 			//const _float fLerpSpeed = 10.f;
 			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;

@@ -650,10 +650,9 @@ HRESULT CServer::Define_Packets()
 
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), [this](void* pArg)
         {
-            cout << "CS_PRESS_W" << endl;
 
-            PRESS_W_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_W_DESC));
+            PRESS_KEY_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
@@ -671,10 +670,37 @@ HRESULT CServer::Define_Packets()
             tHeader.byCode = PACKET_CODE;
             tHeader.byType = ENUM_CLASS(PacketType::SC_PRESS_W);
 
-            cout << "SC_PRESS_W" << endl;
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_W_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), [this](void* pArg)
+        {
+
+            PRESS_KEY_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_PRESS_S), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_S), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_PRESS_S);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
             Update_Header();
         })))
         return E_FAIL;

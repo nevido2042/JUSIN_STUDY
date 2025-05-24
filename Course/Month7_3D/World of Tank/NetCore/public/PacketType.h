@@ -23,6 +23,9 @@ enum class PacketType
     CS_PRESS_W,
     SC_PRESS_W,
 
+    CS_PRESS_S,
+    SC_PRESS_S,
+
 
     CS_MATRIX,
     SC_MATRIX,
@@ -43,11 +46,10 @@ typedef struct tagPacket_Desc
     _uint iID{ SESSION_MAX }; //SESSION_MAX Àº ¼­¹ö
 }PACKET_DESC;
 
-typedef struct tagPressW_Desc : PACKET_DESC
+typedef struct tagPressKey_Desc : PACKET_DESC
 {
-    _bool bPressW{ false };
-}PRESS_W_DESC;
-
+    _bool bPressKey{ false };
+}PRESS_KEY_DESC;
 
 
 

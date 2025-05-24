@@ -1,7 +1,7 @@
 #pragma	once
 
 #include "Engine_Defines.h"
-
+#define DEFAULT_BUF_SIZE 2048
 class CRingBuffer
 {
 public:
