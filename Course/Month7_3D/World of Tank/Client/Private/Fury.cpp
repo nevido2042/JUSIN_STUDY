@@ -80,9 +80,6 @@ void CFury::Priority_Update(_float fTimeDelta)
 
 void CFury::Update(_float fTimeDelta)
 {
-
-	CGameObject::Update(fTimeDelta);
-
 	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
 	{
 		m_fTimeAcc += fTimeDelta;
@@ -95,9 +92,10 @@ void CFury::Update(_float fTimeDelta)
 			XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
 
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), &Desc);
-		}			
+		}
 	}
-	
+
+	CGameObject::Update(fTimeDelta);
 }
 
 void CFury::Late_Update(_float fTimeDelta)

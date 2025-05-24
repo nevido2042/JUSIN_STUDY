@@ -35,6 +35,11 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 	HRESULT Bind_ShaderResources();
+
+private:
+	const _float	m_fSyncInterval = { 0.5f };
+	_float			m_fTimeAcc = { 0 };
+
 private:
 	_bool	m_bDestroyed = { false };
 private:

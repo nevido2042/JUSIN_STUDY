@@ -3,13 +3,13 @@
 #include "GameInstance.h"
 
 CTigerTurret::CTigerTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CTurret{ pDevice, pContext }
 {
 
 }
 
 CTigerTurret::CTigerTurret(const CTigerTurret& Prototype)
-	: CGameObject(Prototype)
+	: CTurret(Prototype)
 {
 
 }
@@ -23,6 +23,7 @@ HRESULT CTigerTurret::Initialize(void* pArg)
 {
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
+	m_iID = pDesc->iID;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -47,20 +48,13 @@ HRESULT CTigerTurret::Initialize(void* pArg)
 
 void CTigerTurret::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Pressing(DIK_Q))
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta);
-	else if (m_pGameInstance->Key_Pressing(DIK_E))
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+	CTurret::Priority_Update(fTimeDelta);
 
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
-
-	CGameObject::Priority_Update(fTimeDelta);
 }
 
 void CTigerTurret::Update(_float fTimeDelta)
 {
-	CGameObject::Update(fTimeDelta);
+	CTurret::Update(fTimeDelta);
 
 }
 
@@ -163,6 +157,7 @@ HRESULT CTigerTurret::Ready_PartObjects()
 	CGameObject::GAMEOBJECT_DESC Desc{};
 	Desc.pParentWorldMatrix = &m_CombinedWorldMatrix;
 	Desc.fRotationPerSec = 1.f;
+	Desc.iID = m_iID;
 
 	lstrcpy(Desc.szName, TEXT("TigerGun"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerGun"), TEXT("Part_Gun"), &Desc)))

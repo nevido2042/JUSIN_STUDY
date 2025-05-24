@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Gun.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -10,7 +10,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CFuryGun final : public CGameObject
+class CFuryGun final : public CGun
 {
 private:
 	CFuryGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -28,17 +28,6 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 	HRESULT Bind_ShaderResources();
-
-private:
-	const _float	m_fSyncInterval = { 0.5f };
-	_float			m_fTimeAcc = { 0 };
-
-public:
-	void	Set_Up(_bool bUp) { m_bUp = bUp; }
-	void	Set_Down(_bool bDown) { m_bDown = bDown; }
-private:
-	_bool	m_bUp = { false };
-	_bool	m_bDown = { false };
 
 private:
 	ID3D11RasterizerState* m_pRasterState = { nullptr };

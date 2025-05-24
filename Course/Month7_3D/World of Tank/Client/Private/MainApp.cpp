@@ -11,10 +11,9 @@
 
 #pragma region For_Packet
 #include "GameManager.h"
-#include "Fury.h"
 #include "Layer.h"
-#include "FuryTurret.h"
-#include "FuryGun.h"
+#include "Turret.h"
+#include "Gun.h"
 #include "Engine.h"
 #pragma endregion
 
@@ -221,11 +220,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Press W " << Desc.bBool << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressW(Desc.bBool);
+					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressW(Desc.bBool);
 				}
 			}
 
@@ -254,11 +252,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Press S " << Desc.bBool << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressS(Desc.bBool);
+					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressS(Desc.bBool);
 				}
 			}
 
@@ -287,11 +284,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Press A " << Desc.bBool << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressA(Desc.bBool);
+					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressA(Desc.bBool);
 				}
 			}
 
@@ -320,11 +316,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Press D " << Desc.bBool << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressD(Desc.bBool);
+					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressD(Desc.bBool);
 				}
 			}
 
@@ -353,11 +348,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Left " << Desc.bBool << endl;
-					static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")))->Set_Left(Desc.bBool);
+					static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")))->Set_Left(Desc.bBool);
 				}
 			}
 
@@ -386,11 +380,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Right" << Desc.bBool << endl;
-					static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")))->Set_Right(Desc.bBool);
+					static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")))->Set_Right(Desc.bBool);
 				}
 			}
 
@@ -419,11 +412,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " UP" << Desc.bBool << endl;
-					static_cast<CFuryGun*>(pFury->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Up(Desc.bBool);
+					static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Up(Desc.bBool);
 				}
 			}
 
@@ -452,11 +444,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " DOWN" << Desc.bBool << endl;
-					static_cast<CFuryGun*>(pFury->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Down(Desc.bBool);
+					static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Down(Desc.bBool);
 				}
 			}
 
@@ -487,13 +478,12 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
-					pFury->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Body);
-					CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
+					pGameObject->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Body);
+					CGameObject* pTurret = pGameObject->Find_PartObject(TEXT("Part_Turret"));
 					pTurret->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Turret);
-					CFuryGun* pGun = static_cast<CFuryGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+					CGameObject* pGun = pTurret->Find_PartObject(TEXT("Part_Gun"));
 					pGun->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Gun);
 				}
 			}
@@ -523,10 +513,9 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
-					pFury->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
+					pGameObject->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
 				}
 			}
 
@@ -555,10 +544,9 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
-					CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
+					CGameObject* pTurret = pGameObject->Find_PartObject(TEXT("Part_Turret"));
 					pTurret->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
 				}
 			}
@@ -588,11 +576,10 @@ HRESULT CMainApp::Define_Packets()
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				CFury* pFury = static_cast<CFury*>(pGameObject);
-				if (Desc.iID == pFury->Get_ID())
+				if (Desc.iID == pGameObject->Get_ID())
 				{
-					CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
-					CFuryGun* pGun = static_cast<CFuryGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+					CGameObject* pTurret = pGameObject->Find_PartObject(TEXT("Part_Turret"));
+					CGameObject* pGun = pTurret->Find_PartObject(TEXT("Part_Gun"));
 					pGun->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
 				}
 			}

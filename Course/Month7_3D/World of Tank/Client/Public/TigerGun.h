@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Gun.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -10,7 +10,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CTigerGun final : public CGameObject
+class CTigerGun final : public CGun
 {
 private:
 	CTigerGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

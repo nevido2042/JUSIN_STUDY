@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Turret.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -10,7 +10,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CFuryTurret final : public CGameObject
+class CFuryTurret final : public CTurret
 {
 private:
 	CFuryTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -28,18 +28,6 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 	HRESULT Bind_ShaderResources();
-
-public:
-	void	Set_Left(_bool bLeft) { m_bLeft = bLeft; }
-	void	Set_Right(_bool bRight) { m_bRight = bRight; }
-
-private:
-	const _float	m_fSyncInterval = { 0.5f };
-	_float			m_fTimeAcc = { 0 };
-
-private:
-	_bool	m_bLeft = { false };
-	_bool	m_bRight = { false };
 
 private:
 	ID3D11RasterizerState* m_pRasterState = { nullptr };

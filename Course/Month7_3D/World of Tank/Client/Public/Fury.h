@@ -25,7 +25,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-
 private:
 	void Destroyed();
 private:

@@ -10,7 +10,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CTank final : public CLandObject
+class CTank abstract : public CLandObject
 {
 private:
 	CTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -27,10 +27,12 @@ public:
 
 private:
 	void Destroyed();
+private:
+	void Move(_float fTimeDelta);
 
 private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
+	const _float	m_fSyncInterval = { 0.5f };
+	_float			m_fTimeAcc = { 0 };
 
 private:
 	_bool	m_bDestroyed = { false };
@@ -42,11 +44,11 @@ private:
 	CModel* m_pModelCom = { nullptr };
 	CModel* m_pModelCom_Destroyed = { nullptr };
 
-	HRESULT Ready_Components();
+private:
+	HRESULT SetUp_RenderState();
+	HRESULT Release_RenderState();
 
 public:
-	static CTank* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 
 };

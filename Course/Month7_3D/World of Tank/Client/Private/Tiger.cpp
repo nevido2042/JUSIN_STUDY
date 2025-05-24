@@ -25,6 +25,7 @@ HRESULT CTiger::Initialize_Prototype()
 HRESULT CTiger::Initialize(void* pArg)
 {
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+	m_iID = pDesc->iID;
 
 	LANDOBJECT_DESC		Desc{};
 	Desc.fRotationPerSec = 0.1f;
@@ -75,6 +76,21 @@ void CTiger::Priority_Update(_float fTimeDelta)
 
 void CTiger::Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
+	{
+		m_fTimeAcc += fTimeDelta;
+		if (m_fTimeAcc > m_fSyncInterval)
+		{
+			m_fTimeAcc = 0.f;
+
+			MATRIX_DESC Desc{};
+			Desc.iID = m_pGameInstance->Get_ID();
+			XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
+
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), &Desc);
+		}
+	}
+
 	CGameObject::Update(fTimeDelta);
 
 }
@@ -275,6 +291,7 @@ HRESULT CTiger::Ready_PartObjects()
 	CGameObject::GAMEOBJECT_DESC Desc{};
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	Desc.fRotationPerSec = 1.f;
+	Desc.iID = m_iID;
 
 	lstrcpy(Desc.szName, TEXT("Turret"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTurret"), TEXT("Part_Turret"), &Desc)))
