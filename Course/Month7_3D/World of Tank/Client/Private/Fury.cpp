@@ -26,7 +26,7 @@ HRESULT CFury::Initialize_Prototype()
 
 HRESULT CFury::Initialize(void* pArg)
 {
-	FURY_DESC* pDesc = static_cast<FURY_DESC*>(pArg);
+	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	m_iID = pDesc->iID;
 
 	LANDOBJECT_DESC		Desc{};
@@ -85,6 +85,7 @@ void CFury::Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
 	{
+		m_fTimeAcc += fTimeDelta;
 		if (m_fTimeAcc > m_fSyncInterval)
 		{
 			m_fTimeAcc = 0.f;
@@ -93,10 +94,8 @@ void CFury::Update(_float fTimeDelta)
 			Desc.iID = m_pGameInstance->Get_ID();
 			XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
 
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX), &Desc);
-		}
-		else
-			m_fTimeAcc += fTimeDelta;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), &Desc);
+		}			
 	}
 	
 }
@@ -302,18 +301,15 @@ HRESULT CFury::Ready_PartObjects()
 	CGameObject::GAMEOBJECT_DESC Desc{};
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	Desc.fRotationPerSec = 1.f;
+	Desc.iID = m_iID;
 
 	lstrcpy(Desc.szName, TEXT("Turret"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"), TEXT("Part_Turret"), &Desc)))
 		return E_FAIL;
 
-	CEngine::ENGINE_DESC EngineDesc{};
-	EngineDesc.pParentWorldMatrix = Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	EngineDesc.fRotationPerSec = 1.f;
-	EngineDesc.iID = m_iID;
 	/* 엔진을 추가한다. */
 	lstrcpy(Desc.szName, TEXT("Engine"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"), TEXT("Part_Engine"), &EngineDesc)))
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"), TEXT("Part_Engine"), &Desc)))
 		return E_FAIL;
 
 	/* 왼쪽 궤도를 추가한다. */

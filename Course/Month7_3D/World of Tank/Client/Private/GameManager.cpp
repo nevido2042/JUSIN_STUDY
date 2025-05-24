@@ -75,7 +75,7 @@ HRESULT CGameManager::Create_My_Tank(_float3 vPos)
 
 HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3 vPos)
 {
-	CFury::FURY_DESC Desc{};
+	GAMEOBJECT_DESC Desc{};
 	Desc.iID = m_pGameInstance->Get_ID();
 	Desc.vInitPosition = vPos;
 

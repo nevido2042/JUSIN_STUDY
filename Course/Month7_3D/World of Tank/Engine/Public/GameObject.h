@@ -12,6 +12,7 @@ public:
 		_tchar				szName[MAX_PATH];
 		const _float4x4*	pParentWorldMatrix = { nullptr };
 		_bool				bActive = { true };
+		_int				iID = { -1 };
 	}GAMEOBJECT_DESC;
 
 protected:
@@ -40,6 +41,9 @@ public:
 	const _bool		Get_isVisible() const { return m_bVisible; }
 	void			Set_Visible(_bool bVisible) { m_bVisible = bVisible; }
 
+	_int			Get_ID() const { return m_iID; }
+	void			Set_ID(_int iID) { m_iID = iID; }
+
 	class CTransform* const Get_Transform() { return m_pTransformCom; }
 
 public:
@@ -49,10 +53,12 @@ public:
 protected:
 	_bool m_bCloned = { false };
 
-private:
+protected:
 	_bool m_bDestroyed = { false };
 	_bool m_bActive = { true };
 	_bool m_bVisible = { true };
+protected:
+	_int	m_iID = { -1 };
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

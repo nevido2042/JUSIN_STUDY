@@ -30,6 +30,17 @@ private:
 	HRESULT Bind_ShaderResources();
 
 private:
+	const _float	m_fSyncInterval = { 0.5f };
+	_float			m_fTimeAcc = { 0 };
+
+public:
+	void	Set_Up(_bool bUp) { m_bUp = bUp; }
+	void	Set_Down(_bool bDown) { m_bDown = bDown; }
+private:
+	_bool	m_bUp = { false };
+	_bool	m_bDown = { false };
+
+private:
 	ID3D11RasterizerState* m_pRasterState = { nullptr };
 	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
 private:

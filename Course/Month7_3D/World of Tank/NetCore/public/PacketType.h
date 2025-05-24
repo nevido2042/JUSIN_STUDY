@@ -32,9 +32,27 @@ enum class PacketType
     CS_PRESS_D,
     SC_PRESS_D,
 
+    CS_LEFT,
+    SC_LEFT,
 
-    CS_MATRIX,
-    SC_MATRIX,
+    CS_RIGHT,
+    SC_RIGHT,
+
+    CS_UP,
+    SC_UP,
+
+    CS_DOWN,
+    SC_DOWN,
+
+
+    CS_MATRIX_BODY,
+    SC_MATRIX_BODY,
+
+    CS_MATRIX_TURRET,
+    SC_MATRIX_TURRET,
+
+    CS_MATRIX_GUN,
+    SC_MATRIX_GUN,
 
     CS_TANK_MATRIX,
     SC_TANK_MATRIX,
@@ -52,10 +70,10 @@ typedef struct tagPacket_Desc
     _uint iID{ SESSION_MAX }; //SESSION_MAX Àº ¼­¹ö
 }PACKET_DESC;
 
-typedef struct tagPressKey_Desc : PACKET_DESC
+typedef struct tagBool_Desc : PACKET_DESC
 {
-    _bool bPressKey{ false };
-}PRESS_KEY_DESC;
+    _bool bBool{ false };
+}BOOL_DESC;
 
 
 
@@ -75,8 +93,8 @@ typedef struct tagMatrix_Desc : PACKET_DESC
 typedef struct tagTankMatrix_Desc : PACKET_DESC
 {
     _float4x4 Matrix_Body{};
-    //_float4x4 Matrix_Turret{};
-    //_float4x4 Matrix_Gun{};
+    _float4x4 Matrix_Turret{};
+    _float4x4 Matrix_Gun{};
 }TANK_MATRIX_DESC;
 #pragma pack(pop)
 

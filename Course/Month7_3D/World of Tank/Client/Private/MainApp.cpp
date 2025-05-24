@@ -192,19 +192,19 @@ HRESULT CMainApp::Define_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
 		{
-			POSITION_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
+			POSITION_DESC Packet_Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(POSITION_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			CFury::FURY_DESC FuryDesc = {};
-			FuryDesc.iID = Desc.iID;
-			FuryDesc.vInitPosition = Desc.vPos;
+			CGameObject::GAMEOBJECT_DESC Desc = {};
+			Desc.iID = Packet_Desc.iID;
+			Desc.vInitPosition = Packet_Desc.vPos;
 
 			cout << "SC_CREATE_OTHER_CHARACTER" << endl;
-			cout << "ID: " << Desc.iID << endl;
-			cout << "Pos: " << Desc.vPos.x << endl;
+			cout << "ID: " << Packet_Desc.iID << endl;
+			cout << "Pos: " << Packet_Desc.vPos.x << endl;
 
-			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"), &FuryDesc);
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"), &Desc);
 		})))
 		return E_FAIL;
 
@@ -217,15 +217,15 @@ HRESULT CMainApp::Define_Packets()
 			tHeader.byType = ENUM_CLASS(PacketType::CS_PRESS_W);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
 			m_pGameInstance->Update_Header();
 		})))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_W), [this](void* pArg)
 		{
-			PRESS_KEY_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
@@ -233,8 +233,8 @@ HRESULT CMainApp::Define_Packets()
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press W " << Desc.bPressKey << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressW(Desc.bPressKey);
+					cout << "ID:" << Desc.iID << " Press W " << Desc.bBool << endl;
+					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressW(Desc.bBool);
 				}
 			}
 
@@ -250,15 +250,15 @@ HRESULT CMainApp::Define_Packets()
 			tHeader.byType = ENUM_CLASS(PacketType::CS_PRESS_S);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
 			m_pGameInstance->Update_Header();
 		})))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_S), [this](void* pArg)
 		{
-			PRESS_KEY_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
@@ -266,8 +266,8 @@ HRESULT CMainApp::Define_Packets()
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press S " << Desc.bPressKey << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressS(Desc.bPressKey);
+					cout << "ID:" << Desc.iID << " Press S " << Desc.bBool << endl;
+					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressS(Desc.bBool);
 				}
 			}
 
@@ -283,15 +283,15 @@ HRESULT CMainApp::Define_Packets()
 			tHeader.byType = ENUM_CLASS(PacketType::CS_PRESS_A);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
 			m_pGameInstance->Update_Header();
 		})))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_A), [this](void* pArg)
 		{
-			PRESS_KEY_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
@@ -299,8 +299,8 @@ HRESULT CMainApp::Define_Packets()
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press A " << Desc.bPressKey << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressA(Desc.bPressKey);
+					cout << "ID:" << Desc.iID << " Press A " << Desc.bBool << endl;
+					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressA(Desc.bBool);
 				}
 			}
 
@@ -316,15 +316,15 @@ HRESULT CMainApp::Define_Packets()
 			tHeader.byType = ENUM_CLASS(PacketType::CS_PRESS_D);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
 			m_pGameInstance->Update_Header();
 		})))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_D), [this](void* pArg)
 		{
-			PRESS_KEY_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
@@ -332,8 +332,140 @@ HRESULT CMainApp::Define_Packets()
 				CFury* pFury = static_cast<CFury*>(pGameObject);
 				if (Desc.iID == pFury->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press D " << Desc.bPressKey << endl;
-					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressD(Desc.bPressKey);
+					cout << "ID:" << Desc.iID << " Press D " << Desc.bBool << endl;
+					static_cast<CEngine*>(pFury->Find_PartObject(TEXT("Part_Engine")))->Set_PressD(Desc.bBool);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_LEFT), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_LEFT);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_LEFT), [this](void* pArg)
+		{
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << " Left " << Desc.bBool << endl;
+					static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")))->Set_Left(Desc.bBool);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_RIGHT), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_RIGHT);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_RIGHT), [this](void* pArg)
+		{
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << " Right" << Desc.bBool << endl;
+					static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")))->Set_Right(Desc.bBool);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_UP), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_UP);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_UP), [this](void* pArg)
+		{
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << " UP" << Desc.bBool << endl;
+					static_cast<CFuryGun*>(pFury->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Up(Desc.bBool);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_DOWN), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_DOWN);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_DOWN), [this](void* pArg)
+		{
+			BOOL_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << " DOWN" << Desc.bBool << endl;
+					static_cast<CFuryGun*>(pFury->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Down(Desc.bBool);
 				}
 			}
 
@@ -368,23 +500,23 @@ HRESULT CMainApp::Define_Packets()
 				if (Desc.iID == pFury->Get_ID())
 				{
 					pFury->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Body);
-					/*CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
-					pTurret->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Turret);*/
-					/*CFuryGun* pGun = static_cast<CFuryGun*>(pFury->Find_PartObject(TEXT("Part_Gun")));
-					pGun->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Gun);*/
+					CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
+					pTurret->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Turret);
+					CFuryGun* pGun = static_cast<CFuryGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+					pGun->Get_Transform()->Set_WorldMatrix(Desc.Matrix_Gun);
 				}
 			}
 
 		})))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX), [this](void* pArg)
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
 
 			PACKET_HEADER tHeader{};
 			tHeader.byCode = PACKET_CODE;
-			tHeader.byType = ENUM_CLASS(PacketType::CS_MATRIX);
+			tHeader.byType = ENUM_CLASS(PacketType::CS_MATRIX_BODY);
 
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
@@ -392,7 +524,7 @@ HRESULT CMainApp::Define_Packets()
 		})))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX), [this](void* pArg)
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_BODY), [this](void* pArg)
 		{
 			MATRIX_DESC Desc{};
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
@@ -404,6 +536,73 @@ HRESULT CMainApp::Define_Packets()
 				if (Desc.iID == pFury->Get_ID())
 				{
 					pFury->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_TURRET), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_MATRIX_TURRET);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_TURRET), [this](void* pArg)
+		{
+			MATRIX_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
+					pTurret->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
+				}
+			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_GUN), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_MATRIX_GUN);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_GUN), [this](void* pArg)
+		{
+			MATRIX_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Fury"))->Get_GameObjects())
+			{
+				CFury* pFury = static_cast<CFury*>(pGameObject);
+				if (Desc.iID == pFury->Get_ID())
+				{
+					CFuryTurret* pTurret = static_cast<CFuryTurret*>(pFury->Find_PartObject(TEXT("Part_Turret")));
+					CFuryGun* pGun = static_cast<CFuryGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+					pGun->Get_Transform()->Set_WorldMatrix(Desc.Matrix);
 				}
 			}
 

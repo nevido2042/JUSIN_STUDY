@@ -22,7 +22,7 @@ HRESULT CEngine::Initialize_Prototype()
 
 HRESULT CEngine::Initialize(void* pArg)
 {
-	ENGINE_DESC* pDesc = static_cast<ENGINE_DESC*>(pArg);
+	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	m_iID = pDesc->iID;
 
 	GAMEOBJECT_DESC			Desc{};
@@ -63,67 +63,70 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
+	if (GetForegroundWindow() != g_hWnd)
+		return;
+
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
 		return;
 
-	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd)
+	if (m_pGameInstance->Get_ID() == m_iID )
 	{
 		if (m_pGameInstance->Key_Down(DIK_W))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = true;
+			BOOL_DESC Desc{};
+			Desc.bBool = true;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W),&Desc);
 		}
 		else if(m_pGameInstance->Key_Up(DIK_W))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = false;
+			BOOL_DESC Desc{};
+			Desc.bBool = false;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
 		}
 
 		if (m_pGameInstance->Key_Down(DIK_S))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = true;
+			BOOL_DESC Desc{};
+			Desc.bBool = true;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
 		}
 		else if (m_pGameInstance->Key_Up(DIK_S))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = false;
+			BOOL_DESC Desc{};
+			Desc.bBool = false;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
 		}
 
 		if (m_pGameInstance->Key_Down(DIK_A))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = true;
+			BOOL_DESC Desc{};
+			Desc.bBool = true;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
 		}
 		else if (m_pGameInstance->Key_Up(DIK_A))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = false;
+			BOOL_DESC Desc{};
+			Desc.bBool = false;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
 		}
 
 		if (m_pGameInstance->Key_Down(DIK_D))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = true;
+			BOOL_DESC Desc{};
+			Desc.bBool = true;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
 		}
 		else if (m_pGameInstance->Key_Up(DIK_D))
 		{
-			PRESS_KEY_DESC Desc{};
-			Desc.bPressKey = false;
+			BOOL_DESC Desc{};
+			Desc.bBool = false;
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
 		}

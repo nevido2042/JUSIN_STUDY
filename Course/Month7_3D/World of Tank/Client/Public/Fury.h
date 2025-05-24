@@ -12,12 +12,6 @@ NS_BEGIN(Client)
 
 class CFury final : public CLandObject
 {
-public:
-#pragma message ("탱크 디스크립션으로 바꾸면 좋을듯 티거랑 공용으로 쓰게")
-	typedef struct tagFuryDesc : public GAMEOBJECT_DESC
-	{
-		_uint	iID = { SESSION_MAX };
-	}FURY_DESC;
 private:
 	CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CFury(const CFury& Prototype);
@@ -32,15 +26,10 @@ public:
 	virtual HRESULT Render();
 
 
-public:
-	_uint	Get_ID() const { return m_iID; }
 private:
 	void Destroyed();
 private:
 	void Move(_float fTimeDelta);
-
-private:
-	_uint	m_iID = { SESSION_MAX };
 
 private:
 	const _float	m_fSyncInterval = { 0.5f };

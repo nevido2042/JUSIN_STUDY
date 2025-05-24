@@ -15,11 +15,6 @@ NS_BEGIN(Client)
 
 class CEngine final : public CGameObject
 {
-public:
-	typedef struct tagEngineDesc : public GAMEOBJECT_DESC
-	{
-		_uint	iID = { SESSION_MAX };
-	}ENGINE_DESC;
 private:
 	CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEngine(const CEngine& Prototype);
@@ -63,7 +58,7 @@ private:
 	_bool	m_bPressS = { false };
 	_bool	m_bPressA = { false };
 	_bool	m_bPressD = { false };
-	_uint	m_iID = { SESSION_MAX };
+
 private:
 	string		m_EngineSound_Start = {};
 	string		m_EngineSound_Loop = {};

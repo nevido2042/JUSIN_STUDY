@@ -651,8 +651,8 @@ HRESULT CServer::Define_Packets()
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), [this](void* pArg)
         {
 
-            PRESS_KEY_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
@@ -672,7 +672,7 @@ HRESULT CServer::Define_Packets()
 
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
             Update_Header();
         })))
         return E_FAIL;
@@ -680,8 +680,8 @@ HRESULT CServer::Define_Packets()
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), [this](void* pArg)
         {
 
-            PRESS_KEY_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
@@ -700,7 +700,7 @@ HRESULT CServer::Define_Packets()
             tHeader.byType = ENUM_CLASS(PacketType::SC_PRESS_S);
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
             Update_Header();
         })))
         return E_FAIL;
@@ -708,8 +708,8 @@ HRESULT CServer::Define_Packets()
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), [this](void* pArg)
         {
 
-            PRESS_KEY_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
@@ -728,7 +728,7 @@ HRESULT CServer::Define_Packets()
             tHeader.byType = ENUM_CLASS(PacketType::SC_PRESS_A);
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
             Update_Header();
         })))
         return E_FAIL;
@@ -736,8 +736,8 @@ HRESULT CServer::Define_Packets()
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), [this](void* pArg)
         {
 
-            PRESS_KEY_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PRESS_KEY_DESC));
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
             Clear_Packet();
 
             CSession* pSession = Find_Session(Desc.iID);
@@ -756,7 +756,117 @@ HRESULT CServer::Define_Packets()
             tHeader.byType = ENUM_CLASS(PacketType::SC_PRESS_D);
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PRESS_KEY_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_LEFT), [this](void* pArg)
+        {
+
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_LEFT), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_LEFT), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_LEFT);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_RIGHT), [this](void* pArg)
+        {
+
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_RIGHT), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_RIGHT), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_RIGHT);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_UP), [this](void* pArg)
+        {
+
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_UP), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_UP), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_UP);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_DOWN), [this](void* pArg)
+        {
+
+            BOOL_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_DOWN), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_DOWN), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_DOWN);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(BOOL_DESC));
             Update_Header();
         })))
         return E_FAIL;
@@ -771,8 +881,8 @@ HRESULT CServer::Define_Packets()
 
             CSession* pSession = Find_Session(Desc.iID);
             pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix_Body;
-            //pSession->Get_SessionInfo().Matrix_Turret = Desc.Matrix_Turret;
-            //pSession->Get_SessionInfo().Matrix_Gun = Desc.Matrix_Gun;
+            pSession->Get_SessionInfo().Matrix_Turret = Desc.Matrix_Turret;
+            pSession->Get_SessionInfo().Matrix_Gun = Desc.Matrix_Gun;
 
             //나를 제외한 모든 사람들에게 알려야함
             Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_TANK_MATRIX), &Desc);
@@ -795,7 +905,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX), [this](void* pArg)
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), [this](void* pArg)
         {
             MATRIX_DESC Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
@@ -805,19 +915,75 @@ HRESULT CServer::Define_Packets()
             pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
 
             //나를 제외한 모든 사람들에게 알려야함
-            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX), &Desc);
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX_BODY), &Desc);
         })))
         return E_FAIL;
 
     
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX), [this](void* pArg)
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_BODY), [this](void* pArg)
         {
             Clear_Packet();
 
             PACKET_HEADER tHeader{};
             tHeader.byCode = PACKET_CODE;
-            tHeader.byType = ENUM_CLASS(PacketType::SC_MATRIX);
+            tHeader.byType = ENUM_CLASS(PacketType::SC_MATRIX_BODY);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_TURRET), [this](void* pArg)
+        {
+            MATRIX_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX_TURRET), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_TURRET), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_MATRIX_TURRET);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_GUN), [this](void* pArg)
+        {
+            MATRIX_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+            pSession->Get_SessionInfo().Matrix_Body = Desc.Matrix;
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_MATRIX_GUN), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_GUN), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_MATRIX_GUN);
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
             Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MATRIX_DESC));
