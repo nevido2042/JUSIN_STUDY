@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Icon_Engine.h"
 #include "TigerTrackRight.h"
 #include "TigerTrackLeft.h"
 #include "TigerGun.h"
@@ -172,7 +173,7 @@ HRESULT CLoader::Loading_For_Static()
 	//"../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/global_AM.dds"
 	//"../Bin/Resources/Textures/Terrain/Tile0.dds"
 
-		/* For.Prototype_Component_Texture_StatusLight*/
+	/* For.Prototype_Component_Texture_StatusLight*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_StatusLight"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/00.StatusLight/StatusLight%d.dds"), 3))))
 		return E_FAIL;
@@ -185,6 +186,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_Component_Texture_DamagePanel */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamagePanel"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/output/DamagePanel_bg.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Icon_Engine */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_Engine"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Engine/engine%d.dds"), 3))))
 		return E_FAIL;
 
 #pragma endregion
@@ -341,6 +347,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Icon_Engine */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
+		CIcon_Engine::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DamagePanel */

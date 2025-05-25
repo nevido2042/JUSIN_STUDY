@@ -48,6 +48,12 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_TPS::Update(_float fTimeDelta)
 {
+	
+
+}
+
+void CCamera_TPS::Late_Update(_float fTimeDelta)
+{
 	// Å¸°Ù À§Ä¡
 	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
 
@@ -92,12 +98,6 @@ void CCamera_TPS::Update(_float fTimeDelta)
 
 #pragma message ("°è¼Ó ÄÑ´Â°Å ¸¾¿¡¾ÈµéÁö¸¸ ÀÏ´Ü, Å¸°Ù ÅÍ·¿")
 	//m_pTarget->Set_Visible(true);
-
-}
-
-void CCamera_TPS::Late_Update(_float fTimeDelta)
-{
-	
 }
 
 HRESULT CCamera_TPS::Render()

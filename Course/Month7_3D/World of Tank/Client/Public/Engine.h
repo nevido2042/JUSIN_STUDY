@@ -51,6 +51,7 @@ public:
 
 private:
 	void	Input(_float fTimeDelta);
+	void	Send_Packet();
 	void	Input_Network(_float fTimeDelta);
 
 private:

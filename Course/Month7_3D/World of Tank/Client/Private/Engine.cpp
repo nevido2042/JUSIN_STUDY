@@ -68,97 +68,15 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
-	if (GetForegroundWindow() != g_hWnd)
-		return;
-
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
-		return;
-
-	if (m_pGameInstance->Get_ID() == m_iID )
-	{
-		if (!m_IsOn)
-		{
-			if (m_pGameInstance->Key_Down(DIK_W))
-			{
-				BOOL_DESC Desc{};
-				Desc.bBool = true;
-				Desc.iID = m_iID;
-				m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
-			}
-
-			return;
-		}
-
-		if (m_pGameInstance->Key_Down(DIK_W))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = true;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W),&Desc);
-		}
-		else if(m_pGameInstance->Key_Up(DIK_W))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = false;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
-		}
-
-		if (m_pGameInstance->Key_Down(DIK_S))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = true;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
-		}
-		else if (m_pGameInstance->Key_Up(DIK_S))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = false;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
-		}
-
-		if (m_pGameInstance->Key_Down(DIK_A))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = true;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
-		}
-		else if (m_pGameInstance->Key_Up(DIK_A))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = false;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
-		}
-
-		if (m_pGameInstance->Key_Down(DIK_D))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = true;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
-		}
-		else if (m_pGameInstance->Key_Up(DIK_D))
-		{
-			BOOL_DESC Desc{};
-			Desc.bBool = false;
-			Desc.iID = m_iID;
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
-		}
-	}
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || m_pGameInstance->Get_ID() == m_iID)
+		Input(fTimeDelta);
+	else
+		Input_Network(fTimeDelta);
 
 }
 
 void CEngine::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd) )
-		Input(fTimeDelta);
-	else
-		Input_Network(fTimeDelta);
-
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
@@ -217,6 +135,10 @@ void CEngine::Accel_RPM(_float fTimeDelta)
 
 void CEngine::Input(_float fTimeDelta)
 {
+	if (GetForegroundWindow() != g_hWnd)
+		return;
+
+#pragma region Local_Input
 	if (!m_IsOn && m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		Start_Engine();
@@ -286,6 +208,88 @@ void CEngine::Input(_float fTimeDelta)
 			End_Engine();
 		}
 	}
+#pragma endregion
+
+	//패킷 전송
+	Send_Packet();
+	
+}
+
+void CEngine::Send_Packet()
+{
+	if (!m_IsOn)
+	{
+		if (m_pGameInstance->Key_Down(DIK_W))
+		{
+			BOOL_DESC Desc{};
+			Desc.bBool = true;
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
+		}
+
+		return;
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_W))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = true;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
+	}
+	else if (m_pGameInstance->Key_Up(DIK_W))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = false;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_S))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = true;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
+	}
+	else if (m_pGameInstance->Key_Up(DIK_S))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = false;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), &Desc);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_A))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = true;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
+	}
+	else if (m_pGameInstance->Key_Up(DIK_A))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = false;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), &Desc);
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_D))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = true;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
+	}
+	else if (m_pGameInstance->Key_Up(DIK_D))
+	{
+		BOOL_DESC Desc{};
+		Desc.bBool = false;
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), &Desc);
+	}
+
 }
 
 void CEngine::Input_Network(_float fTimeDelta)
@@ -358,7 +362,7 @@ void CEngine::Input_Network(_float fTimeDelta)
 HRESULT CEngine::Ready_Components()
 {
 	/* For.Com_Sound */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_TankSound3D"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
 		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 

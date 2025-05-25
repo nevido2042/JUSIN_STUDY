@@ -63,7 +63,7 @@ void CTiger::Priority_Update(_float fTimeDelta)
 {
 	Move(fTimeDelta);
 
-	if (m_pGameInstance->Key_Down(DIK_F1))
+	if (m_pGameInstance->Key_Down(DIK_F12))
 	{
 		Destroyed();
 	}

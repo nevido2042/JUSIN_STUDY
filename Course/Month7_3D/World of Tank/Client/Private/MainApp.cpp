@@ -656,13 +656,18 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 
 	/* For.Prototype_Component_TankSound3D */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_TankSound3D"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
 		CSoundController::Create("../Bin/WOT_Resources/Sound/01.TankSound3D/", true))))															
 		return E_FAIL;
 
 	/* For.Prototype_Component_BGM */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_BGM"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_BGM"),
 		CSoundController::Create("../Bin/WOT_Resources/Sound/02.BGM/"))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_SoundController_Voice */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/03.Voice/"))))
 		return E_FAIL;
 #pragma endregion
 

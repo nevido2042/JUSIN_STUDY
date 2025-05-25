@@ -44,6 +44,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
+		return E_FAIL;
+
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), &Desc);
@@ -197,8 +200,26 @@ HRESULT CLevel_GamePlay::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 	UIObject_Desc.fSizeY = 228.0f;
 	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamagePanel"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Icon_Engine(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 46.0f;
+	UIObject_Desc.fSizeY = 40.0f;
+	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.6f;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 4.15f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 

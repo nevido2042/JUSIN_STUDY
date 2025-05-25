@@ -145,50 +145,56 @@
     <Filter Include="02.GameObjects\UIObject\11.WOT_Icon">
       <UniqueIdentifier>{53b430a7-444b-4542-930c-ffc6365de69c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LandObject\01.Fury">
-      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\UIObject\12.Icon_Engine">
+      <UniqueIdentifier>{f88e400f-91b3-4dee-8f30-17ade9367f88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LandObject\02.Tiger">
-      <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Parts">
+    <Filter Include="02.GameObjects\Modules">
       <UniqueIdentifier>{80b184da-797c-4e62-8415-b897cff97fc5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\01.Turret">
+    <Filter Include="02.GameObjects\Modules\01.Turret">
       <UniqueIdentifier>{838ee112-d8ff-4f7e-8862-ee4dc2cee83e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\00.Engine">
-      <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Parts\02.Gun">
-      <UniqueIdentifier>{84bd9c99-d35d-4d09-8ba8-3b01d647dba6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Parts\01.Turret\FuryTurret">
+    <Filter Include="02.GameObjects\Modules\01.Turret\FuryTurret">
       <UniqueIdentifier>{f5d9b5b0-b18b-4c2a-858e-940c1c93358c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\01.Turret\TigerTurret">
+    <Filter Include="02.GameObjects\Modules\01.Turret\TigerTurret">
       <UniqueIdentifier>{79be9bcd-ddf2-4384-8f1c-8a6e107f9359}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\02.Gun\FuryGun">
+    <Filter Include="02.GameObjects\Modules\00.Engine">
+      <UniqueIdentifier>{c8df65e9-7b48-40e0-9c53-e287b8fa694c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\02.Gun">
+      <UniqueIdentifier>{84bd9c99-d35d-4d09-8ba8-3b01d647dba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\02.Gun\FuryGun">
       <UniqueIdentifier>{1b856865-9148-4643-b184-8bb9560daba2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\02.Gun\TigerGun">
+    <Filter Include="02.GameObjects\Modules\02.Gun\TigerGun">
       <UniqueIdentifier>{78632613-37c4-45b2-91ad-3d7fdb18de74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\03.Tracks">
+    <Filter Include="02.GameObjects\Modules\03.Tracks">
       <UniqueIdentifier>{dd5efe91-c3a5-42ff-9498-0ce882896f37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\03.Tracks\TigerTrackLeft">
+    <Filter Include="02.GameObjects\Modules\03.Tracks\TigerTrackLeft">
       <UniqueIdentifier>{7dd21582-d3a0-4dcd-83d4-7b469a64f426}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\03.Tracks\TigerTrackRight">
+    <Filter Include="02.GameObjects\Modules\03.Tracks\TigerTrackRight">
       <UniqueIdentifier>{e676163c-c9a7-4ac4-8f62-759493d2d5a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\03.Tracks\FuryTrackRight">
+    <Filter Include="02.GameObjects\Modules\03.Tracks\FuryTrackRight">
       <UniqueIdentifier>{e8cf1c38-c868-41a9-81cb-e942e0853879}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Parts\03.Tracks\FuryTrackLeft">
+    <Filter Include="02.GameObjects\Modules\03.Tracks\FuryTrackLeft">
       <UniqueIdentifier>{5e2aea67-3b9f-4600-80e1-f85fe27c4a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\00.Tank">
+      <UniqueIdentifier>{da1f2422-d818-4fbd-952d-74c7f0d3b634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\00.Tank\01.Fury">
+      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\LandObject\00.Tank\02.Tiger">
+      <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +289,7 @@
       <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Engine.h">
-      <Filter>02.GameObjects\Parts\00.Engine</Filter>
+      <Filter>02.GameObjects\Modules\00.Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Practice.h">
       <Filter>01.Levels\04.Practice</Filter>
@@ -304,7 +310,7 @@
       <Filter>02.GameObjects\05.Skydome</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Fury.h">
-      <Filter>02.GameObjects\LandObject\01.Fury</Filter>
+      <Filter>02.GameObjects\LandObject\00.Tank\01.Fury</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BurntTree.h">
       <Filter>02.GameObjects\06.BurntTree</Filter>
@@ -313,7 +319,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTurret.h">
-      <Filter>02.GameObjects\Parts\01.Turret\FuryTurret</Filter>
+      <Filter>02.GameObjects\Modules\01.Turret\FuryTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VHouse01A.h">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
@@ -349,40 +355,49 @@
       <Filter>02.GameObjects\00.GameManager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tiger.h">
-      <Filter>02.GameObjects\LandObject\02.Tiger</Filter>
+      <Filter>02.GameObjects\LandObject\00.Tank\02.Tiger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTrackLeft.h">
-      <Filter>02.GameObjects\Parts\03.Tracks\FuryTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackLeft</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTrackRight.h">
-      <Filter>02.GameObjects\Parts\03.Tracks\FuryTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackRight</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryGun.h">
-      <Filter>02.GameObjects\Parts\02.Gun\FuryGun</Filter>
+      <Filter>02.GameObjects\Modules\02.Gun\FuryGun</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_FPS.h">
       <Filter>02.GameObjects\02.Camera\Camera_FPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TigerTurret.h">
-      <Filter>02.GameObjects\Parts\01.Turret\TigerTurret</Filter>
+      <Filter>02.GameObjects\Modules\01.Turret\TigerTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TigerGun.h">
-      <Filter>02.GameObjects\Parts\02.Gun\TigerGun</Filter>
+      <Filter>02.GameObjects\Modules\02.Gun\TigerGun</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TigerTrackLeft.h">
-      <Filter>02.GameObjects\Parts\03.Tracks\TigerTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackLeft</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TigerTrackRight.h">
-      <Filter>02.GameObjects\Parts\03.Tracks\TigerTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackRight</Filter>
     </ClInclude>
     <ClInclude Include="..\public\WOT_Icon.h">
       <Filter>02.GameObjects\UIObject\11.WOT_Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Turret.h">
-      <Filter>02.GameObjects\Parts\01.Turret</Filter>
+      <Filter>02.GameObjects\Modules\01.Turret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Gun.h">
-      <Filter>02.GameObjects\Parts\02.Gun</Filter>
+      <Filter>02.GameObjects\Modules\02.Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Icon_Engine.h">
+      <Filter>02.GameObjects\UIObject\12.Icon_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tank.h">
+      <Filter>02.GameObjects\LandObject\00.Tank</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Track.h">
+      <Filter>02.GameObjects\Modules\03.Tracks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -472,7 +487,7 @@
       <Filter>96.ThirdParty\imGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Engine.cpp">
-      <Filter>02.GameObjects\Parts\00.Engine</Filter>
+      <Filter>02.GameObjects\Modules\00.Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Practice.cpp">
       <Filter>01.Levels\04.Practice</Filter>
@@ -493,7 +508,7 @@
       <Filter>02.GameObjects\05.Skydome</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Fury.cpp">
-      <Filter>02.GameObjects\LandObject\01.Fury</Filter>
+      <Filter>02.GameObjects\LandObject\00.Tank\01.Fury</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BurntTree.cpp">
       <Filter>02.GameObjects\06.BurntTree</Filter>
@@ -502,7 +517,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTurret.cpp">
-      <Filter>02.GameObjects\Parts\01.Turret\FuryTurret</Filter>
+      <Filter>02.GameObjects\Modules\01.Turret\FuryTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VHouse01A.cpp">
       <Filter>02.GameObjects\07.VHouse01A</Filter>
@@ -538,40 +553,49 @@
       <Filter>02.GameObjects\00.GameManager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tiger.cpp">
-      <Filter>02.GameObjects\LandObject\02.Tiger</Filter>
+      <Filter>02.GameObjects\LandObject\00.Tank\02.Tiger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTrackLeft.cpp">
-      <Filter>02.GameObjects\Parts\03.Tracks\FuryTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackLeft</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTrackRight.cpp">
-      <Filter>02.GameObjects\Parts\03.Tracks\FuryTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackRight</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryGun.cpp">
-      <Filter>02.GameObjects\Parts\02.Gun\FuryGun</Filter>
+      <Filter>02.GameObjects\Modules\02.Gun\FuryGun</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_FPS.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_FPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TigerTurret.cpp">
-      <Filter>02.GameObjects\Parts\01.Turret\TigerTurret</Filter>
+      <Filter>02.GameObjects\Modules\01.Turret\TigerTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TigerGun.cpp">
-      <Filter>02.GameObjects\Parts\02.Gun\TigerGun</Filter>
+      <Filter>02.GameObjects\Modules\02.Gun\TigerGun</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TigerTrackLeft.cpp">
-      <Filter>02.GameObjects\Parts\03.Tracks\TigerTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackLeft</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TigerTrackRight.cpp">
-      <Filter>02.GameObjects\Parts\03.Tracks\TigerTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackRight</Filter>
     </ClCompile>
     <ClCompile Include="..\private\WOT_Icon.cpp">
       <Filter>02.GameObjects\UIObject\11.WOT_Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Turret.cpp">
-      <Filter>02.GameObjects\Parts\01.Turret</Filter>
+      <Filter>02.GameObjects\Modules\01.Turret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Gun.cpp">
-      <Filter>02.GameObjects\Parts\02.Gun</Filter>
+      <Filter>02.GameObjects\Modules\02.Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Icon_Engine.cpp">
+      <Filter>02.GameObjects\UIObject\12.Icon_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tank.cpp">
+      <Filter>02.GameObjects\LandObject\00.Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Track.cpp">
+      <Filter>02.GameObjects\Modules\03.Tracks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

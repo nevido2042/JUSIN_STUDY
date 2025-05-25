@@ -171,7 +171,7 @@ HRESULT CGameManager::StopBGM_Game()
 HRESULT CGameManager::Ready_Components()
 {
 	/* For.Com_Sound */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_BGM"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_BGM"),
 		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 

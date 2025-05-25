@@ -185,9 +185,11 @@
     <ClInclude Include="..\public\Fury_Hanger.h" />
     <ClInclude Include="..\public\GameManager.h" />
     <ClInclude Include="..\public\Gun.h" />
+    <ClInclude Include="..\public\Icon_Engine.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Skydome.h" />
+    <ClInclude Include="..\public\Tank.h" />
     <ClInclude Include="..\public\Tiger.h" />
     <ClInclude Include="..\public\TigerGun.h" />
     <ClInclude Include="..\public\TigerTrackLeft.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="..\public\StatusLight.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
+    <ClInclude Include="..\public\Track.h" />
     <ClInclude Include="..\public\Turret.h" />
     <ClInclude Include="..\public\VHouse01A.h" />
     <ClInclude Include="..\public\WOT_Icon.h" />
@@ -249,9 +252,11 @@
     <ClCompile Include="..\private\Fury_Hanger.cpp" />
     <ClCompile Include="..\private\GameManager.cpp" />
     <ClCompile Include="..\private\Gun.cpp" />
+    <ClCompile Include="..\private\Icon_Engine.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
+    <ClCompile Include="..\private\Tank.cpp" />
     <ClCompile Include="..\private\Tiger.cpp" />
     <ClCompile Include="..\private\TigerGun.cpp" />
     <ClCompile Include="..\private\TigerTrackLeft.cpp" />
@@ -274,6 +279,7 @@
     <ClCompile Include="..\private\StatusLight.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
+    <ClCompile Include="..\private\Track.cpp" />
     <ClCompile Include="..\private\Turret.cpp" />
     <ClCompile Include="..\private\VHouse01A.cpp" />
     <ClCompile Include="..\private\WOT_Icon.cpp" />
