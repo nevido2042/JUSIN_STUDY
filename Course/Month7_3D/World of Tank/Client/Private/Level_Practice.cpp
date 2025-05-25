@@ -8,6 +8,7 @@
 #include "Camera_FPS.h"
 #include "GameManager.h"
 
+#include "LandObject.h"
 #include "UIObject.h"
 #include "Layer.h"
 
@@ -206,7 +207,7 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 {
 	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
 
-	CGameObject::GAMEOBJECT_DESC Desc{};
+	CLandObject::LANDOBJECT_DESC Desc{};
 	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
 	Desc.iID = m_pGameInstance->Get_ID();
 	
@@ -239,8 +240,8 @@ HRESULT CLevel_Practice::Ready_Layer_Minimap(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 256.0f;
-	UIObject_Desc.fSizeY = 256.0f;
+	UIObject_Desc.fSizeX = 256.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 256.0f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX - UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
 
@@ -255,8 +256,8 @@ HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 229.0f;
-	UIObject_Desc.fSizeY = 228.0f;
+	UIObject_Desc.fSizeX = 229.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 228.0f * UI_RATIO;
 	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
 

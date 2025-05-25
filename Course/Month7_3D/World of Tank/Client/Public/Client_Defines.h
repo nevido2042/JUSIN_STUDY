@@ -55,5 +55,6 @@ using namespace Client;
 
 #define GET_GAMEMANAGER static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))
 
+#define UI_RATIO ((static_cast<_float>(g_iWinSizeX) / g_iBase_WinSizeX + static_cast<_float>(g_iWinSizeY) / g_iBase_WinSizeY) * 0.5f)
 
 

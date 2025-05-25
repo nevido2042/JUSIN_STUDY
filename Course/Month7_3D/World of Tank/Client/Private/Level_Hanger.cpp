@@ -142,10 +142,11 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
+	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.2f;
-	UIObject_Desc.fSizeX = 200.f;
-	UIObject_Desc.fSizeY = 50.f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
+
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Start"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
@@ -158,10 +159,11 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Fury(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
+	UIObject_Desc.fSizeX = 420.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 307.f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
-	UIObject_Desc.fSizeX = 420.f * 0.5f;
-	UIObject_Desc.fSizeY = 307.f * 0.5f;
+
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Fury"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
@@ -189,10 +191,11 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Tiger(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
+	UIObject_Desc.fSizeX = 420.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 307.f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.7f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
-	UIObject_Desc.fSizeX = 420.f * 0.5f;
-	UIObject_Desc.fSizeY = 307.f * 0.5f;
+
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
@@ -233,11 +236,11 @@ HRESULT CLevel_Hanger::Ready_Layer_StatusLight(const _wstring strLayerTag)
 
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
+	UIObject_Desc.fSizeX = 40.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 50.0f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.05f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.05f;
-#pragma message ("UI 크기도 WinSize 비례해서 하면 좋겠지만. 툴 없이는 힘들지도, 왜냐하면 화면비율 망가진 상태에서 생성하면 비율 망가짐")
-	UIObject_Desc.fSizeX = 40.0f;
-	UIObject_Desc.fSizeY = 50.0f;
+
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),
 		ENUM_CLASS(LEVEL::STATIC), strLayerTag, &UIObject_Desc)))

@@ -114,8 +114,8 @@ HRESULT CLevel_Loading::Ready_Layer_Loading_Spinner(const _wstring strLayerTag)
 	UIObjectDesc.fRotationPerSec = 1.f;
 	UIObjectDesc.fX = g_iWinSizeX * 0.5f;
 	UIObjectDesc.fY = g_iWinSizeY * 0.5f;
-	UIObjectDesc.fSizeX = 260.0f;
-	UIObjectDesc.fSizeY = 260.0f;
+	UIObjectDesc.fSizeX = 260.0f * UI_RATIO;
+	UIObjectDesc.fSizeY = 260.0f * UI_RATIO;
 	UIObjectDesc.fDepth = 0.05f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Loading_Spinner"),
@@ -130,8 +130,8 @@ HRESULT CLevel_Loading::Ready_Layer_WOT_Icon(const _wstring strLayerTag)
 	CUIObject::UIOBJECT_DESC				UIObjectDesc{};
 	UIObjectDesc.fX = g_iWinSizeX * 0.5f;
 	UIObjectDesc.fY = g_iWinSizeY * 0.5f;
-	UIObjectDesc.fSizeX = 260.0f;
-	UIObjectDesc.fSizeY = 260.0f;
+	UIObjectDesc.fSizeX = 260.0f * UI_RATIO;
+	UIObjectDesc.fSizeY = 260.0f * UI_RATIO;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_WOT_Icon"),
 		ENUM_CLASS(LEVEL::LOADING), strLayerTag, &UIObjectDesc)))

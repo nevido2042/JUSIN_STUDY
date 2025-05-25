@@ -180,8 +180,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Minimap(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 256.0f;
-	UIObject_Desc.fSizeY = 256.0f;
+	UIObject_Desc.fSizeX = 256.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 256.0f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX - UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
 
@@ -196,8 +196,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 229.0f;
-	UIObject_Desc.fSizeY = 228.0f;
+	UIObject_Desc.fSizeX = 229.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 228.0f * UI_RATIO;
 	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND;
@@ -213,8 +213,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Icon_Engine(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 46.0f;
-	UIObject_Desc.fSizeY = 40.0f;
+	UIObject_Desc.fSizeX = 46.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 40.0f * UI_RATIO;
 	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.6f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 4.15f;
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;

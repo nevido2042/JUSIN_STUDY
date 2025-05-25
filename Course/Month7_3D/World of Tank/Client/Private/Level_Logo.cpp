@@ -97,8 +97,8 @@ HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring strLayerTag)
 
 	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
-	UIObject_Desc.fSizeX = 400.f;
-	UIObject_Desc.fSizeY = 200.f;
+	UIObject_Desc.fSizeX = 400.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 200.f * UI_RATIO;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Logo"),
 		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
@@ -113,8 +113,8 @@ HRESULT CLevel_Logo::Ready_Layer_Button_Login(const _wstring strLayerTag)
 
 	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
-	UIObject_Desc.fSizeX = 200.f;
-	UIObject_Desc.fSizeY = 50.f;
+	UIObject_Desc.fSizeX = 200.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 50.f * UI_RATIO;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_Button_Login"),
 		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &UIObject_Desc)))
