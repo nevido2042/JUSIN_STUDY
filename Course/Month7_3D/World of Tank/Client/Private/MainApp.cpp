@@ -15,6 +15,7 @@
 #include "Turret.h"
 #include "Gun.h"
 #include "Engine.h"
+#include "LandObject.h"
 #pragma endregion
 
 
@@ -195,7 +196,7 @@ HRESULT CMainApp::Define_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(CREATE_OTHER_TANK_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			CGameObject::GAMEOBJECT_DESC Desc = {};
+			CLandObject::LANDOBJECT_DESC Desc = {};
 			Desc.iID = Packet_Desc.iID;
 			Desc.vInitPosition = Packet_Desc.vPos;
 

@@ -48,6 +48,10 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 void CCamera_FPS::Update(_float fTimeDelta)
 {
 
+}
+
+void CCamera_FPS::Late_Update(_float fTimeDelta)
+{
 	// Å¸°ÙÀÇ Right
 	_vector vTargetRight = m_pTarget->Get_CombinedWorldMatrix().r[0];
 	vTargetRight = XMVector3Normalize(vTargetRight);
@@ -72,19 +76,13 @@ void CCamera_FPS::Update(_float fTimeDelta)
 	m_pTransformCom->Set_State(STATE::UP, vTargetUp);
 	m_pTransformCom->Set_State(STATE::LOOK, vTargetLook);
 
+	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
+
 	// ºä/ÇÁ·ÎÁ§¼Ç °»½Å
 	__super::Bind_Matrices();
 
 #pragma message ("°è¼Ó ²ô´Â°Å ¸¾¿¡¾ÈµéÁö¸¸ ÀÏ´Ü, Å¸°Ù °Ç")
 	m_pTarget->Set_Visible(false);
-
-
-}
-
-void CCamera_FPS::Late_Update(_float fTimeDelta)
-{
-	//if (Get_isActive() == false)
-	//	m_pTarget->Set_Visible(true);
 }
 
 HRESULT CCamera_FPS::Render()

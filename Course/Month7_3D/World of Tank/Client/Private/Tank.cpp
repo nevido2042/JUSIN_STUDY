@@ -23,7 +23,6 @@ CTank::CTank(const CTank& Prototype)
 HRESULT CTank::Initialize(void* pArg)
 {
 	LANDOBJECT_DESC* pDesc = static_cast<LANDOBJECT_DESC*>(pArg);
-	m_iID = pDesc->iID;
 	(*pDesc).fRotationPerSec = 0.1f;
 	(*pDesc).fSpeedPerSec = 0.5f;
 	(*pDesc).iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
@@ -31,6 +30,7 @@ HRESULT CTank::Initialize(void* pArg)
 	(*pDesc).strComponentTag = TEXT("Com_VIBuffer");
 	(*pDesc).iIndex = 0;
 
+	m_iID = pDesc->iID;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

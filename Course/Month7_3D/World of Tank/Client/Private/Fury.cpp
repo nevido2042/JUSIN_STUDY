@@ -25,16 +25,13 @@ HRESULT CFury::Initialize_Prototype()
 
 HRESULT CFury::Initialize(void* pArg)
 {
-#pragma message ("디스크립션 주는거 정리하자 나중에")
-	GAMEOBJECT_DESC*	pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-	LANDOBJECT_DESC		Desc{};
-	lstrcpy(Desc.szName, TEXT("Fury"));
-	Desc.vInitPosition = pDesc->vInitPosition;
+	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+	lstrcpy((*pDesc).szName, TEXT("Fury"));
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(__super::Initialize(&Desc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_PartObjects()))

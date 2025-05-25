@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "Track.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -10,7 +11,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CTigerTrackRight final : public CGameObject
+class CTigerTrackRight final : public CTrack
 {
 private:
 	CTigerTrackRight(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -24,25 +25,6 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-
-public:
-	void Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; }
-
-private:
-	_float			m_fSpeed = {};
-	_float			m_fUVScrollY = {};
-
-private:
-	ID3D11RasterizerState* m_pRasterState = { nullptr };
-	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
-private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
-private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-	HRESULT Bind_ShaderResources();
 
 private:
 	HRESULT Ready_Components();

@@ -68,6 +68,8 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 		}
 	}
 
+	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
+
 	__super::Bind_Matrices();
 }
 

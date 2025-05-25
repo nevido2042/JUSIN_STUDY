@@ -172,21 +172,6 @@
     <Filter Include="02.GameObjects\Modules\02.Gun\TigerGun">
       <UniqueIdentifier>{78632613-37c4-45b2-91ad-3d7fdb18de74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Modules\03.Tracks">
-      <UniqueIdentifier>{dd5efe91-c3a5-42ff-9498-0ce882896f37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Modules\03.Tracks\TigerTrackLeft">
-      <UniqueIdentifier>{7dd21582-d3a0-4dcd-83d4-7b469a64f426}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Modules\03.Tracks\TigerTrackRight">
-      <UniqueIdentifier>{e676163c-c9a7-4ac4-8f62-759493d2d5a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Modules\03.Tracks\FuryTrackRight">
-      <UniqueIdentifier>{e8cf1c38-c868-41a9-81cb-e942e0853879}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Modules\03.Tracks\FuryTrackLeft">
-      <UniqueIdentifier>{5e2aea67-3b9f-4600-80e1-f85fe27c4a84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\LandObject\00.Tank">
       <UniqueIdentifier>{da1f2422-d818-4fbd-952d-74c7f0d3b634}</UniqueIdentifier>
     </Filter>
@@ -195,6 +180,21 @@
     </Filter>
     <Filter Include="02.GameObjects\LandObject\00.Tank\02.Tiger">
       <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\03.Track">
+      <UniqueIdentifier>{dd5efe91-c3a5-42ff-9498-0ce882896f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\03.Track\TigerTrackLeft">
+      <UniqueIdentifier>{7dd21582-d3a0-4dcd-83d4-7b469a64f426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\03.Track\TigerTrackRight">
+      <UniqueIdentifier>{e676163c-c9a7-4ac4-8f62-759493d2d5a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\03.Track\FuryTrackRight">
+      <UniqueIdentifier>{e8cf1c38-c868-41a9-81cb-e942e0853879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Modules\03.Track\FuryTrackLeft">
+      <UniqueIdentifier>{5e2aea67-3b9f-4600-80e1-f85fe27c4a84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -358,10 +358,10 @@
       <Filter>02.GameObjects\LandObject\00.Tank\02.Tiger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTrackLeft.h">
-      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\FuryTrackLeft</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTrackRight.h">
-      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\FuryTrackRight</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryGun.h">
       <Filter>02.GameObjects\Modules\02.Gun\FuryGun</Filter>
@@ -376,10 +376,10 @@
       <Filter>02.GameObjects\Modules\02.Gun\TigerGun</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TigerTrackLeft.h">
-      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\TigerTrackLeft</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TigerTrackRight.h">
-      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\TigerTrackRight</Filter>
     </ClInclude>
     <ClInclude Include="..\public\WOT_Icon.h">
       <Filter>02.GameObjects\UIObject\11.WOT_Icon</Filter>
@@ -397,7 +397,7 @@
       <Filter>02.GameObjects\LandObject\00.Tank</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Track.h">
-      <Filter>02.GameObjects\Modules\03.Tracks</Filter>
+      <Filter>02.GameObjects\Modules\03.Track</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -556,10 +556,10 @@
       <Filter>02.GameObjects\LandObject\00.Tank\02.Tiger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTrackLeft.cpp">
-      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\FuryTrackLeft</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTrackRight.cpp">
-      <Filter>02.GameObjects\Modules\03.Tracks\FuryTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\FuryTrackRight</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryGun.cpp">
       <Filter>02.GameObjects\Modules\02.Gun\FuryGun</Filter>
@@ -574,10 +574,10 @@
       <Filter>02.GameObjects\Modules\02.Gun\TigerGun</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TigerTrackLeft.cpp">
-      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackLeft</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\TigerTrackLeft</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TigerTrackRight.cpp">
-      <Filter>02.GameObjects\Modules\03.Tracks\TigerTrackRight</Filter>
+      <Filter>02.GameObjects\Modules\03.Track\TigerTrackRight</Filter>
     </ClCompile>
     <ClCompile Include="..\private\WOT_Icon.cpp">
       <Filter>02.GameObjects\UIObject\11.WOT_Icon</Filter>
@@ -595,7 +595,7 @@
       <Filter>02.GameObjects\LandObject\00.Tank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Track.cpp">
-      <Filter>02.GameObjects\Modules\03.Tracks</Filter>
+      <Filter>02.GameObjects\Modules\03.Track</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,16 +1,17 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "LandObject.h"
+#include "Tank.h"
 
 NS_BEGIN(Engine)
 class CShader;
 class CModel;
+class CSoundController;
 NS_END
 
 NS_BEGIN(Client)
 
-class CTiger final : public CLandObject
+class CTiger final : public CTank
 {
 private:
 	CTiger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -26,30 +27,6 @@ public:
 	virtual HRESULT Render();
 
 private:
-	void Destroyed();
-
-private:
-	void Move(_float fTimeDelta);
-
-private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-	HRESULT Bind_ShaderResources();
-
-private:
-	const _float	m_fSyncInterval = { 0.5f };
-	_float			m_fTimeAcc = { 0 };
-
-private:
-	_bool	m_bDestroyed = { false };
-private:
-	ID3D11RasterizerState* m_pRasterState = { nullptr };
-	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
-private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-	CModel* m_pModelCom_Destroyed = { nullptr };
-
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();
 
