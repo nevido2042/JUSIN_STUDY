@@ -18,6 +18,7 @@
 _uint g_iWinSizeX;
 _uint g_iWinSizeY;
 _bool g_bWindowResizeRequired = false;
+HWND g_hWnd;
 
 IMPLEMENT_SINGLETON(CGameInstance);
 
@@ -88,7 +89,14 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 		m_pGraphic_Device->Resize(g_iWinSizeX, g_iWinSizeY);
 
 	m_pInputDevice->Update();
-	m_pSound_Device->Update();
+
+	if (GetForegroundWindow() == g_hWnd)
+	{
+		m_pSound_Device->MuteSound(false);
+		m_pSound_Device->Update();
+	}
+	else
+		m_pSound_Device->MuteSound(true);
 
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
@@ -314,6 +322,11 @@ void CGameInstance::Set_Master_Volume(_float volume)
 	m_pSound_Device->Set_Master_Volume(volume);
 }
 #pragma endregion
+
+void CGameInstance::MuteSound(_bool bMute)
+{
+	m_pSound_Device->MuteSound(bMute);
+}
 
 #pragma region INPUT_DEVICE
 

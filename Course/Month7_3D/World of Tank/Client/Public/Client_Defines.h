@@ -43,7 +43,7 @@ namespace Client
 //extern _uint g_iWinResizeX;
 //extern _uint g_iWinResizeY;
 
-extern HWND g_hWnd;
+//extern HWND g_hWnd;
 extern HINSTANCE g_hInst;
 
 

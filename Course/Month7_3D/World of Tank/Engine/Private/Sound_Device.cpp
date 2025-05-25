@@ -193,6 +193,16 @@ void CSound_Device::Set_Master_Volume(_float volume)
         masterGroup->setVolume(volume);
 }
 
+void CSound_Device::MuteSound(_bool bMute)
+{
+    FMOD::ChannelGroup* masterGroup = nullptr;
+    m_pCoreSystem->getMasterChannelGroup(&masterGroup);
+    if (masterGroup)
+    {
+        masterGroup->setMute(bMute);  // mute가 true이면 소리 음소거, false로 하면 복구
+    }
+}
+
 CSound_Device* CSound_Device::Create()
 {
     CSound_Device* pInstance = new CSound_Device();

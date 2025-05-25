@@ -28,11 +28,12 @@ public:
 	void Set_Pitch(_float Pitch);
 	void Set_Loop(_int LoopCount);
 	// 사운드 포지션 업데이트
-	void Update3DPosition(const _float3& vPos);
+	void Update3DPosition(const _fvector& vPos);
 	//트랜스폼과 소리의 감쇠곡선을 결정할 죄소,최대 거리
 	void Set3DState(_float fMin, _float fMax);
 	_bool IsPlaying() const;
 	void SetPaused(_bool paused);
+
 
 private:
 	FMOD::System* m_pCoreSystem = { nullptr };

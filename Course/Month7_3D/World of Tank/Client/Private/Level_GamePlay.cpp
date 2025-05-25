@@ -33,11 +33,8 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 
-
 	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 		return E_FAIL;
-
-
 
 
 	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
@@ -50,7 +47,11 @@ HRESULT CLevel_GamePlay::Initialize()
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), &Desc);
-	m_pGameInstance->Clear_Packet();
+	//m_pGameInstance->Clear_Packet();
+
+	CGameManager* pGameManager = GET_GAMEMANAGER;
+	pGameManager->StopBGM_LoadingGame();
+	pGameManager->PlayBGM_Game();
 
 	return S_OK;
 }

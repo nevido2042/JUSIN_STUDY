@@ -81,6 +81,8 @@ public:
 	void Set_Listener_Position(const class CTransform* pTransform, const _float3& vel);
 	// 전체 볼륨 제어
 	void Set_Master_Volume(_float volume);
+	//음소거
+	void MuteSound(_bool bMute);
 #pragma endregion
 
 #pragma region INPUT_DEVICE

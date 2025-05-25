@@ -65,7 +65,7 @@ void CSoundController::SetVolume(const string& strTag, _float Volume)
 		pSoundCore->Set_Volume(Volume);
 }
 
-void CSoundController::Update3DPosition(const string& strTag, const _float3& vPos)
+void CSoundController::Update3DPosition(const string& strTag, const _fvector& vPos)
 {
 	auto pSoundCore = Find_Sound(strTag);
 	if (pSoundCore)
@@ -99,7 +99,7 @@ void CSoundController::SetVolume(_float Volume)
 		value->Set_Volume(Volume);
 }
 
-void CSoundController::Update3DPosition(const _float3& vPos)
+void CSoundController::Update3DPosition(const _fvector& vPos)
 {
 	for (auto& [key, value] : m_Sounds)
 		value->Update3DPosition(vPos);

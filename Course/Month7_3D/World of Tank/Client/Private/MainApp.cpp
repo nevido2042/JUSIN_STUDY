@@ -655,9 +655,14 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_SoundController */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController"),
-		CSoundController::Create("../Bin/WOT_Resources/Sound/01.Engine/"))))															\
+	/* For.Prototype_Component_TankSound3D */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_TankSound3D"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/01.TankSound3D/", true))))															
+		return E_FAIL;
+
+	/* For.Prototype_Component_BGM */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_BGM"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/02.BGM/"))))
 		return E_FAIL;
 #pragma endregion
 

@@ -96,10 +96,10 @@ void CSound_Core::Set_Loop(_int LoopCount)
     }
 }
 
-void CSound_Core::Update3DPosition(const _float3& vPos)
+void CSound_Core::Update3DPosition(const _fvector& vPos)
 {
     _vector vOldPos = XMLoadFloat3(&m_vSoundPos);
-    _vector vNewPos = XMLoadFloat3(&vPos);
+    _vector vNewPos = vPos;
 
     _vector vSoundVel = vNewPos - vOldPos;
 

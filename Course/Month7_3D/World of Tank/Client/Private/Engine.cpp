@@ -24,6 +24,7 @@ HRESULT CEngine::Initialize(void* pArg)
 {
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	m_iID = pDesc->iID;
+	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
 
 	GAMEOBJECT_DESC			Desc{};
 	
@@ -41,6 +42,8 @@ HRESULT CEngine::Initialize(void* pArg)
 	m_EngineSound_Loop = "engines_13";
 	m_EngineSound_End = "engines_14";
 
+	m_pSoundCom->Set3DState(0.f, 100.f);
+
 	return S_OK;
 }
 
@@ -55,6 +58,8 @@ void CEngine::Start_Engine()
 
 void CEngine::End_Engine()
 {
+#pragma message ("본 게임간에 엔진을 끈다라는 건 없는걸로하고 (패킷도 안보냄). 사운드 테스트로 놔두자.")
+
 	m_IsOn = false;
 	m_pSoundCom->Stop(m_EngineSound_Loop);
 
@@ -71,6 +76,19 @@ void CEngine::Priority_Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID )
 	{
+		if (!m_IsOn)
+		{
+			if (m_pGameInstance->Key_Down(DIK_W))
+			{
+				BOOL_DESC Desc{};
+				Desc.bBool = true;
+				Desc.iID = m_iID;
+				m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), &Desc);
+			}
+
+			return;
+		}
+
 		if (m_pGameInstance->Key_Down(DIK_W))
 		{
 			BOOL_DESC Desc{};
@@ -140,10 +158,17 @@ void CEngine::Update(_float fTimeDelta)
 		Input(fTimeDelta);
 	else
 		Input_Network(fTimeDelta);
+
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
+	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
+	m_pSoundCom->Update3DPosition(vPos);
+
 	m_pSoundCom->SetVolume(m_EngineSound_Loop, 0.7f + abs(m_fRPM) * m_fVolumeValue);
 	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + abs(m_fRPM) * m_fPitchValue);
 }
@@ -333,7 +358,7 @@ void CEngine::Input_Network(_float fTimeDelta)
 HRESULT CEngine::Ready_Components()
 {
 	/* For.Com_Sound */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_TankSound3D"),
 		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 

@@ -62,6 +62,7 @@ using namespace Engine;
 ENGINE_DLL extern _bool g_bWindowResizeRequired;
 ENGINE_DLL extern _uint g_iWinSizeX;
 ENGINE_DLL extern _uint g_iWinSizeY;
+ENGINE_DLL extern HWND g_hWnd;
 
 
 #ifdef _DEBUG

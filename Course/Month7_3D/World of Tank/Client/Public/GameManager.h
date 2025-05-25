@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
+NS_BEGIN(Engine)
+class CSoundController;
+NS_END
+
 NS_BEGIN(Client)
 
 class CGameManager final : public CGameObject
@@ -33,10 +37,22 @@ public:
 	HRESULT		Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3 vPos);
 	HRESULT		Ready_Layer_Camera_TPS(const _wstring strLayerTag);
 	HRESULT		Ready_Layer_Camera_FPS(const _wstring strLayerTag);
+public:
+	HRESULT		PlayBGM_LoadingGame();
+	HRESULT		StopBGM_LoadingGame();
+public:
+	HRESULT		PlayBGM_Game();
+	HRESULT		StopBGM_Game();
 
 private:
 	TANK		m_eSelectTank = { TANK::FURY };
 	_bool		m_isGameStart = { false };
+
+private:
+	CSoundController* m_pSoundCom = { nullptr };
+
+private:
+	HRESULT Ready_Components();
 
 public:
 	static CGameManager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

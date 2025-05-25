@@ -42,8 +42,8 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
-	
-
+#pragma message ("이동 방향을 넣으란거 같은데 일딴 뺌, 도플러 효과 주라는 듯")
+	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
 }
 
 void CCamera_TPS::Update(_float fTimeDelta)

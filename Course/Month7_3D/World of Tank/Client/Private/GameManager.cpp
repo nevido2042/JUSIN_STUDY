@@ -5,6 +5,7 @@
 #include "Fury.h"
 #include "Camera_TPS.h"
 #include "Camera_FPS.h"
+#include "SoundController.h"
 
 CGameManager::CGameManager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -32,6 +33,9 @@ HRESULT CGameManager::Initialize(void* pArg)
 	lstrcpy(Desc.szName, TEXT("GameManager"));
 
 	if (FAILED(__super::Initialize(&Desc)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
 
@@ -132,6 +136,48 @@ HRESULT CGameManager::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CGameManager::PlayBGM_LoadingGame()
+{
+	m_pSoundCom->Play("19. Studzianki");
+	m_pSoundCom->SetVolume(0.2f);
+	m_pSoundCom->Set_Loop("19. Studzianki");
+
+	return S_OK;
+}
+
+HRESULT CGameManager::StopBGM_LoadingGame()
+{
+	m_pSoundCom->Stop("19. Studzianki");
+
+	return S_OK;
+}
+
+HRESULT CGameManager::PlayBGM_Game()
+{
+	m_pSoundCom->Play("Stuzianki_Battle");
+	m_pSoundCom->SetVolume(0.2f);
+	m_pSoundCom->Set_Loop("Stuzianki_Battle");
+
+	return S_OK;
+}
+
+HRESULT CGameManager::StopBGM_Game()
+{
+	m_pSoundCom->Stop("Stuzianki_Battle");
+
+	return S_OK;
+}
+
+HRESULT CGameManager::Ready_Components()
+{
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_BGM"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CGameManager* CGameManager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CGameManager* pInstance = new CGameManager(pDevice, pContext);
@@ -161,5 +207,7 @@ CGameObject* CGameManager::Clone(void* pArg)
 void CGameManager::Free()
 {
 	__super::Free();
+	
+	//Safe_Release(m_pSoundCom);
 
 }

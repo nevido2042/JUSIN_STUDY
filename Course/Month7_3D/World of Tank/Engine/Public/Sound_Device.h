@@ -24,6 +24,7 @@ public:
     void Set_Listener_Position(const class CTransform* pTransform, const _float3& vel);
     class CSound_Core* Get_Single_Sound(const string& strKey);
     void Set_Master_Volume(_float volume);
+    void MuteSound(_bool bMute);
 private:
     FMOD::DSP* m_pMasterLimiter = nullptr;
     FMOD::System* m_pCoreSystem = nullptr;

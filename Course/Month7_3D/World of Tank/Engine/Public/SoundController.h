@@ -28,7 +28,7 @@ public:
 
     void SetVolume(const string& strTag,_float Volume);
     // 사운드 포지션 업데이트
-    void Update3DPosition(const string& strTag, const _float3& vPos);
+    void Update3DPosition(const string& strTag, const _fvector& vPos);
     //트랜스폼과 소리의 감쇠곡선을 결정할 죄소,최대 거리
     void Set3DState(const string& strTag, _float fMin, _float fMax);
     _bool IsPlaying(const string& strTag) const;
@@ -36,7 +36,7 @@ public:
     void StopAll();
     void SetVolume(_float Volume);
     // 사운드 포지션 업데이트
-    void Update3DPosition(const _float3& vPos);
+    void Update3DPosition(const _fvector& vPos);
     //트랜스폼과 소리의 감쇠곡선을 결정할 죄소,최대 거리
     void Set3DState(_float fMin, _float fMax);
 

@@ -52,6 +52,8 @@ void CButton_Start::Update(_float fTimeDelta)
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		pGameManager->Set_isGameStart(false);
 
+		pGameManager->PlayBGM_LoadingGame();
+
 		JOIN_MATCH_DESC Desc{};
 		Desc.eTank = pGameManager->Get_Select_Tank();
 		Desc.iID = m_pGameInstance->Get_ID();
