@@ -163,13 +163,12 @@ void CTank::Input()
 
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
 	{
+		PACKET_DESC Desc{};
+		Desc.iID = m_iID;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_FIRE), &Desc);
+
 		Try_Fire();
 	}
-}
-
-void CTank::Input_Network()
-{
-
 }
 
 void CTank::Try_Fire()

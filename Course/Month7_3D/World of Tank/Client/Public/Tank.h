@@ -31,7 +31,6 @@ public:
 
 private:
 	void Input();
-	void Input_Network();
 private:
 	void Move(_float fTimeDelta);
 private:
