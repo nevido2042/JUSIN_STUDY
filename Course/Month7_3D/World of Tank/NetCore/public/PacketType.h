@@ -46,6 +46,8 @@ enum class PacketType
     CS_DOWN,
     SC_DOWN,
 
+    CS_FIRE,
+    SC_FIRE,
 
     CS_MATRIX_BODY,
     SC_MATRIX_BODY,

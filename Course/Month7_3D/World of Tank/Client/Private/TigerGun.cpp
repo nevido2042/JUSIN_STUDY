@@ -42,10 +42,9 @@ HRESULT CTigerGun::Initialize(void* pArg)
 	//블렌더에서 가져온걸로
 	//1. x 100.f
 	//2. 축 순서 변경
-
-	//-0.000098f, -0.010188f, 0.022237f
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(-0.0098f, 2.2237f, 1.0188f, 1.0f));
-	//m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(-0.0041f, 2.2863f, 0.8589f, 1.0f));
+
+	m_pSoundCom->Set3DState(0.f, 100.f);
 
 	return S_OK;
 }
@@ -146,6 +145,11 @@ HRESULT CTigerGun::Ready_Components()
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_TigerGun"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;

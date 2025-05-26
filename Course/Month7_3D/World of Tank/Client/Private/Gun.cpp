@@ -99,6 +99,16 @@ void CGun::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 }
 
+HRESULT CGun::Fire()
+{
+	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
+	m_pSoundCom->Update3DPosition(vPos);
+
+	m_pSoundCom->Play("wpn_1");
+
+	return S_OK;
+}
+
 void CGun::Free()
 {
 	__super::Free();

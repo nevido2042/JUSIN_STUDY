@@ -44,6 +44,8 @@ HRESULT CFuryGun::Initialize(void* pArg)
 	//2. 축 순서 변경
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(-0.0041f, 2.2863f, 0.8589f, 1.0f));
 
+	m_pSoundCom->Set3DState(0.f, 100.f);
+
 	return S_OK;
 }
 
@@ -146,6 +148,11 @@ HRESULT CFuryGun::Ready_Components()
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_FuryGun"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;

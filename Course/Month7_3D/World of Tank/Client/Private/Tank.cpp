@@ -1,7 +1,7 @@
 #include "Tank.h"
 
-//#include "FuryTrackLeft.h"
-//#include "FuryTrackRight.h"
+#include "Turret.h"
+#include "Gun.h"
 #include "Track.h"
 #include "GameInstance.h"
 #include "Engine.h"
@@ -55,6 +55,9 @@ void CTank::Priority_Update(_float fTimeDelta)
 	Move(fTimeDelta);
 
 	CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
+
+	// 반동 적용
+	ApplyRecoil(fTimeDelta);
 
 	CGameObject::Priority_Update(fTimeDelta);
 }
@@ -143,6 +146,9 @@ void CTank::Input()
 	if (GetForegroundWindow() != g_hWnd)
 		return;
 
+	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE) && m_pGameInstance->Get_ID() != m_iID)
+		return;
+
 	if (m_pGameInstance->Key_Down(DIK_F12))
 		Destroyed();
 
@@ -154,6 +160,29 @@ void CTank::Input()
 
 	if (m_pGameInstance->Key_Down(DIK_F3))
 		Set_State_Engine(MODULE_STATE::DESTROYED);
+
+	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
+	{
+		Try_Fire();
+	}
+}
+
+void CTank::Input_Network()
+{
+
+}
+
+void CTank::Try_Fire()
+{
+	//발사
+	CTurret* pTurret = static_cast<CTurret*>(Find_PartObject(TEXT("Part_Turret")));
+	CGun* pGun = static_cast<CGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+
+	if (FAILED(pGun->Fire()))
+		return;
+
+	//꿀렁임
+	m_fRecoilTime = m_fMaxRecoilTime;
 }
 
 void CTank::Move(_float fTimeDelta)
@@ -260,6 +289,50 @@ HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 
 	return S_OK;
 }
+
+void CTank::ApplyRecoil(_float fTimeDelta)
+{
+	if (m_fRecoilTime <= 0.f)
+		return;
+
+	m_fRecoilTime -= fTimeDelta * 0.5f;
+
+	_float fProgress = 1.f - (m_fRecoilTime / m_fMaxRecoilTime);
+	_float fOscillation = sinf(fProgress * XM_PI * 3.f); // 1.5회 진동
+	_float fDamping = (1.f - fProgress); // 감쇠
+	_float fRecoilStrength = XMConvertToRadians(1.5f); // 최대 회전 각도
+
+	// 회전 각도 계산
+	_float fAngle = fOscillation * fDamping * fRecoilStrength;
+
+	// 포탑의 Right 벡터 가져오기
+	_vector vTurretRight = Find_PartObject(TEXT("Part_Turret"))->Get_CombinedWorldMatrix().r[0];
+	vTurretRight = XMVector3Normalize(vTurretRight);
+
+	// 탱크 본체의 방향 정보
+	_vector vRight = m_pTransformCom->Get_State(STATE::RIGHT);
+	_vector vLook = m_pTransformCom->Get_State(STATE::LOOK);
+	_vector vUp = m_pTransformCom->Get_State(STATE::UP);
+
+	// 회전 축: 포탑의 Right
+	_matrix matRot = XMMatrixRotationAxis(vTurretRight, -fAngle); // 마이너스로 뒤로 꿀렁이기
+
+	// 본체 기준 회전 적용
+	vLook = XMVector3TransformNormal(vLook, matRot);
+	vUp = XMVector3TransformNormal(vUp, matRot);
+
+	// 정규화 및 직교화
+	vLook = XMVector3Normalize(vLook);
+	vUp = XMVector3Normalize(vUp);
+	vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
+
+	// 본체에 적용
+	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
+	m_pTransformCom->Set_State(STATE::UP, vUp);
+	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+}
+
+
 
 HRESULT CTank::SetUp_RenderState()
 {

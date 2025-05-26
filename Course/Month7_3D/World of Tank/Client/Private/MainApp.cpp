@@ -16,6 +16,7 @@
 #include "Gun.h"
 #include "Engine.h"
 #include "LandObject.h"
+#include "Tank.h"
 #pragma endregion
 
 
@@ -61,7 +62,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Start_Level(LEVEL::LOGO)))
 		return E_FAIL;
 
-	if(FAILED(Define_Packets()))
+	if(FAILED(Ready_Packets()))
 		return E_FAIL;
 
 	//int* p = new int[4];
@@ -99,8 +100,9 @@ HRESULT CMainApp::Render()
     return S_OK;
 }
 
-HRESULT CMainApp::Define_Packets()
+HRESULT CMainApp::Ready_Packets()
 {
+#pragma region MISC
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
 		{
 			PACKET_DESC Desc{};
@@ -115,7 +117,7 @@ HRESULT CMainApp::Define_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg)
 		{
-			if(m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
+			if (m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
 				return;
 
 			PACKET_DESC Desc{};
@@ -134,7 +136,7 @@ HRESULT CMainApp::Define_Packets()
 		})))
 		return E_FAIL;
 
-	if(FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg) 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg)
 		{
 			m_pGameInstance->Set_Network_Status(NETWORK_STATUS::CONNECTED);
 			//::cout << "SC_PING" << endl;
@@ -175,7 +177,9 @@ HRESULT CMainApp::Define_Packets()
 			cout << "CS_LOAD_COMPLETE" << endl;
 		})))
 		return E_FAIL;
+#pragma endregion
 
+#pragma region Create
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), [this](void* pArg)
 		{
 			POSITION_DESC Desc{};
@@ -203,14 +207,16 @@ HRESULT CMainApp::Define_Packets()
 			cout << "SC_CREATE_OTHER_CHARACTER" << endl;
 			cout << "ID: " << Packet_Desc.iID << endl;
 
-			if(Packet_Desc.eTank == TANK::FURY)
+			if (Packet_Desc.eTank == TANK::FURY)
 				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"), &Desc);
 			else if (Packet_Desc.eTank == TANK::TIGER)
 				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"), &Desc);
 
 		})))
 		return E_FAIL;
+#pragma endregion
 
+#pragma region WASD
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
@@ -338,7 +344,9 @@ HRESULT CMainApp::Define_Packets()
 
 		})))
 		return E_FAIL;
+#pragma endregion
 
+#pragma region TurretMove
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_LEFT), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
@@ -402,7 +410,9 @@ HRESULT CMainApp::Define_Packets()
 
 		})))
 		return E_FAIL;
+#pragma endregion
 
+#pragma region GunMove
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_UP), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
@@ -466,7 +476,44 @@ HRESULT CMainApp::Define_Packets()
 
 		})))
 		return E_FAIL;
+#pragma endregion
 
+#pragma region GunFire
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_FIRE), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_FIRE);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PACKET_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_FIRE), [this](void* pArg)
+		{
+			PACKET_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			{
+				if (Desc.iID == pGameObject->Get_ID())
+				{
+					cout << "ID:" << Desc.iID << "Try_Fire" << endl;
+					static_cast<CTank*>(pGameObject)->Try_Fire();
+				}
+			}
+
+		})))
+		return E_FAIL;
+#pragma endregion
+
+
+#pragma region Matrix
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
@@ -599,7 +646,9 @@ HRESULT CMainApp::Define_Packets()
 
 		})))
 		return E_FAIL;
+#pragma endregion
 
+#pragma region Position
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
 		{
 			if (m_pGameInstance->Get_Network_Status() == NETWORK_STATUS::DISCONNECTED)
@@ -621,7 +670,7 @@ HRESULT CMainApp::Define_Packets()
 		})))
 		return E_FAIL;
 
-	if(FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
 		{
 			POSITION_DESC Desc{};
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
@@ -629,7 +678,7 @@ HRESULT CMainApp::Define_Packets()
 			::cout << Desc.vPos.x << ' ' << Desc.vPos.y << ' ' << Desc.vPos.z << endl;
 		})))
 		return E_FAIL;
-
+#pragma endregion
 	return S_OK;
 }
 

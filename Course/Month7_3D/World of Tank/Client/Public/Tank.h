@@ -26,14 +26,25 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Try_Fire();
+
 private:
 	void Input();
+	void Input_Network();
 private:
 	void Move(_float fTimeDelta);
 private:
 	void Destroyed();
 private:
 	HRESULT Set_State_Engine(MODULE_STATE eState);
+
+private:
+	void ApplyRecoil(_float fTimeDelta);
+
+private:
+	_float m_fRecoilTime = 0.f;
+	const _float m_fMaxRecoilTime = 0.3f;
 
 private:
 	const _float	m_fSyncInterval = { 0.5f };
