@@ -2,67 +2,16 @@
 #include "Packet.h"
 #include "Layer.h"
 
-//CNetwork::CNetwork(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-//	:CGameObject{ pDevice, pContext }
-//{
-//
-// }
-//
-//CNetwork::CNetwork(const CNetwork& Prototype)
-//	:CGameObject(Prototype),
-//	m_iMyID(Prototype.m_iMyID),
-//	m_hSocket(Prototype.m_hSocket),
-//	m_sendQ(Prototype.m_sendQ),
-//	m_recvQ(Prototype.m_recvQ),
-//	m_Packet(Prototype.m_Packet),
-//	m_tServerConfig(Prototype.m_tServerConfig)
-//{
-//	ZeroMemory(&m_ReadSet, sizeof(fd_set));
-//}
-
-//HRESULT CNetwork::Initialize_Prototype()
-//{
-//	return S_OK;
-//}
-
 CNetwork::CNetwork()
 {
 }
 
 HRESULT CNetwork::Initialize(void* pArg)
 {
-	//Clear_Packet();
-
-	//m_tServerConfig = Load_Config_File(TEXT("../bin/config.txt"));
-
-	//WSADATA wsaData;
-	//if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-	//{
-	//	MSG_BOX("WSAStartup() error!");
-	//	return E_FAIL;
-	//}
-
-	//m_hSocket = socket(PF_INET, SOCK_STREAM, 0);
-	//if (m_hSocket == INVALID_SOCKET)
-	//{
-	//	MSG_BOX("sock() error");
-	//	return E_FAIL;
-	//}
-
-	//u_long mode = 1;  // 비동기
-	//ioctlsocket(m_hSocket, FIONBIO, &mode);
-
-	//FD_ZERO(&m_ReadSet);
-	//FD_SET(m_hSocket, &m_ReadSet);
 
 	return S_OK;
 }
 
-
-//HRESULT CNetwork::Ready_Components()
-//{
-//	return S_OK;
-//}
 
 void CNetwork::Priority_Update(_float fTimeDelta)
 {
@@ -88,13 +37,6 @@ void CNetwork::Update(_float fTimeDelta)
 		}
 	}
 
-	//m_fPingElapsed += fTimeDelta;
-	//if (m_fPingElapsed  > PING_TIME && m_isPing == false)
-	//{
-	//	Send_Packet(CPacketHandler::mp_CS_Ping);
-	//	m_isPing = true;
-	//	//Send_Ping();
-	//}
 }
 
 void CNetwork::Late_Update(_float fTimeDelta)
@@ -178,6 +120,10 @@ void CNetwork::Flush_SendBuffer()
 
 HRESULT CNetwork::Send_Packet(_uint iPacketType, void* pArg)
 {
+#pragma message ("연습 모드 때 패킷 보내지는거 같아서 이렇게 일단 처리했음")
+	if (m_eStatus != NETWORK_STATUS::CONNECTED)
+		return S_OK;
+
 	auto it = m_PacketTypes.find(iPacketType);
 	if (it == m_PacketTypes.end())
 		return E_FAIL;
@@ -192,7 +138,7 @@ HRESULT CNetwork::Define_Packet(_uint iPacketType, function<void(void*)> pFuncti
 	if (!pFunction)
 		return E_INVALIDARG;
 
-	// 중복 등록 방지 (선택적)
+	// 중복 등록 방지
 	if (m_PacketTypes.find(iPacketType) != m_PacketTypes.end())
 		return E_FAIL;
 
@@ -374,36 +320,9 @@ CNetwork::SERVER_CONFIG CNetwork::Load_Config_File(const std::wstring& filename)
 	return tConfig;
 }
 
-//CNetwork* CNetwork::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-//{
-//	CNetwork* pInstance = new CNetwork(pDevice, pContext);
-//
-//	if (FAILED(pInstance->Initialize_Prototype()))
-//	{
-//		MSG_BOX("Failed to Created : CNetwork");
-//		Safe_Release(pInstance);
-//	}
-//
-//	return pInstance;
-//}
-//
-//CGameObject* CNetwork::Clone(void* pArg)
-//{
-//	CNetwork* pInstance = new CNetwork(*this);
-//
-//	if (FAILED(pInstance->Initialize(pArg)))
-//	{
-//		MSG_BOX("Failed to Cloned : CNetwork");
-//		Safe_Release(pInstance);
-//	}
-//
-//	return pInstance;
-//}
-
 CNetwork* CNetwork::Create()
 {
 	CNetwork* pInstance = new CNetwork();
-#pragma message ("나중에 전투시작 같은 거 누르면 접속하게끔 Initialize를 겜인스턴스로 호출할 수 있도록 하면 좋을 듯?")
 	if (FAILED(pInstance->Initialize()))
 	{
 		MSG_BOX("Failed to Created : CNetwork");

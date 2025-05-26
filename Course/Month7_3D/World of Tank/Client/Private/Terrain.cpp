@@ -38,21 +38,31 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 void CTerrain::Priority_Update(_float fTimeDelta)
 {
-	//if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
-	//{
-	//	m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
-	//}
+	_uint iLevelIndex = { m_pGameInstance->Get_NewLevel_Index() };
 
-	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
+	if (iLevelIndex == ENUM_CLASS(LEVEL::MAPTOOL) && m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
 	{
 		// 쿼드트리 픽킹
 		_float fDist = { 0 }; //거리
 		_uint iPickedTri = { 0 }; //피킹된 인덱스
 		_float3 vPos = {}; //포지션
-		if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri))
+		if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, XMLoadFloat3(&m_pGameInstance->Get_MousePos()), XMLoadFloat3(&m_pGameInstance->Get_MouseRay())))
 		{
 			m_vPickedPos = vPos;
 		}
+	}
+
+	if (iLevelIndex != ENUM_CLASS(LEVEL::GAMEPLAY) && iLevelIndex != ENUM_CLASS(LEVEL::PRACTICE))
+		return;
+
+	// 쿼드트리 픽킹
+	_float fDist = { 0 }; //거리
+	_uint iPickedTri = { 0 }; //피킹된 인덱스
+	_float3 vPos = {}; //포지션
+	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay())))
+	{
+		m_vPickedPos = vPos;
+		//cout << m_vPickedPos.x << ' ' << m_vPickedPos.y << ' ' << m_vPickedPos.z << endl;
 	}
 }
 

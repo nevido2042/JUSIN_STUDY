@@ -29,6 +29,9 @@ HRESULT CMinimap::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+#pragma message ("UI 부모 자식 트랜스폼 해보려다 실패")
+	//if (FAILED(Ready_PartObjects()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -37,16 +40,22 @@ void CMinimap::Priority_Update(_float fTimeDelta)
 {
 	if (g_bWindowResizeRequired)
 		Resize(g_iWinSizeX, g_iWinSizeY);
+
+	CGameObject::Priority_Update(fTimeDelta);
 }
 
 void CMinimap::Update(_float fTimeDelta)
 {
+	CGameObject::Update(fTimeDelta);
 
 }
 
 void CMinimap::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+
+	CGameObject::Late_Update(fTimeDelta);
+
 }
 
 HRESULT CMinimap::Render()
@@ -93,6 +102,24 @@ HRESULT CMinimap::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CMinimap::Ready_PartObjects()
+{
+	UIOBJECT_DESC UIObject_Desc{};
+	UIObject_Desc.fSizeX = 188.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 226.0f * UI_RATIO;
+	UIObject_Desc.fX = 0.f;
+	UIObject_Desc.fY = 0.f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+	lstrcpy(UIObject_Desc.szName, TEXT("PersonalArrowEntry"));
+
+	UIObject_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"), TEXT("Part_PersonalArrowEntry"), &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CMinimap* CMinimap::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CMinimap* pInstance = new CMinimap(pDevice, pContext);
@@ -122,6 +149,10 @@ CGameObject* CMinimap::Clone(void* pArg)
 void CMinimap::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);

@@ -70,6 +70,9 @@ public:
 
 	const _float3& Get_MousePos();
 	const _float3& Get_MouseRay();
+
+	const _float3& Get_ScreenCenterPos();
+	const _float3& Get_ScreenCenterRay();
 #pragma endregion
 
 #pragma region SOUND_DEVICE

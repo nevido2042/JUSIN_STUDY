@@ -28,6 +28,13 @@ public:
 	const _float3& Get_MousePos()	{ return m_vMousePos; }
 	const _float3& Get_MouseRay()	{ return m_vMouseRay; }
 
+	const _float3& Get_ScreenCenterPos() { return m_vScreenCenterPos; }
+	const _float3& Get_ScreenCenterRay() { return m_vScreenCenterRay; }
+
+private:
+	void Update_Mouse();
+	void Update_ScreenCenter();
+
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
@@ -39,6 +46,9 @@ private:
 	
 	_float3			m_vMouseRay = {};
 	_float3			m_vMousePos = {};
+
+	_float3			m_vScreenCenterRay = {};
+	_float3			m_vScreenCenterPos = {};
 
 	/* 로컬좌표로 옮겨온 마우스의 방향과 위치를 저장하기 위한 변수 */
 	_float3			m_vLocalMouseRay = {};

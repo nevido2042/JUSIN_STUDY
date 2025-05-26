@@ -262,7 +262,7 @@ void CTank::Destroyed()
 
 HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 {
-	CIcon_Engine* pIcon = static_cast<CIcon_Engine*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Icon_Engine")));
+	CIcon_Engine* pIcon = static_cast<CIcon_Engine*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Icon_Engine")));
 	if (pIcon == nullptr)
 		return E_FAIL;
 	pIcon->Set_ModuleState(eState);

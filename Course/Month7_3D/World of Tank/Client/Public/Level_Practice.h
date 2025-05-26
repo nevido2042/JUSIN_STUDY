@@ -32,7 +32,10 @@ private:
 	//UI
 	HRESULT Ready_Layer_Minimap(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
-
+	HRESULT Ready_Layer_Icon_Engine(const _wstring strLayerTag);
+	HRESULT Ready_Layer_PersonalArrowEntry(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Crosshair(const _wstring strLayerTag);
+	
 	////TOOL
 	//HRESULT Ready_Layer_Tool_EngineSound(const _wstring strLayerTag);
 

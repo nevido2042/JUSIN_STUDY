@@ -295,6 +295,15 @@ const _float3& CGameInstance::Get_MouseRay()
 	return m_pPicking->Get_MouseRay();
 }
 
+const _float3& CGameInstance::Get_ScreenCenterPos()
+{
+	return m_pPicking->Get_ScreenCenterPos();
+}
+const _float3& CGameInstance::Get_ScreenCenterRay()
+{
+	return m_pPicking->Get_ScreenCenterRay();
+}
+
 #pragma endregion
 
 #pragma region Sound_Device

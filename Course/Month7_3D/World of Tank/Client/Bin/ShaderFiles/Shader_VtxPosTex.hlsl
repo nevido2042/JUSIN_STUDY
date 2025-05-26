@@ -3,6 +3,7 @@
 /* 상수테이블 ConstantTable */
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D g_Texture;
+float g_fAlpha = 0.3f;
 
 sampler DefaultSampler = sampler_state
 {
@@ -68,7 +69,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
-    if(Out.vColor.a < 0.3f)
+    if (Out.vColor.a < g_fAlpha)
         discard;
     
     return Out;

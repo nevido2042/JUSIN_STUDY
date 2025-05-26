@@ -196,6 +196,12 @@
     <Filter Include="02.GameObjects\Modules\03.Track\FuryTrackLeft">
       <UniqueIdentifier>{5e2aea67-3b9f-4600-80e1-f85fe27c4a84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\06.Minimap\PersonalArrowEntry">
+      <UniqueIdentifier>{8ab7531b-c809-4f5e-97f4-4b995b6726f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\13.Crosshair">
+      <UniqueIdentifier>{1568540f-f1fe-4fd5-9780-8e6e06ce597b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -399,6 +405,12 @@
     <ClInclude Include="..\public\Track.h">
       <Filter>02.GameObjects\Modules\03.Track</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PersonalArrowEntry.h">
+      <Filter>02.GameObjects\UIObject\06.Minimap\PersonalArrowEntry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Crosshair.h">
+      <Filter>02.GameObjects\UIObject\13.Crosshair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -596,6 +608,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Track.cpp">
       <Filter>02.GameObjects\Modules\03.Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PersonalArrowEntry.cpp">
+      <Filter>02.GameObjects\UIObject\06.Minimap\PersonalArrowEntry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Crosshair.cpp">
+      <Filter>02.GameObjects\UIObject\13.Crosshair</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

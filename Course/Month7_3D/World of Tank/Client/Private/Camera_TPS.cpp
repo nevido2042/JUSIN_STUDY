@@ -54,50 +54,52 @@ void CCamera_TPS::Update(_float fTimeDelta)
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
-	// 타겟 위치
-	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
+	if (GetForegroundWindow() == g_hWnd)
+	{
+		_float fDistance = 20.f;
 
-	// 타겟의 Look 방향 (정규화)
-	_vector vLookDir = m_pTarget->Get_CombinedWorldMatrix().r[2];
-	vLookDir = XMVector3Normalize(vLookDir);
+		// 좌우 공전 (Yaw)
+		m_fYaw += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
 
-	// 월드 업 벡터
-	_vector vWorldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		// 상하 공전 (Pitch)
+		m_fPitch += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
 
-	// 타겟의 Right 벡터
-	_vector vRight = XMVector3Normalize(XMVector3Cross(vWorldUp, vLookDir));
+		// Pitch 각도 제한
+		m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(85.f), m_fPitch));
 
-	// 타겟의 Up 벡터
-	_vector vUp = XMVector3Cross(vLookDir, vRight);
+		// 타겟 위치
+		_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
+		// Y축을 살짝 올림 (예: 머리 위 3.0f만큼)
+		vTargetPos.m128_f32[1] += 3.f;
 
-	// 기본 거리 및 높이
-	_float fDistance = 20.f;
-	_float fHeight = 10.f;
+		// 구면좌표계 기반 오프셋 계산
+		_vector vOffset = XMVectorSet(
+			fDistance * cosf(m_fPitch) * cosf(m_fYaw),
+			fDistance * sinf(m_fPitch),
+			fDistance * cosf(m_fPitch) * sinf(m_fYaw),
+			0.f
+		);
 
-	// 오프셋 계산 (뒤로 fDistance만큼, 위로 fHeight만큼)
-	_vector vOffset = (-vLookDir * fDistance) + (vWorldUp * fHeight);
+		// 카메라 위치
+		_vector vCamPos = vTargetPos + vOffset;
+		m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
 
-	// 카메라 위치 = 타겟 위치 + 오프셋
-	_vector vCamPos = vTargetPos + vOffset;
+		// 카메라 방향 계산
+		_vector vLook = XMVector3Normalize(vTargetPos - vCamPos);
+		_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+		_vector vUp = XMVector3Cross(vLook, vRight);
 
-	// 위치 설정
-	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
-
-	// 카메라 방향 벡터 계산
-	_vector vLook = XMVector3Normalize(vTargetPos - vCamPos);
-	vRight = XMVector3Normalize(XMVector3Cross(vWorldUp, vLook));
-	vUp = XMVector3Cross(vLook, vRight);
-
-	// 방향 벡터 설정
-	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
-	m_pTransformCom->Set_State(STATE::UP, vUp);
-	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+		// 방향 설정
+		m_pTransformCom->Set_State(STATE::RIGHT, vRight);
+		m_pTransformCom->Set_State(STATE::UP, vUp);
+		m_pTransformCom->Set_State(STATE::LOOK, vLook);
+	}
 
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
 
 #pragma message ("계속 켜는거 맘에안들지만 일단, 타겟 터렛")
-	//m_pTarget->Set_Visible(true);
+	m_pTarget->Set_Visible(true);
 }
 
 HRESULT CCamera_TPS::Render()

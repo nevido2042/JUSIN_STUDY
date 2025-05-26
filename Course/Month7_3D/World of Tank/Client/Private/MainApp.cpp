@@ -102,7 +102,7 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Packets()
 {
-#pragma region Connect
+#pragma region CONNECT
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
 		{
 			PACKET_DESC Desc{};
@@ -215,8 +215,8 @@ HRESULT CMainApp::Ready_Packets()
 		})))
 		return E_FAIL;
 #pragma endregion
-
-#pragma region TankControl
+	
+#pragma region TANK_CONTROL
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();

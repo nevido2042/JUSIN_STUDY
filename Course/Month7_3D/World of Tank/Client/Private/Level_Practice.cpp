@@ -56,6 +56,15 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
+		return E_FAIL;
+
+	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
+	//	return E_FAIL;
+
 
 
 	//if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
@@ -66,10 +75,15 @@ HRESULT CLevel_Practice::Initialize()
 
 void CLevel_Practice::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_H))
+	if (m_bLevelChanged)
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
+			CLevel_Loading::Create(m_pDevice, m_pContext, static_cast<LEVEL>(m_iNewLevelIndex)))))
+			return;
+	}
+	else if (m_pGameInstance->Key_Down(DIK_H))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER))))
 			return;
 	}
 	else if (m_pGameInstance->Key_Down(DIK_C))
@@ -260,6 +274,7 @@ HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 	UIObject_Desc.fSizeY = 228.0f * UI_RATIO;
 	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamagePanel"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
@@ -268,14 +283,56 @@ HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 	return S_OK;
 }
 
-//HRESULT CLevel_Practice::Ready_Layer_Tool_EngineSound(const _wstring strLayerTag)
-//{
-//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_Tool_EngineSound"),
-//		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
-//		return E_FAIL;
-//
-//	return S_OK;
-//}
+HRESULT CLevel_Practice::Ready_Layer_Icon_Engine(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 46.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 40.0f * UI_RATIO;
+	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.6f;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 4.15f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_PersonalArrowEntry(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 188.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 226.0f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Crosshair(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 511.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 504.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Crosshair"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
 
 HRESULT CLevel_Practice::Load_Map()
 {

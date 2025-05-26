@@ -169,12 +169,12 @@ _float3 CVIBuffer_Terrain::Compute_PickedPosition(const _matrix& pWorldMatrixInv
 	return vPickedPos;
 }
 
-_bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex)
+_bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex, const _fvector& vRayOrigin, const _fvector& vRayDir)
 {
 	_float fNearestDist = FLT_MAX;
 
 	_float fDistAABB;
-	if (!RayIntersectAABB(m_pQuadTreeRoot->Get_Min(), m_pQuadTreeRoot->Get_Max(), fDistAABB))
+	if (!RayIntersectAABB(m_pQuadTreeRoot->Get_Min(), m_pQuadTreeRoot->Get_Max(), fDistAABB, vRayOrigin, vRayDir))
 		return false;
 
 	_bool bHit = false;
@@ -207,11 +207,11 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestD
 		{
 			if (m_pQuadTreeRoot->Get_Children()[i])
 			{
-				if (PickQuadTreeNode(m_pQuadTreeRoot->Get_Children()[i], m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), fNearestDist, iOutPickedTriangleIndex))
+				if (PickQuadTreeNode(m_pQuadTreeRoot->Get_Children()[i], m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), fNearestDist, iOutPickedTriangleIndex, vRayOrigin, vRayDir))
 				{
 					bHit = true;
 					vOutNearestDist = fNearestDist;
-					XMStoreFloat3(&vOutPos, XMLoadFloat3(&m_pGameInstance->Get_MousePos()) + XMLoadFloat3(&m_pGameInstance->Get_MouseRay()) * fNearestDist);
+					XMStoreFloat3(&vOutPos, vRayOrigin + vRayDir * fNearestDist);
 				}
 
 			}
@@ -344,20 +344,20 @@ CQuadTreeNode* CVIBuffer_Terrain::CreateTerrainQuadTree(const _float3* pPosition
 	return pRoot;
 }
 
-_bool CVIBuffer_Terrain::RayIntersectAABB(const _float3& vBoxMin, const _float3& vBoxMax, _float& vOutDistance)
+_bool CVIBuffer_Terrain::RayIntersectAABB(const _float3& vBoxMin, const _float3& vBoxMax, _float& vOutDistance, const _fvector& vRayOrigin, const _fvector& vRayDir)
 {
 	// 레이 시작점과 방향 벡터를 가져옴
-	const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
-	const _float3 vRayDir = m_pGameInstance->Get_MouseRay();
+	//const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
+	//const _float3 vRayDir = m_pGameInstance->Get_MouseRay();
 
 	// X축에서의 진입(fTMin)과 이탈(fTMax) 거리 계산
-	_float fTMin = (vBoxMin.x - vRayOrigin.x) / vRayDir.x;
-	_float fTMax = (vBoxMax.x - vRayOrigin.x) / vRayDir.x;
+	_float fTMin = (vBoxMin.x - XMVectorGetX(vRayOrigin)) / XMVectorGetX(vRayDir);
+	_float fTMax = (vBoxMax.x - XMVectorGetX(vRayOrigin)) / XMVectorGetX(vRayDir);
 	if (fTMin > fTMax) swap(fTMin, fTMax); // 방향이 반대일 수 있으므로 정렬
 
 	// Y축에서의 진입과 이탈 거리 계산
-	_float tymin = (vBoxMin.y - vRayOrigin.y) / vRayDir.y;
-	_float tymax = (vBoxMax.y - vRayOrigin.y) / vRayDir.y;
+	_float tymin = (vBoxMin.y - XMVectorGetY(vRayOrigin)) / XMVectorGetY(vRayDir);
+	_float tymax = (vBoxMax.y - XMVectorGetY(vRayOrigin)) / XMVectorGetY(vRayDir);
 	if (tymin > tymax) swap(tymin, tymax); // 정렬
 
 	// X축과 Y축의 간격이 겹치지 않으면 AABB와 충돌 안 함
@@ -371,8 +371,8 @@ _bool CVIBuffer_Terrain::RayIntersectAABB(const _float3& vBoxMin, const _float3&
 		fTMax = tymax;
 
 	// Z축에서의 진입과 이탈 거리 계산
-	_float fTZMin = (vBoxMin.z - vRayOrigin.z) / vRayDir.z;
-	_float fTZMax = (vBoxMax.z - vRayOrigin.z) / vRayDir.z;
+	_float fTZMin = (vBoxMin.z - XMVectorGetZ(vRayOrigin)) / XMVectorGetZ(vRayDir);
+	_float fTZMax = (vBoxMax.z - XMVectorGetZ(vRayOrigin)) / XMVectorGetZ(vRayDir);
 	if (fTZMin > fTZMax) swap(fTZMin, fTZMax); // 정렬
 
 	// X, Y, Z축의 간격이 겹치지 않으면 충돌 안 함
@@ -444,13 +444,13 @@ _bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& v0, const _float3& 
 	return false;
 }
 
-_bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3* pPositions, const _uint* pIndices, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex)
+_bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3* pPositions, const _uint* pIndices, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex, const _fvector& vRayOrigin, const _fvector& vRayDir)
 {
-	const _float3& vRayOrigin = m_pGameInstance->Get_MousePos();
-	const _float3& vRayDir = m_pGameInstance->Get_MouseRay();
+	//const _float3& vRayOrigin = m_pGameInstance->Get_MousePos();
+	//const _float3& vRayDir = m_pGameInstance->Get_MouseRay();
 
 	_float fDistAABB;
-	if (!RayIntersectAABB(pNode->Get_Min(), pNode->Get_Max(), fDistAABB))
+	if (!RayIntersectAABB(pNode->Get_Min(), pNode->Get_Max(), fDistAABB, vRayOrigin, vRayDir))
 		return false;
 
 	_bool bHit = false;
@@ -483,7 +483,7 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3* p
 		{
 			if (pNode->Get_Children()[i])
 			{
-				if (PickQuadTreeNode(pNode->Get_Children()[i], pPositions, pIndices, vOutNearestDist, iOutPickedTriangleIndex))
+				if (PickQuadTreeNode(pNode->Get_Children()[i], pPositions, pIndices, vOutNearestDist, iOutPickedTriangleIndex, vRayOrigin, vRayDir))
 					bHit = true;
 			}
 		}

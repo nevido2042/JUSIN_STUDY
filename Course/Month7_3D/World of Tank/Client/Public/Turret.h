@@ -23,6 +23,9 @@ public:
 	void	Set_Left(_bool bLeft) { m_bLeft = bLeft; }
 	void	Set_Right(_bool bRight) { m_bRight = bRight; }
 
+private:
+	void Input(_float fTimeDelta);
+
 protected:
 	const _float	m_fSyncInterval = { 0.5f };
 	_float			m_fTimeAcc = { 0 };
