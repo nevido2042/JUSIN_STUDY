@@ -881,34 +881,6 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_FIRE), [this](void* pArg)
-        {
-
-            PACKET_DESC Desc{};
-            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
-            Clear_Packet();
-
-            CSession* pSession = Find_Session(Desc.iID);
-
-            //나를 제외한 모든 사람들에게 알려야함
-            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_FIRE), &Desc);
-        })))
-        return E_FAIL;
-
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_FIRE), [this](void* pArg)
-        {
-            Clear_Packet();
-
-            PACKET_HEADER tHeader{};
-            tHeader.byCode = PACKET_CODE;
-            tHeader.byType = ENUM_CLASS(PacketType::SC_FIRE);
-
-            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PACKET_DESC));
-            Update_Header();
-        })))
-        return E_FAIL;
-
     if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), [this](void* pArg)
         {
             cout << "CS_TANK_MATRIX" << endl;
