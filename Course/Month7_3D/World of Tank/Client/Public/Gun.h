@@ -26,8 +26,12 @@ public:
 public:
 	void	Set_Up(_bool bUp) { m_bUp = bUp; }
 	void	Set_Down(_bool bDown) { m_bDown = bDown; }
+
 public:
 	HRESULT	Fire();
+
+private:
+	void Input(_float fTimeDelta);
 
 protected:
 	const _float	m_fSyncInterval = { 0.5f };
@@ -36,6 +40,11 @@ protected:
 protected:
 	_bool	m_bUp = { false };
 	_bool	m_bDown = { false };
+
+protected:
+	// 허용 각도 (예: 상향 30도, 하향 10도)
+	const _float m_fMaxPitch = sinf(XMConvertToRadians(30.f));  // +Y
+	const _float m_fMinPitch = sinf(XMConvertToRadians(-10.f)); // -Y
 
 protected:
 	CSoundController* m_pSoundCom{ nullptr };

@@ -438,7 +438,9 @@ HRESULT CMainApp::Ready_Packets()
 				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " UP" << Desc.bBool << endl;
-					static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Up(Desc.bBool);
+					CGun* pGun = static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
+					pGun->Set_Up(Desc.bBool);
+					pGun->Set_Down(false);
 				}
 			}
 
@@ -470,7 +472,9 @@ HRESULT CMainApp::Ready_Packets()
 				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " DOWN" << Desc.bBool << endl;
-					static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")))->Set_Down(Desc.bBool);
+					CGun* pGun = static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
+					pGun->Set_Down(Desc.bBool);
+					pGun->Set_Up(false);
 				}
 			}
 

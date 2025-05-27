@@ -64,28 +64,37 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 	// Pitch 각도 제한
 	m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(85.f), m_fPitch));
 
-	// 구면 좌표계 기반 카메라 방향 계산 (카메라 회전 적용)
-	_vector vLook = XMVector3Normalize(XMVectorSet(
-		cosf(m_fPitch) * sinf(m_fYaw),
-		sinf(m_fPitch),
-		cosf(m_fPitch) * cosf(m_fYaw),
-		0.f
-	));
+	// 부모 객체의 World Matrix에서 Up 벡터 가져오기 (Yaw 회전 기준축)
+	_vector vParentUp = XMVector3Normalize(m_pTarget->Get_CombinedWorldMatrix().r[1]);
 
-	_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+	// 구면 좌표계 기반 회전 방향 계산 (Pitch & Yaw 적용)
+	// 먼저 임시로 기준 축이 Z+인 상태에서 Look 벡터 생성 (Yaw은 부모 Up 기준 회전)
+	_matrix matYaw = XMMatrixRotationAxis(vParentUp, m_fYaw);
+
+	// Pitch는 Look 방향 기준 Right 축을 회전축으로 사용하기 위해 Look 벡터 먼저 생성
+	_vector vTempLook = XMVector3TransformNormal(XMVectorSet(1.f, 0.f, 1.f, 0.f), matYaw);
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vParentUp, vTempLook));
+
+	// Pitch 회전 적용
+	_matrix matPitch = XMMatrixRotationAxis(vRight, -m_fPitch);
+	_vector vLook = XMVector3Normalize(XMVector3TransformNormal(vTempLook, matPitch));
+
+	// 최종 카메라 Up/Right 벡터 정직하게 직교화
+	vRight = XMVector3Normalize(XMVector3Cross(vParentUp, vLook)); // 다시 계산 (Pitch 영향 반영)
 	_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-
+	// 타겟 위치 가져오기 (머리 위치 정도로 살짝 위로)
 	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];
-	vTargetPos = XMVectorAdd(vTargetPos, XMVectorSet(0.f, 2.f, 0.f, 0.f)); // 머리 위치 정도
+	vTargetPos = XMVectorAdd(vTargetPos, XMVectorSet(0.f, 2.f, 0.f, 0.f));
 
-	// 카메라 위치 설정
+	// 카메라 위치 설정 (타겟 위치로 이동)
 	m_pTransformCom->Set_State(STATE::POSITION, vTargetPos);
 
 	// 회전 방향 설정
 	m_pTransformCom->Set_State(STATE::LOOK, vLook);
 	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
 	m_pTransformCom->Set_State(STATE::UP, vUp);
+
 
 	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
 
