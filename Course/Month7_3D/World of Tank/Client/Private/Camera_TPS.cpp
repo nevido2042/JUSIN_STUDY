@@ -25,7 +25,7 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 	pDesc->vAt = _float3(0.f, 0.f, 0.f);
 	pDesc->fFov = XMConvertToRadians(60.0f);
 	pDesc->fNear = 0.1f;
-	pDesc->fFar = 40000.f;
+	pDesc->fFar = 400.f;
 	pDesc->fRotationPerSec = XMConvertToRadians(0.0f);
 	pDesc->fSpeedPerSec = 0.0f;
 	lstrcpy(pDesc->szName, TEXT("Camera"));
@@ -42,6 +42,14 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
+	if (GetForegroundWindow() == g_hWnd)
+	{
+		// 좌우 공전 (Yaw)
+		m_fYaw += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
+		// 상하 공전 (Pitch)
+		m_fPitch += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
+	}
+
 #pragma message ("이동 방향을 넣으란거 같은데 일딴 뺌, 도플러 효과 주라는 듯")
 	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
 }
@@ -54,15 +62,7 @@ void CCamera_TPS::Update(_float fTimeDelta)
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
-	if (GetForegroundWindow() == g_hWnd)
-	{
-		// 좌우 공전 (Yaw)
-		m_fYaw += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
-		// 상하 공전 (Pitch)
-		m_fPitch += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
-	}
-
-	_float fDistance = 20.f;
+	const _float fDistance = 20.f;
 
 	// Pitch 각도 제한
 	m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(85.f), m_fPitch));

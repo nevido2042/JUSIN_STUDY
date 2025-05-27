@@ -29,8 +29,6 @@ public:
 private:
 	_float				m_fSensor = { 0.1f };
 	CGameObject*		m_pTarget = { nullptr };
-	_float				m_fYaw = {};
-	_float				m_fPitch = {};
 
 public:
 	static CCamera_TPS* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -26,11 +26,21 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	_float	Get_Yaw() const { return m_fYaw; }
+	void	Set_Yaw(_float fYaw) { m_fYaw = fYaw; }
+
+	_float	Get_Pitch() const { return m_fPitch; }
+	void	Set_Pitch(_float fPitch) { m_fPitch = fPitch; }
+
 protected:
 	_float				m_fFov = { };
 	_float				m_fNear = { };
 	_float				m_fFar = { };
-	_float				m_fAspect = {};	
+	_float				m_fAspect = {};
+
+	_float				m_fYaw = {};
+	_float				m_fPitch = {};
 
 protected:
 	void Bind_Matrices();

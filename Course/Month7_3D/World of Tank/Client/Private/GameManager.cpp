@@ -125,7 +125,7 @@ HRESULT CGameManager::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 HRESULT CGameManager::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 {
 	CCamera_FPS::CAMERA_FPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));// ->Find_PartObject(TEXT("Part_Gun"));
 
 	Desc.bActive = false;
 

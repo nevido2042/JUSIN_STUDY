@@ -11,6 +11,7 @@
 #include "LandObject.h"
 #include "UIObject.h"
 #include "Layer.h"
+#include "Terrain.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -39,8 +40,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
@@ -65,8 +66,6 @@ HRESULT CLevel_Practice::Initialize()
 	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
 	//	return E_FAIL;
 
-
-
 	//if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
 	//	return E_FAIL;
 
@@ -86,7 +85,7 @@ void CLevel_Practice::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER))))
 			return;
 	}
-	else if (m_pGameInstance->Key_Down(DIK_C))
+	else if (m_pGameInstance->Key_Down(DIK_LSHIFT))
 	{
 		if (GetForegroundWindow() != g_hWnd)
 			return;
@@ -100,13 +99,21 @@ void CLevel_Practice::Update(_float fTimeDelta)
 		{
 			if (true == (*iter)->Get_isActive())
 			{
+				CCamera* pBeforeCam = static_cast<CCamera*>(*iter);
 				(*iter)->Set_Active(false);
 
-				if (++iter != GameObjects.end())
-					(*iter)->Set_Active(true);
-				else
-					(*GameObjects.begin())->Set_Active(true);
+				CCamera* pAfterCam = { nullptr };
 
+				if (++iter != GameObjects.end())
+					pAfterCam = static_cast<CCamera*>(*iter);
+				else
+					pAfterCam = static_cast<CCamera*>(*GameObjects.begin());
+
+				pAfterCam->Set_Active(true);
+
+				//1인칭 카메라와 3인칭 카메라는 yaw picth 가 반대다
+				pAfterCam->Set_Yaw(-pBeforeCam->Get_Yaw() + XMConvertToRadians(-90.f));
+				pAfterCam->Set_Pitch(-pBeforeCam->Get_Pitch());
 				break;
 			}
 		}
@@ -186,8 +193,7 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 {
 	CCamera_FPS::CAMERA_FPS_DESC Desc{};
-	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));
 	Desc.bActive = false;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_FPS"),

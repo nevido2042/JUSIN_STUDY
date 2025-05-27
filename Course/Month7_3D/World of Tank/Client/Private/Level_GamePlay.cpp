@@ -33,8 +33,8 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
+	//	return E_FAIL;
 
 
 	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
@@ -77,7 +77,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
 			return;*/
 	}
-	else if (m_pGameInstance->Key_Down(DIK_C))
+	else if (m_pGameInstance->Key_Down(DIK_LSHIFT))
 	{
 		if (GetForegroundWindow() != g_hWnd)
 			return;
@@ -91,13 +91,21 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 		{
 			if (true == (*iter)->Get_isActive())
 			{
+				CCamera* pBeforeCam = static_cast<CCamera*>(*iter);
 				(*iter)->Set_Active(false);
 
-				if (++iter != GameObjects.end())
-					(*iter)->Set_Active(true);
-				else
-					(*GameObjects.begin())->Set_Active(true);
+				CCamera* pAfterCam = { nullptr };
 
+				if (++iter != GameObjects.end())
+					pAfterCam = static_cast<CCamera*>(*iter);
+				else
+					pAfterCam = static_cast<CCamera*>(*GameObjects.begin());
+
+				pAfterCam->Set_Active(true);
+
+				//1인칭 카메라와 3인칭 카메라는 yaw picth 가 반대다
+				pAfterCam->Set_Yaw(-pBeforeCam->Get_Yaw() + XMConvertToRadians(-90.f));
+				pAfterCam->Set_Pitch(-pBeforeCam->Get_Pitch());
 				break;
 			}
 		}

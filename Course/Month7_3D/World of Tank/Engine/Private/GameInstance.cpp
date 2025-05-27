@@ -100,6 +100,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
+	m_pPipeLine->Update();
 
 	m_pFrustum->Update();
 	m_pPicking->Update(iWinSizeX, iWinSizeY);

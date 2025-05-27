@@ -7,10 +7,10 @@ float4 g_vLightDiffuse;
 float4 g_vLightAmbient;
 float4 g_vLightSpecular;
 
-float4 g_vMtrlAmibient = float4(0.5f, 0.5f, 0.5f, 1.f);
+float4 g_vCamPosition;
 
-//float2  g_TexOffset; // UV 오프셋
-//float2  g_TexScale; // UV 타일링 배수 (예: 3.0, 3.0)
+float4 g_vMtrlAmibient = float4(0.5f, 0.5f, 0.5f, 1.f);
+float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
 
 sampler DefaultSampler = sampler_state
 {
@@ -31,6 +31,7 @@ struct VS_OUT
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -43,6 +44,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
+    Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     
     return Out;
 }
@@ -52,6 +54,7 @@ struct PS_IN
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
 };
 
 struct PS_OUT
@@ -68,13 +71,11 @@ PS_OUT PS_MAIN(PS_IN In)
     float4 vShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f) +
         (g_vLightAmbient * g_vMtrlAmibient);
     
-    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * vShade;
+    float4 vLook = In.vWorldPos - g_vCamPosition;    
+    float4 vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
+    float4 vSpecular = pow(max(dot(normalize(vLook) * -1.f, vReflect), 0.f), 50.f);
     
-    // 3x3 타일링 및 오프셋 적용
-    //float2 tiledUV = In.vTexcoord * g_TexScale + g_TexOffset;
-    
-    // AddressU/V가 wrap이므로 tiledUV가 0~1 범위 넘어가도 자동 반복됨
-    //Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, tiledUV);
+    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * vShade + (g_vLightSpecular * g_vMtrlSpecular) * vSpecular;
 
     return Out;
 }
