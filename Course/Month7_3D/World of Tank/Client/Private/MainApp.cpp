@@ -370,7 +370,9 @@ HRESULT CMainApp::Ready_Packets()
 				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Left " << Desc.bBool << endl;
-					static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")))->Set_Left(Desc.bBool);
+					CTurret* pTurret = static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")));
+					pTurret->Set_Left(Desc.bBool);
+					pTurret->Set_Right(false);
 				}
 			}
 
@@ -402,7 +404,9 @@ HRESULT CMainApp::Ready_Packets()
 				if (Desc.iID == pGameObject->Get_ID())
 				{
 					cout << "ID:" << Desc.iID << " Right" << Desc.bBool << endl;
-					static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")))->Set_Right(Desc.bBool);
+					CTurret* pTurret = static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")));
+					pTurret->Set_Right(Desc.bBool);
+					pTurret->Set_Left(false);
 				}
 			}
 

@@ -47,6 +47,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
+		return E_FAIL;
+
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), &Desc);
@@ -220,6 +223,23 @@ HRESULT CLevel_GamePlay::Ready_Layer_Icon_Engine(const _wstring strLayerTag)
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Crosshair(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 511.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 504.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Crosshair"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 

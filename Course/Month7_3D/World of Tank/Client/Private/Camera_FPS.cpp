@@ -81,8 +81,12 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
 
-#pragma message ("계속 끄는거 맘에안들지만 일단, 타겟 건")
-	m_pTarget->Set_Visible(false);
+#pragma message ("계속 끄는거 맘에안들지만 일단")
+	CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	if( nullptr == pGameObject )
+		return;
+
+	pGameObject->Set_Visible(false);
 }
 
 HRESULT CCamera_FPS::Render()

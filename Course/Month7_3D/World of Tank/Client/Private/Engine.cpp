@@ -68,7 +68,7 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || m_pGameInstance->Get_ID() == m_iID)
+	if (m_pGameInstance->Get_ID() == m_iID || m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
 		Input(fTimeDelta);
 	else
 		Input_Network(fTimeDelta);
@@ -80,15 +80,16 @@ void CEngine::Update(_float fTimeDelta)
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
-}
-
-void CEngine::Late_Update(_float fTimeDelta)
-{
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
 
 	m_pSoundCom->SetVolume(m_EngineSound_Loop, 0.7f + abs(m_fRPM) * m_fVolumeValue);
 	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + abs(m_fRPM) * m_fPitchValue);
+}
+
+void CEngine::Late_Update(_float fTimeDelta)
+{
+
 }
 
 HRESULT CEngine::Render()
@@ -209,9 +210,9 @@ void CEngine::Input(_float fTimeDelta)
 		}
 	}
 #pragma endregion
-
-	//패킷 전송
-	Send_Packet();
+	
+	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
+		Send_Packet();
 	
 }
 

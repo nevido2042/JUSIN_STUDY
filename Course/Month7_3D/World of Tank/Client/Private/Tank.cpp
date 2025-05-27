@@ -84,6 +84,9 @@ void CTank::Update(_float fTimeDelta)
 
 void CTank::Late_Update(_float fTimeDelta)
 {
+	if (!m_bVisible)
+		return;
+
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 	if (m_bDestroyed)
@@ -163,9 +166,12 @@ void CTank::Input()
 
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
 	{
-		PACKET_DESC Desc{};
-		Desc.iID = m_iID;
-		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_FIRE), &Desc);
+		if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
+		{
+			PACKET_DESC Desc{};
+			Desc.iID = m_iID;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_FIRE), &Desc);
+		}
 
 		Try_Fire();
 	}
