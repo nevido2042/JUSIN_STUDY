@@ -30,6 +30,7 @@ public:
 private:
 	_float				m_fSensor = { 0.1f };
 	CGameObject*		m_pTarget = { nullptr };
+	_float4				m_vLook = {};
 
 
 public:

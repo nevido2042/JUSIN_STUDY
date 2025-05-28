@@ -84,6 +84,9 @@ void CGun::Input(_float fTimeDelta)
 	if (GetForegroundWindow() != g_hWnd)
 		return;
 
+	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
+		return;
+
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		// Å¸°Ù À§Ä¡

@@ -72,7 +72,8 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 	_matrix matYaw = XMMatrixRotationAxis(vParentUp, m_fYaw);
 
 	// Pitch는 Look 방향 기준 Right 축을 회전축으로 사용하기 위해 Look 벡터 먼저 생성
-	_vector vTempLook = XMVector3TransformNormal(XMVectorSet(1.f, 0.f, 1.f, 0.f), matYaw);
+#pragma message ("XMVectorSet(0.f, 0.f, 1.f, 0.f) 방향을 보고있으면 반동을 약하게 받음 해결법을 모르겠음. 반동을 아예 안주는 방법(본 게임 반동 없음)")
+	_vector vTempLook = XMVector3TransformNormal(XMVectorSet(0.f, 0.f, 1.f, 0.f), matYaw);
 	_vector vRight = XMVector3Normalize(XMVector3Cross(vParentUp, vTempLook));
 
 	// Pitch 회전 적용
