@@ -5,6 +5,7 @@
 #include "Track.h"
 #include "GameInstance.h"
 #include "Engine.h"
+#include "DamageBar.h"
 
 #pragma region UI
 #include "Icon_Engine.h"
@@ -160,7 +161,11 @@ void CTank::Input()
 		Set_State_Engine(MODULE_STATE::FUNCTIONAL);
 
 	if (m_pGameInstance->Key_Down(DIK_F2))
+	{
+		Take_Damage(5.f);
 		Set_State_Engine(MODULE_STATE::DAMAGED);
+	}
+
 
 	if (m_pGameInstance->Key_Down(DIK_F3))
 		Set_State_Engine(MODULE_STATE::DESTROYED);
@@ -189,6 +194,24 @@ void CTank::Try_Fire()
 
 	//꿀렁임
 	m_fRecoilTime = m_fMaxRecoilTime;
+}
+
+HRESULT CTank::Take_Damage(_float fDamage)
+{
+	m_fHP -= fDamage;
+
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) || m_pGameInstance->Get_ID() == m_iID)
+	{
+		//플레이어 탱크라면 체력바 찾아서 깎아라 && 맞는 소리 (꽝)
+		
+		CDamageBar* pDamageBar = static_cast<CDamageBar*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamageBar")));
+		if (nullptr == pDamageBar)
+			return E_FAIL;
+	
+		pDamageBar->Fill(m_fHP / m_fMaxHP);
+	}
+
+	return S_OK;
 }
 
 void CTank::Move(_float fTimeDelta)

@@ -28,6 +28,7 @@ public:
 
 public:
 	void Try_Fire();
+	HRESULT Take_Damage(_float fDamage);
 
 private:
 	void Input();
@@ -40,6 +41,10 @@ private:
 
 private:
 	void ApplyRecoil(_float fTimeDelta);
+
+protected:
+	const	_float m_fMaxHP = { 100.f };
+	_float	m_fHP = { m_fMaxHP };
 
 private:
 	_float m_fRecoilTime = 0.f;

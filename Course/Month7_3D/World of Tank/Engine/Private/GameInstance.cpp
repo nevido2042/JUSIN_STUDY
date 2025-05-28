@@ -88,10 +88,11 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 	if (g_bWindowResizeRequired)
 		m_pGraphic_Device->Resize(g_iWinSizeX, g_iWinSizeY);
 
-	m_pInputDevice->Update();
 
 	if (GetForegroundWindow() == g_hWnd)
 	{
+		m_pInputDevice->Update();
+
 		m_pSound_Device->MuteSound(false);
 		m_pSound_Device->Update();
 	}

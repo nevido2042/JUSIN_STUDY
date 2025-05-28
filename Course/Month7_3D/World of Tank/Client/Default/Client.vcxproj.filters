@@ -118,23 +118,11 @@
     <Filter Include="02.GameObjects\UIObject\01.DamagePannel">
       <UniqueIdentifier>{9c88118f-4f5c-4b51-8835-3aed34339ccf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UIObject\07.Button_Login">
-      <UniqueIdentifier>{ac2512d4-5aec-4055-a0d9-7d5bc79210a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObject\08.Button_Start">
-      <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObject\09.Button_Fury">
-      <UniqueIdentifier>{c0424797-a47c-4f09-b6bd-2a5e0d6ae945}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\09.Fury_Hanger">
       <UniqueIdentifier>{ec85730a-92fe-466a-a2b0-1fec193c6994}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\10.Tiger_Hanger">
       <UniqueIdentifier>{535103fa-551b-45e6-ac80-5caff1375a56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UIObject\10.Button_Tiger">
-      <UniqueIdentifier>{131c3715-2a1a-4997-abed-8e51f83a3333}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.GameManager">
       <UniqueIdentifier>{d14d0158-33b2-4b8a-9fd7-0a41b253eafc}</UniqueIdentifier>
@@ -201,6 +189,24 @@
     </Filter>
     <Filter Include="02.GameObjects\UIObject\13.Crosshair">
       <UniqueIdentifier>{1568540f-f1fe-4fd5-9780-8e6e06ce597b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Button">
+      <UniqueIdentifier>{b7539a7f-8510-4fdc-99e1-940e53f2f4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Button\10.Button_Tiger">
+      <UniqueIdentifier>{131c3715-2a1a-4997-abed-8e51f83a3333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Button\07.Button_Login">
+      <UniqueIdentifier>{ac2512d4-5aec-4055-a0d9-7d5bc79210a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Button\08.Button_Start">
+      <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\Button\09.Button_Fury">
+      <UniqueIdentifier>{c0424797-a47c-4f09-b6bd-2a5e0d6ae945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UIObject\07.DamageBar">
+      <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -340,13 +346,13 @@
       <Filter>02.GameObjects\UIObject\01.DamagePannel</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Button_Login.h">
-      <Filter>02.GameObjects\UIObject\07.Button_Login</Filter>
+      <Filter>02.GameObjects\UIObject\Button\07.Button_Login</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Button_Start.h">
-      <Filter>02.GameObjects\UIObject\08.Button_Start</Filter>
+      <Filter>02.GameObjects\UIObject\Button\08.Button_Start</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Button_Fury.h">
-      <Filter>02.GameObjects\UIObject\09.Button_Fury</Filter>
+      <Filter>02.GameObjects\UIObject\Button\09.Button_Fury</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Fury_Hanger.h">
       <Filter>02.GameObjects\09.Fury_Hanger</Filter>
@@ -355,7 +361,7 @@
       <Filter>02.GameObjects\10.Tiger_Hanger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Button_Tiger.h">
-      <Filter>02.GameObjects\UIObject\10.Button_Tiger</Filter>
+      <Filter>02.GameObjects\UIObject\Button\10.Button_Tiger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\GameManager.h">
       <Filter>02.GameObjects\00.GameManager</Filter>
@@ -410,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Crosshair.h">
       <Filter>02.GameObjects\UIObject\13.Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DamageBar.h">
+      <Filter>02.GameObjects\UIObject\07.DamageBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -544,13 +553,13 @@
       <Filter>02.GameObjects\UIObject\01.DamagePannel</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Button_Login.cpp">
-      <Filter>02.GameObjects\UIObject\07.Button_Login</Filter>
+      <Filter>02.GameObjects\UIObject\Button\07.Button_Login</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Button_Start.cpp">
-      <Filter>02.GameObjects\UIObject\08.Button_Start</Filter>
+      <Filter>02.GameObjects\UIObject\Button\08.Button_Start</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Button_Fury.cpp">
-      <Filter>02.GameObjects\UIObject\09.Button_Fury</Filter>
+      <Filter>02.GameObjects\UIObject\Button\09.Button_Fury</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Fury_Hanger.cpp">
       <Filter>02.GameObjects\09.Fury_Hanger</Filter>
@@ -559,7 +568,7 @@
       <Filter>02.GameObjects\10.Tiger_Hanger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Button_Tiger.cpp">
-      <Filter>02.GameObjects\UIObject\10.Button_Tiger</Filter>
+      <Filter>02.GameObjects\UIObject\Button\10.Button_Tiger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GameManager.cpp">
       <Filter>02.GameObjects\00.GameManager</Filter>
@@ -614,6 +623,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Crosshair.cpp">
       <Filter>02.GameObjects\UIObject\13.Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamageBar.cpp">
+      <Filter>02.GameObjects\UIObject\07.DamageBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

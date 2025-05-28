@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "DamageBar.h"
 #include "Crosshair.h"
 #include "PersonalArrowEntry.h"
 #include "Icon_Engine.h"
@@ -162,6 +163,11 @@ HRESULT CLoader::Loading_For_Static()
 {
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_DamageBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/output/damageBar_green.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Crosshair */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Crosshair"),
@@ -359,6 +365,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DamageBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
+		CDamageBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Crosshair */

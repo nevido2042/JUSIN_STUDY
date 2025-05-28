@@ -5,6 +5,8 @@ matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D g_Texture;
 float g_fAlpha = 0.3f;
 
+float g_fFill = 1.f;
+
 sampler DefaultSampler = sampler_state
 {
     filter = min_mag_mip_linear;
@@ -65,13 +67,32 @@ struct PS_OUT
 
 PS_OUT PS_MAIN(PS_IN In)
 {
-    PS_OUT Out;    
+    PS_OUT Out;
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
     if (Out.vColor.a < g_fAlpha)
         discard;
     
+    return Out;
+}
+
+PS_OUT PS_FILL(PS_IN In)
+{
+    PS_OUT Out;
+
+    if (In.vTexcoord.x >= g_fFill)
+        discard;
+
+    float4 texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    
+    //if (texColor.a < g_fAlpha)
+    //    discard;
+    
+    Out.vColor = lerp(texColor, float4(1.f - g_fFill, g_fFill, 0.0, texColor.a), 0.7); // »¡°£»ö 30% ¼¯±â
+
+
+
     return Out;
 }
 
@@ -91,6 +112,12 @@ technique11 DefaultTechnique
     {
         VertexShader = compile vs_5_0 VS_MAIN();        
         PixelShader = compile ps_5_0 PS_MAIN();      
+    }
+
+    pass FILL
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_FILL();
     }
     //pass Disstortion/* ¿Ö°î 1*/ 
     //{

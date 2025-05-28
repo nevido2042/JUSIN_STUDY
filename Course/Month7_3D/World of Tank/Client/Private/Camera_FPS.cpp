@@ -62,7 +62,7 @@ void CCamera_FPS::Update(_float fTimeDelta)
 void CCamera_FPS::Late_Update(_float fTimeDelta)
 {
 	// Pitch 각도 제한
-	m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(85.f), m_fPitch));
+	m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(70.f), m_fPitch));
 
 	// 부모 객체의 World Matrix에서 Up 벡터 가져오기 (Yaw 회전 기준축)
 	_vector vParentUp = XMVector3Normalize(m_pTarget->Get_CombinedWorldMatrix().r[1]);
