@@ -100,15 +100,7 @@ HRESULT CUIObject::Resize(_uint iNewWidth, _uint iNewHeight)
 	m_fSizeY = m_fSizeYRatio * fHeight;
 
 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY);
-	m_pTransformCom->Set_State(
-		STATE::POSITION,
-		XMVectorSet(
-			m_fX - fWidth * 0.5f,
-			-m_fY + fHeight * 0.5f,
-			m_fDepth,
-			1.f
-		)
-	);
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(m_fX - fWidth * 0.5f, -m_fY + fHeight * 0.5f, m_fDepth, 1.f));
 
 	return S_OK;
 }

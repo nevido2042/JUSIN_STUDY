@@ -107,7 +107,7 @@ void CGun::Input(_float fTimeDelta)
 		// 방향 벡터 (월드 공간)
 		_vector vToPicked = XMLoadFloat3(&vPicked) - XMLoadFloat3(&vMyPos);
 
-		// 내 Up, Look, Right 추출 (정규화돼 있다고 가정)
+		// 내 Up, Look, Right 추출
 		_vector vUp = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[1]));
 		_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[2]));
 		_vector vRight = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[0]));
@@ -115,7 +115,7 @@ void CGun::Input(_float fTimeDelta)
 		// Look-Up 평면에 투영 = Right 축 제거
 		_vector vProjected = vToPicked - XMVector3Dot(vToPicked, vRight) * vRight;  // vToPicked의 Right 성분 제거
 
-		vProjected = XMVector3Normalize(vProjected);  // 방향만 필요하다면 정규화
+		vProjected = XMVector3Normalize(vProjected);
 
 		// Up 벡터와 비교해 위/아래 판단
 		_float fUpDot = XMVectorGetX(XMVector3Dot(vProjected, -vUp));
@@ -131,7 +131,7 @@ void CGun::Input(_float fTimeDelta)
 		// 여기선 Y값을 기준으로 판단 가능
 		_float fDotY = XMVectorGetY(vLocalLook); // = sin(pitch)
 
-		if (fUpDot > 0.1f) //하로
+		if (fUpDot > 0.01f) //하로
 		{
 			if (m_bDown == false)
 			{
@@ -149,7 +149,7 @@ void CGun::Input(_float fTimeDelta)
 			if(fDotY >= m_fMinPitch)
 				m_pTransformCom->Turn(vAxis, fTimeDelta);
 		}
-		else if (fUpDot < -0.1f) //상으로
+		else if (fUpDot < -0.01f) //상으로
 		{
 			if (m_bUp == false)
 			{

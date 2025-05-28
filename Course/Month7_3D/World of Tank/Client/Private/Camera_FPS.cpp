@@ -42,13 +42,24 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 
 void CCamera_FPS::Priority_Update(_float fTimeDelta)
 {
-	if (GetForegroundWindow() == g_hWnd)
-	{
+	//if (GetForegroundWindow() == g_hWnd)
+	//{
 		// 좌우 공전 (Yaw)
 		m_fYaw += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
 		// 상하 공전 (Pitch)
 		m_fPitch += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
-	}
+	//}
+
+		if (m_pGameInstance->Get_DIMMoveState(DIMM::WHEEL) < 0.f)
+		{
+			m_fFov += XMConvertToRadians(10.0f);
+			m_fFov = min(m_fFov, m_fMaxFov);
+		}
+		else if (m_pGameInstance->Get_DIMMoveState(DIMM::WHEEL) > 0.f)
+		{
+			m_fFov -= XMConvertToRadians(10.0f);
+			m_fFov = max(m_fFov, m_fMinFov);
+		}
 
 #pragma message ("이동 방향을 넣으란거 같은데 일딴 뺌, 도플러 효과 주라는 듯")
 	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});

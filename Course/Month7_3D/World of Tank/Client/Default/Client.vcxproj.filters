@@ -208,6 +208,9 @@
     <Filter Include="02.GameObjects\UIObject\07.DamageBar">
       <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\11.GunMarker">
+      <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -420,6 +423,9 @@
     <ClInclude Include="..\public\DamageBar.h">
       <Filter>02.GameObjects\UIObject\07.DamageBar</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\GunMarker.h">
+      <Filter>02.GameObjects\11.GunMarker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -626,6 +632,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DamageBar.cpp">
       <Filter>02.GameObjects\UIObject\07.DamageBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GunMarker.cpp">
+      <Filter>02.GameObjects\11.GunMarker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

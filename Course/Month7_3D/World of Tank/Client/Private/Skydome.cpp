@@ -32,8 +32,6 @@ HRESULT CSkydome::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-#pragma message ("이거 넣으니까 ui가 안보임")
-
 	D3D11_DEPTH_STENCIL_DESC depthDesc = {};
 	depthDesc.DepthEnable = FALSE;  // 깊이 테스트 완전 비활성화
 	depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;

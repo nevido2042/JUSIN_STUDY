@@ -64,6 +64,10 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 		m_vPickedPos = vPos;
 		//cout << m_vPickedPos.x << ' ' << m_vPickedPos.y << ' ' << m_vPickedPos.z << endl;
 	}
+
+
+	Picking_Gun();
+
 }
 
 void CTerrain::Update(_float fTimeDelta)
@@ -89,6 +93,32 @@ HRESULT CTerrain::Render()
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTerrain::Picking_Gun()
+{
+	//포구 피킹
+	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	if (nullptr == pPlayerTank)
+		return E_FAIL;
+
+	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+	if (nullptr == pGun)
+		return E_FAIL;
+
+	pGun->Get_CombinedWorldMatrix();
+
+	// 쿼드트리 픽킹
+	_float fDist = { 0 }; //거리
+	_uint iPickedTri = { 0 }; //피킹된 인덱스
+	_float3 vPos = {}; //포지션
+	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, pGun->Get_CombinedWorldMatrix().r[3], pGun->Get_CombinedWorldMatrix().r[2]))
+	{
+		m_vPickedPos_Gun = vPos;
+		//cout << m_vPickedPos.x << ' ' << m_vPickedPos.y << ' ' << m_vPickedPos.z << endl;
+	}
 
 	return S_OK;
 }

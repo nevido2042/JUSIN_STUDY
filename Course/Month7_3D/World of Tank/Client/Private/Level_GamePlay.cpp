@@ -50,6 +50,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
+		return E_FAIL;
+
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), &Desc);
@@ -187,6 +193,17 @@ HRESULT CLevel_GamePlay::Ready_Layer_Skydome(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Ready_Layer_GunMarker(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.vInitPosition = _float3(100.f, 110.f, 100.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_GamePlay::Ready_Layer_Minimap(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
@@ -248,6 +265,23 @@ HRESULT CLevel_GamePlay::Ready_Layer_Crosshair(const _wstring strLayerTag)
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Crosshair"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_DamageBar(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 215.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 10.0f * UI_RATIO;
+	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.531f;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 19.98f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 

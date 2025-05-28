@@ -66,6 +66,9 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
+		return E_FAIL;
+
 	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
 	//	return E_FAIL;
 
@@ -253,6 +256,17 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
 	//	ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.vInitPosition = _float3(100.f, 110.f, 100.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

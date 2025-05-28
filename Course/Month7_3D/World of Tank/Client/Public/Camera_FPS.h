@@ -28,6 +28,10 @@ public:
 	virtual HRESULT Render();
 
 private:
+	const float m_fMinFov = XMConvertToRadians(10.0f);
+	const float m_fMaxFov = XMConvertToRadians(60.0f);
+
+private:
 	_float				m_fSensor = { 0.1f };
 	CGameObject*		m_pTarget = { nullptr };
 	_float4				m_vLook = {};

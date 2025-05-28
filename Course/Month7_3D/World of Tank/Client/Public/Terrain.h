@@ -27,10 +27,15 @@ public:
 	virtual HRESULT Render();
 
 public:
-	_float3				Get_PickedPos() const { return m_vPickedPos; }
+	_float3						Get_PickedPos() const { return m_vPickedPos; }
+	const _float3&				Get_PickedPos_Gun() { return m_vPickedPos_Gun; }
+
+private:
+	HRESULT Picking_Gun();
 
 private:
 	_float3				m_vPickedPos = { 0.f, 0.f, 0.f };
+	_float3				m_vPickedPos_Gun = { 0.f, 0.f, 0.f };
 
 private:
 	CShader*			m_pShaderCom = { nullptr };

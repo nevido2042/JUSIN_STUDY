@@ -187,6 +187,7 @@
     <ClInclude Include="..\public\Fury_Hanger.h" />
     <ClInclude Include="..\public\GameManager.h" />
     <ClInclude Include="..\public\Gun.h" />
+    <ClInclude Include="..\public\GunMarker.h" />
     <ClInclude Include="..\public\Icon_Engine.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\Minimap.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="..\private\Fury_Hanger.cpp" />
     <ClCompile Include="..\private\GameManager.cpp" />
     <ClCompile Include="..\private\Gun.cpp" />
+    <ClCompile Include="..\private\GunMarker.cpp" />
     <ClCompile Include="..\private\Icon_Engine.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />

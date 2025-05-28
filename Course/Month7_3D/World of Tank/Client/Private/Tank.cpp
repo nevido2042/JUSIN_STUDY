@@ -57,6 +57,10 @@ void CTank::Priority_Update(_float fTimeDelta)
 
 	CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
+	// 반동 적용
+	#pragma message ("FPS 카메라 반동 주는 것이 방향에 따라 달라진다 해결 못함(원본 겜도 못해서 안넣은거일거야)")
+	ApplyRecoil(fTimeDelta);
+
 	CGameObject::Priority_Update(fTimeDelta);
 }
 
@@ -83,18 +87,17 @@ void CTank::Update(_float fTimeDelta)
 void CTank::Late_Update(_float fTimeDelta)
 {
 	if (!m_bVisible)
+	{
 		return;
+	}
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
-
-	// 반동 적용
-#pragma message ("렌더링 하기 직전에만 반동 부여, FPS 카메라 반동 주는 것이 방향에 따라 달라져서 아예 빼버림(원본 겜도 못해서 안넣은거일거야)")
-	ApplyRecoil(fTimeDelta);
 
 	if (m_bDestroyed)
 		return;
 
 	CGameObject::Late_Update(fTimeDelta);
+
 }
 
 

@@ -31,7 +31,7 @@ HRESULT CFury_Hanger::Initialize(void* pArg)
 	// »õ RasterizerState ¼³Á¤
 	D3D11_RASTERIZER_DESC rasterDesc = {};
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_FRONT;
+	rasterDesc.CullMode = D3D11_CULL_NONE;
 	rasterDesc.FrontCounterClockwise = FALSE;
 
 	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
