@@ -79,6 +79,9 @@ void CLevel_Hanger::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::MAPTOOL))))
 			return;
 	}
+
+	//_float4 vCamPos = *m_pGameInstance->Get_CamPosition();
+	//cout << "vCamPos x: " << vCamPos.x << ", y: " << vCamPos.y << "z:" << vCamPos.z << endl;
 }
 
 HRESULT CLevel_Hanger::Render()
@@ -118,11 +121,11 @@ HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
 	CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 0.0f;
+	Desc.fSpeedPerSec = 10.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(312.f, 100.f, 292.f);
-	Desc.vAt = _float3(322.f, 87.f, 286.f);
+	Desc.vEye = _float3(325.f, 90.f, 291.f);
+	Desc.vAt = _float3(60.f, 80.f, 0.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
 	Desc.fFar = 4000.f;

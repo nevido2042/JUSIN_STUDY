@@ -177,6 +177,7 @@
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\public\Crosshair.h" />
     <ClInclude Include="..\public\DamageBar.h" />
+    <ClInclude Include="..\public\DamageBar_World.h" />
     <ClInclude Include="..\public\DamagePanel.h" />
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\Engine.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\private\ChurchA.cpp" />
     <ClCompile Include="..\private\Crosshair.cpp" />
     <ClCompile Include="..\private\DamageBar.cpp" />
+    <ClCompile Include="..\private\DamageBar_World.cpp" />
     <ClCompile Include="..\private\DamagePanel.cpp" />
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
@@ -316,6 +318,9 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader_Defines.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

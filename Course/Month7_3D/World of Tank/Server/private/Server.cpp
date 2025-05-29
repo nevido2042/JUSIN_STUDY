@@ -113,12 +113,12 @@ void CServer::AcceptProc()
     while (true)
     {
         SOCKADDR_IN clntAdr;
-        int iAdrSize = sizeof(clntAdr);
+        _int iAdrSize = sizeof(clntAdr);
         SOCKET clntSock = accept(m_ServSock, (SOCKADDR*)&clntAdr, &iAdrSize);
 
         if (clntSock == INVALID_SOCKET)
         {
-            int iErrCode = WSAGetLastError();
+            _int iErrCode = WSAGetLastError();
             if (iErrCode == WSAEWOULDBLOCK)
                 break;
 
@@ -128,12 +128,7 @@ void CServer::AcceptProc()
 
         cout << "ID:" << m_iID << " 클라이언트 접속" << endl;
 
-        int iRandX{ rand() % 3 };
-        int iRandZ{ rand() % 3 };
-
-        _float3 Position{ static_cast<_float>(iRandX) , 0.f, static_cast<_float>(iRandZ) };
-
-        CSession* pNewSession = new CSession(clntAdr, clntSock, m_iID, Position);
+        CSession* pNewSession = new CSession(clntAdr, clntSock, m_iID, _float3{ 0.f, 0.f, 0.f });
 
         //아이디 부여
 		PACKET_DESC Desc{};
@@ -150,7 +145,7 @@ void CServer::Read_Proc(CSession* _pSession)
     //recvQ에 다이렉트로 꽂는다.
     if (_pSession->Get_RecvQ().DirectEnqueueSize() > 0)
     {
-        int retRecv = recv(_pSession->Get_Socket(), (char*)_pSession->Get_RecvQ().Get_Rear() + 1, _pSession->Get_RecvQ().DirectEnqueueSize(), 0);
+        _int retRecv = recv(_pSession->Get_Socket(), (_char*)_pSession->Get_RecvQ().Get_Rear() + 1, _pSession->Get_RecvQ().DirectEnqueueSize(), 0);
 
         if (retRecv == 0)
         {
@@ -172,8 +167,8 @@ void CServer::Read_Proc(CSession* _pSession)
     else//버퍼를 통해 리시브큐로 꽂는다.
     {
         _byte Buffer[BUF_SIZE];
-        int iResult = recv(_pSession->Get_Socket(), (char*)Buffer, sizeof(Buffer), 0);
-        int iErrCode = WSAGetLastError();
+        _int iResult = recv(_pSession->Get_Socket(), (_char*)Buffer, sizeof(Buffer), 0);
+        _int iErrCode = WSAGetLastError();
 
         if (iResult == 0 || (iResult == SOCKET_ERROR && iErrCode != WSAEWOULDBLOCK))
         {
@@ -201,7 +196,7 @@ void CServer::Read_Proc(CSession* _pSession)
             break;
         }
 
-        int retPeek = _pSession->Get_RecvQ().Peek((_byte*)&tHeader, sizeof(tHeader));
+        _int retPeek = _pSession->Get_RecvQ().Peek((_byte*)&tHeader, sizeof(tHeader));
         if (retPeek != sizeof(tHeader))
         {
             wprintf_s(L"Peek() Error:%d\n", retPeek);
@@ -224,7 +219,7 @@ void CServer::Read_Proc(CSession* _pSession)
 
 void CServer::Decode_Packet(const PACKET_HEADER& _Header, CSession* _pSession)
 {
-    int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);
+    _int iResult = _pSession->Receive_Data(m_Packet, _Header.bySize);
     if (iResult != _Header.bySize)
     {
         wprintf_s(L"Dequeue() Error:%d\n", iResult);
@@ -242,26 +237,6 @@ void CServer::Decode_Packet(const PACKET_HEADER& _Header, CSession* _pSession)
         wprintf_s(L"Unknown packet type: %d\n", _Header.byType);
     }
 
- //   switch (_Header.byType)
- //   {
-	//case ENUM_CLASS(PacketType::CS_PING):
- //       cout << "CS_PING" << endl;
-	//	Send_Packet_Unicast(_pSession, ENUM_CLASS(PacketType::SC_PING), nullptr);
-
-	//	break;
-
- //   case ENUM_CLASS(PacketType::CS_POSITION):
-
- //       //_float3 vPos;
- //       //CPacketHandler::net_Position(&m_Packet, vPos);
-
- //       //cout << vPos.x << ' ' << vPos.y << ' ' << vPos.z << endl;
-
- //       //CPacketHandler::POSITION_DESC Desc{};
- //       //Desc.vPos = vPos;
-
- //       break;
- //   }
 }
 
 void CServer::Recieve_Message()
@@ -284,7 +259,7 @@ void CServer::Recieve_Message()
     tCpySet = m_tReadSet;
 
     // select() 호출
-    int iResult = select(0, &tCpySet, NULL, NULL, &tTimeOut);
+    _int iResult = select(0, &tCpySet, NULL, NULL, &tTimeOut);
     if (iResult == SOCKET_ERROR)
     {
         wprintf_s(L"select() error:%d\n", WSAGetLastError());
@@ -344,12 +319,12 @@ void CServer::Send_Message()
                 if (m_vecSession[j]->Get_Socket() == writeSock)
                 {
                     // 현재 세션의 큐에서 보낼 데이터 가져오기
-                    int iPeek = m_vecSession[j]->Get_SendQ().Peek(Buffer, m_vecSession[j]->Get_SendQ().Get_UseSize());
+                    _int iPeek = m_vecSession[j]->Get_SendQ().Peek(Buffer, m_vecSession[j]->Get_SendQ().Get_UseSize());
                     if (iPeek <= 0) // 보낼 데이터가 없음
                         continue;
 
                     // 데이터 전송
-                    int iSend = send(writeSock, (char*)Buffer, iPeek, 0);
+                    _int iSend = send(writeSock, (_char*)Buffer, iPeek, 0);
                     if (iSend == SOCKET_ERROR)
                     {
                         wprintf_s(L"ID:%d, send() error:%d\n", m_vecSession[j]->Get_SessionInfo().iID, WSAGetLastError());
@@ -394,7 +369,7 @@ void CServer::Check_Session_State(SOCKET sock)
         {
             // 데이터 수신 전 소켓 상태 확인
             _byte buffer[1];
-            int result = recv(sock, (char*)buffer, sizeof(buffer), MSG_PEEK);
+            _int result = recv(sock, (_char*)buffer, sizeof(buffer), MSG_PEEK);
             if (result <= 0) // 연결 종료되었거나 오류 발생
             {
                 wprintf_s(L"클라이언트 종료 ID:%d, WSAGetLastError:%d\n", (*iter)->Get_SessionInfo().iID, WSAGetLastError());
@@ -477,7 +452,7 @@ HRESULT CServer::Send_Packet_Broadcast(CSession* _pSession, _uint iPacketType, v
     return S_OK;
 }
 
-HRESULT CServer::Define_Packet(_uint iPacketType, function<void(void*)> pFunction)
+HRESULT CServer::Ready_Packet(_uint iPacketType, function<void(void*)> pFunction)
 {
     if (!pFunction)
         return E_INVALIDARG;
@@ -516,7 +491,7 @@ HRESULT CServer::Update_Header()
 
 HRESULT CServer::Define_Packets()
 {
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_GIVE_ID), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -534,7 +509,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), [this](void* pArg)
         {
             JOIN_MATCH_DESC Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(JOIN_MATCH_DESC));
@@ -574,7 +549,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -588,7 +563,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
         {
             //로딩이 완료되면
             PACKET_DESC Packet_Desc{};
@@ -630,7 +605,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -646,7 +621,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), [this](void* pArg)
         {
             Clear_Packet();
             PACKET_HEADER tHeader{};
@@ -658,7 +633,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_PRESS_W), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -672,7 +647,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_W), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_PRESS_W), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -687,7 +662,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_PRESS_S), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -701,7 +676,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_S), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_PRESS_S), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -715,7 +690,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_PRESS_A), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -729,7 +704,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_A), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_PRESS_A), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -743,7 +718,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_PRESS_D), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -757,7 +732,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PRESS_D), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_PRESS_D), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -771,7 +746,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_LEFT), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_LEFT), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -785,7 +760,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_LEFT), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_LEFT), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -798,7 +773,7 @@ HRESULT CServer::Define_Packets()
             Update_Header();
         })))
         return E_FAIL;
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_RIGHT), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_RIGHT), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -812,7 +787,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_RIGHT), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_RIGHT), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -826,7 +801,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_UP), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_UP), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -840,7 +815,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_UP), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_UP), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -853,7 +828,7 @@ HRESULT CServer::Define_Packets()
             Update_Header();
         })))
         return E_FAIL;
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_DOWN), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_DOWN), [this](void* pArg)
         {
 
             BOOL_DESC Desc{};
@@ -867,7 +842,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_DOWN), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_DOWN), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -881,7 +856,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_FIRE), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_FIRE), [this](void* pArg)
         {
 
             PACKET_DESC Desc{};
@@ -895,7 +870,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_FIRE), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_FIRE), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -909,7 +884,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_TANK_MATRIX), [this](void* pArg)
         {
             cout << "CS_TANK_MATRIX" << endl;
 
@@ -924,7 +899,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_TANK_MATRIX), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_TANK_MATRIX), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -940,7 +915,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), [this](void* pArg)
         {
             MATRIX_DESC Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
@@ -955,7 +930,7 @@ HRESULT CServer::Define_Packets()
 
     
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_BODY), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_MATRIX_BODY), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -969,7 +944,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_TURRET), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_MATRIX_TURRET), [this](void* pArg)
         {
             MATRIX_DESC Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
@@ -982,7 +957,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_TURRET), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_MATRIX_TURRET), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -996,7 +971,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_MATRIX_GUN), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_MATRIX_GUN), [this](void* pArg)
         {
             MATRIX_DESC Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
@@ -1009,7 +984,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_MATRIX_GUN), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_MATRIX_GUN), [this](void* pArg)
         {
             Clear_Packet();
 
@@ -1023,7 +998,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_POSITION), [this](void* pArg)
     {
         Clear_Packet();
 
@@ -1040,7 +1015,7 @@ HRESULT CServer::Define_Packets()
     })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_POSITION), [this](void* pArg)
         {
             POSITION_DESC Desc{};
 			Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
@@ -1057,7 +1032,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_PING), [this](void* pArg)
         {
             PACKET_DESC Desc{};
             Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
@@ -1068,7 +1043,7 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
-    if (FAILED(Define_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg)
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_PING), [this](void* pArg)
         {
             Clear_Packet();
 

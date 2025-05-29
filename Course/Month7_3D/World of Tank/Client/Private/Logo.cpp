@@ -41,8 +41,7 @@ void CLogo::Priority_Update(_float fTimeDelta)
 
 void CLogo::Update(_float fTimeDelta)
 {
-#pragma message ( "로딩스피너 돌려야함" )
-	//m_pTransformCom->
+
 }
 
 void CLogo::Late_Update(_float fTimeDelta)
@@ -52,8 +51,6 @@ void CLogo::Late_Update(_float fTimeDelta)
 
 HRESULT CLogo::Render()
 {
-#pragma message ( "월탱 아이콘도 위에 덧붙여야함" )
-
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 	

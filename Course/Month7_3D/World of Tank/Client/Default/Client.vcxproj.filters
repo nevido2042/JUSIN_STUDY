@@ -217,6 +217,9 @@
     <Filter Include="02.GameObjects\12.Shell">
       <UniqueIdentifier>{aa7b2ef5-1968-47c0-8078-17f3921904d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\13.DamageBar_World">
+      <UniqueIdentifier>{4e45e9f9-6719-4755-a6e9-a72aed94e952}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -438,6 +441,9 @@
     <ClInclude Include="..\public\Shell.h">
       <Filter>02.GameObjects\12.Shell</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DamageBar_World.h">
+      <Filter>02.GameObjects\13.DamageBar_World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -654,6 +660,9 @@
     <ClCompile Include="..\private\Shell.cpp">
       <Filter>02.GameObjects\12.Shell</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\DamageBar_World.cpp">
+      <Filter>02.GameObjects\13.DamageBar_World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -665,5 +674,10 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader_Defines.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

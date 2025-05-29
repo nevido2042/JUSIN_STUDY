@@ -41,7 +41,7 @@ void CLoading_Spinner::Priority_Update(_float fTimeDelta)
 
 void CLoading_Spinner::Update(_float fTimeDelta)
 {
-	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), fTimeDelta);
+	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), -fTimeDelta);
 }
 
 void CLoading_Spinner::Late_Update(_float fTimeDelta)

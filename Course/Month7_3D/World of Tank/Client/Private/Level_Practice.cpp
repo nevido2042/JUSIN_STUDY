@@ -40,6 +40,9 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_DummyTank(TEXT("Layer_Tank"))))
+		return E_FAIL;
+
 	//if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 	//	return E_FAIL;
 
@@ -258,9 +261,22 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 		break;
 	}
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
-	//	ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
-	//	return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
+{
+	CLandObject::LANDOBJECT_DESC Desc{};
+
+	Desc.vInitPosition = _float3(150.f, 87.f, 100.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vInitPosition = _float3(50.f, 87.f, 100.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
