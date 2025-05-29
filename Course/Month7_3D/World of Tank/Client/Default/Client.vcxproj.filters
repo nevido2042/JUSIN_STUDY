@@ -214,6 +214,9 @@
     <Filter Include="02.GameObjects\UIObject\08.DirectionBody">
       <UniqueIdentifier>{05e9590a-4a87-4c73-a89f-54d92d6b84e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\12.Shell">
+      <UniqueIdentifier>{aa7b2ef5-1968-47c0-8078-17f3921904d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -432,6 +435,9 @@
     <ClInclude Include="..\public\DirectionBody.h">
       <Filter>02.GameObjects\UIObject\08.DirectionBody</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Shell.h">
+      <Filter>02.GameObjects\12.Shell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -644,6 +650,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DirectionBody.cpp">
       <Filter>02.GameObjects\UIObject\08.DirectionBody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shell.cpp">
+      <Filter>02.GameObjects\12.Shell</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

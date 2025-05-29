@@ -37,20 +37,16 @@ void CDirectionBody::Priority_Update(_float fTimeDelta)
 	if (g_bWindowResizeRequired)
 		Resize(g_iWinSizeX, g_iWinSizeY);
 
-	CGameObject::Priority_Update(fTimeDelta);
 }
 
 void CDirectionBody::Update(_float fTimeDelta)
 {
-	CGameObject::Update(fTimeDelta);
-
+	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), fTimeDelta * 0.2f);
 }
 
 void CDirectionBody::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
-
-	CGameObject::Late_Update(fTimeDelta);
 
 }
 

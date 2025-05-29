@@ -65,6 +65,9 @@ HRESULT CMainApp::Initialize()
 	if(FAILED(Ready_Packets()))
 		return E_FAIL;
 
+	/*if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_151"), TEXT("../Bin/Resources/Fonts/151ex.spritefont"))))
+		return E_FAIL;*/
+
 	//int* p = new int[4];
 
     return S_OK;
@@ -83,9 +86,6 @@ void CMainApp::Update(_float fTimeDelta)
 		}
 	}
 
-
-	//extern _uint g_iWinResizeX;
-	//extern _uint g_iWinResizeY;
 	m_pGameInstance->Update_Engine(fTimeDelta, g_iWinSizeX, g_iWinSizeY);
 }
 
@@ -94,6 +94,8 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Begin_Draw();
 
 	m_pGameInstance->Draw();
+
+	//m_pGameInstance->Draw_Font(TEXT("Font_151"), TEXT("배가 고파요"), _float2(0.f, 0.f)/*, XMVectorSet(1.f, 0.f, 0.f, 1.f)*/);
 
 	m_pGameInstance->End_Draw();
 

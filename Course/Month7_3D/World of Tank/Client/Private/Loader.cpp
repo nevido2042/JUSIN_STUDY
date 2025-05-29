@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Shell.h"
 #include "DirectionBody.h"
 #include "GunMarker.h"
 #include "DamageBar.h"
@@ -377,6 +378,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Shell */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shell"),
+		CShell::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DirectionBody */

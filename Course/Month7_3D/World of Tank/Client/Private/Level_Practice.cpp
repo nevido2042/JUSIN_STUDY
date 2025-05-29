@@ -382,10 +382,11 @@ HRESULT CLevel_Practice::Ready_Layer_DirectionBody(const _wstring strLayerTag)
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
 	UIObject_Desc.fSizeX = 48.0f * UI_RATIO;
-	UIObject_Desc.fSizeY = 122.0f * UI_RATIO;
-	UIObject_Desc.fX = UIObject_Desc.fSizeX;
-	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY;
+	UIObject_Desc.fSizeY = 74.0f * UI_RATIO;
+	UIObject_Desc.fX = UIObject_Desc.fSizeX * 2.35f;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 1.3f;
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	UIObject_Desc.fRotationPerSec = 1.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))

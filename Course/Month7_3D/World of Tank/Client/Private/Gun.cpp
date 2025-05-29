@@ -71,6 +71,17 @@ void CGun::Update(_float fTimeDelta)
 
 HRESULT CGun::Fire()
 {
+	GAMEOBJECT_DESC Desc = {};
+	memcpy(&Desc.vInitPosition, m_CombinedWorldMatrix.m[3], sizeof(_float3));
+	memcpy(&Desc.vVelocity, m_CombinedWorldMatrix.m[2], sizeof(_float3));
+
+	_vector vVelocity = XMLoadFloat3(&Desc.vVelocity);
+	vVelocity = XMVectorScale(vVelocity, 100.f);
+	XMStoreFloat3(&Desc.vVelocity, vVelocity);
+
+
+	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shell"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Shell"), &Desc);
+
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
 

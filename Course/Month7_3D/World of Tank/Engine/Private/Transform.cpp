@@ -90,6 +90,7 @@ HRESULT CTransform::Initialize(void* pArg)
 
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
+	m_vVelocity = pDesc->vVelocity;
 
 	if (pDesc->vInitPosition.x != 0.f || pDesc->vInitPosition.y != 0.f || pDesc->vInitPosition.z != 0.f)
 		Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vInitPosition), 1.f));
@@ -179,6 +180,23 @@ void CTransform::LookAt(_fvector vAt)
 	Set_State(STATE::RIGHT, XMVector3Normalize(vRight) * vScaled.x);
 	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScaled.y);
 	Set_State(STATE::LOOK, XMVector3Normalize(vLook) * vScaled.z);
+}
+
+void CTransform::Add_Velocity(_fvector vVelocity)
+{
+	XMStoreFloat3(&m_vVelocity, vVelocity + XMLoadFloat3(&m_vVelocity));
+}
+
+void CTransform::Move_Velocity(_float fTimeDelta)
+{
+	//벨로시티 만큼 움직인다.
+	Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&m_vVelocity) * fTimeDelta);
+}
+
+void CTransform::Apply_Gravity(_float fGravity, _float fTimeDelta)
+{
+	//m_vVelocity에 y값을 빼준다.
+	m_vVelocity.y -= fGravity * fTimeDelta;
 }
 
 HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const _char* pConstantName)

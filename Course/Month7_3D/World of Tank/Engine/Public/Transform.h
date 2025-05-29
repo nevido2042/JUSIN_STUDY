@@ -12,6 +12,7 @@ public:
 		_float			fSpeedPerSec;
 		_float			fRotationPerSec;
 		_float3			vInitPosition = { 0.f, 0.f, 0.f };
+		_float3			vVelocity = { 0.f, 0.f, 0.f };
 	}TRANSFORM_DESC;
 
 protected:
@@ -60,6 +61,7 @@ public:
 public:
 	void Scaling(_float fX = 1.f, _float fY = 1.f, _float fZ = 1.f);
 	void Scaling(const _float3& vScale);
+
 public:
 	void Go_Straight(_float fTimeDelta);
 	void Go_Backward(_float fTimeDelta);
@@ -71,10 +73,19 @@ public:
 
 public:
 	void LookAt(_fvector vAt);
+
+public:
+	void Add_Velocity(_fvector vVelocity);
+	void Set_Velocity(_float3 vVelocity) { m_vVelocity = vVelocity; }
+	void Move_Velocity(_float fTimeDelta);
+	void Apply_Gravity(_float fGravity, _float fTimeDelta);
 	
 
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
+
+private:
+	_float3		m_vVelocity = {};
 
 private:
 	_float4x4				m_WorldMatrix = {};
