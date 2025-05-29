@@ -48,6 +48,9 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 		m_fYaw += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
 		// 상하 공전 (Pitch)
 		m_fPitch += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
+		// Pitch 각도 제한
+		m_fPitch = max(XMConvertToRadians(-10.f), min(XMConvertToRadians(85.f), m_fPitch));
+
 	}
 
 #pragma message ("이동 방향을 넣으란거 같은데 일딴 뺌, 도플러 효과 주라는 듯")
@@ -63,9 +66,6 @@ void CCamera_TPS::Update(_float fTimeDelta)
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
 	const _float fDistance = 20.f;
-
-	// Pitch 각도 제한
-	m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(85.f), m_fPitch));
 
 	// 타겟 위치
 	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];

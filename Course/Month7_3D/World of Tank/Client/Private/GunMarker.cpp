@@ -44,8 +44,6 @@ HRESULT CGunMarker::Initialize(void* pArg)
 	depthDesc.StencilEnable = FALSE;
 	m_pDevice->CreateDepthStencilState(&depthDesc, &m_pDSState);
 
-	m_pTransformCom->Scaling(10.f, 10.f, 10.f);
-
 	return S_OK;
 }
 
@@ -70,6 +68,11 @@ void CGunMarker::Update(_float fTimeDelta)
 
 void CGunMarker::Late_Update(_float fTimeDelta)
 {
+	//거리에 따라 보정해서, 항상 같은 크기 출력하도록
+	_vector vToCamera = XMLoadFloat4(m_pGameInstance->Get_CamPosition()) - m_pTransformCom->Get_State(STATE::POSITION);
+	_float fDistance = XMVectorGetX(XMVector3Length(vToCamera));
+	_float3 vFinalScale = { m_fBaseScale * fDistance, m_fBaseScale * fDistance, m_fBaseScale * fDistance };
+	m_pTransformCom->Scaling(vFinalScale.x, vFinalScale.y, vFinalScale.z);
 
 
 	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 10.f))
@@ -145,17 +148,16 @@ HRESULT CGunMarker::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	_float4x4 MatrixIdentity = {};
-	XMStoreFloat4x4(&MatrixIdentity, XMMatrixIdentity());
-	_float4x4 ProjMatrix = {};
-	XMStoreFloat4x4(&ProjMatrix, XMMatrixOrthographicLH(static_cast<_float>(g_iWinSizeX), static_cast<_float>(g_iWinSizeY), 0.0f, 1.f));
-
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;
+
+	_float fAlpha = { 0.1f };
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;

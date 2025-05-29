@@ -178,6 +178,7 @@
     <ClInclude Include="..\public\Crosshair.h" />
     <ClInclude Include="..\public\DamageBar.h" />
     <ClInclude Include="..\public\DamagePanel.h" />
+    <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\FuryGun.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="..\private\Crosshair.cpp" />
     <ClCompile Include="..\private\DamageBar.cpp" />
     <ClCompile Include="..\private\DamagePanel.cpp" />
+    <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\FuryGun.cpp" />

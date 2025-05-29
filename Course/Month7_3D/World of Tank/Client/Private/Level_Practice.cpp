@@ -69,6 +69,11 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_DirectionBody(TEXT("Layer_DirectionBody"))))
+		return E_FAIL;
+
+
+
 	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
 	//	return E_FAIL;
 
@@ -366,6 +371,23 @@ HRESULT CLevel_Practice::Ready_Layer_DamageBar(const _wstring strLayerTag)
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_DirectionBody(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 48.0f * UI_RATIO;
+	UIObject_Desc.fSizeY = 122.0f * UI_RATIO;
+	UIObject_Desc.fX = UIObject_Desc.fSizeX;
+	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 

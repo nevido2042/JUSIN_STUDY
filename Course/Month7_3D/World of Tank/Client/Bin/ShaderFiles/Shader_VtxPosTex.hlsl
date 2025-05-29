@@ -91,8 +91,6 @@ PS_OUT PS_FILL(PS_IN In)
     
     Out.vColor = lerp(texColor, float4(1.f - g_fFill, g_fFill, 0.0, texColor.a), 0.7); // »¡°£»ö 30% ¼¯±â
 
-
-
     return Out;
 }
 

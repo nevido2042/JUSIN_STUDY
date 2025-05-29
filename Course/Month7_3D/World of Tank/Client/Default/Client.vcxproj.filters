@@ -211,6 +211,9 @@
     <Filter Include="02.GameObjects\11.GunMarker">
       <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\08.DirectionBody">
+      <UniqueIdentifier>{05e9590a-4a87-4c73-a89f-54d92d6b84e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -426,6 +429,9 @@
     <ClInclude Include="..\public\GunMarker.h">
       <Filter>02.GameObjects\11.GunMarker</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DirectionBody.h">
+      <Filter>02.GameObjects\UIObject\08.DirectionBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -635,6 +641,9 @@
     </ClCompile>
     <ClCompile Include="..\private\GunMarker.cpp">
       <Filter>02.GameObjects\11.GunMarker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DirectionBody.cpp">
+      <Filter>02.GameObjects\UIObject\08.DirectionBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

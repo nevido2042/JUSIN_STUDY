@@ -31,6 +31,9 @@ private:
 	HRESULT Release_RenderState();
 
 private:
+	const _float m_fBaseScale = 0.03f;
+
+private:
 	ID3D11DepthStencilState* m_pDSState = { nullptr };
 	ID3D11DepthStencilState* m_pOldDSState = { nullptr };
 	ID3D11RasterizerState* m_pRasterState = { nullptr };
