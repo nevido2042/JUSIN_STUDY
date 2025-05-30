@@ -181,6 +181,7 @@
     <ClInclude Include="..\public\DamagePanel.h" />
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\Engine.h" />
+    <ClInclude Include="..\public\FPS_Renderer.h" />
     <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\FuryGun.h" />
     <ClInclude Include="..\public\FuryTrackLeft.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="..\private\DamagePanel.cpp" />
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
+    <ClCompile Include="..\private\FPS_Renderer.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\FuryGun.cpp" />
     <ClCompile Include="..\private\FuryTrackLeft.cpp" />

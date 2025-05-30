@@ -95,6 +95,9 @@ HRESULT CButton_Start::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
+	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("전투 시작"), _float2(m_fX - m_fSizeX * 0.275f, m_fY - m_fSizeY * 0.275f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 1.5f * UI_RATIO);
+
+
 	return S_OK;
 }
 

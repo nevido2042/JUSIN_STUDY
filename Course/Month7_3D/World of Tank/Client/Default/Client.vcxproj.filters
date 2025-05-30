@@ -220,6 +220,9 @@
     <Filter Include="02.GameObjects\13.DamageBar_World">
       <UniqueIdentifier>{4e45e9f9-6719-4755-a6e9-a72aed94e952}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\14.FPS_Renderer">
+      <UniqueIdentifier>{2def2272-a72a-4975-b145-fc14d96f332e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -444,6 +447,9 @@
     <ClInclude Include="..\public\DamageBar_World.h">
       <Filter>02.GameObjects\13.DamageBar_World</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\FPS_Renderer.h">
+      <Filter>02.GameObjects\UIObject\14.FPS_Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -662,6 +668,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DamageBar_World.cpp">
       <Filter>02.GameObjects\13.DamageBar_World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FPS_Renderer.cpp">
+      <Filter>02.GameObjects\UIObject\14.FPS_Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

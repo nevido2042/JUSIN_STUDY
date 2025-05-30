@@ -65,11 +65,8 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     float2 uv = In.vTexcoord;
-    //if (g_IsTread == 1)
-    //{
-        //uv = RotateUV(uv, g_UVRotation);
-        uv += g_UVOffset;
-    //}
+
+    uv += g_UVOffset;
 
     Out.vTexcoord = uv;
     
@@ -111,6 +108,18 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;    
 }
 
+PS_OUT PS_SKY(PS_IN In)
+{
+    PS_OUT Out;
+    
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
+
+        
+    Out.vColor = vMtrlDiffuse;
+    
+    return Out;
+}
+
 // === Å×Å©´Ð ===
 technique11 DefaultTechnique
 {
@@ -132,7 +141,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_SKY();
     }
     //2
     pass Tank

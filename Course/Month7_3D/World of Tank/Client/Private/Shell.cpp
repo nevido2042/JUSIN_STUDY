@@ -69,7 +69,7 @@ HRESULT CShell::Render()
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
-			if (FAILED(m_pShaderCom->Begin(0)))
+			if (FAILED(m_pShaderCom->Begin(2)))
 				return E_FAIL;
 
 			if (FAILED(m_pModelCom->Render(i)))

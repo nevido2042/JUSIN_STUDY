@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "FPS_Renderer.h"
 #include "Shell.h"
 #include "DirectionBody.h"
 #include "GunMarker.h"
@@ -164,6 +165,12 @@ HRESULT CLoader::Loading()
 
 HRESULT CLoader::Loading_For_Static()
 {
+
+#pragma region 폰트
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_WarheliosKO"), TEXT("../Bin/WOT_Resources/Font/WarheliosKO.spritefont"))))
+		return E_FAIL;
+#pragma endregion
+
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
@@ -378,6 +385,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_FPS_Renderer */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
+		CFPS_Renderer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Shell */

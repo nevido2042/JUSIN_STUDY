@@ -34,6 +34,7 @@ private:
 	//Static
 	HRESULT Ready_Layer_StatusLight(const _wstring strLayerTag);
 	HRESULT Ready_Layer_GameManger(const _wstring strLayerTag);
+	HRESULT Ready_Layer_FPS_Renderer(const _wstring strLayerTag);
 
 private:
 	HRESULT Load_Map();

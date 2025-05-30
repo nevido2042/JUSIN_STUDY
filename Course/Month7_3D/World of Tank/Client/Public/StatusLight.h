@@ -7,7 +7,6 @@ NS_BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Rect;
-class CSoundController;
 NS_END
 
 NS_BEGIN(Client)

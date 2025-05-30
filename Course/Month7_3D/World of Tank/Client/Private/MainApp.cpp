@@ -40,7 +40,7 @@ HRESULT CMainApp::Initialize()
 	freopen_s(&fp, "CONIN$", "r", stdin);
 
 	SetConsoleOutputCP(CP_UTF8);
-	std::ios::sync_with_stdio();
+	ios::sync_with_stdio();
 //#endif
 
 	ENGINE_DESC			EngineDesc{};
@@ -64,9 +64,6 @@ HRESULT CMainApp::Initialize()
 
 	if(FAILED(Ready_Packets()))
 		return E_FAIL;
-
-	/*if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_151"), TEXT("../Bin/Resources/Fonts/151ex.spritefont"))))
-		return E_FAIL;*/
 
 	//int* p = new int[4];
 
@@ -95,7 +92,7 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Draw();
 
-	//m_pGameInstance->Draw_Font(TEXT("Font_151"), TEXT("배가 고파요"), _float2(0.f, 0.f)/*, XMVectorSet(1.f, 0.f, 0.f, 1.f)*/);
+	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("배가 고파요"), _float2(0.f, 0.f)/*, XMVectorSet(1.f, 0.f, 0.f, 1.f)*/);
 
 	m_pGameInstance->End_Draw();
 

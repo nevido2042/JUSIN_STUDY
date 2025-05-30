@@ -26,6 +26,9 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_StatusLight(TEXT("Layer_StatusLight"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_FPS_Renderer(TEXT("Layer_FPS_Renderer"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -259,6 +262,19 @@ HRESULT CLevel_Hanger::Ready_Layer_GameManger(const _wstring strLayerTag)
 		return S_OK;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_FPS_Renderer(const _wstring strLayerTag)
+{
+	//이미 있으면 안만듬
+	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_FPS_Renderer")))
+		return S_OK;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
 		ENUM_CLASS(LEVEL::STATIC), strLayerTag)))
 		return E_FAIL;
 
