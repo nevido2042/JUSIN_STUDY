@@ -64,12 +64,6 @@ protected:
 	CSoundController*	m_pSoundCom = { nullptr };
 
 private:
-	ID3D11RasterizerState* m_pRasterState = { nullptr };
-	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
-
-private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
 	HRESULT Bind_ShaderResources();
 
 public:

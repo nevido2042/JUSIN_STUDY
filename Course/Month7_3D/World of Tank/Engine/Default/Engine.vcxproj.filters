@@ -395,5 +395,13 @@
     <Filter Include="01.Utility\11.Fonts\Manager">
       <UniqueIdentifier>{1c8297b6-8f84-4001-9399-1383cff70d5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\98.ShaderFiles">
+      <UniqueIdentifier>{0d9a8675-9eb1-4953-9937-49fcd918b400}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
+      <Filter>01.Utility\98.ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

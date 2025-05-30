@@ -27,14 +27,6 @@ HRESULT CTrack::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	// »õ RasterizerState ¼³Á¤
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_FRONT;
-	rasterDesc.FrontCounterClockwise = FALSE;
-
-	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
-
 	return S_OK;
 }
 
@@ -60,8 +52,6 @@ void CTrack::Late_Update(_float fTimeDelta)
 
 HRESULT CTrack::Render()
 {
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -81,7 +71,7 @@ HRESULT CTrack::Render()
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
-			if (FAILED(m_pShaderCom->Begin(0)))
+			if (FAILED(m_pShaderCom->Begin(2)))
 				return E_FAIL;
 
 			if (FAILED(m_pModelCom->Render(i)))
@@ -94,24 +84,6 @@ HRESULT CTrack::Render()
 			}
 		}
 	}
-
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CTrack::SetUp_RenderState()
-{
-	m_pContext->RSGetState(&m_pOldRasterState);
-	m_pContext->RSSetState(m_pRasterState);
-
-	return S_OK;
-}
-
-HRESULT CTrack::Release_RenderState()
-{
-	m_pContext->RSSetState(m_pOldRasterState);
 
 	return S_OK;
 }
@@ -146,9 +118,6 @@ HRESULT CTrack::Bind_ShaderResources()
 void CTrack::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pRasterState);
-	Safe_Release(m_pOldRasterState);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);

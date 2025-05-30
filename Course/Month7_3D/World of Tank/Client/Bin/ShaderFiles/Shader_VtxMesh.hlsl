@@ -1,5 +1,6 @@
-matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+#include "Engine_Shader_Defines.hlsli"
 
+matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D g_DiffuseTexture;
 
 float4 g_vLightDir;
@@ -11,14 +12,6 @@ float4 g_vCamPosition;
 
 float4 g_vMtrlAmibient = float4(0.5f, 0.5f, 0.5f, 1.f);
 float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
-
-sampler DefaultSampler = sampler_state
-{
-    filter = min_mag_mip_linear;
-    AddressU = wrap;
-    AddressV = wrap;
-
-};
 
 // === UV Offset / 회전용 상수버퍼 추가 ===
 float2  g_UVOffset = float2(0.f, 0.f); // 애니메이션용 offset
@@ -121,11 +114,35 @@ PS_OUT PS_MAIN(PS_IN In)
 // === 테크닉 ===
 technique11 DefaultTechnique
 {
-   
-    pass Default
+    //0
+    pass Default 
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();        
         PixelShader = compile ps_5_0 PS_MAIN();      
+    }
+    //1
+    pass Sky 
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
+    //2
+    pass Tank
+    {
+        SetRasterizerState(RS_Cull_Front);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
    
 }

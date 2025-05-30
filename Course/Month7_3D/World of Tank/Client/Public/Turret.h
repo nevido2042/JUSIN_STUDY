@@ -2,6 +2,11 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+NS_BEGIN(Engine)
+class CShader;
+class CModel;
+NS_END
+
 NS_BEGIN(Client)
 
 class CTurret abstract : public CGameObject
@@ -17,7 +22,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta) {}
-	virtual HRESULT Render() { return S_OK; }
+	virtual HRESULT Render();
 
 public:
 	void	Set_Left(_bool bLeft) { m_bLeft = bLeft; }
@@ -33,6 +38,14 @@ protected:
 protected:
 	_bool	m_bLeft = { false };
 	_bool	m_bRight = { false };
+
+
+protected:
+	CShader* m_pShaderCom = { nullptr };
+	CModel* m_pModelCom = { nullptr };
+
+protected:
+	HRESULT Bind_ShaderResources();
 
 	virtual void Free() override;
 };

@@ -28,16 +28,6 @@ HRESULT CShell::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-#pragma message("렌더 스테이트 쉐이더로 옮기자")
-	// 새 RasterizerState 설정
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_NONE;
-	rasterDesc.FrontCounterClockwise = FALSE;
-
-	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
-
-
 	return S_OK;
 }
 
@@ -67,9 +57,6 @@ void CShell::Late_Update(_float fTimeDelta)
 
 HRESULT CShell::Render()
 {
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
-
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -90,26 +77,9 @@ HRESULT CShell::Render()
 		}
 	}
 
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
-
 	return S_OK;
 }
 
-HRESULT CShell::SetUp_RenderState()
-{
-	m_pContext->RSGetState(&m_pOldRasterState);
-	m_pContext->RSSetState(m_pRasterState);
-
-	return S_OK;
-}
-
-HRESULT CShell::Release_RenderState()
-{
-	m_pContext->RSSetState(m_pOldRasterState);
-
-	return S_OK;
-}
 
 HRESULT CShell::Ready_Components()
 {
@@ -178,9 +148,6 @@ CGameObject* CShell::Clone(void* pArg)
 void CShell::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pRasterState);
-	Safe_Release(m_pOldRasterState);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);

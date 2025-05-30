@@ -1,4 +1,4 @@
-
+#include "Engine_Shader_Defines.hlsli"
 
 /* 상수테이블 ConstantTable */
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
@@ -6,12 +6,6 @@ texture2D g_Texture;
 float g_fAlpha = 0.3f;
 
 float g_fFill = 1.f;
-
-sampler DefaultSampler = sampler_state
-{
-    filter = min_mag_mip_linear;
-};
-
 
 /* 정점의 기초적인 변환 (월드변환, 뷰, 투영변환) */ 
 /* 정점의 구성 정보를 변형할 수 있다. */ 
@@ -106,17 +100,40 @@ technique11 DefaultTechnique
     /* 어떤 쉐이더를 사용할건지? */ 
     /* 진입점 함수 결정 */
     /* 렌더스테이츠에 대한 설정*/ 
+
+    //0
     pass Default/* 명암 + 스펙큘러 + 그림자 + ssao + 림라이트 */ 
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();        
         PixelShader = compile ps_5_0 PS_MAIN();      
     }
-
+    //1
     pass FILL
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_FILL();
     }
+    //2
+    pass GUN_MARKER
+    {
+        SetRasterizerState(RS_Cull_Front);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+
+
     //pass Disstortion/* 왜곡 1*/ 
     //{
     //    VertexShader = compile vs_5_0 VS_MAIN1();

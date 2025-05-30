@@ -27,17 +27,7 @@ public:
 	virtual HRESULT Render();
 
 private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-
-private:
 	const _float m_fBaseScale = 0.03f;
-
-private:
-	ID3D11DepthStencilState* m_pDSState = { nullptr };
-	ID3D11DepthStencilState* m_pOldDSState = { nullptr };
-	ID3D11RasterizerState* m_pRasterState = { nullptr };
-	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
 
 private:
 	CShader*		m_pShaderCom = { nullptr };

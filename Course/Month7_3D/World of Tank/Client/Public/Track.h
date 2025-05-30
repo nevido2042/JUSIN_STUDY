@@ -33,15 +33,10 @@ protected:
 	_float			m_fUVScrollY = {};
 
 protected:
-	ID3D11RasterizerState* m_pRasterState = { nullptr };
-	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
-protected:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 
 protected:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
 	HRESULT Bind_ShaderResources();
 
 public:

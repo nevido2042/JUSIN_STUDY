@@ -36,14 +36,6 @@ HRESULT CTank::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	// »õ RasterizerState ¼³Á¤
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_FRONT;
-	rasterDesc.FrontCounterClockwise = FALSE;
-
-	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
-
 	m_pSoundCom->SetVolume(0.1f);
 
 	return S_OK;
@@ -104,9 +96,6 @@ void CTank::Late_Update(_float fTimeDelta)
 HRESULT CTank::Render()
 {
 
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
-
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -119,7 +108,7 @@ HRESULT CTank::Render()
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
-			if (FAILED(m_pShaderCom->Begin(0)))
+			if (FAILED(m_pShaderCom->Begin(2)))
 				return E_FAIL;
 
 			if (FAILED(m_pModelCom->Render(i)))
@@ -135,16 +124,13 @@ HRESULT CTank::Render()
 			if (FAILED(m_pModelCom_Destroyed->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
-			if (FAILED(m_pShaderCom->Begin(0)))
+			if (FAILED(m_pShaderCom->Begin(2)))
 				return E_FAIL;
 
 			if (FAILED(m_pModelCom_Destroyed->Render(i)))
 				return E_FAIL;
 		}
 	}
-
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -365,22 +351,6 @@ void CTank::ApplyRecoil(_float fTimeDelta)
 }
 
 
-
-HRESULT CTank::SetUp_RenderState()
-{
-	m_pContext->RSGetState(&m_pOldRasterState);
-	m_pContext->RSSetState(m_pRasterState);
-
-	return S_OK;
-}
-
-HRESULT CTank::Release_RenderState()
-{
-	m_pContext->RSSetState(m_pOldRasterState);
-
-	return S_OK;
-}
-
 HRESULT CTank::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -413,7 +383,5 @@ void CTank::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pRasterState);
-	Safe_Release(m_pOldRasterState);
 }
 

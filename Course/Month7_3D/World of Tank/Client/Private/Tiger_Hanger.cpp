@@ -28,14 +28,6 @@ HRESULT CTiger_Hanger::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// »õ RasterizerState ¼³Á¤
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_FRONT;
-	rasterDesc.FrontCounterClockwise = FALSE;
-
-	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
-
 	Set_Active(false);
 
 	return S_OK;
@@ -61,9 +53,6 @@ void CTiger_Hanger::Late_Update(_float fTimeDelta)
 
 HRESULT CTiger_Hanger::Render()
 {
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
-
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -76,31 +65,13 @@ HRESULT CTiger_Hanger::Render()
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
 
-			if (FAILED(m_pShaderCom->Begin(0)))
+			if (FAILED(m_pShaderCom->Begin(2)))
 				return E_FAIL;
 
 			if (FAILED(m_pModelCom->Render(i)))
 				return E_FAIL;
 		}
 	}
-
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CTiger_Hanger::SetUp_RenderState()
-{
-	m_pContext->RSGetState(&m_pOldRasterState);
-	m_pContext->RSSetState(m_pRasterState);
-
-	return S_OK;
-}
-
-HRESULT CTiger_Hanger::Release_RenderState()
-{
-	m_pContext->RSSetState(m_pOldRasterState);
 
 	return S_OK;
 }
@@ -172,9 +143,6 @@ CGameObject* CTiger_Hanger::Clone(void* pArg)
 void CTiger_Hanger::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pRasterState);
-	Safe_Release(m_pOldRasterState);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);

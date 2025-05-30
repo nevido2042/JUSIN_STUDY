@@ -4,6 +4,8 @@
 
 NS_BEGIN(Engine)
 class CSoundController;
+class CShader;
+class CModel;
 NS_END
 
 NS_BEGIN(Client)
@@ -21,7 +23,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta) {}
-	virtual HRESULT Render() { return S_OK; }
+	virtual HRESULT Render();
 
 public:
 	void	Set_Up(_bool bUp) { m_bUp = bUp; }
@@ -47,7 +49,12 @@ protected:
 	const _float m_fMinPitch = sinf(XMConvertToRadians(-10.f)); // -Y
 
 protected:
-	CSoundController* m_pSoundCom{ nullptr };
+	CShader*			m_pShaderCom = { nullptr };
+	CModel*				m_pModelCom = { nullptr };
+	CSoundController*	m_pSoundCom{ nullptr };
+
+protected:
+	HRESULT Bind_ShaderResources();
 
 	virtual void Free() override;
 };

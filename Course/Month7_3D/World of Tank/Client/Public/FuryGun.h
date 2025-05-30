@@ -3,11 +3,6 @@
 #include "Client_Defines.h"
 #include "Gun.h"
 
-NS_BEGIN(Engine)
-class CShader;
-class CModel;
-NS_END
-
 NS_BEGIN(Client)
 
 class CFuryGun final : public CGun
@@ -25,17 +20,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 private:
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-	HRESULT Bind_ShaderResources();
-
-private:
-	ID3D11RasterizerState* m_pRasterState = { nullptr };
-	ID3D11RasterizerState* m_pOldRasterState = { nullptr };
-private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
 	HRESULT Ready_Components();
 
 public:

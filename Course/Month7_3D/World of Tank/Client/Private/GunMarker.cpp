@@ -29,21 +29,6 @@ HRESULT CGunMarker::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// 새 RasterizerState 설정
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.CullMode = D3D11_CULL_NONE;
-	rasterDesc.DepthClipEnable = FALSE;
-	rasterDesc.FrontCounterClockwise = FALSE;
-	m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState);
-
-	D3D11_DEPTH_STENCIL_DESC depthDesc = {};
-	depthDesc.DepthEnable = FALSE;  // 깊이 테스트 완전 비활성화
-	depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	depthDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;  // 비교는 무조건 통과
-	depthDesc.StencilEnable = FALSE;
-	m_pDevice->CreateDepthStencilState(&depthDesc, &m_pDSState);
-
 	return S_OK;
 }
 
@@ -82,13 +67,11 @@ void CGunMarker::Late_Update(_float fTimeDelta)
 
 HRESULT CGunMarker::Render()
 {
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(2)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -96,29 +79,6 @@ HRESULT CGunMarker::Render()
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
-
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CGunMarker::SetUp_RenderState()
-{
-	m_pContext->RSGetState(&m_pOldRasterState);
-	m_pContext->RSSetState(m_pRasterState);
-
-	m_pContext->OMGetDepthStencilState(&m_pOldDSState, 0);
-	m_pContext->OMSetDepthStencilState(m_pDSState, 0);
-
-	return S_OK;
-}
-
-HRESULT CGunMarker::Release_RenderState()
-{
-	m_pContext->RSSetState(m_pOldRasterState);
-
-	m_pContext->OMSetDepthStencilState(m_pOldDSState, 0);
 
 	return S_OK;
 }
@@ -192,12 +152,6 @@ CGameObject* CGunMarker::Clone(void* pArg)
 void CGunMarker::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pDSState);
-	Safe_Release(m_pOldDSState);
-
-	Safe_Release(m_pRasterState);
-	Safe_Release(m_pOldRasterState);
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
