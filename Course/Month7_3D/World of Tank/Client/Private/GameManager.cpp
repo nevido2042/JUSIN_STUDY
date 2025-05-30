@@ -81,6 +81,8 @@ HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3
 {
 	CLandObject::LANDOBJECT_DESC Desc{};
 	Desc.iID = m_pGameInstance->Get_ID();
+	Desc.fRotationPerSec = 1.f;
+	Desc.fSpeedPerSec = 1.f;
 	Desc.vInitPosition = vPos;
 
 	switch (m_eSelectTank)

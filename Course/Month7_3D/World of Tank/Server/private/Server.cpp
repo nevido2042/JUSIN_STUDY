@@ -227,6 +227,8 @@ void CServer::Decode_Packet(const PACKET_HEADER& _Header, CSession* _pSession)
     }
     m_Packet.Move_WritePos(iResult);
 
+	printf_s("Packet Type: %d\n", _Header.byType);
+
     auto it = m_PacketTypes.find(_Header.byType);
     if (it != m_PacketTypes.end())
     {

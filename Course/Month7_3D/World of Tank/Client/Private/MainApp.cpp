@@ -200,6 +200,8 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Clear_Packet();
 
 			CLandObject::LANDOBJECT_DESC Desc = {};
+			Desc.fRotationPerSec = 1.f;
+			Desc.fSpeedPerSec = 1.f;
 			Desc.iID = Packet_Desc.iID;
 			Desc.vInitPosition = Packet_Desc.vPos;
 

@@ -7,10 +7,6 @@ NS_BEGIN(Engine)
 class CSoundController;
 NS_END
 
-#define TURN_POWER_MAX 0.2f
-#define MOVE_POWER_MAX 0.5f
-#define RPM_MAX 1.f
-
 NS_BEGIN(Client)
 
 class CEngine final : public CGameObject
@@ -55,6 +51,13 @@ private:
 	void	Input_Network(_float fTimeDelta);
 
 private:
+	const _float m_fTurnPower_Max = 1.5f;
+	const _float m_fMovePower_Max = 10.f;
+	const _float m_fRPM_Max = 1.f;
+
+
+
+private:
 	_bool	m_bPressW = { false };
 	_bool	m_bPressS = { false };
 	_bool	m_bPressA = { false };
@@ -73,9 +76,6 @@ private:
 	_float		m_fTurnSpeed = { 0.f };
 
 	GEAR		m_eGear = { GEAR::END };
-
-	_float		m_fVolumeValue = { 0.4f };
-	_float		m_fPitchValue = { 1.1f };
 
 private:
 	CSoundController* m_pSoundCom{ nullptr };

@@ -42,7 +42,7 @@ HRESULT CEngine::Initialize(void* pArg)
 	m_EngineSound_Loop = "engines_13";
 	m_EngineSound_End = "engines_14";
 
-	m_pSoundCom->Set3DState(0.f, 100.f);
+	m_pSoundCom->Set3DState(0.f, 30.f);
 
 	return S_OK;
 }
@@ -83,8 +83,8 @@ void CEngine::Update(_float fTimeDelta)
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
 
-	m_pSoundCom->SetVolume(m_EngineSound_Loop, 0.7f + abs(m_fRPM) * m_fVolumeValue);
-	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + abs(m_fRPM) * m_fPitchValue);
+	m_pSoundCom->SetVolume(m_EngineSound_Loop, 0.5f + abs(m_fRPM) * 0.1f);
+	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + abs(m_fRPM) * 0.2f);
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
@@ -102,24 +102,24 @@ void CEngine::Accel_Move(_float fTimeDelta)
 {
 	m_bIsPressAccel = true;
 
-	m_fMoveSpeed += fTimeDelta * 1.f;
+	m_fMoveSpeed += fTimeDelta * 10.f;
 
-	if (m_fMoveSpeed > MOVE_POWER_MAX)
-		m_fMoveSpeed = MOVE_POWER_MAX;
-	else if (m_fMoveSpeed < -MOVE_POWER_MAX)
-		m_fMoveSpeed = -MOVE_POWER_MAX;
+	if (m_fMoveSpeed > m_fMovePower_Max)
+		m_fMoveSpeed = m_fMovePower_Max;
+	else if (m_fMoveSpeed < -m_fMovePower_Max)
+		m_fMoveSpeed = -m_fMovePower_Max;
 
 	Accel_RPM(fTimeDelta);
 }
 
 void CEngine::Accel_Turn(_float fTimeDelta)
 {
-	m_fTurnSpeed += fTimeDelta;
+	m_fTurnSpeed += fTimeDelta * 5.f;
 
-	if (m_fTurnSpeed > TURN_POWER_MAX)
-		m_fTurnSpeed = TURN_POWER_MAX;
-	else if (m_fTurnSpeed < -TURN_POWER_MAX)
-		m_fTurnSpeed = -TURN_POWER_MAX;
+	if (m_fTurnSpeed > m_fTurnPower_Max)
+		m_fTurnSpeed = m_fTurnPower_Max;
+	else if (m_fTurnSpeed < -m_fTurnPower_Max)
+		m_fTurnSpeed = -m_fTurnPower_Max;
 
 	Accel_RPM(fTimeDelta);
 }
@@ -128,8 +128,8 @@ void CEngine::Accel_RPM(_float fTimeDelta)
 {
 	m_fRPM += abs(fTimeDelta) * 1.f;
 
-	if (m_fRPM > RPM_MAX)
-		m_fRPM = RPM_MAX;
+	if (m_fRPM > m_fRPM_Max)
+		m_fRPM = m_fRPM_Max;
 	else if (m_fRPM < 0.f)
 		m_fRPM = 0.f;
 }

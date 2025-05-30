@@ -241,6 +241,8 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 
 	CLandObject::LANDOBJECT_DESC Desc{};
 	Desc.vInitPosition = _float3(100.f, 87.f, 100.f);
+	Desc.fRotationPerSec = 1.f;
+	Desc.fSpeedPerSec = 1.f;
 	Desc.iID = m_pGameInstance->Get_ID();
 	
 	switch (eSelectTank)
@@ -269,11 +271,15 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 	CLandObject::LANDOBJECT_DESC Desc{};
 
 	Desc.vInitPosition = _float3(150.f, 87.f, 100.f);
+	Desc.fRotationPerSec = 0.f;
+	Desc.fSpeedPerSec = 0.f;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	Desc.vInitPosition = _float3(50.f, 87.f, 100.f);
+	Desc.fRotationPerSec = 0.f;
+	Desc.fSpeedPerSec = 0.f;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;

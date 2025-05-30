@@ -24,8 +24,8 @@ CTank::CTank(const CTank& Prototype)
 HRESULT CTank::Initialize(void* pArg)
 {
 	LANDOBJECT_DESC* pDesc = static_cast<LANDOBJECT_DESC*>(pArg);
-	(*pDesc).fRotationPerSec = 0.1f;
-	(*pDesc).fSpeedPerSec = 0.5f;
+	//(*pDesc).fRotationPerSec = 0.1f;
+	//(*pDesc).fSpeedPerSec = 0.5f;
 	(*pDesc).iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	(*pDesc).strLayerTag = TEXT("Layer_Terrain");
 	(*pDesc).strComponentTag = TEXT("Com_VIBuffer");
@@ -265,10 +265,10 @@ void CTank::Move(_float fTimeDelta)
 		}
 	}
 
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), pEngin->Get_TurnPower());
+	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), pEngin->Get_TurnPower() * fTimeDelta);
 
 	//if(pEngin->Get_Gear() != GEAR::LEFT && pEngin->Get_Gear() != GEAR::RIGHT)
-	m_pTransformCom->Go_Straight(fMovePower);
+	m_pTransformCom->Go_Straight(fMovePower * fTimeDelta);
 
 	pTrackLeft->Set_Speed(SpeedTrackLeft);
 	pTrackRight->Set_Speed(SpeedTrackRight);
