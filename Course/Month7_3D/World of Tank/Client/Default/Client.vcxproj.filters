@@ -88,17 +88,8 @@
     <Filter Include="02.GameObjects\LandObject">
       <UniqueIdentifier>{8701e789-29a7-42b8-8b6b-993f153311d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.BurntTree">
-      <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
       <UniqueIdentifier>{52b79f24-254c-4073-8656-4284c5087249}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.VHouse01A">
-      <UniqueIdentifier>{a2135a6c-4067-4158-a479-61462e2152de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.ChurchA">
-      <UniqueIdentifier>{f2b153c0-5025-47e7-beb4-4d377b99a662}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UIObject\Tool">
       <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
@@ -226,6 +217,24 @@
     <Filter Include="02.GameObjects\3DUI\13.DamageBar_World">
       <UniqueIdentifier>{4e45e9f9-6719-4755-a6e9-a72aed94e952}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\Button\11.Button_Practice">
+      <UniqueIdentifier>{2bc91c6c-3bd8-4330-8093-ce8ca39e5e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Buildings">
+      <UniqueIdentifier>{8e8bad7c-1ed6-485c-bdeb-4a3824a94cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Buildings\07.VHouse01A">
+      <UniqueIdentifier>{a2135a6c-4067-4158-a479-61462e2152de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Buildings\08.ChurchA">
+      <UniqueIdentifier>{f2b153c0-5025-47e7-beb4-4d377b99a662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Enviroments">
+      <UniqueIdentifier>{fcddbf89-7e5b-4448-8c1f-f38f36d99a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Enviroments\06.BurntTree">
+      <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -343,7 +352,7 @@
       <Filter>02.GameObjects\LandObject\00.Tank\01.Fury</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BurntTree.h">
-      <Filter>02.GameObjects\06.BurntTree</Filter>
+      <Filter>02.GameObjects\Enviroments\06.BurntTree</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_TPS.h">
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
@@ -352,10 +361,10 @@
       <Filter>02.GameObjects\Modules\01.Turret\FuryTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VHouse01A.h">
-      <Filter>02.GameObjects\07.VHouse01A</Filter>
+      <Filter>02.GameObjects\Buildings\07.VHouse01A</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ChurchA.h">
-      <Filter>02.GameObjects\08.ChurchA</Filter>
+      <Filter>02.GameObjects\Buildings\08.ChurchA</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Minimap.h">
       <Filter>02.GameObjects\UIObject\06.Minimap</Filter>
@@ -452,6 +461,9 @@
     </ClInclude>
     <ClInclude Include="..\public\FPS_Renderer.h">
       <Filter>02.GameObjects\UIObject\14.FPS_Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Practice.h">
+      <Filter>02.GameObjects\UIObject\Button\11.Button_Practice</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -565,7 +577,7 @@
       <Filter>02.GameObjects\LandObject\00.Tank\01.Fury</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BurntTree.cpp">
-      <Filter>02.GameObjects\06.BurntTree</Filter>
+      <Filter>02.GameObjects\Enviroments\06.BurntTree</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_TPS.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
@@ -574,10 +586,10 @@
       <Filter>02.GameObjects\Modules\01.Turret\FuryTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VHouse01A.cpp">
-      <Filter>02.GameObjects\07.VHouse01A</Filter>
+      <Filter>02.GameObjects\Buildings\07.VHouse01A</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ChurchA.cpp">
-      <Filter>02.GameObjects\08.ChurchA</Filter>
+      <Filter>02.GameObjects\Buildings\08.ChurchA</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Minimap.cpp">
       <Filter>02.GameObjects\UIObject\06.Minimap</Filter>
@@ -674,6 +686,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FPS_Renderer.cpp">
       <Filter>02.GameObjects\UIObject\14.FPS_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Practice.cpp">
+      <Filter>02.GameObjects\UIObject\Button\11.Button_Practice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

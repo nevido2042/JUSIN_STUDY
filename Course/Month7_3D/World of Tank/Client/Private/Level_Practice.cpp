@@ -240,7 +240,7 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
 
 	CLandObject::LANDOBJECT_DESC Desc{};
-	Desc.vInitPosition = _float3(100.f, 87.f, 100.f);
+	Desc.vInitPosition = _float3(128.f * 5.f * 0.5f, 0.f, 128.f * 5.f * 0.5f);
 	Desc.fRotationPerSec = 1.f;
 	Desc.fSpeedPerSec = 1.f;
 	Desc.iID = m_pGameInstance->Get_ID();
@@ -269,17 +269,15 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 {
 	CLandObject::LANDOBJECT_DESC Desc{};
+	Desc.fRotationPerSec = 0.f;
+	Desc.fSpeedPerSec = 0.f;
 
 	Desc.vInitPosition = _float3(150.f, 87.f, 200.f);
-	Desc.fRotationPerSec = 1.f;
-	Desc.fSpeedPerSec = 1.f;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	Desc.vInitPosition = _float3(250.f, 87.f, 200.f);
-	Desc.fRotationPerSec = 1.f;
-	Desc.fSpeedPerSec = 1.f;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
@@ -302,8 +300,8 @@ HRESULT CLevel_Practice::Ready_Layer_Minimap(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 256.0f * UI_RATIO;
-	UIObject_Desc.fSizeY = 256.0f * UI_RATIO;
+	UIObject_Desc.fSizeX = 256.0f * 1.5f * UI_RATIO;
+	UIObject_Desc.fSizeY = 256.0f * 1.5f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX - UIObject_Desc.fSizeX * 0.5f;
 	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
 

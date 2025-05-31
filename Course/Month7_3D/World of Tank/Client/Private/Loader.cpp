@@ -29,7 +29,6 @@
 #include "FuryTrackLeft.h"
 #include "FuryTurret.h"
 #include "GameManager.h"
-#include "Button_Start.h"
 #include "DamagePanel.h"
 #include "Minimap.h"
 #include "StatusLight.h"
@@ -56,9 +55,11 @@
 
 #pragma region HANGER
 #include "Fury_Hanger.h"
-#include "Button_Fury.h"
 #include "Tiger_Hanger.h"
+#include "Button_Fury.h"
 #include "Button_Tiger.h"
+#include "Button_Start.h"
+#include "Button_Practice.h"
 #pragma endregion
 
 #pragma region MAPTOOL
@@ -627,6 +628,11 @@ HRESULT CLoader::Loading_For_Hanger()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_Button_Practice */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Practice"),
+		CButton_Practice::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Button_Start */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Start"),

@@ -13,6 +13,7 @@ public:
 	typedef struct tagUIObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		_float			fX, fY, fDepth, fSizeX, fSizeY;
+		_bool			bIsChild = { false };
 	}UIOBJECT_DESC;
 protected:
 	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -44,6 +45,9 @@ protected:
 	_float m_fYRatio;      // m_fY / OldHeight
 	_float m_fSizeXRatio;  // m_fSizeX / OldWidth
 	_float m_fSizeYRatio;  // m_fSizeY / OldHeight
+
+protected:
+	_bool m_bIsChild = { false }; // 자식 유아이 여부
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

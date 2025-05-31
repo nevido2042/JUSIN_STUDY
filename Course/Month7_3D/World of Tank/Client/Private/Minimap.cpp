@@ -30,8 +30,8 @@ HRESULT CMinimap::Initialize(void* pArg)
 		return E_FAIL;
 
 #pragma message ("UI 부모 자식 트랜스폼 해보려다 실패")
-	//if (FAILED(Ready_PartObjects()))
-	//	return E_FAIL;
+	if (FAILED(Ready_PartObjects()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -110,11 +110,8 @@ HRESULT CMinimap::Ready_Components()
 HRESULT CMinimap::Ready_PartObjects()
 {
 	UIOBJECT_DESC UIObject_Desc{};
-	UIObject_Desc.fSizeX = 188.0f * UI_RATIO;
-	UIObject_Desc.fSizeY = 226.0f * UI_RATIO;
-	UIObject_Desc.fX = 0.f;
-	UIObject_Desc.fY = 0.f;
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+	UIObject_Desc.bIsChild = true;
 	lstrcpy(UIObject_Desc.szName, TEXT("PersonalArrowEntry"));
 
 	UIObject_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();

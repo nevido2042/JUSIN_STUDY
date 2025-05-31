@@ -41,6 +41,9 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button_Start"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Button_Practice(TEXT("Layer_Button_Practice"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Button_Fury(TEXT("Layer_Button_Fury"))))
 		return E_FAIL;
 
@@ -161,6 +164,23 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Hanger::Ready_Layer_Button_Practice(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.3f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Practice"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Hanger::Ready_Layer_Button_Fury(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
@@ -184,7 +204,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Fury_Hanger(const _wstring strLayerTag)
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Fury_Hanger"));
-	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
+	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Fury_Hanger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
@@ -216,7 +236,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
-	Desc.vInitPosition = _float3(322.f, 87.f, 286.f);
+	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Tiger_Hanger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))

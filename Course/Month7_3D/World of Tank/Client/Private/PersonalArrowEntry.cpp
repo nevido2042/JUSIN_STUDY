@@ -21,17 +21,13 @@ HRESULT CPersonalArrowEntry::Initialize_Prototype()
 
 HRESULT CPersonalArrowEntry::Initialize(void* pArg)
 {
-	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+	m_pTransformCom->Scaling(0.2f, 0.2f, 0.2f);
 
 	return S_OK;
 }
@@ -44,6 +40,14 @@ void CPersonalArrowEntry::Priority_Update(_float fTimeDelta)
 
 void CPersonalArrowEntry::Update(_float fTimeDelta)
 {
+	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	if (pPlayerTank)
+	{
+		_vector vPlayerPos = pPlayerTank->Get_Transform()->Get_State(STATE::POSITION);
+		_vector vIconPos = XMVectorSet(-0.5f + (XMVectorGetX(vPlayerPos) / (128.f * 5.f * 0.9f)), 0.5f - (XMVectorGetZ(vPlayerPos) / (128.f * 5.f * 0.9f)), m_fDepth, 1.f);//XMVectorSet(XMVectorGetX(vPlayerPos) / 128.f * 5.f, -XMVectorGetZ(vPlayerPos) / 128.f * 5.f, m_fDepth, 1.f);
+		m_pTransformCom->Set_State(STATE::POSITION, vIconPos);
+	}
+	
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 }
@@ -63,7 +67,7 @@ HRESULT CPersonalArrowEntry::Render()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
-	_float fAlpha = { 0.3f };
+	_float fAlpha = { 0.9f };
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
 		return E_FAIL;
 

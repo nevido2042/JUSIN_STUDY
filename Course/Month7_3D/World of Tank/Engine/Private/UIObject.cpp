@@ -28,36 +28,31 @@ HRESULT CUIObject::Initialize(void* pArg)
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.0f, 1.f));
 
-	//const _float scaleX = ViewportDesc.Width / g_iBase_WinSizeX;
-	//const _float scaleY = ViewportDesc.Height / g_iBase_WinSizeY;
-
-	//// 스케일을 일관성 있게 적용 (선택: X 기준 or Y 기준)
-	//const _float uniformScale = min(scaleX, scaleY);
-
 	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
 
-	m_fX = pDesc->fX;
-	m_fY = pDesc->fY;
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+	m_bIsChild = pDesc->bIsChild;
+
 	m_fDepth = pDesc->fDepth;
 	m_fSizeX = pDesc->fSizeX;
 	m_fSizeY = pDesc->fSizeY;
 
-	/*m_fDepth = pDesc->fDepth;
-	m_fX = pDesc->fX * scaleX;
-	m_fY = pDesc->fY * scaleY;
-	m_fSizeX = pDesc->fSizeX * uniformScale;
-	m_fSizeY = pDesc->fSizeY * uniformScale;*/
-
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
+	m_fX = pDesc->fX;
+	m_fY = pDesc->fY;
 
 	m_fXRatio = m_fX / ViewportDesc.Width;
 	m_fYRatio = m_fY / ViewportDesc.Height;
 	m_fSizeXRatio = m_fSizeX / ViewportDesc.Width;
 	m_fSizeYRatio = m_fSizeY / ViewportDesc.Height;
 
-	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY);
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, m_fDepth, 1.f));
 
+
+	if (m_bIsChild)
+		return S_OK; //자식 UI라면 이 아래는 안해도 된다.
+
+	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY);
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, m_fDepth, 1.f));
 
 
@@ -98,6 +93,9 @@ HRESULT CUIObject::Resize(_uint iNewWidth, _uint iNewHeight)
 	m_fY = m_fYRatio * fHeight;
 	m_fSizeX = m_fSizeXRatio * fWidth;
 	m_fSizeY = m_fSizeYRatio * fHeight;
+
+	if (m_bIsChild)
+		return S_OK; //자식 UI라면 이 아래는 안해도 된다.
 
 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY);
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(m_fX - fWidth * 0.5f, -m_fY + fHeight * 0.5f, m_fDepth, 1.f));
