@@ -19,6 +19,8 @@ public:
 	const _float4x4* Get_Transform_Float4x4(D3DTS eState) const;
 	_matrix Get_Transform_Matrix(D3DTS eState) const;
 	const _float4* Get_CamPosition() const;
+	void Set_Fov(_float fFov);
+	_float Get_Fov() const;
 
 
 public:
@@ -28,6 +30,7 @@ private:
 	_float4x4				m_TransformationMatrices[ENUM_CLASS(D3DTS::END)] = {};
 	_float4x4				m_TransformationMatrixInverse[ENUM_CLASS(D3DTS::END)] = {};
 	_float4					m_vCamPosition = {};
+	_float					m_fFov = {};
 
 public:
 	static CPipeLine* Create();

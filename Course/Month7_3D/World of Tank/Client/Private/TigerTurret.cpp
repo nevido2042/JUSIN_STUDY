@@ -21,10 +21,6 @@ HRESULT CTigerTurret::Initialize_Prototype()
 
 HRESULT CTigerTurret::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
-	m_iID = pDesc->iID;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 

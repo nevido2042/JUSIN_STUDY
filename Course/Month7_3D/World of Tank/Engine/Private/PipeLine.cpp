@@ -24,6 +24,16 @@ const _float4* CPipeLine::Get_CamPosition() const
 	return &m_vCamPosition;
 }
 
+void CPipeLine::Set_Fov(_float fFov)
+{
+	m_fFov = fFov;
+}
+
+_float CPipeLine::Get_Fov() const
+{
+	return m_fFov;
+}
+
 void CPipeLine::Update()
 {
 	for (size_t i = 0; i < ENUM_CLASS(D3DTS::END); i++)

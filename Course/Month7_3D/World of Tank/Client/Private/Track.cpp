@@ -21,9 +21,6 @@ HRESULT CTrack::Initialize_Prototype()
 
 HRESULT CTrack::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 

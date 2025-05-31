@@ -53,10 +53,21 @@ void CGunMarker::Update(_float fTimeDelta)
 
 void CGunMarker::Late_Update(_float fTimeDelta)
 {
-	//거리에 따라 보정해서, 항상 같은 크기 출력하도록
+	// 1. 카메라 거리 계산
 	_vector vToCamera = XMLoadFloat4(m_pGameInstance->Get_CamPosition()) - m_pTransformCom->Get_State(STATE::POSITION);
 	_float fDistance = XMVectorGetX(XMVector3Length(vToCamera));
-	_float3 vFinalScale = { m_fBaseScale * fDistance, m_fBaseScale * fDistance, m_fBaseScale * fDistance };
+
+	// 2. 현재 FOV와 기준 FOV (라디안)
+	_float fCurrentFov = m_pGameInstance->Get_Fov();
+	_float fBaseFov = XMConvertToRadians(BASE_FOV);
+
+	// 3. FOV 보정 계수
+	_float fFovScale = tanf(fCurrentFov * 0.5f) / tanf(fBaseFov * 0.5f);
+
+	// 4. 최종 스케일 = 거리 * FOV 보정 * 베이스 스케일
+	_float fFinalScale = m_fBaseScale * fDistance * fFovScale;
+
+	_float3 vFinalScale = { fFinalScale, fFinalScale, fFinalScale };
 	m_pTransformCom->Scaling(vFinalScale.x, vFinalScale.y, vFinalScale.z);
 
 
@@ -67,6 +78,7 @@ void CGunMarker::Late_Update(_float fTimeDelta)
 
 HRESULT CGunMarker::Render()
 {
+#pragma message ("왜 플레이어 탱크의 체력바 UI가 카메라를 전환하면 안보이지? 실행은 되는데?, 안보이는 게 맞긴한데")
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;

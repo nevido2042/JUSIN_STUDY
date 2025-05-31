@@ -17,12 +17,12 @@ CDamageBar_World::CDamageBar_World(const CDamageBar_World& Prototype)
 
 HRESULT CDamageBar_World::Initialize_Prototype()
 {
+
 	return S_OK;
 }
 
 HRESULT CDamageBar_World::Initialize(void* pArg)
 {
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -40,24 +40,44 @@ void CDamageBar_World::Priority_Update(_float fTimeDelta)
 void CDamageBar_World::Update(_float fTimeDelta)
 {
 
-	//터레인한테 포구 피킹 위치 가져와서 위치시키자
-	CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-	if (nullptr == pTerrain)
-		return;
+	//_float4 vParentRight = {};
+	//_float4 vParentUp = {};
+	//_float4 vParentLook = {};
+	//memcpy(&vParentRight, m_pParentWorldMatrix->m[0], sizeof(_float4));
+	//memcpy(&vParentUp, m_pParentWorldMatrix->m[1], sizeof(_float4));
+	//memcpy(&vParentLook, m_pParentWorldMatrix->m[2], sizeof(_float4));
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&pTerrain->Get_PickedPos_Gun()), 1.f));
+	//m_pTransformCom->Set_State(STATE::RIGHT, XMVector3Normalize(XMLoadFloat4(&vParentRight)) * 3.f);
+	//m_pTransformCom->Set_State(STATE::UP, XMVector3Normalize(XMLoadFloat4(&vParentUp)) * 1.f);
+	//m_pTransformCom->Set_State(STATE::LOOK, XMVector3Normalize(XMLoadFloat4(&vParentLook)) * 1.f);
 
+	_float4 vParentPosition = {};
+	memcpy(&vParentPosition, m_pParentWorldMatrix->m[3], sizeof(_float4));
+
+	vParentPosition.y += 6.0f;
+
+	m_pTransformCom->Set_State(STATE::POSITION, XMLoadFloat4(&vParentPosition));
 	m_pTransformCom->LookAt(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
 
 }
 
 void CDamageBar_World::Late_Update(_float fTimeDelta)
 {
-	//거리에 따라 보정해서, 항상 같은 크기 출력하도록
+	// 1. 카메라 거리 계산
 	_vector vToCamera = XMLoadFloat4(m_pGameInstance->Get_CamPosition()) - m_pTransformCom->Get_State(STATE::POSITION);
 	_float fDistance = XMVectorGetX(XMVector3Length(vToCamera));
-	_float3 vFinalScale = { m_fBaseScale * fDistance, m_fBaseScale * fDistance, m_fBaseScale * fDistance };
-	m_pTransformCom->Scaling(vFinalScale.x, vFinalScale.y, vFinalScale.z);
+
+	// 2. 현재 FOV와 기준 FOV (라디안)
+	_float fCurrentFov = m_pGameInstance->Get_Fov();
+	_float fBaseFov = XMConvertToRadians(BASE_FOV);
+
+	// 3. FOV 보정 계수
+	_float fFovScale = tanf(fCurrentFov * 0.5f) / tanf(fBaseFov * 0.5f);
+
+	// 4. 최종 스케일 = 거리 * FOV 보정 * 베이스 스케일
+	_float fFinalScale = m_fBaseScale * fDistance * fFovScale;
+
+	m_pTransformCom->Scaling(fFinalScale * 2.f, fFinalScale, fFinalScale);
 
 
 	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 10.f))
@@ -110,6 +130,7 @@ HRESULT CDamageBar_World::Bind_ShaderResources()
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 

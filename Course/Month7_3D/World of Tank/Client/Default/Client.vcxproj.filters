@@ -208,20 +208,23 @@
     <Filter Include="02.GameObjects\UIObject\07.DamageBar">
       <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\11.GunMarker">
-      <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UIObject\08.DirectionBody">
       <UniqueIdentifier>{05e9590a-4a87-4c73-a89f-54d92d6b84e8}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\12.Shell">
       <UniqueIdentifier>{aa7b2ef5-1968-47c0-8078-17f3921904d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\13.DamageBar_World">
-      <UniqueIdentifier>{4e45e9f9-6719-4755-a6e9-a72aed94e952}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UIObject\14.FPS_Renderer">
       <UniqueIdentifier>{2def2272-a72a-4975-b145-fc14d96f332e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DUI">
+      <UniqueIdentifier>{798b5e6a-f3c6-4dd5-a528-96b1f78aa327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DUI\11.GunMarker">
+      <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DUI\13.DamageBar_World">
+      <UniqueIdentifier>{4e45e9f9-6719-4755-a6e9-a72aed94e952}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -436,7 +439,7 @@
       <Filter>02.GameObjects\UIObject\07.DamageBar</Filter>
     </ClInclude>
     <ClInclude Include="..\public\GunMarker.h">
-      <Filter>02.GameObjects\11.GunMarker</Filter>
+      <Filter>02.GameObjects\3DUI\11.GunMarker</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DirectionBody.h">
       <Filter>02.GameObjects\UIObject\08.DirectionBody</Filter>
@@ -445,7 +448,7 @@
       <Filter>02.GameObjects\12.Shell</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DamageBar_World.h">
-      <Filter>02.GameObjects\13.DamageBar_World</Filter>
+      <Filter>02.GameObjects\3DUI\13.DamageBar_World</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FPS_Renderer.h">
       <Filter>02.GameObjects\UIObject\14.FPS_Renderer</Filter>
@@ -658,7 +661,7 @@
       <Filter>02.GameObjects\UIObject\07.DamageBar</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GunMarker.cpp">
-      <Filter>02.GameObjects\11.GunMarker</Filter>
+      <Filter>02.GameObjects\3DUI\11.GunMarker</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DirectionBody.cpp">
       <Filter>02.GameObjects\UIObject\08.DirectionBody</Filter>
@@ -667,7 +670,7 @@
       <Filter>02.GameObjects\12.Shell</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DamageBar_World.cpp">
-      <Filter>02.GameObjects\13.DamageBar_World</Filter>
+      <Filter>02.GameObjects\3DUI\13.DamageBar_World</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FPS_Renderer.cpp">
       <Filter>02.GameObjects\UIObject\14.FPS_Renderer</Filter>

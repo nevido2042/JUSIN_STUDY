@@ -57,4 +57,6 @@ using namespace Client;
 
 #define UI_RATIO ((static_cast<_float>(g_iWinSizeX) / g_iBase_WinSizeX + static_cast<_float>(g_iWinSizeY) / g_iBase_WinSizeY) * 0.5f)
 
+#define BASE_FOV 60.f
+
 

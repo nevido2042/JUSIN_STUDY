@@ -119,6 +119,11 @@ HRESULT CTiger::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTrackRight"), TEXT("Part_TrackRight"), &Desc)))
 		return E_FAIL;
 
+	/* 데미지바_월드를 추가한다. */
+	lstrcpy(Desc.szName, TEXT("DamageBar"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &Desc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

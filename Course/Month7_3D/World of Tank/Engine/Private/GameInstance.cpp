@@ -423,6 +423,16 @@ const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
 }
+
+void	CGameInstance::Set_Fov(_float fFov)
+{
+	m_pPipeLine->Set_Fov(fFov);
+}
+_float	CGameInstance::Get_Fov() const
+{
+	return m_pPipeLine->Get_Fov();
+}
+
 #pragma endregion
 
 #pragma region Network

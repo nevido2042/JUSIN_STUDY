@@ -95,7 +95,7 @@ HRESULT CFury::Ready_Components()
 HRESULT CFury::Ready_PartObjects()
 {
 	/* 포탑을 추가한다. */
-	CGameObject::GAMEOBJECT_DESC Desc{};
+	GAMEOBJECT_DESC Desc{};
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	Desc.fRotationPerSec = 1.f;
 	Desc.iID = m_iID;
@@ -117,6 +117,11 @@ HRESULT CFury::Ready_PartObjects()
 	/* 오른쪽 궤도를 추가한다. */
 	lstrcpy(Desc.szName, TEXT("TrackRight"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTrackRight"), TEXT("Part_TrackRight"), &Desc)))
+		return E_FAIL;
+
+	/* 데미지바_월드를 추가한다. */
+	lstrcpy(Desc.szName, TEXT("DamageBar"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &Desc)))
 		return E_FAIL;
 
 	return S_OK;

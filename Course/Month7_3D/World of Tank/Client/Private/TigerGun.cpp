@@ -21,10 +21,6 @@ HRESULT CTigerGun::Initialize_Prototype()
 
 HRESULT CTigerGun::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
-	m_iID = pDesc->iID;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 

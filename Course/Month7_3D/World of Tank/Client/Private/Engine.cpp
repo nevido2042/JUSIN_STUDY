@@ -22,17 +22,7 @@ HRESULT CEngine::Initialize_Prototype()
 
 HRESULT CEngine::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-	m_iID = pDesc->iID;
-	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
-
-	GAMEOBJECT_DESC			Desc{};
-	
-	Desc.fRotationPerSec = 0.f;
-	Desc.fSpeedPerSec = 0.f;
-	lstrcpy(Desc.szName, TEXT("Engine"));
-
-	if (FAILED(__super::Initialize(&Desc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))

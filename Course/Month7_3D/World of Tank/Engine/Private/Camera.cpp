@@ -62,6 +62,7 @@ void CCamera::Bind_Matrices()
 {
 	m_pGameInstance->Set_Transform(D3DTS::VIEW, m_pTransformCom->Get_WorldMatrix_Inverse());
 	m_pGameInstance->Set_Transform(D3DTS::PROJ, XMMatrixPerspectiveFovLH(m_fFov, m_fAspect, m_fNear, m_fFar));
+	m_pGameInstance->Set_Fov(m_fFov);
 }
 
 void CCamera::Free()

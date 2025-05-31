@@ -103,10 +103,6 @@ HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3
 		break;
 	}
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"),
-	//	ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
-	//	return E_FAIL;
-
 	return S_OK;
 }
 
