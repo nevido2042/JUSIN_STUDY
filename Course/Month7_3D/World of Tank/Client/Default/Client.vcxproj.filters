@@ -235,6 +235,9 @@
     <Filter Include="02.GameObjects\Enviroments\06.BurntTree">
       <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UIObject\06.Minimap\MediumTank_Enemy_Red">
+      <UniqueIdentifier>{c3f8620e-2a90-49c5-98f8-b655dc150e34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -465,6 +468,9 @@
     <ClInclude Include="..\public\Button_Practice.h">
       <Filter>02.GameObjects\UIObject\Button\11.Button_Practice</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MediumTank_Enemy_Red.h">
+      <Filter>02.GameObjects\UIObject\06.Minimap\MediumTank_Enemy_Red</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -689,6 +695,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Button_Practice.cpp">
       <Filter>02.GameObjects\UIObject\Button\11.Button_Practice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MediumTank_Enemy_Red.cpp">
+      <Filter>02.GameObjects\UIObject\06.Minimap\MediumTank_Enemy_Red</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

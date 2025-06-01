@@ -215,6 +215,24 @@ HRESULT CMainApp::Ready_Packets()
 
 		})))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_MINIMAP), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			cout << "SC_CREATE_MINIMAP" << endl;
+
+			CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+			UIObject_Desc.fSizeX = 256.0f * 1.5f * UI_RATIO;
+			UIObject_Desc.fSizeY = 256.0f * 1.5f * UI_RATIO;
+			UIObject_Desc.fX = g_iWinSizeX - UIObject_Desc.fSizeX * 0.5f;
+			UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 0.5f;
+
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Minimap"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Minimap"), &UIObject_Desc);
+
+		})))
+		return E_FAIL;
 #pragma endregion
 	
 #pragma region TANK_CONTROL

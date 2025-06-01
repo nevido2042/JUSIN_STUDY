@@ -21,6 +21,12 @@ HRESULT CPersonalArrowEntry::Initialize_Prototype()
 
 HRESULT CPersonalArrowEntry::Initialize(void* pArg)
 {
+	PERSONAL_ARROW_ENTRY_DESC* pDesc = static_cast<PERSONAL_ARROW_ENTRY_DESC*>(pArg);
+	m_pTarget = pDesc->pTarget;
+	if(m_pTarget == nullptr)
+		return E_FAIL;
+	Safe_AddRef(m_pTarget);
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -40,23 +46,20 @@ void CPersonalArrowEntry::Priority_Update(_float fTimeDelta)
 
 void CPersonalArrowEntry::Update(_float fTimeDelta)
 {
-	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
-	if (pPlayerTank)
-	{
-		CTransform* pPlayerTransform = pPlayerTank->Get_Transform();
+	CTransform* pPlayerTransform = m_pTarget->Get_Transform();
 
-		_vector vPlayerPos = pPlayerTransform->Get_State(STATE::POSITION);
-		_vector vIconPos = XMVectorSet(
-			(-0.5f + (XMVectorGetX(vPlayerPos) / (TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH))) * 1.3f,
-			(0.5f - (XMVectorGetZ(vPlayerPos) / (TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH))) * 1.3f,
-			m_fDepth,
-			1.f);
-		m_pTransformCom->Set_State(STATE::POSITION, vIconPos);
+	_vector vPlayerPos = pPlayerTransform->Get_State(STATE::POSITION);
+	_vector vIconPos = XMVectorSet(
+		(-0.5f + (XMVectorGetX(vPlayerPos) / (TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH))) * 1.3f,
+		(0.5f - (XMVectorGetZ(vPlayerPos) / (TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH))) * 1.3f,
+		m_fDepth,
+		1.f);
+	m_pTransformCom->Set_State(STATE::POSITION, vIconPos);
 		
-		_float3 vRot = pPlayerTransform->Get_Rotation();
+	_float3 vRot = pPlayerTransform->Get_Rotation();
 
-		m_pTransformCom->Rotation(0.f, 0.f, XMConvertToRadians(180.f) - vRot.y);
-	}
+	m_pTransformCom->Rotation(0.f, 0.f, XMConvertToRadians(180.f) - vRot.y);
+
 	
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
@@ -143,6 +146,8 @@ CGameObject* CPersonalArrowEntry::Clone(void* pArg)
 void CPersonalArrowEntry::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pTarget);
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);

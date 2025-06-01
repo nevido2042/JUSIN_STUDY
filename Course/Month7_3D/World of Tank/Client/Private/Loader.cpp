@@ -18,6 +18,7 @@
 #include "GunMarker.h"
 #include "DamageBar.h"
 #include "Crosshair.h"
+#include "MediumTank_Enemy_Red.h"
 #include "PersonalArrowEntry.h"
 #include "Icon_Engine.h"
 #include "TigerTrackRight.h"
@@ -197,6 +198,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_Component_Texture_Crosshair */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Crosshair"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Crosshair/Crosshair.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_MediumTank_Enemy_Red */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_MediumTank_Enemy_Red"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/output/mediumTank_enemy_red.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_PersonalArrowEntry */
@@ -430,6 +436,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_PersonalArrowEntry */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"),
 		CPersonalArrowEntry::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_MediumTank_Enemy_Red */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MediumTank_Enemy_Red"),
+		CMediumTank_Enemy_Red::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Icon_Engine */

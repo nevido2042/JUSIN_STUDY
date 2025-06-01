@@ -17,6 +17,9 @@ HRESULT CUIObject::Initialize_Prototype()
 
 HRESULT CUIObject::Initialize(void* pArg)
 {
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
 	if (nullptr == pArg)
 		return S_OK;
 
@@ -29,9 +32,6 @@ HRESULT CUIObject::Initialize(void* pArg)
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.0f, 1.f));
 
 	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
-
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
 	m_bIsChild = pDesc->bIsChild;
 
 	m_fDepth = pDesc->fDepth;

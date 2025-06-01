@@ -13,6 +13,12 @@ NS_BEGIN(Client)
 
 class CPersonalArrowEntry final : public CUIObject
 {
+public:
+	typedef struct tagPersonalArrowEntry : public UIOBJECT_DESC
+	{
+		CGameObject* pTarget = { nullptr };
+	}PERSONAL_ARROW_ENTRY_DESC;
+
 private:
 	CPersonalArrowEntry(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPersonalArrowEntry(const CPersonalArrowEntry& Prototype);
@@ -25,6 +31,9 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+
+private:
+	CGameObject* m_pTarget = { nullptr };
 
 private:
 	CShader* m_pShaderCom = { nullptr };

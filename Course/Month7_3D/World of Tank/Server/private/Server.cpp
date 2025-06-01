@@ -603,7 +603,23 @@ HRESULT CServer::Define_Packets()
                 Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_OTHER_CHARACTER), &Other_Desc);
             }
 
-            
+            //다 만들고 미니맵 만들어라
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_MINIMAP));
+
+        })))
+        return E_FAIL;
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_CREATE_MINIMAP), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_CREATE_MINIMAP);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+            Update_Header();
         })))
         return E_FAIL;
 

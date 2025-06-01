@@ -37,8 +37,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	//	return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
-		return E_FAIL;
+#pragma message ("미니맵을 탱크들 모두 배치후 만들어야한다.")
+	/*if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
+		return E_FAIL;*/
 
 
 	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))

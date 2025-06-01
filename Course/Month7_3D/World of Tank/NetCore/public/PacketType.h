@@ -22,6 +22,8 @@ enum class PacketType
     CS_CREATE_OTHER_CHARACTER,
     SC_CREATE_OTHER_CHARACTER,
 
+    SC_CREATE_MINIMAP,
+
     CS_PRESS_W,
     SC_PRESS_W,
 

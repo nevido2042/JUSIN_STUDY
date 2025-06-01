@@ -1,6 +1,9 @@
 #include "Minimap.h"
 
 #include "GameInstance.h"
+#include "PersonalArrowEntry.h"
+#include "MediumTank_Enemy_Red.h"
+#include "Layer.h"
 
 CMinimap::CMinimap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -29,7 +32,6 @@ HRESULT CMinimap::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-#pragma message ("UI 부모 자식 트랜스폼 해보려다 실패")
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
@@ -109,15 +111,37 @@ HRESULT CMinimap::Ready_Components()
 
 HRESULT CMinimap::Ready_PartObjects()
 {
-	UIOBJECT_DESC UIObject_Desc{};
-	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
-	UIObject_Desc.bIsChild = true;
-	lstrcpy(UIObject_Desc.szName, TEXT("PersonalArrowEntry"));
+	CPersonalArrowEntry::PERSONAL_ARROW_ENTRY_DESC PersonalArrowEntry_Desc{};
+	PersonalArrowEntry_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+	PersonalArrowEntry_Desc.bIsChild = true;
+	lstrcpy(PersonalArrowEntry_Desc.szName, TEXT("PersonalArrowEntry"));
+	PersonalArrowEntry_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	PersonalArrowEntry_Desc.pTarget = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
 
-	UIObject_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"), TEXT("Part_PersonalArrowEntry"), &UIObject_Desc)))
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"), TEXT("Part_PersonalArrowEntry"), &PersonalArrowEntry_Desc)))
 		return E_FAIL;
+
+
+
+	CLayer* pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"));
+	if (pLayer == nullptr)
+		return E_FAIL;
+
+	CMediumTank_Enemy_Red::MEDIUM_TANK_ENEMY_RED_DESC Medium_Tank_Enemy_Red_Desc{};
+	Medium_Tank_Enemy_Red_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+	Medium_Tank_Enemy_Red_Desc.bIsChild = true;
+	lstrcpy(Medium_Tank_Enemy_Red_Desc.szName, TEXT("MediumTank_Enemy_Red"));
+	Medium_Tank_Enemy_Red_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	_uint iCount = 0;
+	for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+	{
+		Medium_Tank_Enemy_Red_Desc.pTarget = pGameObject;
+		wstring PartName = TEXT("Part_MediumTank_Enemy_Red_") + to_wstring(iCount++);
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MediumTank_Enemy_Red"), PartName, &Medium_Tank_Enemy_Red_Desc)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
