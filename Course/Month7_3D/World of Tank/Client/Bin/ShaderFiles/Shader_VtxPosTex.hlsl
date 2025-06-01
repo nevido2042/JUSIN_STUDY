@@ -122,7 +122,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_FILL();
     }
     //2
-    pass GUN_MARKER
+    pass UI3D
     {
         SetRasterizerState(RS_Cull_Front);
         SetDepthStencilState(DSS_None, 0);

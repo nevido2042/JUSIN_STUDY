@@ -32,6 +32,8 @@ HRESULT CSkydome::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->Rotation(0.f, XMConvertToRadians(90.f), 0.f);
+
 	return S_OK;
 }
 

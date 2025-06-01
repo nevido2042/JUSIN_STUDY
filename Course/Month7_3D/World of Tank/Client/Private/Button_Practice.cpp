@@ -46,6 +46,8 @@ void CButton_Practice::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
+		CGameManager* pGameManager = GET_GAMEMANAGER;
+		pGameManager->PlaySound_Button();
 
 		//현재 레벨아 레벨 체인지 될거야~
 		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE));
@@ -83,8 +85,7 @@ HRESULT CButton_Practice::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("연습 모드"), _float2(m_fX - m_fSizeX * 0.275f, m_fY - m_fSizeY * 0.275f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 1.5f * UI_RATIO);
-
+	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("연습 모드"), _float2(m_fX - m_fSizeX * 0.275f, m_fY - m_fSizeY * 0.275f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.5f * UI_RATIO);
 
 	return S_OK;
 }

@@ -35,6 +35,9 @@ HRESULT CInput_Device::Initialize(HINSTANCE hInstance, HWND hWnd)
 
 void CInput_Device::Update()
 {
+	if (GetForegroundWindow() != g_hWnd)
+		return;
+
 	memcpy(&m_PrevMouseState, &m_MouseState, sizeof(DIMOUSESTATE));
 
 	memcpy(m_byPrevKeyState, m_byKeyState, sizeof(m_byKeyState));

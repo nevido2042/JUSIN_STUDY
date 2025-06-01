@@ -57,6 +57,9 @@ private:
 private:
 	_bool	m_bDestroyed = { false };
 
+private:
+	_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
+
 protected:
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };

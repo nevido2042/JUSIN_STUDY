@@ -176,6 +176,7 @@
     <ClInclude Include="..\public\ChurchA.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
+    <ClInclude Include="..\public\CountdownTimer.h" />
     <ClInclude Include="..\public\Crosshair.h" />
     <ClInclude Include="..\public\DamageBar.h" />
     <ClInclude Include="..\public\DamageBar_World.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />
+    <ClCompile Include="..\private\CountdownTimer.cpp" />
     <ClCompile Include="..\private\Crosshair.cpp" />
     <ClCompile Include="..\private\DamageBar.cpp" />
     <ClCompile Include="..\private\DamageBar_World.cpp" />

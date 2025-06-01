@@ -69,6 +69,11 @@ HRESULT CSound_Device::Initialize()
 
 void CSound_Device::Update()
 {
+    if (GetForegroundWindow() == g_hWnd)
+        MuteSound(false);
+    else
+        MuteSound(true);
+
     m_pCoreSystem->update();
 }
 

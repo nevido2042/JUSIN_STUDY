@@ -136,32 +136,39 @@ HRESULT CGameManager::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 
 HRESULT CGameManager::PlayBGM_LoadingGame()
 {
-	m_pSoundCom->Play("19. Studzianki");
-	m_pSoundCom->SetVolume(0.2f);
-	m_pSoundCom->Set_Loop("19. Studzianki");
+	m_pSoundCom_BGM->Play("19. Studzianki");
+	m_pSoundCom_BGM->SetVolume(0.2f);
+	m_pSoundCom_BGM->Set_Loop("19. Studzianki");
 
 	return S_OK;
 }
 
 HRESULT CGameManager::StopBGM_LoadingGame()
 {
-	m_pSoundCom->Stop("19. Studzianki");
+	m_pSoundCom_BGM->Stop("19. Studzianki");
 
 	return S_OK;
 }
 
 HRESULT CGameManager::PlayBGM_Game()
 {
-	m_pSoundCom->Play("Stuzianki_Battle");
-	m_pSoundCom->SetVolume(0.2f);
-	m_pSoundCom->Set_Loop("Stuzianki_Battle");
+	m_pSoundCom_BGM->Play("Stuzianki_Battle");
+	m_pSoundCom_BGM->SetVolume(0.2f);
+	m_pSoundCom_BGM->Set_Loop("Stuzianki_Battle");
 
 	return S_OK;
 }
 
 HRESULT CGameManager::StopBGM_Game()
 {
-	m_pSoundCom->Stop("Stuzianki_Battle");
+	m_pSoundCom_BGM->Stop("Stuzianki_Battle");
+
+	return S_OK;
+}
+
+HRESULT CGameManager::PlaySound_Button()
+{
+	m_pSoundCom_GUI->Play("gui_25");
 
 	return S_OK;
 }
@@ -170,7 +177,12 @@ HRESULT CGameManager::Ready_Components()
 {
 	/* For.Com_Sound */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_BGM"),
-		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		TEXT("Com_Sound_BGM"), reinterpret_cast<CComponent**>(&m_pSoundCom_BGM))))
+		return E_FAIL;
+
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_GUI"),
+		TEXT("Com_Sound_GUI"), reinterpret_cast<CComponent**>(&m_pSoundCom_GUI))))
 		return E_FAIL;
 
 	return S_OK;
@@ -206,6 +218,6 @@ void CGameManager::Free()
 {
 	__super::Free();
 	
-	//Safe_Release(m_pSoundCom);
+	//Safe_Release(m_pSoundCom_BGM);
 
 }

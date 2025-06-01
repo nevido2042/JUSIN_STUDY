@@ -736,6 +736,11 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
 		CSoundController::Create("../Bin/WOT_Resources/Sound/03.Voice/"))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_SoundController_GUI */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_GUI"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/04.GUI/"))))
+		return E_FAIL;
 #pragma endregion
 
 	return S_OK;

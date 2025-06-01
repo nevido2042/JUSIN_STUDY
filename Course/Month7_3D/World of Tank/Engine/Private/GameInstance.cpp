@@ -94,19 +94,12 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 		m_pGraphic_Device->Resize(g_iWinSizeX, g_iWinSizeY);
 
 
-	if (GetForegroundWindow() == g_hWnd)
-	{
-		m_pInputDevice->Update();
-
-		m_pSound_Device->MuteSound(false);
-		m_pSound_Device->Update();
-	}
-	else
-		m_pSound_Device->MuteSound(true);
+	m_pInputDevice->Update();
 
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pPipeLine->Update();
+
 
 	m_pFrustum->Update();
 	m_pPicking->Update(iWinSizeX, iWinSizeY);
@@ -115,6 +108,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 
 	m_pNetwork->Late_Update(fTimeDelta);
 	m_pObject_Manager->Late_Update(fTimeDelta);
+
+	m_pSound_Device->Update();
 
 	m_pLevel_Manager->Update(fTimeDelta);
 

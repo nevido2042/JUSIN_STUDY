@@ -52,6 +52,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_CountdownTimer(TEXT("Layer_CountdownTimer"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
 		return E_FAIL;
@@ -291,6 +293,15 @@ HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
 	Desc.vInitPosition = _float3(100.f, 110.f, 100.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_CountdownTimer(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_CountdownTimer"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

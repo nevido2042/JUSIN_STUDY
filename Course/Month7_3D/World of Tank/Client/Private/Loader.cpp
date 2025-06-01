@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "CountdownTimer.h"
 #include "DamageBar_World.h"
 #include "FPS_Renderer.h"
 #include "Shell.h"
@@ -168,6 +169,7 @@ HRESULT CLoader::Loading_For_Static()
 {
 
 #pragma region ÆùÆ®
+	/* MakeSpriteFont "WarheliosKO" /FontSize:60 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 WarheliosKO.spritefont */
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_WarheliosKO"), TEXT("../Bin/WOT_Resources/Font/WarheliosKO.spritefont"))))
 		return E_FAIL;
 #pragma endregion
@@ -384,6 +386,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Model_Skydome */
 	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(90.f));
 	PreTransformMatrix = XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Skydome"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Map/99_poland/maps/skyboxes/99_Poland_sky/skydome/99_Poland_sky_forward.bin", PreTransformMatrix))))
@@ -401,6 +404,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_DamageBar_World */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"),
 		CDamageBar_World::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CountdownTimer */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_CountdownTimer"),
+		CCountdownTimer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_FPS_Renderer */

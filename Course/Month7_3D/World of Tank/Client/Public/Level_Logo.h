@@ -23,7 +23,10 @@ private:
 	HRESULT Ready_Layer_Logo(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Login(const _wstring strLayerTag);
 
+	//STATIC
 	HRESULT Ready_Layer_Tool_Base(const _wstring strLayerTag);
+	HRESULT Ready_Layer_GameManger(const _wstring strLayerTag);
+
 
 public:
 	static CLevel_Logo* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

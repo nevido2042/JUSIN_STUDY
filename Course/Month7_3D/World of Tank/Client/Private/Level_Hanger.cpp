@@ -18,8 +18,8 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_GameManger(TEXT("Layer_GameManager"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_GameManger(TEXT("Layer_GameManager"))))
+	//	return E_FAIL;
 
 	static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Set_Select_Tank(TANK::FURY);
 

@@ -43,21 +43,29 @@ HRESULT CTank::Initialize(void* pArg)
 
 void CTank::Priority_Update(_float fTimeDelta)
 {
+	CGameObject* pCountdownTimer = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountdownTimer"));
+	if (pCountdownTimer)
+	{
+		if (pCountdownTimer->Get_isActive())
+			return;
+	}
+	
 	Input();
+	CGameObject::Priority_Update(fTimeDelta);
+
+}
+
+void CTank::Update(_float fTimeDelta)
+{
 
 	Move(fTimeDelta);
 
 	CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
 	// 반동 적용
-	#pragma message ("FPS 카메라 반동 주는 것이 방향에 따라 달라진다 해결 못함(원본 겜도 못해서 안넣은거일거야)")
+#pragma message ("FPS 카메라 반동 주는 것이 방향에 따라 달라진다 해결 못함(원본 겜도 못해서 안넣은거일거야)")
 	ApplyRecoil(fTimeDelta);
 
-	CGameObject::Priority_Update(fTimeDelta);
-}
-
-void CTank::Update(_float fTimeDelta)
-{
 	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
 	{
 		m_fTimeAcc += fTimeDelta;
@@ -143,7 +151,13 @@ void CTank::Input()
 	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE) && m_pGameInstance->Get_ID() != m_iID)
 		return;
 
-	if (m_pGameInstance->Key_Down(DIK_F12))
+	if (!m_bIsBattleStartVoice)
+	{
+		m_bIsBattleStartVoice = true;
+		m_pSoundCom->Play("start_battle_2");
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_F5))
 		Destroyed();
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
@@ -151,13 +165,14 @@ void CTank::Input()
 
 	if (m_pGameInstance->Key_Down(DIK_F2))
 	{
-		Take_Damage(5.f);
 		Set_State_Engine(MODULE_STATE::DAMAGED);
 	}
 
-
 	if (m_pGameInstance->Key_Down(DIK_F3))
 		Set_State_Engine(MODULE_STATE::DESTROYED);
+
+	if (m_pGameInstance->Key_Down(DIK_F4))
+		Take_Damage(5.f);
 
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
 	{

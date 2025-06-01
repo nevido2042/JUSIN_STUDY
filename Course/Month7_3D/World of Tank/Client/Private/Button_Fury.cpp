@@ -45,7 +45,10 @@ void CButton_Fury::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
-		static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Set_Select_Tank(TANK::FURY);
+		CGameManager* pGameManager = GET_GAMEMANAGER;
+		pGameManager->PlaySound_Button();
+
+		pGameManager->Set_Select_Tank(TANK::FURY);
 		Active_This_Tank_Solo();
 	}
 }

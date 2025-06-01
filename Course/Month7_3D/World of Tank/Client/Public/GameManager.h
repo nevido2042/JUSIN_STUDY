@@ -43,13 +43,16 @@ public:
 public:
 	HRESULT		PlayBGM_Game();
 	HRESULT		StopBGM_Game();
+public:
+	HRESULT		PlaySound_Button();
 
 private:
 	TANK		m_eSelectTank = { TANK::FURY };
 	_bool		m_isGameStart = { false };
 
 private:
-	CSoundController* m_pSoundCom = { nullptr };
+	CSoundController* m_pSoundCom_BGM = { nullptr };
+	CSoundController* m_pSoundCom_GUI = { nullptr };
 
 private:
 	HRESULT Ready_Components();
