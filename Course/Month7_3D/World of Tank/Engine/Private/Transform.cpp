@@ -20,8 +20,6 @@ _float3 CTransform::Get_Scaled()
 		XMVectorGetX(XMVector3Length(Get_State(STATE::LOOK))));		
 }
 
-
-
 _float3 CTransform::Get_RotationEuler() const
 {
 	_vector scale, rotQuat, translation;
@@ -167,6 +165,72 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE::RIGHT, XMVector4Transform(Get_State(STATE::RIGHT), RotationMatrix));
 	Set_State(STATE::UP, XMVector4Transform(Get_State(STATE::UP), RotationMatrix));
 	Set_State(STATE::LOOK, XMVector4Transform(Get_State(STATE::LOOK), RotationMatrix));
+}
+
+void CTransform::Rotation(_fvector vAxis, _float fRadian)
+{
+	_float3		vScaled = Get_Scaled();
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	Set_State(STATE::RIGHT, XMVector4Transform(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector4Transform(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector4Transform(vLook, RotationMatrix));
+}
+
+_float3 CTransform::Get_Rotation() const
+{
+	_vector vRight = XMVector3Normalize(Get_State(STATE::RIGHT));
+	_vector vUp = XMVector3Normalize(Get_State(STATE::UP));
+	_vector vLook = XMVector3Normalize(Get_State(STATE::LOOK));
+
+	_matrix matRotation;
+	matRotation.r[0] = vRight;
+	matRotation.r[1] = vUp;
+	matRotation.r[2] = vLook;
+	matRotation.r[3] = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+
+	// XMMATRIX → XMFLOAT4X4 변환
+	XMFLOAT4X4 fMat;
+	XMStoreFloat4x4(&fMat, matRotation);
+
+	_float3 vRotation = {};
+
+	// 오일러 각 계산 (Pitch, Yaw, Roll)
+	vRotation.x = asinf(-fMat._23); // -m23
+	if (cosf(vRotation.x) > 0.0001f) {
+		vRotation.y = atan2f(fMat._13, fMat._33); // m13, m33
+		vRotation.z = atan2f(fMat._21, fMat._22); // m21, m22
+	}
+	else {
+		vRotation.y = atan2f(-fMat._31, fMat._11); // -m31, m11
+		vRotation.z = 0.f;
+	}
+
+	return vRotation;
+}
+
+
+
+void CTransform::Rotation(_float fX, _float fY, _float fZ)
+{
+	_float3		vScaled = Get_Scaled();
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+	_vector		vQuaternion = XMQuaternionRotationRollPitchYaw(fX, fY, fZ);
+
+	_matrix		RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
+
+	Set_State(STATE::RIGHT, XMVector4Transform(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector4Transform(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
 void CTransform::LookAt(_fvector vAt)

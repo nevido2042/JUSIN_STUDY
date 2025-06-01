@@ -70,7 +70,9 @@ public:
 	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance);
 
 	void Turn(_fvector vAxis, _float fTimeDelta);
-
+	void Rotation(_fvector vAxis, _float fRadian);
+	_float3 Get_Rotation() const;
+	void Rotation(_float fX, _float fY, _float fZ);
 public:
 	void LookAt(_fvector vAt);
 

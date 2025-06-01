@@ -59,4 +59,8 @@ using namespace Client;
 
 #define BASE_FOV 60.f
 
+#define TERRAIN_SIZE			128.f	//지형 크기
+#define TERRAIN_OFFSET_WIDTH	5.0f	//수평
+#define TERRAIN_OFFSET_HEIGHT	1.f		//높이
+
 

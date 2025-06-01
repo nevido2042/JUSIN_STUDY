@@ -43,9 +43,19 @@ void CPersonalArrowEntry::Update(_float fTimeDelta)
 	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
 	if (pPlayerTank)
 	{
-		_vector vPlayerPos = pPlayerTank->Get_Transform()->Get_State(STATE::POSITION);
-		_vector vIconPos = XMVectorSet(-0.5f + (XMVectorGetX(vPlayerPos) / (128.f * 5.f * 0.9f)), 0.5f - (XMVectorGetZ(vPlayerPos) / (128.f * 5.f * 0.9f)), m_fDepth, 1.f);//XMVectorSet(XMVectorGetX(vPlayerPos) / 128.f * 5.f, -XMVectorGetZ(vPlayerPos) / 128.f * 5.f, m_fDepth, 1.f);
+		CTransform* pPlayerTransform = pPlayerTank->Get_Transform();
+
+		_vector vPlayerPos = pPlayerTransform->Get_State(STATE::POSITION);
+		_vector vIconPos = XMVectorSet(
+			(-0.5f + (XMVectorGetX(vPlayerPos) / (TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH))) * 1.3f,
+			(0.5f - (XMVectorGetZ(vPlayerPos) / (TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH))) * 1.3f,
+			m_fDepth,
+			1.f);
 		m_pTransformCom->Set_State(STATE::POSITION, vIconPos);
+		
+		_float3 vRot = pPlayerTransform->Get_Rotation();
+
+		m_pTransformCom->Rotation(0.f, 0.f, XMConvertToRadians(180.f) - vRot.y);
 	}
 	
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.

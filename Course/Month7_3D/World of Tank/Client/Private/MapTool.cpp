@@ -278,6 +278,7 @@ void CMapTool::Update(_float fTimeDelta)
 #pragma message("값을 입력했을 때 다른 축들이 0으로 초기화 되는 현상 있음")
 			_vector vRotation = XMVectorSet(XMConvertToRadians(vRot.x), XMConvertToRadians(vRot.y), XMConvertToRadians(vRot.z), 0.f);
 			pTransform->Set_RotationEuler(vRotation);
+			//pTransform->Rotation(vRot.x, vRot.y, vRot.z);
 		}
 		ImGui::SameLine();
 		if (ImGui::RadioButton("Rotation", m_currentOperation == ImGuizmo::ROTATE)) m_currentOperation = ImGuizmo::ROTATE;
