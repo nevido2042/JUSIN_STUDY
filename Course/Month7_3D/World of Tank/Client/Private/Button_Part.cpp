@@ -50,6 +50,7 @@ void CButton_Part::Update(_float fTimeDelta)
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		pGameManager->PlaySound_Button();
 
+		pGameManager->Set_PartRepaint(m_ePartRepaint);
 	}
 }
 

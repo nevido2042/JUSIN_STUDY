@@ -12,6 +12,11 @@ NS_BEGIN(Client)
 
 class CGun abstract : public CGameObject
 {
+public:
+	typedef struct tagGunDesc : public GAMEOBJECT_DESC
+	{
+		_float4 vBaseColor = { 1.f, 1.f, 1.f, 1.f };
+	}GUN_DESC;
 protected:
 	CGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGun(const CGun& Prototype);
@@ -34,6 +39,9 @@ public:
 
 private:
 	void Input(_float fTimeDelta);
+
+private:
+	_float4	m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
 	const _float	m_fSyncInterval = { 0.5f };

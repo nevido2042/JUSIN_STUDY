@@ -1,6 +1,7 @@
 #include "TigerTurret.h"
 
 #include "GameInstance.h"
+#include "Gun.h"
 
 CTigerTurret::CTigerTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTurret{ pDevice, pContext }
@@ -27,7 +28,7 @@ HRESULT CTigerTurret::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(Ready_PartObjects()))
+	if (FAILED(Ready_PartObjects(static_cast<TURRET_DESC*>(pArg))))
 		return E_FAIL;
 
 	return S_OK;
@@ -75,16 +76,17 @@ HRESULT CTigerTurret::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CTigerTurret::Ready_PartObjects()
+HRESULT CTigerTurret::Ready_PartObjects(TURRET_DESC* pDesc)
 {
 	/* 주포을 추가한다. */
-	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.pParentWorldMatrix = &m_CombinedWorldMatrix;
-	Desc.fRotationPerSec = 1.f;
-	Desc.iID = m_iID;
+	CGun::GUN_DESC GunDesc{};
+	GunDesc.vBaseColor = pDesc->vGunColor;
+	GunDesc.pParentWorldMatrix = &m_CombinedWorldMatrix;
+	GunDesc.fRotationPerSec = 1.f;
+	GunDesc.iID = m_iID;
+	lstrcpy(GunDesc.szName, TEXT("TigerGun"));
 
-	lstrcpy(Desc.szName, TEXT("TigerGun"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerGun"), TEXT("Part_Gun"), &Desc)))
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerGun"), TEXT("Part_Gun"), &GunDesc)))
 		return E_FAIL;
 
 	return S_OK;

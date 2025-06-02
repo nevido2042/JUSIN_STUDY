@@ -28,7 +28,7 @@ public:
 
 private:
 	HRESULT Ready_Components();
-	HRESULT Ready_PartObjects();
+	HRESULT Ready_PartObjects(TANK_DESC* pDesc);
 
 public:
 	static CFury* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

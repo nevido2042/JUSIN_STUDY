@@ -57,12 +57,12 @@ public:
 	void 			Set_GunColor(const _float4& vColor) { m_vGunColor = vColor; }
 
 	const PART_REPAINT& Get_PartRepaint() const { return m_ePartRepaint; }
-	void				Set_PartRepaint(const PART_REPAINT& ePartRepaint) { m_ePartRepaint = ePartRepaint; }
+	void				Set_PartRepaint(const PART_REPAINT& ePartRepaint);
 private:
 	PART_REPAINT	m_ePartRepaint = { PART_REPAINT::BODY };
 private:
 	TANK		m_eSelectTank = { TANK::FURY };
-	_float4		m_vBodyColor =		{ 1.f, 0.f, 1.f, 1.f };
+	_float4		m_vBodyColor =		{ 1.f, 1.f, 1.f, 1.f };
 	_float4		m_vTurretColor =	{ 1.f, 1.f, 1.f, 1.f };
 	_float4		m_vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
 private:

@@ -11,6 +11,13 @@ NS_BEGIN(Client)
 
 class CTurret abstract : public CGameObject
 {
+public:
+	typedef struct tagTurretDesc : public GAMEOBJECT_DESC
+	{
+		_float4 vBaseColor =	{ 1.f, 1.f, 1.f, 1.f };
+		_float4 vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
+	}TURRET_DESC;
+
 protected:
 	CTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTurret(const CTurret& Prototype);
@@ -30,6 +37,9 @@ public:
 
 private:
 	void Input(_float fTimeDelta);
+
+private:
+	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
 	const _float	m_fSyncInterval = { 0.5f };

@@ -67,6 +67,7 @@
 #include "Button_Customize.h"
 #include "Button_Exit_Customize.h"
 #include "Button_Color.h"
+#include "Button_Part.h"
 #include "Background_UI.h"
 #pragma endregion
 
@@ -660,9 +661,60 @@ HRESULT CLoader::Loading_For_Logo()
 HRESULT CLoader::Loading_For_Hanger()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+#pragma region 텍스쳐
 	/* For.Prototype_Component_Texture_CustomColor_Yellow*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Yellow"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_04.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_37.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Pink*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Pink"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_01.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Red*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Red"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_18.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Blue*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Blue"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_22.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Black*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Black"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_23.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_White*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_White"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_29.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Brown*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Brown"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/uk_color_02.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Green*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Green"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/ussr_color_07.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Part_Turret*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Part_Turret"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Parts/tower.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Part_Gun*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Part_Gun"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Parts/gun.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CustomColor_Part_Body*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Part_Body"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Parts/hull.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Background_UI*/
@@ -679,6 +731,7 @@ HRESULT CLoader::Loading_For_Hanger()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Button_Tiger"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Tanks/g04_pzvi_tiger_i.dds"), 1))))
 		return E_FAIL;
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
@@ -688,9 +741,15 @@ HRESULT CLoader::Loading_For_Hanger()
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
+#pragma region 원형 객체
 	/* For.Prototype_GameObject_Button_Color */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
 		CButton_Color::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Button_Part */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
+		CButton_Part::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Background_UI */
@@ -737,6 +796,7 @@ HRESULT CLoader::Loading_For_Hanger()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Tiger_Hanger"),
 		CTiger_Hanger::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

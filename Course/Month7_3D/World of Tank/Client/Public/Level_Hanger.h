@@ -29,6 +29,7 @@ private:
 	HRESULT Ready_Layer_Button_Customize(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Exit_Customize(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Colors(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Button_Parts(const _wstring strLayerTag);
 
 	HRESULT Ready_Layer_Button_Fury(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Fury_Hanger(const _wstring strLayerTag);

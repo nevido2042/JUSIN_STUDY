@@ -16,6 +16,8 @@ public:
 	class CComponent* Get_Component(const _wstring& strComponentTag, _uint iIndex);
 	class CGameObject* Get_GameObject(_uint iIndex = 0);
 	const list<class CGameObject*>& Get_GameObjects() const { return m_GameObjects; }
+	class CGameObject* Find_GameObject_By_Name(const _wstring& strName);
+
 public:
 	HRESULT Add_GameObject(class CGameObject* pGameObject);
 	void Priority_Update(_float fTimeDelta);

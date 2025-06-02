@@ -1,6 +1,7 @@
 #include "FuryTurret.h"
 
 #include "GameInstance.h"
+#include "Gun.h"
 
 CFuryTurret::CFuryTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTurret{ pDevice, pContext }
@@ -27,7 +28,7 @@ HRESULT CFuryTurret::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(Ready_PartObjects()))
+	if (FAILED(Ready_PartObjects(static_cast<TURRET_DESC*>(pArg))))
 		return E_FAIL;
 
 	return S_OK;
@@ -72,16 +73,17 @@ HRESULT CFuryTurret::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CFuryTurret::Ready_PartObjects()
+HRESULT CFuryTurret::Ready_PartObjects(TURRET_DESC* pDesc)
 {
 	/* 주포을 추가한다. */
-	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.pParentWorldMatrix = &m_CombinedWorldMatrix;
-	Desc.fRotationPerSec = 1.f;
-	Desc.iID = m_iID;
+	CGun::GUN_DESC GunDesc{};
+	GunDesc.vBaseColor = pDesc->vGunColor;
+	GunDesc.pParentWorldMatrix = &m_CombinedWorldMatrix;
+	GunDesc.fRotationPerSec = 1.f;
+	GunDesc.iID = m_iID;
+	lstrcpy(GunDesc.szName, TEXT("FuryGun"));
 
-	lstrcpy(Desc.szName, TEXT("FuryGun"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryGun"), TEXT("Part_Gun"), &Desc)))
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryGun"), TEXT("Part_Gun"), &GunDesc)))
 		return E_FAIL;
 
 	return S_OK;

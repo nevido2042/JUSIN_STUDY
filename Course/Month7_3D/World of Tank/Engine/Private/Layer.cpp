@@ -26,6 +26,18 @@ CGameObject* CLayer::Get_GameObject(_uint iIndex)
 	return (*iter);
 }
 
+CGameObject* CLayer::Find_GameObject_By_Name(const _wstring& strName)
+{
+	for (auto& pGameObject : m_GameObjects)
+	{
+		if (pGameObject && strName == pGameObject->GetName()) // 문자열 비교
+		{
+			return pGameObject;
+		}
+	}
+	return nullptr; // 못 찾으면 nullptr 반환
+}
+
 HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
 	if (nullptr == pGameObject)

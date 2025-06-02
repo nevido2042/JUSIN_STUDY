@@ -44,6 +44,8 @@ public:
 	_int			Get_ID() const { return m_iID; }
 	void			Set_ID(_int iID) { m_iID = iID; }
 
+	const _tchar*	GetName() const { return m_szName; }
+
 	class CTransform* const Get_Transform() { return m_pTransformCom; }
 
 public:

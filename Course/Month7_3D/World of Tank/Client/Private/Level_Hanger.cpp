@@ -8,6 +8,7 @@
 #include "GameManager.h"
 #include "LandObject.h"
 #include "Button_Color.h"
+#include "Button_Part.h"
 
 CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -67,6 +68,9 @@ HRESULT CLevel_Hanger::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Button_Colors(TEXT("Layer_Button_Customize"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_Parts(TEXT("Layer_Button_Customize"))))
 		return E_FAIL;
 #pragma endregion
 
@@ -265,15 +269,102 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Colors(const _wstring strLayerTag)
 
 	ButtonColorDesc.fSizeX = 102.f * UI_RATIO;
 	ButtonColorDesc.fSizeY = 102.f * UI_RATIO;
-	ButtonColorDesc.fX = g_iWinSizeX * 0.5f;
 	ButtonColorDesc.fY = g_iWinSizeY * 0.8f;
 	ButtonColorDesc.bActive = false;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.5f;
+	ButtonColorDesc.vBaseColor = _float4(2.f, 2.f, 1.f, 1.f);
 	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Yellow");
-	ButtonColorDesc.vBaseColor = _float4(3.f, 3.f, 0.f, 1.f);
-
-
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.45f;
+	ButtonColorDesc.vBaseColor = _float4(2.f, 2.f, 2.f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_White");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.40f;
+	ButtonColorDesc.vBaseColor = _float4(0.2f, 0.2f, 0.2f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Black");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.35f;
+	ButtonColorDesc.vBaseColor = _float4(1.f, 1.f, 2.f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Blue");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.30f;
+	ButtonColorDesc.vBaseColor = _float4(2.f, 1.f, 1.f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Red");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.25f;
+	ButtonColorDesc.vBaseColor = _float4(2.f, 1.3f, 1.3f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Pink");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.20f;
+	ButtonColorDesc.vBaseColor = _float4(1.09f, 0.90f, 0.73f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Brown");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	ButtonColorDesc.fX = g_iWinSizeX * 0.15f;
+	ButtonColorDesc.vBaseColor = _float4(0.42f, 1.09f, 0.65f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Green");
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Parts(const _wstring strLayerTag)
+{
+	CButton_Part::BUTTON_PART_DESC				ButtonPartDesc{};
+
+	ButtonPartDesc.fSizeX = 59.f * 2.f * UI_RATIO;
+	ButtonPartDesc.fSizeY = 20.f * 2.f * UI_RATIO;
+	ButtonPartDesc.fX = g_iWinSizeX * 0.05f;
+	ButtonPartDesc.bActive = false;
+
+	ButtonPartDesc.fY = g_iWinSizeY * 0.8f;
+	ButtonPartDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Part_Body");
+	ButtonPartDesc.ePartRepaint = PART_REPAINT::BODY;
+	lstrcpy(ButtonPartDesc.szName, TEXT("PART_REPAINT_BODY"));
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))
+		return E_FAIL;
+
+	ButtonPartDesc.fY = g_iWinSizeY * 0.75f;
+	ButtonPartDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Part_Turret");
+	ButtonPartDesc.ePartRepaint = PART_REPAINT::TURRET;
+	lstrcpy(ButtonPartDesc.szName, TEXT("PART_REPAINT_TURRET"));
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))
+		return E_FAIL;
+
+	ButtonPartDesc.fY = g_iWinSizeY * 0.85f;
+	ButtonPartDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Part_Gun");
+	ButtonPartDesc.ePartRepaint = PART_REPAINT::GUN;
+	lstrcpy(ButtonPartDesc.szName, TEXT("PART_REPAINT_GUN"));
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -335,6 +426,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
 	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
+	Desc.bActive = false;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))

@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Render();
 
 	HRESULT Ready_Components();
-	HRESULT Ready_PartObjects();
+	HRESULT Ready_PartObjects(TURRET_DESC* pDesc);
 
 public:
 	static CFuryTurret* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

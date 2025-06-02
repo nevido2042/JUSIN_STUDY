@@ -19,6 +19,9 @@ HRESULT CTurret::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	TURRET_DESC* pDesc = static_cast<TURRET_DESC*>(pArg);
+	m_vBaseColor = pDesc->vBaseColor;
+
 	return S_OK;
 }
 
@@ -191,6 +194,9 @@ HRESULT CTurret::Bind_ShaderResources()
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &m_vBaseColor, sizeof(_float4))))
 		return E_FAIL;
 
 	//격납고 레벨이라면 실시간으로 게임매니저에서, 색깔을 가져와서 바인딩한다.

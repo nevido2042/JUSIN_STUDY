@@ -6,6 +6,7 @@
 #include "Camera_FPS.h"
 #include "SoundController.h"
 #include "Tank.h"
+#include "Layer.h"
 
 CGameManager::CGameManager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -175,6 +176,31 @@ HRESULT CGameManager::PlaySound_Button()
 	m_pSoundCom_GUI->Play("gui_25");
 
 	return S_OK;
+}
+
+void CGameManager::Set_PartRepaint(const PART_REPAINT& ePartRepaint)
+{
+	//해당 버튼을 활성화한다. 나머지는 다 끄고
+	m_ePartRepaint = ePartRepaint;
+
+#pragma message ("파인드 게임오브젝트 바이 네임 이거 다시 잘 만들어보자.")
+	/*CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Button_Customize"));
+	if (pLayer == nullptr)
+	{
+		return;
+	}
+
+	switch (m_ePartRepaint)
+	{
+	case PART_REPAINT::BODY:
+		pLayer->Find_GameObject_By_Name(TEXT("PART_REPAINT_BODY"))->Set_Active(true);
+		break;
+	case PART_REPAINT::TURRET:
+		break;
+	case PART_REPAINT::GUN:
+		break;
+	}*/
+
 }
 
 HRESULT CGameManager::Ready_Components()

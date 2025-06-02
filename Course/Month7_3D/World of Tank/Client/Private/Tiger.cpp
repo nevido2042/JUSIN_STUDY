@@ -34,7 +34,7 @@ HRESULT CTiger::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_PartObjects()))
+	if (FAILED(Ready_PartObjects(static_cast<TANK_DESC*>(pArg))))
 		return E_FAIL;
 
 	return S_OK;
@@ -92,17 +92,24 @@ HRESULT CTiger::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CTiger::Ready_PartObjects()
+HRESULT CTiger::Ready_PartObjects(TANK_DESC* pDesc)
 {
 	/* 포탑을 추가한다. */
+	CTurret::TURRET_DESC TurretDesc{};
+	TurretDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	TurretDesc.fRotationPerSec = 1.f;
+	TurretDesc.iID = m_iID;
+	lstrcpy(TurretDesc.szName, TEXT("Turret"));
+	TurretDesc.vBaseColor = pDesc->vTurretColor;
+	TurretDesc.vGunColor = pDesc->vGunColor;
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTurret"), TEXT("Part_Turret"), &TurretDesc)))
+		return E_FAIL;
+
 	CGameObject::GAMEOBJECT_DESC Desc{};
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	Desc.fRotationPerSec = 1.f;
 	Desc.iID = m_iID;
-
-	lstrcpy(Desc.szName, TEXT("Turret"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTurret"), TEXT("Part_Turret"), &Desc)))
-		return E_FAIL;
 
 	/* 엔진을 추가한다. */
 	lstrcpy(Desc.szName, TEXT("Engine"));
