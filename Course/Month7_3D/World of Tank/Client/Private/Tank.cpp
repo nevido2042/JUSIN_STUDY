@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "Engine.h"
 #include "DamageBar.h"
+#include "GameManager.h"
 
 #pragma region UI
 #include "Icon_Engine.h"
@@ -23,13 +24,15 @@ CTank::CTank(const CTank& Prototype)
 
 HRESULT CTank::Initialize(void* pArg)
 {
-	LANDOBJECT_DESC* pDesc = static_cast<LANDOBJECT_DESC*>(pArg);
+	TANK_DESC* pDesc = static_cast<TANK_DESC*>(pArg);
 	//(*pDesc).fRotationPerSec = 0.1f;
 	//(*pDesc).fSpeedPerSec = 0.5f;
 	(*pDesc).iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	(*pDesc).strLayerTag = TEXT("Layer_Terrain");
 	(*pDesc).strComponentTag = TEXT("Com_VIBuffer");
 	(*pDesc).iIndex = 0;
+
+	m_vBodyColor = pDesc->vBodyColor;
 
 	m_iID = pDesc->iID;
 
@@ -49,6 +52,9 @@ void CTank::Priority_Update(_float fTimeDelta)
 		if (pCountdownTimer->Get_isActive())
 			return;
 	}
+
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
+		return;
 	
 	Input();
 	CGameObject::Priority_Update(fTimeDelta);
@@ -377,6 +383,18 @@ HRESULT CTank::Bind_ShaderResources()
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &m_vBodyColor, sizeof(_float4))))
+		return E_FAIL;
+
+	//격납고 레벨이라면 실시간으로 게임매니저에서, 색깔을 가져와서 바인딩한다.
+	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
+	{
+		CGameManager* pGameManager = GET_GAMEMANAGER;
+
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &pGameManager->Get_BodyColor(), sizeof(_float4))))
+			return E_FAIL;
+	}
 
 	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_Light(0);
 

@@ -520,6 +520,9 @@ HRESULT CServer::Define_Packets()
             CSession* pSession = Find_Session(Desc.iID);
             pSession->Get_SessionInfo().isJoinMatch = true;
             pSession->Get_SessionInfo().eTank = Desc.eTank;
+			pSession->Get_SessionInfo().vBodyColor = Desc.vBodyColor;
+			pSession->Get_SessionInfo().vTurretColor = Desc.vTurretColor;
+			pSession->Get_SessionInfo().vGunColor = Desc.vGunColor;
 
             cout << "ID: " << Desc.iID << " TankType: " << ENUM_CLASS(pSession->Get_SessionInfo().eTank) << endl;
 
@@ -595,6 +598,9 @@ HRESULT CServer::Define_Packets()
                 Other_Desc.iID = pOther->Get_SessionInfo().iID;
                 Other_Desc.vPos = pOther->Get_SessionInfo().vPosition;
                 Other_Desc.eTank = pOther->Get_SessionInfo().eTank;
+				Other_Desc.vBodyColor = pOther->Get_SessionInfo().vBodyColor;
+				Other_Desc.vTurretColor = pOther->Get_SessionInfo().vTurretColor;
+				Other_Desc.vGunColor = pOther->Get_SessionInfo().vGunColor;
 
                 cout << "Send_Packet_Unicast(SC_CREATE_OTHER_CHARACTER)" << endl;
                 cout << "ID: " << Other_Desc.iID << endl;

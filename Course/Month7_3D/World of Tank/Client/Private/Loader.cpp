@@ -25,7 +25,9 @@
 #include "TigerTrackRight.h"
 #include "TigerTrackLeft.h"
 #include "TigerGun.h"
+#include "TigerGunSkin.h"
 #include "TigerTurret.h"
+#include "TigerTurretSkin.h"
 #include "FuryGun.h"
 #include "FuryTrackRight.h"
 #include "FuryTrackLeft.h"
@@ -62,6 +64,10 @@
 #include "Button_Tiger.h"
 #include "Button_Start.h"
 #include "Button_Practice.h"
+#include "Button_Customize.h"
+#include "Button_Exit_Customize.h"
+#include "Button_Color.h"
+#include "Background_UI.h"
 #pragma endregion
 
 #pragma region MAPTOOL
@@ -304,11 +310,25 @@ HRESULT CLoader::Loading_For_Static()
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I_Gun.bin", PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_TigerGunSkin */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_TigerGunSkin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I_Skin_Gun.bin", PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_TigerTurret */
 	PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_TigerTurret"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I_Turret.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_TigerTurretSkin */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_TigerTurretSkin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Tank/German/G04_PzVI_Tiger_I/Tiger I_Skin_Turret.bin", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_TigerBody */
@@ -539,9 +559,19 @@ HRESULT CLoader::Loading_For_Static()
 		CTigerTurret::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_TigerTurretSkin */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTurretSkin"),
+		CTigerTurretSkin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_TigerGun */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerGun"),
 		CTigerGun::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_TigerGunSkin */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerGunSkin"),
+		CTigerGunSkin::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 
@@ -630,6 +660,16 @@ HRESULT CLoader::Loading_For_Logo()
 HRESULT CLoader::Loading_For_Hanger()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Texture_CustomColor_Yellow*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Yellow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_04.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Background_UI*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Background_UI"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/cm_sub_item_bg.dds"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Button_Fury*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Button_Fury"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Tanks/a104_m4a3e8a.dds"), 1))))
@@ -647,6 +687,26 @@ HRESULT CLoader::Loading_For_Hanger()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_Button_Color */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		CButton_Color::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Background_UI */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Background_UI"),
+		CBackground_UI::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Button_Exit_Customize */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Exit_Customize"),
+		CButton_Exit_Customize::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Button_Customize */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Customize"),
+		CButton_Customize::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Button_Practice */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Practice"),

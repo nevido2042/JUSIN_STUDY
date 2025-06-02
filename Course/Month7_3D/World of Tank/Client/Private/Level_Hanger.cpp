@@ -6,6 +6,8 @@
 #include "Camera_Free.h"
 #include "UIObject.h"
 #include "GameManager.h"
+#include "LandObject.h"
+#include "Button_Color.h"
 
 CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -38,19 +40,43 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button_Start"))))
+	if (FAILED(Ready_Layer_Background_UI(TEXT("Layer_Background_UI"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Button_Practice(TEXT("Layer_Button_Practice"))))
+#pragma region 기본 버튼
+	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Button_Fury(TEXT("Layer_Button_Fury"))))
+	if (FAILED(Ready_Layer_Button_Practice(TEXT("Layer_Button"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_Customize(TEXT("Layer_Button"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_Fury(TEXT("Layer_Button"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_Tiger(TEXT("Layer_Button"))))
+		return E_FAIL;
+#pragma endregion
+
+
+
+#pragma region 커스터마이징용 버튼
+	if (FAILED(Ready_Layer_Button_Exit_Customize(TEXT("Layer_Button_Customize"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_Colors(TEXT("Layer_Button_Customize"))))
+		return E_FAIL;
+#pragma endregion
+
+
+
+
+
+
 
 	if (FAILED(Ready_Layer_Fury_Hanger(TEXT("Layer_Fury_Hanger"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Button_Tiger(TEXT("Layer_Button_Tiger"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Tiger_Hanger(TEXT("Layer_Tiger_Hanger"))))
@@ -147,6 +173,23 @@ HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Hanger::Ready_Layer_Background_UI(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = static_cast<_float>(g_iWinSizeX);
+	UIObject_Desc.fSizeY = 150.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Background_UI"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
@@ -181,6 +224,61 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Practice(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Hanger::Ready_Layer_Button_Customize(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.7f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Customize"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Exit_Customize(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.3f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
+	UIObject_Desc.bActive = false;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Exit_Customize"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Colors(const _wstring strLayerTag)
+{
+	CButton_Color::BUTTON_COLOR_DESC				ButtonColorDesc{};
+
+	ButtonColorDesc.fSizeX = 102.f * UI_RATIO;
+	ButtonColorDesc.fSizeY = 102.f * UI_RATIO;
+	ButtonColorDesc.fX = g_iWinSizeX * 0.5f;
+	ButtonColorDesc.fY = g_iWinSizeY * 0.8f;
+	ButtonColorDesc.bActive = false;
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Yellow");
+	ButtonColorDesc.vBaseColor = _float4(3.f, 3.f, 0.f, 1.f);
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Hanger::Ready_Layer_Button_Fury(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
@@ -200,13 +298,13 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Fury(const _wstring strLayerTag)
 
 HRESULT CLevel_Hanger::Ready_Layer_Fury_Hanger(const _wstring strLayerTag)
 {
-	CGameObject::GAMEOBJECT_DESC Desc = {};
+	CLandObject::LANDOBJECT_DESC Desc = {};
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Fury_Hanger"));
 	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Fury_Hanger"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
@@ -232,13 +330,13 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Tiger(const _wstring strLayerTag)
 
 HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
 {
-	CGameObject::GAMEOBJECT_DESC Desc = {};
+	CLandObject::LANDOBJECT_DESC Desc = {};
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
 	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Tiger_Hanger"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 

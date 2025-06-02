@@ -8,10 +8,10 @@
 #include "Camera_FPS.h"
 #include "GameManager.h"
 
-#include "LandObject.h"
 #include "UIObject.h"
 #include "Layer.h"
 #include "Terrain.h"
+#include "Tank.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -241,11 +241,16 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 {
 	TANK eSelectTank = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")))->Get_Select_Tank();
 
-	CLandObject::LANDOBJECT_DESC Desc{};
+	CTank::TANK_DESC Desc{};
 	Desc.vInitPosition = _float3(128.f * 5.f * 0.5f, 0.f, 128.f * 5.f * 0.5f);
 	Desc.fRotationPerSec = 1.f;
 	Desc.fSpeedPerSec = 1.f;
 	Desc.iID = m_pGameInstance->Get_ID();
+
+	CGameManager* pGameManager = GET_GAMEMANAGER;
+	Desc.vBodyColor = pGameManager->Get_BodyColor();
+	Desc.vTurretColor = pGameManager->Get_TurretColor();
+	Desc.vGunColor = pGameManager->Get_GunColor();
 	
 	switch (eSelectTank)
 	{
@@ -270,7 +275,7 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 {
-	CLandObject::LANDOBJECT_DESC Desc{};
+	CTank::TANK_DESC Desc{};
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 

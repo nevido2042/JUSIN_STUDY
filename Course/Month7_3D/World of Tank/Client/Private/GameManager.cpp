@@ -2,10 +2,10 @@
 
 #include "GameInstance.h"
 
-#include "Fury.h"
 #include "Camera_TPS.h"
 #include "Camera_FPS.h"
 #include "SoundController.h"
+#include "Tank.h"
 
 CGameManager::CGameManager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -79,11 +79,15 @@ HRESULT CGameManager::Create_My_Tank(_float3 vPos)
 
 HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3 vPos)
 {
-	CLandObject::LANDOBJECT_DESC Desc{};
+	CTank::TANK_DESC Desc{};
 	Desc.iID = m_pGameInstance->Get_ID();
 	Desc.fRotationPerSec = 1.f;
 	Desc.fSpeedPerSec = 1.f;
 	Desc.vInitPosition = vPos;
+
+	Desc.vBodyColor = m_vBodyColor;
+	Desc.vTurretColor = m_vTurretColor;
+	Desc.vGunColor = m_vGunColor;
 
 	switch (m_eSelectTank)
 	{

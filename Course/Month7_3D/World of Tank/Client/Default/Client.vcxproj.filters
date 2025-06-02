@@ -241,6 +241,27 @@
     <Filter Include="02.GameObjects\06.UIObject\CountdownTimer">
       <UniqueIdentifier>{8b57e999-4c20-4fc8-8470-b52c7bf7f545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Modules\01.Turret\TigerTurretSkin">
+      <UniqueIdentifier>{405c3d92-852e-4574-bb7f-940c3efcbce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Modules\02.Gun\TigerGunSkin">
+      <UniqueIdentifier>{e4e48e01-dd49-41ee-957d-4420460d0035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\00.Button\12.Button_Customize">
+      <UniqueIdentifier>{c98ee023-9ac5-45fa-9893-276b2c61af48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Background_UI">
+      <UniqueIdentifier>{21ee5e6c-33d8-4171-b236-757f96ade946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\00.Button\13.Button_Exit_Customize">
+      <UniqueIdentifier>{8603b1b0-c42f-4d51-b796-3a445c7582cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\00.Button\14.Button_Color">
+      <UniqueIdentifier>{71766179-abf4-4669-9a1a-c92d3163b6fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\00.Button\15.Button_Part">
+      <UniqueIdentifier>{16bcd23f-bc9a-4767-a183-f2becdcb97e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -477,6 +498,27 @@
     <ClInclude Include="..\public\CountdownTimer.h">
       <Filter>02.GameObjects\06.UIObject\CountdownTimer</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TigerTurretSkin.h">
+      <Filter>02.GameObjects\03.Modules\01.Turret\TigerTurretSkin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TigerGunSkin.h">
+      <Filter>02.GameObjects\03.Modules\02.Gun\TigerGunSkin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Customize.h">
+      <Filter>02.GameObjects\06.UIObject\00.Button\12.Button_Customize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Background_UI.h">
+      <Filter>02.GameObjects\06.UIObject\Background_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Exit_Customize.h">
+      <Filter>02.GameObjects\06.UIObject\00.Button\13.Button_Exit_Customize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Color.h">
+      <Filter>02.GameObjects\06.UIObject\00.Button\14.Button_Color</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Button_Part.h">
+      <Filter>02.GameObjects\06.UIObject\00.Button\15.Button_Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -707,6 +749,27 @@
     </ClCompile>
     <ClCompile Include="..\private\CountdownTimer.cpp">
       <Filter>02.GameObjects\06.UIObject\CountdownTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TigerTurretSkin.cpp">
+      <Filter>02.GameObjects\03.Modules\01.Turret\TigerTurretSkin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TigerGunSkin.cpp">
+      <Filter>02.GameObjects\03.Modules\02.Gun\TigerGunSkin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Customize.cpp">
+      <Filter>02.GameObjects\06.UIObject\00.Button\12.Button_Customize</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Background_UI.cpp">
+      <Filter>02.GameObjects\06.UIObject\Background_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Exit_Customize.cpp">
+      <Filter>02.GameObjects\06.UIObject\00.Button\13.Button_Exit_Customize</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Color.cpp">
+      <Filter>02.GameObjects\06.UIObject\00.Button\14.Button_Color</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button_Part.cpp">
+      <Filter>02.GameObjects\06.UIObject\00.Button\15.Button_Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

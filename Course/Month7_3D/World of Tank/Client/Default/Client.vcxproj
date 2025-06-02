@@ -164,9 +164,14 @@
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\BackGround_Loading.h" />
+    <ClInclude Include="..\public\Background_UI.h" />
     <ClInclude Include="..\public\BurntTree.h" />
+    <ClInclude Include="..\public\Button_Color.h" />
+    <ClInclude Include="..\public\Button_Customize.h" />
+    <ClInclude Include="..\public\Button_Exit_Customize.h" />
     <ClInclude Include="..\public\Button_Fury.h" />
     <ClInclude Include="..\public\Button_Login.h" />
+    <ClInclude Include="..\public\Button_Part.h" />
     <ClInclude Include="..\public\Button_Practice.h" />
     <ClInclude Include="..\public\Button_Start.h" />
     <ClInclude Include="..\public\Button_Tiger.h" />
@@ -203,9 +208,11 @@
     <ClInclude Include="..\public\Tank.h" />
     <ClInclude Include="..\public\Tiger.h" />
     <ClInclude Include="..\public\TigerGun.h" />
+    <ClInclude Include="..\public\TigerGunSkin.h" />
     <ClInclude Include="..\public\TigerTrackLeft.h" />
     <ClInclude Include="..\public\TigerTrackRight.h" />
     <ClInclude Include="..\public\TigerTurret.h" />
+    <ClInclude Include="..\public\TigerTurretSkin.h" />
     <ClInclude Include="..\public\Tiger_Hanger.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\public\Tool_Engine_Sound.h" />
@@ -244,9 +251,14 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
+    <ClCompile Include="..\private\Background_UI.cpp" />
     <ClCompile Include="..\private\BurntTree.cpp" />
+    <ClCompile Include="..\private\Button_Color.cpp" />
+    <ClCompile Include="..\private\Button_Customize.cpp" />
+    <ClCompile Include="..\private\Button_Exit_Customize.cpp" />
     <ClCompile Include="..\private\Button_Fury.cpp" />
     <ClCompile Include="..\private\Button_Login.cpp" />
+    <ClCompile Include="..\private\Button_Part.cpp" />
     <ClCompile Include="..\private\Button_Practice.cpp" />
     <ClCompile Include="..\private\Button_Start.cpp" />
     <ClCompile Include="..\private\Button_Tiger.cpp" />
@@ -281,9 +293,11 @@
     <ClCompile Include="..\private\Tank.cpp" />
     <ClCompile Include="..\private\Tiger.cpp" />
     <ClCompile Include="..\private\TigerGun.cpp" />
+    <ClCompile Include="..\private\TigerGunSkin.cpp" />
     <ClCompile Include="..\private\TigerTrackLeft.cpp" />
     <ClCompile Include="..\private\TigerTrackRight.cpp" />
     <ClCompile Include="..\private\TigerTurret.cpp" />
+    <ClCompile Include="..\private\TigerTurretSkin.cpp" />
     <ClCompile Include="..\private\Tiger_Hanger.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />

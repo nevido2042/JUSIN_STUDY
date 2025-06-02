@@ -13,6 +13,14 @@ NS_BEGIN(Client)
 
 class CTank abstract : public CLandObject
 {
+public:
+	typedef struct tagTankDesc : public LANDOBJECT_DESC
+	{
+		_float4 vBodyColor =	{ 1.f, 1.f, 1.f, 1.f };
+		_float4 vTurretColor =	{ 1.f, 1.f, 1.f, 1.f };
+		_float4 vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
+	} TANK_DESC;
+
 protected:
 	CTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTank(const CTank& Prototype);
@@ -41,6 +49,9 @@ private:
 
 private:
 	void ApplyRecoil(_float fTimeDelta);
+
+private:
+	_float4 m_vBodyColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
 	const	_float m_fMaxHP = { 100.f };

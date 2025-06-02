@@ -199,11 +199,15 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Packet_Desc), sizeof(CREATE_OTHER_TANK_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			CLandObject::LANDOBJECT_DESC Desc = {};
+			CTank::TANK_DESC Desc = {};
 			Desc.fRotationPerSec = 1.f;
 			Desc.fSpeedPerSec = 1.f;
 			Desc.iID = Packet_Desc.iID;
 			Desc.vInitPosition = Packet_Desc.vPos;
+
+			Desc.vBodyColor = Packet_Desc.vBodyColor;
+			Desc.vTurretColor = Packet_Desc.vTurretColor;
+			Desc.vGunColor = Packet_Desc.vGunColor;
 
 			cout << "SC_CREATE_OTHER_CHARACTER" << endl;
 			cout << "ID: " << Packet_Desc.iID << endl;

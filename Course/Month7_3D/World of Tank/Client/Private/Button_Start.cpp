@@ -59,6 +59,11 @@ void CButton_Start::Update(_float fTimeDelta)
 		JOIN_MATCH_DESC Desc{};
 		Desc.eTank = pGameManager->Get_Select_Tank();
 		Desc.iID = m_pGameInstance->Get_ID();
+
+		Desc.vBodyColor = pGameManager->Get_BodyColor();
+		Desc.vTurretColor = pGameManager->Get_TurretColor();
+		Desc.vGunColor = pGameManager->Get_GunColor();
+
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), &Desc);
 
 		//현재 레벨아 레벨 체인지 될거야~

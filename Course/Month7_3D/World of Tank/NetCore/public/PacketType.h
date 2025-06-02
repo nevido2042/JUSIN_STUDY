@@ -90,11 +90,17 @@ typedef struct tagPostion_Desc : PACKET_DESC
 typedef struct tagJoinMatch_Desc : PACKET_DESC
 {
     TANK eTank{ TANK::END };
+    _float4 vBodyColor      { 1.f, 1.f, 1.f, 1.f };
+    _float4 vTurretColor    { 1.f, 1.f, 1.f, 1.f };
+    _float4 vGunColor       { 1.f, 1.f, 1.f, 1.f };
 }JOIN_MATCH_DESC;
 
 typedef struct tagCreateOtherTank_Desc : POSITION_DESC
 {
     TANK eTank{ TANK::END };
+    _float4 vBodyColor      { 1.f, 1.f, 1.f, 1.f };
+    _float4 vTurretColor    { 1.f, 1.f, 1.f, 1.f };
+    _float4 vGunColor       { 1.f, 1.f, 1.f, 1.f };
 }CREATE_OTHER_TANK_DESC;
 
 typedef struct tagMatrix_Desc : PACKET_DESC
