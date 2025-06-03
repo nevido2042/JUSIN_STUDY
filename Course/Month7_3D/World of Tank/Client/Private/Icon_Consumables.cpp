@@ -51,7 +51,7 @@ void CIcon_Consumables::Update(_float fTimeDelta)
 		m_CanUseTime = chrono::steady_clock::now() + chrono::seconds(5);
 
 		//해당 아이템 효과 발동
-		static_cast<CTank*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank")))->Repair_All();
+		//static_cast<CTank*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank")))->Repair_All();
 		//m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
 
 	}
