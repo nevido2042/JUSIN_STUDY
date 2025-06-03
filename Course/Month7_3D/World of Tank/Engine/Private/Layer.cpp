@@ -5,6 +5,7 @@ CLayer::CLayer()
 {
 }
 
+
 CComponent* CLayer::Get_Component(const _wstring& strComponentTag, _uint iIndex)
 {
 	auto	iter = m_GameObjects.begin();

@@ -41,28 +41,43 @@ HRESULT CTank::Initialize(void* pArg)
 
 	m_pSoundCom->SetVolume(0.1f);
 
+	m_ModulesState.assign(ENUM_CLASS(MODULE::END), MODULE_STATE::FUNCTIONAL);
+
 	return S_OK;
 }
 
 void CTank::Priority_Update(_float fTimeDelta)
 {
-	CGameObject* pCountdownTimer = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountdownTimer"));
-	if (pCountdownTimer)
-	{
-		if (pCountdownTimer->Get_isActive())
-			return;
-	}
-
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return;
 	
-	Input();
-	CGameObject::Priority_Update(fTimeDelta);
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CGameObject* pCountdownTimer = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountdownTimer"));
+		if (pCountdownTimer)
+		{
+			if (pCountdownTimer->Get_isActive())
+				return;
+		}
 
+		if (!m_bIsBattleStartVoice)
+		{
+			m_bIsBattleStartVoice = true;
+			m_pSoundCom->Play("start_battle_2");
+		}
+
+		Input();
+	}
+
+	CGameObject::Priority_Update(fTimeDelta);
 }
 
 void CTank::Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		Check_Modules();
+	}
 
 	Move(fTimeDelta);
 
@@ -72,20 +87,7 @@ void CTank::Update(_float fTimeDelta)
 #pragma message ("FPS 카메라 반동 주는 것이 방향에 따라 달라진다 해결 못함(원본 겜도 못해서 안넣은거일거야)")
 	ApplyRecoil(fTimeDelta);
 
-	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
-	{
-		m_fTimeAcc += fTimeDelta;
-		if (m_fTimeAcc > m_fSyncInterval)
-		{
-			m_fTimeAcc = 0.f;
-
-			MATRIX_DESC Desc{};
-			Desc.iID = m_pGameInstance->Get_ID();
-			XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
-
-			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), &Desc);
-		}
-	}
+	SendMatrixSync(fTimeDelta);
 
 	CGameObject::Update(fTimeDelta);
 }
@@ -149,33 +151,46 @@ HRESULT CTank::Render()
 	return S_OK;
 }
 
-void CTank::Input()
+void CTank::Check_Modules()
 {
-	if (GetForegroundWindow() != g_hWnd)
-		return;
-
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE) && m_pGameInstance->Get_ID() != m_iID)
-		return;
-
-	if (!m_bIsBattleStartVoice)
+	for (_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
 	{
-		m_bIsBattleStartVoice = true;
-		m_pSoundCom->Play("start_battle_2");
+		if (nullptr == m_Modules[i])
+			return;
+
+		if (m_Modules[i]->Get_ModuleState() != m_ModulesState[i])
+		{
+			//모듈의 상태가 변경됨!
+			m_ModulesState[i] = m_Modules[i]->Get_ModuleState();
+			//모듈 상태에 따른 보이스 재생, ui 변경
+			
+			switch (i)
+			{
+			case ENUM_CLASS(MODULE::ENGINE):
+				Set_State_Engine(m_ModulesState[i]);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
+}
+
+void CTank::Input()
+{
 	if (m_pGameInstance->Key_Down(DIK_F5))
 		Destroyed();
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
-		Set_State_Engine(MODULE_STATE::FUNCTIONAL);
+		m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
 
-	if (m_pGameInstance->Key_Down(DIK_F2))
-	{
-		Set_State_Engine(MODULE_STATE::DAMAGED);
-	}
+	//if (m_pGameInstance->Key_Down(DIK_F2))
+	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::DAMAGED);
 
-	if (m_pGameInstance->Key_Down(DIK_F3))
-		Set_State_Engine(MODULE_STATE::DESTROYED);
+	//if (m_pGameInstance->Key_Down(DIK_F3))
+	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::DESTROYED);
+
 
 	if (m_pGameInstance->Key_Down(DIK_F4))
 		Take_Damage(5.f);
@@ -307,7 +322,6 @@ HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 		return E_FAIL;
 	pIcon->Set_ModuleState(eState);
 
-
 	switch (eState)
 	{
 	case Client::MODULE_STATE::FUNCTIONAL:
@@ -324,7 +338,6 @@ HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 	default:
 		break;
 	}
-
 
 	return S_OK;
 }
@@ -369,6 +382,24 @@ void CTank::ApplyRecoil(_float fTimeDelta)
 	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
 	m_pTransformCom->Set_State(STATE::UP, vUp);
 	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+}
+
+void CTank::SendMatrixSync(_float fTimeDelta)
+{
+	if (m_pGameInstance->Get_ID() == m_iID && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
+	{
+		m_fTimeAcc += fTimeDelta;
+		if (m_fTimeAcc > m_fSyncInterval)
+		{
+			m_fTimeAcc = 0.f;
+
+			MATRIX_DESC Desc{};
+			Desc.iID = m_pGameInstance->Get_ID();
+			XMStoreFloat4x4(&Desc.Matrix, m_pTransformCom->Get_WorldMatrix());
+
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MATRIX_BODY), &Desc);
+		}
+	}
 }
 
 
@@ -416,5 +447,8 @@ void CTank::Free()
 {
 	__super::Free();
 
+	for (CModule* pModule : m_Modules)
+		Safe_Release(pModule);
+	m_Modules.clear();
 }
 

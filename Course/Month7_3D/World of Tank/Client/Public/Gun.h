@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Module.h"
 #include "Client_Defines.h"
 
 NS_BEGIN(Engine)
@@ -10,7 +10,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CGun abstract : public CGameObject
+class CGun abstract : public CModule
 {
 public:
 	typedef struct tagGunDesc : public GAMEOBJECT_DESC

@@ -5,12 +5,12 @@
 #include "GameManager.h"
 
 CTurret::CTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice, pContext)
+	:CModule(pDevice, pContext)
 {
 }
 
 CTurret::CTurret(const CTurret& Prototype)
-	:CGameObject(Prototype)
+	:CModule(Prototype)
 {
 }
 

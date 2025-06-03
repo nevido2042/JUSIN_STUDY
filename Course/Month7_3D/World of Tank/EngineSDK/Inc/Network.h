@@ -51,7 +51,7 @@ private:
 	_bool	Try_Connect();
 
 public:
-	void	Set_ID(_uint iID) { m_iMyID = iID; }
+	void	Set_ID(_int iID) { m_iMyID = iID; }
 	_uint	Get_ID() { return m_iMyID; }
 	HRESULT	Clear_Packet();
 	HRESULT	Input_Data(_byte* pByte, _int iSize);
@@ -65,8 +65,7 @@ private:
 	SOCKET				m_hSocket{};
 	fd_set				m_ReadSet{};
 
-	//"최대 세션 갯수 = 서버 = 아이디 부여 안받음"
-	_uint				m_iMyID{ SESSION_MAX };
+	_int				m_iMyID{ -1 };
 
 	CRingBuffer			m_sendQ;
 	CRingBuffer			m_recvQ;

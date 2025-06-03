@@ -8,10 +8,10 @@
 #include "Camera_FPS.h"
 #include "GameManager.h"
 
-#include "UIObject.h"
 #include "Layer.h"
 #include "Terrain.h"
 #include "Tank.h"
+#include "Icon_Consumables.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -62,9 +62,6 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DamagePanel(TEXT("Layer_DamagePanel"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
 		return E_FAIL;
 
@@ -76,6 +73,14 @@ HRESULT CLevel_Practice::Initialize()
 
 	if (FAILED(Ready_Layer_DirectionBody(TEXT("Layer_DirectionBody"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Icon_Consumables(TEXT("Layer_Icon_Consumables"))))
+		return E_FAIL;
+
+	
 
 
 
@@ -278,6 +283,7 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 	CTank::TANK_DESC Desc{};
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
+	Desc.iID = -100;
 
 	Desc.vInitPosition = _float3(150.f, 87.f, 200.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
@@ -426,6 +432,39 @@ HRESULT CLevel_Practice::Ready_Layer_DirectionBody(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Icon_Consumables(const _wstring strLayerTag)
+{
+	CIcon_Consumables::ICON_CONSUMABLES_DESC				Desc{};
+
+	Desc.fSizeX = 48.0f * UI_RATIO;
+	Desc.fSizeY = 48.0f * UI_RATIO;
+	Desc.fY = g_iWinSizeY * 0.95f;
+	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_HandExtinguishers");
+	Desc.fX = g_iWinSizeX * 0.45f;
+	Desc.iKeyNumber = 4;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallRepairkit");
+	Desc.fX = g_iWinSizeX * 0.5f;
+	Desc.iKeyNumber = 5;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallMedkit");
+	Desc.fX = g_iWinSizeX * 0.55f;
+	Desc.iKeyNumber = 6;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

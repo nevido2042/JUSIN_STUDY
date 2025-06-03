@@ -253,7 +253,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Exit_Customize(const _wstring strLayer
 	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.3f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
-	UIObject_Desc.bActive = false;
+	UIObject_Desc.bVisible = false;
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Exit_Customize"),
@@ -270,7 +270,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Colors(const _wstring strLayerTag)
 	ButtonColorDesc.fSizeX = 102.f * UI_RATIO;
 	ButtonColorDesc.fSizeY = 102.f * UI_RATIO;
 	ButtonColorDesc.fY = g_iWinSizeY * 0.8f;
-	ButtonColorDesc.bActive = false;
+	ButtonColorDesc.bVisible = false;
 
 	ButtonColorDesc.fX = g_iWinSizeX * 0.5f;
 	ButtonColorDesc.vBaseColor = _float4(2.f, 2.f, 1.f, 1.f);
@@ -308,8 +308,8 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Colors(const _wstring strLayerTag)
 		return E_FAIL;
 
 	ButtonColorDesc.fX = g_iWinSizeX * 0.25f;
-	ButtonColorDesc.vBaseColor = _float4(2.f, 1.3f, 1.3f, 1.f);
-	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Pink");
+	ButtonColorDesc.vBaseColor = _float4(0.42f, 1.09f, 0.65f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Green");
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
 		return E_FAIL;
@@ -322,8 +322,8 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Colors(const _wstring strLayerTag)
 		return E_FAIL;
 
 	ButtonColorDesc.fX = g_iWinSizeX * 0.15f;
-	ButtonColorDesc.vBaseColor = _float4(0.42f, 1.09f, 0.65f, 1.f);
-	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Green");
+	ButtonColorDesc.vBaseColor = _float4(1.f, 1.f, 1.f, 1.f);
+	ButtonColorDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Default");
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonColorDesc)))
 		return E_FAIL;
@@ -338,12 +338,12 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Parts(const _wstring strLayerTag)
 	ButtonPartDesc.fSizeX = 59.f * 2.f * UI_RATIO;
 	ButtonPartDesc.fSizeY = 20.f * 2.f * UI_RATIO;
 	ButtonPartDesc.fX = g_iWinSizeX * 0.05f;
-	ButtonPartDesc.bActive = false;
+	ButtonPartDesc.bVisible = false;
 
 	ButtonPartDesc.fY = g_iWinSizeY * 0.8f;
 	ButtonPartDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Part_Body");
 	ButtonPartDesc.ePartRepaint = PART_REPAINT::BODY;
-	lstrcpy(ButtonPartDesc.szName, TEXT("PART_REPAINT_BODY"));
+	lstrcpy(ButtonPartDesc.szName, TEXT("Button_Repaint_Body"));
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))
@@ -352,7 +352,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Parts(const _wstring strLayerTag)
 	ButtonPartDesc.fY = g_iWinSizeY * 0.75f;
 	ButtonPartDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Part_Turret");
 	ButtonPartDesc.ePartRepaint = PART_REPAINT::TURRET;
-	lstrcpy(ButtonPartDesc.szName, TEXT("PART_REPAINT_TURRET"));
+	lstrcpy(ButtonPartDesc.szName, TEXT("Button_Repaint_Turret"));
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))
@@ -361,7 +361,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Parts(const _wstring strLayerTag)
 	ButtonPartDesc.fY = g_iWinSizeY * 0.85f;
 	ButtonPartDesc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Part_Gun");
 	ButtonPartDesc.ePartRepaint = PART_REPAINT::GUN;
-	lstrcpy(ButtonPartDesc.szName, TEXT("PART_REPAINT_GUN"));
+	lstrcpy(ButtonPartDesc.szName, TEXT("Button_Repaint_Gun"));
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))

@@ -33,6 +33,12 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Disable_Highlight()	{ m_vBaseColor =	{ 0.3f, 0.3f, 0.3f, 1.f }; }
+	void Enable_Highlight()		{ m_vBaseColor =	{ 1.f, 1.f, 1.f, 1.f }; }
+private:
+	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
+
 private:
 	wstring			m_strTextureName = {};
 	PART_REPAINT	m_ePartRepaint = {};

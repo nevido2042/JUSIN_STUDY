@@ -7,6 +7,8 @@ float g_fAlpha = 0.3f;
 
 float g_fFill = 1.f;
 
+float4 g_vBaseColor = float4(1.f, 1.f, 1.f, 1.f);
+
 /* 정점의 기초적인 변환 (월드변환, 뷰, 투영변환) */ 
 /* 정점의 구성 정보를 변형할 수 있다. */ 
 
@@ -64,6 +66,18 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out;
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    
+    if (Out.vColor.a < g_fAlpha)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_BASECOLOR(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = g_vBaseColor * g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
     if (Out.vColor.a < g_fAlpha)
         discard;
@@ -130,6 +144,16 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
+    }
+    //3
+    pass BaseColor
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_BASECOLOR();
     }
 
 

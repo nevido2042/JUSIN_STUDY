@@ -7,6 +7,7 @@
 #include "SoundController.h"
 #include "Tank.h"
 #include "Layer.h"
+#include "Button_Part.h"
 
 CGameManager::CGameManager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -39,6 +40,7 @@ HRESULT CGameManager::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pSoundCom_GUI->SetVolume(0.5f);
 
 	return S_OK;
 }
@@ -183,8 +185,8 @@ void CGameManager::Set_PartRepaint(const PART_REPAINT& ePartRepaint)
 	//해당 버튼을 활성화한다. 나머지는 다 끄고
 	m_ePartRepaint = ePartRepaint;
 
-#pragma message ("파인드 게임오브젝트 바이 네임 이거 다시 잘 만들어보자.")
-	/*CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Button_Customize"));
+	CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Button_Customize"));
+
 	if (pLayer == nullptr)
 	{
 		return;
@@ -193,13 +195,21 @@ void CGameManager::Set_PartRepaint(const PART_REPAINT& ePartRepaint)
 	switch (m_ePartRepaint)
 	{
 	case PART_REPAINT::BODY:
-		pLayer->Find_GameObject_By_Name(TEXT("PART_REPAINT_BODY"))->Set_Active(true);
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Body")))->Enable_Highlight();
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Turret")))->Disable_Highlight();
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Gun")))->Disable_Highlight();
 		break;
 	case PART_REPAINT::TURRET:
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Turret")))->Enable_Highlight();
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Body")))->Disable_Highlight();
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Gun")))->Disable_Highlight();
 		break;
 	case PART_REPAINT::GUN:
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Gun")))->Enable_Highlight();
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Body")))->Disable_Highlight();
+		static_cast<CButton_Part*>(pLayer->Find_GameObject_By_Name(TEXT("Button_Repaint_Turret")))->Disable_Highlight();
 		break;
-	}*/
+	}
 
 }
 

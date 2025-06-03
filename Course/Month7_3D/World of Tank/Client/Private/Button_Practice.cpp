@@ -46,6 +46,9 @@ void CButton_Practice::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
+		if (m_bVisible == false)
+			return;
+
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		pGameManager->PlaySound_Button();
 

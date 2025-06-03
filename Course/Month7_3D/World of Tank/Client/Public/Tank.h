@@ -36,8 +36,11 @@ public:
 
 public:
 	void Try_Fire();
+public:
 	HRESULT Take_Damage(_float fDamage);
 
+private:
+	void Check_Modules();
 private:
 	void Input();
 private:
@@ -46,9 +49,15 @@ private:
 	void Destroyed();
 private:
 	HRESULT Set_State_Engine(MODULE_STATE eState);
-
 private:
 	void ApplyRecoil(_float fTimeDelta);
+private:
+	void SendMatrixSync(_float fTimeDelta);
+
+protected:
+	//공간을 팔아서 시간을 사는 법
+	vector<class CModule*>	m_Modules = {};
+	vector<MODULE_STATE>	m_ModulesState = {};
 
 private:
 	_float4 m_vBodyColor = { 1.f, 1.f, 1.f, 1.f };
@@ -58,8 +67,8 @@ protected:
 	_float	m_fHP = { m_fMaxHP };
 
 private:
-	_float m_fRecoilTime = 0.f;
-	const _float m_fMaxRecoilTime = 0.3f;
+	_float			m_fRecoilTime = 0.f;
+	const _float	m_fMaxRecoilTime = 0.3f;
 
 private:
 	const _float	m_fSyncInterval = { 0.5f };

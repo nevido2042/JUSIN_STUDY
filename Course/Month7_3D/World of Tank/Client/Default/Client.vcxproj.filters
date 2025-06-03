@@ -262,6 +262,9 @@
     <Filter Include="02.GameObjects\06.UIObject\00.Button\15.Button_Part">
       <UniqueIdentifier>{16bcd23f-bc9a-4767-a183-f2becdcb97e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Icon_Consumable">
+      <UniqueIdentifier>{b01527be-ea6a-4532-a484-9dd87f7054bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -519,6 +522,12 @@
     <ClInclude Include="..\public\Button_Part.h">
       <Filter>02.GameObjects\06.UIObject\00.Button\15.Button_Part</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Icon_Consumables.h">
+      <Filter>02.GameObjects\06.UIObject\Icon_Consumable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Module.h">
+      <Filter>02.GameObjects\03.Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -770,6 +779,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Button_Part.cpp">
       <Filter>02.GameObjects\06.UIObject\00.Button\15.Button_Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Icon_Consumables.cpp">
+      <Filter>02.GameObjects\06.UIObject\Icon_Consumable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Module.cpp">
+      <Filter>02.GameObjects\03.Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

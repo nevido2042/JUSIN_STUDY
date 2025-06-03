@@ -53,6 +53,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);	
 	lstrcpy(m_szName, pDesc->szName);
 	m_bActive = pDesc->bActive;
+	m_bVisible = pDesc->bVisible;
 	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
 	m_iID = pDesc->iID;
 

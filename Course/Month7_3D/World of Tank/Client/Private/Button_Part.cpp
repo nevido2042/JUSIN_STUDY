@@ -47,6 +47,9 @@ void CButton_Part::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
+		if(m_bVisible == false)
+			return;	
+
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		pGameManager->PlaySound_Button();
 
@@ -76,7 +79,10 @@ HRESULT CButton_Part::Render()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &m_vBaseColor, sizeof(_float4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Begin(3)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))

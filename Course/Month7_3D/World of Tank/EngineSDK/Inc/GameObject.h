@@ -12,6 +12,7 @@ public:
 		_tchar				szName[MAX_PATH];
 		const _float4x4*	pParentWorldMatrix = { nullptr };
 		_bool				bActive = { true };
+		_bool				bVisible = { true };
 		_int				iID = { -1 };
 	}GAMEOBJECT_DESC;
 

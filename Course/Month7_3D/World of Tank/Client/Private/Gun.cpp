@@ -5,12 +5,12 @@
 #include "GameManager.h"
 
 CGun::CGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice, pContext)
+	:CModule(pDevice, pContext)
 {
 }
 
 CGun::CGun(const CGun& Prototype)
-	:CGameObject(Prototype)
+	:CModule(Prototype)
 {
 }
 

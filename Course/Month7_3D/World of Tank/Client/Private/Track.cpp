@@ -3,13 +3,13 @@
 #include "GameInstance.h"
 
 CTrack::CTrack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CModule{ pDevice, pContext }
 {
 
 }
 
 CTrack::CTrack(const CTrack& Prototype)
-	: CGameObject(Prototype)
+	: CModule(Prototype)
 {
 
 }

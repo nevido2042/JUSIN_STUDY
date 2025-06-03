@@ -42,6 +42,7 @@ private:
 	HRESULT Ready_Layer_Crosshair(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DamageBar(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DirectionBody(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Icon_Consumables(const _wstring strLayerTag);
 	
 	////TOOL
 	//HRESULT Ready_Layer_Tool_EngineSound(const _wstring strLayerTag);

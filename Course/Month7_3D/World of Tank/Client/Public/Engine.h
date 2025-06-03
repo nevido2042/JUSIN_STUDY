@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Module.h"
 
 NS_BEGIN(Engine)
 class CSoundController;
@@ -9,7 +9,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CEngine final : public CGameObject
+class CEngine final : public CModule
 {
 private:
 	CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

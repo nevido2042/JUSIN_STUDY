@@ -198,10 +198,12 @@
     <ClInclude Include="..\public\GameManager.h" />
     <ClInclude Include="..\public\Gun.h" />
     <ClInclude Include="..\public\GunMarker.h" />
+    <ClInclude Include="..\public\Icon_Consumables.h" />
     <ClInclude Include="..\public\Icon_Engine.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\MediumTank_Enemy_Red.h" />
     <ClInclude Include="..\public\Minimap.h" />
+    <ClInclude Include="..\public\Module.h" />
     <ClInclude Include="..\public\PersonalArrowEntry.h" />
     <ClInclude Include="..\public\Shell.h" />
     <ClInclude Include="..\public\Skydome.h" />
@@ -283,10 +285,12 @@
     <ClCompile Include="..\private\GameManager.cpp" />
     <ClCompile Include="..\private\Gun.cpp" />
     <ClCompile Include="..\private\GunMarker.cpp" />
+    <ClCompile Include="..\private\Icon_Consumables.cpp" />
     <ClCompile Include="..\private\Icon_Engine.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\MediumTank_Enemy_Red.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
+    <ClCompile Include="..\private\Module.cpp" />
     <ClCompile Include="..\private\PersonalArrowEntry.cpp" />
     <ClCompile Include="..\private\Shell.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />

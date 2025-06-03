@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Icon_Consumables.h"
 #include "CountdownTimer.h"
 #include "DamageBar_World.h"
 #include "FPS_Renderer.h"
@@ -183,6 +184,26 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_Back_Ghost*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Back_Ghost"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/back_ghost.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SmallRepairkit*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_SmallRepairkit"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Artefact/smallRepairkit.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HandExtinguishers*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HandExtinguishers"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Artefact/handExtinguishers.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SmallMedkit*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_SmallMedkit"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Artefact/smallMedkit.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DamageBar_World */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World"),
@@ -420,6 +441,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Icon_Consumables */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		CIcon_Consumables::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DamageBar_World */
@@ -662,14 +688,16 @@ HRESULT CLoader::Loading_For_Hanger()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 #pragma region 텍스쳐
+	
+#pragma region 커스터마이징
+	/* For.Prototype_Component_Texture_CustomColor_Default*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Default"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/closeBtnIcon.dds"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_CustomColor_Yellow*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Yellow"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_37.dds"), 1))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_CustomColor_Pink*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Pink"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Repaints/custom_color_01.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_CustomColor_Red*/
@@ -716,6 +744,7 @@ HRESULT CLoader::Loading_For_Hanger()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Part_Body"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Customize/Parts/hull.dds"), 1))))
 		return E_FAIL;
+#pragma endregion
 
 	/* For.Prototype_Component_Texture_Background_UI*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Background_UI"),

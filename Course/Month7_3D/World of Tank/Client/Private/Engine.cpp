@@ -4,13 +4,13 @@
 #include "SoundController.h"
 
 CEngine::CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CModule{ pDevice, pContext }
 {
 
 }
 
 CEngine::CEngine(const CEngine& Prototype)
-	: CGameObject(Prototype)
+	: CModule(Prototype)
 {
 
 }
@@ -58,7 +58,7 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_ID() == m_iID || m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
+	if (m_pGameInstance->Get_ID() == m_iID)
 		Input(fTimeDelta);
 	else
 		Input_Network(fTimeDelta);

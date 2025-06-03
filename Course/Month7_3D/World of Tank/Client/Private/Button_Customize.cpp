@@ -45,18 +45,23 @@ void CButton_Customize::Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && isPick(g_hWnd))
 	{
+		if (m_bVisible == false)
+			return;
+
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		pGameManager->PlaySound_Button();
 
 		for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Button"))->Get_GameObjects())
 		{
-			pGameObject->Set_Active(false);
+			pGameObject->Set_Visible(false);
 		}
 
 		for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Button_Customize"))->Get_GameObjects())
 		{
-			pGameObject->Set_Active(true);
+			pGameObject->Set_Visible(true);
 		}
+
+		pGameManager->Set_PartRepaint(PART_REPAINT::BODY);
 	}
 }
 
