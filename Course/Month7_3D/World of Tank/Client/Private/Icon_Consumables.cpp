@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "Tank.h"
+#include "GameManager.h"
 
 CIcon_Consumables::CIcon_Consumables(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -25,6 +26,7 @@ HRESULT CIcon_Consumables::Initialize(void* pArg)
 	ICON_CONSUMABLES_DESC* pDesc = static_cast<ICON_CONSUMABLES_DESC*>(pArg);
 	m_strTextureName = pDesc->strTextureName;
 	m_iKeyNumber = pDesc->iKeyNumber;
+	m_eConsumables = pDesc->eConsumables;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -49,10 +51,27 @@ void CIcon_Consumables::Update(_float fTimeDelta)
 		if(chrono::steady_clock::now() < m_CanUseTime)
 			return; // 아직 사용 불가 시간이라면 리턴
 		m_CanUseTime = chrono::steady_clock::now() + chrono::seconds(5);
-
+		CGameManager* pGameManager = GET_GAMEMANAGER;
 		//해당 아이템 효과 발동
-		//static_cast<CTank*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank")))->Repair_All();
-		//m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+		switch (m_eConsumables)
+		{
+		case Client::CONSUMABLES::HAND_EXTINGUISHER:
+			pGameManager->PlaySound_Extinguisher();
+			break;
+		case Client::CONSUMABLES::SMALL_REPAIR_KIT:
+			static_cast<CTank*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank")))->Repair_All();
+			pGameManager->PlaySound_Repair();
+			break;
+		case Client::CONSUMABLES::SMALL_MED_KIT:
+			pGameManager->PlaySound_Medkit();
+			break;
+		case Client::CONSUMABLES::END:
+			break;
+		default:
+			break;
+		}
+
+		
 
 	}
 }

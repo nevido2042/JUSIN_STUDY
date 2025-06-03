@@ -74,8 +74,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DirectionBody(TEXT("Layer_DirectionBody"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Icon_Consumables(TEXT("Layer_Icon_Consumables"))))
 		return E_FAIL;
@@ -351,22 +351,22 @@ HRESULT CLevel_Practice::Ready_Layer_DamagePanel(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_Icon_Engine(const _wstring strLayerTag)
-{
-	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
-
-	UIObject_Desc.fSizeX = 46.0f * UI_RATIO;
-	UIObject_Desc.fSizeY = 40.0f * UI_RATIO;
-	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.6f;
-	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 4.15f;
-	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CLevel_Practice::Ready_Layer_Icon_Engine(const _wstring strLayerTag)
+//{
+//	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+//
+//	UIObject_Desc.fSizeX = 46.0f * UI_RATIO;
+//	UIObject_Desc.fSizeY = 40.0f * UI_RATIO;
+//	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.6f;
+//	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 4.15f;
+//	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+//
+//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
+//		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
 
 HRESULT CLevel_Practice::Ready_Layer_PersonalArrowEntry(const _wstring strLayerTag)
 {
@@ -449,6 +449,7 @@ HRESULT CLevel_Practice::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_HandExtinguishers");
 	Desc.fX = g_iWinSizeX * 0.45f;
 	Desc.iKeyNumber = 4;
+	Desc.eConsumables = CONSUMABLES::HAND_EXTINGUISHER;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
@@ -456,6 +457,7 @@ HRESULT CLevel_Practice::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallRepairkit");
 	Desc.fX = g_iWinSizeX * 0.5f;
 	Desc.iKeyNumber = 5;
+	Desc.eConsumables = CONSUMABLES::SMALL_REPAIR_KIT;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
@@ -463,6 +465,7 @@ HRESULT CLevel_Practice::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallMedkit");
 	Desc.fX = g_iWinSizeX * 0.55f;
 	Desc.iKeyNumber = 6;
+	Desc.eConsumables = CONSUMABLES::SMALL_MED_KIT;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;

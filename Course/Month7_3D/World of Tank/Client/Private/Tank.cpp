@@ -39,7 +39,7 @@ HRESULT CTank::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pSoundCom->SetVolume(0.1f);
+	m_pSoundCom_Voice->SetVolume(0.1f);
 
 	m_ModulesState.assign(ENUM_CLASS(MODULE::END), MODULE_STATE::FUNCTIONAL);
 
@@ -63,7 +63,7 @@ void CTank::Priority_Update(_float fTimeDelta)
 		if (!m_bIsBattleStartVoice)
 		{
 			m_bIsBattleStartVoice = true;
-			m_pSoundCom->Play("start_battle_2");
+			m_pSoundCom_Voice->Play("start_battle_2");
 		}
 
 		Input();
@@ -156,7 +156,7 @@ void CTank::Check_Modules()
 	for (_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
 	{
 		if (nullptr == m_Modules[i])
-			return;
+			continue;
 
 		if (m_Modules[i]->Get_ModuleState() != m_ModulesState[i])
 		{
@@ -239,6 +239,18 @@ HRESULT CTank::Take_Damage(_float fDamage)
 	return S_OK;
 }
 
+void CTank::Repair_All()
+{
+	for(CModule* pModule : m_Modules)
+	{
+		if(nullptr == pModule)
+			continue;
+
+		if (pModule)
+			pModule->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+	}
+}
+
 void CTank::Move(_float fTimeDelta)
 {
 	CEngine* pEngin = static_cast<CEngine*>(Find_PartObject(TEXT("Part_Engine")));
@@ -317,7 +329,7 @@ void CTank::Destroyed()
 
 HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 {
-	CIcon_Engine* pIcon = static_cast<CIcon_Engine*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Icon_Engine")));
+	CIcon_Engine* pIcon = static_cast<CIcon_Engine*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
 	if (pIcon == nullptr)
 		return E_FAIL;
 	pIcon->Set_ModuleState(eState);
@@ -325,13 +337,13 @@ HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 	switch (eState)
 	{
 	case Client::MODULE_STATE::FUNCTIONAL:
-		m_pSoundCom->Play("engine_functional_1");
+		//m_pSoundCom->Play("engine_functional_1");
 		break;
 	case Client::MODULE_STATE::DAMAGED:
-		m_pSoundCom->Play("engine_damaged_6");
+		m_pSoundCom_Voice->Play("engine_damaged_6");
 		break;
 	case Client::MODULE_STATE::DESTROYED:
-		m_pSoundCom->Play("engine_destroyed_4");
+		m_pSoundCom_Voice->Play("engine_destroyed_4");
 		break;
 	case Client::MODULE_STATE::END:
 		break;

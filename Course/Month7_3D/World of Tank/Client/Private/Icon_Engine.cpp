@@ -29,6 +29,8 @@ HRESULT CIcon_Engine::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->Scaling(0.2f, 0.2f, 0.2f);
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(-0.38f, 0.23f, 0.f, 1.f));
 
 	return S_OK;
 }
@@ -41,7 +43,8 @@ void CIcon_Engine::Priority_Update(_float fTimeDelta)
 
 void CIcon_Engine::Update(_float fTimeDelta)
 {
-
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 }
 
 void CIcon_Engine::Late_Update(_float fTimeDelta)
@@ -51,7 +54,8 @@ void CIcon_Engine::Late_Update(_float fTimeDelta)
 
 HRESULT CIcon_Engine::Render()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))

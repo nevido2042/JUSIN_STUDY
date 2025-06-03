@@ -45,6 +45,10 @@ public:
 	HRESULT		StopBGM_Game();
 public:
 	HRESULT		PlaySound_Button();
+public:
+	HRESULT		PlaySound_Repair();
+	HRESULT		PlaySound_Medkit();
+	HRESULT		PlaySound_Extinguisher();
 
 public:
 	const _float4&  Get_BodyColor() const { return m_vBodyColor; }

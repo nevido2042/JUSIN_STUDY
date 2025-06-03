@@ -29,6 +29,8 @@ HRESULT CDamagePanel::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if (FAILED(Ready_PartObjects()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -37,16 +39,23 @@ void CDamagePanel::Priority_Update(_float fTimeDelta)
 {
 	if (g_bWindowResizeRequired)
 		Resize(g_iWinSizeX, g_iWinSizeY);
+
+	CGameObject::Priority_Update(fTimeDelta);
+
 }
 
 void CDamagePanel::Update(_float fTimeDelta)
 {
+	CGameObject::Update(fTimeDelta);
 
 }
 
 void CDamagePanel::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+
+	CGameObject::Late_Update(fTimeDelta);
+
 }
 
 HRESULT CDamagePanel::Render()
@@ -96,6 +105,20 @@ HRESULT CDamagePanel::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CDamagePanel::Ready_PartObjects()
+{
+	UIOBJECT_DESC Desc{};
+	Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
+	Desc.bIsChild = true;
+	lstrcpy(Desc.szName, TEXT("Icon_Engine"));
+	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"), TEXT("Part_Engine"), &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CDamagePanel* CDamagePanel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CDamagePanel* pInstance = new CDamagePanel(pDevice, pContext);
@@ -125,6 +148,10 @@ CGameObject* CDamagePanel::Clone(void* pArg)
 void CDamagePanel::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);

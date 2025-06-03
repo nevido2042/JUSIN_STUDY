@@ -38,6 +38,8 @@ public:
 	void Try_Fire();
 public:
 	HRESULT Take_Damage(_float fDamage);
+public:
+	void Repair_All();
 
 private:
 	void Check_Modules();
@@ -84,7 +86,8 @@ protected:
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 	CModel*				m_pModelCom_Destroyed = { nullptr };
-	CSoundController*	m_pSoundCom = { nullptr };
+	CSoundController*	m_pSoundCom_Voice = { nullptr };
+	//CSoundController*	m_pSoundCom_TankSound2D = { nullptr };
 
 private:
 	HRESULT Bind_ShaderResources();

@@ -34,6 +34,7 @@ private:
 
 private:
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects();
 
 public:
 	static CDamagePanel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

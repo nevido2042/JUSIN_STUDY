@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	void			Set_ModuleState(MODULE_STATE eState) { m_eModuleState = eState; cout << ENUM_CLASS(m_eModuleState) << endl; }
+	void			Set_ModuleState(MODULE_STATE eState) { m_eModuleState = eState; }
 	MODULE_STATE	Get_ModuleState() const { return m_eModuleState; }
 
 protected:

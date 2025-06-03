@@ -18,6 +18,7 @@ public:
 	{
 		wstring			strTextureName = {};
 		_uint			iKeyNumber = { 0 };
+		CONSUMABLES		eConsumables = { CONSUMABLES::END };
 	}ICON_CONSUMABLES_DESC;
 
 private:
@@ -36,7 +37,7 @@ public:
 private:
 	wstring			m_strTextureName = {};
 	_uint			m_iKeyNumber = { 0 };
-
+	CONSUMABLES		m_eConsumables = { CONSUMABLES::END };
 private:
 	chrono::high_resolution_clock::time_point m_CanUseTime = {};
 

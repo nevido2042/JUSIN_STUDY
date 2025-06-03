@@ -176,7 +176,24 @@ HRESULT CGameManager::StopBGM_Game()
 HRESULT CGameManager::PlaySound_Button()
 {
 	m_pSoundCom_GUI->Play("gui_25");
+	return S_OK;
+}
 
+HRESULT CGameManager::PlaySound_Repair()
+{
+	m_pSoundCom_GUI->Play("consumables_18");
+	return S_OK;
+}
+
+HRESULT CGameManager::PlaySound_Medkit()
+{
+	m_pSoundCom_GUI->Play("consumables_15");
+	return S_OK;
+}
+
+HRESULT CGameManager::PlaySound_Extinguisher()
+{
+	m_pSoundCom_GUI->Play("consumables_5");
 	return S_OK;
 }
 
