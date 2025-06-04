@@ -53,7 +53,8 @@ private:
 private:
 	const _float m_fTurnPower_Max = 1.5f;
 	const _float m_fMovePower_Max = 10.f;
-	const _float m_fRPM_Max = 1.f;
+	const _float m_fRPM_Max = 1.5f;
+	const _float m_fRPM_Min = 1.f;
 
 
 
@@ -68,7 +69,7 @@ private:
 	string		m_EngineSound_Loop = {};
 	string		m_EngineSound_End = {};
 
-	_bool		m_bIsPressAccel = { false };
+	//_bool		m_bIsPressAccel = { false };
 	_bool		m_IsOn = { false };
 
 	_float		m_fRPM = { 0.f };

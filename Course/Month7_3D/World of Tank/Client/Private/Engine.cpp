@@ -73,8 +73,8 @@ void CEngine::Update(_float fTimeDelta)
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
 
-	m_pSoundCom->SetVolume(m_EngineSound_Loop, 0.5f + abs(m_fRPM) * 0.1f);
-	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, 1.f + abs(m_fRPM) * 0.2f);
+	m_pSoundCom->SetVolume(m_EngineSound_Loop, abs(m_fRPM));
+	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, abs(m_fRPM));
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
@@ -90,9 +90,12 @@ HRESULT CEngine::Render()
 
 void CEngine::Accel_Move(_float fTimeDelta)
 {
-	m_bIsPressAccel = true;
+	//m_bIsPressAccel = true;
 
-	m_fMoveSpeed += fTimeDelta * 10.f;
+	if(m_eModuleState == MODULE_STATE::DAMAGED)
+		m_fMoveSpeed += fTimeDelta * 50.f;
+	else if(m_eModuleState == MODULE_STATE::FUNCTIONAL)
+		m_fMoveSpeed += fTimeDelta * 100.f;
 
 	if (m_fMoveSpeed > m_fMovePower_Max)
 		m_fMoveSpeed = m_fMovePower_Max;
@@ -104,7 +107,10 @@ void CEngine::Accel_Move(_float fTimeDelta)
 
 void CEngine::Accel_Turn(_float fTimeDelta)
 {
-	m_fTurnSpeed += fTimeDelta * 5.f;
+	if (m_eModuleState == MODULE_STATE::DAMAGED)
+		m_fTurnSpeed += fTimeDelta * 25.f;
+	else if (m_eModuleState == MODULE_STATE::FUNCTIONAL)
+		m_fTurnSpeed += fTimeDelta * 50.f;
 
 	if (m_fTurnSpeed > m_fTurnPower_Max)
 		m_fTurnSpeed = m_fTurnPower_Max;
@@ -116,18 +122,22 @@ void CEngine::Accel_Turn(_float fTimeDelta)
 
 void CEngine::Accel_RPM(_float fTimeDelta)
 {
-	m_fRPM += abs(fTimeDelta) * 1.f;
+	if (m_eModuleState == MODULE_STATE::DAMAGED)
+		m_fRPM += abs(fTimeDelta) * 1.f;
+	else if (m_eModuleState == MODULE_STATE::FUNCTIONAL)
+		m_fRPM += abs(fTimeDelta) * 2.f;
 
 	if (m_fRPM > m_fRPM_Max)
 		m_fRPM = m_fRPM_Max;
-	else if (m_fRPM < 0.f)
+	else if (m_eModuleState == MODULE_STATE::DESTROYED)
 		m_fRPM = 0.f;
+	else if (m_fRPM < m_fRPM_Min)
+		m_fRPM = m_fRPM_Min;
+
 }
 
 void CEngine::Input(_float fTimeDelta)
 {
-	if (GetForegroundWindow() != g_hWnd)
-		return;
 
 #pragma region Local_Input
 	if (!m_IsOn && m_pGameInstance->Key_Pressing(DIK_W))
@@ -150,16 +160,6 @@ void CEngine::Input(_float fTimeDelta)
 
 			Accel_Move(-fTimeDelta);
 		}
-		else
-		{
-			m_eGear = GEAR::END;
-
-			const _float fLerpSpeed = 10.f;
-			m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
-
-			if (fabsf(m_fMoveSpeed) < 0.05f)
-				m_fMoveSpeed = 0.f;
-		}
 
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
@@ -175,24 +175,22 @@ void CEngine::Input(_float fTimeDelta)
 			else
 				Accel_Turn(fTimeDelta);
 		}
-		else
-		{
-			const _float fLerpSpeed = 10.f;
-			m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
 
-			if (fabsf(m_fTurnSpeed) < 0.05f)
-				m_fTurnSpeed = 0.f;
-		}
+		const _float fLerpSpeed = 10.f;
+		m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
 
-		if (!m_pGameInstance->Key_Pressing(DIK_W) && !m_pGameInstance->Key_Pressing(DIK_A) && !m_pGameInstance->Key_Pressing(DIK_S) && !m_pGameInstance->Key_Pressing(DIK_D))
-		{
-			const _float fLerpSpeed = 10.f;
-			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
+		if (fabsf(m_fMoveSpeed) < 0.05f)
+			m_fMoveSpeed = 0.f;
 
-			if (fabsf(m_fRPM) < 0.05f)
-				m_fRPM = 0.f;
-		}
+		m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+		if (fabsf(m_fTurnSpeed) < 0.05f)
+			m_fTurnSpeed = 0.f;
 
+		m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed * 0.1f;
+		if (m_eModuleState == MODULE_STATE::DESTROYED)
+			m_fRPM = 0.f;
+		else if (fabsf(m_fRPM) < m_fRPM_Min)
+			m_fRPM = m_fRPM_Min;
 
 		if (m_pGameInstance->Key_Pressing(DIK_SPACE))
 		{
@@ -292,8 +290,6 @@ void CEngine::Input_Network(_float fTimeDelta)
 
 	if (m_IsOn)
 	{
-		const _float fLerpSpeed = 10.f;
-
 		if (m_bPressW)
 		{
 			m_eGear = GEAR::DRIVE;
@@ -306,17 +302,7 @@ void CEngine::Input_Network(_float fTimeDelta)
 
 			Accel_Move(-fTimeDelta);
 		}
-		else
-		{
-			m_eGear = GEAR::END;
 
-			m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
-
-			if (fabsf(m_fMoveSpeed) < 0.05f)
-				m_fMoveSpeed = 0.f;
-		}
-
-		
 		if (m_bPressA)
 		{
 			if (m_eGear == GEAR::REVERSE)
@@ -331,22 +317,22 @@ void CEngine::Input_Network(_float fTimeDelta)
 			else
 				Accel_Turn(fTimeDelta);
 		}
-		else
-		{
-			m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
 
-			if (fabsf(m_fTurnSpeed) < 0.05f)
-				m_fTurnSpeed = 0.f;
-		}
+		const _float fLerpSpeed = 10.f;
+		m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
 
-		if (!m_bPressW && !m_bPressS && !m_bPressA && !m_bPressD)
-		{
-			//const _float fLerpSpeed = 10.f;
-			m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed;
+		if (fabsf(m_fMoveSpeed) < 0.05f)
+			m_fMoveSpeed = 0.f;
 
-			if (fabsf(m_fRPM) < 0.05f)
-				m_fRPM = 0.f;
-		}
+		m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+		if (fabsf(m_fTurnSpeed) < 0.05f)
+			m_fTurnSpeed = 0.f;
+
+		m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed * 0.1f;
+		if (m_eModuleState == MODULE_STATE::DESTROYED)
+			m_fRPM = 0.f;
+		else if (fabsf(m_fRPM) < m_fRPM_Min)
+			m_fRPM = m_fRPM_Min;
 	}
 }
 

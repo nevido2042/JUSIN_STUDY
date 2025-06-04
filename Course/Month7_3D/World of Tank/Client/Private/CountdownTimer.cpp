@@ -25,7 +25,7 @@ HRESULT CCountdownTimer::Initialize(void* pArg)
 		return E_FAIL;
 
 	//m_bisCounting = true;;
-	m_StartTime = chrono::steady_clock::now() + chrono::seconds(5);
+	m_StartTime = chrono::steady_clock::now() + chrono::seconds(2);
 
 	return S_OK;
 }
