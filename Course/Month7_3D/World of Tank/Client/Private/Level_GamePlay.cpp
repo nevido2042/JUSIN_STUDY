@@ -10,7 +10,7 @@
 
 #include "UIObject.h"
 #include "Layer.h"
-
+#include "Icon_Consumables.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -57,6 +57,9 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Icon_Consumables(TEXT("Layer_Icon_Consumables"))))
 		return E_FAIL;
 
 	PACKET_DESC Desc = {};
@@ -295,6 +298,42 @@ HRESULT CLevel_GamePlay::Ready_Layer_DamageBar(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Icon_Consumables(const _wstring strLayerTag)
+{
+	CIcon_Consumables::ICON_CONSUMABLES_DESC				Desc{};
+
+	Desc.fSizeX = 48.0f * UI_RATIO;
+	Desc.fSizeY = 48.0f * UI_RATIO;
+	Desc.fY = g_iWinSizeY * 0.95f;
+	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_HandExtinguishers");
+	Desc.fX = g_iWinSizeX * 0.45f;
+	Desc.iKeyNumber = 4;
+	Desc.eConsumables = CONSUMABLES::HAND_EXTINGUISHER;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallRepairkit");
+	Desc.fX = g_iWinSizeX * 0.5f;
+	Desc.iKeyNumber = 5;
+	Desc.eConsumables = CONSUMABLES::SMALL_REPAIR_KIT;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallMedkit");
+	Desc.fX = g_iWinSizeX * 0.55f;
+	Desc.iKeyNumber = 6;
+	Desc.eConsumables = CONSUMABLES::SMALL_MED_KIT;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

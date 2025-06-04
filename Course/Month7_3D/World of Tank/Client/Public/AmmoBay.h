@@ -32,6 +32,10 @@ public:
 	HRESULT is_Load_Complete();
 
 private:
+	_bool m_bIsPlayLoadSound = { false }; // 장전 사운드 재생 여부
+private:
+	_bool m_bIsLoading = { false }; // 장전 중인지 여부
+private:
 	chrono::duration<_float>	m_Remaining = {}; // 남은 시간
 	_float						m_fDisplaySeconds = {}; // 남은 시간 표시용
 private:

@@ -3,7 +3,9 @@
 #include "Engine_Defines.h"
 #include "NetCore_Define.h"
 
-enum class TANK { FURY, TIGER, END };
+enum class TANK         { FURY, TIGER, END };
+enum class MODULE       { ENGINE, TRACK_LEFT, TRACK_RIGHT, TURRET, GUN, SURVEYING_DEVICE, RADIO, FUEL_TANK, AMMO_BAY, END };
+enum class MODULE_STATE { DESTROYED, DAMAGED, FUNCTIONAL, END };
 
 enum class PacketType
 {
@@ -51,6 +53,9 @@ enum class PacketType
     CS_FIRE,
     SC_FIRE,
 
+    CS_MODULE_STATE,
+    SC_MODULE_STATE,
+
     CS_MATRIX_BODY,
     SC_MATRIX_BODY,
 
@@ -75,6 +80,12 @@ typedef struct tagPacket_Desc
 {
     _int iID{ -1 };
 }PACKET_DESC;
+
+typedef struct tagModuleState_Desc : PACKET_DESC
+{
+	MODULE          eModule{ MODULE::END };
+    MODULE_STATE    eState{ MODULE_STATE::END };
+}MODULE_STATE_DESC;
 
 typedef struct tagBool_Desc : PACKET_DESC
 {

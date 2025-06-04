@@ -35,7 +35,10 @@ public:
 	virtual HRESULT Render();
 
 public:
-	void Try_Fire();
+	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
+
+public:
+	HRESULT Try_Fire();
 public:
 	HRESULT Take_Damage(_float fDamage);
 public:
@@ -53,12 +56,12 @@ private:
 private:
 	void Destroyed();
 private:
-	HRESULT Set_State_Engine(MODULE_STATE eState);
-	HRESULT Set_State_AmmoBay(MODULE_STATE eState);
-private:
 	void ApplyRecoil(_float fTimeDelta);
 private:
 	void SendMatrixSync(_float fTimeDelta);
+private:
+	HRESULT OnStateChanged_Engine(MODULE_STATE eState);
+	HRESULT OnStateChanged_AmmoBay(MODULE_STATE eState);
 
 protected:
 	//공간을 팔아서 시간을 사는 법
@@ -81,7 +84,7 @@ private:
 	_float			m_fTimeAcc = { 0 };
 
 private:
-	_bool	m_bDestroyed = { false };
+	_bool	m_bisDestroyed = { false };
 
 private:
 	_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부

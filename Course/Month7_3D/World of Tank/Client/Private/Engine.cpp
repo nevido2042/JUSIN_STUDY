@@ -34,6 +34,11 @@ HRESULT CEngine::Initialize(void* pArg)
 
 	m_pSoundCom->Set3DState(0.f, 30.f);
 
+	if(m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::HANGER))
+	{
+		Start_Engine();
+	}
+
 	return S_OK;
 }
 
@@ -58,6 +63,9 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
+	if (m_eModuleState == MODULE_STATE::DESTROYED)
+		return;
+
 	if (m_pGameInstance->Get_ID() == m_iID)
 		Input(fTimeDelta);
 	else
@@ -67,6 +75,29 @@ void CEngine::Priority_Update(_float fTimeDelta)
 
 void CEngine::Update(_float fTimeDelta)
 {
+	if (m_eModuleState == MODULE_STATE::DESTROYED && m_IsOn)
+	{
+		m_IsOn = false;
+		m_pSoundCom->Stop(m_EngineSound_Loop);
+		return;
+	}
+
+	const _float fLerpSpeed = 10.f;
+	m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
+
+	if (fabsf(m_fMoveSpeed) < 0.05f)
+		m_fMoveSpeed = 0.f;
+
+	m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
+	if (fabsf(m_fTurnSpeed) < 0.05f)
+		m_fTurnSpeed = 0.f;
+
+	m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed * 0.1f;
+	if (m_eModuleState == MODULE_STATE::DESTROYED)
+		m_fRPM = 0.f;
+	else if (fabsf(m_fRPM) < m_fRPM_Min)
+		m_fRPM = m_fRPM_Min;
+
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
@@ -79,7 +110,8 @@ void CEngine::Update(_float fTimeDelta)
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
-
+	if (m_eModuleState == MODULE_STATE::DESTROYED)
+		return;
 }
 
 HRESULT CEngine::Render()
@@ -140,10 +172,10 @@ void CEngine::Input(_float fTimeDelta)
 {
 
 #pragma region Local_Input
-	if (!m_IsOn && m_pGameInstance->Key_Pressing(DIK_W))
-	{
-		Start_Engine();
-	}
+	//if (!m_IsOn && m_pGameInstance->Key_Pressing(DIK_W))
+	//{
+	//	Start_Engine();
+	//}
 
 	if (m_IsOn)
 	{
@@ -176,26 +208,10 @@ void CEngine::Input(_float fTimeDelta)
 				Accel_Turn(fTimeDelta);
 		}
 
-		const _float fLerpSpeed = 10.f;
-		m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
-
-		if (fabsf(m_fMoveSpeed) < 0.05f)
-			m_fMoveSpeed = 0.f;
-
-		m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
-		if (fabsf(m_fTurnSpeed) < 0.05f)
-			m_fTurnSpeed = 0.f;
-
-		m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed * 0.1f;
-		if (m_eModuleState == MODULE_STATE::DESTROYED)
-			m_fRPM = 0.f;
-		else if (fabsf(m_fRPM) < m_fRPM_Min)
-			m_fRPM = m_fRPM_Min;
-
-		if (m_pGameInstance->Key_Pressing(DIK_SPACE))
-		{
-			End_Engine();
-		}
+		//if (m_pGameInstance->Key_Pressing(DIK_SPACE))
+		//{
+		//	End_Engine();
+		//}
 	}
 #pragma endregion
 	
@@ -283,10 +299,10 @@ void CEngine::Send_Packet()
 
 void CEngine::Input_Network(_float fTimeDelta)
 {
-	if (!m_IsOn && m_bPressW)
+	/*if (!m_IsOn && m_bPressW)
 	{
 		Start_Engine();
-	}
+	}*/
 
 	if (m_IsOn)
 	{
@@ -317,22 +333,6 @@ void CEngine::Input_Network(_float fTimeDelta)
 			else
 				Accel_Turn(fTimeDelta);
 		}
-
-		const _float fLerpSpeed = 10.f;
-		m_fMoveSpeed += -m_fMoveSpeed * fTimeDelta * fLerpSpeed;
-
-		if (fabsf(m_fMoveSpeed) < 0.05f)
-			m_fMoveSpeed = 0.f;
-
-		m_fTurnSpeed += -m_fTurnSpeed * fTimeDelta * fLerpSpeed;
-		if (fabsf(m_fTurnSpeed) < 0.05f)
-			m_fTurnSpeed = 0.f;
-
-		m_fRPM += -m_fRPM * fTimeDelta * fLerpSpeed * 0.1f;
-		if (m_eModuleState == MODULE_STATE::DESTROYED)
-			m_fRPM = 0.f;
-		else if (fabsf(m_fRPM) < m_fRPM_Min)
-			m_fRPM = m_fRPM_Min;
 	}
 }
 

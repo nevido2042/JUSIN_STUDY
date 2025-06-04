@@ -47,11 +47,25 @@ void CAmmoBay::Update(_float fTimeDelta)
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
 
-	// 시간 차이 계산
-	m_Remaining = chrono::duration_cast<chrono::duration<_float>>(m_TimeLoadComplete - chrono::high_resolution_clock::now());
+	if (m_bIsLoading)
+	{
+		// 시간 차이 계산
+		m_Remaining = chrono::duration_cast<chrono::duration<_float>>(m_TimeLoadComplete - chrono::high_resolution_clock::now());
 
-	// 음수 방지 (시간이 지났으면 0초로 표시)
-	m_fDisplaySeconds = max<_float>(0.f, static_cast<_float>(m_Remaining.count()));
+		// 음수 방지 (시간이 지났으면 0초로 표시)
+		m_fDisplaySeconds = max<_float>(0.f, static_cast<_float>(m_Remaining.count()));
+
+		if (m_fDisplaySeconds < 1.f && m_bIsPlayLoadSound == false)
+		{
+			m_bIsPlayLoadSound = true;
+			m_pSoundCom->Play("gun_reload_1");
+		}
+
+		if (m_fDisplaySeconds == 0.f)
+		{
+			m_bIsLoading = false;
+		}
+	}
 
 }
 
@@ -67,15 +81,20 @@ HRESULT CAmmoBay::Render()
 {
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		if (m_fDisplaySeconds == 0.f)
-		{
-			wstring strText = format(L"{:.2f}", m_fLoadTime);
-			m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), strText.c_str(), _float2(g_iWinSizeX * 0.45f, g_iWinSizeY * 0.5f), XMVectorSet(0.f, 1.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f * UI_RATIO);
-		}
-		else
+		if (m_bIsLoading)
 		{
 			wstring strText = format(L"{:.2f}", m_fDisplaySeconds);
 			m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), strText.c_str(), _float2(g_iWinSizeX * 0.45f, g_iWinSizeY * 0.5f), XMVectorSet(1.f, 0.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f * UI_RATIO);
+		}
+		else
+		{
+			wstring strText = {};
+			if (m_eModuleState == MODULE_STATE::FUNCTIONAL)
+				strText = format(L"{:.2f}", m_fLoadTime);
+			else if (m_eModuleState == MODULE_STATE::DAMAGED)
+				strText = format(L"{:.2f}", m_fLoadTime * 2.f);
+
+			m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), strText.c_str(), _float2(g_iWinSizeX * 0.45f, g_iWinSizeY * 0.5f), XMVectorSet(0.f, 1.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f * UI_RATIO);
 		}
 	}
 
@@ -84,12 +103,18 @@ HRESULT CAmmoBay::Render()
 
 void CAmmoBay::Start_Load()
 {
-	 m_TimeLoadComplete = chrono::steady_clock::now() + chrono::duration<_float>(m_fLoadTime);	
+	if (m_eModuleState == MODULE_STATE::FUNCTIONAL)
+		m_TimeLoadComplete = chrono::steady_clock::now() + chrono::duration<_float>(m_fLoadTime);
+	else if (m_eModuleState == MODULE_STATE::DAMAGED)
+		m_TimeLoadComplete = chrono::steady_clock::now() + chrono::duration<_float>(m_fLoadTime * 2.f);
+
+	 m_bIsLoading = true;
+	 m_bIsPlayLoadSound = false;
 }
 
 HRESULT CAmmoBay::is_Load_Complete()
 {
-	if (m_fDisplaySeconds > 0.f)
+	if (m_bIsLoading)
 		return E_FAIL;
 
 	return S_OK;

@@ -67,6 +67,9 @@ void CTank::Priority_Update(_float fTimeDelta)
 			m_pSoundCom_Voice->Play("start_battle_2");
 		}
 
+		if (m_bisDestroyed)
+			return;
+
 		Input();
 	}
 
@@ -75,10 +78,7 @@ void CTank::Priority_Update(_float fTimeDelta)
 
 void CTank::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_ID() == m_iID)
-	{
-		Check_Modules();
-	}
+	Check_Modules();
 
 	Move(fTimeDelta);
 
@@ -103,7 +103,7 @@ void CTank::Late_Update(_float fTimeDelta)
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-	if (m_bDestroyed)
+	if (m_bisDestroyed)
 		return;
 
 	CGameObject::Late_Update(fTimeDelta);
@@ -117,7 +117,7 @@ HRESULT CTank::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (m_pModelCom && !m_bDestroyed)
+	if (m_pModelCom && !m_bisDestroyed)
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
@@ -153,6 +153,21 @@ HRESULT CTank::Render()
 	return S_OK;
 }
 
+HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
+{
+	switch (eModule)
+	{
+	case MODULE::ENGINE:
+		m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(eState);
+		break;
+	case MODULE::AMMO_BAY:
+		m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(eState);
+			break;
+	}
+
+	return S_OK;
+}
+
 void CTank::Check_Modules()
 {
 	for (_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
@@ -164,15 +179,15 @@ void CTank::Check_Modules()
 		{
 			//모듈의 상태가 변경됨!
 			m_ModulesState[i] = m_Modules[i]->Get_ModuleState();
+
 			//모듈 상태에 따른 보이스 재생, ui 변경
-			
 			switch (i)
 			{
 			case ENUM_CLASS(MODULE::ENGINE):
-				Set_State_Engine(m_ModulesState[i]);
+				OnStateChanged_Engine(m_ModulesState[i]);
 				break;
 			case ENUM_CLASS(MODULE::AMMO_BAY):
-				Set_State_AmmoBay(m_ModulesState[i]);
+				OnStateChanged_AmmoBay(m_ModulesState[i]);
 				break;
 			default:
 				break;
@@ -188,7 +203,8 @@ void CTank::Input()
 		Destroyed();
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
-		m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
+		Set_State_Module(MODULE::ENGINE, static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
+		//m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
 
 	if (m_pGameInstance->Key_Down(DIK_F2))
 		m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::AMMO_BAY)]) - 1)));
@@ -205,33 +221,47 @@ void CTank::Input()
 
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
 	{
+		if (FAILED(Try_Fire()))
+			return;
+
 		if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 		{
 			PACKET_DESC Desc{};
 			Desc.iID = m_iID;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_FIRE), &Desc);
 		}
-
-		Try_Fire();
 	}
 }
 
-void CTank::Try_Fire()
+HRESULT CTank::Try_Fire()
 {
-	CAmmoBay* pAmmoBay = static_cast<CAmmoBay*>(m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY)));
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CAmmoBay* pAmmoBay = static_cast<CAmmoBay*>(m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY)));
 
-	//장전 완료 여부 확인
-	if(FAILED(pAmmoBay->is_Load_Complete()))
-		return;
+		//장전 완료 여부 확인
+		if (FAILED(pAmmoBay->is_Load_Complete()))
+			return E_FAIL;
 
-	//발사
-	if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
-		return;
+		//발사
+		if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
+			return E_FAIL;
 
-	//꿀렁임
-	m_fRecoilTime = m_fMaxRecoilTime;
+		//꿀렁임
+		m_fRecoilTime = m_fMaxRecoilTime;
 
-	pAmmoBay->Start_Load();
+		pAmmoBay->Start_Load();
+
+	}
+	else
+	{
+		//발사
+		if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
+			return E_FAIL;
+	}
+
+	return S_OK;
+
 }
 
 HRESULT CTank::Take_Damage(_float fDamage)
@@ -254,14 +284,31 @@ HRESULT CTank::Take_Damage(_float fDamage)
 
 void CTank::Repair_All()
 {
-	for(CModule* pModule : m_Modules)
+	for(_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
 	{
-		if(nullptr == pModule)
+		if (nullptr == m_Modules[i])
 			continue;
 
-		if (pModule)
-			pModule->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+		m_Modules[i]->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+
+		if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
+		{
+			MODULE_STATE_DESC Desc{};
+			Desc.iID = m_iID;
+			Desc.eModule = static_cast<MODULE>(i);
+			Desc.eState = MODULE_STATE::FUNCTIONAL;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
+		}
 	}
+
+	//for(CModule* pModule : m_Modules)
+	//{
+	//	if(nullptr == pModule)
+	//		continue;
+
+	//	if (pModule)
+	//		pModule->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+	//}
 }
 
 HRESULT CTank::Store_Modules()
@@ -364,37 +411,60 @@ void CTank::Move(_float fTimeDelta)
 
 void CTank::Destroyed()
 {
-	m_bDestroyed = true;
+	m_bisDestroyed = true;
+
+	for(CModule * pModule : m_Modules)
+	{
+		if (pModule)
+			pModule->Set_ModuleState(MODULE_STATE::DESTROYED);
+	}
 }
 
-HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
+HRESULT CTank::OnStateChanged_Engine(MODULE_STATE eState)
 {
-	CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
-	if (pIcon == nullptr)
-		return E_FAIL;
-	pIcon->Set_ModuleState(eState);
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
+		if (pIcon == nullptr)
+			return E_FAIL;
+		pIcon->Set_ModuleState(eState);
+	}
 
 	switch (eState)
 	{
-	case Client::MODULE_STATE::FUNCTIONAL:
+	case MODULE_STATE::FUNCTIONAL:
+		static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Start_Engine();
 		//m_pSoundCom->Play("engine_functional_1");
 		break;
-	case Client::MODULE_STATE::DAMAGED:
-		m_pSoundCom_Voice->Play("engine_damaged_6");
+	case MODULE_STATE::DAMAGED:
+
+		if (m_pGameInstance->Get_ID() == m_iID)
+			m_pSoundCom_Voice->Play("engine_damaged_6");
 		break;
-	case Client::MODULE_STATE::DESTROYED:
-		m_pSoundCom_Voice->Play("engine_destroyed_4");
+	case MODULE_STATE::DESTROYED:
+
+		if (m_pGameInstance->Get_ID() == m_iID)
+			m_pSoundCom_Voice->Play("engine_destroyed_4");
 		break;
-	case Client::MODULE_STATE::END:
+	case MODULE_STATE::END:
 		break;
 	default:
 		break;
 	}
 
+	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() == m_iID)
+	{
+		MODULE_STATE_DESC Desc{};
+		Desc.iID = m_iID;
+		Desc.eModule = MODULE::ENGINE;
+		Desc.eState = eState;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
+	}
+
 	return S_OK;
 }
 
-HRESULT CTank::Set_State_AmmoBay(MODULE_STATE eState)
+HRESULT CTank::OnStateChanged_AmmoBay(MODULE_STATE eState)
 {
 	CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_AmmoBay")));
 	if (pIcon == nullptr)
@@ -403,16 +473,18 @@ HRESULT CTank::Set_State_AmmoBay(MODULE_STATE eState)
 
 	switch (eState)
 	{
-	case Client::MODULE_STATE::FUNCTIONAL:
+	case MODULE_STATE::FUNCTIONAL:
 		//m_pSoundCom->Play("engine_functional_1");
 		break;
-	case Client::MODULE_STATE::DAMAGED:
+	case MODULE_STATE::DAMAGED:
 		m_pSoundCom_Voice->Play("engine_damaged_6");
 		break;
-	case Client::MODULE_STATE::DESTROYED:
-		m_pSoundCom_Voice->Play("engine_destroyed_4");
+	case MODULE_STATE::DESTROYED:
+		//전차 파괴
+		Destroyed();
+		//m_pSoundCom_Voice->Play("engine_destroyed_4");
 		break;
-	case Client::MODULE_STATE::END:
+	case MODULE_STATE::END:
 		break;
 	default:
 		break;
