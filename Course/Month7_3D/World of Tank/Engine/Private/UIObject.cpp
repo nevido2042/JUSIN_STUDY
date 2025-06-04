@@ -46,7 +46,7 @@ HRESULT CUIObject::Initialize(void* pArg)
 	m_fSizeXRatio = m_fSizeX / ViewportDesc.Width;
 	m_fSizeYRatio = m_fSizeY / ViewportDesc.Height;
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, m_fDepth, 1.f));
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(m_fX, m_fY, m_fDepth, 1.f));
 
 
 	if (m_bIsChild)

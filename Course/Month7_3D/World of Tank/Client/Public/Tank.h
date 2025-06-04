@@ -41,6 +41,9 @@ public:
 public:
 	void Repair_All();
 
+protected:
+	HRESULT Store_Modules();
+
 private:
 	void Check_Modules();
 private:
@@ -51,6 +54,7 @@ private:
 	void Destroyed();
 private:
 	HRESULT Set_State_Engine(MODULE_STATE eState);
+	HRESULT Set_State_AmmoBay(MODULE_STATE eState);
 private:
 	void ApplyRecoil(_float fTimeDelta);
 private:

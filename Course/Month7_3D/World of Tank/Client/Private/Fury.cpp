@@ -131,26 +131,12 @@ HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTrackRight"), TEXT("Part_TrackRight"), &Desc)))
 		return E_FAIL;
 
+	/* 탄약적재함을 추가한다 */
+	lstrcpy(Desc.szName, TEXT("AmmoBay"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_AmmoBay"), TEXT("Part_AmmoBay"), &Desc)))
+		return E_FAIL;
 
-	CModule* pEngine = static_cast<CModule*>(Find_PartObject(TEXT("Part_Engine")));
-	CModule* pTurret = static_cast<CModule*>(Find_PartObject(TEXT("Part_Turret")));
-	CModule* pGun = static_cast<CModule*>(Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
-	CModule* pTrackLeft = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackLeft")));
-	CModule* pTrackRight = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackRight")));
-
-	m_Modules.resize(ENUM_CLASS(MODULE::END));
-	m_Modules.at(ENUM_CLASS(MODULE::ENGINE)) = pEngine;
-	m_Modules.at(ENUM_CLASS(MODULE::TURRET)) = pTurret;
-	m_Modules.at(ENUM_CLASS(MODULE::GUN)) = pGun;
-	m_Modules.at(ENUM_CLASS(MODULE::TRACK_LEFT)) = pTrackLeft;
-	m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT)) = pTrackRight;
-
-	Safe_AddRef(pEngine);
-	Safe_AddRef(pTurret);
-	Safe_AddRef(pGun);
-	Safe_AddRef(pTrackLeft);
-	Safe_AddRef(pTrackRight);
-
+	Store_Modules();
 
 	/* 데미지바_월드를 추가한다. */
 	lstrcpy(Desc.szName, TEXT("DamageBar"));

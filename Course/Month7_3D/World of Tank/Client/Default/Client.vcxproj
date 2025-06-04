@@ -143,7 +143,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../public/;../../NetCore/public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
@@ -162,6 +162,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\public\AmmoBay.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\BackGround_Loading.h" />
     <ClInclude Include="..\public\Background_UI.h" />
@@ -199,7 +200,7 @@
     <ClInclude Include="..\public\Gun.h" />
     <ClInclude Include="..\public\GunMarker.h" />
     <ClInclude Include="..\public\Icon_Consumables.h" />
-    <ClInclude Include="..\public\Icon_Engine.h" />
+    <ClInclude Include="..\public\Icon_Module.h" />
     <ClInclude Include="..\public\MapObject.h" />
     <ClInclude Include="..\public\MediumTank_Enemy_Red.h" />
     <ClInclude Include="..\public\Minimap.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\AmmoBay.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
     <ClCompile Include="..\private\Background_UI.cpp" />
@@ -286,7 +288,7 @@
     <ClCompile Include="..\private\Gun.cpp" />
     <ClCompile Include="..\private\GunMarker.cpp" />
     <ClCompile Include="..\private\Icon_Consumables.cpp" />
-    <ClCompile Include="..\private\Icon_Engine.cpp" />
+    <ClCompile Include="..\private\Icon_Module.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
     <ClCompile Include="..\private\MediumTank_Enemy_Red.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />

@@ -265,6 +265,9 @@
     <Filter Include="02.GameObjects\06.UIObject\Icon_Consumable">
       <UniqueIdentifier>{b01527be-ea6a-4532-a484-9dd87f7054bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Modules\04.AmmoBay">
+      <UniqueIdentifier>{f920c9b9-c7ac-4b79-a547-a197da2f4a0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -459,7 +462,7 @@
     <ClInclude Include="..\public\Gun.h">
       <Filter>02.GameObjects\03.Modules\02.Gun</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Icon_Engine.h">
+    <ClInclude Include="..\public\Icon_Module.h">
       <Filter>02.GameObjects\06.UIObject\Icon_Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tank.h">
@@ -527,6 +530,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Module.h">
       <Filter>02.GameObjects\03.Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\AmmoBay.h">
+      <Filter>02.GameObjects\03.Modules\04.AmmoBay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -717,7 +723,7 @@
     <ClCompile Include="..\private\Gun.cpp">
       <Filter>02.GameObjects\03.Modules\02.Gun</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Icon_Engine.cpp">
+    <ClCompile Include="..\private\Icon_Module.cpp">
       <Filter>02.GameObjects\06.UIObject\Icon_Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tank.cpp">
@@ -785,6 +791,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Module.cpp">
       <Filter>02.GameObjects\03.Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\AmmoBay.cpp">
+      <Filter>02.GameObjects\03.Modules\04.AmmoBay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

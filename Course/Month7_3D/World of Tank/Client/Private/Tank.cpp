@@ -7,9 +7,10 @@
 #include "Engine.h"
 #include "DamageBar.h"
 #include "GameManager.h"
+#include "AmmoBay.h"
 
 #pragma region UI
-#include "Icon_Engine.h"
+#include "Icon_Module.h"
 #pragma endregion
 
 CTank::CTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -96,6 +97,7 @@ void CTank::Late_Update(_float fTimeDelta)
 {
 	if (!m_bVisible)
 	{
+		m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY))->Late_Update(fTimeDelta);
 		return;
 	}
 
@@ -169,6 +171,9 @@ void CTank::Check_Modules()
 			case ENUM_CLASS(MODULE::ENGINE):
 				Set_State_Engine(m_ModulesState[i]);
 				break;
+			case ENUM_CLASS(MODULE::AMMO_BAY):
+				Set_State_AmmoBay(m_ModulesState[i]);
+				break;
 			default:
 				break;
 			}
@@ -184,6 +189,9 @@ void CTank::Input()
 
 	if (m_pGameInstance->Key_Down(DIK_F1))
 		m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
+
+	if (m_pGameInstance->Key_Down(DIK_F2))
+		m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::AMMO_BAY)]) - 1)));
 
 	//if (m_pGameInstance->Key_Down(DIK_F2))
 	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::DAMAGED);
@@ -210,15 +218,20 @@ void CTank::Input()
 
 void CTank::Try_Fire()
 {
-	//발사
-	CTurret* pTurret = static_cast<CTurret*>(Find_PartObject(TEXT("Part_Turret")));
-	CGun* pGun = static_cast<CGun*>(pTurret->Find_PartObject(TEXT("Part_Gun")));
+	CAmmoBay* pAmmoBay = static_cast<CAmmoBay*>(m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY)));
 
-	if (FAILED(pGun->Fire()))
+	//장전 완료 여부 확인
+	if(FAILED(pAmmoBay->is_Load_Complete()))
+		return;
+
+	//발사
+	if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
 		return;
 
 	//꿀렁임
 	m_fRecoilTime = m_fMaxRecoilTime;
+
+	pAmmoBay->Start_Load();
 }
 
 HRESULT CTank::Take_Damage(_float fDamage)
@@ -249,6 +262,33 @@ void CTank::Repair_All()
 		if (pModule)
 			pModule->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
 	}
+}
+
+HRESULT CTank::Store_Modules()
+{
+	CModule* pEngine = static_cast<CModule*>(Find_PartObject(TEXT("Part_Engine")));
+	CModule* pTurret = static_cast<CModule*>(Find_PartObject(TEXT("Part_Turret")));
+	CModule* pGun = static_cast<CModule*>(Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
+	CModule* pTrackLeft = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackLeft")));
+	CModule* pTrackRight = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackRight")));
+	CModule* pAmmoBay = static_cast<CModule*>(Find_PartObject(TEXT("Part_AmmoBay")));
+
+	m_Modules.resize(ENUM_CLASS(MODULE::END));
+	m_Modules.at(ENUM_CLASS(MODULE::ENGINE)) = pEngine;
+	m_Modules.at(ENUM_CLASS(MODULE::TURRET)) = pTurret;
+	m_Modules.at(ENUM_CLASS(MODULE::GUN)) = pGun;
+	m_Modules.at(ENUM_CLASS(MODULE::TRACK_LEFT)) = pTrackLeft;
+	m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT)) = pTrackRight;
+	m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY)) = pAmmoBay;
+
+	Safe_AddRef(pEngine);
+	Safe_AddRef(pTurret);
+	Safe_AddRef(pGun);
+	Safe_AddRef(pTrackLeft);
+	Safe_AddRef(pTrackRight);
+	Safe_AddRef(pAmmoBay);
+
+	return S_OK;
 }
 
 void CTank::Move(_float fTimeDelta)
@@ -329,7 +369,34 @@ void CTank::Destroyed()
 
 HRESULT CTank::Set_State_Engine(MODULE_STATE eState)
 {
-	CIcon_Engine* pIcon = static_cast<CIcon_Engine*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
+	CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
+	if (pIcon == nullptr)
+		return E_FAIL;
+	pIcon->Set_ModuleState(eState);
+
+	switch (eState)
+	{
+	case Client::MODULE_STATE::FUNCTIONAL:
+		//m_pSoundCom->Play("engine_functional_1");
+		break;
+	case Client::MODULE_STATE::DAMAGED:
+		m_pSoundCom_Voice->Play("engine_damaged_6");
+		break;
+	case Client::MODULE_STATE::DESTROYED:
+		m_pSoundCom_Voice->Play("engine_destroyed_4");
+		break;
+	case Client::MODULE_STATE::END:
+		break;
+	default:
+		break;
+	}
+
+	return S_OK;
+}
+
+HRESULT CTank::Set_State_AmmoBay(MODULE_STATE eState)
+{
+	CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_AmmoBay")));
 	if (pIcon == nullptr)
 		return E_FAIL;
 	pIcon->Set_ModuleState(eState);

@@ -1,6 +1,7 @@
 #include "DamagePanel.h"
 
 #include "GameInstance.h"
+#include "Icon_Module.h" 
 
 CDamagePanel::CDamagePanel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -107,13 +108,23 @@ HRESULT CDamagePanel::Ready_Components()
 
 HRESULT CDamagePanel::Ready_PartObjects()
 {
-	UIOBJECT_DESC Desc{};
+	CIcon_Module::ICON_MODULE_DESC Desc{};
 	Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
 	Desc.bIsChild = true;
-	lstrcpy(Desc.szName, TEXT("Icon_Engine"));
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"), TEXT("Part_Engine"), &Desc)))
+	lstrcpy(Desc.szName, TEXT("Icon_Engine"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_Engine");
+	Desc.fX = -0.38f;
+	Desc.fY = 0.23f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_Engine"), &Desc)))
+		return E_FAIL;
+
+	lstrcpy(Desc.szName, TEXT("Icon_AmmoBay"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_AmmoBay");
+	Desc.fX = -0.38f;
+	Desc.fY = 0.08f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_AmmoBay"), &Desc)))
 		return E_FAIL;
 
 	return S_OK;

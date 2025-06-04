@@ -22,7 +22,7 @@
 #include "Crosshair.h"
 #include "MediumTank_Enemy_Red.h"
 #include "PersonalArrowEntry.h"
-#include "Icon_Engine.h"
+#include "Icon_Module.h"
 #include "TigerTrackRight.h"
 #include "TigerTrackLeft.h"
 #include "TigerGun.h"
@@ -48,6 +48,7 @@
 #include "Camera_FPS.h"
 #include "Terrain.h"
 #include "Engine.h"
+#include "AmmoBay.h"
 #include "Tool_Base.h"
 #pragma endregion
 
@@ -269,7 +270,12 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_Icon_Engine */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_Engine"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Engine/engine%d.dds"), 3))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/engine%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Icon_AmmoBay */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_AmmoBay"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/ammoBay%d.dds"), 3))))
 		return E_FAIL;
 
 #pragma endregion
@@ -498,9 +504,9 @@ HRESULT CLoader::Loading_For_Static()
 		CMediumTank_Enemy_Red::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Icon_Engine */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Engine"),
-		CIcon_Engine::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Icon_Module */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"),
+		CIcon_Module::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DamagePanel */
@@ -521,6 +527,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_Engine */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"),
 		CEngine::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_AmmoBay */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_AmmoBay"),
+		CAmmoBay::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_BurntTree */
