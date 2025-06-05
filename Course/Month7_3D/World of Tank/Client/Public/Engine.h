@@ -4,6 +4,7 @@
 #include "Module.h"
 
 NS_BEGIN(Engine)
+class CCollider;
 class CSoundController;
 NS_END
 
@@ -23,6 +24,7 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual void    On_Collision_Enter(CGameObject* pOther) override;
 
 public:
 	void Start_Engine();
@@ -69,7 +71,6 @@ private:
 	string		m_EngineSound_Loop = {};
 	string		m_EngineSound_End = {};
 
-	//_bool		m_bIsPressAccel = { false };
 	_bool		m_IsOn = { false };
 
 	_float		m_fRPM = { 0.f };
@@ -79,7 +80,8 @@ private:
 	GEAR		m_eGear = { GEAR::END };
 
 private:
-	CSoundController* m_pSoundCom{ nullptr };
+	CCollider*			m_pColliderCom = { nullptr };
+	CSoundController*	m_pSoundCom{ nullptr };
 private:
 	HRESULT Ready_Components();
 

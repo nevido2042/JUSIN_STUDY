@@ -85,7 +85,7 @@ PS_OUT PS_BASECOLOR(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_FILL(PS_IN In)
+PS_OUT PS_FILL_COLOR(PS_IN In)
 {
     PS_OUT Out;
 
@@ -98,6 +98,23 @@ PS_OUT PS_FILL(PS_IN In)
     //    discard;
     
     Out.vColor = lerp(texColor, float4(1.f - g_fFill, g_fFill, 0.0, texColor.a), 0.7); // »¡°£»ö 30% ¼¯±â
+
+    return Out;
+}
+
+PS_OUT PS_FILL(PS_IN In)
+{
+    PS_OUT Out;
+
+    if (In.vTexcoord.x >= g_fFill)
+        discard;
+
+    float4 texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    
+    //if (texColor.a < g_fAlpha)
+    //    discard;
+    
+    Out.vColor = texColor;
 
     return Out;
 }
@@ -133,12 +150,12 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_FILL();
+        PixelShader = compile ps_5_0 PS_FILL_COLOR();
     }
     //2
     pass UI3D
     {
-        SetRasterizerState(RS_Cull_Front);
+        SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
@@ -154,6 +171,16 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_BASECOLOR();
+    }
+    //4
+    pass FILL_UI3D
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_FILL();
     }
 
 

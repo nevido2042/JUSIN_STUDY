@@ -12,7 +12,7 @@ NS_BEGIN(Client)
 class CTurret abstract : public CModule
 {
 public:
-	typedef struct tagTurretDesc : public GAMEOBJECT_DESC
+	typedef struct tagTurretDesc : public MODULE_DESC
 	{
 		_float4 vBaseColor =	{ 1.f, 1.f, 1.f, 1.f };
 		_float4 vGunColor =		{ 1.f, 1.f, 1.f, 1.f };

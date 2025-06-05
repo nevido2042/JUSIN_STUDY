@@ -47,7 +47,7 @@ void CGunMarker::Update(_float fTimeDelta)
 
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&pTerrain->Get_PickedPos_Gun()), 1.f));
 
-	m_pTransformCom->LookAt(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
+	m_pTransformCom->LookAt_Reverse(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
 
 }
 

@@ -34,7 +34,6 @@ public:
 
 private:
 	CGameObject* m_pTarget = { nullptr };
-
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

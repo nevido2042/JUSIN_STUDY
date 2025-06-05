@@ -34,7 +34,7 @@ HRESULT CShell::Initialize(void* pArg)
 
 void CShell::Priority_Update(_float fTimeDelta)
 {
-
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"));
 }
 
 void CShell::Update(_float fTimeDelta)
@@ -42,6 +42,8 @@ void CShell::Update(_float fTimeDelta)
 	m_pTransformCom->Apply_Gravity(9.8f, fTimeDelta);
 	m_pTransformCom->Move_Velocity(fTimeDelta);
 
+	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	//50보다 낮아지면 없애라
 	if (XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION)) < 50.f)
@@ -57,7 +59,7 @@ void CShell::Late_Update(_float fTimeDelta)
 
 HRESULT CShell::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
+	/*if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
 	if (m_pModelCom)
@@ -75,22 +77,38 @@ HRESULT CShell::Render()
 			if (FAILED(m_pModelCom->Render(i)))
 				return E_FAIL;
 		}
-	}
+	}*/
+
+	m_pColliderCom->Render();
 
 	return S_OK;
+}
+
+void CShell::On_Collision_Enter(CGameObject* pOther)
+{	
+	wcout << "Shell On_Collision_Enter: " << pOther->GetName() << endl;
+	Destroy();
 }
 
 
 HRESULT CShell::Ready_Components()
 {
-	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
+	///* For.Com_Shader */
+	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	//	return E_FAIL;
 
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fury"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	///* For.Com_Model */
+	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fury"),
+	//	TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	//	return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_Sphere::SPHERE_DESC	SphereDesc{};
+	SphereDesc.fRadius = 0.5f;
+	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -149,6 +167,7 @@ void CShell::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pModelCom);
+	Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 }

@@ -7,6 +7,12 @@ NS_BEGIN(Client)
 
 class CModule abstract : public CGameObject
 {
+public:
+	typedef struct tagModuleDesc : public GAMEOBJECT_DESC
+	{
+		class CTank*  pOwner = { nullptr };
+	}MODULE_DESC;
+
 protected:
 	CModule(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModule(const CModule& Prototype);
@@ -26,7 +32,7 @@ public:
 
 protected:
 	MODULE_STATE m_eModuleState = { MODULE_STATE::FUNCTIONAL };
-
+	class CTank* m_pOwner = { nullptr };
 private:
 	HRESULT Ready_Components();
 

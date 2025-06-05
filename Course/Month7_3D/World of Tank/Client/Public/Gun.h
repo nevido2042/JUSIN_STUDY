@@ -13,7 +13,7 @@ NS_BEGIN(Client)
 class CGun abstract : public CModule
 {
 public:
-	typedef struct tagGunDesc : public GAMEOBJECT_DESC
+	typedef struct tagGunDesc : public MODULE_DESC
 	{
 		_float4 vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 	}GUN_DESC;

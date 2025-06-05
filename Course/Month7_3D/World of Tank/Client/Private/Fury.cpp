@@ -117,17 +117,19 @@ HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 	lstrcpy(TurretDesc.szName, TEXT("Turret"));
 	TurretDesc.vBaseColor = pDesc->vTurretColor;
 	TurretDesc.vGunColor = pDesc->vGunColor;
+	TurretDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"), TEXT("Part_Turret"), &TurretDesc)))
 		return E_FAIL;
 
-	GAMEOBJECT_DESC Desc{};
+	CModule::MODULE_DESC Desc{};
 	Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	Desc.fRotationPerSec = 1.f;
 	Desc.iID = m_iID;
+	Desc.pOwner = this;
 
 	/* 엔진을 추가한다. */
-	lstrcpy(Desc.szName, TEXT("Engine"));
+	lstrcpy(Desc.szName, TEXT("Fury_Engine"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"), TEXT("Part_Engine"), &Desc)))
 		return E_FAIL;
 

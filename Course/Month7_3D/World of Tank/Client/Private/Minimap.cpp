@@ -121,8 +121,6 @@ HRESULT CMinimap::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"), TEXT("Part_PersonalArrowEntry"), &PersonalArrowEntry_Desc)))
 		return E_FAIL;
 
-
-
 	CLayer* pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"));
 	if (pLayer == nullptr)
 		return E_FAIL;

@@ -81,6 +81,7 @@ HRESULT CFuryTurret::Ready_PartObjects(TURRET_DESC* pDesc)
 	GunDesc.pParentWorldMatrix = &m_CombinedWorldMatrix;
 	GunDesc.fRotationPerSec = 1.f;
 	GunDesc.iID = m_iID;
+	GunDesc.pOwner = pDesc->pOwner;
 	lstrcpy(GunDesc.szName, TEXT("FuryGun"));
 
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryGun"), TEXT("Part_Gun"), &GunDesc)))

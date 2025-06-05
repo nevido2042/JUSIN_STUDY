@@ -4,8 +4,9 @@
 #include "GameObject.h"
 
 NS_BEGIN(Engine)
+class CCollider;
 class CShader;
-class CModel;
+//class CModel;
 NS_END
 
 NS_BEGIN(Client)
@@ -24,10 +25,12 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual void    On_Collision_Enter(CGameObject* pOther) override;
 
 private:
+	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	//CModel* m_pModelCom = { nullptr };
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();

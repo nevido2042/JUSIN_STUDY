@@ -86,7 +86,7 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 	// 한 번이라도 true였으면 계속 true 유지
 	m_isColl = m_isColl || bNowColl;
 
-	return m_isColl;
+	return bNowColl;
 }
 
 //#ifdef _DEBUG

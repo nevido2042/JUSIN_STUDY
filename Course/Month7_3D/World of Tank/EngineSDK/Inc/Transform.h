@@ -75,6 +75,7 @@ public:
 	void Rotation(_float fX, _float fY, _float fZ);
 public:
 	void LookAt(_fvector vAt);
+	void LookAt_Reverse(_fvector vAt);
 
 public:
 	void Add_Velocity(_fvector vVelocity);

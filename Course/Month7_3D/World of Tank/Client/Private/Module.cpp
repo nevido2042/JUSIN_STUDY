@@ -21,6 +21,12 @@ HRESULT CModule::Initialize_Prototype()
 
 HRESULT CModule::Initialize(void* pArg)
 {
+	MODULE_DESC* pModuleDesc = reinterpret_cast<MODULE_DESC*>(pArg);
+	m_pOwner = pModuleDesc->pOwner;
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+	//Safe_AddRef(m_pOwner);
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -68,5 +74,7 @@ HRESULT CModule::Ready_Components()
 void CModule::Free()
 {
 	__super::Free();
+
+	//Safe_Release(m_pOwner);
 
 }

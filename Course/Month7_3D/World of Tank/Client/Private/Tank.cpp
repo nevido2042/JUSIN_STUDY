@@ -5,12 +5,13 @@
 #include "Track.h"
 #include "GameInstance.h"
 #include "Engine.h"
-#include "DamageBar.h"
 #include "GameManager.h"
 #include "AmmoBay.h"
 
 #pragma region UI
 #include "Icon_Module.h"
+#include "DamageBar_World.h"
+#include "DamageBar.h"
 #pragma endregion
 
 CTank::CTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -52,7 +53,7 @@ void CTank::Priority_Update(_float fTimeDelta)
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return;
 
-	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLIDER_GROUP::BODY), this, TEXT("Com_Collider"));
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"));
 	
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -94,12 +95,7 @@ void CTank::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
-	//CCollider* pTargetCollider = static_cast<CCollider*>(m_pGameInstance->Get_Component(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"), TEXT("Com_Collider")));
-	//if (nullptr == pTargetCollider)
-	//	return;
-	//m_pColliderCom->Intersect(pTargetCollider);
-
-	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLIDER_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	CGameObject::Update(fTimeDelta);
 }
@@ -112,7 +108,7 @@ void CTank::Late_Update(_float fTimeDelta)
 		return;
 	}
 
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 	if (m_bisDestroyed)
 		return;
@@ -162,9 +158,7 @@ HRESULT CTank::Render()
 	}
 
 //#ifdef _DEBUG
-
 	m_pColliderCom->Render();
-
 //#endif
 
 	return S_OK;
@@ -172,7 +166,7 @@ HRESULT CTank::Render()
 
 void CTank::On_Collision_Enter(CGameObject* pGameObject)
 {
-	//cout << "Tank On_Collision_Enter" << endl;
+	wcout << "Tank On_Collision_Enter : " << pGameObject->GetName() << endl;
 }
 
 HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
@@ -301,6 +295,8 @@ HRESULT CTank::Take_Damage(_float fDamage)
 		pDamageBar->Fill(m_fHP / m_fMaxHP);
 	}
 
+	static_cast<CDamageBar_World*> (Find_PartObject(TEXT("Part_DamageBar")))->Fill(m_fHP / m_fMaxHP);
+
 	return S_OK;
 }
 
@@ -362,13 +358,13 @@ HRESULT CTank::Store_Modules()
 
 void CTank::Move(_float fTimeDelta)
 {
-	CEngine* pEngin = static_cast<CEngine*>(Find_PartObject(TEXT("Part_Engine")));
+	CEngine* pEngin = static_cast<CEngine*>(m_Modules.at(ENUM_CLASS(MODULE::ENGINE))); //static_cast<CEngine*>(Find_PartObject(TEXT("Part_Engine")));
 
 	if (!pEngin->Get_isOn())
 		return;
 
-	CTrack* pTrackLeft = static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackLeft")));
-	CTrack* pTrackRight = static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackRight")));
+	CTrack* pTrackLeft = static_cast<CTrack*>(m_Modules.at(ENUM_CLASS(MODULE::TRACK_LEFT))); //static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackLeft")));
+	CTrack* pTrackRight = static_cast<CTrack*>(m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT))); //static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackRight")));
 
 	pTrackLeft->Set_Speed(0.f);
 	pTrackRight->Set_Speed(0.f);
@@ -380,48 +376,52 @@ void CTank::Move(_float fTimeDelta)
 	_float SpeedTrackLeft = 0.f;
 	_float SpeedTrackRight = 0.f;
 
-	if (m_pGameInstance->Key_Pressing(DIK_W))
+#pragma message ("트랙 돌리는 거 메시지 따로 트랙에서 처리해야겠다.")
+	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		SpeedTrackLeft += -fRPMPower;
-		SpeedTrackRight += -fRPMPower;
-
-		if (m_pGameInstance->Key_Pressing(DIK_A))
-		{
-			SpeedTrackRight += -fRPMPower;
-		}
-		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		if (m_pGameInstance->Key_Pressing(DIK_W))
 		{
 			SpeedTrackLeft += -fRPMPower;
-		}
-	}
-	else if (m_pGameInstance->Key_Pressing(DIK_S))
-	{
-		SpeedTrackLeft += fRPMPower;
-		SpeedTrackRight += fRPMPower;
+			SpeedTrackRight += -fRPMPower;
 
-		if (m_pGameInstance->Key_Pressing(DIK_A))
-		{
-			SpeedTrackRight += fRPMPower;
+			if (m_pGameInstance->Key_Pressing(DIK_A))
+			{
+				SpeedTrackRight += -fRPMPower;
+			}
+			else if (m_pGameInstance->Key_Pressing(DIK_D))
+			{
+				SpeedTrackLeft += -fRPMPower;
+			}
 		}
-		else if (m_pGameInstance->Key_Pressing(DIK_D))
+		else if (m_pGameInstance->Key_Pressing(DIK_S))
 		{
 			SpeedTrackLeft += fRPMPower;
-		}
-	}
-	else
-	{
-		if (m_pGameInstance->Key_Pressing(DIK_A))
-		{
-			SpeedTrackLeft += fRPMPower * 0.3f;
-			SpeedTrackRight += -fRPMPower;
-		}
-		else if (m_pGameInstance->Key_Pressing(DIK_D))
-		{
-			SpeedTrackLeft += -fRPMPower;
-			SpeedTrackRight += fRPMPower * 0.3f;
-		}
-	}
+			SpeedTrackRight += fRPMPower;
 
+			if (m_pGameInstance->Key_Pressing(DIK_A))
+			{
+				SpeedTrackRight += fRPMPower;
+			}
+			else if (m_pGameInstance->Key_Pressing(DIK_D))
+			{
+				SpeedTrackLeft += fRPMPower;
+			}
+		}
+		else
+		{
+			if (m_pGameInstance->Key_Pressing(DIK_A))
+			{
+				SpeedTrackLeft += fRPMPower * 0.3f;
+				SpeedTrackRight += -fRPMPower;
+			}
+			else if (m_pGameInstance->Key_Pressing(DIK_D))
+			{
+				SpeedTrackLeft += -fRPMPower;
+				SpeedTrackRight += fRPMPower * 0.3f;
+			}
+		}
+	}
+	
 	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), pEngin->Get_TurnPower() * fTimeDelta);
 
 	//if(pEngin->Get_Gear() != GEAR::LEFT && pEngin->Get_Gear() != GEAR::RIGHT)
@@ -459,7 +459,6 @@ HRESULT CTank::OnStateChanged_Engine(MODULE_STATE eState)
 		//m_pSoundCom->Play("engine_functional_1");
 		break;
 	case MODULE_STATE::DAMAGED:
-
 		if (m_pGameInstance->Get_ID() == m_iID)
 			m_pSoundCom_Voice->Play("engine_damaged_6");
 		break;

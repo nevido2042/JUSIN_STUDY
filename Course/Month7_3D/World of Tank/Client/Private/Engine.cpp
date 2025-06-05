@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "SoundController.h"
+#include "Tank.h"
 
 CEngine::CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CModule{ pDevice, pContext }
@@ -39,6 +40,8 @@ HRESULT CEngine::Initialize(void* pArg)
 		Start_Engine();
 	}
 
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, -2.f, 1.f));
+
 	return S_OK;
 }
 
@@ -65,6 +68,8 @@ void CEngine::Priority_Update(_float fTimeDelta)
 {
 	if (m_eModuleState == MODULE_STATE::DESTROYED)
 		return;
+
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 		Input(fTimeDelta);
@@ -106,18 +111,32 @@ void CEngine::Update(_float fTimeDelta)
 
 	m_pSoundCom->SetVolume(m_EngineSound_Loop, abs(m_fRPM));
 	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, abs(m_fRPM));
+
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
 	if (m_eModuleState == MODULE_STATE::DESTROYED)
 		return;
+
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
 HRESULT CEngine::Render()
 {
+	//#ifdef _DEBUG
+	m_pColliderCom->Render();
+	//#endif
 
 	return S_OK;
+}
+
+void CEngine::On_Collision_Enter(CGameObject* pOther)
+{
+	m_pOwner->Take_Damage(10.f);
+	m_eModuleState = static_cast<MODULE_STATE>(max(0, ENUM_CLASS(m_eModuleState) - 1));
 }
 
 void CEngine::Accel_Move(_float fTimeDelta)
@@ -343,6 +362,14 @@ HRESULT CEngine::Ready_Components()
 		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
+	/* For.Com_Collider */
+	CBounding_Sphere::SPHERE_DESC	SphereDesc{};
+	SphereDesc.fRadius = 0.5f;
+	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -375,5 +402,7 @@ CGameObject* CEngine::Clone(void* pArg)
 void CEngine::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pSoundCom);
 }

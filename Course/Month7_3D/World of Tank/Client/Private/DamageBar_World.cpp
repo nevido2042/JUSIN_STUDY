@@ -57,7 +57,7 @@ void CDamageBar_World::Update(_float fTimeDelta)
 	vParentPosition.y += 6.0f;
 
 	m_pTransformCom->Set_State(STATE::POSITION, XMLoadFloat4(&vParentPosition));
-	m_pTransformCom->LookAt(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
+	m_pTransformCom->LookAt_Reverse(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
 
 }
 
@@ -91,16 +91,40 @@ HRESULT CDamageBar_World::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(2)))
+	//¹è°æ
+
+	if (FAILED(m_pTextureCom_Background->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Begin(2)))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
+
+	//¹Ù
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFill", &m_fFillAmount, sizeof(_float))))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Begin(4)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CDamageBar_World::Fill(_float fFillAmount)
+{
+	m_fFillAmount = fFillAmount;
 }
 
 HRESULT CDamageBar_World::Ready_Components()
@@ -120,6 +144,11 @@ HRESULT CDamageBar_World::Ready_Components()
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
+	/* For.Com_Texture_Background */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Back_Ghost"),
+		TEXT("Com_Texture_Background"), reinterpret_cast<CComponent**>(&m_pTextureCom_Background))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -132,9 +161,6 @@ HRESULT CDamageBar_World::Bind_ShaderResources()
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
 	_float fAlpha = { 0.1f };
@@ -176,5 +202,6 @@ void CDamageBar_World::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pTextureCom_Background);
 	Safe_Release(m_pVIBufferCom);
 }

@@ -26,12 +26,19 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void	Fill(_float fFillAmount);
+
+private:
+	_float	m_fFillAmount = { 1.f };
+
 private:
 	const _float m_fBaseScale = 0.03f;
 
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
+	CTexture* m_pTextureCom_Background = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 private:
 	HRESULT Ready_Components();
