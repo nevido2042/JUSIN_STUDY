@@ -21,11 +21,11 @@ public:
 //#endif
 
 private:
-	void Resset_Collision() { m_isColl = false; } friend class CCollider_Manager;
+	void Reset_Collision() { m_isColl = false; } friend class CCollider_Manager;
 
 private:
 	COLLIDER			m_eType = { COLLIDER::END };
-	class CBounding* m_pBounding = { nullptr };
+	class CBounding*	m_pBounding = { nullptr };
 
 	_bool				m_isColl = { false };
 

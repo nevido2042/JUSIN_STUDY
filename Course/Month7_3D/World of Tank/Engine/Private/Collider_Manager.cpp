@@ -20,7 +20,7 @@ HRESULT CCollider_Manager::Add_CollisionGroup(_uint iGroupIndex, CGameObject* pG
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
-	static_cast<CCollider*>(pGameObject->Get_Component(strComponentTag))->Resset_Collision();
+	static_cast<CCollider*>(pGameObject->Get_Component(strComponentTag))->Reset_Collision();
 
 	m_pGameObjects[iGroupIndex].push_back(pGameObject);
 	Safe_AddRef(pGameObject);

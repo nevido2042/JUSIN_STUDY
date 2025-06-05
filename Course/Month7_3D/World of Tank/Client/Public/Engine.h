@@ -27,6 +27,9 @@ public:
 	virtual void    On_Collision_Enter(CGameObject* pOther) override;
 
 public:
+	HRESULT Damage_Engine();
+
+public:
 	void Start_Engine();
 	void End_Engine();
 

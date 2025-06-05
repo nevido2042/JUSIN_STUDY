@@ -39,6 +39,8 @@ public:
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
 
+	HRESULT OnStateChanged_Engine(MODULE_STATE eState);
+	HRESULT OnStateChanged_AmmoBay(MODULE_STATE eState);
 public:
 	HRESULT Try_Fire();
 public:
@@ -48,9 +50,8 @@ public:
 
 protected:
 	HRESULT Store_Modules();
-
-private:
-	void Check_Modules();
+//private:
+//	void Check_Modules();
 private:
 	void Input();
 private:
@@ -61,14 +62,11 @@ private:
 	void ApplyRecoil(_float fTimeDelta);
 private:
 	void SendMatrixSync(_float fTimeDelta);
-private:
-	HRESULT OnStateChanged_Engine(MODULE_STATE eState);
-	HRESULT OnStateChanged_AmmoBay(MODULE_STATE eState);
 
 protected:
 	//공간을 팔아서 시간을 사는 법
 	vector<class CModule*>	m_Modules = {};
-	vector<MODULE_STATE>	m_ModulesState = {};
+	//vector<MODULE_STATE>	m_ModulesState = {};
 
 private:
 	_float4 m_vBodyColor = { 1.f, 1.f, 1.f, 1.f };
