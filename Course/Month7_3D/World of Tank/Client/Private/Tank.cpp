@@ -90,6 +90,8 @@ void CTank::Update(_float fTimeDelta)
 
 	SendMatrixSync(fTimeDelta);
 
+	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
 	CGameObject::Update(fTimeDelta);
 }
 
@@ -149,6 +151,12 @@ HRESULT CTank::Render()
 				return E_FAIL;
 		}
 	}
+
+//#ifdef _DEBUG
+
+	m_pColliderCom->Render();
+
+//#endif
 
 	return S_OK;
 }
@@ -597,6 +605,8 @@ HRESULT CTank::Bind_ShaderResources()
 void CTank::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pColliderCom);
 
 	for (CModule* pModule : m_Modules)
 		Safe_Release(pModule);

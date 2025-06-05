@@ -37,7 +37,7 @@ void CTurret::Priority_Update(_float fTimeDelta)
 			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
 		else if (!m_bLeft && !m_bRight)
 		{
-			int a = 10;
+			//int a = 10;
 		}
 	}
 
@@ -95,11 +95,28 @@ HRESULT CTurret::Render()
 
 void CTurret::Input(_float fTimeDelta)
 {
-	if (GetForegroundWindow() != g_hWnd)
-		return;
+	//if (GetForegroundWindow() != g_hWnd)
+	//	return;
 
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
+	{
+		if (m_bLeft || m_bRight)
+		{
+			m_bLeft = m_bRight = false;
+
+			if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
+			{
+				BOOL_DESC Desc{};
+				Desc.iID = m_iID;
+				Desc.bBool = false;
+				m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LEFT), &Desc);
+				Desc.bBool = false;
+				m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
+			}
+		}
+
 		return;
+	}
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{

@@ -281,12 +281,12 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 0.f;
 	Desc.iID = -100;
 
-	Desc.vInitPosition = _float3(150.f, 87.f, 200.f);
+	Desc.vInitPosition = _float3(300.f, 87.f, 300.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
-	Desc.vInitPosition = _float3(250.f, 87.f, 200.f);
+	Desc.vInitPosition = _float3(310.f, 87.f, 300.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;

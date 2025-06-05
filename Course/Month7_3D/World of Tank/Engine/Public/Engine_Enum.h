@@ -2,6 +2,7 @@
 
 namespace Engine
 {
+    enum class COLLIDER { AABB, OBB, SPHERE, END };
     enum class MODEL { NONANIM, ANIM };
 	enum class D3DTS { VIEW, PROJ, END };
 	enum class RENDERGROUP{ RG_PRIORITY = 0, RG_NONBLEND, RG_BLEND, RG_UI, RG_END };

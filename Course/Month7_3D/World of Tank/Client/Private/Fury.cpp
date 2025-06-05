@@ -89,6 +89,16 @@ HRESULT CFury::Ready_Components()
 		TEXT("Com_Sound_Voice"), reinterpret_cast<CComponent**>(&m_pSoundCom_Voice))))
 		return E_FAIL;
 
+	/* For.Com_Collider */
+	CBounding_OBB::OBB_DESC	OBBDesc{};
+	OBBDesc.vExtents = _float3(1.3f, 1.f, 2.9f);
+	OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, -0.1f);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
+		return E_FAIL;
+
 	/* For.Com_Sound_TankSound2D */
 	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound2D"),
 	//	TEXT("Com_Sound_TankSound2D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound2D))))

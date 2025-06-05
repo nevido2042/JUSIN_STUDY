@@ -4,6 +4,7 @@
 #include "LandObject.h"
 
 NS_BEGIN(Engine)
+class CCollider;
 class CShader;
 class CModel;
 class CSoundController;
@@ -90,6 +91,7 @@ private:
 	_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
 
 protected:
+	CCollider*			m_pColliderCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 	CModel*				m_pModelCom_Destroyed = { nullptr };
