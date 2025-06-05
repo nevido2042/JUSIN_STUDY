@@ -107,6 +107,10 @@ CGameObject* CGameObject::Find_PartObject(const _wstring& strPartObjectTag)
 	return iter->second;
 }
 
+void CGameObject::On_Collision_Enter(CGameObject* pOther)
+{
+}
+
 CComponent* CGameObject::Find_Part_Component(const _wstring& strPartObjectTag, const _wstring& strComponentTag)
 {
 	CGameObject* pPartObject = Find_PartObject(strPartObjectTag);

@@ -151,6 +151,9 @@
     <ClInclude Include="..\public\Bounding_OBB.h">
       <Filter>01.Utility\04.Components\Collider\Bounding\OBB</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Collider_Manager.h">
+      <Filter>01.Utility\04.Components\Collider\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -287,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Bounding_OBB.cpp">
       <Filter>01.Utility\04.Components\Collider\Bounding\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collider_Manager.cpp">
+      <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +451,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Collider\Bounding\Sphere">
       <UniqueIdentifier>{662ed3b8-cdb2-40e4-b676-d654c9678f0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\Manager">
+      <UniqueIdentifier>{697ab2a5-3ccc-42fd-8502-343c9c470270}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

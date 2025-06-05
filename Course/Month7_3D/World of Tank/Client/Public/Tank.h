@@ -34,6 +34,7 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual void On_Collision_Enter(CGameObject* pGameObject) override;
 
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);

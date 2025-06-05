@@ -16,10 +16,12 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	void Update(_fmatrix WorldMatrix);
 	_bool Intersect(CCollider* pTargetCollider);
-
 //#ifdef _DEBUG
 	HRESULT Render();
 //#endif
+
+private:
+	void Resset_Collision() { m_isColl = false; } friend class CCollider_Manager;
 
 private:
 	COLLIDER			m_eType = { COLLIDER::END };

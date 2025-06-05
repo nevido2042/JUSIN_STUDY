@@ -10,6 +10,7 @@ namespace Engine
 		_uint			iWinSizeX;
 		_uint			iWinSizeY;
 		_uint			iNumLevels;
+		_uint			iNumColliderGroup;
 	}ENGINE_DESC;
 
 	typedef struct tagLightDesc

@@ -118,8 +118,6 @@ HRESULT CSkydome::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 
-#pragma message("스카이 돔은 빛을 계산하지 말아야함")
-
 	return S_OK;
 }
 

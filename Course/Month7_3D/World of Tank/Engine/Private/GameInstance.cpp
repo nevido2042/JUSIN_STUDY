@@ -14,6 +14,7 @@
 #include "Frustum.h"
 #include "Light_Manager.h"
 #include "Font_Manager.h"
+#include "Collider_Manager.h"
 
 
 _uint g_iWinSizeX;
@@ -85,6 +86,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
+	m_pCollider_Manager = CCollider_Manager::Create(EngineDesc.iNumColliderGroup);
+	if (nullptr == m_pCollider_Manager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -108,6 +113,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 
 	m_pNetwork->Late_Update(fTimeDelta);
 	m_pObject_Manager->Late_Update(fTimeDelta);
+	m_pCollider_Manager->Clear_CollisionGroups();
 
 	m_pSound_Device->Update();
 
@@ -522,6 +528,21 @@ void CGameInstance::Draw_Font(const _wstring& strFontTag, const _tchar* pText, c
 }
 #pragma endregion
 
+#pragma region COLLIDER_MANAGER
+HRESULT CGameInstance::Add_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag)
+{
+	return m_pCollider_Manager->Add_CollisionGroup(iGroupIndex, pGameObject, strComponentTag);
+}
+HRESULT CGameInstance::Out_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject)
+{
+	return m_pCollider_Manager->Out_CollisionGroup(iGroupIndex, pGameObject);
+}
+void CGameInstance::Check_Collision(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag)
+{
+	return m_pCollider_Manager->Check_Collision(iGroupIndex, pGameObject, strComponentTag, strOtherComponentTag);
+}
+#pragma endregion
+
 
 void CGameInstance::Release_Engine()
 {
@@ -563,6 +584,9 @@ void CGameInstance::Release_Engine()
 
 	if (0 != Safe_Release(m_pFont_Manager))
 		MSG_BOX("Failed to Release : m_pFont_Manager");
+
+	if (0 != Safe_Release(m_pCollider_Manager))
+		MSG_BOX("Failed to Release : m_pCollider_Manager");
 
 	if (0 != Safe_Release(m_pGraphic_Device))
 		MSG_BOX("Failed to Release : m_pGraphic_Device");

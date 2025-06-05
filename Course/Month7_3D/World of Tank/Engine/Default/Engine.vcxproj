@@ -159,6 +159,7 @@
     <ClInclude Include="..\public\Bounding_Sphere.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\public\Collider.h" />
+    <ClInclude Include="..\public\Collider_Manager.h" />
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\public\DebugDraw.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="..\private\Bounding_Sphere.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\private\Collider.cpp" />
+    <ClCompile Include="..\private\Collider_Manager.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\private\DebugDraw.cpp" />

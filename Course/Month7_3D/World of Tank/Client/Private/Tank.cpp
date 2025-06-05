@@ -51,6 +51,8 @@ void CTank::Priority_Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return;
+
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLIDER_GROUP::BODY), this, TEXT("Com_Collider"));
 	
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -91,6 +93,13 @@ void CTank::Update(_float fTimeDelta)
 	SendMatrixSync(fTimeDelta);
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
+	//CCollider* pTargetCollider = static_cast<CCollider*>(m_pGameInstance->Get_Component(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"), TEXT("Com_Collider")));
+	//if (nullptr == pTargetCollider)
+	//	return;
+	//m_pColliderCom->Intersect(pTargetCollider);
+
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLIDER_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	CGameObject::Update(fTimeDelta);
 }
@@ -159,6 +168,11 @@ HRESULT CTank::Render()
 //#endif
 
 	return S_OK;
+}
+
+void CTank::On_Collision_Enter(CGameObject* pGameObject)
+{
+	//cout << "Tank On_Collision_Enter" << endl;
 }
 
 HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
