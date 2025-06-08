@@ -84,7 +84,7 @@ void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObj
 			continue;
 
 		if (pCollider->Intersect(pOtherCollider))
-			pGameObject->On_Collision_Enter(pOther);
+			pGameObject->On_Collision_Stay(pOther);
 
 	}
 

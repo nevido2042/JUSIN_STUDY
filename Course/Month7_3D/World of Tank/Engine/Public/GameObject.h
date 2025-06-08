@@ -54,7 +54,7 @@ public:
 	_matrix			Get_CombinedWorldMatrix() const { return XMLoadFloat4x4(&m_CombinedWorldMatrix); }
 
 protected:
-	virtual void    On_Collision_Enter(CGameObject* pOther); friend class CCollider_Manager;
+	virtual void    On_Collision_Stay(CGameObject* pOther); friend class CCollider_Manager;
 
 protected:
 	_bool m_bCloned = { false };

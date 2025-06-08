@@ -20,11 +20,8 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-private:
-	//_bool	m_bisCounting = { false };
 
 private:
-	//chrono::high_resolution_clock::time_point m_CurretTime = {};
 	chrono::high_resolution_clock::time_point m_StartTime = {};
 
 public:

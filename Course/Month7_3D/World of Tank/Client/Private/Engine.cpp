@@ -4,6 +4,7 @@
 #include "SoundController.h"
 #include "Tank.h"
 #include "Icon_Module.h"
+#include "DamagePanel.h"
 
 CEngine::CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CModule{ pDevice, pContext }
@@ -122,7 +123,7 @@ void CEngine::Late_Update(_float fTimeDelta)
 	if (m_eModuleState == MODULE_STATE::DESTROYED)
 		return;
 
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
 HRESULT CEngine::Render()
@@ -134,8 +135,20 @@ HRESULT CEngine::Render()
 	return S_OK;
 }
 
-void CEngine::On_Collision_Enter(CGameObject* pOther)
+void CEngine::On_Collision_Stay(CGameObject* pOther)
 {
+	cout << "CEngine::On_Collision_Stay" << endl;
+	
+	Damage_Engine();
+}
+
+void CEngine::Set_ModuleState(MODULE_STATE eState)
+{
+	m_eModuleState = eState;
+
+	if (!m_IsOn)
+		Start_Engine();
+
 
 }
 
@@ -147,32 +160,15 @@ HRESULT CEngine::Damage_Engine()
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if(pDamagePanel == nullptr)
+			return E_FAIL;
+		pDamagePanel->Play_Voice_EngineState(m_eModuleState);
+
+		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_Engine")));
 		if (pIcon == nullptr)
 			return E_FAIL;
 		pIcon->Set_ModuleState(m_eModuleState);
-	}
-
-#pragma message ("보이스 음성, 게임매니저가 들고 있는게 좋을지도")
-	switch (m_eModuleState)
-	{
-	case MODULE_STATE::FUNCTIONAL:
-		Start_Engine();
-		//m_pSoundCom->Play("engine_functional_1");
-		break;
-	case MODULE_STATE::DAMAGED:
-		if (m_pGameInstance->Get_ID() == m_iID)
-			//m_pSoundCom_Voice->Play("engine_damaged_6");
-		break;
-	case MODULE_STATE::DESTROYED:
-
-		if (m_pGameInstance->Get_ID() == m_iID)
-			//m_pSoundCom_Voice->Play("engine_destroyed_4");
-		break;
-	case MODULE_STATE::END:
-		break;
-	default:
-		break;
 	}
 
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() == m_iID)
@@ -180,9 +176,11 @@ HRESULT CEngine::Damage_Engine()
 		MODULE_STATE_DESC Desc{};
 		Desc.iID = m_iID;
 		Desc.eModule = MODULE::ENGINE;
-		Desc.eState = eState;
+		Desc.eState = m_eModuleState;
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
 	}
+
+	return S_OK;
 }
 
 void CEngine::Accel_Move(_float fTimeDelta)

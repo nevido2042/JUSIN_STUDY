@@ -24,7 +24,10 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-	virtual void    On_Collision_Enter(CGameObject* pOther) override;
+	virtual void    On_Collision_Stay(CGameObject* pOther) override;
+
+public:
+	virtual void	Set_ModuleState(MODULE_STATE eState) override;
 
 public:
 	HRESULT Damage_Engine();

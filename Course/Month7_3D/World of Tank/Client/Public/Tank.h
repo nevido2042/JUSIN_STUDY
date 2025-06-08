@@ -34,13 +34,13 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-	virtual void On_Collision_Enter(CGameObject* pGameObject) override;
+	virtual void On_Collision_Stay(CGameObject* pGameObject) override;
 
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
 
-	HRESULT OnStateChanged_Engine(MODULE_STATE eState);
-	HRESULT OnStateChanged_AmmoBay(MODULE_STATE eState);
+	//HRESULT OnStateChanged_Engine(MODULE_STATE eState);
+	//HRESULT OnStateChanged_AmmoBay(MODULE_STATE eState);
 public:
 	HRESULT Try_Fire();
 public:
@@ -64,9 +64,7 @@ private:
 	void SendMatrixSync(_float fTimeDelta);
 
 protected:
-	//공간을 팔아서 시간을 사는 법
 	vector<class CModule*>	m_Modules = {};
-	//vector<MODULE_STATE>	m_ModulesState = {};
 
 private:
 	_float4 m_vBodyColor = { 1.f, 1.f, 1.f, 1.f };
@@ -87,14 +85,14 @@ private:
 	_bool	m_bisDestroyed = { false };
 
 private:
-	_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
+	//_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
 
 protected:
 	CCollider*			m_pColliderCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 	CModel*				m_pModelCom_Destroyed = { nullptr };
-	CSoundController*	m_pSoundCom_Voice = { nullptr };
+	//CSoundController*	m_pSoundCom_Voice = { nullptr };
 	//CSoundController*	m_pSoundCom_TankSound2D = { nullptr };
 
 private:

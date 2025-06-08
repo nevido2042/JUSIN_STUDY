@@ -199,9 +199,6 @@
     <Filter Include="02.GameObjects\06.UIObject\WOT_Icon">
       <UniqueIdentifier>{53b430a7-444b-4542-930c-ffc6365de69c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\Icon_Engine">
-      <UniqueIdentifier>{f88e400f-91b3-4dee-8f30-17ade9367f88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\Crosshair">
       <UniqueIdentifier>{1568540f-f1fe-4fd5-9780-8e6e06ce597b}</UniqueIdentifier>
     </Filter>
@@ -267,6 +264,12 @@
     </Filter>
     <Filter Include="02.GameObjects\03.Modules\04.AmmoBay">
       <UniqueIdentifier>{f920c9b9-c7ac-4b79-a547-a197da2f4a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\DamageCollider">
+      <UniqueIdentifier>{426337a1-ceb5-4c28-b0ed-ff520707ad79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Icon_Module">
+      <UniqueIdentifier>{f88e400f-91b3-4dee-8f30-17ade9367f88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -463,7 +466,7 @@
       <Filter>02.GameObjects\03.Modules\02.Gun</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Icon_Module.h">
-      <Filter>02.GameObjects\06.UIObject\Icon_Engine</Filter>
+      <Filter>02.GameObjects\06.UIObject\Icon_Module</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tank.h">
       <Filter>02.GameObjects\02.LandObject\00.Tank</Filter>
@@ -533,6 +536,9 @@
     </ClInclude>
     <ClInclude Include="..\public\AmmoBay.h">
       <Filter>02.GameObjects\03.Modules\04.AmmoBay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DamageCollider.h">
+      <Filter>02.GameObjects\DamageCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -724,7 +730,7 @@
       <Filter>02.GameObjects\03.Modules\02.Gun</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Icon_Module.cpp">
-      <Filter>02.GameObjects\06.UIObject\Icon_Engine</Filter>
+      <Filter>02.GameObjects\06.UIObject\Icon_Module</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tank.cpp">
       <Filter>02.GameObjects\02.LandObject\00.Tank</Filter>
@@ -794,6 +800,9 @@
     </ClCompile>
     <ClCompile Include="..\private\AmmoBay.cpp">
       <Filter>02.GameObjects\03.Modules\04.AmmoBay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamageCollider.cpp">
+      <Filter>02.GameObjects\DamageCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -85,9 +85,9 @@ HRESULT CTiger::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Sound_Voice */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
-		TEXT("Com_Sound_Voice"), reinterpret_cast<CComponent**>(&m_pSoundCom_Voice))))
-		return E_FAIL;
+	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
+	//	TEXT("Com_Sound_Voice"), reinterpret_cast<CComponent**>(&m_pSoundCom_Voice))))
+	//	return E_FAIL;
 
 	/* For.Com_Collider */
 	CBounding_OBB::OBB_DESC	OBBDesc{};
@@ -196,3 +196,5 @@ void CTiger::Free()
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 }
+
+

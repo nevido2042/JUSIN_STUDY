@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Rect;
+class CSoundController;
 NS_END
 
 NS_BEGIN(Client)
@@ -26,11 +27,18 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-private:
-	CShader* m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+public:
+	void Play_Voice_StartBattle();
+public:
+	void Play_Voice_EngineState(MODULE_STATE eState);
+public:
+	void Repair_All();
 
+private:
+	CShader*			m_pShaderCom = { nullptr };
+	CTexture*			m_pTextureCom = { nullptr };
+	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
+	CSoundController*	m_pSoundCom_Voice = { nullptr };
 
 private:
 	HRESULT Ready_Components();

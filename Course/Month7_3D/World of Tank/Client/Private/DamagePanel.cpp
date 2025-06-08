@@ -88,6 +88,47 @@ HRESULT CDamagePanel::Render()
 	return S_OK;
 }
 
+void CDamagePanel::Play_Voice_StartBattle()
+{
+	m_pSoundCom_Voice->Play("start_battle_2");
+}
+
+void CDamagePanel::Play_Voice_EngineState(MODULE_STATE eState)
+{
+	switch (eState)
+	{
+	case MODULE_STATE::DESTROYED:
+		m_pSoundCom_Voice->Play("engine_destroyed_4");
+		break;
+	case MODULE_STATE::DAMAGED:
+		m_pSoundCom_Voice->Play("engine_damaged_6");
+		break;
+	case MODULE_STATE::FUNCTIONAL:
+		//m_pSoundCom_Voice->Play("engine_functional_1");
+		break;
+	case MODULE_STATE::END:
+		break;
+	default:
+		break;
+	}
+
+}
+
+void CDamagePanel::Repair_All()
+{
+	static_cast<CIcon_Module*>(Find_PartObject(TEXT("Part_Engine")))->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+	static_cast<CIcon_Module*>(Find_PartObject(TEXT("Part_AmmoBay")))->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
+
+	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
+	{
+		MODULE_STATE_DESC Desc{};
+		Desc.iID = m_pGameInstance->Get_ID();
+		Desc.eModule = MODULE::ENGINE;
+		Desc.eState = MODULE_STATE::FUNCTIONAL;
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
+	}
+}
+
 HRESULT CDamagePanel::Ready_Components()
 {
 	/* For.Com_Shader */
@@ -101,6 +142,10 @@ HRESULT CDamagePanel::Ready_Components()
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamagePanel"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+	/* For.Com_Sound_Voice */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
+		TEXT("Com_Sound_Voice"), reinterpret_cast<CComponent**>(&m_pSoundCom_Voice))))
 		return E_FAIL;
 
 	return S_OK;

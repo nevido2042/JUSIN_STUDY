@@ -84,9 +84,9 @@ HRESULT CShell::Render()
 	return S_OK;
 }
 
-void CShell::On_Collision_Enter(CGameObject* pOther)
+void CShell::On_Collision_Stay(CGameObject* pOther)
 {	
-	wcout << "Shell On_Collision_Enter: " << pOther->GetName() << endl;
+	wcout << "Shell On_Collision_Stay: " << pOther->GetName() << endl;
 	Destroy();
 }
 

@@ -186,6 +186,7 @@
     <ClInclude Include="..\public\Crosshair.h" />
     <ClInclude Include="..\public\DamageBar.h" />
     <ClInclude Include="..\public\DamageBar_World.h" />
+    <ClInclude Include="..\public\DamageCollider.h" />
     <ClInclude Include="..\public\DamagePanel.h" />
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\Engine.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="..\private\Crosshair.cpp" />
     <ClCompile Include="..\private\DamageBar.cpp" />
     <ClCompile Include="..\private\DamageBar_World.cpp" />
+    <ClCompile Include="..\private\DamageCollider.cpp" />
     <ClCompile Include="..\private\DamagePanel.cpp" />
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />

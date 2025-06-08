@@ -1,6 +1,7 @@
 #include "CountdownTimer.h"
 
 #include "GameInstance.h"
+#include "DamagePanel.h"
 
 CCountdownTimer::CCountdownTimer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -53,7 +54,10 @@ HRESULT CCountdownTimer::Render()
 
 	if(Remaining.count() <= 0)
 	{
-		//m_bisCounting = false; // 시간이 다 되면 카운트 중지
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if (pDamagePanel)
+			pDamagePanel->Play_Voice_StartBattle();
+
 		m_bActive = false;
 	}
 
@@ -64,7 +68,6 @@ HRESULT CCountdownTimer::Render()
 	wstring strText = to_wstring(iDisplaySeconds);
 
 	// 폰트 출력
-	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), strText.c_str(), _float2(g_iWinSizeX * 0.5f, g_iWinSizeY * 0.1f));
 	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), strText.c_str(), _float2(g_iWinSizeX * 0.5f, g_iWinSizeY * 0.1f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 2.f * UI_RATIO);
 
 	return S_OK;

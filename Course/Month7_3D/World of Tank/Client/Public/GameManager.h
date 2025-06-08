@@ -75,7 +75,6 @@ private:
 private:
 	CSoundController* m_pSoundCom_BGM = { nullptr };
 	CSoundController* m_pSoundCom_GUI = { nullptr };
-
 private:
 	HRESULT Ready_Components();
 

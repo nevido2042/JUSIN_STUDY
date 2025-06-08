@@ -79,7 +79,7 @@
 #pragma endregion
 
 #pragma region PRACTICE
-#include "Tool_Engine_Sound.h"
+#include "DamageCollider.h"
 #pragma endregion
 
 #pragma region GAMEPLAY
@@ -852,6 +852,12 @@ HRESULT CLoader::Loading_For_Practice()
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_DamageCollider */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_DamageCollider"),
+		CDamageCollider::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
