@@ -74,12 +74,6 @@ HRESULT CLevel_Hanger::Initialize()
 		return E_FAIL;
 #pragma endregion
 
-
-
-
-
-
-
 	if (FAILED(Ready_Layer_Fury_Hanger(TEXT("Layer_Fury_Hanger"))))
 		return E_FAIL;
 
@@ -105,19 +99,11 @@ void CLevel_Hanger::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE))))
 			return;
 	}
-	/*else if (m_pGameInstance->Key_Down(DIK_G))
-	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::GAMEPLAY))))
-			return;
-	}*/
 	else if (m_pGameInstance->Key_Down(DIK_T))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::MAPTOOL))))
 			return;
 	}
-
-	//_float4 vCamPos = *m_pGameInstance->Get_CamPosition();
-	//cout << "vCamPos x: " << vCamPos.x << ", y: " << vCamPos.y << "z:" << vCamPos.z << endl;
 }
 
 HRESULT CLevel_Hanger::Render()

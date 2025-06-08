@@ -62,6 +62,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Icon_Consumables(TEXT("Layer_Icon_Consumables"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_PickedManager(TEXT("Layer_PickedManager"))))
+		return E_FAIL;
+
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
 	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), &Desc);
@@ -317,7 +320,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.iKeyNumber = 4;
 	Desc.eConsumables = CONSUMABLES::HAND_EXTINGUISHER;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallRepairkit");
@@ -325,7 +328,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.iKeyNumber = 5;
 	Desc.eConsumables = CONSUMABLES::SMALL_REPAIR_KIT;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_SmallMedkit");
@@ -333,12 +336,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.iKeyNumber = 6;
 	Desc.eConsumables = CONSUMABLES::SMALL_MED_KIT;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Ready_Layer_PickedManager(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PickedManager"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
 
 HRESULT CLevel_GamePlay::Load_Map()
 {

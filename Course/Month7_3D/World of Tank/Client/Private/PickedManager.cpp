@@ -35,12 +35,13 @@ void CPickedManager::Priority_Update(_float fTimeDelta)
 
 void CPickedManager::Update(_float fTimeDelta)
 {
-	Update_ScreenCenterPickedPos();
-	Update_GunPickedPos();
+
 }
 
 void CPickedManager::Late_Update(_float fTimeDelta)
 {
+	Update_ScreenCenterPickedPos();
+	Update_GunPickedPos();
 	m_ScreenCenterPickedPoses.clear();
 	m_GunPickedPoses.clear();
 }
