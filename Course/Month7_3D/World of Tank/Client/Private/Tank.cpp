@@ -55,7 +55,7 @@ void CTank::Priority_Update(_float fTimeDelta)
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return;
 
-	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"));
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TANK), this, TEXT("Com_Collider"));
 	
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -97,7 +97,7 @@ void CTank::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
-	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	if (m_pGameInstance->Get_ID() != m_iID)
 	{

@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Engine)
+class CCollider;
 class CShader;
 class CModel;
 NS_END
@@ -39,6 +40,10 @@ private:
 	void Input(_float fTimeDelta);
 
 private:
+	void Picked_Ray_ScreenCenter();
+	void Picked_Ray_Gun();
+
+private:
 	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
@@ -51,6 +56,7 @@ protected:
 
 
 protected:
+	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 

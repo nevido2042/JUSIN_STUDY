@@ -28,6 +28,8 @@ HRESULT CTurret::Initialize(void* pArg)
 
 void CTurret::Priority_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TANK), this, TEXT("Com_Collider"));
+
 	Input(fTimeDelta);
 
 	if (m_pGameInstance->Get_ID() != m_iID && m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
@@ -65,6 +67,14 @@ void CTurret::Update(_float fTimeDelta)
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
+	if (m_pGameInstance->Get_ID() != m_iID)
+	{
+		Picked_Ray_ScreenCenter();
+		Picked_Ray_Gun();
+	}
+
 	CGameObject::Update(fTimeDelta);
 
 }
@@ -90,6 +100,8 @@ HRESULT CTurret::Render()
 				return E_FAIL;
 		}
 	}
+
+	m_pColliderCom->Render();
 
 	return S_OK;
 }
@@ -148,7 +160,7 @@ void CTurret::Input(_float fTimeDelta)
 		// 좌/우 판별
 		_float fRightDot = XMVectorGetX(XMVector3Dot(vRight, vToTarget));
 
-		if (fRightDot > 0.01f) //오른쪽으로 돌기
+		if (fRightDot > 0.001f) //오른쪽으로 돌기
 		{
 			if (m_bRight == false)
 			{
@@ -164,9 +176,9 @@ void CTurret::Input(_float fTimeDelta)
 				}
 			}
 
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * abs(fRightDot));
 		}
-		else if (fRightDot < -0.01f) //왼쪽으로 돌기
+		else if (fRightDot < -0.001f) //왼쪽으로 돌기
 		{
 			if (m_bLeft == false)
 			{
@@ -183,7 +195,7 @@ void CTurret::Input(_float fTimeDelta)
 				
 			}
 
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * abs(fRightDot));
 		}
 		else
 		{
@@ -199,10 +211,70 @@ void CTurret::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LEFT), &Desc);
 					Desc.bBool = false;
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
-				}
-				
+				}	
 			}
+
+			// 회전이 멈췄을 때, 정확히 바라보도록 Look을 설정
+			// 새로운 Look 벡터 설정
 		}
+	}
+}
+
+void CTurret::Picked_Ray_ScreenCenter()
+{
+	_float fDist = { 0 };
+
+	_bool bisColl = false;
+	bisColl = m_pColliderCom->Intersect_Ray(XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),
+		XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), 1.f),
+		fDist);
+
+	if (bisColl)
+	{
+		_float3 vPickedPos = {};
+		_vector vOrigin = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()) };
+		_vector vDir = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()) };
+
+		XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
+
+		//여기서 픽된 포즈를 계산해서 올리자
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			pPickedManager->Add_ScreenCenterPickedPos(vPickedPos);
+	}
+
+}
+
+void CTurret::Picked_Ray_Gun()
+{
+	_float fDist = { 0 };
+
+	_bool bisColl = false;
+
+	//포구 피킹
+	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	if (nullptr == pPlayerTank)
+		return;
+
+	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+	if (nullptr == pGun)
+		return;
+
+	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
+	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
+	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2];
+
+	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
+
+	if (bisColl)
+	{
+		_float3 vPickedPos = {};
+		XMStoreFloat3(&vPickedPos, vGunPos + vGunLook * fDist);
+
+		//여기서 픽된 포즈를 계산해서 올리자
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			pPickedManager->Add_GunPickedPos(vPickedPos);
 	}
 }
 
@@ -248,5 +320,13 @@ HRESULT CTurret::Bind_ShaderResources()
 void CTurret::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
+
+	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pModelCom);
+	Safe_Release(m_pShaderCom);
 
 }

@@ -73,6 +73,16 @@ HRESULT CTigerTurret::Ready_Components()
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
+	/* For.Com_Collider */
+	CBounding_OBB::OBB_DESC	OBBDesc{};
+	OBBDesc.vExtents = _float3(1.1f, 0.5f, 1.4f);
+	OBBDesc.vCenter = _float3(0.0f, 2.3f, -0.2f);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -124,10 +134,4 @@ void CTigerTurret::Free()
 {
 	__super::Free();
 
-	for (auto& Pair : m_PartObjects)
-		Safe_Release(Pair.second);
-	m_PartObjects.clear();
-
-	Safe_Release(m_pModelCom);
-	Safe_Release(m_pShaderCom);
 }

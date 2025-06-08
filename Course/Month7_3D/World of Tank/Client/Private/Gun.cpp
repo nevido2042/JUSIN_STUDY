@@ -176,7 +176,7 @@ void CGun::Input(_float fTimeDelta)
 		// 여기선 Y값을 기준으로 판단 가능
 		_float fDotY = XMVectorGetY(vLocalLook); // = sin(pitch)
 
-		if (fUpDot > 0.01f) //하로
+		if (fUpDot > 0.001f) //하로
 		{
 			if (m_bDown == false)
 			{
@@ -192,9 +192,9 @@ void CGun::Input(_float fTimeDelta)
 				}
 			}
 			if(fDotY >= m_fMinPitch)
-				m_pTransformCom->Turn(vAxis, fTimeDelta);
+				m_pTransformCom->Turn(vAxis, fTimeDelta * abs(fUpDot));
 		}
-		else if (fUpDot < -0.01f) //상으로
+		else if (fUpDot < -0.001f) //상으로
 		{
 			if (m_bUp == false)
 			{
@@ -211,7 +211,7 @@ void CGun::Input(_float fTimeDelta)
 
 			}
 			if (fDotY <= m_fMaxPitch)
-				m_pTransformCom->Turn(vAxis, -fTimeDelta);
+				m_pTransformCom->Turn(vAxis, -fTimeDelta * abs(fUpDot));
 		}
 		else
 		{
