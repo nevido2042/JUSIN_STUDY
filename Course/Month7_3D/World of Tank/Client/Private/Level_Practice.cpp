@@ -83,6 +83,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DamageColliders(TEXT("Layer_DamageCollider"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_PickedManager(TEXT("Layer_PickedManager"))))
+		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
 	//	return E_FAIL;
@@ -306,6 +308,15 @@ HRESULT CLevel_Practice::Ready_Layer_DamageColliders(const _wstring strLayerTag)
 	Desc.vInitPosition = _float3(310.f, 90.f, 330.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_DamageCollider"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_PickedManager(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PickedManager"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

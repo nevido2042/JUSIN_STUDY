@@ -25,7 +25,7 @@ public:
 private:
 	_bool					PickQuadTreeNode(class CQuadTreeNode* pNode, const _float3* pPositions, const _uint* pIndices, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex, const _fvector& vRayOrigin, const _fvector& vRayDir);
 	_bool					RayIntersectAABB(const _float3& vBoxMin, const _float3& vBoxMax, _float& vOutDistance, const _fvector& vRayOrigin, const _fvector& vRayDir);
-	_bool					RayIntersectTriangle(const _float3& v0, const _float3& v1, const _float3& v2, _float& vOutDistance);
+	_bool					RayIntersectTriangle(const _float3& v0, const _float3& v1, const _float3& v2, const _fvector& vRayOrigin, const _fvector& vRayDir, _float& vOutDistance);
 
 private:
 	class CQuadTreeNode*	CreateTerrainQuadTree(const _float3* pPositions, const _uint* pIndices, _uint iNumVertices, _uint iNumIndices);

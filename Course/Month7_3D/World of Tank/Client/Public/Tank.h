@@ -38,9 +38,6 @@ public:
 
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
-
-	//HRESULT OnStateChanged_Engine(MODULE_STATE eState);
-	//HRESULT OnStateChanged_AmmoBay(MODULE_STATE eState);
 public:
 	HRESULT Try_Fire();
 public:
@@ -50,8 +47,6 @@ public:
 
 protected:
 	HRESULT Store_Modules();
-//private:
-//	void Check_Modules();
 private:
 	void Input();
 private:

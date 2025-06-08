@@ -1,8 +1,9 @@
 #include "Gun.h"
 
 #include "GameInstance.h"
-#include "Terrain.h"
+//#include "Terrain.h"
 #include "GameManager.h"
+#include "PickedManager.h"
 
 CGun::CGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -130,9 +131,9 @@ void CGun::Input(_float fTimeDelta)
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		// 타겟 위치
-		CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-		if (pTerrain == nullptr)
-			return;
+		//CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
+		//if (pTerrain == nullptr)
+		//	return;
 
 		// 내 위치
 		_float3 vMyPos = {
@@ -142,7 +143,11 @@ void CGun::Input(_float fTimeDelta)
 		};
 
 		// Pick된 위치
-		_float3 vPicked = pTerrain->Get_PickedPos();
+		_float3 vPicked = {};
+
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			vPicked = pPickedManager->Get_ScreenCenterPickedPos();
 
 		// 방향 벡터 (월드 공간)
 		_vector vToPicked = XMLoadFloat3(&vPicked) - XMLoadFloat3(&vMyPos);

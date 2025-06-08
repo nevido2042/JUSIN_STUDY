@@ -98,6 +98,12 @@ void CTank::Update(_float fTimeDelta)
 
 	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
+	_float fDist = { 0 };
+	m_pColliderCom->Intersect_Ray(XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),
+		XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), 1.f),
+		fDist);
+	//여기서 픽된 포즈를 계산해서 올리자
+
 	CGameObject::Update(fTimeDelta);
 }
 
@@ -109,7 +115,7 @@ void CTank::Late_Update(_float fTimeDelta)
 		return;
 	}
 
-	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 	if (m_bisDestroyed)
 		return;
@@ -442,77 +448,6 @@ void CTank::Destroyed()
 			pModule->Set_ModuleState(MODULE_STATE::DESTROYED);
 	}
 }
-
-//HRESULT CTank::OnStateChanged_Engine(MODULE_STATE eState)
-//{
-//	if (m_pGameInstance->Get_ID() == m_iID)
-//	{
-//		CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_Engine")));
-//		if (pIcon == nullptr)
-//			return E_FAIL;
-//		pIcon->Set_ModuleState(eState);
-//	}
-//
-//	switch (eState)
-//	{
-//	case MODULE_STATE::FUNCTIONAL:
-//		static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Start_Engine();
-//		//m_pSoundCom->Play("engine_functional_1");
-//		break;
-//	case MODULE_STATE::DAMAGED:
-//		/*if (m_pGameInstance->Get_ID() == m_iID)
-//			m_pSoundCom_Voice->Play("engine_damaged_6");*/
-//		break;
-//	case MODULE_STATE::DESTROYED:
-//		/*if (m_pGameInstance->Get_ID() == m_iID)
-//			m_pSoundCom_Voice->Play("engine_destroyed_4");*/
-//		break;
-//	case MODULE_STATE::END:
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() == m_iID)
-//	{
-//		MODULE_STATE_DESC Desc{};
-//		Desc.iID = m_iID;
-//		Desc.eModule = MODULE::ENGINE;
-//		Desc.eState = eState;
-//		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
-//	}
-//
-//	return S_OK;
-//}
-//
-//HRESULT CTank::OnStateChanged_AmmoBay(MODULE_STATE eState)
-//{
-//	CIcon_Module* pIcon = static_cast<CIcon_Module*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"))->Find_PartObject(TEXT("Part_AmmoBay")));
-//	if (pIcon == nullptr)
-//		return E_FAIL;
-//	pIcon->Set_ModuleState(eState);
-//
-//	switch (eState)
-//	{
-//	case MODULE_STATE::FUNCTIONAL:
-//		//m_pSoundCom->Play("engine_functional_1");
-//		break;
-//	case MODULE_STATE::DAMAGED:
-//		//m_pSoundCom_Voice->Play("engine_damaged_6");
-//		break;
-//	case MODULE_STATE::DESTROYED:
-//		//전차 파괴
-//		Destroyed();
-//		//m_pSoundCom_Voice->Play("engine_destroyed_4");
-//		break;
-//	case MODULE_STATE::END:
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	return S_OK;
-//}
 
 void CTank::ApplyRecoil(_float fTimeDelta)
 {

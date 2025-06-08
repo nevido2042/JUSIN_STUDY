@@ -123,8 +123,8 @@ void CPicking::Update_Mouse()
 	/*2. 투영스페이스로 옮기자. 로컬위치 * 월드행렬 * 뷰행렬 * 투영행렬 * 1/w */
 	_float4			vPosition = { };
 
-	vPosition.x = 0.f;// ptMouse.x / (iWinSizeX * 0.5f) - 1.f;
-	vPosition.y = 0.f;// ptMouse.y / (iWinSizeY * -0.5f) + 1.f;
+	vPosition.x = ptMouse.x / (g_iWinSizeX * 0.5f) - 1.f;
+	vPosition.y = ptMouse.y / (g_iWinSizeY * -0.5f) + 1.f;
 	vPosition.z = 0.0f;
 	vPosition.w = 1.f;
 

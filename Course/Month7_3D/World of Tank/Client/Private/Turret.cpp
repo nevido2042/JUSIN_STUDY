@@ -1,8 +1,9 @@
 #include "Turret.h"
 
 #include "GameInstance.h"
-#include "Terrain.h"
+//#include "Terrain.h"
 #include "GameManager.h"
+#include "PickedManager.h"
 
 CTurret::CTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -121,11 +122,16 @@ void CTurret::Input(_float fTimeDelta)
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		// 타겟 위치
-		CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-		if (pTerrain == nullptr)
-			return;
+		//CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
+		//if (pTerrain == nullptr)
+		//	return;
 
-		_float3 vTargetPos = pTerrain->Get_PickedPos();
+		_float3 vTargetPos = {};
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			vTargetPos = pPickedManager->Get_ScreenCenterPickedPos();
+
+		//_float3 vTargetPos = pTerrain->Get_PickedPos();
 		vTargetPos.y = m_CombinedWorldMatrix.m[3][1]; // 자기와 y만 맞추기
 
 		// 내 위치

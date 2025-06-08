@@ -1,7 +1,8 @@
 #include "GunMarker.h"
 
 #include "GameInstance.h"
-#include "Terrain.h"
+//#include "Terrain.h"
+#include "PickedManager.h"
 
 CGunMarker::CGunMarker(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -35,17 +36,22 @@ HRESULT CGunMarker::Initialize(void* pArg)
 
 void CGunMarker::Priority_Update(_float fTimeDelta)
 {
+
 }
 
 void CGunMarker::Update(_float fTimeDelta)
 {
-
 	//터레인한테 포구 피킹 위치 가져와서 위치시키자
-	CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-	if (nullptr == pTerrain)
-		return;
+	//CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
+	//if (nullptr == pTerrain)
+	//	return;
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&pTerrain->Get_PickedPos_Gun()), 1.f));
+	_float3 vGunPickedPos = {};
+	CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+	if (pPickedManager)
+		vGunPickedPos = pPickedManager->Get_GunPickedPos();
+
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vGunPickedPos), 1.f));
 
 	m_pTransformCom->LookAt_Reverse(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
 

@@ -31,6 +31,8 @@ public:
 	const _float3&				Get_PickedPos_Gun() { return m_vPickedPos_Gun; }
 
 private:
+	HRESULT Picking_Mouse();
+	HRESULT Picking_ScreenCenter();
 	HRESULT Picking_Gun();
 
 private:

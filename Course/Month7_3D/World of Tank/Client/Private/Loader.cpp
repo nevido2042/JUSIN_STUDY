@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "PickedManager.h"
 #include "Icon_Consumables.h"
 #include "CountdownTimer.h"
 #include "DamageBar_World.h"
@@ -447,6 +448,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PickedManager */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PickedManager"),
+		CPickedManager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Icon_Consumables */

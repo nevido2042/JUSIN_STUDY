@@ -30,6 +30,7 @@ private:
 	HRESULT Ready_Layer_PlayerTank(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DummyTank(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DamageColliders(const _wstring strLayerTag);
+	HRESULT Ready_Layer_PickedManager(const _wstring strLayerTag);
 
 
 	//3D UI

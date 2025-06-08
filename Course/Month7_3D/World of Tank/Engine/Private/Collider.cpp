@@ -89,6 +89,16 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 	return bNowColl;
 }
 
+_bool CCollider::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist)
+{
+	_bool bNowColl = m_pBounding->Intersect_Ray(vOrigin, vDir, fDist);
+
+	// 한 번이라도 true였으면 계속 true 유지
+	m_isColl = m_isColl || bNowColl;
+
+	return bNowColl;
+}
+
 //#ifdef _DEBUG
 HRESULT CCollider::Render()
 {

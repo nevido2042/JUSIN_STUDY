@@ -53,6 +53,15 @@ _bool CBounding_AABB::Intersect(CBounding* pTarget)
 	return isColl;
 }
 
+_bool CBounding_AABB::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist)
+{
+	_bool		isColl = { false };
+
+	isColl = m_pDesc->Intersects(vOrigin, vDir, fDist);
+
+	return isColl;
+}
+
 
 
 //#ifdef _DEBUG

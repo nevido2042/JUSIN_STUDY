@@ -189,7 +189,7 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestD
 			const _float3& v2 = m_pVertexPositions[reinterpret_cast<_uint*>(m_pIndices)[triIdx * 3 + 2]];
 
 			_float distTri;
-			if (RayIntersectTriangle(v0, v1, v2, distTri))
+			if (RayIntersectTriangle(v0, v1, v2, vRayOrigin, vRayDir, distTri))
 			{
 				if (distTri < fNearestDist)
 				{
@@ -395,16 +395,16 @@ _bool CVIBuffer_Terrain::RayIntersectAABB(const _float3& vBoxMin, const _float3&
 	return true; // 충돌 있음
 }
 
-_bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& v0, const _float3& v1, const _float3& v2, _float& vOutDistance)
+_bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& v0, const _float3& v1, const _float3& v2, const _fvector& vRayOrigin, const _fvector& vRayDir, _float& vOutDistance)
 {
-	const _float3& rayOrigin = m_pGameInstance->Get_MousePos();
-	const _float3& rayDir = m_pGameInstance->Get_MouseRay();
+	//const _float3& rayOrigin = //m_pGameInstance->Get_MousePos();
+	//const _float3& rayDir = //m_pGameInstance->Get_MouseRay();
 
 	const _float fEPSILON = numeric_limits<_float>::epsilon();
 
 	// 벡터 로딩
-	_vector vecOrigin = XMLoadFloat3(&rayOrigin);
-	_vector vecDir = XMLoadFloat3(&rayDir);
+	_vector vecOrigin = vRayOrigin;
+	_vector vecDir = vRayDir;
 	_vector vecV0 = XMLoadFloat3(&v0);
 	_vector vecV1 = XMLoadFloat3(&v1);
 	_vector vecV2 = XMLoadFloat3(&v2);
@@ -465,7 +465,7 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3* p
 			const _float3& v2 = pPositions[pIndices[iTri_Index * 3 + 2]];
 
 			_float fDistTri;
-			if (RayIntersectTriangle(v0, v1, v2, fDistTri))
+			if (RayIntersectTriangle(v0, v1, v2, vRayOrigin, vRayDir, fDistTri))
 			{
 				if (fDistTri < vOutNearestDist)
 				{
