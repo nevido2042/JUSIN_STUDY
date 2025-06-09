@@ -275,6 +275,7 @@ void CGameManager::Free()
 {
 	__super::Free();
 	
-	//Safe_Release(m_pSoundCom_BGM);
+	Safe_Release(m_pSoundCom_GUI);
+	Safe_Release(m_pSoundCom_BGM);
 
 }

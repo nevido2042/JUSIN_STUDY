@@ -80,6 +80,11 @@ HRESULT CTerrain::Picking_Mouse()
 
 	if (iLevelIndex == ENUM_CLASS(LEVEL::MAPTOOL) && m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
 	{
+
+		/*m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
+		m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
+		m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());*/
+
 		// 쿼드트리 픽킹
 		_float fDist = { 0 }; //거리
 		_uint iPickedTri = { 0 }; //피킹된 인덱스

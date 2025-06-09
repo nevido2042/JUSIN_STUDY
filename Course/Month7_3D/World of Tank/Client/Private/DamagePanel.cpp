@@ -209,6 +209,7 @@ void CDamagePanel::Free()
 		Safe_Release(Pair.second);
 	m_PartObjects.clear();
 
+	Safe_Release(m_pSoundCom_Voice);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);

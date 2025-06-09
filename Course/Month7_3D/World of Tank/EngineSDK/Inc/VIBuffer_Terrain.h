@@ -22,6 +22,12 @@ public:
 	virtual _float3 Compute_PickedPosition(const _matrix& pWorldMatrixInverse) override;
 	_bool			PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex, const _fvector& vRayOrigin, const _fvector& vRayDir);
 
+public:
+	void DigGround(const _float3& vCenter, _float radius, _float depth);
+
+private:
+	void RecalculateNormals();
+
 private:
 	_bool					PickQuadTreeNode(class CQuadTreeNode* pNode, const _float3* pPositions, const _uint* pIndices, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex, const _fvector& vRayOrigin, const _fvector& vRayDir);
 	_bool					RayIntersectAABB(const _float3& vBoxMin, const _float3& vBoxMax, _float& vOutDistance, const _fvector& vRayOrigin, const _fvector& vRayDir);
@@ -34,8 +40,12 @@ private:
 	_bool					AABBOverlap(const _float3& minA, const _float3& maxA, const _float3& minB, const _float3& maxB);
 
 private:
-	HRESULT Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset);
+	//HRESULT Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset);
 	HRESULT Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, _float2 Offset);
+
+private:
+	//VTXNORTEX* m_pVertices = {};
+
 private:
 	_uint			m_iNumVerticesX = {};
 	_uint			m_iNumVerticesZ = {};

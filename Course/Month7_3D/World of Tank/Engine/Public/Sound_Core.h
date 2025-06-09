@@ -42,8 +42,8 @@ private:
 
 	_float m_fVolume{ 1.f };
 	_float3		m_vSoundPos{};
-	_float		m_fMinDis;
-	_float		m_fMaxDis;
+	_float		m_fMinDis = {};
+	_float		m_fMaxDis = {};
 
 public:
 	static CSound_Core* Create(FMOD::System* pCoreSystem, FMOD::Sound* pSound);

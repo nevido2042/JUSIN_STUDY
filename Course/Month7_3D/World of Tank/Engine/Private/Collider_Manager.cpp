@@ -106,4 +106,15 @@ CCollider_Manager* CCollider_Manager::Create(_uint iNumGroups)
 
 void CCollider_Manager::Free()
 {
+	__super::Free();
+
+	for (size_t i = 0; i < m_iNumGroups; i++)
+	{
+		for (auto& GameObject : m_pGameObjects[i])
+			Safe_Release(GameObject);
+
+		m_pGameObjects[i].clear();
+	}
+
+	Safe_Delete_Array(m_pGameObjects);
 }

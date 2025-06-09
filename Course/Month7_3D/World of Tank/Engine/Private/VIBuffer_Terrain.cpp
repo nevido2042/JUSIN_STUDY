@@ -22,7 +22,9 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 
 	filesystem::path path = pHeightMapFilePath;
 	if (path.extension().wstring() == L".bmp")
-		Read_HeightMap_BMP(pHeightMapFilePath, Offset);
+	{
+		//Read_HeightMap_BMP(pHeightMapFilePath, Offset);
+	}
 	else if (path.extension().wstring() == L".png")
 		Read_HeightMap_PNG(pHeightMapFilePath, Offset);
 	else
@@ -219,6 +221,30 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestD
 	}
 	return bHit;
 }
+
+void CVIBuffer_Terrain::DigGround(const _float3& vCenter, _float radius, _float depth)
+{
+	for (_uint i = 0; i < m_iNumVertices; ++i)
+	{
+		_float3& vPos = m_pVertexPositions[i];
+
+		_float dist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&vCenter)));
+		if (dist < radius)
+		{
+			_float falloff = 1.0f - (dist / radius);
+			vPos.y -= depth * falloff;
+			//m_pVertices[i].vPosition.y = vPos.y; // 정점 데이터도 같이 수정
+		}
+	}
+
+	RecalculateNormals();
+	//m_pContext->UpdateSubresource(m_pVB, 0, nullptr, m_pVertices, 0, 0);
+}
+
+void CVIBuffer_Terrain::RecalculateNormals()
+{
+}
+
 
 void CVIBuffer_Terrain::ComputeTriangleAABB(const _float3& v0, const _float3& v1, const _float3& v2, _float3& outMin, _float3& outMax)
 {
@@ -491,165 +517,165 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(CQuadTreeNode* pNode, const _float3* p
 	return bHit;
 }
 
-HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset)
-{
-	HANDLE			hFile = CreateFile(pHeightMapFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	if (0 == hFile)
-		return E_FAIL;
-
-	_ulong			dwByte = {};
-
-	BITMAPFILEHEADER			fh{};
-	BITMAPINFOHEADER			ih{};
-
-	_bool bResult = { false };
-
-	bResult = ReadFile(hFile, &fh, sizeof fh, &dwByte, nullptr);
-	if (bResult == false)
-		return E_FAIL;
-	bResult = ReadFile(hFile, &ih, sizeof ih, &dwByte, nullptr);
-	if (bResult == false)
-		return E_FAIL;
-
-	m_iNumVerticesX = ih.biWidth;
-	m_iNumVerticesZ = ih.biHeight;
-	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
-
-	_uint* pPixels = new _uint[m_iNumVertices];
-	bResult = ReadFile(hFile, pPixels, sizeof(_uint) * m_iNumVertices, &dwByte, nullptr);
-	if (bResult == false)
-		return E_FAIL;
-
-
-	m_iNumVertexBuffers = 1;
-	m_iVertexStride = sizeof(VTXNORTEX);
-	m_iNumPritimive = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
-	m_iNumIndices = m_iNumPritimive * 3;
-	m_iIndexStride = sizeof(_uint);
-	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
-	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-	D3D11_BUFFER_DESC			VBBufferDesc{};
-	VBBufferDesc.ByteWidth = m_iNumVertices * m_iVertexStride;
-	VBBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	VBBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	VBBufferDesc.CPUAccessFlags = /*D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE*/0;
-	VBBufferDesc.StructureByteStride = m_iVertexStride;
-	VBBufferDesc.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA		VBInitialData{};
-
-	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
-
-	m_pVertexPositions = new _float3[m_iNumVertices];
-	ZeroMemory(m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
-
-	for (_uint i = 0; i < m_iNumVerticesZ; i++)
-	{
-		for (_uint j = 0; j < m_iNumVerticesX; j++)
-		{
-			_uint		iIndex = i * m_iNumVerticesX + j;
-
-			pVertices[iIndex].vPosition = _float3(
-				static_cast<_float>(j * Offset.x),
-				static_cast<_float>((pPixels[iIndex] & 0x000000ff) * Offset.y),
-				static_cast<_float>(i * Offset.x));
-
-			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
-			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesX - 1.f));
-		}
-	}
-
-	for (_uint i = 0; i < m_iNumVertices; ++i)
-		m_pVertexPositions[i] = pVertices[i].vPosition;
-
-	VBInitialData.pSysMem = pVertices;
-
-	D3D11_BUFFER_DESC			IBBufferDesc{};
-	IBBufferDesc.ByteWidth = m_iNumIndices * m_iIndexStride;
-	IBBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	IBBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	IBBufferDesc.CPUAccessFlags = /*D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE*/0;
-	IBBufferDesc.StructureByteStride = m_iIndexStride;
-	IBBufferDesc.MiscFlags = 0;
-
-	m_pIndices = new _uint[m_iNumIndices];
-	ZeroMemory(m_pIndices, sizeof(_uint) * m_iNumIndices);
-
-	_uint	iNumIndices = { 0 };
-
-	for (_uint i = 0; i < m_iNumVerticesZ - 1; i++)
-	{
-		for (_uint j = 0; j < m_iNumVerticesX - 1; j++)
-		{
-			_uint		iIndex = i * m_iNumVerticesX + j;
-
-			_uint		iIndices[4] = {
-				iIndex + m_iNumVerticesX,
-				iIndex + m_iNumVerticesX + 1,
-				iIndex + 1,
-				iIndex
-			};
-
-			_vector		vSourDir, vDestDir, vNormal;
-
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[1];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
-
-			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[1]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
-			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[1]]);
-			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
-
-			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
-				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[1]].vNormal
-				, XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
-				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
-
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
-			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[3];
-
-			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
-			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[3]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
-			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
-
-			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
-				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
-				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[3]].vNormal
-				, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
-		}
-	}
-
-	for (size_t i = 0; i < m_iNumVertices; i++)
-	{
-		XMStoreFloat3(&pVertices[i].vNormal
-			, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
-	}
-
-	D3D11_SUBRESOURCE_DATA		IBInitialData{};
-	IBInitialData.pSysMem = m_pIndices;
-
-	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
-		return E_FAIL;
-
-	Safe_Delete_Array(pVertices);
-
-	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
-		return E_FAIL;
-
-	m_pQuadTreeRoot = CreateTerrainQuadTree(m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), m_iNumVertices, m_iNumIndices);
-
-	CloseHandle(hFile);
-	Safe_Delete_Array(pPixels);
-
-	return S_OK;
-}
+//HRESULT CVIBuffer_Terrain::Read_HeightMap_BMP(const _tchar* pHeightMapFilePath, _float2 Offset)
+//{
+//	HANDLE			hFile = CreateFile(pHeightMapFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+//	if (0 == hFile)
+//		return E_FAIL;
+//
+//	_ulong			dwByte = {};
+//
+//	BITMAPFILEHEADER			fh{};
+//	BITMAPINFOHEADER			ih{};
+//
+//	_bool bResult = { false };
+//
+//	bResult = ReadFile(hFile, &fh, sizeof fh, &dwByte, nullptr);
+//	if (bResult == false)
+//		return E_FAIL;
+//	bResult = ReadFile(hFile, &ih, sizeof ih, &dwByte, nullptr);
+//	if (bResult == false)
+//		return E_FAIL;
+//
+//	m_iNumVerticesX = ih.biWidth;
+//	m_iNumVerticesZ = ih.biHeight;
+//	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
+//
+//	_uint* pPixels = new _uint[m_iNumVertices];
+//	bResult = ReadFile(hFile, pPixels, sizeof(_uint) * m_iNumVertices, &dwByte, nullptr);
+//	if (bResult == false)
+//		return E_FAIL;
+//
+//
+//	m_iNumVertexBuffers = 1;
+//	m_iVertexStride = sizeof(VTXNORTEX);
+//	m_iNumPritimive = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
+//	m_iNumIndices = m_iNumPritimive * 3;
+//	m_iIndexStride = sizeof(_uint);
+//	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
+//	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+//
+//	D3D11_BUFFER_DESC			VBBufferDesc{};
+//	VBBufferDesc.ByteWidth = m_iNumVertices * m_iVertexStride;
+//	VBBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+//	VBBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+//	VBBufferDesc.CPUAccessFlags = /*D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE*/0;
+//	VBBufferDesc.StructureByteStride = m_iVertexStride;
+//	VBBufferDesc.MiscFlags = 0;
+//
+//	D3D11_SUBRESOURCE_DATA		VBInitialData{};
+//
+//	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
+//	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+//
+//	m_pVertexPositions = new _float3[m_iNumVertices];
+//	ZeroMemory(m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
+//
+//	for (_uint i = 0; i < m_iNumVerticesZ; i++)
+//	{
+//		for (_uint j = 0; j < m_iNumVerticesX; j++)
+//		{
+//			_uint		iIndex = i * m_iNumVerticesX + j;
+//
+//			pVertices[iIndex].vPosition = _float3(
+//				static_cast<_float>(j * Offset.x),
+//				static_cast<_float>((pPixels[iIndex] & 0x000000ff) * Offset.y),
+//				static_cast<_float>(i * Offset.x));
+//
+//			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
+//			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesX - 1.f));
+//		}
+//	}
+//
+//	for (_uint i = 0; i < m_iNumVertices; ++i)
+//		m_pVertexPositions[i] = pVertices[i].vPosition;
+//
+//	VBInitialData.pSysMem = pVertices;
+//
+//	D3D11_BUFFER_DESC			IBBufferDesc{};
+//	IBBufferDesc.ByteWidth = m_iNumIndices * m_iIndexStride;
+//	IBBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+//	IBBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+//	IBBufferDesc.CPUAccessFlags = /*D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE*/0;
+//	IBBufferDesc.StructureByteStride = m_iIndexStride;
+//	IBBufferDesc.MiscFlags = 0;
+//
+//	m_pIndices = new _uint[m_iNumIndices];
+//	ZeroMemory(m_pIndices, sizeof(_uint) * m_iNumIndices);
+//
+//	_uint	iNumIndices = { 0 };
+//
+//	for (_uint i = 0; i < m_iNumVerticesZ - 1; i++)
+//	{
+//		for (_uint j = 0; j < m_iNumVerticesX - 1; j++)
+//		{
+//			_uint		iIndex = i * m_iNumVerticesX + j;
+//
+//			_uint		iIndices[4] = {
+//				iIndex + m_iNumVerticesX,
+//				iIndex + m_iNumVerticesX + 1,
+//				iIndex + 1,
+//				iIndex
+//			};
+//
+//			_vector		vSourDir, vDestDir, vNormal;
+//
+//			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
+//			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[1];
+//			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
+//
+//			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[1]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+//			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[1]]);
+//			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
+//
+//			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
+//				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+//			XMStoreFloat3(&pVertices[iIndices[1]].vNormal
+//				, XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
+//			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
+//				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+//
+//			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[0];
+//			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[2];
+//			reinterpret_cast<_uint*>(m_pIndices)[iNumIndices++] = iIndices[3];
+//
+//			vSourDir = XMLoadFloat3(&m_pVertexPositions[iIndices[2]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[0]]);
+//			vDestDir = XMLoadFloat3(&m_pVertexPositions[iIndices[3]]) - XMLoadFloat3(&m_pVertexPositions[iIndices[2]]);
+//			vNormal = XMVector3Normalize(XMVector3Cross(vSourDir, vDestDir));
+//
+//			XMStoreFloat3(&pVertices[iIndices[0]].vNormal
+//				, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+//			XMStoreFloat3(&pVertices[iIndices[2]].vNormal
+//				, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+//			XMStoreFloat3(&pVertices[iIndices[3]].vNormal
+//				, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
+//		}
+//	}
+//
+//	for (size_t i = 0; i < m_iNumVertices; i++)
+//	{
+//		XMStoreFloat3(&pVertices[i].vNormal
+//			, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
+//	}
+//
+//	D3D11_SUBRESOURCE_DATA		IBInitialData{};
+//	IBInitialData.pSysMem = m_pIndices;
+//
+//	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
+//		return E_FAIL;
+//
+//	Safe_Delete_Array(pVertices);
+//
+//	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
+//		return E_FAIL;
+//
+//	m_pQuadTreeRoot = CreateTerrainQuadTree(m_pVertexPositions, reinterpret_cast<_uint*>(m_pIndices), m_iNumVertices, m_iNumIndices);
+//
+//	CloseHandle(hFile);
+//	Safe_Delete_Array(pPixels);
+//
+//	return S_OK;
+//}
 
 HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, _float2 Offset)
 {
@@ -830,6 +856,9 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, 
 
 	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
 		return E_FAIL;
+
+	//m_pVertices = pVertices;
+
 	Safe_Delete_Array(pVertices);
 
     if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
@@ -884,4 +913,6 @@ void CVIBuffer_Terrain::Free()
 
 	if(!m_isCloned)
 		Safe_Release(m_pQuadTreeRoot);
+
+	//Safe_Delete_Array(m_pVertices);
 }
