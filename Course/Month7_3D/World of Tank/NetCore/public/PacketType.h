@@ -59,6 +59,9 @@ enum class PacketType
     CS_MODULE_STATE,
     SC_MODULE_STATE,
 
+    CS_HIT,
+    SC_HIT,
+
     CS_MATRIX_BODY,
     SC_MATRIX_BODY,
 
@@ -83,6 +86,12 @@ typedef struct tagPacket_Desc
 {
     _int iID{ -1 };
 }PACKET_DESC;
+
+typedef struct tagHitModule_Desc : PACKET_DESC
+{
+    _int            iTargetID{ -1 };
+    MODULE          eModule{ MODULE::END };
+}HIT_MODULE_DESC;
 
 typedef struct tagModuleState_Desc : PACKET_DESC
 {

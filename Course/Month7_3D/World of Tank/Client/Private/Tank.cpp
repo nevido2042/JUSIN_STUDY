@@ -296,6 +296,12 @@ HRESULT CTank::Take_Damage(_float fDamage)
 {
 	m_fHP -= fDamage;
 
+	if (m_fHP <= 0.f)
+	{
+		m_fHP = 0.f;
+		m_bisDestroyed = true;
+	}
+
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		//플레이어 탱크라면 체력바 찾아서 깎아라 && 맞는 소리 (꽝)

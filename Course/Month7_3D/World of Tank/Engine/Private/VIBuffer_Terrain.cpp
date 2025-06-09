@@ -267,6 +267,8 @@ void CVIBuffer_Terrain::DigGround(const _float3& vCenter, _float fRadius, _float
 	}
 
 	RecalculateNormals();
+
+	//m_pContext->Map() 이란게있다는데 자주 바뀔때 쓰면 좋다고 함
 	m_pContext->UpdateSubresource(m_pVB, 0, nullptr, m_pVertices, 0, 0);
 }
 

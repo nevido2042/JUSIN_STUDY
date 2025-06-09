@@ -39,7 +39,7 @@ private:
 	chrono::duration<_float>	m_Remaining = {}; // 남은 시간
 	_float						m_fDisplaySeconds = {}; // 남은 시간 표시용
 private:
-	const _float m_fLoadTime = { 3.5f }; // 장전 시간
+	const _float m_fLoadTime = { 1.f }; // 장전 시간
 private:
 	chrono::time_point < chrono::steady_clock, chrono::duration<_float>> m_TimeLoadComplete = {};
 private:

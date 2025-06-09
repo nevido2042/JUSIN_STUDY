@@ -68,10 +68,10 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
+
 	if (m_eModuleState == MODULE_STATE::DESTROYED)
 		return;
-
-	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 		Input(fTimeDelta);
@@ -82,6 +82,12 @@ void CEngine::Priority_Update(_float fTimeDelta)
 
 void CEngine::Update(_float fTimeDelta)
 {
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+
 	if (m_eModuleState == MODULE_STATE::DESTROYED && m_IsOn)
 	{
 		m_IsOn = false;
@@ -105,24 +111,15 @@ void CEngine::Update(_float fTimeDelta)
 	else if (fabsf(m_fRPM) < m_fRPM_Min)
 		m_fRPM = m_fRPM_Min;
 
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
-
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
 
 	m_pSoundCom->SetVolume(m_EngineSound_Loop, abs(m_fRPM));
 	m_pSoundCom->Set_Pitch(m_EngineSound_Loop, abs(m_fRPM));
-
-	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
-	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 }
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
-	if (m_eModuleState == MODULE_STATE::DESTROYED)
-		return;
-
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
@@ -167,10 +164,12 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 
 HRESULT CEngine::Damage_Engine()
 {
-	m_pOwner->Take_Damage(10.f);
-	m_eModuleState = static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1)));
+	m_pOwner->Take_Damage(30.f);
+	//m_eModuleState = static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1)));
 	//m_pOwner->OnStateChanged_Engine(m_eModuleState);
+	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
 
+#pragma message ("TODO: 엔진 고장났어요 라고 알리는게 맞나?? 엔진 맞았어요 모두에게 알리고 고장내면 되지")
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 	{
 		MODULE_STATE_DESC Desc{};
