@@ -53,6 +53,9 @@ enum class PacketType
     CS_FIRE,
     SC_FIRE,
 
+    CS_DIG,
+    SC_DIG,
+
     CS_MODULE_STATE,
     SC_MODULE_STATE,
 

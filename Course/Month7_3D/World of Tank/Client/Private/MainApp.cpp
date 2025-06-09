@@ -17,6 +17,7 @@
 #include "Engine.h"
 #include "LandObject.h"
 #include "Tank.h"
+#include "VIBuffer_Terrain.h"
 #pragma endregion
 
 
@@ -533,6 +534,31 @@ HRESULT CMainApp::Ready_Packets()
 					static_cast<CTank*>(pGameObject)->Try_Fire();
 				}
 			}
+
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_DIG), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_DIG);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_DIG), [this](void* pArg)
+		{
+			POSITION_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			static_cast<CVIBuffer_Terrain*>(m_pGameInstance->Get_Component(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Terrain"), TEXT("Com_VIBuffer"), 0))->DigGround(Desc.vPos, 10.f, 10.f);
 
 		})))
 		return E_FAIL;

@@ -272,6 +272,51 @@ void CVIBuffer_Terrain::DigGround(const _float3& vCenter, _float radius, _float 
 
 void CVIBuffer_Terrain::RecalculateNormals()
 {
+	// 정점 노멀 초기화
+	for (_uint i = 0; i < m_iNumVertices; ++i)
+		m_pVertices[i].vNormal = _float3(0.f, 0.f, 0.f);
+
+	// 각 삼각형마다 노멀 계산
+	for (_uint i = 0; i < m_iNumIndices; i += 3)
+	{
+		_uint i0 = reinterpret_cast<_uint*>(m_pIndices)[i];
+		_uint i1 = reinterpret_cast<_uint*>(m_pIndices)[i + 1];
+		_uint i2 = reinterpret_cast<_uint*>(m_pIndices)[i + 2];
+
+		const _float3& v0 = m_pVertices[i0].vPosition;
+		const _float3& v1 = m_pVertices[i1].vPosition;
+		const _float3& v2 = m_pVertices[i2].vPosition;
+
+		_vector vEdge1 = XMLoadFloat3(&v1) - XMLoadFloat3(&v0);
+		_vector vEdge2 = XMLoadFloat3(&v2) - XMLoadFloat3(&v0);
+
+		_vector vNormal = XMVector3Normalize(XMVector3Cross(vEdge1, vEdge2));
+
+		// 누적하기 전에 기존 vNormal 값을 로드하고
+		_vector vNormal0 = XMLoadFloat3(&m_pVertices[i0].vNormal);
+		_vector vNormal1 = XMLoadFloat3(&m_pVertices[i1].vNormal);
+		_vector vNormal2 = XMLoadFloat3(&m_pVertices[i2].vNormal);
+
+		// 새로운 노멀을 누적
+		vNormal0 = XMVectorAdd(vNormal0, vNormal);
+		vNormal1 = XMVectorAdd(vNormal1, vNormal);
+		vNormal2 = XMVectorAdd(vNormal2, vNormal);
+
+		// 다시 저장
+		XMStoreFloat3(&m_pVertices[i0].vNormal, vNormal0);
+		XMStoreFloat3(&m_pVertices[i1].vNormal, vNormal1);
+		XMStoreFloat3(&m_pVertices[i2].vNormal, vNormal2);
+
+	}
+
+	// 정점 노멀 정규화
+	for (_uint i = 0; i < m_iNumVertices; ++i)
+	{
+		XMStoreFloat3(&m_pVertices[i].vNormal,
+			XMVector3Normalize(XMLoadFloat3(&m_pVertices[i].vNormal)));
+	}
+
+	// GPU로 다시 업데이트는 DigGround에서 수행됨
 }
 
 
@@ -465,12 +510,12 @@ _bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& v0, const _float3& 
 	_vector vecV2 = XMLoadFloat3(&v2);
 
 	// 에지 벡터 계산
-	_vector edge1 = vecV1 - vecV0;
-	_vector edge2 = vecV2 - vecV0;
+	_vector vEdge1 = vecV1 - vecV0;
+	_vector vEdge2 = vecV2 - vecV0;
 
 	// 평면과의 교차 검사
-	_vector h = XMVector3Cross(vecDir, edge2);
-	_float a = XMVectorGetX(XMVector3Dot(edge1, h));
+	_vector h = XMVector3Cross(vecDir, vEdge2);
+	_float a = XMVectorGetX(XMVector3Dot(vEdge1, h));
 
 	if (fabs(a) < fEPSILON)
 		return false;  // 레이와 삼각형이 평행
@@ -482,13 +527,13 @@ _bool CVIBuffer_Terrain::RayIntersectTriangle(const _float3& v0, const _float3& 
 	if (u < 0.0f || u > 1.0f)
 		return false;
 
-	_vector q = XMVector3Cross(s, edge1);
+	_vector q = XMVector3Cross(s, vEdge1);
 	_float v = f * XMVectorGetX(XMVector3Dot(vecDir, q));
 
 	if (v < 0.0f || u + v > 1.0f)
 		return false;
 
-	_float t = f * XMVectorGetX(XMVector3Dot(edge2, q));
+	_float t = f * XMVectorGetX(XMVector3Dot(vEdge2, q));
 
 	if (t > fEPSILON)
 	{

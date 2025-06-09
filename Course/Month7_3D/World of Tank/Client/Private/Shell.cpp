@@ -53,18 +53,27 @@ void CShell::Update(_float fTimeDelta)
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
-	//현재 x, z 로 터레인의 높이를 받아와서
-	//터레인의 높이보다 낮아지면 그 곳의 땅을 파고
-	//사라져야함
-	_float vTerrainHeight = XMVectorGetY(m_pTargetBuffer->Compute_HeightPosition(m_pTransformCom->Get_State(STATE::POSITION)));
-	_float vShellHeight = XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION));
-
-	if (vTerrainHeight > vShellHeight)
+	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		_float3 vDigCenter;
-		XMStoreFloat3(&vDigCenter, m_pTransformCom->Get_State(STATE::POSITION));
-		static_cast<CVIBuffer_Terrain*>(m_pTargetBuffer)->DigGround(vDigCenter, 10.f, 10.f);
-		Destroy();
+		//현재 x, z 로 터레인의 높이를 받아와서
+		//터레인의 높이보다 낮아지면 그 곳의 땅을 파고
+		//사라져야함
+		_float vTerrainHeight = XMVectorGetY(m_pTargetBuffer->Compute_HeightPosition(m_pTransformCom->Get_State(STATE::POSITION)));
+		_float vShellHeight = XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION));
+
+		if (vTerrainHeight > vShellHeight)
+		{
+			_float3 vDigCenter;
+			XMStoreFloat3(&vDigCenter, m_pTransformCom->Get_State(STATE::POSITION));
+			static_cast<CVIBuffer_Terrain*>(m_pTargetBuffer)->DigGround(vDigCenter, 10.f, 10.f);
+			Destroy();
+
+			POSITION_DESC PosDesc = {};
+			//땅이 파였다는 패킷을 보내라
+			PosDesc.iID; //필요 없겠지만 일단 넣음
+			PosDesc.vPos = vDigCenter;
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DIG), &PosDesc);
+		}
 	}
 
 	//50보다 낮아지면 없애라

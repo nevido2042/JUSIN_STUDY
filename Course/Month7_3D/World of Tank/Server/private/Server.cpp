@@ -908,6 +908,34 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_DIG), [this](void* pArg)
+        {
+
+            POSITION_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_DIG), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_DIG), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_DIG);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
     if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), [this](void* pArg)
         {
             MODULE_STATE_DESC Desc{};
