@@ -13,6 +13,7 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype)
 	, m_iNumVerticesZ { Prototype.m_iNumVerticesZ }
 	, m_Offset{ Prototype.m_Offset }
 	, m_pQuadTreeRoot{ Prototype.m_pQuadTreeRoot }
+	, m_pVertices{ Prototype.m_pVertices }
 {
 }
 
@@ -228,17 +229,18 @@ void CVIBuffer_Terrain::DigGround(const _float3& vCenter, _float radius, _float 
 	{
 		_float3& vPos = m_pVertexPositions[i];
 
-		_float dist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&vCenter)));
-		if (dist < radius)
+		_float fDist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&vCenter)));
+		if (fDist < radius)
 		{
-			_float falloff = 1.0f - (dist / radius);
-			vPos.y -= depth * falloff;
-			//m_pVertices[i].vPosition.y = vPos.y; // 정점 데이터도 같이 수정
+			_float fFalloff = 1.0f - (fDist / radius);
+			vPos.y -= depth * fFalloff;
+			m_pVertices[i].vPosition.y = vPos.y; // 정점 데이터도 같이 수정
+			m_pVertexPositions[i] = vPos;
 		}
 	}
 
 	RecalculateNormals();
-	//m_pContext->UpdateSubresource(m_pVB, 0, nullptr, m_pVertices, 0, 0);
+	m_pContext->UpdateSubresource(m_pVB, 0, nullptr, m_pVertices, 0, 0);
 }
 
 void CVIBuffer_Terrain::RecalculateNormals()
@@ -857,9 +859,9 @@ HRESULT CVIBuffer_Terrain::Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, 
 	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
 		return E_FAIL;
 
-	//m_pVertices = pVertices;
+	m_pVertices = pVertices;
 
-	Safe_Delete_Array(pVertices);
+	//Safe_Delete_Array(pVertices);
 
     if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
         return E_FAIL;
@@ -911,8 +913,9 @@ void CVIBuffer_Terrain::Free()
 {
     __super::Free();
 
-	if(!m_isCloned)
+	if (!m_isCloned)
+	{
 		Safe_Release(m_pQuadTreeRoot);
-
-	//Safe_Delete_Array(m_pVertices);
+		Safe_Delete_Array(m_pVertices);
+	}
 }

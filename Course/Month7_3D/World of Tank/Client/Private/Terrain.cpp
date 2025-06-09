@@ -92,6 +92,7 @@ HRESULT CTerrain::Picking_Mouse()
 		if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, XMLoadFloat3(&m_pGameInstance->Get_MousePos()), XMLoadFloat3(&m_pGameInstance->Get_MouseRay())))
 		{
 			m_vPickedPos = vPos;
+			m_pVIBufferCom->DigGround(m_vPickedPos, 10.f, 10.f);
 		}
 	}
 

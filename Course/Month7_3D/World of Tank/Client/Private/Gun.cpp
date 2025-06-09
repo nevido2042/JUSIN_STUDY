@@ -4,6 +4,7 @@
 //#include "Terrain.h"
 #include "GameManager.h"
 #include "PickedManager.h"
+#include "Shell.h"
 
 CGun::CGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -101,15 +102,18 @@ HRESULT CGun:: Render()
 
 HRESULT CGun::Fire()
 {
-	GAMEOBJECT_DESC Desc = {};
+	CShell::SHELL_DESC Desc = {};
 	memcpy(&Desc.vInitPosition, m_CombinedWorldMatrix.m[3], sizeof(_float3));
 	memcpy(&Desc.vVelocity, m_CombinedWorldMatrix.m[2], sizeof(_float3));
-
 	_vector vVelocity = XMLoadFloat3(&Desc.vVelocity);
 	vVelocity = XMVectorScale(vVelocity, 100.f);
 	XMStoreFloat3(&Desc.vVelocity, vVelocity);
 	Desc.iID = m_iID;
 
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
+	Desc.strLayerTag = TEXT("Layer_Terrain");
+	Desc.iIndex = 0;
+	Desc.strComponentTag = TEXT("Com_VIBuffer");
 
 	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shell"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Shell"), &Desc);
 

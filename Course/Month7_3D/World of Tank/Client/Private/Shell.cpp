@@ -21,9 +21,16 @@ HRESULT CShell::Initialize_Prototype()
 
 HRESULT CShell::Initialize(void* pArg)
 {
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
+	SHELL_DESC* pDesc = static_cast<SHELL_DESC*>(pArg);
+
+	m_pTargetBuffer = static_cast<CVIBuffer*>(m_pGameInstance->Get_Component(pDesc->iLevelIndex, pDesc->strLayerTag, pDesc->strComponentTag, pDesc->iIndex));
+	Safe_AddRef(m_pTargetBuffer);
+	if (nullptr == m_pTargetBuffer)
+		return E_FAIL;
+
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -45,6 +52,20 @@ void CShell::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+
+	//현재 x, z 로 터레인의 높이를 받아와서
+	//터레인의 높이보다 낮아지면 그 곳의 땅을 파고
+	//사라져야함
+	_float vTerrainHeight = XMVectorGetY(m_pTargetBuffer->Compute_HeightPosition(m_pTransformCom->Get_State(STATE::POSITION)));
+	_float vShellHeight = XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION));
+
+	if (vTerrainHeight > vShellHeight)
+	{
+		_float3 vDigCenter;
+		XMStoreFloat3(&vDigCenter, m_pTransformCom->Get_State(STATE::POSITION));
+		static_cast<CVIBuffer_Terrain*>(m_pTargetBuffer)->DigGround(vDigCenter, 10.f, 10.f);
+		Destroy();
+	}
 
 	//50보다 낮아지면 없애라
 	if (XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION)) < 50.f)
@@ -128,6 +149,6 @@ void CShell::Free()
 	__super::Free();
 
 	Safe_Release(m_pColliderCom);
-	//Safe_Release(m_pModelCom);
+	Safe_Release(m_pTargetBuffer);
 	Safe_Release(m_pShaderCom);
 }

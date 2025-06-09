@@ -6,13 +6,22 @@
 NS_BEGIN(Engine)
 class CCollider;
 class CShader;
-//class CModel;
+class CVIBuffer;
 NS_END
 
 NS_BEGIN(Client)
 
 class CShell final : public CGameObject
 {
+public:
+	typedef struct tagShellDesc : public GAMEOBJECT_DESC
+	{
+		_uint		iLevelIndex;
+		_wstring	strLayerTag;
+		_uint		iIndex;
+		_wstring	strComponentTag;
+	}SHELL_DESC;
+
 private:
 	CShell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CShell(const CShell& Prototype);
@@ -30,7 +39,7 @@ public:
 private:
 	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
-	//CModel* m_pModelCom = { nullptr };
+	class CVIBuffer* m_pTargetBuffer = { nullptr };
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
