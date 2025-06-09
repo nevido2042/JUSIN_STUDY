@@ -22,7 +22,7 @@ HRESULT CBurntTree::Initialize_Prototype()
 HRESULT CBurntTree::Initialize(void* pArg)
 {
 	GAMEOBJECT_DESC			Desc{};
-	Desc.fRotationPerSec = 0.f;
+	Desc.fRotationPerSec = 1.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("BurntTree"));
 
@@ -38,12 +38,37 @@ HRESULT CBurntTree::Initialize(void* pArg)
 
 void CBurntTree::Priority_Update(_float fTimeDelta)
 {
+	if (m_bFallComplete == true)
+		return;
 
+	if(m_bIsFall == false)
+		m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TREE), this, TEXT("Com_Collider"));
 }
 
 void CBurntTree::Update(_float fTimeDelta)
 {
+	if (m_bFallComplete == true)
+		return;
 
+	if (m_bIsFall == false)
+	{
+		m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
+		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TANK), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	}
+	else
+	{
+		//월드의 업벡터랑, 업벡터랑 내적했을 때 0.3f 이하가 되면 멈춰라
+		_vector vWorldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		_vector vUp =  m_pTransformCom->Get_State(STATE::UP);
+		_float fDot = XMVectorGetX(XMVector3Dot(vWorldUp, vUp));
+		if (fDot < 0.3f)
+		{
+			m_bFallComplete = true;
+			return;
+		}
+			
+		m_pTransformCom->Turn(XMLoadFloat3(&m_vAxis), fTimeDelta);
+	}
 }
 
 void CBurntTree::Late_Update(_float fTimeDelta)
@@ -75,7 +100,26 @@ HRESULT CBurntTree::Render()
 		}
 	}
 
+	m_pColliderCom->Render();
+
 	return S_OK;
+}
+
+void CBurntTree::On_Collision_Stay(CGameObject* pOther)
+{
+	m_bIsFall = true;
+
+	//탱크의 반대 방향으로 넘어져야한다.
+	_vector vOtherPos = pOther->Get_Transform()->Get_State(STATE::POSITION);
+	_vector vTreePos = m_pTransformCom->Get_State(STATE::POSITION);
+
+	_vector vDir = vTreePos - vOtherPos;
+	_vector vWorldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+	_vector vAxis = XMVector3Cross(vWorldUp, vDir);
+
+	XMStoreFloat3(&m_vAxis, vAxis);
+	//Destroy();
 }
 
 HRESULT CBurntTree::Ready_Components()
@@ -88,6 +132,14 @@ HRESULT CBurntTree::Ready_Components()
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_BurntTree"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_Sphere::SPHERE_DESC	SphereDesc{};
+	SphereDesc.fRadius = 0.5f;
+	SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereDesc)))
 		return E_FAIL;
 
 	return S_OK;
