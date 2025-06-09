@@ -160,7 +160,7 @@ void CTurret::Input(_float fTimeDelta)
 		// 좌/우 판별
 		_float fRightDot = XMVectorGetX(XMVector3Dot(vRight, vToTarget));
 
-		if (fRightDot > 0.001f) //오른쪽으로 돌기
+		if (fRightDot > 0.01f) //오른쪽으로 돌기
 		{
 			if (m_bRight == false)
 			{
@@ -176,9 +176,9 @@ void CTurret::Input(_float fTimeDelta)
 				}
 			}
 
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * abs(fRightDot));
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta /** abs(fRightDot)*/);
 		}
-		else if (fRightDot < -0.001f) //왼쪽으로 돌기
+		else if (fRightDot < -0.01f) //왼쪽으로 돌기
 		{
 			if (m_bLeft == false)
 			{
@@ -195,7 +195,7 @@ void CTurret::Input(_float fTimeDelta)
 				
 			}
 
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * abs(fRightDot));
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta /** abs(fRightDot)*/);
 		}
 		else
 		{
@@ -212,10 +212,28 @@ void CTurret::Input(_float fTimeDelta)
 					Desc.bBool = false;
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
 				}	
-			}
 
-			// 회전이 멈췄을 때, 정확히 바라보도록 Look을 설정
-			// 새로운 Look 벡터 설정
+
+				// 회전이 멈췄을 때, 정확히 바라보도록 Look을 설정
+				// 새로운 Look 벡터 설정
+				// 회전 멈출 때 정확히 타겟을 바라보게 Look 보정
+				_float3 vScaled = m_pTransformCom->Get_Scaled(); // 현재 스케일 유지
+				// 정면 방향 (Look)
+				_vector vLook = XMVector3Normalize(vToTarget); // 목표 방향 정규화
+				// 오른쪽 방향
+				_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+				// 위 방향
+				_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
+				// 스케일 적용
+				vLook *= vScaled.z;
+				vRight *= vScaled.x;
+				vUp *= vScaled.y;
+				// CombinedWorldMatrix에 직접 반영
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[0]), vRight);
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[1]), vUp);
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
+
+			}
 		}
 	}
 }

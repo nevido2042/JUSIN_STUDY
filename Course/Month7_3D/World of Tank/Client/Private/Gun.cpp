@@ -108,6 +108,7 @@ HRESULT CGun::Fire()
 	_vector vVelocity = XMLoadFloat3(&Desc.vVelocity);
 	vVelocity = XMVectorScale(vVelocity, 100.f);
 	XMStoreFloat3(&Desc.vVelocity, vVelocity);
+	Desc.iID = m_iID;
 
 
 	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shell"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Shell"), &Desc);
@@ -176,7 +177,7 @@ void CGun::Input(_float fTimeDelta)
 		// 여기선 Y값을 기준으로 판단 가능
 		_float fDotY = XMVectorGetY(vLocalLook); // = sin(pitch)
 
-		if (fUpDot > 0.001f) //하로
+		if (fUpDot > 0.01f) //하로
 		{
 			if (m_bDown == false)
 			{
@@ -192,9 +193,9 @@ void CGun::Input(_float fTimeDelta)
 				}
 			}
 			if(fDotY >= m_fMinPitch)
-				m_pTransformCom->Turn(vAxis, fTimeDelta * abs(fUpDot));
+				m_pTransformCom->Turn(vAxis, fTimeDelta /** abs(fUpDot)*/);
 		}
-		else if (fUpDot < -0.001f) //상으로
+		else if (fUpDot < -0.01f) //상으로
 		{
 			if (m_bUp == false)
 			{
@@ -211,7 +212,7 @@ void CGun::Input(_float fTimeDelta)
 
 			}
 			if (fDotY <= m_fMaxPitch)
-				m_pTransformCom->Turn(vAxis, -fTimeDelta * abs(fUpDot));
+				m_pTransformCom->Turn(vAxis, -fTimeDelta /** abs(fUpDot)*/);
 		}
 		else
 		{
@@ -229,6 +230,24 @@ void CGun::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DOWN), &Desc);
 				}
 
+				// 회전이 멈췄을 때, 정확히 바라보도록 Look을 설정
+				// 새로운 Look 벡터 설정
+				// 회전 멈출 때 정확히 타겟을 바라보게 Look 보정
+				_float3 vScaled = m_pTransformCom->Get_Scaled(); // 현재 스케일 유지
+				// 정면 방향 (Look)
+				_vector vLook = XMVector3Normalize(vProjected); // 목표 방향 정규화
+				// 오른쪽 방향
+				_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+				// 위 방향
+				_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
+				// 스케일 적용
+				vLook *= vScaled.z;
+				vRight *= vScaled.x;
+				vUp *= vScaled.y;
+				// CombinedWorldMatrix에 직접 반영
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[0]), vRight);
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[1]), vUp);
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
 			}
 		}
 	}

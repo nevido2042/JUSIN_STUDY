@@ -34,7 +34,8 @@ HRESULT CShell::Initialize(void* pArg)
 
 void CShell::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"));
+	if(m_pGameInstance->Get_ID() == m_iID)
+		m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"));
 }
 
 void CShell::Update(_float fTimeDelta)
@@ -59,26 +60,6 @@ void CShell::Late_Update(_float fTimeDelta)
 
 HRESULT CShell::Render()
 {
-	/*if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-	if (m_pModelCom)
-	{
-		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
-
-		for (_uint i = 0; i < iNumMesh; i++)
-		{
-			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-				return E_FAIL;
-
-			if (FAILED(m_pShaderCom->Begin(2)))
-				return E_FAIL;
-
-			if (FAILED(m_pModelCom->Render(i)))
-				return E_FAIL;
-		}
-	}*/
-
 	m_pColliderCom->Render();
 
 	return S_OK;
@@ -93,16 +74,6 @@ void CShell::On_Collision_Stay(CGameObject* pOther)
 
 HRESULT CShell::Ready_Components()
 {
-	///* For.Com_Shader */
-	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
-	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-	//	return E_FAIL;
-
-	///* For.Com_Model */
-	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fury"),
-	//	TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-	//	return E_FAIL;
-
 	/* For.Com_Collider */
 	CBounding_Sphere::SPHERE_DESC	SphereDesc{};
 	SphereDesc.fRadius = 0.5f;
@@ -121,17 +92,6 @@ HRESULT CShell::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
-		return E_FAIL;
-
-	const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_Light(0);
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

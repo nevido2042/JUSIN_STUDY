@@ -171,7 +171,7 @@ HRESULT CEngine::Damage_Engine()
 		pIcon->Set_ModuleState(m_eModuleState);
 	}
 
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() == m_iID)
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 	{
 		MODULE_STATE_DESC Desc{};
 		Desc.iID = m_iID;
