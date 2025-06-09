@@ -13,8 +13,34 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype)
 	, m_iNumVerticesZ { Prototype.m_iNumVerticesZ }
 	, m_Offset{ Prototype.m_Offset }
 	, m_pQuadTreeRoot{ Prototype.m_pQuadTreeRoot }
-	, m_pVertices{ Prototype.m_pVertices }
+	//, m_pVertices{ Prototype.m_pVertices }
 {
+	//m_iNumVertices = Prototype.m_iNumVertices;
+
+	// Vertex Buffer 생성
+	D3D11_BUFFER_DESC VBBufferDesc{};
+	VBBufferDesc.ByteWidth = m_iNumVertices * m_iVertexStride;
+	VBBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	VBBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	VBBufferDesc.CPUAccessFlags = 0;
+	VBBufferDesc.StructureByteStride = m_iVertexStride;
+
+	D3D11_SUBRESOURCE_DATA VBInitialData{};
+	VBInitialData.pSysMem = Prototype.m_pVertices;
+
+	// 정점 위치 깊은 복사
+	m_pVertexPositions = new _float3[m_iNumVertices];
+	memcpy(m_pVertexPositions, Prototype.m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
+
+	// 정점 버퍼도 깊은 복사
+	m_pVertices = new VTXNORTEX[m_iNumVertices];
+	memcpy(m_pVertices, Prototype.m_pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+
+	//부모에서 만들어 놓은 버퍼 안쓸거니까 릴리즈 시킨다.
+	Safe_Release(m_pVB);
+	//그리고 자식에서 버퍼를 새로 만든다.
+	if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
+		return;
 }
 
 HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath, _float2 Offset)
@@ -36,6 +62,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 
 HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 {
+
     return S_OK;
 }
 
@@ -918,4 +945,27 @@ void CVIBuffer_Terrain::Free()
 		Safe_Release(m_pQuadTreeRoot);
 		Safe_Delete_Array(m_pVertices);
 	}
+	Safe_Delete_Array(m_pVertexPositions);
+	Safe_Delete_Array(m_pVertices);
+	Safe_Release(m_pVB);
 }
+
+//void CVIBuffer_Terrain::Free()
+//{
+//	__super::Free();
+//
+//	if (!m_isCloned)
+//	{
+//		Safe_Release(m_pQuadTreeRoot);
+//		Safe_Delete_Array(m_pVertices); // 여기서만 삭제
+//	}
+//	else
+//	{
+//		// 복사본은 별도로 해제
+//		Safe_Delete_Array(m_pVertices);
+//	}
+//
+//	Safe_Delete_Array(m_pVertexPositions);
+//	Safe_Release(m_pVB);
+//}
+

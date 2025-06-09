@@ -44,7 +44,7 @@ private:
 	HRESULT Read_HeightMap_PNG(const _tchar* pHeightMapFilePath, _float2 Offset);
 
 private:
-	VTXNORTEX* m_pVertices = {};
+	VTXNORTEX*		m_pVertices = {};
 
 private:
 	_uint			m_iNumVerticesX = {};

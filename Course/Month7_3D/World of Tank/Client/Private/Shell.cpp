@@ -51,7 +51,7 @@ void CShell::Update(_float fTimeDelta)
 	m_pTransformCom->Move_Velocity(fTimeDelta);
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
-	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	//현재 x, z 로 터레인의 높이를 받아와서
 	//터레인의 높이보다 낮아지면 그 곳의 땅을 파고
