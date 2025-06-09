@@ -65,7 +65,7 @@ void CShell::Update(_float fTimeDelta)
 		{
 			_float3 vDigCenter;
 			XMStoreFloat3(&vDigCenter, m_pTransformCom->Get_State(STATE::POSITION));
-			static_cast<CVIBuffer_Terrain*>(m_pTargetBuffer)->DigGround(vDigCenter, 10.f, 10.f);
+			static_cast<CVIBuffer_Terrain*>(m_pTargetBuffer)->DigGround(vDigCenter, SHELL_DIG_RADIUS, SHELL_DIG_DEPTH);
 			Destroy();
 
 			POSITION_DESC PosDesc = {};

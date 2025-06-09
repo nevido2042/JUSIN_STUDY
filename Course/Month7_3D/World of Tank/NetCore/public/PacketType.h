@@ -86,6 +86,7 @@ typedef struct tagPacket_Desc
 
 typedef struct tagModuleState_Desc : PACKET_DESC
 {
+    _int            iTargetID{ -1 };
 	MODULE          eModule{ MODULE::END };
     MODULE_STATE    eState{ MODULE_STATE::END };
 }MODULE_STATE_DESC;

@@ -23,7 +23,7 @@ public:
 	_bool			PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestDist, _uint& iOutPickedTriangleIndex, const _fvector& vRayOrigin, const _fvector& vRayDir);
 
 public:
-	void DigGround(const _float3& vCenter, _float radius, _float depth);
+	void DigGround(const _float3& vCenter, _float fRadius, _float fDepth);
 
 private:
 	void RecalculateNormals();

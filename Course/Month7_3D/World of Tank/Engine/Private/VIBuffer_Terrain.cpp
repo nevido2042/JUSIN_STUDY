@@ -250,17 +250,17 @@ _bool CVIBuffer_Terrain::PickQuadTreeNode(_float3& vOutPos, _float& vOutNearestD
 	return bHit;
 }
 
-void CVIBuffer_Terrain::DigGround(const _float3& vCenter, _float radius, _float depth)
+void CVIBuffer_Terrain::DigGround(const _float3& vCenter, _float fRadius, _float fDepth)
 {
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		_float3& vPos = m_pVertexPositions[i];
 
 		_float fDist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&vCenter)));
-		if (fDist < radius)
+		if (fDist < fRadius)
 		{
-			_float fFalloff = 1.0f - (fDist / radius);
-			vPos.y -= depth * fFalloff;
+			_float fFalloff = 1.0f - (fDist / fRadius);
+			vPos.y -= fDepth * fFalloff;
 			m_pVertices[i].vPosition.y = vPos.y; // 정점 데이터도 같이 수정
 			m_pVertexPositions[i] = vPos;
 		}

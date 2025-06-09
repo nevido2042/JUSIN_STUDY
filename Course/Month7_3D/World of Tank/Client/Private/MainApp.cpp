@@ -558,7 +558,7 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			static_cast<CVIBuffer_Terrain*>(m_pGameInstance->Get_Component(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Terrain"), TEXT("Com_VIBuffer"), 0))->DigGround(Desc.vPos, 10.f, 10.f);
+			static_cast<CVIBuffer_Terrain*>(m_pGameInstance->Get_Component(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Terrain"), TEXT("Com_VIBuffer"), 0))->DigGround(Desc.vPos, SHELL_DIG_RADIUS, SHELL_DIG_DEPTH);
 
 		})))
 		return E_FAIL;
@@ -583,9 +583,18 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MODULE_STATE_DESC));
 			m_pGameInstance->Clear_Packet();
 
+			//다른 탱크의 상태이상일수도
 			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
 			{
-				if (Desc.iID == pGameObject->Get_ID())
+				if (Desc.iTargetID == pGameObject->Get_ID())
+				{
+					static_cast<CTank*>(pGameObject)->Set_State_Module(Desc.eModule, Desc.eState);
+				}
+			}
+			//나의 탱크의 상태 이상 일수도 있음
+			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Get_GameObjects())
+			{
+				if (Desc.iTargetID == pGameObject->Get_ID())
 				{
 					static_cast<CTank*>(pGameObject)->Set_State_Module(Desc.eModule, Desc.eState);
 				}

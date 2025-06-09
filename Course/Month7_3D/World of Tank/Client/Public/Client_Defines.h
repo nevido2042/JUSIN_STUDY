@@ -64,4 +64,7 @@ using namespace Client;
 #define TERRAIN_OFFSET_WIDTH	5.0f	//수평
 #define TERRAIN_OFFSET_HEIGHT	1.f		//높이
 
+#define SHELL_DIG_DEPTH				10.f			//포탄 땅 파임 정도
+#define SHELL_DIG_RADIUS			10.f			//포탄 땅 파임 범위
+
 

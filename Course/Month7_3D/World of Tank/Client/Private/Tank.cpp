@@ -325,6 +325,7 @@ void CTank::Repair_All()
 		{
 			MODULE_STATE_DESC Desc{};
 			Desc.iID = m_iID;
+			Desc.iTargetID = m_iID;
 			Desc.eModule = static_cast<MODULE>(i);
 			Desc.eState = MODULE_STATE::FUNCTIONAL;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);

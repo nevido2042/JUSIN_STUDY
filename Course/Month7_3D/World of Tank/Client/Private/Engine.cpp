@@ -149,6 +149,19 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 	if (!m_IsOn)
 		Start_Engine();
 
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if (pDamagePanel == nullptr)
+			return;
+		pDamagePanel->Play_Voice_EngineState(m_eModuleState);
+
+		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_Engine")));
+		if (pIcon == nullptr)
+			return;
+
+		pIcon->Set_ModuleState(m_eModuleState);
+	}
 
 }
 
@@ -158,23 +171,11 @@ HRESULT CEngine::Damage_Engine()
 	m_eModuleState = static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1)));
 	//m_pOwner->OnStateChanged_Engine(m_eModuleState);
 
-	if (m_pGameInstance->Get_ID() == m_iID)
-	{
-		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
-		if(pDamagePanel == nullptr)
-			return E_FAIL;
-		pDamagePanel->Play_Voice_EngineState(m_eModuleState);
-
-		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_Engine")));
-		if (pIcon == nullptr)
-			return E_FAIL;
-		pIcon->Set_ModuleState(m_eModuleState);
-	}
-
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 	{
 		MODULE_STATE_DESC Desc{};
-		Desc.iID = m_iID;
+		Desc.iID = m_pGameInstance->Get_ID();
+		Desc.iTargetID = m_iID;
 		Desc.eModule = MODULE::ENGINE;
 		Desc.eState = m_eModuleState;
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
