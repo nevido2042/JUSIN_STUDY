@@ -277,6 +277,9 @@
     <Filter Include="02.GameObjects\06.UIObject\Score">
       <UniqueIdentifier>{4b8d4756-845e-4d64-b2e8-66f19e8ad6e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Score\Score_Tank">
+      <UniqueIdentifier>{7658b373-eb90-486b-9082-5a188c21827b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -552,6 +555,9 @@
     <ClInclude Include="..\public\Score.h">
       <Filter>02.GameObjects\06.UIObject\Score</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Score_Tank.h">
+      <Filter>02.GameObjects\06.UIObject\Score\Score_Tank</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -821,6 +827,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Score.cpp">
       <Filter>02.GameObjects\06.UIObject\Score</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Score_Tank.cpp">
+      <Filter>02.GameObjects\06.UIObject\Score\Score_Tank</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,11 +5,16 @@ typedef struct tagSessionInfo
 {
 	//쓰고있음
 	_int			iID = { 0 };
+
 	_bool			isJoinMatch = { false };
+
 	TANK			eTank = { TANK::END };
+
 	_float4			vBodyColor = { 1.f, 1.f, 1.f, 1.f };
 	_float4			vTurretColor = { 1.f, 1.f, 1.f, 1.f };
 	_float4			vGunColor = { 1.f, 1.f, 1.f, 1.f };
+
+	TEAM			eTeam = { TEAM::END };
 
 	//안쓰고있음
 	_float3			vPosition = {};

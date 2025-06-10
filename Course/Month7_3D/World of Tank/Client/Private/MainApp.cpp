@@ -190,15 +190,15 @@ HRESULT CMainApp::Ready_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), [this](void* pArg)
 		{
-			POSITION_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
+			SPAWN_TANK_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(SPAWN_TANK_DESC));
 			m_pGameInstance->Clear_Packet();
 
 			cout << "SC_CREATE_MY_CHARACTER" << endl;
 			cout << "Pos: " << Desc.vPos.x << endl;
 
 			CGameManager* pGameManager = GET_GAMEMANAGER;
-			pGameManager->Create_My_Tank(Desc.vPos);
+			pGameManager->Create_My_Tank(&Desc);
 		})))
 		return E_FAIL;
 
@@ -213,6 +213,7 @@ HRESULT CMainApp::Ready_Packets()
 			Desc.fSpeedPerSec = 1.f;
 			Desc.iID = Packet_Desc.iID;
 			Desc.vInitPosition = Packet_Desc.vPos;
+			Desc.eTeam = Packet_Desc.eTeam;
 
 			Desc.vBodyColor = Packet_Desc.vBodyColor;
 			Desc.vTurretColor = Packet_Desc.vTurretColor;

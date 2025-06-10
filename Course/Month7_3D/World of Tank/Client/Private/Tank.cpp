@@ -66,12 +66,6 @@ void CTank::Priority_Update(_float fTimeDelta)
 				return;
 		}
 
-		/*if (!m_bIsBattleStartVoice)
-		{
-			m_bIsBattleStartVoice = true;
-			m_pSoundCom_Voice->Play("start_battle_2");
-		}*/
-
 		if (m_bisDestroyed)
 			return;
 
@@ -208,60 +202,8 @@ HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
 	return S_OK;
 }
 
-//void CTank::Check_Modules()
-//{
-//	for (_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
-//	{
-//		if (nullptr == m_Modules[i])
-//			continue;
-//
-//		if (m_Modules[i]->Get_ModuleState() != m_ModulesState[i])
-//		{
-//			//모듈의 상태가 변경됨!
-//			m_ModulesState[i] = m_Modules[i]->Get_ModuleState();
-//
-//			//모듈 상태에 따른 보이스 재생, ui 변경
-//			switch (i)
-//			{
-//			case ENUM_CLASS(MODULE::ENGINE):
-//				OnStateChanged_Engine(m_ModulesState[i]);
-//				break;
-//			case ENUM_CLASS(MODULE::AMMO_BAY):
-//				OnStateChanged_AmmoBay(m_ModulesState[i]);
-//				break;
-//			default:
-//				break;
-//			}
-//		}
-//	}
-//
-//}
-
 void CTank::Input()
 {
-	//if (m_pGameInstance->Key_Down(DIK_F5))
-	//	Destroyed();
-
-	//if (m_pGameInstance->Key_Down(DIK_F1))
-	//{
-	//	static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Damage_Engine();
-	//}
-		//Set_State_Module(MODULE::ENGINE, static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
-		//m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::ENGINE)]) - 1)));
-
-	//if (m_pGameInstance->Key_Down(DIK_F2))
-		//m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(m_ModulesState[ENUM_CLASS(MODULE::AMMO_BAY)]) - 1)));
-
-	//if (m_pGameInstance->Key_Down(DIK_F2))
-	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::DAMAGED);
-
-	//if (m_pGameInstance->Key_Down(DIK_F3))
-	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(MODULE_STATE::DESTROYED);
-
-
-	if (m_pGameInstance->Key_Down(DIK_F4))
-		Take_Damage(5.f);
-
 	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
 	{
 		if (FAILED(Try_Fire()))
@@ -579,7 +521,8 @@ void CTank::Picked_Ray_Gun()
 
 	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
 	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
-	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2];
+	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2]; //단위 벡터로 전달 안해서 터진듯?
+	vGunLook = XMVector3Normalize(vGunLook);
 
 	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
 

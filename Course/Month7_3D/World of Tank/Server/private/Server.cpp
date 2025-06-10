@@ -554,10 +554,19 @@ HRESULT CServer::Define_Packets()
 
             if (iPlayerCount_JoinMatch == 2) //두명이 ready 상태면 시작시키기
             {
+                _uint iCount = 1;
                 for (CSession* _pSession : m_vecSession)
                 {
+                    //팀 정하기
+                    if (iCount % 2)
+                        _pSession->Get_SessionInfo().eTeam = TEAM::A;
+                    else
+                        _pSession->Get_SessionInfo().eTeam = TEAM::B;
+
+                    ++iCount;
+
                     //일단 랜덤 배치
-                    _pSession->Get_SessionInfo().vPosition = _float3{ 300.f + rand() % 10, 100.f + +rand() % 10, 292.f + rand() % 10 };
+                    _pSession->Get_SessionInfo().vPosition = _float3{ 300.f + rand() % 30, 100.f + +rand() % 30, 292.f + rand() % 30 };
                 }
 
                 cout << "Start_Game" << endl;
@@ -610,16 +619,17 @@ HRESULT CServer::Define_Packets()
 
             CSession* pSession = Find_Session(Packet_Desc.iID);
             
-            POSITION_DESC My_Pos_Desc = {};
-            My_Pos_Desc.iID = Packet_Desc.iID;
-            My_Pos_Desc.vPos = pSession->Get_SessionInfo().vPosition;
+            SPAWN_TANK_DESC SpawnTankDesc = {};
+            SpawnTankDesc.iID = Packet_Desc.iID;
+            SpawnTankDesc.vPos = pSession->Get_SessionInfo().vPosition;
+            SpawnTankDesc.eTeam = pSession->Get_SessionInfo().eTeam;
 
             //1. 내 캐릭터와
-            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), &My_Pos_Desc);
+            Send_Packet_Unicast(pSession, ENUM_CLASS(PacketType::SC_CREATE_MY_CHARACTER), &SpawnTankDesc);
 
             cout << "Send_Packet_Unicast(SC_CREATE_MY_CHARACTER)" << endl;
-            cout << "ID: " << My_Pos_Desc.iID << endl;
-            cout << "Pos: " << My_Pos_Desc.vPos.x << endl;
+            cout << "ID: " << SpawnTankDesc.iID << endl;
+            cout << "Pos: " << SpawnTankDesc.vPos.x << endl;
 
             //2. 상대 캐릭터 만들어라
             for (CSession* pOther : m_vecSession)
@@ -634,6 +644,7 @@ HRESULT CServer::Define_Packets()
 				Other_Desc.vBodyColor = pOther->Get_SessionInfo().vBodyColor;
 				Other_Desc.vTurretColor = pOther->Get_SessionInfo().vTurretColor;
 				Other_Desc.vGunColor = pOther->Get_SessionInfo().vGunColor;
+                Other_Desc.eTeam = pOther->Get_SessionInfo().eTeam;
 
                 cout << "Send_Packet_Unicast(SC_CREATE_OTHER_CHARACTER)" << endl;
                 cout << "ID: " << Other_Desc.iID << endl;
@@ -672,7 +683,7 @@ HRESULT CServer::Define_Packets()
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
-            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(POSITION_DESC));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(SPAWN_TANK_DESC));
 
             Update_Header();
         })))

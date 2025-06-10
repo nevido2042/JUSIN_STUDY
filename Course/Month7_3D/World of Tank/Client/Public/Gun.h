@@ -41,6 +41,8 @@ private:
 	void Input(_float fTimeDelta);
 
 private:
+	_float m_fRotateSpeed = 0.2f;
+private:
 	_float4	m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:

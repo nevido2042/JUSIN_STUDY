@@ -6,6 +6,7 @@
 enum class TANK         { FURY, TIGER, END };
 enum class MODULE       { ENGINE, TRACK_LEFT, TRACK_RIGHT, TURRET, GUN, SURVEYING_DEVICE, RADIO, FUEL_TANK, AMMO_BAY, END };
 enum class MODULE_STATE { DESTROYED, DAMAGED, FUNCTIONAL, END };
+enum class TEAM         { A, B, END };
 
 enum class PacketType
 {
@@ -113,6 +114,11 @@ typedef struct tagPostion_Desc : PACKET_DESC
     _float3 vPos{};
 }POSITION_DESC;
 
+typedef struct tagSpawnTankDesc : POSITION_DESC
+{
+    TEAM eTeam = { TEAM::END };
+}SPAWN_TANK_DESC;
+
 typedef struct tagJoinMatch_Desc : PACKET_DESC
 {
     TANK eTank{ TANK::END };
@@ -121,7 +127,7 @@ typedef struct tagJoinMatch_Desc : PACKET_DESC
     _float4 vGunColor       { 1.f, 1.f, 1.f, 1.f };
 }JOIN_MATCH_DESC;
 
-typedef struct tagCreateOtherTank_Desc : POSITION_DESC
+typedef struct tagCreateOtherTank_Desc : SPAWN_TANK_DESC
 {
     TANK eTank{ TANK::END };
     _float4 vBodyColor      { 1.f, 1.f, 1.f, 1.f };

@@ -66,9 +66,9 @@ HRESULT CGameManager::Render()
 	return S_OK;
 }
 
-HRESULT CGameManager::Create_My_Tank(_float3 vPos)
+HRESULT CGameManager::Create_My_Tank(SPAWN_TANK_DESC* pDesc)
 {
-	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"), vPos)))
+	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"), pDesc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
@@ -80,13 +80,14 @@ HRESULT CGameManager::Create_My_Tank(_float3 vPos)
 	return S_OK;
 }
 
-HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, _float3 vPos)
+HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, SPAWN_TANK_DESC* pDesc)
 {
 	CTank::TANK_DESC Desc{};
 	Desc.iID = m_pGameInstance->Get_ID();
 	Desc.fRotationPerSec = 1.f;
 	Desc.fSpeedPerSec = 1.f;
-	Desc.vInitPosition = vPos;
+	Desc.vInitPosition = pDesc->vPos;
+	Desc.eTeam = pDesc->eTeam;
 
 	Desc.vBodyColor = m_vBodyColor;
 	Desc.vTurretColor = m_vTurretColor;

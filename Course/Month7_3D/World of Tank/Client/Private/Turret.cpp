@@ -35,9 +35,9 @@ void CTurret::Priority_Update(_float fTimeDelta)
 	if (m_pGameInstance->Get_ID() != m_iID && m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 	{
 		if (m_bLeft)
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * m_fRotateSpeed);
 		else if (m_bRight)
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fRotateSpeed);
 		else if (!m_bLeft && !m_bRight)
 		{
 			//int a = 10;
@@ -178,7 +178,7 @@ void CTurret::Input(_float fTimeDelta)
 			}
 
 #pragma message ("델타값이 너무크면 넘어가버려서 바들바들 떤다. ex) 30프레임으로 낮추니까 발견하였음")
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta /** abs(fRightDot)*/);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fRotateSpeed/** abs(fRightDot)*/);
 		}
 		else if (fRightDot < -0.01f) //왼쪽으로 돌기
 		{
@@ -197,7 +197,7 @@ void CTurret::Input(_float fTimeDelta)
 				
 			}
 
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta /** abs(fRightDot)*/);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * m_fRotateSpeed /** abs(fRightDot)*/);
 		}
 		else
 		{
@@ -283,6 +283,7 @@ void CTurret::Picked_Ray_Gun()
 	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
 	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
 	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2];
+	vGunLook = XMVector3Normalize(vGunLook);
 
 	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
 

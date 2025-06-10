@@ -27,7 +27,12 @@ public:
 	virtual HRESULT Render();
 
 private:
+	_uint m_iNumTeamA = {};
+	_uint m_iNumTeamB = {};
+
+private:
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects();
 
 public:
 	static CScore* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

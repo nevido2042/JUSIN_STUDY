@@ -46,10 +46,10 @@ void CGun::Priority_Update(_float fTimeDelta)
 
 		// 상향 회전 시 제한
 		if (m_bUp && fDotY <= m_fMaxPitch)
-			m_pTransformCom->Turn(vAxis, -fTimeDelta);
+			m_pTransformCom->Turn(vAxis, -fTimeDelta * m_fRotateSpeed);
 		// 하향 회전 시 제한
 		else if (m_bDown && fDotY >= m_fMinPitch)
-			m_pTransformCom->Turn(vAxis, fTimeDelta);
+			m_pTransformCom->Turn(vAxis, fTimeDelta * m_fRotateSpeed);
 	}
 	
 }
@@ -197,7 +197,7 @@ void CGun::Input(_float fTimeDelta)
 				}
 			}
 			if(fDotY >= m_fMinPitch)
-				m_pTransformCom->Turn(vAxis, fTimeDelta /** abs(fUpDot)*/);
+				m_pTransformCom->Turn(vAxis, fTimeDelta * m_fRotateSpeed/** abs(fUpDot)*/);
 		}
 		else if (fUpDot < -0.01f) //상으로
 		{
@@ -216,7 +216,7 @@ void CGun::Input(_float fTimeDelta)
 
 			}
 			if (fDotY <= m_fMaxPitch)
-				m_pTransformCom->Turn(vAxis, -fTimeDelta /** abs(fUpDot)*/);
+				m_pTransformCom->Turn(vAxis, -fTimeDelta * m_fRotateSpeed /** abs(fUpDot)*/);
 		}
 		else
 		{
