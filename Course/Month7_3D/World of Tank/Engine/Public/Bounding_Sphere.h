@@ -23,10 +23,10 @@ public:
 	virtual void Update(_fmatrix WorldMatrix) override;
 	virtual _bool Intersect(CBounding* pTarget) override;
 	virtual _bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist) override;
-//#ifdef _DEBUG
+#ifdef _DEBUG
 public:
 	virtual HRESULT Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
-//#endif
+#endif
 
 private:
 	/* 채워지는 초기정보는 로컬상에 상태대로 셋팅한다. */

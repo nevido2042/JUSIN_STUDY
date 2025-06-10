@@ -55,7 +55,7 @@ _bool CBounding_Sphere::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& f
 	return isColl;
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
@@ -65,7 +65,7 @@ HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _f
 	return S_OK;
 }
 
-//#endif
+#endif
 
 
 CBounding_Sphere* CBounding_Sphere::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc)

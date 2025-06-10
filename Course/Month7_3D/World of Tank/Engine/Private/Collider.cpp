@@ -13,15 +13,15 @@ CCollider::CCollider(const CCollider& Prototype)
 	: CComponent(Prototype)
 	, m_eType{ Prototype.m_eType }
 	, m_pBounding{ Prototype.m_pBounding }
+#ifdef _DEBUG
 	, m_pBatch{ Prototype.m_pBatch }
 	, m_pEffect{ Prototype.m_pEffect }
-//#ifdef _DEBUG
 	, m_pInputLayout{ Prototype.m_pInputLayout }
-//#endif
+#endif
 {
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	Safe_AddRef(m_pInputLayout);
-//#endif
+#endif
 }
 
 HRESULT CCollider::Initialize_Prototype(COLLIDER eType)
@@ -29,7 +29,7 @@ HRESULT CCollider::Initialize_Prototype(COLLIDER eType)
 	m_eType = eType;
 
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -46,7 +46,7 @@ HRESULT CCollider::Initialize_Prototype(COLLIDER eType)
 
 
 
-//#endif
+#endif
 
 	return S_OK;
 }
@@ -99,7 +99,7 @@ _bool CCollider::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist)
 	return bNowColl;
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 HRESULT CCollider::Render()
 {
 	m_pEffect->SetWorld(XMMatrixIdentity());
@@ -118,7 +118,7 @@ HRESULT CCollider::Render()
 
 	return S_OK;
 }
-//#endif
+#endif
 
 CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, COLLIDER eType)
 {
@@ -154,12 +154,12 @@ void CCollider::Free()
 
 	Safe_Release(m_pBounding);
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	Safe_Release(m_pInputLayout);
 	if (false == m_isCloned)
 	{
 		Safe_Delete(m_pBatch);
 		Safe_Delete(m_pEffect);
 	}
-//#endif
+#endif
 }

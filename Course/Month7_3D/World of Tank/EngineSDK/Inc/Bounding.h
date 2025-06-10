@@ -2,9 +2,9 @@
 
 #include "Base.h"
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 #include "DebugDraw.h"
-//#endif
+#endif
 
 NS_BEGIN(Engine)
 
@@ -32,10 +32,10 @@ public:
 	virtual void Update(_fmatrix WorldMatrix) = 0;
 	virtual _bool Intersect(CBounding* pTarget) = 0;
 	virtual _bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist) = 0;
-//#ifdef _DEBUG
+#ifdef _DEBUG
 public:
 	virtual HRESULT Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) { return S_OK; }
-//#endif
+#endif
 
 protected:
 	ID3D11Device* m_pDevice = { nullptr };

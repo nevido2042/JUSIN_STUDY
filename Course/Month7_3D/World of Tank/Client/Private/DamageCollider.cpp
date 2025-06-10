@@ -65,9 +65,9 @@ void CDamageCollider::Late_Update(_float fTimeDelta)
 
 HRESULT CDamageCollider::Render()
 {
-
+#ifdef _DEBUG
 	m_pColliderCom->Render();
-
+#endif
 	return S_OK;
 }
 

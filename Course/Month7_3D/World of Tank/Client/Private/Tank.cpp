@@ -166,9 +166,9 @@ HRESULT CTank::Render()
 		}
 	}
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	m_pColliderCom->Render();
-//#endif
+#endif
 
 	return S_OK;
 }

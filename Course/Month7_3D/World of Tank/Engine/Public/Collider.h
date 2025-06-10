@@ -17,9 +17,9 @@ public:
 	void Update(_fmatrix WorldMatrix);
 	_bool Intersect(CCollider* pTargetCollider);
 	_bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist);
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	HRESULT Render();
-//#endif
+#endif
 
 private:
 	void Reset_Collision() { m_isColl = false; } friend class CCollider_Manager;
@@ -30,12 +30,12 @@ private:
 
 	_bool				m_isColl = { false };
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 private:
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
 	BasicEffect* m_pEffect = { nullptr };
 	ID3D11InputLayout* m_pInputLayout = { nullptr };
-//#endif
+#endif
 
 public:
 	static CCollider* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, COLLIDER eType);

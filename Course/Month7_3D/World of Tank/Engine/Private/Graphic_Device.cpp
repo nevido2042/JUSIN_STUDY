@@ -11,9 +11,9 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, _bool isWindowed, _uint iWinSizeX
 {
 	_uint		iFlag = 0;
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
-//#endif
+#endif
 	D3D_FEATURE_LEVEL			FeatureLV;
 
 	/* dx9 : 장치 초기화를 하기위한 설정을 쭈욱 하고나서 최종적으로 장치객체를 생성한다. */

@@ -61,7 +61,7 @@ _bool CBounding_OBB::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDis
 	return isColl;
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
@@ -71,7 +71,7 @@ HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvec
 	return S_OK;
 }
 
-//#endif
+#endif
 
 
 _bool CBounding_OBB::Intersect_ToOBB(CBounding* pTarget)

@@ -64,7 +64,7 @@ _bool CBounding_AABB::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDi
 
 
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
@@ -74,7 +74,7 @@ HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fve
 	return S_OK;
 }
 
-//#endif
+#endif
 
 
 _bool CBounding_AABB::Intersect_ToAABB(CBounding* pTarget)
