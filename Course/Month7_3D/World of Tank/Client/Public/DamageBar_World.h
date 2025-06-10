@@ -13,6 +13,11 @@ NS_BEGIN(Client)
 
 class CDamageBar_World final : public CGameObject
 {
+public:
+	typedef struct tagDamageBar_World_Desc : public GAMEOBJECT_DESC
+	{
+		TEAM eTeam;
+	}DAMAGEBAR_WORLD_DESC;
 private:
 	CDamageBar_World(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CDamageBar_World(const CDamageBar_World& Prototype);
@@ -28,6 +33,9 @@ public:
 
 public:
 	void	Fill(_float fFillAmount);
+
+private:
+	TEAM m_eTeam = { TEAM::END };
 
 private:
 	_float	m_fFillAmount = { 1.f };

@@ -70,7 +70,7 @@ void CShell::Update(_float fTimeDelta)
 
 			POSITION_DESC PosDesc = {};
 			//땅이 파였다는 패킷을 보내라
-			PosDesc.iID; //필요 없겠지만 일단 넣음
+			PosDesc.iID = m_iID;
 			PosDesc.vPos = vDigCenter;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DIG), &PosDesc);
 		}

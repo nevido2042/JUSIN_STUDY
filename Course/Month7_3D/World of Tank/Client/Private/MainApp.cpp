@@ -277,7 +277,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press W " << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " Press W " << Desc.bBool << endl;
 					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressW(Desc.bBool);
 				}
 			}
@@ -313,7 +313,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press S " << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " Press S " << Desc.bBool << endl;
 					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressS(Desc.bBool);
 				}
 			}
@@ -349,7 +349,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press A " << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " Press A " << Desc.bBool << endl;
 					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressA(Desc.bBool);
 				}
 			}
@@ -385,7 +385,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Press D " << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " Press D " << Desc.bBool << endl;
 					static_cast<CEngine*>(pGameObject->Find_PartObject(TEXT("Part_Engine")))->Set_PressD(Desc.bBool);
 				}
 			}
@@ -421,7 +421,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Left " << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " Left " << Desc.bBool << endl;
 					CTurret* pTurret = static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")));
 					pTurret->Set_Left(Desc.bBool);
 					pTurret->Set_Right(false);
@@ -459,7 +459,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Right" << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " Right" << Desc.bBool << endl;
 					CTurret* pTurret = static_cast<CTurret*>(pGameObject->Find_PartObject(TEXT("Part_Turret")));
 					pTurret->Set_Right(Desc.bBool);
 					pTurret->Set_Left(false);
@@ -497,7 +497,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " UP" << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " UP" << Desc.bBool << endl;
 					CGun* pGun = static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
 					pGun->Set_Up(Desc.bBool);
 					pGun->Set_Down(false);
@@ -535,7 +535,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " DOWN" << Desc.bBool << endl;
+					//cout << "ID:" << Desc.iID << " DOWN" << Desc.bBool << endl;
 					CGun* pGun = static_cast<CGun*>(pGameObject->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
 					pGun->Set_Down(Desc.bBool);
 					pGun->Set_Up(false);
@@ -573,7 +573,7 @@ HRESULT CMainApp::Ready_Packets()
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
-					cout << "ID:" << Desc.iID << " Fire" << endl;
+					//cout << "ID:" << Desc.iID << " Fire" << endl;
 					static_cast<CTank*>(pGameObject)->Try_Fire();
 				}
 			}
@@ -601,7 +601,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(POSITION_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			static_cast<CVIBuffer_Terrain*>(m_pGameInstance->Get_Component(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Terrain"), TEXT("Com_VIBuffer"), 0))->DigGround(Desc.vPos, SHELL_DIG_RADIUS, SHELL_DIG_DEPTH);
+			CVIBuffer_Terrain* pTerrain = static_cast<CVIBuffer_Terrain*>(m_pGameInstance->Get_Component(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Terrain"), TEXT("Com_VIBuffer"), 0));
+			if (pTerrain)
+			{
+				pTerrain->DigGround(Desc.vPos, SHELL_DIG_RADIUS, SHELL_DIG_DEPTH);
+			}
 
 		})))
 		return E_FAIL;

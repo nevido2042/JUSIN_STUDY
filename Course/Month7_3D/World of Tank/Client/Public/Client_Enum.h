@@ -8,6 +8,7 @@ namespace Client
 	enum class PART_REPAINT			{ BODY, TURRET, GUN, END };
 	enum class CONSUMABLES			{ HAND_EXTINGUISHER, SMALL_REPAIR_KIT, SMALL_MED_KIT, END };
 	enum class COLLISION_GROUP		{ TANK, SHELL, MODULE, TREE, END };
+	enum class TEAM					{ A, B, END };
 }
 
 

@@ -51,7 +51,8 @@ void CScore::Late_Update(_float fTimeDelta)
 
 HRESULT CScore::Render()
 {
-
+	// 폰트 출력
+	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("0 : 0"), _float2(g_iWinSizeX * 0.5f, g_iWinSizeY * 0.01f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.4f * UI_RATIO);
 
 	return S_OK;
 }

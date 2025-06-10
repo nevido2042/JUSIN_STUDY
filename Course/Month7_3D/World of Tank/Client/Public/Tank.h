@@ -20,6 +20,8 @@ public:
 		_float4 vBodyColor =	{ 1.f, 1.f, 1.f, 1.f };
 		_float4 vTurretColor =	{ 1.f, 1.f, 1.f, 1.f };
 		_float4 vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
+
+		TEAM	eTeam = { TEAM::END };
 	} TANK_DESC;
 
 protected:
@@ -37,8 +39,9 @@ public:
 	virtual void On_Collision_Stay(CGameObject* pGameObject) override;
 
 public:
+	TEAM Get_Team() const { return m_eTeam; }
+public:
 	void Damage_Module(MODULE eModule);
-
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
 public:
@@ -63,6 +66,9 @@ private:
 private:
 	void Picked_Ray_ScreenCenter();
 	void Picked_Ray_Gun();
+
+protected:
+	TEAM	m_eTeam = { TEAM::END };
 
 protected:
 	vector<class CModule*>	m_Modules = {};

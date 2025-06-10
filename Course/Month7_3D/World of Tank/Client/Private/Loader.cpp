@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Score.h"
 #include "PickedManager.h"
 #include "Icon_Consumables.h"
 #include "CountdownTimer.h"
@@ -207,9 +208,14 @@ HRESULT CLoader::Loading_For_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Artefact/smallMedkit.dds"), 1))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_DamageBar_World */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World"),
+	/* For.Prototype_Component_Texture_DamageBar_World_Red */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World_Red"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/vehicleMarkerAtlas/output/damageBar_red.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_DamageBar_World_Green */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World_Green"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/vehicleMarkerAtlas/output/damageBar_green.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DirectionBody */
@@ -448,6 +454,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Score */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Score"),
+		CScore::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_PickedManager */

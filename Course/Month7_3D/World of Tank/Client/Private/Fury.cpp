@@ -4,6 +4,7 @@
 
 #include "FuryTurret.h"
 #include "FuryGun.h"
+#include "DamageBar_World.h"
 
 
 CFury::CFury(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -150,9 +151,15 @@ HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 
 	Store_Modules();
 
+	CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
+	DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	DamageBarWorldDesc.fRotationPerSec = 1.f;
+	DamageBarWorldDesc.iID = m_iID;
+	DamageBarWorldDesc.eTeam = pDesc->eTeam;
+
 	/* 데미지바_월드를 추가한다. */
-	lstrcpy(Desc.szName, TEXT("DamageBar"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &Desc)))
+	lstrcpy(DamageBarWorldDesc.szName, TEXT("DamageBar"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &DamageBarWorldDesc)))
 		return E_FAIL;
 
 	return S_OK;

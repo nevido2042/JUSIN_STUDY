@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "Terrain.h"
+#include "Tank.h"
 
 CDamageBar_World::CDamageBar_World(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -23,6 +24,9 @@ HRESULT CDamageBar_World::Initialize_Prototype()
 
 HRESULT CDamageBar_World::Initialize(void* pArg)
 {
+	DAMAGEBAR_WORLD_DESC* pDesc = static_cast<DAMAGEBAR_WORLD_DESC*>(pArg);
+	m_eTeam = pDesc->eTeam;
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -35,21 +39,11 @@ HRESULT CDamageBar_World::Initialize(void* pArg)
 
 void CDamageBar_World::Priority_Update(_float fTimeDelta)
 {
+
 }
 
 void CDamageBar_World::Update(_float fTimeDelta)
 {
-
-	//_float4 vParentRight = {};
-	//_float4 vParentUp = {};
-	//_float4 vParentLook = {};
-	//memcpy(&vParentRight, m_pParentWorldMatrix->m[0], sizeof(_float4));
-	//memcpy(&vParentUp, m_pParentWorldMatrix->m[1], sizeof(_float4));
-	//memcpy(&vParentLook, m_pParentWorldMatrix->m[2], sizeof(_float4));
-
-	//m_pTransformCom->Set_State(STATE::RIGHT, XMVector3Normalize(XMLoadFloat4(&vParentRight)) * 3.f);
-	//m_pTransformCom->Set_State(STATE::UP, XMVector3Normalize(XMLoadFloat4(&vParentUp)) * 1.f);
-	//m_pTransformCom->Set_State(STATE::LOOK, XMVector3Normalize(XMLoadFloat4(&vParentLook)) * 1.f);
 
 	_float4 vParentPosition = {};
 	memcpy(&vParentPosition, m_pParentWorldMatrix->m[3], sizeof(_float4));
@@ -63,6 +57,7 @@ void CDamageBar_World::Update(_float fTimeDelta)
 
 void CDamageBar_World::Late_Update(_float fTimeDelta)
 {
+
 	// 1. 카메라 거리 계산
 	_vector vToCamera = XMLoadFloat4(m_pGameInstance->Get_CamPosition()) - m_pTransformCom->Get_State(STATE::POSITION);
 	_float fDistance = XMVectorGetX(XMVector3Length(vToCamera));
@@ -139,10 +134,29 @@ HRESULT CDamageBar_World::Ready_Components()
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 
-	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
+	CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	if (pGameObject)
+	{
+		CTank* pPlayerTank = static_cast<CTank*>(pGameObject);
+
+		if (pPlayerTank->Get_Team() == m_eTeam)
+		{
+			/* For.Com_Texture */
+			if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World_Green"),
+				TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+				return E_FAIL;
+		}
+		else
+		{
+			/* For.Com_Texture */
+			if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar_World_Red"),
+				TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+				return E_FAIL;
+		}
+	}
+
+	if (nullptr == m_pTextureCom)
+		m_bActive = false;
 
 	/* For.Com_Texture_Background */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Back_Ghost"),

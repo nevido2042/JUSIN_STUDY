@@ -37,8 +37,8 @@ HRESULT CTank::Initialize(void* pArg)
 	(*pDesc).iIndex = 0;
 
 	m_vBodyColor = pDesc->vBodyColor;
-
 	m_iID = pDesc->iID;
+	m_eTeam = pDesc->eTeam;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -301,6 +301,10 @@ HRESULT CTank::Try_Fire()
 		//πﬂªÁ
 		if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
 			return E_FAIL;
+
+		//≤‹∑∑¿”
+		m_fRecoilTime = m_fMaxRecoilTime;
+
 	}
 
 	return S_OK;

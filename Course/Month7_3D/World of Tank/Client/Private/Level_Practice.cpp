@@ -86,6 +86,10 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_PickedManager(TEXT("Layer_PickedManager"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Score(TEXT("Layer_Score"))))
+		return E_FAIL;
+	
+
 	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
 	//	return E_FAIL;
 
@@ -259,6 +263,7 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 	Desc.vTurretColor = pGameManager->Get_TurretColor();
 	Desc.vGunColor = pGameManager->Get_GunColor();
 	
+	Desc.eTeam = TEAM::A;
 	switch (eSelectTank)
 	{
 	case TANK::FURY:
@@ -287,12 +292,15 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 0.f;
 	Desc.iID = -100;
 
+
 	Desc.vInitPosition = _float3(300.f, 87.f, 300.f);
+	Desc.eTeam = TEAM::A;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	Desc.vInitPosition = _float3(310.f, 87.f, 300.f);
+	Desc.eTeam = TEAM::B;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
@@ -491,6 +499,22 @@ HRESULT CLevel_Practice::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 	Desc.iKeyNumber = 6;
 	Desc.eConsumables = CONSUMABLES::SMALL_MED_KIT;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Consumables"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Score(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC		Desc{};
+
+	Desc.fSizeX = 48.0f * UI_RATIO;
+	Desc.fSizeY = 48.0f * UI_RATIO;
+	Desc.fY = g_iWinSizeY * 0.1f;
+	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Score"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 

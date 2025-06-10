@@ -68,7 +68,7 @@ void CGameObject::Priority_Update(_float fTimeDelta)
 {
 	for (auto& Pair : m_PartObjects)
 	{
-		if (nullptr != Pair.second)
+		if (nullptr != Pair.second && Pair.second->Get_isActive())
 			Pair.second->Priority_Update(fTimeDelta);
 	}
 }
@@ -77,7 +77,7 @@ void CGameObject::Update(_float fTimeDelta)
 {
 	for (auto& Pair : m_PartObjects)
 	{
-		if (nullptr != Pair.second)
+		if (nullptr != Pair.second && Pair.second->Get_isActive())
 			Pair.second->Update(fTimeDelta);
 	}
 }
@@ -86,7 +86,7 @@ void CGameObject::Late_Update(_float fTimeDelta)
 {
 	for (auto& Pair : m_PartObjects)
 	{
-		if (nullptr != Pair.second)
+		if (nullptr != Pair.second && Pair.second->Get_isActive())
 			Pair.second->Late_Update(fTimeDelta);
 	}
 }
