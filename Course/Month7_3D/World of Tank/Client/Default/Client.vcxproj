@@ -208,6 +208,7 @@
     <ClInclude Include="..\public\Module.h" />
     <ClInclude Include="..\public\PersonalArrowEntry.h" />
     <ClInclude Include="..\public\PickedManager.h" />
+    <ClInclude Include="..\public\Score.h" />
     <ClInclude Include="..\public\Shell.h" />
     <ClInclude Include="..\public\Skydome.h" />
     <ClInclude Include="..\public\Tank.h" />
@@ -298,6 +299,7 @@
     <ClCompile Include="..\private\Module.cpp" />
     <ClCompile Include="..\private\PersonalArrowEntry.cpp" />
     <ClCompile Include="..\private\PickedManager.cpp" />
+    <ClCompile Include="..\private\Score.cpp" />
     <ClCompile Include="..\private\Shell.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
     <ClCompile Include="..\private\Tank.cpp" />
