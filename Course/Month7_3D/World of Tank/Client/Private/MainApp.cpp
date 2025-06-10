@@ -166,6 +166,13 @@ HRESULT CMainApp::Ready_Packets()
 		})))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_RETURN_HANGER), [this](void* pArg)
+		{
+			if(m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::HANGER))
+				m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
+		})))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
@@ -262,7 +269,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -294,7 +305,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -326,7 +341,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -358,7 +377,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -390,7 +413,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -424,7 +451,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -458,7 +489,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -492,7 +527,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(BOOL_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -526,7 +565,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(PACKET_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -583,22 +626,75 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MODULE_STATE_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			//다른 탱크의 상태이상일수도
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
-			{
-				if (Desc.iTargetID == pGameObject->Get_ID())
-				{
-					static_cast<CTank*>(pGameObject)->Set_State_Module(Desc.eModule, Desc.eState);
-				}
-			}
 			//나의 탱크의 상태 이상 일수도 있음
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"))->Get_GameObjects())
+			CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"));
+			if (pGameObject->Get_ID() == Desc.iTargetID)
 			{
-				if (Desc.iTargetID == pGameObject->Get_ID())
-				{
 					static_cast<CTank*>(pGameObject)->Set_State_Module(Desc.eModule, Desc.eState);
+			}
+			else
+			{
+				CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+				if (pLayer == nullptr)
+					return;
+
+				//다른 탱크의 상태이상일수도
+				for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+				{
+					if (Desc.iTargetID == pGameObject->Get_ID())
+					{
+						static_cast<CTank*>(pGameObject)->Set_State_Module(Desc.eModule, Desc.eState);
+						break;
+					}
 				}
 			}
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_HIT_MODULE);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(HIT_MODULE_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_HIT_MODULE), [this](void* pArg)
+		{
+			HIT_MODULE_DESC Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(HIT_MODULE_DESC));
+			m_pGameInstance->Clear_Packet();
+
+
+			//나의 탱크의 상태 이상 일수도 있음
+			CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"));
+			if (pGameObject->Get_ID() == Desc.iTargetID)
+			{
+				static_cast<CTank*>(pGameObject)->Damage_Module(Desc.eModule);
+			}
+			else
+			{
+				CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+				if (pLayer == nullptr)
+					return;
+
+				//다른 탱크의 상태이상일수도
+				for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+				{
+					if (Desc.iTargetID == pGameObject->Get_ID())
+					{
+						static_cast<CTank*>(pGameObject)->Damage_Module(Desc.eModule);
+						break;
+					}
+				}
+			}
+
 		})))
 		return E_FAIL;
 
@@ -624,7 +720,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(TANK_MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -659,7 +759,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -690,7 +794,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{
@@ -722,7 +830,11 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(MATRIX_DESC));
 			m_pGameInstance->Clear_Packet();
 
-			for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"))->Get_GameObjects())
+			CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+			if (pLayer == nullptr)
+				return;
+
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 			{
 				if (Desc.iID == pGameObject->Get_ID())
 				{

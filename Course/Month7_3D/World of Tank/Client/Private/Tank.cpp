@@ -178,6 +178,21 @@ void CTank::On_Collision_Stay(CGameObject* pGameObject)
 	wcout << "Tank On_Collision_Stay : " << pGameObject->GetName() << endl;
 }
 
+void CTank::Damage_Module(MODULE eModule)
+{
+	if (ENUM_CLASS(eModule) < 0 || ENUM_CLASS(eModule) >= ENUM_CLASS(MODULE::END))
+		return;
+
+	switch (eModule)
+	{
+		case MODULE::ENGINE:
+		static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Damage_Engine();
+		break;
+	}
+
+}
+
+
 HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
 {
 	switch (eModule)

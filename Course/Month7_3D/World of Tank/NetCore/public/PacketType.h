@@ -18,6 +18,8 @@ enum class PacketType
     SC_START_GAME,
     CS_LOAD_COMPLETE,
 
+    SC_RETURN_HANGER,
+
     CS_CREATE_MY_CHARACTER,
     SC_CREATE_MY_CHARACTER,
 
@@ -59,8 +61,8 @@ enum class PacketType
     CS_MODULE_STATE,
     SC_MODULE_STATE,
 
-    CS_HIT,
-    SC_HIT,
+    CS_HIT_MODULE,
+    SC_HIT_MODULE,
 
     CS_MATRIX_BODY,
     SC_MATRIX_BODY,

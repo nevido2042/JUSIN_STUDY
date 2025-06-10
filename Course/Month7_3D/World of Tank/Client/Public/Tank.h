@@ -37,6 +37,9 @@ public:
 	virtual void On_Collision_Stay(CGameObject* pGameObject) override;
 
 public:
+	void Damage_Module(MODULE eModule);
+
+public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
 public:
 	HRESULT Try_Fire();

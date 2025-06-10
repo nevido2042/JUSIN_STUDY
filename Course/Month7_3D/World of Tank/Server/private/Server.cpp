@@ -77,11 +77,24 @@ _bool CServer::Initialize()
 _bool CServer::Update()
 {
     // ESC와 S가 동시에 눌렸을 때만 종료
-    if ((GetAsyncKeyState(VK_ESCAPE) & 0x8000) &&
-        (GetAsyncKeyState('S') & 0x8000))
+    if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
     {
-        return false;
+        if (GetAsyncKeyState('Q') & 0x0001)
+        {
+            cout << "SERVER_SHUT_DOWN" << endl;
+            return false;
+        }
+
+        if (GetAsyncKeyState('G') & 0x0001)
+        {
+            cout << "SC_RETURN_HANGER" << endl;
+            Send_Packet_Broadcast(nullptr, ENUM_CLASS(PacketType::SC_RETURN_HANGER));
+        }
+
     }
+
+
+
 
     return Network();
 }
@@ -568,6 +581,26 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_RETURN_HANGER), [this](void* pArg)
+        {
+            for (CSession* pSesseion : m_vecSession)
+            {
+                pSesseion->Get_SessionInfo().isJoinMatch = false;
+            }
+
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_RETURN_HANGER);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+
+            Update_Header();
+        })))
+        return E_FAIL;
+
     if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_LOAD_COMPLETE), [this](void* pArg)
         {
             //로딩이 완료되면
@@ -961,6 +994,35 @@ HRESULT CServer::Define_Packets()
 
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
             Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(MODULE_STATE_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), [this](void* pArg)
+        {
+            HIT_MODULE_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(HIT_MODULE_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            printf_s("(CS_HIT_MODULE) ID: %d\n", Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_HIT_MODULE), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_HIT_MODULE), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_HIT_MODULE);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(HIT_MODULE_DESC));
             Update_Header();
         })))
         return E_FAIL;

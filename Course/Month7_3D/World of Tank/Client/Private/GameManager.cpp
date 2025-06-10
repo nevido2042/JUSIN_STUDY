@@ -159,6 +159,9 @@ HRESULT CGameManager::StopBGM_LoadingGame()
 
 HRESULT CGameManager::PlayBGM_Game()
 {
+	if(m_pSoundCom_BGM->IsPlaying("Stuzianki_Battle"))
+		m_pSoundCom_BGM->Stop("Stuzianki_Battle");
+
 	m_pSoundCom_BGM->Play("Stuzianki_Battle");
 	m_pSoundCom_BGM->SetVolume(0.2f);
 	m_pSoundCom_BGM->Set_Loop("Stuzianki_Battle");
