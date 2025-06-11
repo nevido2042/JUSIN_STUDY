@@ -20,9 +20,33 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	static string WStringToString(const wstring& wstr);
+
 private:
 	CGameObject* Get_Selected_GameObject(vector<string>& HierarchyNames);
 	CGameObject* Get_GameObject(string HierarchyName);
+
+private:
+	HRESULT Delete_All();
+
+	HRESULT Save_Map(vector<string>& HierarchyNames);
+	HRESULT Load_Map();
+
+	HRESULT Save_BoundaryPoints();
+	HRESULT Load_BoundaryPoints();
+
+	HRESULT Get_Assets();
+	HRESULT Ready_Components();
+
+private:
+	void Draw_Boundary();
+private:
+	vector<_float3> m_BoundaryPoints;
+
+	PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
+	BasicEffect* m_pEffect = { nullptr };
+	ID3D11InputLayout* m_pInputLayout = { nullptr };
 
 private:
 	class CTerrain* m_pTerrain = { nullptr };
@@ -35,17 +59,6 @@ private:
 	_int m_iSelectedHierarchyIndex = -1; // 선택된 항목 인덱스
 
 	ImGuizmo::OPERATION m_currentOperation = { ImGuizmo::TRANSLATE };
-private:
-	HRESULT Delete_All();
-
-	HRESULT Save_Map(vector<string>& HierarchyNames);
-	HRESULT Load_Map();
-
-	HRESULT Get_Assets();
-	HRESULT Ready_Components();
-
-public:
-	static string WStringToString(const wstring& wstr);
 
 public:
 	static CMapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

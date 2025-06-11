@@ -196,9 +196,6 @@
     <Filter Include="02.GameObjects\06.UIObject\DirectionBody">
       <UniqueIdentifier>{05e9590a-4a87-4c73-a89f-54d92d6b84e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\WOT_Icon">
-      <UniqueIdentifier>{53b430a7-444b-4542-930c-ffc6365de69c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\Crosshair">
       <UniqueIdentifier>{1568540f-f1fe-4fd5-9780-8e6e06ce597b}</UniqueIdentifier>
     </Filter>
@@ -279,6 +276,12 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\Score\Score_Tank">
       <UniqueIdentifier>{7658b373-eb90-486b-9082-5a188c21827b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\WOT_Icon">
+      <UniqueIdentifier>{53b430a7-444b-4542-930c-ffc6365de69c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Boundary">
+      <UniqueIdentifier>{6e2bddc3-6acd-4527-95f9-570067b6bb9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -558,6 +561,9 @@
     <ClInclude Include="..\public\Score_Tank.h">
       <Filter>02.GameObjects\06.UIObject\Score\Score_Tank</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Boundary.h">
+      <Filter>02.GameObjects\Boundary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -830,6 +836,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Score_Tank.cpp">
       <Filter>02.GameObjects\06.UIObject\Score\Score_Tank</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Boundary.cpp">
+      <Filter>02.GameObjects\Boundary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

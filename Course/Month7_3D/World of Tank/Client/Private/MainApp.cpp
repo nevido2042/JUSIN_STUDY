@@ -31,7 +31,7 @@ CMainApp::CMainApp()
 HRESULT CMainApp::Initialize()
 {
 
-//#if defined(_DEBUG)
+#if defined(_DEBUG)
 	AllocConsole();
 	SetConsoleTitleW(L"Debug Console");
 
@@ -42,7 +42,7 @@ HRESULT CMainApp::Initialize()
 
 	SetConsoleOutputCP(CP_UTF8);
 	ios::sync_with_stdio();
-//#endif
+#endif
 
 	ENGINE_DESC			EngineDesc{};
 
@@ -1025,7 +1025,7 @@ void CMainApp::Free()
 
 	//Safe_Release(m_pGameInstance);
 
-//#if defined(_DEBUG)
+#if defined(_DEBUG)
 	FreeConsole();
-//#endif
+#endif
 }

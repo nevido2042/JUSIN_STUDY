@@ -38,12 +38,12 @@ HRESULT CChurchA::Initialize(void* pArg)
 
 void CChurchA::Priority_Update(_float fTimeDelta)
 {
-
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"));
 }
 
 void CChurchA::Update(_float fTimeDelta)
 {
-
+	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CChurchA::Late_Update(_float fTimeDelta)
@@ -73,7 +73,9 @@ HRESULT CChurchA::Render()
 				return E_FAIL;
 		}
 	}
-
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
 	return S_OK;
 }
 
@@ -87,6 +89,16 @@ HRESULT CChurchA::Ready_Components()
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_ChurchA"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_OBB::OBB_DESC	OBBDesc{};
+	OBBDesc.vExtents = _float3(8.f, 10.f, 14.f);
+	OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, -11.f);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -145,6 +157,7 @@ void CChurchA::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 }

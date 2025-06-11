@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Boundary.h"
 #include "Score_Tank.h"
 #include "Score.h"
 #include "PickedManager.h"
@@ -465,6 +466,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Boundary */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Boundary"),
+		CBoundary::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Score_Tank */

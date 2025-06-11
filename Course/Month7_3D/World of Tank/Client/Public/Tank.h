@@ -67,6 +67,9 @@ private:
 	void Picked_Ray_ScreenCenter();
 	void Picked_Ray_Gun();
 
+private:
+	class CBoundary* m_pBoundary = { nullptr };
+
 protected:
 	TEAM	m_eTeam = { TEAM::END };
 

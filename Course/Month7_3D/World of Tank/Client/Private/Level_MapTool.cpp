@@ -51,14 +51,6 @@ void CLevel_MapTool::Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER))))
 			return;
 	}
-
-	//if (m_pGameInstance->Key_Down(DIK_H))
-	//{
-	//	if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-	//		CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::HANGER))))
-	//		return;
-	//}
-
 }
 
 HRESULT CLevel_MapTool::Render()

@@ -34,8 +34,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Engine(TEXT("Layer_Engine"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Boundary(TEXT("Layer_Boundary"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
@@ -74,9 +74,6 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DirectionBody(TEXT("Layer_DirectionBody"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Icon_Engine(TEXT("Layer_Icon_Engine"))))
-	//	return E_FAIL;
-
 	if (FAILED(Ready_Layer_Icon_Consumables(TEXT("Layer_Icon_Consumables"))))
 		return E_FAIL;
 
@@ -88,13 +85,6 @@ HRESULT CLevel_Practice::Initialize()
 
 	if (FAILED(Ready_Layer_Score(TEXT("Layer_Score"))))
 		return E_FAIL;
-	
-
-	//if (FAILED(Ready_Layer_PersonalArrowEntry(TEXT("Layer_PersonalArrowEntry"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_Tool_EngineSound(TEXT("Layer_Tool_EngineSound"))))
-	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -324,6 +314,15 @@ HRESULT CLevel_Practice::Ready_Layer_DamageColliders(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_PickedManager(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PickedManager"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Boundary(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Boundary"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 

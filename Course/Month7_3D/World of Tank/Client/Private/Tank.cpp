@@ -7,6 +7,7 @@
 #include "Engine.h"
 #include "GameManager.h"
 #include "AmmoBay.h"
+#include "Boundary.h"
 
 #pragma region UI
 #include "Icon_Module.h"
@@ -43,9 +44,9 @@ HRESULT CTank::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	//m_pSoundCom_Voice->SetVolume(0.1f);
-
-	//m_ModulesState.assign(ENUM_CLASS(MODULE::END), MODULE_STATE::FUNCTIONAL);
+	m_pBoundary = static_cast<CBoundary*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Boundary")));
+	if(m_pBoundary)
+		Safe_AddRef(m_pBoundary);
 
 	return S_OK;
 }
@@ -78,8 +79,22 @@ void CTank::Priority_Update(_float fTimeDelta)
 void CTank::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	Move(fTimeDelta);
+
+	if (m_pBoundary)
+	{
+		_float3 vPos = {};
+		XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+		if (!m_pBoundary->IsPointInBoundary(vPos))
+		{
+			_float3 vClosestPos = m_pBoundary->ClosestPointOnBoundary(vPos);
+			m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vClosestPos), 1.f));
+
+		}
+	}
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
@@ -592,10 +607,12 @@ void CTank::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pBoundary);
 	Safe_Release(m_pColliderCom);
 
 	for (CModule* pModule : m_Modules)
 		Safe_Release(pModule);
 	m_Modules.clear();
+
 }
 

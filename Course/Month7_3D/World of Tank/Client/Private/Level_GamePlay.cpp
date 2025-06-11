@@ -32,6 +32,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Boundary(TEXT("Layer_Boundary"))))
+		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 	//	return E_FAIL;
@@ -345,6 +347,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_Icon_Consumables(const _wstring strLayerTag
 HRESULT CLevel_GamePlay::Ready_Layer_PickedManager(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PickedManager"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Boundary(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Boundary"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
 		return E_FAIL;
 

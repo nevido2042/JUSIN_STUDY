@@ -40,6 +40,25 @@ HRESULT CMapTool::Initialize(void* pArg)
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
+	if (FAILED(Load_BoundaryPoints()))
+		return E_FAIL;
+
+#pragma region 제한구역 설정
+	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+	m_pEffect = new BasicEffect(m_pDevice);
+
+	const void* pShaderByteCode = { nullptr };
+	size_t		iShaderByteCodeLength = {  };
+
+	m_pEffect->SetVertexColorEnabled(true);
+
+	m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iShaderByteCodeLength);
+
+	if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount,
+		pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
+		return E_FAIL;
+#pragma endregion
+
 	return S_OK;
 }
 
@@ -302,6 +321,44 @@ void CMapTool::Update(_float fTimeDelta)
 #pragma endregion
 
 	ImGui::ShowDemoWindow();
+
+#pragma region 제한 구역 설정
+	if (m_pGameInstance->Key_Pressing(DIK_B))
+	{
+		if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)))
+		{
+			_float3 vPos = m_pTerrain->Get_PickedPos();
+
+			//// Y값을 기존 점들 중 가장 높은 값으로 교체
+			//if (!m_BoundaryPoints.empty())
+			//{
+			//	_float fMaxY = vPos.y; // 기본은 현재 Y
+			//	for (const _float3& _vPos : m_BoundaryPoints)
+			//	{
+			//		fMaxY = max(fMaxY, _vPos.y);
+			//	}
+			//	vPos.y = fMaxY;
+			//}
+
+			m_BoundaryPoints.push_back(vPos);
+		}
+		else if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::RBUTTON)))
+		{
+			if (m_BoundaryPoints.empty())
+				return;
+
+			m_BoundaryPoints.pop_back();
+		}
+		else if (m_pGameInstance->Key_Down(DIK_S))
+		{
+			if(FAILED(Save_BoundaryPoints()))
+				cout << "Save_BoundaryPoints Fail !!!!!!!!!!!!" << endl;
+			else
+				cout << "Save_BoundaryPoints Success !" << endl;
+		}
+	}
+
+#pragma endregion
 }
 
 void CMapTool::Late_Update(_float fTimeDelta)
@@ -316,6 +373,20 @@ void CMapTool::Late_Update(_float fTimeDelta)
 HRESULT CMapTool::Render()
 {
 	__super::Render();
+
+	m_pEffect->SetWorld(XMMatrixIdentity());
+	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
+	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
+
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
+	m_pEffect->Apply(m_pContext);
+
+	m_pBatch->Begin();
+
+	Draw_Boundary();
+
+	m_pBatch->End();
 
 	return S_OK;
 }
@@ -485,6 +556,59 @@ HRESULT CMapTool::Load_Map()
 	return S_OK;
 }
 
+HRESULT CMapTool::Save_BoundaryPoints()
+{
+	// 폴더 없으면 생성
+	if (!filesystem::exists("../Bin/Map/"))
+		filesystem::create_directories("../Bin/Map/");
+
+	filesystem::path Path = "../Bin/Map/BoundaryPoints.bin";
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, Path.string().c_str(), "wb");
+	if (!fp)
+		return E_FAIL;
+
+	for (_float3& vPos : m_BoundaryPoints)
+	{
+		fwrite(&vPos, sizeof(_float3), 1, fp);
+	}
+
+	fclose(fp);
+
+	return S_OK;
+}
+
+HRESULT CMapTool::Load_BoundaryPoints()
+{
+	m_BoundaryPoints.clear();
+
+	filesystem::path Path = "../Bin/Map/BoundaryPoints.bin";
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, Path.string().c_str(), "rb");
+	if (!fp)
+		return S_OK;
+
+	while (true)
+	{
+
+		_float3 vPos = {};
+		size_t readCount = fread(&vPos, sizeof(_float3), 1, fp);
+
+		// 더 이상 읽을게 없으면 종료
+		if (readCount != 1)
+			break;
+
+		m_BoundaryPoints.push_back(vPos);
+
+	}
+
+	fclose(fp);
+
+	return S_OK;
+}
+
 
 HRESULT CMapTool::Get_Assets()
 {
@@ -505,6 +629,38 @@ HRESULT CMapTool::Ready_Components()
 {
 	// 필요한 컴포넌트들 준비
 	return S_OK;
+}
+
+void CMapTool::Draw_Boundary()
+{
+	if (m_BoundaryPoints.size() < 2)
+		return;
+
+	_float3 vPointA = {};
+	_float3 vPointB = {};
+
+	for (_uint i = 0; i < m_BoundaryPoints.size(); ++i)
+	{
+		if (i == m_BoundaryPoints.size() - 1)
+		{
+			vPointA = m_BoundaryPoints.at(i);
+			vPointB = m_BoundaryPoints.at(0);
+		}
+		else
+		{
+			vPointA = m_BoundaryPoints.at(i);
+			vPointB = m_BoundaryPoints.at(i + 1);
+		}
+
+		DX::DrawRay(
+			m_pBatch,
+			XMVectorSetW(XMLoadFloat3(&vPointA), 1.f),     // 시작점 A
+			XMVectorSubtract(XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointA)), // 방향 벡터 (B - A)
+			false,
+			DirectX::Colors::Red
+		);
+
+	}
 }
 
 string CMapTool::WStringToString(const wstring& wstr)
@@ -545,7 +701,12 @@ CGameObject* CMapTool::Clone(void* pArg)
 
 void CMapTool::Free()
 {
+	__super::Free();
+
 	Safe_Release(m_pTerrain);
 
-	__super::Free();
+	Safe_Release(m_pInputLayout);
+	Safe_Delete(m_pBatch);
+	Safe_Delete(m_pEffect);
+
 }
