@@ -78,10 +78,13 @@ void CCollider::Update(_fmatrix WorldMatrix)
 	m_pBounding->Update(WorldMatrix);
 }
 
-_bool CCollider::Intersect(CCollider* pTargetCollider)
+_bool CCollider::Intersect(CCollider* pTargetCollider, _vector* pOutNormal)
 {
 	// 현재 충돌 여부 계산
-	_bool bNowColl = m_pBounding->Intersect(pTargetCollider->m_pBounding);
+	_bool bNowColl = m_pBounding->Intersect(pTargetCollider->m_pBounding, pOutNormal);
+
+	if (bNowColl == true)
+		XMStoreFloat3(&m_vNormal, *pOutNormal);
 
 	// 한 번이라도 true였으면 계속 true 유지
 	m_isColl = m_isColl || bNowColl;

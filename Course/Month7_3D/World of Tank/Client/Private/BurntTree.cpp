@@ -53,7 +53,7 @@ void CBurntTree::Update(_float fTimeDelta)
 	if (m_bIsFall == false)
 	{
 		m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
-		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TANK), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 	}
 	else
 	{
@@ -106,7 +106,7 @@ HRESULT CBurntTree::Render()
 	return S_OK;
 }
 
-void CBurntTree::On_Collision_Stay(CGameObject* pOther)
+void CBurntTree::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
 	m_bIsFall = true;
 

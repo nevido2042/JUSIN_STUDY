@@ -65,7 +65,8 @@ HRESULT CCollider_Manager::Clear_CollisionGroups()
 	return S_OK;
 }
 
-void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag)
+#pragma message (" 여기 노말벡터 받는거 없애고 무조건 노말 계산하는걸로 바꿔도 괜찮을 지도")
+void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag/*, _vector* pOutNormal*/)
 {	
 	if (nullptr == pGameObject)
 		return;
@@ -83,8 +84,9 @@ void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObj
 		if(nullptr == pOtherCollider)
 			continue;
 
-		if (pCollider->Intersect(pOtherCollider))
-			pGameObject->On_Collision_Stay(pOther);
+		_vector vNormal = {};
+		if (pCollider->Intersect(pOtherCollider, &vNormal))
+			pGameObject->On_Collision_Stay(pOther, vNormal);
 
 	}
 

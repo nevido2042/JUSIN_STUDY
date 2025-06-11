@@ -144,7 +144,7 @@ HRESULT CEngine::Render()
 	return S_OK;
 }
 
-void CEngine::On_Collision_Stay(CGameObject* pOther)
+void CEngine::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
 	cout << "CEngine::On_Collision_Stay" << endl;
 

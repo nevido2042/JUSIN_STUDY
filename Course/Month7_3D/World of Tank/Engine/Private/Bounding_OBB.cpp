@@ -30,7 +30,7 @@ void CBounding_OBB::Update(_fmatrix WorldMatrix)
 	m_pOriginalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_OBB::Intersect(CBounding* pTarget)
+_bool CBounding_OBB::Intersect(CBounding* pTarget, _vector* pOutNormal)
 {
 	_bool		isColl = { false };
 
@@ -40,8 +40,14 @@ _bool CBounding_OBB::Intersect(CBounding* pTarget)
 		isColl = m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pTarget)->Get_Desc());
 		break;
 	case COLLIDER::OBB:
-		isColl = m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pTarget)->Get_Desc());
-		//isColl = Intersect_ToOBB(pTarget);
+		//isColl = m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pTarget)->Get_Desc());
+		isColl = Intersect_ToOBB(pTarget, pOutNormal);
+		/*충돌 법선 벡터 반환*/
+
+		//내위치, 타겟 위치로 어느 평면에 부딫혔는지 판단하고
+		//그법선 벡터를 반환 해야함
+
+
 		break;
 	case COLLIDER::SPHERE:
 		isColl = m_pDesc->Intersects(*static_cast<CBounding_Sphere*>(pTarget)->Get_Desc());
@@ -74,40 +80,91 @@ HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvec
 #endif
 
 
-_bool CBounding_OBB::Intersect_ToOBB(CBounding* pTarget)
+_bool CBounding_OBB::Intersect_ToOBB(CBounding* pTarget, _vector* pOutNormal)
 {
 	OBB_INFO	OBBDesc[2] = {
 		Compute_OBB(),
 		static_cast<CBounding_OBB*>(pTarget)->Compute_OBB()
 	};
 
-	_float		fDistance[3] = {};
+	_vector		vCenterDelta = XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter);
 
-	for (size_t i = 0; i < 2; i++)
+	_vector		vAxisList[15];
+	_int		iAxisIndex = 0;
+
+	// 0~2: A의 로컬 축
+	for (size_t i = 0; i < 3; ++i)
+		vAxisList[iAxisIndex++] = XMLoadFloat3(&OBBDesc[0].vAxisDir[i]);
+
+	// 3~5: B의 로컬 축
+	for (size_t i = 0; i < 3; ++i)
+		vAxisList[iAxisIndex++] = XMLoadFloat3(&OBBDesc[1].vAxisDir[i]);
+
+	// 6~14: 각 축의 교차축
+	for (size_t i = 0; i < 3; ++i)
 	{
-		for (size_t j = 0; j < 3; j++)
+		_vector vA = XMLoadFloat3(&OBBDesc[0].vAxisDir[i]);
+
+		for (size_t j = 0; j < 3; ++j)
 		{
-			fDistance[0] = fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenter) - XMLoadFloat3(&OBBDesc[0].vCenter),
-				XMLoadFloat3(&OBBDesc[i].vAxisDir[j]))));
+			_vector vB = XMLoadFloat3(&OBBDesc[1].vAxisDir[j]);
+			_vector vCross = XMVector3Cross(vA, vB);
 
-			fDistance[1] = fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[0]), XMLoadFloat3(&OBBDesc[i].vAxisDir[j])))) +
-				fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[1]), XMLoadFloat3(&OBBDesc[i].vAxisDir[j])))) +
-				fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[2]), XMLoadFloat3(&OBBDesc[i].vAxisDir[j]))));
+			if (XMVector3Equal(vCross, XMVectorZero())) continue;
 
-			fDistance[2] = fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[0]), XMLoadFloat3(&OBBDesc[i].vAxisDir[j])))) +
-				fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[1]), XMLoadFloat3(&OBBDesc[i].vAxisDir[j])))) +
-				fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[2]), XMLoadFloat3(&OBBDesc[i].vAxisDir[j]))));
-
-
-			if (fDistance[0] > fDistance[1] + fDistance[2])
-				return false;
+			vAxisList[iAxisIndex++] = XMVector3Normalize(vCross);
 		}
 	}
 
+	_float		fMinPenetration = FLT_MAX;
+	_vector		vBestAxis = XMVectorZero();
 
+	for (size_t i = 0; i < iAxisIndex; ++i)
+	{
+		_vector vAxis = XMVector3Normalize(vAxisList[i]);
+		if (XMVector3Equal(vAxis, XMVectorZero())) continue;
+
+		_float fProjCenter = fabs(XMVectorGetX(XMVector3Dot(vCenterDelta, vAxis)));
+
+		_float fProjA =
+			fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[0]), vAxis))) +
+			fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[1]), vAxis))) +
+			fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[0].vCenterDir[2]), vAxis)));
+
+		_float fProjB =
+			fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[0]), vAxis))) +
+			fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[1]), vAxis))) +
+			fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterDir[2]), vAxis)));
+
+
+		if (fProjCenter > fProjA + fProjB)
+			return false;
+
+		if (pOutNormal != nullptr)
+		{
+			_float fPenetration = (fProjA + fProjB) - fProjCenter;
+			if (fPenetration < fMinPenetration)
+			{
+				fMinPenetration = fPenetration;
+				vBestAxis = vAxis;
+			}
+		}
+	}
+
+	if (pOutNormal != nullptr)
+	{
+		// 방향 통일: vCenterDelta 기준으로 노말 방향 정렬
+		if (XMVectorGetX(XMVector3Dot(vBestAxis, vCenterDelta)) < 0.f)
+			vBestAxis = -vBestAxis;
+
+		*pOutNormal = vBestAxis;
+	}
 
 	return true;
 }
+
+
+
 
 CBounding_OBB::OBB_INFO CBounding_OBB::Compute_OBB()
 {

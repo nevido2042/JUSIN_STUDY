@@ -25,7 +25,7 @@ void CBounding_Sphere::Update(_fmatrix WorldMatrix)
 	m_pOriginalDesc->Transform(*m_pDesc, WorldMatrix);
 }
 
-_bool CBounding_Sphere::Intersect(CBounding* pTarget)
+_bool CBounding_Sphere::Intersect(CBounding* pTarget, _vector* pOutNormal)
 {
 	_bool		isColl = { false };
 

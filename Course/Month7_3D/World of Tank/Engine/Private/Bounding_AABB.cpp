@@ -31,7 +31,7 @@ void CBounding_AABB::Update(_fmatrix WorldMatrix)
 	m_pOriginalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 
-_bool CBounding_AABB::Intersect(CBounding* pTarget)
+_bool CBounding_AABB::Intersect(CBounding* pTarget, _vector* pOutNormal)
 {
 	_bool		isColl = { false };
 

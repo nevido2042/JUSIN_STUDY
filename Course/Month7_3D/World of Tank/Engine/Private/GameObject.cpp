@@ -107,7 +107,7 @@ CGameObject* CGameObject::Find_PartObject(const _wstring& strPartObjectTag)
 	return iter->second;
 }
 
-void CGameObject::On_Collision_Stay(CGameObject* pOther)
+void CGameObject::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
 }
 

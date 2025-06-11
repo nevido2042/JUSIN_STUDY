@@ -28,7 +28,7 @@ HRESULT CTurret::Initialize(void* pArg)
 
 void CTurret::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TANK), this, TEXT("Com_Collider"));
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"));
 
 	Input(fTimeDelta);
 

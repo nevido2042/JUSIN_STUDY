@@ -17,7 +17,7 @@ public:
 	HRESULT Out_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject);
 	HRESULT Clear_CollisionGroups();
 public:
-	void Check_Collision(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag);
+	void Check_Collision(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag/*, _vector* pOutNormal = nullptr*/);
 
 private:
 	_uint							m_iNumGroups = {};

@@ -71,7 +71,7 @@ HRESULT CDamageCollider::Render()
 	return S_OK;
 }
 
-void CDamageCollider::On_Collision_Stay(CGameObject* pOther)
+void CDamageCollider::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
 	wcout << "Shell On_Collision_Stay: " << pOther->GetName() << endl;
 	m_bVisible = false;

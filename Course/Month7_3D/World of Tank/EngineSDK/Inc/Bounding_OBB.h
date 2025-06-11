@@ -30,7 +30,7 @@ public:
 public:
 	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
 	virtual void Update(_fmatrix WorldMatrix) override;
-	virtual _bool Intersect(CBounding* pTarget) override;
+	virtual _bool Intersect(CBounding* pTarget, _vector* pOutNormal) override;
 	virtual _bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist) override;
 #ifdef _DEBUG
 public:
@@ -43,7 +43,7 @@ private:
 	BoundingOrientedBox* m_pDesc = { nullptr };
 
 private:
-	_bool Intersect_ToOBB(CBounding* pTarget);
+	_bool Intersect_ToOBB(CBounding* pTarget, _vector* pOutNormal = nullptr);
 	OBB_INFO Compute_OBB();
 
 public:

@@ -63,13 +63,13 @@ public:
 	void Scaling(const _float3& vScale);
 
 public:
-	void Go_Straight(_float fTimeDelta);
-	void Go_Backward(_float fTimeDelta);
+	void Go_Straight(_float fTimeDelta, class CCollider* pCollider = nullptr, _float fFriction = 0.f);
+	void Go_Backward(_float fTimeDelta, class CCollider* pCollider = nullptr, _float fFriction = 0.f);
 	void Go_Right(_float fTimeDelta);
 	void Go_Left(_float fTimeDelta);
 	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance);
 
-	void Turn(_fvector vAxis, _float fTimeDelta);
+	void Turn(_fvector vAxis, _float fTimeDelta, CCollider* pCollider = nullptr, _float fPushPower = 0.f);
 	void Rotation(_fvector vAxis, _float fRadian);
 	_float3 Get_Rotation() const;
 	void Rotation(_float fX, _float fY, _float fZ);

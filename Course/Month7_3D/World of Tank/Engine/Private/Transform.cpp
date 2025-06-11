@@ -1,6 +1,7 @@
 #include "Transform.h"
 
 #include "Shader.h"
+#include "Collider.h"
 
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent { pDevice, pContext }
@@ -110,22 +111,50 @@ void CTransform::Scaling(const _float3& vScale)
 	Set_State(STATE::LOOK, XMVector3Normalize(Get_State(STATE::LOOK)) * vScale.z);
 }
 
-void CTransform::Go_Straight(_float fTimeDelta)
+void CTransform::Go_Straight(_float fTimeDelta, CCollider* pCollider, _float fFriction)
 {
 	_vector		vPosition = Get_State(STATE::POSITION);
 	_vector		vLook = Get_State(STATE::LOOK);
 		
-	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	_vector vMoveDir = XMVector3Normalize(vLook);
 
+	if (pCollider)
+	{
+		//충돌을 했는지 판단
+		if (pCollider->Get_IsColl())
+		{
+			// 충돌면 법선을 따라 슬라이딩 방향 계산
+			_vector vNormal = pCollider->Get_Normal();
+			vMoveDir = XMVector3Normalize(vMoveDir - vNormal); // 평면 방향으로만 이동
+			vMoveDir *= 1.f - fFriction;
+		}
+	}
+
+	vPosition += vMoveDir * m_fSpeedPerSec * fTimeDelta;
 	Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Go_Backward(_float fTimeDelta)
+void CTransform::Go_Backward(_float fTimeDelta, CCollider* pCollider, _float fFriction)
 {
 	_vector		vPosition = Get_State(STATE::POSITION);
 	_vector		vLook = Get_State(STATE::LOOK);
 
-	vPosition -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	_vector vMoveDir = XMVector3Normalize(vLook);
+
+	if (pCollider)
+	{
+		//충돌을 했는지 판단
+		if (pCollider->Get_IsColl())
+		{
+			_vector vNormal = pCollider->Get_Normal();
+
+			// 이동 방향을 평면에 투영 (뒤로 가는 방향이므로 음수 적용 없이 그대로 투영)
+			vMoveDir = XMVector3Normalize(vMoveDir - vNormal * XMVectorGetX(XMVector3Dot(vMoveDir, vNormal)));
+			vMoveDir *= 1.f - fFriction;
+		}
+	}
+
+	vPosition -= vMoveDir * m_fSpeedPerSec * fTimeDelta;
 
 	Set_State(STATE::POSITION, vPosition);
 }
@@ -158,8 +187,16 @@ void CTransform::Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDista
 		Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMVector3Normalize(vMoveDir) * m_fSpeedPerSec * fTimeDelta);
 }
 
-void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
+void CTransform::Turn(_fvector vAxis, _float fTimeDelta, CCollider* pCollider, _float fPushPower)
 {
+	// 충돌 시, 회전 말고 조금 밀어내는
+	if (pCollider && pCollider->Get_IsColl())
+	{
+		_vector vPush = XMVectorScale(pCollider->Get_Normal(), -fPushPower);
+		Set_State(STATE::POSITION, Get_State(STATE::POSITION) + vPush);
+		return;
+	}
+
 	_matrix			RotationMatrix = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
 
 	Set_State(STATE::RIGHT, XMVector4Transform(Get_State(STATE::RIGHT), RotationMatrix));

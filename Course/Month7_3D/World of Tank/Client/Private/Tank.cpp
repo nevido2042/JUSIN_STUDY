@@ -55,7 +55,7 @@ void CTank::Priority_Update(_float fTimeDelta)
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return;
 
-	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TANK), this, TEXT("Com_Collider"));
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"));
 	
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -77,9 +77,12 @@ void CTank::Priority_Update(_float fTimeDelta)
 
 void CTank::Update(_float fTimeDelta)
 {
-	//Check_Modules();
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	Move(fTimeDelta);
+
+	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
 
 	CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
@@ -88,10 +91,6 @@ void CTank::Update(_float fTimeDelta)
 	ApplyRecoil(fTimeDelta);
 
 	SendMatrixSync(fTimeDelta);
-
-	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
-
-	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	if (m_pGameInstance->Get_ID() != m_iID)
 	{
@@ -167,9 +166,9 @@ HRESULT CTank::Render()
 	return S_OK;
 }
 
-void CTank::On_Collision_Stay(CGameObject* pGameObject)
+void CTank::On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal)
 {
-	wcout << "Tank On_Collision_Stay : " << pGameObject->GetName() << endl;
+
 }
 
 void CTank::Damage_Module(MODULE eModule)
@@ -399,10 +398,20 @@ void CTank::Move(_float fTimeDelta)
 		}
 	}
 	
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), pEngin->Get_TurnPower() * fTimeDelta);
+	_float fTurnSpeed = pEngin->Get_TurnPower();
+
+	//if (abs(fTurnSpeed) > 0.f)
+	//{
+
+	//}
+
+	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTurnSpeed * fTimeDelta, m_pColliderCom, 0.01f);
 
 	//if(pEngin->Get_Gear() != GEAR::LEFT && pEngin->Get_Gear() != GEAR::RIGHT)
-	m_pTransformCom->Go_Straight(fMovePower * fTimeDelta);
+	if(fMovePower > 0.f)
+		m_pTransformCom->Go_Straight(fMovePower * fTimeDelta, m_pColliderCom, 0.5f);
+	else
+		m_pTransformCom->Go_Backward(-fMovePower * fTimeDelta, m_pColliderCom, 0.5f);
 
 	pTrackLeft->Set_Speed(SpeedTrackLeft);
 	pTrackRight->Set_Speed(SpeedTrackRight);

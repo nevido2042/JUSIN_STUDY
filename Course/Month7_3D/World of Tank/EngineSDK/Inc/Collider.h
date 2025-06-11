@@ -15,12 +15,15 @@ public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eType);
 	virtual HRESULT Initialize(void* pArg) override;
 	void Update(_fmatrix WorldMatrix);
-	_bool Intersect(CCollider* pTargetCollider);
+	_bool Intersect(CCollider* pTargetCollider, _vector* pOutNormal);
 	_bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist);
 #ifdef _DEBUG
 	HRESULT Render();
 #endif
 
+public:
+	_bool Get_IsColl() const { return m_isColl; }
+	_vector Get_Normal() const { return XMLoadFloat3(&m_vNormal); }
 private:
 	void Reset_Collision() { m_isColl = false; } friend class CCollider_Manager;
 
@@ -29,6 +32,7 @@ private:
 	class CBounding*	m_pBounding = { nullptr };
 
 	_bool				m_isColl = { false };
+	_float3				m_vNormal = {};
 
 #ifdef _DEBUG
 private:

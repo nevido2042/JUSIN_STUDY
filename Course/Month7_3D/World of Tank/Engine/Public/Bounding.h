@@ -30,7 +30,7 @@ public:
 public:
 	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
 	virtual void Update(_fmatrix WorldMatrix) = 0;
-	virtual _bool Intersect(CBounding* pTarget) = 0;
+	virtual _bool Intersect(CBounding* pTarget, _vector* pOutNormal) = 0;
 	virtual _bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist) = 0;
 #ifdef _DEBUG
 public:

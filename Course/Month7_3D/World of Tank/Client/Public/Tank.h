@@ -36,7 +36,7 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-	virtual void On_Collision_Stay(CGameObject* pGameObject) override;
+	virtual void On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal) override;
 
 public:
 	TEAM Get_Team() const { return m_eTeam; }
