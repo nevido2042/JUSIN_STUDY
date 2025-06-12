@@ -11,6 +11,7 @@
 #include "UIObject.h"
 #include "Layer.h"
 #include "Icon_Consumables.h"
+#include "InvisibleWall.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -34,6 +35,11 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(Ready_Layer_Boundary(TEXT("Layer_Boundary"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_InvisibleWalls(TEXT("Layer_InvisibleWall"))))
+		return E_FAIL;
+
+	
 
 	//if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 	//	return E_FAIL;
@@ -357,6 +363,37 @@ HRESULT CLevel_GamePlay::Ready_Layer_Boundary(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Boundary"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
+{
+	CInvisibleWall::INVISIBLE_WALL_DESC Desc{};
+
+	Desc.vExtents = _float3(320.f, 500.f, 1.f);
+	Desc.vInitPosition = _float3(320.f, 50.f, 640.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vExtents = _float3(320.f, 500.f, 1.f);
+	Desc.vInitPosition = _float3(320.f, 50.f, 0.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vExtents = _float3(1, 500.f, 320.f);
+	Desc.vInitPosition = _float3(640.f, 50.f, 320.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vExtents = _float3(1, 500.f, 320.f);
+	Desc.vInitPosition = _float3(0.f, 50.f, 320.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

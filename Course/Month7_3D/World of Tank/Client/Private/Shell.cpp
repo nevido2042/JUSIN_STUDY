@@ -77,8 +77,13 @@ void CShell::Update(_float fTimeDelta)
 		}
 	}
 
-	//50보다 낮아지면 없애라
-	if (XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION)) < 50.f)
+	_float3 vPos{};
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+	
+	//맵 밖을 나가면 없애라
+	if (vPos.y < 50.f || 
+		vPos.x < 1.f || vPos.x > TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH - 1.f ||
+		vPos.z < 1.f || vPos.z > TERRAIN_SIZE* TERRAIN_OFFSET_WIDTH - 1.f)
 		Destroy();
 }
 

@@ -48,7 +48,6 @@ void CPickedManager::Late_Update(_float fTimeDelta)
 
 HRESULT CPickedManager::Render()
 {
-
 	return S_OK;
 }
 

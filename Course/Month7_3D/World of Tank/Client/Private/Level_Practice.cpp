@@ -12,6 +12,7 @@
 #include "Terrain.h"
 #include "Tank.h"
 #include "Icon_Consumables.h"
+#include "InvisibleWall.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -36,6 +37,10 @@ HRESULT CLevel_Practice::Initialize()
 
 	if (FAILED(Ready_Layer_Boundary(TEXT("Layer_Boundary"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_InvisibleWalls(TEXT("Layer_InvisibleWall"))))
+		return E_FAIL;
+
 
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
@@ -332,10 +337,41 @@ HRESULT CLevel_Practice::Ready_Layer_Boundary(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Practice::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
+{
+	CInvisibleWall::INVISIBLE_WALL_DESC Desc{};
+
+	Desc.vExtents = _float3(320.f, 500.f, 1.f);
+	Desc.vInitPosition = _float3(320.f, 50.f, 640.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vExtents = _float3(320.f, 500.f, 1.f);
+	Desc.vInitPosition = _float3(320.f, 50.f, 0.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vExtents = _float3(1, 500.f, 320.f);
+	Desc.vInitPosition = _float3(640.f, 50.f, 320.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.vExtents = _float3(1, 500.f, 320.f);
+	Desc.vInitPosition = _float3(0.f, 50.f, 320.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
 {
 	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.vInitPosition = _float3(100.f, 110.f, 100.f);
+	Desc.vInitPosition = _float3(320.f, 110.f, 320.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;

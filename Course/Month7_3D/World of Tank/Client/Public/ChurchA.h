@@ -27,6 +27,10 @@ public:
 	virtual HRESULT Render();
 
 private:
+	void Picked_Ray_ScreenCenter();
+	void Picked_Ray_Gun();
+
+private:
 	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };

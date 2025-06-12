@@ -283,6 +283,9 @@
     <Filter Include="02.GameObjects\06.UIObject\DamageIndicator">
       <UniqueIdentifier>{a446c30c-3b12-484f-88bb-7a6e7715d043}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\InvisibleWall">
+      <UniqueIdentifier>{9905a599-090d-4413-9f37-d005ff2614c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -564,6 +567,9 @@
     <ClInclude Include="..\public\DamageIndicator.h">
       <Filter>02.GameObjects\06.UIObject\DamageIndicator</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\InvisibleWall.h">
+      <Filter>02.GameObjects\InvisibleWall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -839,6 +845,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DamageIndicator.cpp">
       <Filter>02.GameObjects\06.UIObject\DamageIndicator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\InvisibleWall.cpp">
+      <Filter>02.GameObjects\InvisibleWall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

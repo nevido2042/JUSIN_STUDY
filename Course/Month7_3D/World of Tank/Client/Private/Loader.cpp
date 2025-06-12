@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "InvisibleWall.h"
 #include "DamageBig.h"
 #include "DamageIndicator.h"
 #include "Boundary.h"
@@ -244,7 +245,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_GunMarker */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_GunMarker"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Crosshair/swf/crosshairControls/crosshairControls-12.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Crosshair/swf/crosshairControls/crosshairControls-11.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DamageBar */
@@ -473,6 +474,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_InvisibleWall */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
+		CInvisibleWall::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DamageIndicator */
