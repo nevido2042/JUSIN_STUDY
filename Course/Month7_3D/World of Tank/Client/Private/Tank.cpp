@@ -562,6 +562,13 @@ void CTank::Picked_Ray_Gun()
 	}
 }
 
+HRESULT CTank::Ready_Components()
+{
+	/* For.Com_Sound_TankSound3D */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
+		TEXT("Com_Sound_TankSound3D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound3D))))
+		return E_FAIL;
+}
 
 HRESULT CTank::Bind_ShaderResources()
 {

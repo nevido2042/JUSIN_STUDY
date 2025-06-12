@@ -33,6 +33,8 @@ HRESULT CDamagePanel::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
+	m_pSoundCom_Voice->SetVolume(0.3f);
+
 	return S_OK;
 }
 
