@@ -283,6 +283,12 @@
     <Filter Include="02.GameObjects\Boundary">
       <UniqueIdentifier>{6e2bddc3-6acd-4527-95f9-570067b6bb9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamageIndicator">
+      <UniqueIdentifier>{a446c30c-3b12-484f-88bb-7a6e7715d043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamageIndicator\DamageBig">
+      <UniqueIdentifier>{0653c498-3a7c-4549-807b-6121b3563895}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -564,6 +570,12 @@
     <ClInclude Include="..\public\Boundary.h">
       <Filter>02.GameObjects\Boundary</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DamageIndicator.h">
+      <Filter>02.GameObjects\06.UIObject\DamageIndicator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DamageBig.h">
+      <Filter>02.GameObjects\06.UIObject\DamageIndicator\DamageBig</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -839,6 +851,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Boundary.cpp">
       <Filter>02.GameObjects\Boundary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamageIndicator.cpp">
+      <Filter>02.GameObjects\06.UIObject\DamageIndicator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamageBig.cpp">
+      <Filter>02.GameObjects\06.UIObject\DamageIndicator\DamageBig</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
