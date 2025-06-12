@@ -18,6 +18,7 @@
 #include "LandObject.h"
 #include "Tank.h"
 #include "VIBuffer_Terrain.h"
+#include "DamageIndicator.h"
 #pragma endregion
 
 
@@ -672,16 +673,31 @@ HRESULT CMainApp::Ready_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_HIT_MODULE), [this](void* pArg)
 		{
-			HIT_MODULE_DESC Desc{};
-			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(HIT_MODULE_DESC));
+			HIT_MODULE_DESC Hit_Desc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Hit_Desc), sizeof(HIT_MODULE_DESC));
 			m_pGameInstance->Clear_Packet();
 
 
 			//나의 탱크의 상태 이상 일수도 있음
 			CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"));
-			if (pGameObject->Get_ID() == Desc.iTargetID)
+			if (pGameObject->Get_ID() == Hit_Desc.iTargetID)
 			{
-				static_cast<CTank*>(pGameObject)->Damage_Module(Desc.eModule);
+				static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule);
+
+				//데미지 인디케이터 띄우자 여기서
+				CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
+
+				Desc.fSizeX = 248.f * UI_RATIO;
+				Desc.fSizeY = 716.f * UI_RATIO;
+				Desc.fX = g_iWinSizeX * 0.5f;
+				Desc.fY = g_iWinSizeY * 0.5f;
+				Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+				Desc.fRotationPerSec = 1.f;
+				Desc.vFirePos = Hit_Desc.vFirePos;
+
+				if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+					ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_DamageIndicator"), &Desc)))
+					return;
 			}
 			else
 			{
@@ -692,9 +708,9 @@ HRESULT CMainApp::Ready_Packets()
 				//다른 탱크의 상태이상일수도
 				for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 				{
-					if (Desc.iTargetID == pGameObject->Get_ID())
+					if (Hit_Desc.iTargetID == pGameObject->Get_ID())
 					{
-						static_cast<CTank*>(pGameObject)->Damage_Module(Desc.eModule);
+						static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule);
 						break;
 					}
 				}

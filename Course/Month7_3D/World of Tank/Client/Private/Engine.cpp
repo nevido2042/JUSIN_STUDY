@@ -5,6 +5,7 @@
 #include "Tank.h"
 #include "Icon_Module.h"
 #include "DamagePanel.h"
+#include "Shell.h"
 
 CEngine::CEngine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CModule{ pDevice, pContext }
@@ -161,6 +162,7 @@ void CEngine::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 		Desc.iID = m_pGameInstance->Get_ID();
 		Desc.iTargetID = m_iID;
 		Desc.eModule = MODULE::ENGINE;
+		Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
 
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
 	}
@@ -192,20 +194,8 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 HRESULT CEngine::Damage_Engine()
 {
 	m_pOwner->Take_Damage(30.f);
-	//m_eModuleState = static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1)));
-	//m_pOwner->OnStateChanged_Engine(m_eModuleState);
-	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
 
-//#pragma message ("TODO: 엔진 고장났어요 라고 알리는게 맞나?? 엔진 맞았어요 모두에게 알리고 고장내면 되지")
-//	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
-//	{
-//		MODULE_STATE_DESC Desc{};
-//		Desc.iID = m_pGameInstance->Get_ID();
-//		Desc.iTargetID = m_iID;
-//		Desc.eModule = MODULE::ENGINE;
-//		Desc.eState = m_eModuleState;
-//		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_MODULE_STATE), &Desc);
-//	}
+	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
 
 	return S_OK;
 }

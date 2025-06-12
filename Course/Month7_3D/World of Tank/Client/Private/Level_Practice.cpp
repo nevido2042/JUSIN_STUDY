@@ -526,17 +526,18 @@ HRESULT CLevel_Practice::Ready_Layer_Score(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_DamageIndicator(const _wstring strLayerTag)
 {
-	CUIObject::UIOBJECT_DESC		Desc{};
+	//CUIObject::UIOBJECT_DESC		Desc{};
 
-	Desc.fSizeX = 248.f * UI_RATIO;
-	Desc.fSizeY = 716.f * UI_RATIO;
-	Desc.fX = g_iWinSizeX * 0.5f;
-	Desc.fY = g_iWinSizeY * 0.5f;
-	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	//Desc.fSizeX = 248.f * UI_RATIO;
+	//Desc.fSizeY = 716.f * UI_RATIO;
+	//Desc.fX = g_iWinSizeX * 0.5f;
+	//Desc.fY = g_iWinSizeY * 0.5f;
+	//Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	//Desc.fRotationPerSec = 1.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+	//	ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

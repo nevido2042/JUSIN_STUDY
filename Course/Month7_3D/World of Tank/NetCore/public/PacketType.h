@@ -94,6 +94,7 @@ typedef struct tagHitModule_Desc : PACKET_DESC
 {
     _int            iTargetID{ -1 };
     MODULE          eModule{ MODULE::END };
+    _float3         vFirePos = {};
 }HIT_MODULE_DESC;
 
 typedef struct tagModuleState_Desc : PACKET_DESC

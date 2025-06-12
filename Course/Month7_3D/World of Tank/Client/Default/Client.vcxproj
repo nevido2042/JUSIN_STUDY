@@ -187,7 +187,6 @@
     <ClInclude Include="..\public\Crosshair.h" />
     <ClInclude Include="..\public\DamageBar.h" />
     <ClInclude Include="..\public\DamageBar_World.h" />
-    <ClInclude Include="..\public\DamageBig.h" />
     <ClInclude Include="..\public\DamageCollider.h" />
     <ClInclude Include="..\public\DamageIndicator.h" />
     <ClInclude Include="..\public\DamagePanel.h" />
@@ -225,7 +224,6 @@
     <ClInclude Include="..\public\TigerTurretSkin.h" />
     <ClInclude Include="..\public\Tiger_Hanger.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
-    <ClInclude Include="..\public\Tool_Engine_Sound.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Hanger.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -282,7 +280,6 @@
     <ClCompile Include="..\private\Crosshair.cpp" />
     <ClCompile Include="..\private\DamageBar.cpp" />
     <ClCompile Include="..\private\DamageBar_World.cpp" />
-    <ClCompile Include="..\private\DamageBig.cpp" />
     <ClCompile Include="..\private\DamageCollider.cpp" />
     <ClCompile Include="..\private\DamageIndicator.cpp" />
     <ClCompile Include="..\private\DamagePanel.cpp" />
@@ -320,7 +317,6 @@
     <ClCompile Include="..\private\TigerTurretSkin.cpp" />
     <ClCompile Include="..\private\Tiger_Hanger.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
-    <ClCompile Include="..\private\Tool_Engine_Sound.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Hanger.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

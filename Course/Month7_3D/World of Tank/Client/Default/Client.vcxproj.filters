@@ -229,9 +229,6 @@
     <Filter Include="02.GameObjects\06.UIObject\01.Tool\01.MapTool">
       <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\01.Tool\02.Tool_Engine_Sound">
-      <UniqueIdentifier>{5e57e32d-f1a0-49a3-8eaa-8fb9fa867c9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\CountdownTimer">
       <UniqueIdentifier>{8b57e999-4c20-4fc8-8470-b52c7bf7f545}</UniqueIdentifier>
     </Filter>
@@ -285,9 +282,6 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\DamageIndicator">
       <UniqueIdentifier>{a446c30c-3b12-484f-88bb-7a6e7715d043}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\DamageIndicator\DamageBig">
-      <UniqueIdentifier>{0653c498-3a7c-4549-807b-6121b3563895}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -389,9 +383,6 @@
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
       <Filter>02.GameObjects\06.UIObject\01.Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Tool_Engine_Sound.h">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\02.Tool_Engine_Sound</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool_Base.h">
       <Filter>02.GameObjects\06.UIObject\01.Tool\00.Base_Tool</Filter>
@@ -573,9 +564,6 @@
     <ClInclude Include="..\public\DamageIndicator.h">
       <Filter>02.GameObjects\06.UIObject\DamageIndicator</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\DamageBig.h">
-      <Filter>02.GameObjects\06.UIObject\DamageIndicator\DamageBig</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -671,9 +659,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
       <Filter>02.GameObjects\06.UIObject\01.Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Tool_Engine_Sound.cpp">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\02.Tool_Engine_Sound</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool_Base.cpp">
       <Filter>02.GameObjects\06.UIObject\01.Tool\00.Base_Tool</Filter>
@@ -854,9 +839,6 @@
     </ClCompile>
     <ClCompile Include="..\private\DamageIndicator.cpp">
       <Filter>02.GameObjects\06.UIObject\DamageIndicator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\DamageBig.cpp">
-      <Filter>02.GameObjects\06.UIObject\DamageIndicator\DamageBig</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

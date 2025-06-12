@@ -31,6 +31,7 @@ HRESULT CShell::Initialize(void* pArg)
 	if (nullptr == m_pTargetBuffer)
 		return E_FAIL;
 
+	m_vFirePos = pDesc->vFirePos;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

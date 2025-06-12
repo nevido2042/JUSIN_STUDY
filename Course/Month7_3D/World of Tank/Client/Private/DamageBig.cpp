@@ -32,8 +32,8 @@ HRESULT CDamageBig::Initialize(void* pArg)
 	m_pTransformCom->Scaling(0.5f, 0.5f, 0.5f);
 
 
-	_vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
-	m_pTransformCom->Set_State(STATE::POSITION, vPos + _vector{0.f, 0.3f, 0.f, 0.f});
+	//_vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+	//m_pTransformCom->Set_State(STATE::POSITION, vPos + _vector{0.f, 0.3f, 0.f, 0.f});
 
 	//공격한 적의 위치 (일단  0 0 0)를 저장하고
 
@@ -43,16 +43,6 @@ HRESULT CDamageBig::Initialize(void* pArg)
 	//적의 위치를 2d화면상의 위치로 변환
 	//카메라 중점의 화면상 위치 와 위의 위치의 방향 벡터를 구한다.
 	//그만큼 회전시킨다
-
-	// Transform 컴포넌트가 제공하는 로컬 회전
-	m_pTransformCom->Rotation(_vector{ 0.f, 0.f, 1.f, 0.f }, XMConvertToRadians(90.f));
-
-	//// 이후 Update에서 부모와 곱함
-	//_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
-	//_matrix matParentWorld = XMLoadFloat4x4(m_pParentWorldMatrix);
-
-	//XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(matWorld, matParentWorld));
-
 
 	return S_OK;
 }
@@ -65,6 +55,11 @@ void CDamageBig::Priority_Update(_float fTimeDelta)
 
 void CDamageBig::Update(_float fTimeDelta)
 {
+	//_float3 vPos = {};
+	//XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	//cout << vPos.x << ", " << vPos.y << ", " << vPos.z << endl;
+
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 }

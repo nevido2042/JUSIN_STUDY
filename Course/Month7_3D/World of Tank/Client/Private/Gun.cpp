@@ -114,6 +114,7 @@ HRESULT CGun::Fire()
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.iIndex = 0;
 	Desc.strComponentTag = TEXT("Com_VIBuffer");
+	memcpy(&Desc.vFirePos, m_CombinedWorldMatrix.m[3], sizeof(_float3));
 
 	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shell"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Shell"), &Desc);
 
