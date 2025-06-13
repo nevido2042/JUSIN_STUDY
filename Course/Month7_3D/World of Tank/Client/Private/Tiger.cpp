@@ -88,11 +88,6 @@ HRESULT CTiger::Ready_Components()
 		TEXT("Com_Model_Destroyed"), reinterpret_cast<CComponent**>(&m_pModelCom_Destroyed))))
 		return E_FAIL;
 
-	/* For.Com_Sound_Voice */
-	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
-	//	TEXT("Com_Sound_Voice"), reinterpret_cast<CComponent**>(&m_pSoundCom_Voice))))
-	//	return E_FAIL;
-
 	/* For.Com_Collider */
 	CBounding_OBB::OBB_DESC	OBBDesc{};
 	OBBDesc.vExtents = _float3(1.5f, 1.f, 3.0f);
@@ -102,11 +97,6 @@ HRESULT CTiger::Ready_Components()
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
 		return E_FAIL;
-
-	/* For.Com_Sound_TankSound2D */
-	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound2D"),
-	//	TEXT("Com_Sound_TankSound2D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound2D))))
-	//	return E_FAIL;
 
 	return S_OK;
 }

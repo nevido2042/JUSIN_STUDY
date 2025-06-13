@@ -32,6 +32,8 @@ HRESULT CBurntTree::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pSoundCom->Set3DState(0.f, 30.f);
+
 	return S_OK;
 }
 
@@ -47,6 +49,8 @@ void CBurntTree::Priority_Update(_float fTimeDelta)
 
 void CBurntTree::Update(_float fTimeDelta)
 {
+	m_pSoundCom->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
+
 	if (m_bFallComplete == true)
 		return;
 
@@ -108,6 +112,8 @@ HRESULT CBurntTree::Render()
 
 void CBurntTree::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
+	m_pSoundCom->Play("phys_coll_30");
+
 	m_bIsFall = true;
 
 	//탱크의 반대 방향으로 넘어져야한다.
@@ -141,6 +147,11 @@ HRESULT CBurntTree::Ready_Components()
 	SphereDesc.vCenter = _float3(0.f, SphereDesc.fRadius, 0.f);
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereDesc)))
+		return E_FAIL;
+
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Tree3D"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -202,4 +213,6 @@ void CBurntTree::Free()
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pSoundCom);
+	
 }

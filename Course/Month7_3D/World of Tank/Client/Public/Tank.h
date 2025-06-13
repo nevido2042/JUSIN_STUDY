@@ -102,9 +102,9 @@ protected:
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 	CModel*				m_pModelCom_Destroyed = { nullptr };
-	CSoundController*	m_pSoundCom_TankSound3D = { nullptr };
+	//CSoundController*	m_pSoundCom_TankSound3D = { nullptr };
 
-private:
+protected:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
 

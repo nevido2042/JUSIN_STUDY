@@ -48,6 +48,9 @@ HRESULT CTank::Initialize(void* pArg)
 	if(m_pBoundary)
 		Safe_AddRef(m_pBoundary);
 
+	//m_pSoundCom_TankSound3D->Set3DState(0.f, 30.f);
+
+
 	return S_OK;
 }
 
@@ -98,6 +101,7 @@ void CTank::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
+	//m_pSoundCom_TankSound3D->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
 
 	CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
@@ -183,7 +187,8 @@ HRESULT CTank::Render()
 
 void CTank::On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal)
 {
-
+	//if(!m_pSoundCom_TankSound3D->IsPlaying("phys_coll_83"))
+	//	m_pSoundCom_TankSound3D->Play("phys_coll_83");
 }
 
 void CTank::Damage_Module(MODULE eModule)
@@ -565,9 +570,11 @@ void CTank::Picked_Ray_Gun()
 HRESULT CTank::Ready_Components()
 {
 	/* For.Com_Sound_TankSound3D */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
-		TEXT("Com_Sound_TankSound3D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound3D))))
-		return E_FAIL;
+	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
+	//	TEXT("Com_Sound_TankSound3D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound3D))))
+	//	return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CTank::Bind_ShaderResources()
@@ -616,6 +623,7 @@ void CTank::Free()
 
 	Safe_Release(m_pBoundary);
 	Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pSoundCom_TankSound3D);
 
 	for (CModule* pModule : m_Modules)
 		Safe_Release(pModule);

@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CShader;
 class CModel;
 class CCollider;
+class CSoundController;
 NS_END
 
 NS_BEGIN(Client)
@@ -36,6 +37,7 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
+	CSoundController* m_pSoundCom = { nullptr };
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
