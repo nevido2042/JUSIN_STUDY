@@ -31,6 +31,12 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Set_ColorDark();
+
+private:
+	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

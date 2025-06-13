@@ -246,6 +246,20 @@ HRESULT CMainApp::Ready_Packets()
 
 			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Minimap"), ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Minimap"), &UIObject_Desc);
 
+
+			CUIObject::UIOBJECT_DESC		Score_Desc{};
+
+			Score_Desc.fSizeX = 50.0f * UI_RATIO;
+			Score_Desc.fSizeY = 50.0f * UI_RATIO;
+			Score_Desc.fX = g_iWinSizeX * 0.5f;
+			Score_Desc.fY = g_iWinSizeY * 0.03f;
+			Score_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Score"),
+				ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Score"), &Score_Desc)))
+				return E_FAIL;
+
+			return S_OK;
 		})))
 		return E_FAIL;
 #pragma endregion

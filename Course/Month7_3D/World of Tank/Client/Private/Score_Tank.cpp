@@ -65,13 +65,16 @@ HRESULT CScore_Tank::Render()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
 		return E_FAIL;
 
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &m_vBaseColor, sizeof(_float4))))
+		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(3)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -81,6 +84,11 @@ HRESULT CScore_Tank::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CScore_Tank::Set_ColorDark()
+{
+	m_vBaseColor = { 0.2f, 0.2f, 0.2f, 1.f };
 }
 
 HRESULT CScore_Tank::Ready_Components(_tchar* szTextureName)

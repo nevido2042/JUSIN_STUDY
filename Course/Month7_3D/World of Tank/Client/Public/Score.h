@@ -26,9 +26,29 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Set_Destroy_Green();
+	void Set_Destroy_Red();
+
 private:
-	_uint m_iNumTeamA = {};
-	_uint m_iNumTeamB = {};
+	void Check_Team_All_Dead();
+
+private:
+	void Draw_GameResult();
+
+private:
+	_float m_fAccTime = { 0.f };
+
+private:
+	_bool m_bIsGameEnd = { false };
+
+private:
+	_uint m_iGreenScore = {};
+	_uint m_iRedScore = {};
+
+private:
+	_uint m_iNumGreen = 0;
+	_uint m_iNumRed = 0;
 
 private:
 	HRESULT Ready_Components();

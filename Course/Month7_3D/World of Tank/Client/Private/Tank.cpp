@@ -15,6 +15,7 @@
 #include "DamageBar.h"
 #include "DamagePanel.h"
 #include "PickedManager.h"
+#include "Score.h"
 #pragma endregion
 
 CTank::CTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -279,7 +280,8 @@ HRESULT CTank::Take_Damage(_float fDamage)
 	if (m_fHP <= 0.f)
 	{
 		m_fHP = 0.f;
-		m_bisDestroyed = true;
+
+		Destroyed();
 	}
 
 	if (m_pGameInstance->Get_ID() == m_iID)
@@ -440,6 +442,25 @@ void CTank::Move(_float fTimeDelta)
 void CTank::Destroyed()
 {
 	m_bisDestroyed = true;
+
+	CGameObject* pScore = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Score"));
+	if (pScore)
+	{
+		CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+		if (nullptr == pPlayerTank)
+			return;
+
+		TEAM ePlayerTeam = static_cast<CTank*>(pPlayerTank)->Get_Team();
+
+		if (m_eTeam == ePlayerTeam)
+		{
+			static_cast<CScore*>(pScore)->Set_Destroy_Green();
+		}
+		else
+		{
+			static_cast<CScore*>(pScore)->Set_Destroy_Red();
+		}
+	}
 
 	for(CModule * pModule : m_Modules)
 	{

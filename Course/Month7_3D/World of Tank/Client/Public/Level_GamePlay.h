@@ -39,6 +39,7 @@ private:
 	HRESULT Ready_Layer_Boundary(const _wstring strLayerTag);
 	HRESULT Ready_Layer_InvisibleWalls(const _wstring strLayerTag);
 
+
 private:
 	HRESULT Load_Map();
 
