@@ -2,8 +2,9 @@
 
 #include "GameInstance.h"
 #include "PersonalArrowEntry.h"
-#include "MediumTank_Enemy_Red.h"
+#include "Minimap_Tank.h"
 #include "Layer.h"
+#include "Tank.h"
 
 CMinimap::CMinimap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -111,12 +112,17 @@ HRESULT CMinimap::Ready_Components()
 
 HRESULT CMinimap::Ready_PartObjects()
 {
+	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+
+	if (pPlayerTank == nullptr)
+		return E_FAIL;
+
 	CPersonalArrowEntry::PERSONAL_ARROW_ENTRY_DESC PersonalArrowEntry_Desc{};
 	PersonalArrowEntry_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
 	PersonalArrowEntry_Desc.bIsChild = true;
 	lstrcpy(PersonalArrowEntry_Desc.szName, TEXT("PersonalArrowEntry"));
 	PersonalArrowEntry_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	PersonalArrowEntry_Desc.pTarget = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	PersonalArrowEntry_Desc.pTarget = pPlayerTank;
 
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PersonalArrowEntry"), TEXT("Part_PersonalArrowEntry"), &PersonalArrowEntry_Desc)))
 		return E_FAIL;
@@ -125,19 +131,25 @@ HRESULT CMinimap::Ready_PartObjects()
 	if (pLayer == nullptr)
 		return E_FAIL;
 
-	CMediumTank_Enemy_Red::MEDIUM_TANK_ENEMY_RED_DESC Medium_Tank_Enemy_Red_Desc{};
-	Medium_Tank_Enemy_Red_Desc.fDepth = DEPTH_BACKGROUND - 0.1f;
-	Medium_Tank_Enemy_Red_Desc.bIsChild = true;
-	lstrcpy(Medium_Tank_Enemy_Red_Desc.szName, TEXT("MediumTank_Enemy_Red"));
-	Medium_Tank_Enemy_Red_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	CMinimap_Tank::MINIMAP_TANK_DESC MinimapTankDesc{};
+	MinimapTankDesc.fDepth = DEPTH_BACKGROUND - 0.1f;
+	MinimapTankDesc.bIsChild = true;
+	lstrcpy(MinimapTankDesc.szName, TEXT("Minimap_Tank"));
+	MinimapTankDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 
 	_uint iCount = 0;
-	for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+	for (CGameObject* pTank : pLayer->Get_GameObjects())
 	{
-		Medium_Tank_Enemy_Red_Desc.pTarget = pGameObject;
-		wstring PartName = TEXT("Part_MediumTank_Enemy_Red_") + to_wstring(iCount++);
 
-		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MediumTank_Enemy_Red"), PartName, &Medium_Tank_Enemy_Red_Desc)))
+		if (static_cast<CTank*>(pPlayerTank)->Get_Team() == static_cast<CTank*>(pTank)->Get_Team())
+			lstrcpy(MinimapTankDesc.szTextureName, TEXT("Prototype_Component_Texture_MediumTank_Ally_Green"));
+		else
+			lstrcpy(MinimapTankDesc.szTextureName, TEXT("Prototype_Component_Texture_MediumTank_Enemy_Red"));
+
+		MinimapTankDesc.pTarget = pTank;
+		wstring PartName = TEXT("Part_Minimap_Tank_") + to_wstring(iCount++);
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Minimap_Tank"), PartName, &MinimapTankDesc)))
 			return E_FAIL;
 	}
 

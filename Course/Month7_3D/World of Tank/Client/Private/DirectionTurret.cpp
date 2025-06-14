@@ -85,7 +85,6 @@ void CDirectionTurret::Update(_float fTimeDelta)
 	_vector vCross_CamBody = XMVector3Cross(vCamLook, vBodyLook);
 	_float fCrossY_CamBody = XMVectorGetY(vCross_CamBody);
 
-
 	// 방향 처리
 	if (fCrossY_BodyTurret < 0.f)
 		fAngleTurretToBody = -fAngleTurretToBody; // 시계 방향으로 회전

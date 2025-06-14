@@ -187,9 +187,6 @@
     <Filter Include="02.GameObjects\06.UIObject\Minimap\PersonalArrowEntry">
       <UniqueIdentifier>{8ab7531b-c809-4f5e-97f4-4b995b6726f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\Minimap\MediumTank_Enemy_Red">
-      <UniqueIdentifier>{c3f8620e-2a90-49c5-98f8-b655dc150e34}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\DamageBar">
       <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
     </Filter>
@@ -288,6 +285,9 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\DamagePannel\DirectionTurret">
       <UniqueIdentifier>{cede1728-9810-4075-a897-f70312698059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Minimap\Minimap_Tank">
+      <UniqueIdentifier>{c3f8620e-2a90-49c5-98f8-b655dc150e34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -516,8 +516,8 @@
     <ClInclude Include="..\public\Button_Practice.h">
       <Filter>02.GameObjects\06.UIObject\00.Button\11.Button_Practice</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\MediumTank_Enemy_Red.h">
-      <Filter>02.GameObjects\06.UIObject\Minimap\MediumTank_Enemy_Red</Filter>
+    <ClInclude Include="..\public\Minimap_Tank.h">
+      <Filter>02.GameObjects\06.UIObject\Minimap\Minimap_Tank</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CountdownTimer.h">
       <Filter>02.GameObjects\06.UIObject\CountdownTimer</Filter>
@@ -798,8 +798,8 @@
     <ClCompile Include="..\private\Button_Practice.cpp">
       <Filter>02.GameObjects\06.UIObject\00.Button\11.Button_Practice</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\MediumTank_Enemy_Red.cpp">
-      <Filter>02.GameObjects\06.UIObject\Minimap\MediumTank_Enemy_Red</Filter>
+    <ClCompile Include="..\private\Minimap_Tank.cpp">
+      <Filter>02.GameObjects\06.UIObject\Minimap\Minimap_Tank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CountdownTimer.cpp">
       <Filter>02.GameObjects\06.UIObject\CountdownTimer</Filter>

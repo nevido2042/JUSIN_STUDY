@@ -6,6 +6,7 @@
 NS_BEGIN(Engine)
 class CShader;
 class CModel;
+class CCollider;
 NS_END
 
 NS_BEGIN(Client)
@@ -26,6 +27,7 @@ public:
 	virtual HRESULT Render();
 
 private:
+	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 private:

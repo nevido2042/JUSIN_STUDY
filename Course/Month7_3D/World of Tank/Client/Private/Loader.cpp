@@ -28,7 +28,7 @@
 #include "GunMarker.h"
 #include "DamageBar.h"
 #include "Crosshair.h"
-#include "MediumTank_Enemy_Red.h"
+#include "Minimap_Tank.h"
 #include "PersonalArrowEntry.h"
 #include "Icon_Module.h"
 #include "TigerTrackRight.h"
@@ -267,6 +267,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_Component_Texture_MediumTank_Enemy_Red */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_MediumTank_Enemy_Red"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/output/mediumTank_enemy_red.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_MediumTank_Ally_Green */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_MediumTank_Ally_Green"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/output/mediumTank_ally_green.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_PersonalArrowEntry */
@@ -568,9 +573,9 @@ HRESULT CLoader::Loading_For_Static()
 		CPersonalArrowEntry::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_MediumTank_Enemy_Red */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MediumTank_Enemy_Red"),
-		CMediumTank_Enemy_Red::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Minimap_Tank */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Minimap_Tank"),
+		CMinimap_Tank::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Icon_Module */
