@@ -24,6 +24,7 @@
 #include "FPS_Renderer.h"
 #include "Shell.h"
 #include "DirectionBody.h"
+#include "DirectionTurret.h"
 #include "GunMarker.h"
 #include "DamageBar.h"
 #include "Crosshair.h"
@@ -243,6 +244,11 @@ HRESULT CLoader::Loading_For_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Direction/body.dds"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_DirectionTurret */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DirectionTurret"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Direction/turret.dds"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_GunMarker */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_GunMarker"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/InGame/Crosshair/swf/crosshairControls/crosshairControls-11.dds"), 1))))
@@ -277,6 +283,7 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/global_AM.dds"), 1))))
 		return E_FAIL;
+	//"../Bin/WOT_Resources/Map/99_poland/maps/landscape/00_AllTerrain3_tiles/Foliage_yellow_02_00236_am.dds"
 	//"../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/global_AM.dds"
 	//"../Bin/Resources/Textures/Terrain/Tile0.dds"
 
@@ -534,6 +541,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_DirectionBody */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"),
 		CDirectionBody::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DirectionTurret */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionTurret"),
+		CDirectionTurret::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_GunMarker */

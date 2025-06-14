@@ -60,7 +60,7 @@ void CSkydome::Late_Update(_float fTimeDelta)
 	_vector vCamPos = mInvViewMatrix.r[3]; // r[3] == m[3][0~3]
 
 	// Y축 내리기
-	vCamPos = XMVectorSetY(vCamPos, XMVectorGetY(vCamPos) - 0.1f);
+	vCamPos = XMVectorSetY(vCamPos, XMVectorGetY(vCamPos) - 0.15f);
 
 	// Transform Position 세팅
 	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);

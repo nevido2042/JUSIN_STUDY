@@ -174,6 +174,20 @@ HRESULT CDamagePanel::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_AmmoBay"), &Desc)))
 		return E_FAIL;
 
+	CUIObject::UIOBJECT_DESC				BodyDir_Desc{};
+
+	BodyDir_Desc.bIsChild = true;
+	BodyDir_Desc.fX = 0.f;
+	BodyDir_Desc.fY = 0.f;
+	BodyDir_Desc.fRotationPerSec = 1.f;
+	BodyDir_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"), TEXT("Part_DirectionBody"), &BodyDir_Desc)))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionTurret"), TEXT("Part_DirectionTurret"), &BodyDir_Desc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

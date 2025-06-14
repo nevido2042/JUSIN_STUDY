@@ -193,9 +193,6 @@
     <Filter Include="02.GameObjects\06.UIObject\DamageBar">
       <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\DirectionBody">
-      <UniqueIdentifier>{05e9590a-4a87-4c73-a89f-54d92d6b84e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\Crosshair">
       <UniqueIdentifier>{1568540f-f1fe-4fd5-9780-8e6e06ce597b}</UniqueIdentifier>
     </Filter>
@@ -262,9 +259,6 @@
     <Filter Include="02.GameObjects\DamageCollider">
       <UniqueIdentifier>{426337a1-ceb5-4c28-b0ed-ff520707ad79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\Icon_Module">
-      <UniqueIdentifier>{f88e400f-91b3-4dee-8f30-17ade9367f88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\PickedManager">
       <UniqueIdentifier>{b4d81f98-6168-472a-8973-c146ce25e3f8}</UniqueIdentifier>
     </Filter>
@@ -285,6 +279,15 @@
     </Filter>
     <Filter Include="02.GameObjects\InvisibleWall">
       <UniqueIdentifier>{9905a599-090d-4413-9f37-d005ff2614c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamagePannel\DirectionBody">
+      <UniqueIdentifier>{05e9590a-4a87-4c73-a89f-54d92d6b84e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamagePannel\Icon_Module">
+      <UniqueIdentifier>{f88e400f-91b3-4dee-8f30-17ade9367f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamagePannel\DirectionTurret">
+      <UniqueIdentifier>{cede1728-9810-4075-a897-f70312698059}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -478,7 +481,7 @@
       <Filter>02.GameObjects\03.Modules\02.Gun</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Icon_Module.h">
-      <Filter>02.GameObjects\06.UIObject\Icon_Module</Filter>
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\Icon_Module</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tank.h">
       <Filter>02.GameObjects\02.LandObject\00.Tank</Filter>
@@ -499,7 +502,7 @@
       <Filter>02.GameObjects\01.3DUI\11.GunMarker</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DirectionBody.h">
-      <Filter>02.GameObjects\06.UIObject\DirectionBody</Filter>
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\DirectionBody</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Shell.h">
       <Filter>02.GameObjects\Shell</Filter>
@@ -569,6 +572,9 @@
     </ClInclude>
     <ClInclude Include="..\public\InvisibleWall.h">
       <Filter>02.GameObjects\InvisibleWall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DirectionTurret.h">
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\DirectionTurret</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -757,7 +763,7 @@
       <Filter>02.GameObjects\03.Modules\02.Gun</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Icon_Module.cpp">
-      <Filter>02.GameObjects\06.UIObject\Icon_Module</Filter>
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\Icon_Module</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tank.cpp">
       <Filter>02.GameObjects\02.LandObject\00.Tank</Filter>
@@ -778,7 +784,7 @@
       <Filter>02.GameObjects\01.3DUI\11.GunMarker</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DirectionBody.cpp">
-      <Filter>02.GameObjects\06.UIObject\DirectionBody</Filter>
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\DirectionBody</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Shell.cpp">
       <Filter>02.GameObjects\Shell</Filter>
@@ -848,6 +854,9 @@
     </ClCompile>
     <ClCompile Include="..\private\InvisibleWall.cpp">
       <Filter>02.GameObjects\InvisibleWall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DirectionTurret.cpp">
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\DirectionTurret</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

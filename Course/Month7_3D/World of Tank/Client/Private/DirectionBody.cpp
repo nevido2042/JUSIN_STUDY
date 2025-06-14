@@ -29,6 +29,9 @@ HRESULT CDirectionBody::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->Set_State(STATE::POSITION, m_pTransformCom->Get_State(STATE::POSITION) + _vector{0.f, -0.05f, 0.f, 0.f});
+	m_pTransformCom->Scaling(0.24f, 0.37f, 1.f);
+
 	return S_OK;
 }
 
@@ -41,7 +44,39 @@ void CDirectionBody::Priority_Update(_float fTimeDelta)
 
 void CDirectionBody::Update(_float fTimeDelta)
 {
-	m_pTransformCom->Turn(XMVectorSet(0.f, 0.f, 1.f, 0.f), fTimeDelta * 0.2f);
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+	if (pPlayerTank == nullptr)
+		return;
+
+	// 탱크 룩 벡터
+	_vector vTankLook = pPlayerTank->Get_Transform()->Get_State(STATE::LOOK);
+	vTankLook = XMVectorSetY(vTankLook, 0.f);
+	vTankLook = XMVector3Normalize(vTankLook);
+
+	// 카메라의 LOOK 벡터는 View 행렬의 Z축
+	_matrix matViewInv = XMMatrixInverse(nullptr, m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
+	_vector vCamLook = matViewInv.r[2]; // Z축
+	vCamLook = XMVectorSetY(vCamLook, 0.f);
+	vCamLook = XMVector3Normalize(vCamLook);
+
+	// Dot: 각도
+	_float fDot = XMVectorGetX(XMVector3Dot(vTankLook, vCamLook));
+	_float fAngle = acosf(fDot); // 항상 0~π (0~180도)
+
+	// Cross: 방향성
+	_vector vCross = XMVector3Cross(vTankLook, vCamLook);
+	_float fCrossY = XMVectorGetY(vCross);
+
+	// 방향 처리
+	if (fCrossY < 0.f)
+		fAngle = -fAngle; // 시계 방향으로 회전
+
+	// 회전 수행 (Y축 기준)
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), fAngle);
+
 }
 
 void CDirectionBody::Late_Update(_float fTimeDelta)
@@ -52,8 +87,8 @@ void CDirectionBody::Late_Update(_float fTimeDelta)
 
 HRESULT CDirectionBody::Render()
 {
-
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
