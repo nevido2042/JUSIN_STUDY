@@ -6,6 +6,8 @@
 
 NS_BEGIN(Client)
 
+#pragma message ("이 클래스 필요 없을 수도 있는데 일단 냅둠.")
+
 class CPickedManager final : public CGameObject
 {
 private:
