@@ -1,6 +1,7 @@
 #include "Camera_TPS.h"
 #include "GameInstance.h"
 #include "PickedManager.h"
+#include "Terrain.h"
 
 CCamera_TPS::CCamera_TPS(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
@@ -186,6 +187,19 @@ void CCamera_TPS::Picking()
 		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
 		if (pPickedManager)
 			pPickedManager->Add_ScreenCenterPickedPos(vPos);
+	}
+
+	CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
+	if (pTerrain)
+	{
+		if (pTerrain->Pick(vOrigin, vRayDir, fDist))
+		{
+			_float3 vPickedPos = {};
+			XMStoreFloat3(&vPickedPos, vOrigin + vRayDir * fDist);
+			CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+			if (pPickedManager)
+				pPickedManager->Add_ScreenCenterPickedPos(vPickedPos);
+		}
 	}
 }
 

@@ -34,21 +34,6 @@ HRESULT CTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-#ifdef _DEBUG
-	//m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
-	//m_pEffect = new BasicEffect(m_pDevice);
-
-	//const void* pShaderByteCode = { nullptr };
-	//size_t		iShaderByteCodeLength = {  };
-
-	//m_pEffect->SetVertexColorEnabled(true);
-
-	//m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iShaderByteCodeLength);
-
-	//if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount,
-	//	pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
-	//	return E_FAIL;
-#endif
 
 	return S_OK;
 }
@@ -57,9 +42,9 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 {
 	Picking_Mouse();
 
-	Picking_ScreenCenter();
+	//Picking_ScreenCenter();
 
-	Picking_Gun();
+	//Picking_Gun();
 
 }
 
@@ -87,29 +72,22 @@ HRESULT CTerrain::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-#ifdef _DEBUG
-	//m_pEffect->SetWorld(XMMatrixIdentity());
-	//m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
-	//m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
-
-	//m_pContext->IASetInputLayout(m_pInputLayout);
-
-	//m_pEffect->Apply(m_pContext);
-
-	//m_pBatch->Begin();
-
-	//DX::DrawRay(
-	//	m_pBatch,
-	//	XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),     // 시작점 A
-	//	XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), // 방향 벡터 (B - A)
-	//	false,
-	//	DirectX::Colors::Red
-	//);
-
-	//m_pBatch->End();
-#endif // _DEBUG
-
 	return S_OK;
+}
+
+_bool CTerrain::Pick(_fvector vOrigin, _fvector vRayDir, _float& fOutDist)
+{
+	// 쿼드트리 픽킹
+	_float fDist = { 0 }; //거리
+	_uint iPickedTri = { 0 }; //피킹된 인덱스
+	_float3 vPos = {}; //포지션
+	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, vOrigin, vRayDir))
+	{
+		fOutDist = fDist;
+		return true;
+	}
+	
+	return false;
 }
 
 HRESULT CTerrain::Picking_Mouse()
@@ -118,11 +96,6 @@ HRESULT CTerrain::Picking_Mouse()
 
 	if (iLevelIndex == ENUM_CLASS(LEVEL::MAPTOOL) && m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::LBUTTON)))
 	{
-
-		/*m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
-		m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());
-		m_vPickedPos = m_pVIBufferCom->Compute_PickedPosition(m_pTransformCom->Get_WorldMatrix_Inverse());*/
-
 		// 쿼드트리 픽킹
 		_float fDist = { 0 }; //거리
 		_uint iPickedTri = { 0 }; //피킹된 인덱스
@@ -137,57 +110,57 @@ HRESULT CTerrain::Picking_Mouse()
 	return S_OK;
 }
 
-HRESULT CTerrain::Picking_ScreenCenter()
-{
-	_uint iLevelIndex = { m_pGameInstance->Get_NewLevel_Index() };
-
-	if (iLevelIndex != ENUM_CLASS(LEVEL::GAMEPLAY) && iLevelIndex != ENUM_CLASS(LEVEL::PRACTICE))
-		return E_FAIL;
-
-	// 쿼드트리 픽킹
-	_float fDist = { 0 }; //거리
-	_uint iPickedTri = { 0 }; //피킹된 인덱스
-	_float3 vPos = {}; //포지션
-	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay())))
-	{
-		m_vPickedPos = vPos;
-
-		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-		if (pPickedManager)
-			pPickedManager->Add_ScreenCenterPickedPos(m_vPickedPos);
-	}
-
-	return S_OK;
-}
-
-HRESULT CTerrain::Picking_Gun()
-{
-	//포구 피킹
-	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
-	if (nullptr == pPlayerTank)
-		return E_FAIL;
-
-	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-	if (nullptr == pGun)
-		return E_FAIL;
-
-	pGun->Get_CombinedWorldMatrix();
-
-	// 쿼드트리 픽킹
-	_float fDist = { 0 }; //거리
-	_uint iPickedTri = { 0 }; //피킹된 인덱스
-	_float3 vPos = {}; //포지션
-	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, pGun->Get_CombinedWorldMatrix().r[3], pGun->Get_CombinedWorldMatrix().r[2]))
-	{
-		m_vPickedPos_Gun = vPos;
-
-		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-		if (pPickedManager)
-			pPickedManager->Add_GunPickedPos(m_vPickedPos_Gun);
-	}
-
-	return S_OK;
-}
+//HRESULT CTerrain::Picking_ScreenCenter()
+//{
+//	_uint iLevelIndex = { m_pGameInstance->Get_NewLevel_Index() };
+//
+//	if (iLevelIndex != ENUM_CLASS(LEVEL::GAMEPLAY) && iLevelIndex != ENUM_CLASS(LEVEL::PRACTICE))
+//		return E_FAIL;
+//
+//	// 쿼드트리 픽킹
+//	_float fDist = { 0 }; //거리
+//	_uint iPickedTri = { 0 }; //피킹된 인덱스
+//	_float3 vPos = {}; //포지션
+//	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay())))
+//	{
+//		m_vPickedPos = vPos;
+//
+//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+//		if (pPickedManager)
+//			pPickedManager->Add_ScreenCenterPickedPos(m_vPickedPos);
+//	}
+//
+//	return S_OK;
+//}
+//
+//HRESULT CTerrain::Picking_Gun()
+//{
+//	//포구 피킹
+//	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+//	if (nullptr == pPlayerTank)
+//		return E_FAIL;
+//
+//	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+//	if (nullptr == pGun)
+//		return E_FAIL;
+//
+//	pGun->Get_CombinedWorldMatrix();
+//
+//	// 쿼드트리 픽킹
+//	_float fDist = { 0 }; //거리
+//	_uint iPickedTri = { 0 }; //피킹된 인덱스
+//	_float3 vPos = {}; //포지션
+//	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, pGun->Get_CombinedWorldMatrix().r[3], pGun->Get_CombinedWorldMatrix().r[2]))
+//	{
+//		m_vPickedPos_Gun = vPos;
+//
+//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+//		if (pPickedManager)
+//			pPickedManager->Add_GunPickedPos(m_vPickedPos_Gun);
+//	}
+//
+//	return S_OK;
+//}
 
 HRESULT CTerrain::Ready_Components()
 {
@@ -277,10 +250,4 @@ void CTerrain::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
-
-#ifdef _DEBUG
-	//Safe_Release(m_pInputLayout);
-	//Safe_Delete(m_pBatch);
-	//Safe_Delete(m_pEffect);
-#endif
 }
