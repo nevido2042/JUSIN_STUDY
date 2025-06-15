@@ -142,9 +142,10 @@ public:
 #pragma endregion
 
 #pragma region COLLIDER_MANAGER
-	HRESULT Add_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag);
-	HRESULT Out_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject);
-	void	Check_Collision(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag);
+	HRESULT				Add_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag);
+	HRESULT				Out_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject);
+	void				Check_Collision(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag);
+	class CGameObject*	Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fDist);
 #pragma endregion
 
 private:

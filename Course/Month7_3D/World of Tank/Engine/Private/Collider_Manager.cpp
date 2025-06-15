@@ -66,7 +66,7 @@ HRESULT CCollider_Manager::Clear_CollisionGroups()
 }
 
 #pragma message (" 여기 노말벡터 받는거 없애고 무조건 노말 계산하는걸로 바꿔도 괜찮을 지도")
-void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag/*, _vector* pOutNormal*/)
+void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag)
 {	
 	if (nullptr == pGameObject)
 		return;
@@ -91,6 +91,22 @@ void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObj
 	}
 
 	return;
+}
+
+class CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fDist)
+{
+	for (CGameObject* pGameObject : m_pGameObjects[iGroupIndex])
+	{
+		CCollider* pCollider = static_cast<CCollider*>(pGameObject->Get_Component(strComponentTag));
+		if (nullptr == pCollider)
+			continue;
+
+		if (pCollider->Intersect_Ray(vOrigin, vDir, fDist) == true)
+			return pGameObject;
+		else
+			return nullptr;
+	}
+	return nullptr;
 }
 
 CCollider_Manager* CCollider_Manager::Create(_uint iNumGroups)

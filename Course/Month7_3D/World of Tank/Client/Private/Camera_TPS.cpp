@@ -42,16 +42,12 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
-	if (GetForegroundWindow() == g_hWnd)
-	{
-		// 좌우 공전 (Yaw)
-		m_fYaw += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
-		// 상하 공전 (Pitch)
-		m_fPitch += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
-		// Pitch 각도 제한
-		m_fPitch = max(XMConvertToRadians(-10.f), min(XMConvertToRadians(85.f), m_fPitch));
-
-	}
+	// 좌우 공전 (Yaw)
+	m_fYaw += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
+	// 상하 공전 (Pitch)
+	m_fPitch += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
+	// Pitch 각도 제한
+	m_fPitch = max(XMConvertToRadians(-10.f), min(XMConvertToRadians(85.f), m_fPitch));
 
 #pragma message ("이동 방향을 넣으란거 같은데 일딴 뺌, 도플러 효과 주라는 듯")
 	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
@@ -93,6 +89,18 @@ void CCamera_TPS::Late_Update(_float fTimeDelta)
 	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
 	m_pTransformCom->Set_State(STATE::UP, vUp);
 	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+
+	//타겟에서 자신의 위치로 레이를 쏴서 레이쏜 위치로 변경
+	_float fDist = {};
+	_vector vRayDir = vCamPos - vTargetPos;
+	vRayDir = XMVector3Normalize(vRayDir);
+	CGameObject* pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BUILDING), TEXT("Com_Collider"), vTargetPos, vRayDir, fDist);
+
+	if (pHit != nullptr)
+	{
+		if (fDist < fDistance/*카메라 암의 길이보다 짧으면*/)
+			m_pTransformCom->Set_State(STATE::POSITION, vTargetPos + vRayDir * fDist * 0.9f);
+	}
 
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
