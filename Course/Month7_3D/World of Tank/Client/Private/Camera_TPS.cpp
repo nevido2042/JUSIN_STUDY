@@ -154,20 +154,26 @@ void CCamera_TPS::Picking()
 	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BODY), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
 	if (pHit)
 	{
-		if (fMinDist > fDist)
+		if (m_pGameInstance->Get_ID() != pHit->Get_ID())
 		{
-			fMinDist = fDist;
-			pHitClosest = pHit;
+			if (fMinDist > fDist)
+			{
+				fMinDist = fDist;
+				pHitClosest = pHit;
+			}
 		}
 	}
 
 	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::TURRET), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
 	if (pHit)
 	{
-		if (fMinDist > fDist)
+		if (m_pGameInstance->Get_ID() != pHit->Get_ID())
 		{
-			fMinDist = fDist;
-			pHitClosest = pHit;
+			if (fMinDist > fDist)
+			{
+				fMinDist = fDist;
+				pHitClosest = pHit;
+			}
 		}
 	}
 

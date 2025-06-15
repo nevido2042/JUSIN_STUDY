@@ -25,13 +25,14 @@ public:
 	_bool Get_IsColl() const { return m_isColl; }
 	_vector Get_Normal() const { return XMLoadFloat3(&m_vNormal); }
 private:
-	void Reset_Collision() { m_isColl = false; } friend class CCollider_Manager;
+	void Reset_Collision() { m_isColl = false; m_isRaycastHit = false; } friend class CCollider_Manager;
 
 private:
 	COLLIDER			m_eType = { COLLIDER::END };
 	class CBounding*	m_pBounding = { nullptr };
 
 	_bool				m_isColl = { false };
+	_bool				m_isRaycastHit = { false };
 	_float3				m_vNormal = {};
 
 #ifdef _DEBUG

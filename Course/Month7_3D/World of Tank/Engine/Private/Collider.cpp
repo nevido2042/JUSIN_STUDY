@@ -97,7 +97,7 @@ _bool CCollider::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist)
 	_bool bNowColl = m_pBounding->Intersect_Ray(vOrigin, vDir, fDist);
 
 	// 한 번이라도 true였으면 계속 true 유지
-	m_isColl = m_isColl || bNowColl;
+	m_isRaycastHit = m_isRaycastHit || bNowColl;
 
 	return bNowColl;
 }
@@ -115,7 +115,7 @@ HRESULT CCollider::Render()
 
 	m_pBatch->Begin();
 
-	m_pBounding->Render(m_pBatch, true == m_isColl ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
+	m_pBounding->Render(m_pBatch, true == m_isColl || true == m_isRaycastHit ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
 	m_pBatch->End();
 
