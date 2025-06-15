@@ -69,11 +69,11 @@ void CTurret::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
-	if (m_pGameInstance->Get_ID() != m_iID)
-	{
-		Picked_Ray_ScreenCenter();
-		Picked_Ray_Gun();
-	}
+	//if (m_pGameInstance->Get_ID() != m_iID)
+	//{
+	//	Picked_Ray_ScreenCenter();
+	//	Picked_Ray_Gun();
+	//}
 
 	CGameObject::Update(fTimeDelta);
 
@@ -240,64 +240,64 @@ void CTurret::Input(_float fTimeDelta)
 	}
 }
 
-void CTurret::Picked_Ray_ScreenCenter()
-{
-	_float fDist = { 0 };
-
-	_bool bisColl = false;
-	bisColl = m_pColliderCom->Intersect_Ray(XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),
-		XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), 1.f),
-		fDist);
-
-	if (bisColl)
-	{
-		_float3 vPickedPos = {};
-		_vector vOrigin = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()) };
-		_vector vDir = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()) };
-
-		XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
-
-		//여기서 픽된 포즈를 계산해서 올리자
-		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-		if (pPickedManager)
-			pPickedManager->Add_ScreenCenterPickedPos(vPickedPos);
-	}
-
-}
-
-void CTurret::Picked_Ray_Gun()
-{
-	_float fDist = { 0 };
-
-	_bool bisColl = false;
-
-	//포구 피킹
-	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
-	if (nullptr == pPlayerTank)
-		return;
-
-	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-	if (nullptr == pGun)
-		return;
-
-	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
-	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
-	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2];
-	vGunLook = XMVector3Normalize(vGunLook);
-
-	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
-
-	if (bisColl)
-	{
-		_float3 vPickedPos = {};
-		XMStoreFloat3(&vPickedPos, vGunPos + vGunLook * fDist);
-
-		//여기서 픽된 포즈를 계산해서 올리자
-		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-		if (pPickedManager)
-			pPickedManager->Add_GunPickedPos(vPickedPos);
-	}
-}
+//void CTurret::Picked_Ray_ScreenCenter()
+//{
+//	_float fDist = { 0 };
+//
+//	_bool bisColl = false;
+//	bisColl = m_pColliderCom->Intersect_Ray(XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),
+//		XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), 1.f),
+//		fDist);
+//
+//	if (bisColl)
+//	{
+//		_float3 vPickedPos = {};
+//		_vector vOrigin = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()) };
+//		_vector vDir = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()) };
+//
+//		XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
+//
+//		//여기서 픽된 포즈를 계산해서 올리자
+//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+//		if (pPickedManager)
+//			pPickedManager->Add_ScreenCenterPickedPos(vPickedPos);
+//	}
+//
+//}
+//
+//void CTurret::Picked_Ray_Gun()
+//{
+//	_float fDist = { 0 };
+//
+//	_bool bisColl = false;
+//
+//	//포구 피킹
+//	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
+//	if (nullptr == pPlayerTank)
+//		return;
+//
+//	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
+//	if (nullptr == pGun)
+//		return;
+//
+//	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
+//	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
+//	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2];
+//	vGunLook = XMVector3Normalize(vGunLook);
+//
+//	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
+//
+//	if (bisColl)
+//	{
+//		_float3 vPickedPos = {};
+//		XMStoreFloat3(&vPickedPos, vGunPos + vGunLook * fDist);
+//
+//		//여기서 픽된 포즈를 계산해서 올리자
+//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+//		if (pPickedManager)
+//			pPickedManager->Add_GunPickedPos(vPickedPos);
+//	}
+//}
 
 HRESULT CTurret::Bind_ShaderResources()
 {

@@ -39,6 +39,9 @@ public:
 
 private:
 	void Input(_float fTimeDelta);
+	
+private:
+	void Picking();
 
 private:
 	_float m_fRotateSpeed = 0.2f;

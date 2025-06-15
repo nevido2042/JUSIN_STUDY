@@ -39,9 +39,9 @@ public:
 private:
 	void Input(_float fTimeDelta);
 
-private:
-	void Picked_Ray_ScreenCenter();
-	void Picked_Ray_Gun();
+//private:
+//	void Picked_Ray_ScreenCenter();
+//	void Picked_Ray_Gun();
 
 private:
 	_float m_fRotateSpeed = 0.5f;

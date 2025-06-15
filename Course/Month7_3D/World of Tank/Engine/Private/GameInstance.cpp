@@ -541,9 +541,9 @@ void CGameInstance::Check_Collision(_uint iGroupIndex, class CGameObject* pGameO
 {
 	return m_pCollider_Manager->Check_Collision(iGroupIndex, pGameObject, strComponentTag, strOtherComponentTag);
 }
-class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fDist)
+class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist)
 {
-	return m_pCollider_Manager->Check_RaycastHit(iGroupIndex, strComponentTag, vOrigin, vDir, fDist);
+	return m_pCollider_Manager->Check_RaycastHit(iGroupIndex, strComponentTag, vOrigin, vDir, fOutDist);
 }
 #pragma endregion
 

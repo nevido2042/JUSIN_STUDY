@@ -27,6 +27,9 @@ public:
 	virtual HRESULT Render();
 
 private:
+	void Picking();
+
+private:
 	_float				m_fSensor = { 0.1f };
 	CGameObject*		m_pTarget = { nullptr };
 

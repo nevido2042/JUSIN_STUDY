@@ -56,7 +56,7 @@ void CGun::Priority_Update(_float fTimeDelta)
 
 void CGun::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Get_ID() == m_iID && GetForegroundWindow() == g_hWnd && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
+	if (m_pGameInstance->Get_ID() == m_iID && m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::PRACTICE))
 	{
 		m_fTimeAcc += fTimeDelta;
 		if (m_fTimeAcc > m_fSyncInterval)
@@ -73,6 +73,13 @@ void CGun::Update(_float fTimeDelta)
 
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		Picking();
+		
+	}
 }
 
 HRESULT CGun:: Render()
@@ -255,6 +262,69 @@ void CGun::Input(_float fTimeDelta)
 				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
 			}
 		}
+	}
+}
+
+void CGun::Picking()
+{
+	_float fMinDist = { FLT_MAX };
+	CGameObject* pHitClosest = { nullptr };
+
+	_float fDist = {};
+	_vector vOrigin = XMLoadFloat4x4(&m_CombinedWorldMatrix).r[3];
+	_vector vRayDir = XMLoadFloat4x4(&m_CombinedWorldMatrix).r[2];
+	vRayDir = XMVector3Normalize(vRayDir);
+	CGameObject* pHit = { nullptr };
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BUILDING), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::WALL), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BODY), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::TURRET), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	if (pHitClosest)
+	{
+		_float3 vPickedPos = {};
+		XMStoreFloat3(&vPickedPos, vOrigin + vRayDir * fMinDist);
+
+		//여기서 픽된 포즈를 계산해서 올리자
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			pPickedManager->Add_GunPickedPos(vPickedPos);
 	}
 }
 

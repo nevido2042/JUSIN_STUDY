@@ -1,5 +1,6 @@
 #include "Camera_TPS.h"
 #include "GameInstance.h"
+#include "PickedManager.h"
 
 CCamera_TPS::CCamera_TPS(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
@@ -55,8 +56,7 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_TPS::Update(_float fTimeDelta)
 {
-	
-
+	Picking();
 }
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
@@ -117,6 +117,70 @@ HRESULT CCamera_TPS::Render()
 {
 
 	return S_OK;
+}
+
+void CCamera_TPS::Picking()
+{
+	_float fMinDist = { FLT_MAX };
+	CGameObject* pHitClosest = { nullptr };
+
+	_float fDist = { };
+	_vector vOrigin = m_pTransformCom->Get_State(STATE::POSITION);
+	_vector vRayDir = m_pTransformCom->Get_State(STATE::LOOK);
+
+	vRayDir = XMVector3Normalize(vRayDir);
+	CGameObject* pHit = { nullptr };
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BUILDING), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::WALL), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BODY), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::TURRET), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fMinDist > fDist)
+		{
+			fMinDist = fDist;
+			pHitClosest = pHit;
+		}
+	}
+
+	if (pHitClosest)
+	{
+		_float3 vPos = {};
+		XMStoreFloat3(&vPos, vOrigin + vRayDir * fMinDist);
+
+		//여기서 픽된 포즈를 계산해서 올리자
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			pPickedManager->Add_ScreenCenterPickedPos(vPos);
+	}
 }
 
 CCamera_TPS* CCamera_TPS::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
