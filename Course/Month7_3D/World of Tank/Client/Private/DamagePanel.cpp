@@ -213,11 +213,39 @@ HRESULT CDamagePanel::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_Engine"), &Desc)))
 		return E_FAIL;
 
+	lstrcpy(Desc.szName, TEXT("Icon_Track"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_Track");
+	Desc.fX = 0.38f;
+	Desc.fY = 0.23f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_Track"), &Desc)))
+		return E_FAIL;
+
 	lstrcpy(Desc.szName, TEXT("Icon_AmmoBay"));
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_AmmoBay");
 	Desc.fX = -0.38f;
-	Desc.fY = 0.08f;
+	Desc.fY = 0.07f;
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_AmmoBay"), &Desc)))
+		return E_FAIL;
+
+	lstrcpy(Desc.szName, TEXT("Icon_SurveyingDevice"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_SurveyingDevice");
+	Desc.fX = 0.38f;
+	Desc.fY = 0.07f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_SurveyingDevice"), &Desc)))
+		return E_FAIL;
+
+	lstrcpy(Desc.szName, TEXT("Icon_Gun"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_Gun");
+	Desc.fX = -0.38f;
+	Desc.fY = -0.09f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_Gun"), &Desc)))
+		return E_FAIL;
+
+	lstrcpy(Desc.szName, TEXT("Icon_Radio"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_Radio");
+	Desc.fX = 0.38f;
+	Desc.fY = -0.09f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_Radio"), &Desc)))
 		return E_FAIL;
 
 	lstrcpy(Desc.szName, TEXT("Icon_TurretRotator"));
@@ -225,6 +253,13 @@ HRESULT CDamagePanel::Ready_PartObjects()
 	Desc.fX = -0.38f;
 	Desc.fY = -0.25f;
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_TurretRotator"), &Desc)))
+		return E_FAIL;
+
+	lstrcpy(Desc.szName, TEXT("Icon_FuelTank"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_FuelTank");
+	Desc.fX = 0.38f;
+	Desc.fY = -0.25f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_TurretFuelTank"), &Desc)))
 		return E_FAIL;
 
 	CUIObject::UIOBJECT_DESC				BodyDir_Desc{};

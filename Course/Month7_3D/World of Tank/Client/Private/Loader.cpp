@@ -322,6 +322,31 @@ HRESULT CLoader::Loading_For_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/turretRotator%d.dds"), 3))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Icon_Track */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_Track"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/chassis%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Icon_FuelTank */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_FuelTank"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/fuelTank%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Icon_Gun */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_Gun"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/gun%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Icon_Radio */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_Radio"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/radio%d.dds"), 3))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Icon_SurveyingDevice */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_SurveyingDevice"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/surveyingDevice%d.dds"), 3))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region ¸ðµ¨
