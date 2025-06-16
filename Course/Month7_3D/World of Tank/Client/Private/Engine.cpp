@@ -90,10 +90,11 @@ void CEngine::Update(_float fTimeDelta)
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
 	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
 	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
 	{
-		m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 	}
 
@@ -135,11 +136,7 @@ void CEngine::Late_Update(_float fTimeDelta)
 HRESULT CEngine::Render()
 {
 #ifdef _DEBUG
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		m_pColliderCom->Render();
-	}
+	m_pColliderCom->Render();
 #endif
 
 	return S_OK;
@@ -147,25 +144,27 @@ HRESULT CEngine::Render()
 
 void CEngine::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
-	cout << "CEngine::On_Collision_Stay" << endl;
+	CModule::On_Collision_Stay(pOther, vNormal);
 
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		Damage_Engine();
-	}
+	//cout << "CEngine::On_Collision_Stay" << endl;
 
-	// 게임플레이면서 플레이어의 탱크가 아닌애들은 충돌 메시지를 전달한다.
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() != m_iID)
-	{
-		HIT_MODULE_DESC Desc = {};
-		Desc.iID = m_pGameInstance->Get_ID();
-		Desc.iTargetID = m_iID;
-		Desc.eModule = MODULE::ENGINE;
-		Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
+	//// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
+	//if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
+	//{
+	//	Damage_Engine();
+	//}
 
-		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
-	}
+	//// 게임플레이면서 플레이어의 탱크가 아닌애들은 충돌 메시지를 전달한다.
+	//if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() != m_iID)
+	//{
+	//	HIT_MODULE_DESC Desc = {};
+	//	Desc.iID = m_pGameInstance->Get_ID();
+	//	Desc.iTargetID = m_iID;
+	//	Desc.eModule = MODULE::ENGINE;
+	//	Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
+
+	//	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
+	//}
 }
 
 void CEngine::Set_ModuleState(MODULE_STATE eState)

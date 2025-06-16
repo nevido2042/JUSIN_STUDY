@@ -2,6 +2,9 @@
 
 #include "GameInstance.h"
 #include "SoundController.h"
+#include "DamagePanel.h"
+#include "Icon_Module.h"
+#include "Tank.h"
 
 CAmmoBay::CAmmoBay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CModule{ pDevice, pContext }
@@ -30,19 +33,32 @@ HRESULT CAmmoBay::Initialize(void* pArg)
 
 	m_pSoundCom->Set3DState(0.f, 30.f);
 
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, -1.f, 1.f));
+
 	return S_OK;
 }
 
 void CAmmoBay::Priority_Update(_float fTimeDelta)
 {
-
-
+	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
+	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
+	{
+		m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
+	}
 }
 
 void CAmmoBay::Update(_float fTimeDelta)
 {
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
+	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
+	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
+	{
+		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	}
 
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
@@ -71,14 +87,18 @@ void CAmmoBay::Update(_float fTimeDelta)
 
 void CAmmoBay::Late_Update(_float fTimeDelta)
 {
-	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
-		return;	
-
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
 HRESULT CAmmoBay::Render()
 {
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
+
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
+		return S_OK;
+
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		if (m_bIsLoading)
@@ -99,6 +119,33 @@ HRESULT CAmmoBay::Render()
 	}
 
 	return S_OK;
+}
+
+void CAmmoBay::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+{
+	CModule::On_Collision_Stay(pOther, vNormal);
+}
+
+void CAmmoBay::Set_ModuleState(MODULE_STATE eState)
+{
+	m_eModuleState = eState;
+
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if (pDamagePanel == nullptr)
+			return;
+		pDamagePanel->Play_Voice_EngineState(m_eModuleState);
+
+		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_AmmoBay")));
+		if (pIcon == nullptr)
+			return;
+
+		pIcon->Set_ModuleState(m_eModuleState);
+	}
+
+	if (m_eModuleState == MODULE_STATE::DESTROYED)
+		m_pOwner->Take_Damage(9999.f);
 }
 
 void CAmmoBay::Start_Load()
@@ -125,6 +172,14 @@ HRESULT CAmmoBay::Ready_Components()
 	/* For.Com_Sound */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
 		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_Sphere::SPHERE_DESC	SphereDesc{};
+	SphereDesc.fRadius = 0.5f;
+	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -159,5 +214,6 @@ CGameObject* CAmmoBay::Clone(void* pArg)
 void CAmmoBay::Free()
 {
 	__super::Free();
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pSoundCom);
 }

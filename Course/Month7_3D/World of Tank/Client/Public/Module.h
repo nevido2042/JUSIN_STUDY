@@ -11,6 +11,7 @@ public:
 	typedef struct tagModuleDesc : public GAMEOBJECT_DESC
 	{
 		class CTank*  pOwner = { nullptr };
+		MODULE	eModuleType = { MODULE::END };
 	}MODULE_DESC;
 
 protected:
@@ -25,13 +26,18 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual void    On_Collision_Stay(CGameObject* pOther, _fvector vNormal) override;
 
 public:
 	virtual void	Set_ModuleState(MODULE_STATE eState) { m_eModuleState = eState; }
 	MODULE_STATE	Get_ModuleState() const { return m_eModuleState; }
 
+public:
+	void TakeDamage();
+
 protected:
 	MODULE_STATE m_eModuleState = { MODULE_STATE::FUNCTIONAL };
+	MODULE		 m_eModuleType = { MODULE::END };
 	class CTank* m_pOwner = { nullptr };
 private:
 	HRESULT Ready_Components();

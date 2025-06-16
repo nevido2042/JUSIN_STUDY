@@ -1,6 +1,8 @@
 #include "Module.h"
 
 #include "GameInstance.h"
+#include "Tank.h"
+#include "Shell.h"
 
 CModule::CModule(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -23,6 +25,7 @@ HRESULT CModule::Initialize(void* pArg)
 {
 	MODULE_DESC* pModuleDesc = reinterpret_cast<MODULE_DESC*>(pArg);
 	m_pOwner = pModuleDesc->pOwner;
+	m_eModuleType = pModuleDesc->eModuleType;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 	//Safe_AddRef(m_pOwner);
@@ -60,6 +63,36 @@ HRESULT CModule::Render()
 	return S_OK;
 }
 
+void CModule::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+{
+	cout << "MODULE: On_Collision_Stay" << endl;
+
+	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
+	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
+	{
+		TakeDamage();
+	}
+
+	// 게임플레이면서 플레이어의 탱크가 아닌애들은 충돌 메시지를 전달한다.
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() != m_iID)
+	{
+		HIT_MODULE_DESC Desc = {};
+		Desc.iID = m_pGameInstance->Get_ID();
+		Desc.iTargetID = m_iID;
+		Desc.eModule = m_eModuleType;
+		Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
+
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
+	}
+}
+
+
+void CModule::TakeDamage()
+{
+	m_pOwner->Take_Damage(30.f);
+
+	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
+}
 
 HRESULT CModule::Ready_Components()
 {

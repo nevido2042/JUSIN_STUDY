@@ -4,6 +4,7 @@
 #include "Module.h"
 
 NS_BEGIN(Engine)
+class CCollider;
 class CSoundController;
 NS_END
 
@@ -25,6 +26,10 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual void    On_Collision_Stay(CGameObject* pOther, _fvector vNormal) override;
+
+public:
+	virtual void	Set_ModuleState(MODULE_STATE eState) override;
 
 public:
 	void Start_Load();
@@ -43,6 +48,7 @@ private:
 private:
 	chrono::time_point < chrono::steady_clock, chrono::duration<_float>> m_TimeLoadComplete = {};
 private:
+	CCollider* m_pColliderCom = { nullptr };
 	CSoundController* m_pSoundCom{ nullptr };
 private:
 	HRESULT Ready_Components();

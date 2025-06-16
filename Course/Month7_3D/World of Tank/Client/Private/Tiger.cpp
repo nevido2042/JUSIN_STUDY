@@ -122,21 +122,22 @@ HRESULT CTiger::Ready_PartObjects(TANK_DESC* pDesc)
 	Desc.iID = m_iID;
 	Desc.pOwner = this;
 
+	Desc.eModuleType = MODULE::ENGINE;
 	/* 엔진을 추가한다. */
 	lstrcpy(Desc.szName, TEXT("Tiger_Engine"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Engine"), TEXT("Part_Engine"), &Desc)))
 		return E_FAIL;
-
+	Desc.eModuleType = MODULE::TRACK_LEFT;
 	/* 왼쪽 궤도를 추가한다. */
 	lstrcpy(Desc.szName, TEXT("TrackLeft"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTrackLeft"), TEXT("Part_TrackLeft"), &Desc)))
 		return E_FAIL;
-
+	Desc.eModuleType = MODULE::TRACK_RIGHT;
 	/* 오른쪽 궤도를 추가한다. */
 	lstrcpy(Desc.szName, TEXT("TrackRight"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TigerTrackRight"), TEXT("Part_TrackRight"), &Desc)))
 		return E_FAIL;
-
+	Desc.eModuleType = MODULE::AMMO_BAY;
 	/* 탄약적재함을 추가한다 */
 	lstrcpy(Desc.szName, TEXT("AmmoBay"));
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_AmmoBay"), TEXT("Part_AmmoBay"), &Desc)))

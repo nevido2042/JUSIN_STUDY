@@ -197,12 +197,17 @@ void CTank::Damage_Module(MODULE eModule)
 	if (ENUM_CLASS(eModule) < 0 || ENUM_CLASS(eModule) >= ENUM_CLASS(MODULE::END))
 		return;
 
-	switch (eModule)
-	{
-		case MODULE::ENGINE:
-		static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Damage_Engine();
-		break;
-	}
+	m_Modules[ENUM_CLASS(eModule)]->TakeDamage();
+
+	//switch (eModule)
+	//{
+	//	case MODULE::ENGINE:
+	//	static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Damage_Engine();
+	//		break;
+	//	case MODULE::AMMO_BAY:
+	//		m_Modules[ENUM_CLASS(eModule)]->TakeDamage();
+	//		break;
+	//}
 
 }
 
@@ -301,6 +306,9 @@ HRESULT CTank::Take_Damage(_float fDamage)
 
 void CTank::Repair_All()
 {
+	if (m_bisDestroyed == true)
+		return;
+
 	for(_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
 	{
 		if (nullptr == m_Modules[i])
@@ -441,6 +449,9 @@ void CTank::Move(_float fTimeDelta)
 
 void CTank::Destroyed()
 {
+	if (m_bisDestroyed)
+		return;
+
 	m_bisDestroyed = true;
 
 	CGameObject* pScore = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Score"));
