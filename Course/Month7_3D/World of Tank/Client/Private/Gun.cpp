@@ -113,7 +113,7 @@ HRESULT CGun::Fire()
 	memcpy(&Desc.vInitPosition, m_CombinedWorldMatrix.m[3], sizeof(_float3));
 	memcpy(&Desc.vVelocity, m_CombinedWorldMatrix.m[2], sizeof(_float3));
 	_vector vVelocity = XMLoadFloat3(&Desc.vVelocity);
-	vVelocity = XMVectorScale(vVelocity, 200.f);
+	vVelocity = XMVectorScale(vVelocity, 100.f);
 	XMStoreFloat3(&Desc.vVelocity, vVelocity);
 	Desc.iID = m_iID;
 
@@ -135,8 +135,8 @@ HRESULT CGun::Fire()
 
 void CGun::Input(_float fTimeDelta)
 {
-	if (GetForegroundWindow() != g_hWnd)
-		return;
+	//if (GetForegroundWindow() != g_hWnd)
+	//	return;
 
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
 		return;

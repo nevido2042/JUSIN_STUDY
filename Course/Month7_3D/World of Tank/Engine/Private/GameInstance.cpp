@@ -541,11 +541,11 @@ void CGameInstance::Check_Collision(_uint iGroupIndex, class CGameObject* pGameO
 {
 	return m_pCollider_Manager->Check_Collision(iGroupIndex, pGameObject, strComponentTag, strOtherComponentTag);
 }
-class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist)
+class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _fvector vDir, _float& fOutDist)
 {
 	return m_pCollider_Manager->Check_RaycastHit(iGroupIndex, strComponentTag, vOrigin, vDir, fOutDist);
 }
-class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist, _int iIgnoreID)
+class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _fvector vDir, _float& fOutDist, _int iIgnoreID)
 {
 	return m_pCollider_Manager->Check_RaycastHit(iGroupIndex, strComponentTag, vOrigin, vDir, fOutDist, iIgnoreID);
 }

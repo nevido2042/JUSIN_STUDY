@@ -18,8 +18,8 @@ public:
 	HRESULT Clear_CollisionGroups();
 public:
 	void Check_Collision(_uint iGroupIndex, class CGameObject* pGameObject, wstring strComponentTag, wstring strOtherComponentTag);
-	class CGameObject* Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist);
-	class CGameObject* Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist, _int iIgnoreID);
+	class CGameObject* Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _fvector vDir, _float& fOutDist);
+	class CGameObject* Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _fvector vDir, _float& fOutDist, _int iIgnoreID);
 private:
 	_uint							m_iNumGroups = {};
 	list<class CGameObject*>*		m_pGameObjects = { nullptr };

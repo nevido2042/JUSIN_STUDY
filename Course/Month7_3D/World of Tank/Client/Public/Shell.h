@@ -42,6 +42,9 @@ public:
 	const _float3& Get_FirePos() { return m_vFirePos; }
 
 private:
+	_float3		m_vPreviousPos = {};
+
+private:
 	_float3 m_vFirePos = {};
 
 private:

@@ -33,6 +33,8 @@ HRESULT CShell::Initialize(void* pArg)
 
 	m_vFirePos = pDesc->vFirePos;
 
+	XMStoreFloat3(&m_vPreviousPos, m_pTransformCom->Get_State(STATE::POSITION));
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -53,9 +55,27 @@ void CShell::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
-	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+
+	_float fDist = { };
+	_vector vOrigin = XMVectorSetW(XMLoadFloat3(&m_vPreviousPos), 1.f);
+	_vector vRayDir = m_pTransformCom->Get_State(STATE::POSITION) - vOrigin;
+	_float fRayLength = XMVectorGetX(XMVector3Length(vRayDir));
+	vRayDir = XMVector3Normalize(vRayDir);
+
+	CGameObject* pHit = { nullptr };
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fRayLength < fDist)
+			return;
+
+		cout << "Hit" << endl;
+	}
+
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -94,6 +114,8 @@ void CShell::Late_Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 0.1f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+	XMStoreFloat3(&m_vPreviousPos, m_pTransformCom->Get_State(STATE::POSITION));
 
 }
 

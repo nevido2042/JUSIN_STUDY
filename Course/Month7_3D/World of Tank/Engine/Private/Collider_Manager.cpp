@@ -93,7 +93,7 @@ void CCollider_Manager::Check_Collision(_uint iGroupIndex, CGameObject* pGameObj
 	return;
 }
 
-class CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist)
+class CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _fvector vDir, _float& fOutDist)
 {
 	//맞은 것들 중 가장 가까운 것을 리턴하자
 	CGameObject* pHit = { nullptr };
@@ -121,7 +121,7 @@ class CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstrin
 	return pHit;
 }
 
-CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist, _int iIgnoreID)
+CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _fvector vDir, _float& fOutDist, _int iIgnoreID)
 {
 	//맞은 것들 중 가장 가까운 것을 리턴하자
 	CGameObject* pHit = { nullptr };
