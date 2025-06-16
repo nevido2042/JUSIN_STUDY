@@ -545,6 +545,10 @@ class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring st
 {
 	return m_pCollider_Manager->Check_RaycastHit(iGroupIndex, strComponentTag, vOrigin, vDir, fOutDist);
 }
+class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist, _int iIgnoreID)
+{
+	return m_pCollider_Manager->Check_RaycastHit(iGroupIndex, strComponentTag, vOrigin, vDir, fOutDist, iIgnoreID);
+}
 #pragma endregion
 
 

@@ -82,7 +82,13 @@ public:
 	void Set_Velocity(_float3 vVelocity) { m_vVelocity = vVelocity; }
 	void Move_Velocity(_float fTimeDelta);
 	void Apply_Gravity(_float fGravity, _float fTimeDelta);
-	
+
+public:
+	_float Get_RotationPerSec() const { return m_fRotationPerSec; }
+	_float Get_SpeedPerSec() const { return m_fSpeedPerSec; }
+
+	void Set_RotationPerSec(_float fRotatePerSec) { m_fRotationPerSec = fRotatePerSec; }
+	void Set_SpeedPerSec(_float fSpeedPerSec) { m_fSpeedPerSec = fSpeedPerSec; }
 
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);

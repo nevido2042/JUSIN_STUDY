@@ -144,6 +144,8 @@ HRESULT CEngine::Render()
 
 void CEngine::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
+	cout << "Collision_Engine" << endl;
+
 	CModule::On_Collision_Stay(pOther, vNormal);
 
 	//cout << "CEngine::On_Collision_Stay" << endl;
@@ -179,8 +181,11 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
 		if (pDamagePanel == nullptr)
 			return;
-		pDamagePanel->Play_Voice_EngineState(m_eModuleState);
-
+		if (m_pOwner)
+		{
+			if (!m_pOwner->Get_isTankDestroyed())
+				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
+		}
 		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_Engine")));
 		if (pIcon == nullptr)
 			return;
@@ -190,14 +195,14 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 
 }
 
-HRESULT CEngine::Damage_Engine()
-{
-	m_pOwner->Take_Damage(30.f);
-
-	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
-
-	return S_OK;
-}
+//HRESULT CEngine::Damage_Engine()
+//{
+//	m_pOwner->Take_Damage(30.f);
+//
+//	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
+//
+//	return S_OK;
+//}
 
 void CEngine::Accel_Move(_float fTimeDelta)
 {

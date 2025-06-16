@@ -121,6 +121,37 @@ class CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstrin
 	return pHit;
 }
 
+CGameObject* CCollider_Manager::Check_RaycastHit(_uint iGroupIndex, wstring strComponentTag, _fvector vOrigin, _vector vDir, _float& fOutDist, _int iIgnoreID)
+{
+	//맞은 것들 중 가장 가까운 것을 리턴하자
+	CGameObject* pHit = { nullptr };
+	_float fMinDist = FLT_MAX;
+
+	_float fDist = {};
+
+	for (CGameObject* pGameObject : m_pGameObjects[iGroupIndex])
+	{
+		if (iIgnoreID == pGameObject->m_iID)
+			continue;
+
+		CCollider* pCollider = static_cast<CCollider*>(pGameObject->Get_Component(strComponentTag));
+		if (nullptr == pCollider)
+			continue;
+
+		if (pCollider->Intersect_Ray(vOrigin, vDir, fDist) == true)
+		{
+			if (fMinDist > fDist)
+			{
+				fMinDist = fDist;
+				pHit = pGameObject;
+				fOutDist = fMinDist;
+			}
+		}
+	}
+
+	return pHit;
+}
+
 CCollider_Manager* CCollider_Manager::Create(_uint iNumGroups)
 {
 	CCollider_Manager* pInstance = new CCollider_Manager();

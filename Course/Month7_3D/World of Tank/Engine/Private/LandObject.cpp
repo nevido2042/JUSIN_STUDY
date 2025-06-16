@@ -107,6 +107,17 @@ void CLandObject::SetUp_Height_Normal(CTransform* pTransform, _float fTimeDelta,
 	pTransform->Set_State(STATE::LOOK, vLook);
 }
 
+void CLandObject::SetUp_Height(CTransform* pTransform)
+{
+	// 현재 위치에서 지형 높이 계산
+	_vector vPosition = pTransform->Get_State(STATE::POSITION);
+	vPosition = m_pTargetBuffer->Compute_HeightPosition(vPosition);
+
+	// 최종 위치 설정
+	vPosition = XMVectorSetY(vPosition, XMVectorGetY(vPosition));
+	pTransform->Set_State(STATE::POSITION, vPosition);
+}
+
 void CLandObject::Free()
 {
 	__super::Free();

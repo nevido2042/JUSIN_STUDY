@@ -46,10 +46,10 @@ void CGun::Priority_Update(_float fTimeDelta)
 
 		// 상향 회전 시 제한
 		if (m_bUp && fDotY <= m_fMaxPitch)
-			m_pTransformCom->Turn(vAxis, -fTimeDelta * m_fRotateSpeed);
+			m_pTransformCom->Turn(vAxis, -fTimeDelta/* * m_fRotateSpeed*/);
 		// 하향 회전 시 제한
 		else if (m_bDown && fDotY >= m_fMinPitch)
-			m_pTransformCom->Turn(vAxis, fTimeDelta * m_fRotateSpeed);
+			m_pTransformCom->Turn(vAxis, fTimeDelta/* * m_fRotateSpeed*/);
 	}
 	
 }
@@ -205,7 +205,7 @@ void CGun::Input(_float fTimeDelta)
 				}
 			}
 			if(fDotY >= m_fMinPitch)
-				m_pTransformCom->Turn(vAxis, fTimeDelta * m_fRotateSpeed/** abs(fUpDot)*/);
+				m_pTransformCom->Turn(vAxis, fTimeDelta /** m_fRotateSpeed*//** abs(fUpDot)*/);
 		}
 		else if (fUpDot < -0.01f) //상으로
 		{
@@ -224,7 +224,7 @@ void CGun::Input(_float fTimeDelta)
 
 			}
 			if (fDotY <= m_fMaxPitch)
-				m_pTransformCom->Turn(vAxis, -fTimeDelta * m_fRotateSpeed /** abs(fUpDot)*/);
+				m_pTransformCom->Turn(vAxis, -fTimeDelta/* * m_fRotateSpeed *//** abs(fUpDot)*/);
 		}
 		else
 		{
@@ -296,29 +296,23 @@ void CGun::Picking()
 		}
 	}
 
-	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BODY), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BODY), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_pGameInstance->Get_ID());
 	if (pHit)
 	{
-		if (m_pGameInstance->Get_ID() != pHit->Get_ID())
+		if (fMinDist > fDist)
 		{
-			if (fMinDist > fDist)
-			{
-				fMinDist = fDist;
-				pHitClosest = pHit;
-			}
+			fMinDist = fDist;
+			pHitClosest = pHit;
 		}
 	}
 
-	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::TURRET), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::TURRET), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_pGameInstance->Get_ID());
 	if (pHit)
 	{
-		if (m_pGameInstance->Get_ID() != pHit->Get_ID())
+		if (fMinDist > fDist)
 		{
-			if (fMinDist > fDist)
-			{
-				fMinDist = fDist;
-				pHitClosest = pHit;
-			}
+			fMinDist = fDist;
+			pHitClosest = pHit;
 		}
 	}
 

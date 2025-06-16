@@ -253,9 +253,6 @@
     <Filter Include="02.GameObjects\03.Modules\04.AmmoBay">
       <UniqueIdentifier>{f920c9b9-c7ac-4b79-a547-a197da2f4a0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\DamageCollider">
-      <UniqueIdentifier>{426337a1-ceb5-4c28-b0ed-ff520707ad79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\PickedManager">
       <UniqueIdentifier>{b4d81f98-6168-472a-8973-c146ce25e3f8}</UniqueIdentifier>
     </Filter>
@@ -288,6 +285,9 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\Minimap\Minimap_Tank">
       <UniqueIdentifier>{c3f8620e-2a90-49c5-98f8-b655dc150e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\DamageCollider">
+      <UniqueIdentifier>{426337a1-ceb5-4c28-b0ed-ff520707ad79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -553,7 +553,7 @@
       <Filter>02.GameObjects\03.Modules\04.AmmoBay</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DamageCollider.h">
-      <Filter>02.GameObjects\DamageCollider</Filter>
+      <Filter>02.GameObjects\02.LandObject\DamageCollider</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PickedManager.h">
       <Filter>02.GameObjects\PickedManager</Filter>
@@ -835,7 +835,7 @@
       <Filter>02.GameObjects\03.Modules\04.AmmoBay</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DamageCollider.cpp">
-      <Filter>02.GameObjects\DamageCollider</Filter>
+      <Filter>02.GameObjects\02.LandObject\DamageCollider</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PickedManager.cpp">
       <Filter>02.GameObjects\PickedManager</Filter>

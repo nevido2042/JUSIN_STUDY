@@ -29,11 +29,11 @@ public:
 	virtual void    On_Collision_Stay(CGameObject* pOther, _fvector vNormal) override;
 
 public:
-	virtual void	Set_ModuleState(MODULE_STATE eState) { m_eModuleState = eState; }
+	virtual void	Set_ModuleState(MODULE_STATE eState);
 	MODULE_STATE	Get_ModuleState() const { return m_eModuleState; }
 
 public:
-	void TakeDamage();
+	void TakeDamage(_float fDamage);
 
 protected:
 	MODULE_STATE m_eModuleState = { MODULE_STATE::FUNCTIONAL };

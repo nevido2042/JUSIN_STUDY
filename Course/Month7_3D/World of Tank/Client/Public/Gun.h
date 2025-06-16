@@ -44,7 +44,7 @@ private:
 	void Picking();
 
 private:
-	_float m_fRotateSpeed = 0.2f;
+	//_float m_fRotateSpeed = 0.5f;
 private:
 	_float4	m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 

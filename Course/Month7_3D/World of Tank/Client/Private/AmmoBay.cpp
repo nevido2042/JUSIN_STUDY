@@ -123,6 +123,9 @@ HRESULT CAmmoBay::Render()
 
 void CAmmoBay::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
+	cout << "Collision_AmmoBay" << endl;
+
+
 	CModule::On_Collision_Stay(pOther, vNormal);
 }
 
@@ -135,7 +138,12 @@ void CAmmoBay::Set_ModuleState(MODULE_STATE eState)
 		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
 		if (pDamagePanel == nullptr)
 			return;
-		pDamagePanel->Play_Voice_EngineState(m_eModuleState);
+
+		if (m_pOwner)
+		{
+			if (!m_pOwner->Get_isTankDestroyed())
+				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
+		}
 
 		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_AmmoBay")));
 		if (pIcon == nullptr)

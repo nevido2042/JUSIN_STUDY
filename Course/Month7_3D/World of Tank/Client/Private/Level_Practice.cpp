@@ -13,6 +13,7 @@
 #include "Tank.h"
 #include "Icon_Consumables.h"
 #include "InvisibleWall.h"
+#include "DamageCollider.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -308,10 +309,28 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_DamageColliders(const _wstring strLayerTag)
 {
-	CGameObject::GAMEOBJECT_DESC Desc{};
+	CDamageCollider::DAMAGECOLLIDER_DESC Desc{};
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
+	Desc.strLayerTag = TEXT("Layer_Terrain");
+	Desc.strComponentTag = TEXT("Com_VIBuffer");
+	Desc.iIndex = 0;
+
+	Desc.eDamageModule = MODULE::ENGINE;
 	Desc.vInitPosition = _float3(310.f, 90.f, 330.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_DamageCollider"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.eDamageModule = MODULE::AMMO_BAY;
+	Desc.vInitPosition = _float3(320.f, 90.f, 330.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_DamageCollider"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.eDamageModule = MODULE::TURRET;
+	Desc.vInitPosition = _float3(330.f, 90.f, 330.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Prototype_GameObject_DamageCollider"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;

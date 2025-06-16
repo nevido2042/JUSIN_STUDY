@@ -95,25 +95,71 @@ void CDamagePanel::Play_Voice_StartBattle()
 	m_pSoundCom_Voice->Play("start_battle_2");
 }
 
-void CDamagePanel::Play_Voice_EngineState(MODULE_STATE eState)
+void CDamagePanel::Play_Voice_ModuleState(MODULE eModule, MODULE_STATE eState)
 {
-	switch (eState)
+	switch (eModule)
 	{
-	case MODULE_STATE::DESTROYED:
-		m_pSoundCom_Voice->Play("engine_destroyed_4");
+	case MODULE::ENGINE:
+		switch (eState)
+		{
+		case MODULE_STATE::DESTROYED:
+			m_pSoundCom_Voice->Play("engine_destroyed_4");
+			break;
+		case MODULE_STATE::DAMAGED:
+			m_pSoundCom_Voice->Play("engine_damaged_6");
+			break;
+		case MODULE_STATE::FUNCTIONAL:
+			//m_pSoundCom_Voice->Play("engine_functional_1");
+			break;
+		case MODULE_STATE::END:
+			break;
+		default:
+			break;
+		}
 		break;
-	case MODULE_STATE::DAMAGED:
-		m_pSoundCom_Voice->Play("engine_damaged_6");
+
+	case MODULE::AMMO_BAY:
+		switch (eState)
+		{
+		case MODULE_STATE::DESTROYED:
+			break;
+		case MODULE_STATE::DAMAGED:
+			m_pSoundCom_Voice->Play("ammo_bay_damaged_1");
+			break;
+		case MODULE_STATE::FUNCTIONAL:
+			break;
+		case MODULE_STATE::END:
+			break;
+		default:
+			break;
+		}
 		break;
-	case MODULE_STATE::FUNCTIONAL:
-		//m_pSoundCom_Voice->Play("engine_functional_1");
-		break;
-	case MODULE_STATE::END:
-		break;
-	default:
+
+	case MODULE::TURRET:
+		switch (eState)
+		{
+		case MODULE_STATE::DESTROYED:
+			m_pSoundCom_Voice->Play("turret_rotator_destroyed_1");
+			break;
+		case MODULE_STATE::DAMAGED:
+			m_pSoundCom_Voice->Play("turret_rotator_damaged_1");
+			break;
+		case MODULE_STATE::FUNCTIONAL:
+			break;
+		case MODULE_STATE::END:
+			break;
+		default:
+			break;
+		}
 		break;
 	}
 
+
+}
+
+void CDamagePanel::Play_Voice_Destroyed()
+{
+	m_pSoundCom_Voice->Play("vehicle_destroyed_2");
 }
 
 void CDamagePanel::Repair_All()
@@ -172,6 +218,13 @@ HRESULT CDamagePanel::Ready_PartObjects()
 	Desc.fX = -0.38f;
 	Desc.fY = 0.08f;
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_AmmoBay"), &Desc)))
+		return E_FAIL;
+
+	lstrcpy(Desc.szName, TEXT("Icon_TurretRotator"));
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_Icon_TurretRotator");
+	Desc.fX = -0.38f;
+	Desc.fY = -0.25f;
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_TurretRotator"), &Desc)))
 		return E_FAIL;
 
 	CUIObject::UIOBJECT_DESC				BodyDir_Desc{};

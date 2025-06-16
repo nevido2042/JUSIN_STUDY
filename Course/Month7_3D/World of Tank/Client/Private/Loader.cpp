@@ -317,6 +317,11 @@ HRESULT CLoader::Loading_For_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/ammoBay%d.dds"), 3))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Icon_TurretRotator */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Icon_TurretRotator"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/battleAtlas/Icon_Module/turretRotator%d.dds"), 3))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region ¸ðµ¨

@@ -31,7 +31,8 @@ protected:
 	class CVIBuffer* m_pTargetBuffer = { nullptr };
 
 protected:
-	void SetUp_Height_Normal(class CTransform* pTransform, _float fTimeDelta,  _float fOffset = 0.f);
+	void SetUp_Height_Normal(class CTransform* pTransform, _float fTimeDelta, _float fOffset = 0.f);
+	void SetUp_Height(class CTransform* pTransform);
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

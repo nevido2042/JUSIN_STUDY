@@ -30,7 +30,7 @@ public:
 	virtual void	Set_ModuleState(MODULE_STATE eState) override;
 
 public:
-	HRESULT Damage_Engine();
+	//HRESULT Damage_Engine();
 
 public:
 	void Start_Engine();

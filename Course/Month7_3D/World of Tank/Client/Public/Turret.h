@@ -31,6 +31,11 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta) {}
 	virtual HRESULT Render();
+	virtual void    On_Collision_Stay(CGameObject* pOther, _fvector vNormal) override;
+
+public:
+	virtual void	Set_ModuleState(MODULE_STATE eState) override;
+
 
 public:
 	void	Set_Left(_bool bLeft) { m_bLeft = bLeft; }
@@ -43,8 +48,8 @@ private:
 //	void Picked_Ray_ScreenCenter();
 //	void Picked_Ray_Gun();
 
-private:
-	_float m_fRotateSpeed = 0.5f;
+//private:
+//	_float m_fRotateSpeed = 1.f;
 
 private:
 	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };

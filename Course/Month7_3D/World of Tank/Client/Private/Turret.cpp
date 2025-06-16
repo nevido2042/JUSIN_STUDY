@@ -1,9 +1,12 @@
 #include "Turret.h"
 
 #include "GameInstance.h"
-//#include "Terrain.h"
+
 #include "GameManager.h"
 #include "PickedManager.h"
+#include "DamagePanel.h"
+#include "Icon_Module.h"
+#include "Tank.h"
 
 CTurret::CTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -30,14 +33,20 @@ void CTurret::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"));
 
+	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
+	//if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
+	//{
+	//	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
+	//}
+
 	Input(fTimeDelta);
 
 	if (m_pGameInstance->Get_ID() != m_iID && m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 	{
 		if (m_bLeft)
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * m_fRotateSpeed);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta /** m_fRotateSpeed*/);
 		else if (m_bRight)
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fRotateSpeed);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta /** m_fRotateSpeed*/);
 		else if (!m_bLeft && !m_bRight)
 		{
 			//int a = 10;
@@ -68,6 +77,12 @@ void CTurret::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
+	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
+	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
+	{
+		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	}
 
 	//if (m_pGameInstance->Get_ID() != m_iID)
 	//{
@@ -105,6 +120,55 @@ HRESULT CTurret::Render()
 	m_pColliderCom->Render();
 #endif
 	return S_OK;
+}
+
+void CTurret::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+{
+	cout << "Collision_Turret" << endl;
+
+	CModule::On_Collision_Stay(pOther, vNormal);
+}
+
+void CTurret::Set_ModuleState(MODULE_STATE eState)
+{
+	m_eModuleState = eState;
+
+	switch (m_eModuleState)
+	{
+	case MODULE_STATE::DESTROYED:
+		m_pTransformCom->Set_RotationPerSec(0.f);
+		break;
+	case MODULE_STATE::DAMAGED:
+		m_pTransformCom->Set_RotationPerSec(0.5f);
+		break;
+	case MODULE_STATE::FUNCTIONAL:
+		m_pTransformCom->Set_RotationPerSec(1.f);
+		break;
+	case MODULE_STATE::END:
+		break;
+	default:
+		break;
+	}
+
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if (pDamagePanel == nullptr)
+			return;
+
+		if (m_pOwner)
+		{
+			if (!m_pOwner->Get_isTankDestroyed())
+				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
+		}
+
+		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_TurretRotator")));
+		if (pIcon == nullptr)
+			return;
+
+		pIcon->Set_ModuleState(m_eModuleState);
+	}
+
 }
 
 void CTurret::Input(_float fTimeDelta)
@@ -178,7 +242,7 @@ void CTurret::Input(_float fTimeDelta)
 			}
 
 #pragma message ("델타값이 너무크면 넘어가버려서 바들바들 떤다. ex) 30프레임으로 낮추니까 발견하였음")
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fRotateSpeed/** abs(fRightDot)*/);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta /** m_fRotateSpeed*//** abs(fRightDot)*/);
 		}
 		else if (fRightDot < -0.01f) //왼쪽으로 돌기
 		{
@@ -197,7 +261,7 @@ void CTurret::Input(_float fTimeDelta)
 				
 			}
 
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * m_fRotateSpeed /** abs(fRightDot)*/);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta /** m_fRotateSpeed *//** abs(fRightDot)*/);
 		}
 		else
 		{

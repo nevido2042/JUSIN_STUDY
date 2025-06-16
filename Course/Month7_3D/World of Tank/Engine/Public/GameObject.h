@@ -33,8 +33,8 @@ public:
 	virtual HRESULT Render();
 
 public:
-	_bool	Get_IsDestroyed() { return m_bisDestroyed; }
-	void	Destroy() { m_bisDestroyed = true; }
+	_bool	Get_IsDestroyed() { return m_bisTankDestroyed; }
+	void	Destroy() { m_bisTankDestroyed = true; }
 
 	const _bool		Get_isActive() const		{ return m_bActive; }
 	void			Set_Active(_bool bActive)	{ m_bActive = bActive; }
@@ -60,7 +60,7 @@ protected:
 	_bool m_bCloned = { false };
 
 protected:
-	_bool m_bisDestroyed = { false };
+	_bool m_bisTankDestroyed = { false };
 	_bool m_bActive = { true };
 	_bool m_bVisible = { true };
 protected:

@@ -696,7 +696,7 @@ HRESULT CMainApp::Ready_Packets()
 			CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"));
 			if (pGameObject->Get_ID() == Hit_Desc.iTargetID)
 			{
-				static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule);
+				static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule, 30.f);
 
 				//데미지 인디케이터 띄우자 여기서
 				CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
@@ -724,7 +724,7 @@ HRESULT CMainApp::Ready_Packets()
 				{
 					if (Hit_Desc.iTargetID == pGameObject->Get_ID())
 					{
-						static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule);
+						static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule, 30.f);
 						break;
 					}
 				}

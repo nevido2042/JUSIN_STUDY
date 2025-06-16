@@ -71,7 +71,7 @@ void CTank::Priority_Update(_float fTimeDelta)
 				return;
 		}
 
-		if (m_bisDestroyed)
+		if (m_bisTankDestroyed)
 			return;
 
 		Input();
@@ -132,7 +132,7 @@ void CTank::Late_Update(_float fTimeDelta)
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-	if (m_bisDestroyed)
+	if (m_bisTankDestroyed)
 		return;
 
 	CGameObject::Late_Update(fTimeDelta);
@@ -146,7 +146,7 @@ HRESULT CTank::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (m_pModelCom && !m_bisDestroyed)
+	if (m_pModelCom && !m_bisTankDestroyed)
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
@@ -192,12 +192,12 @@ void CTank::On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal)
 	//	m_pSoundCom_TankSound3D->Play("phys_coll_83");
 }
 
-void CTank::Damage_Module(MODULE eModule)
+void CTank::Damage_Module(MODULE eModule, _float fDamage)
 {
 	if (ENUM_CLASS(eModule) < 0 || ENUM_CLASS(eModule) >= ENUM_CLASS(MODULE::END))
 		return;
 
-	m_Modules[ENUM_CLASS(eModule)]->TakeDamage();
+	m_Modules[ENUM_CLASS(eModule)]->TakeDamage(fDamage);
 
 	//switch (eModule)
 	//{
@@ -214,15 +214,17 @@ void CTank::Damage_Module(MODULE eModule)
 
 HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
 {
-	switch (eModule)
-	{
-	case MODULE::ENGINE:
-		m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(eState);
-		break;
-	case MODULE::AMMO_BAY:
-		m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(eState);
-			break;
-	}
+	m_Modules[ENUM_CLASS(eModule)]->Set_ModuleState(eState);
+
+	//switch (eModule)
+	//{
+	//case MODULE::ENGINE:
+	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(eState);
+	//	break;
+	//case MODULE::AMMO_BAY:
+	//	m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(eState);
+	//		break;
+	//}
 
 	return S_OK;
 }
@@ -306,7 +308,7 @@ HRESULT CTank::Take_Damage(_float fDamage)
 
 void CTank::Repair_All()
 {
-	if (m_bisDestroyed == true)
+	if (m_bisTankDestroyed == true)
 		return;
 
 	for(_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
@@ -449,10 +451,18 @@ void CTank::Move(_float fTimeDelta)
 
 void CTank::Destroyed()
 {
-	if (m_bisDestroyed)
+	if (m_bisTankDestroyed)
 		return;
 
-	m_bisDestroyed = true;
+	m_bisTankDestroyed = true;
+
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if (pDamagePanel == nullptr)
+			return;
+		pDamagePanel->Play_Voice_Destroyed();
+	}
 
 	CGameObject* pScore = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Score"));
 	if (pScore)
@@ -464,13 +474,9 @@ void CTank::Destroyed()
 		TEAM ePlayerTeam = static_cast<CTank*>(pPlayerTank)->Get_Team();
 
 		if (m_eTeam == ePlayerTeam)
-		{
 			static_cast<CScore*>(pScore)->Set_Destroy_Green();
-		}
 		else
-		{
 			static_cast<CScore*>(pScore)->Set_Destroy_Red();
-		}
 	}
 
 	for(CModule * pModule : m_Modules)

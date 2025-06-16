@@ -30,7 +30,9 @@ public:
 public:
 	void Play_Voice_StartBattle();
 public:
-	void Play_Voice_EngineState(MODULE_STATE eState);
+	void Play_Voice_ModuleState(MODULE eModule, MODULE_STATE eState);
+public:
+	void Play_Voice_Destroyed();
 public:
 	void Repair_All();
 

@@ -122,6 +122,7 @@ HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 	TurretDesc.vGunColor = pDesc->vGunColor;
 	TurretDesc.pOwner = this;
 
+	TurretDesc.eModuleType = MODULE::TURRET;
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FuryTurret"), TEXT("Part_Turret"), &TurretDesc)))
 		return E_FAIL;
 

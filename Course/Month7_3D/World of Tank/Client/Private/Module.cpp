@@ -65,12 +65,10 @@ HRESULT CModule::Render()
 
 void CModule::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 {
-	cout << "MODULE: On_Collision_Stay" << endl;
-
 	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
 	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
 	{
-		TakeDamage();
+		TakeDamage(30.f);
 	}
 
 	// 게임플레이면서 플레이어의 탱크가 아닌애들은 충돌 메시지를 전달한다.
@@ -86,10 +84,14 @@ void CModule::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 	}
 }
 
-
-void CModule::TakeDamage()
+void CModule::Set_ModuleState(MODULE_STATE eState)
 {
-	m_pOwner->Take_Damage(30.f);
+	m_eModuleState = eState;
+}
+
+void CModule::TakeDamage(_float fDamage)
+{
+	m_pOwner->Take_Damage(fDamage);
 
 	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
 }

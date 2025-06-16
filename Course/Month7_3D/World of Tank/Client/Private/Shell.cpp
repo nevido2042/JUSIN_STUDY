@@ -52,7 +52,10 @@ void CShell::Update(_float fTimeDelta)
 	m_pTransformCom->Move_Velocity(fTimeDelta);
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
+
 	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{

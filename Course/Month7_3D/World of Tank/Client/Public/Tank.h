@@ -39,9 +39,12 @@ public:
 	virtual void On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal) override;
 
 public:
+	_bool Get_isTankDestroyed() const { return m_bisTankDestroyed; }
+
+public:
 	TEAM Get_Team() const { return m_eTeam; }
 public:
-	void Damage_Module(MODULE eModule);
+	void Damage_Module(MODULE eModule, _float fDamage);
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
 public:
@@ -92,7 +95,7 @@ private:
 	_float			m_fTimeAcc = { 0 };
 
 private:
-	_bool	m_bisDestroyed = { false };
+	_bool	m_bisTankDestroyed = { false };
 
 private:
 	//_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
