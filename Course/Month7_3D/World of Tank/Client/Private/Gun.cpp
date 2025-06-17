@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "PickedManager.h"
 #include "Shell.h"
+#include "AimCircle.h"
 
 CGun::CGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -75,10 +76,21 @@ void CGun::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 
+	m_fAngleDegree -= fTimeDelta * 2.f;
+
+	if (m_fAngleDegree < m_fAngleDegree_Min)
+		m_fAngleDegree = m_fAngleDegree_Min;
+
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		Picking();
-		
+
+		CGameObject* pAimCircle = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_AimCircle"));
+		if (pAimCircle)
+		{
+			static_cast<CAimCircle*>(pAimCircle)->Set_AimRadius(m_fAngleDegree * 0.01f);
+			//cout << m_fAngleDegree << endl;
+		}
 	}
 }
 
@@ -107,16 +119,48 @@ HRESULT CGun:: Render()
 	return S_OK;
 }
 
+// 랜덤 원뿔 퍼짐 함수
+_vector CGun::GetRandomSpreadDirection(_fvector vLookDir, _float fMaxAngleDegree)
+{
+	_vector vDir = XMVector3Normalize(vLookDir);  // 복사 후 사용
+
+	// 최대 회전 각도 (라디안)
+	_float fMaxAngleRad = XMConvertToRadians(fMaxAngleDegree);
+
+	// 1. 무작위 회전 축 생성 (룩벡터에 수직인 벡터)
+	_vector vRandom = XMVectorSet(
+		(rand() % 2001 - 1000) / 1000.f,
+		(rand() % 2001 - 1000) / 1000.f,
+		(rand() % 2001 - 1000) / 1000.f,
+		0.f
+	);
+	_vector RotAxis = XMVector3Normalize(XMVector3Cross(vDir, vRandom));
+
+	// 2. 무작위 각도 생성 (0 ~ fMaxAngleRad)
+	_float fAngle = ((rand() % 1001) / 1000.f) * fMaxAngleRad;
+
+	// 3. 쿼터니언으로 회전
+	_vector qRot = XMQuaternionRotationAxis(RotAxis, fAngle);
+	_vector vRotatedDir = XMVector3Rotate(vDir, qRot);
+
+	return XMVector3Normalize(vRotatedDir); // 정규화해서 반환
+}
+
 HRESULT CGun::Fire()
 {
+
 	CShell::SHELL_DESC Desc = {};
 	memcpy(&Desc.vInitPosition, m_CombinedWorldMatrix.m[3], sizeof(_float3));
 	memcpy(&Desc.vVelocity, m_CombinedWorldMatrix.m[2], sizeof(_float3));
 	_vector vVelocity = XMLoadFloat3(&Desc.vVelocity);
+	vVelocity = XMVector3Normalize(vVelocity);
+
+	vVelocity = GetRandomSpreadDirection(vVelocity, m_fAngleDegree);
+
 	vVelocity = XMVectorScale(vVelocity, 300.f);
+
 	XMStoreFloat3(&Desc.vVelocity, vVelocity);
 	Desc.iID = m_iID;
-
 	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	Desc.strLayerTag = TEXT("Layer_Terrain");
 	Desc.iIndex = 0;
@@ -221,6 +265,41 @@ void CGun::Input(_float fTimeDelta)
 		}
 		else
 		{
+			//이 부분 채워줘
+			//오차이내로 들어오면
+			//Gun이 정확히 picekdPos 바라보도록
+
+			// m_CombinedWorldMatrix에서 Right, Look 벡터 추출
+			_vector vUp = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[1]));
+			_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[2]));
+
+			// 목표 방향 (Up 평면에 투영된 방향)
+			vProjected = XMVector3Normalize(vProjected);
+
+			// 두 벡터 사이의 각도 구하기 (Dot)
+			_float fDot = XMVectorGetX(XMVector3Dot(vLook, vProjected));
+			fDot = clamp(fDot, -1.f, 1.f);
+			_float fAngle = asinf(fDot); // 라디안
+
+			// 회전 방향 판단 (Y축 기준, Right 벡터와 목표 방향 Dot)
+			_float fSign = XMVectorGetX(XMVector3Dot(vUp, vProjected));
+
+			if (fabsf(fAngle) > 0.001f) // 아주 작은 각도 무시
+			{
+				_float fRotateAngle = fAngle;
+				if (fSign > 0)
+					fRotateAngle = -fRotateAngle;
+
+				// 제한된 속도로 회전 (필요시 m_fRotateSpeed 곱할 것)
+				_float fDeltaAngle = min(fTimeDelta * 0.01f, fabsf(fRotateAngle));
+				if (fRotateAngle < 0)
+					fDeltaAngle = -fDeltaAngle;
+
+				_vector vAxis = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+
+				m_pTransformCom->Turn(vAxis, fDeltaAngle);
+			}
+
 			if (m_bUp || m_bDown)
 			{
 				m_bUp = m_bDown = false;
@@ -234,25 +313,6 @@ void CGun::Input(_float fTimeDelta)
 					Desc.bBool = false;
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DOWN), &Desc);
 				}
-
-				// 회전이 멈췄을 때, 정확히 바라보도록 Look을 설정
-				// 새로운 Look 벡터 설정
-				// 회전 멈출 때 정확히 타겟을 바라보게 Look 보정
-				_float3 vScaled = m_pTransformCom->Get_Scaled(); // 현재 스케일 유지
-				// 정면 방향 (Look)
-				_vector vLook = XMVector3Normalize(vProjected); // 목표 방향 정규화
-				// 오른쪽 방향
-				_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
-				// 위 방향
-				_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
-				// 스케일 적용
-				vLook *= vScaled.z;
-				vRight *= vScaled.x;
-				vUp *= vScaled.y;
-				// CombinedWorldMatrix에 직접 반영
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[0]), vRight);
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[1]), vUp);
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
 			}
 		}
 	}

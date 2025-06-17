@@ -37,11 +37,23 @@ public:
 public:
 	HRESULT	Fire();
 
+public:
+	void Set_AngleDegree_Max() { m_fAngleDegree = m_fAngleDegree_Max; }
+
+private:
+	_vector GetRandomSpreadDirection(_fvector vLookDir, _float fMaxAngleDegree);
+
 private:
 	void Input(_float fTimeDelta);
 	
 private:
 	void Picking();
+
+private:
+	const _float m_fAngleDegree_Min = { 1.f };
+	const _float m_fAngleDegree_Max = { 5.f };
+
+	_float m_fAngleDegree = { m_fAngleDegree_Max };
 
 private:
 	_float4	m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };

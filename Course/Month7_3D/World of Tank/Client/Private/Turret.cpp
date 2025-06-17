@@ -179,18 +179,18 @@ void CTurret::Input(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		CGameObject* pGun = Find_PartObject(TEXT("Part_Gun"));
-		if (nullptr == pGun)
-			return;
+		//CGameObject* pGun = Find_PartObject(TEXT("Part_Gun"));
+		//if (nullptr == pGun)
+		//	return;
 
-		_float4x4 GunMatrix = {};
-		XMStoreFloat4x4(&GunMatrix, pGun->Get_CombinedWorldMatrix());
+		//_float4x4 GunMatrix = {};
+		//XMStoreFloat4x4(&GunMatrix, pGun->Get_CombinedWorldMatrix());
 
 		// 내 위치
 		_float3 vMyPos = {
-			GunMatrix.m[3][0],
-			GunMatrix.m[3][1],
-			GunMatrix.m[3][2]
+			m_CombinedWorldMatrix.m[3][0],
+			m_CombinedWorldMatrix.m[3][1],
+			m_CombinedWorldMatrix.m[3][2]
 		};
 
 		// Pick된 위치
@@ -203,9 +203,9 @@ void CTurret::Input(_float fTimeDelta)
 		_vector vToPicked = XMLoadFloat3(&vPicked) - XMLoadFloat3(&vMyPos);
 
 		// 내 기준 벡터
-		_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&GunMatrix.m[2]));
-		_vector vUp = XMVector3Normalize(XMLoadFloat3((_float3*)&GunMatrix.m[1]));
-		_vector vRight = XMVector3Normalize(XMLoadFloat3((_float3*)&GunMatrix.m[0]));
+		_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[2]));
+		_vector vUp = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[1]));
+		_vector vRight = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[0]));
 
 		// Up-Look 평면에 투영 = Up 축 제거 (Yaw 기준 평면)
 		_vector vProjected = vToPicked - XMVector3Dot(vToPicked, vUp) * vUp;
@@ -254,6 +254,39 @@ void CTurret::Input(_float fTimeDelta)
 		}
 		else // 정면
 		{
+			// 터렛이 pickedPos를 정확히 바라보도록 회전 조정 (Yaw 방향만 고려)
+			// 목표 방향 (Up 축 평면에 투영한 방향) - 이미 vProjected에 있음
+			// 현재 터렛의 Look 방향 (Yaw 평면)
+			_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[2]));
+
+			// Y축 회전 행렬을 통해 Look 방향을 vProjected 방향으로 천천히 맞춤
+			// 두 벡터 사이의 각도 구하기
+			_float fDot = XMVectorGetX(XMVector3Dot(vLook, vProjected));
+			fDot = clamp(fDot, -1.0f, 1.0f);
+			_float fAngle = acosf(fDot); // 라디안
+
+			// 회전 방향 판단 (Y축 기준)
+			_vector vRight = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[0]));
+			_float fSign = XMVectorGetX(XMVector3Dot(vRight, vProjected));
+
+			if (fabsf(fAngle) > 0.001f) // 아주 작은 각도는 무시
+			{
+				_float fRotateAngle = fAngle;
+
+				if (fSign < 0)
+					fRotateAngle = -fRotateAngle;
+
+				// 제한된 속도로 회전 (fTimeDelta * m_fRotateSpeed 등 곱해줘도 됨)
+				_float fRotationSpeed = 0.01f; // 필요시 조절
+				_float fDeltaAngle = min(fRotationSpeed * fTimeDelta, fabsf(fRotateAngle));
+
+				if (fRotateAngle < 0)
+					fDeltaAngle = -fDeltaAngle;
+
+				_vector vAxis = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+				m_pTransformCom->Turn(vAxis, fDeltaAngle);
+			}
+
 			if (m_bLeft || m_bRight)
 			{
 				m_bLeft = m_bRight = false;
@@ -267,84 +300,11 @@ void CTurret::Input(_float fTimeDelta)
 					Desc.bBool = false;
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
 				}
-
-				// 정면 정렬 (Yaw Look 보정)
-				_float3 vScaled = m_pTransformCom->Get_Scaled();
-				_vector vLook = XMVector3Normalize(vProjected);
-				_vector vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
-				_vector vUpFixed = XMVector3Normalize(XMVector3Cross(vLook, vRight));
-
-				vLook *= vScaled.z;
-				vRight *= vScaled.x;
-				vUpFixed *= vScaled.y;
-
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[0]), vRight);
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[1]), vUpFixed);
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
 			}
 		}
 	}
 
 }
-
-//void CTurret::Picked_Ray_ScreenCenter()
-//{
-//	_float fDist = { 0 };
-//
-//	_bool bisColl = false;
-//	bisColl = m_pColliderCom->Intersect_Ray(XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),
-//		XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), 1.f),
-//		fDist);
-//
-//	if (bisColl)
-//	{
-//		_float3 vPickedPos = {};
-//		_vector vOrigin = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()) };
-//		_vector vDir = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()) };
-//
-//		XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
-//
-//		//여기서 픽된 포즈를 계산해서 올리자
-//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-//		if (pPickedManager)
-//			pPickedManager->Add_ScreenCenterPickedPos(vPickedPos);
-//	}
-//
-//}
-//
-//void CTurret::Picked_Ray_Gun()
-//{
-//	_float fDist = { 0 };
-//
-//	_bool bisColl = false;
-//
-//	//포구 피킹
-//	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
-//	if (nullptr == pPlayerTank)
-//		return;
-//
-//	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-//	if (nullptr == pGun)
-//		return;
-//
-//	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
-//	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
-//	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2];
-//	vGunLook = XMVector3Normalize(vGunLook);
-//
-//	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
-//
-//	if (bisColl)
-//	{
-//		_float3 vPickedPos = {};
-//		XMStoreFloat3(&vPickedPos, vGunPos + vGunLook * fDist);
-//
-//		//여기서 픽된 포즈를 계산해서 올리자
-//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-//		if (pPickedManager)
-//			pPickedManager->Add_GunPickedPos(vPickedPos);
-//	}
-//}
 
 HRESULT CTurret::Bind_ShaderResources()
 {

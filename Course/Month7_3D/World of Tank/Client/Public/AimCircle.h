@@ -27,6 +27,14 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Set_AimRadius(_float fAimRadius);
+
+private:
+	const _float m_fAimRadius_Max = { 0.05f };
+	const _float m_fAimRadius_Min = { 0.01f };
+	_float m_fAimRadius = {};
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

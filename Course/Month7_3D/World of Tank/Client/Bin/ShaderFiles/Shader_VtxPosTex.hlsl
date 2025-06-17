@@ -10,12 +10,10 @@ float g_fFill = 1.f;
 float4 g_vBaseColor = float4(1.f, 1.f, 1.f, 1.f);
 
 float2 g_vAimCenter = float2(0.5f, 0.5f); // 화면 중심 (UV 기준)
-float g_fAimRadius = 0.1f; // 조준원 반지름 (0~0.5)
-float g_fLineWidth = 0.01f; // 조준선 두께
+float g_fAimRadius = 0.01f; // 조준원 반지름 (0~0.5)
+float g_fLineWidth = 0.0005f; // 조준선 두께
 float4 g_vAimColor = float4(0.f, 1.f, 0.f, 1.f); // 흰색
 float g_fZoomScale = 1.0f; // 1.0 (기본 줌), 작아지면 줌인
-
-
 
 /* 정점의 기초적인 변환 (월드변환, 뷰, 투영변환) */ 
 /* 정점의 구성 정보를 변형할 수 있다. */ 

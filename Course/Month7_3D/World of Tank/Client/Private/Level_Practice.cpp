@@ -604,10 +604,8 @@ HRESULT CLevel_Practice::Ready_Layer_AimCircle(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC		Desc{};
 
-	Desc.fSizeX = 200.0f * UI_RATIO;
-	Desc.fSizeY = 200.0f * UI_RATIO;
-	Desc.fX = g_iWinSizeX * 0.5f;
-	Desc.fY = g_iWinSizeY * 0.5f;
+	Desc.fSizeX = 2000.0f * UI_RATIO;
+	Desc.fSizeY = 2000.0f * UI_RATIO;
 	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_AimCircle"),

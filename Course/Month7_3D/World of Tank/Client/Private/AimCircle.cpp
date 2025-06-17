@@ -83,6 +83,10 @@ HRESULT CAimCircle::Render()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAimRadius", &m_fAimRadius, sizeof(_float))))
+		return E_FAIL;
+
 	_float fAlpha = { 0.0f };
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
 		return E_FAIL;
@@ -99,6 +103,16 @@ HRESULT CAimCircle::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CAimCircle::Set_AimRadius(_float fAimRadius)
+{
+	if (m_fAimRadius_Min > fAimRadius)
+		fAimRadius = m_fAimRadius_Min;
+	else if (m_fAimRadius_Max < fAimRadius)
+		fAimRadius = m_fAimRadius_Max;
+
+	m_fAimRadius = fAimRadius;
 }
 
 HRESULT CAimCircle::Ready_Components()

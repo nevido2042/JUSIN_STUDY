@@ -381,6 +381,11 @@ void CTank::Move(_float fTimeDelta)
 	_float fMovePower = { pEngin->Get_MovePower() };
 	_float fRPMPower = { pEngin->Get_RPM() };
 
+	if (fRPMPower > 1.f) // rpm ÃÖ¼Ú°ªÀÌ 1.f
+	{
+		static_cast<CGun*>(m_Modules[ENUM_CLASS(MODULE::GUN)])->Set_AngleDegree_Max();
+	}
+
 	_float SpeedTrackLeft = 0.f;
 	_float SpeedTrackRight = 0.f;
 
