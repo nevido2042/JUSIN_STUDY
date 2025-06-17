@@ -36,10 +36,12 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-	virtual void    On_Collision_Stay(CGameObject* pOther, _fvector vNormal) override;
 
 public:
 	const _float3& Get_FirePos() { return m_vFirePos; }
+
+private:
+	void Check_RaycastHit();
 
 private:
 	_float3		m_vPreviousPos = {};

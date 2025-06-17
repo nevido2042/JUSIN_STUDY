@@ -63,7 +63,7 @@ HRESULT CModule::Render()
 	return S_OK;
 }
 
-void CModule::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+void CModule::On_RaycastHit(CGameObject* pOther)
 {
 	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
 	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)

@@ -33,12 +33,6 @@ void CTurret::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"));
 
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	//if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	//{
-	//	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
-	//}
-
 	Input(fTimeDelta);
 
 	if (m_pGameInstance->Get_ID() != m_iID && m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
@@ -78,18 +72,6 @@ void CTurret::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	}
-
-	//if (m_pGameInstance->Get_ID() != m_iID)
-	//{
-	//	Picked_Ray_ScreenCenter();
-	//	Picked_Ray_Gun();
-	//}
-
 	CGameObject::Update(fTimeDelta);
 
 }
@@ -122,12 +104,11 @@ HRESULT CTurret::Render()
 	return S_OK;
 }
 
-void CTurret::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+void CTurret::On_RaycastHit(CGameObject* pOther)
 {
-	cout << "Collision_Turret" << endl;
-
-	CModule::On_Collision_Stay(pOther, vNormal);
+	CModule::On_RaycastHit(pOther);
 }
+
 
 void CTurret::Set_ModuleState(MODULE_STATE eState)
 {

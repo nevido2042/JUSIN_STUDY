@@ -69,11 +69,7 @@ void CEngine::End_Engine()
 
 void CEngine::Priority_Update(_float fTimeDelta)
 {
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
-	}
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
 
 	if (m_eModuleState == MODULE_STATE::DESTROYED)
 		return;
@@ -91,12 +87,6 @@ void CEngine::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
-
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	}
 
 	if (m_eModuleState == MODULE_STATE::DESTROYED && m_IsOn)
 	{
@@ -142,31 +132,9 @@ HRESULT CEngine::Render()
 	return S_OK;
 }
 
-void CEngine::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+void CEngine::On_RaycastHit(CGameObject* pOther)
 {
-	cout << "Collision_Engine" << endl;
-
-	CModule::On_Collision_Stay(pOther, vNormal);
-
-	//cout << "CEngine::On_Collision_Stay" << endl;
-
-	//// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	//if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	//{
-	//	Damage_Engine();
-	//}
-
-	//// 게임플레이면서 플레이어의 탱크가 아닌애들은 충돌 메시지를 전달한다.
-	//if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY) && m_pGameInstance->Get_ID() != m_iID)
-	//{
-	//	HIT_MODULE_DESC Desc = {};
-	//	Desc.iID = m_pGameInstance->Get_ID();
-	//	Desc.iTargetID = m_iID;
-	//	Desc.eModule = MODULE::ENGINE;
-	//	Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
-
-	//	m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
-	//}
+	CModule::On_RaycastHit(pOther);
 }
 
 void CEngine::Set_ModuleState(MODULE_STATE eState)

@@ -53,6 +53,8 @@ public:
 	CGameObject*	Find_PartObject(const _wstring& strPartObjectTag);
 	_matrix			Get_CombinedWorldMatrix() const { return XMLoadFloat4x4(&m_CombinedWorldMatrix); }
 
+public:
+	virtual void	On_RaycastHit(CGameObject* pOther);
 protected:
 	virtual void    On_Collision_Stay(CGameObject* pOther, _fvector vNormal); friend class CCollider_Manager;
 

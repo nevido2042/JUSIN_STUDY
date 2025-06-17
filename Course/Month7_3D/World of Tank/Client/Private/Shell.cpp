@@ -59,22 +59,13 @@ void CShell::Update(_float fTimeDelta)
 	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
-	_float fDist = { };
-	_vector vOrigin = XMVectorSetW(XMLoadFloat3(&m_vPreviousPos), 1.f);
-	_vector vRayDir = m_pTransformCom->Get_State(STATE::POSITION) - vOrigin;
-	_float fRayLength = XMVectorGetX(XMVector3Length(vRayDir));
-	vRayDir = XMVector3Normalize(vRayDir);
-
-	CGameObject* pHit = { nullptr };
-
-	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
-	if (pHit)
+#pragma region HIT
+	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		if (fRayLength < fDist)
-			return;
-
-		cout << "Hit" << endl;
+		Check_RaycastHit();
 	}
+
+#pragma endregion
 
 
 	if (m_pGameInstance->Get_ID() == m_iID)
@@ -127,10 +118,65 @@ HRESULT CShell::Render()
 	return S_OK;
 }
 
-void CShell::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
-{	
-	wcout << "Shell On_Collision_Stay: " << pOther->GetName() << endl;
-	Destroy();
+void CShell::Check_RaycastHit()
+{
+	CGameObject* pHitResult = { nullptr };
+	_float fMinDist = FLT_MAX;
+
+	_float fDist = { };
+	_vector vOrigin = XMVectorSetW(XMLoadFloat3(&m_vPreviousPos), 1.f);
+	_vector vRayDir = m_pTransformCom->Get_State(STATE::POSITION) - vOrigin;
+	_float fRayLength = XMVectorGetX(XMVector3Length(vRayDir));
+	vRayDir = XMVector3Normalize(vRayDir);
+	CGameObject* pHit = { nullptr };
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
+	if (pHit)
+	{
+		if (fRayLength > fDist)
+		{
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				pHitResult = pHit;
+			}
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::TURRET), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
+	if (pHit)
+	{
+		if (fRayLength > fDist)
+		{
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				pHitResult = pHit;
+			}
+		}
+	}
+
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BUILDING), TEXT("Com_Collider"), vOrigin, vRayDir, fDist);
+	if (pHit)
+	{
+		if (fRayLength > fDist)
+		{
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				pHitResult = pHit;
+			}
+		}
+	}
+
+	if (pHitResult != nullptr)
+	{
+		//모듈이라면 데미지를 주고
+
+		pHitResult->On_RaycastHit(this);
+
+		Destroy();
+	}
 }
 
 

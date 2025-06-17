@@ -40,11 +40,7 @@ HRESULT CAmmoBay::Initialize(void* pArg)
 
 void CAmmoBay::Priority_Update(_float fTimeDelta)
 {
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
-	}
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
 }
 
 void CAmmoBay::Update(_float fTimeDelta)
@@ -53,12 +49,6 @@ void CAmmoBay::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
-
-	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
-	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
-	{
-		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::SHELL), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	}
 
 	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
 	m_pSoundCom->Update3DPosition(vPos);
@@ -121,12 +111,9 @@ HRESULT CAmmoBay::Render()
 	return S_OK;
 }
 
-void CAmmoBay::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
+void CAmmoBay::On_RaycastHit(CGameObject* pOther)
 {
-	cout << "Collision_AmmoBay" << endl;
-
-
-	CModule::On_Collision_Stay(pOther, vNormal);
+	CModule::On_RaycastHit(pOther);
 }
 
 void CAmmoBay::Set_ModuleState(MODULE_STATE eState)
