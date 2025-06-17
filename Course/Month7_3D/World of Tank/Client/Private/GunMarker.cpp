@@ -84,7 +84,6 @@ void CGunMarker::Late_Update(_float fTimeDelta)
 
 HRESULT CGunMarker::Render()
 {
-#pragma message ("왜 플레이어 탱크의 체력바 UI가 카메라를 전환하면 안보이지? 실행은 되는데?, 안보이는 게 맞긴한데")
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -97,6 +96,45 @@ HRESULT CGunMarker::Render()
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
+
+#pragma region AimCircle
+
+	//// 1. 조준점 월드 위치
+	//_vector vWorldPos = m_pTransformCom->Get_State(STATE::POSITION);
+	//_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+	//_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
+
+	//// 2. 월드 → 클립 좌표 → 스크린 좌표
+	//_vector vClipPos = XMVector3TransformCoord(vWorldPos, matView * matProj);
+
+	//_float3 vClip;
+	//XMStoreFloat3(&vClip, vClipPos);
+
+	//_float2 vScreenPos;
+	//vScreenPos.x = (vClip.x * 0.5f + 0.5f); // NDC to UV (0~1)
+	//vScreenPos.y = (-vClip.y * 0.5f + 0.5f);
+
+	//// 3. 줌 비율 계산
+	//_float fZoomScale = XMConvertToRadians(BASE_FOV) / m_pGameInstance->Get_Fov();
+
+	//// 4. 셰이더 바인딩
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vAimCenter", &vScreenPos, sizeof(_float2))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_fZoomScale", &fZoomScale, sizeof(_float))))
+	//	return E_FAIL;
+
+	//// 5. 조준원 렌더링
+	//if (FAILED(m_pShaderCom->Begin(5)))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pVIBufferCom->Render()))
+	//	return E_FAIL;
+
+#pragma endregion
 
 	return S_OK;
 }

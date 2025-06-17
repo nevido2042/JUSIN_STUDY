@@ -135,19 +135,12 @@ HRESULT CGun::Fire()
 
 void CGun::Input(_float fTimeDelta)
 {
-	//if (GetForegroundWindow() != g_hWnd)
-	//	return;
 
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
 		return;
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		// 타겟 위치
-		//CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-		//if (pTerrain == nullptr)
-		//	return;
-
 		// 내 위치
 		_float3 vMyPos = {
 			m_CombinedWorldMatrix.m[3][0],

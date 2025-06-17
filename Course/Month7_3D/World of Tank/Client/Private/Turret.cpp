@@ -179,39 +179,51 @@ void CTurret::Input(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		// 타겟 위치
-		//CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-		//if (pTerrain == nullptr)
-		//	return;
+		CGameObject* pGun = Find_PartObject(TEXT("Part_Gun"));
+		if (nullptr == pGun)
+			return;
 
-		_float3 vTargetPos = {};
-		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-		if (pPickedManager)
-			vTargetPos = pPickedManager->Get_ScreenCenterPickedPos();
-
-		//_float3 vTargetPos = pTerrain->Get_PickedPos();
-		vTargetPos.y = m_CombinedWorldMatrix.m[3][1]; // 자기와 y만 맞추기
+		_float4x4 GunMatrix = {};
+		XMStoreFloat4x4(&GunMatrix, pGun->Get_CombinedWorldMatrix());
 
 		// 내 위치
 		_float3 vMyPos = {
-			m_CombinedWorldMatrix.m[3][0],
-			m_CombinedWorldMatrix.m[3][1],
-			m_CombinedWorldMatrix.m[3][2]
+			GunMatrix.m[3][0],
+			GunMatrix.m[3][1],
+			GunMatrix.m[3][2]
 		};
 
+		// Pick된 위치
+		_float3 vPicked = {};
+		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
+		if (pPickedManager)
+			vPicked = pPickedManager->Get_ScreenCenterPickedPos();
+
 		// 방향 벡터
-		_vector vToTarget = XMVector3Normalize(XMLoadFloat3(&vTargetPos) - XMLoadFloat3(&vMyPos));
-		_vector vRight = XMLoadFloat4(reinterpret_cast<const _float4*>(&m_CombinedWorldMatrix.m[0]));
+		_vector vToPicked = XMLoadFloat3(&vPicked) - XMLoadFloat3(&vMyPos);
 
-		// 좌/우 판별
-		_float fRightDot = XMVectorGetX(XMVector3Dot(vRight, vToTarget));
+		// 내 기준 벡터
+		_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&GunMatrix.m[2]));
+		_vector vUp = XMVector3Normalize(XMLoadFloat3((_float3*)&GunMatrix.m[1]));
+		_vector vRight = XMVector3Normalize(XMLoadFloat3((_float3*)&GunMatrix.m[0]));
 
-		if (fRightDot > 0.01f) //오른쪽으로 돌기
+		// Up-Look 평면에 투영 = Up 축 제거 (Yaw 기준 평면)
+		_vector vProjected = vToPicked - XMVector3Dot(vToPicked, vUp) * vUp;
+
+		vProjected = XMVector3Normalize(vProjected);
+
+		// Look 기준으로 방향 비교 (좌우)
+		_float fRightDot = XMVectorGetX(XMVector3Dot(vRight, vProjected));
+
+		// 회전 축 (y축)
+		_vector vAxis = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+		if (fRightDot > 0.01f) // 오른쪽 회전
 		{
 			if (m_bRight == false)
 			{
-				m_bLeft = false;
 				m_bRight = true;
+				m_bLeft = false;
 
 				if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 				{
@@ -221,30 +233,26 @@ void CTurret::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
 				}
 			}
-
-#pragma message ("델타값이 너무크면 넘어가버려서 바들바들 떤다. ex) 30프레임으로 낮추니까 발견하였음")
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta /** m_fRotateSpeed*//** abs(fRightDot)*/);
+			m_pTransformCom->Turn(vAxis, fTimeDelta /* * 회전속도 */);
 		}
-		else if (fRightDot < -0.01f) //왼쪽으로 돌기
+		else if (fRightDot < -0.01f) // 왼쪽 회전
 		{
 			if (m_bLeft == false)
 			{
 				m_bLeft = true;
 				m_bRight = false;
 
-				if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY)) 
+				if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 				{
 					BOOL_DESC Desc{};
 					Desc.iID = m_iID;
 					Desc.bBool = true;
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LEFT), &Desc);
 				}
-				
 			}
-
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta /** m_fRotateSpeed *//** abs(fRightDot)*/);
+			m_pTransformCom->Turn(vAxis, -fTimeDelta /* * 회전속도 */);
 		}
-		else
+		else // 정면
 		{
 			if (m_bLeft || m_bRight)
 			{
@@ -258,31 +266,25 @@ void CTurret::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LEFT), &Desc);
 					Desc.bBool = false;
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
-				}	
+				}
 
+				// 정면 정렬 (Yaw Look 보정)
+				_float3 vScaled = m_pTransformCom->Get_Scaled();
+				_vector vLook = XMVector3Normalize(vProjected);
+				_vector vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
+				_vector vUpFixed = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-				// 회전이 멈췄을 때, 정확히 바라보도록 Look을 설정
-				// 새로운 Look 벡터 설정
-				// 회전 멈출 때 정확히 타겟을 바라보게 Look 보정
-				_float3 vScaled = m_pTransformCom->Get_Scaled(); // 현재 스케일 유지
-				// 정면 방향 (Look)
-				_vector vLook = XMVector3Normalize(vToTarget); // 목표 방향 정규화
-				// 오른쪽 방향
-				_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
-				// 위 방향
-				_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
-				// 스케일 적용
 				vLook *= vScaled.z;
 				vRight *= vScaled.x;
-				vUp *= vScaled.y;
-				// CombinedWorldMatrix에 직접 반영
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[0]), vRight);
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[1]), vUp);
-				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
+				vUpFixed *= vScaled.y;
 
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[0]), vRight);
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[1]), vUpFixed);
+				XMStoreFloat4(reinterpret_cast<_float4*>(&m_CombinedWorldMatrix.m[2]), vLook);
 			}
 		}
 	}
+
 }
 
 //void CTurret::Picked_Ray_ScreenCenter()

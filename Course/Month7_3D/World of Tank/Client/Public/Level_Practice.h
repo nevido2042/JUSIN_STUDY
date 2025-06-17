@@ -49,6 +49,7 @@ private:
 	HRESULT Ready_Layer_Icon_Consumables(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Score(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DamageIndicator(const _wstring strLayerTag);
+	HRESULT Ready_Layer_AimCircle(const _wstring strLayerTag);
 	
 	////TOOL
 	//HRESULT Ready_Layer_Tool_EngineSound(const _wstring strLayerTag);
