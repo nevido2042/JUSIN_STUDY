@@ -73,9 +73,6 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
-    if (Out.vColor.a < g_fAlpha)
-        discard;
-    
     return Out;
 }
 
@@ -84,9 +81,6 @@ PS_OUT PS_BASECOLOR(PS_IN In)
     PS_OUT Out;
     
     Out.vColor = g_vBaseColor * g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    
-    if (Out.vColor.a < g_fAlpha)
-        discard;
     
     return Out;
 }
@@ -99,10 +93,7 @@ PS_OUT PS_FILL_COLOR(PS_IN In)
         discard;
 
     float4 texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    
-    //if (texColor.a < g_fAlpha)
-    //    discard;
-    
+
     Out.vColor = lerp(texColor, float4(1.f - g_fFill, g_fFill, 0.0, texColor.a), 0.7); // »¡°£»ö 30% ¼¯±â
 
     return Out;
@@ -117,9 +108,6 @@ PS_OUT PS_FILL(PS_IN In)
 
     float4 texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
     
-    //if (texColor.a < g_fAlpha)
-    //    discard;
-    
     Out.vColor = texColor;
 
     return Out;
@@ -133,7 +121,7 @@ PS_OUT PS_AIMCIRCLE(PS_IN In)
     float scale = g_fZoomScale;
 
     float radius = g_fAimRadius * scale;
-    float width = g_fLineWidth * scale;
+    float width = g_fLineWidth;
     float dist = distance(uv, g_vAimCenter);
 
     if (abs(dist - radius) < width)
@@ -161,7 +149,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();        
         PixelShader = compile ps_5_0 PS_MAIN();      
@@ -171,7 +159,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_FILL_COLOR();
@@ -181,7 +169,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();
@@ -191,7 +179,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_BASECOLOR();
@@ -201,7 +189,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_FILL();
@@ -212,7 +200,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0, 0, 0, 0), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0, 0, 0, 0), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_AIMCIRCLE();

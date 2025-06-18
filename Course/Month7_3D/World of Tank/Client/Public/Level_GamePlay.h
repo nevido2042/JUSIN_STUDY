@@ -23,7 +23,7 @@ private:
 	HRESULT Ready_Layer_Camera_Free(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Engine(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
-
+	HRESULT Ready_Layer_InvisibleWalls(const _wstring strLayerTag);
 	//3D UI
 	HRESULT Ready_Layer_GunMarker(const _wstring strLayerTag);
 
@@ -33,12 +33,11 @@ private:
 	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
 	//HRESULT Ready_Layer_Icon_Engine(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Crosshair(const _wstring strLayerTag);
-	HRESULT Ready_Layer_DamageBar(const _wstring strLayerTag);
+	//HRESULT Ready_Layer_DamageBar(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Icon_Consumables(const _wstring strLayerTag);
 	HRESULT Ready_Layer_PickedManager(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Boundary(const _wstring strLayerTag);
-	HRESULT Ready_Layer_InvisibleWalls(const _wstring strLayerTag);
-
+	HRESULT Ready_Layer_AimCircle(const _wstring strLayerTag);
 
 private:
 	HRESULT Load_Map();

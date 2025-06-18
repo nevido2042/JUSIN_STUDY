@@ -20,10 +20,15 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+//public:
+//	_bool IsPointInBoundary(const _float3& vPoint, _float3& vOutClosestPos);
 
 public:
 	_bool IsPointInBoundary(const _float3& vPoint);
 	_float3 ClosestPointOnBoundary(const _float3& vPos);
+
+private:
+	_bool IsPointOnSegmentXZ(const _float3& p, const _float3& a, const _float3& b, _float fTolerance);
 
 private:
 	HRESULT Load_BoundaryPoints();

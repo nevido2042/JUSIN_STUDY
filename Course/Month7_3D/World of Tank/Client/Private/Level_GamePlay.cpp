@@ -61,8 +61,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
 		return E_FAIL;
@@ -72,6 +72,12 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(Ready_Layer_PickedManager(TEXT("Layer_PickedManager"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_AimCircle(TEXT("Layer_AimCircle"))))
+		return E_FAIL;
+
+
+
 
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
@@ -297,22 +303,22 @@ HRESULT CLevel_GamePlay::Ready_Layer_Crosshair(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_DamageBar(const _wstring strLayerTag)
-{
-	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
-
-	UIObject_Desc.fSizeX = 215.0f * UI_RATIO;
-	UIObject_Desc.fSizeY = 10.0f * UI_RATIO;
-	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.531f;
-	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 19.98f;
-	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
-		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CLevel_GamePlay::Ready_Layer_DamageBar(const _wstring strLayerTag)
+//{
+//	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+//
+//	UIObject_Desc.fSizeX = 215.0f * UI_RATIO;
+//	UIObject_Desc.fSizeY = 10.0f * UI_RATIO;
+//	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.531f;
+//	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 19.98f;
+//	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+//
+//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
+//		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &UIObject_Desc)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
 
 HRESULT CLevel_GamePlay::Ready_Layer_Icon_Consumables(const _wstring strLayerTag)
 {
@@ -363,6 +369,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_Boundary(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Boundary"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_AimCircle(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC		Desc{};
+
+	Desc.fSizeX = 2000.0f * UI_RATIO;
+	Desc.fSizeY = 2000.0f * UI_RATIO;
+	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_AimCircle"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

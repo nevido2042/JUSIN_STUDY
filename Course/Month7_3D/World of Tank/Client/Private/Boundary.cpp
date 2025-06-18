@@ -82,6 +82,60 @@ HRESULT CBoundary::Render()
 	return S_OK;
 }
 
+//_bool CBoundary::IsPointInBoundary(const _float3& vPoint, _float3& vOutClosestPos)
+//{
+//	vector<_float3> vCrossPoints;
+//
+//	_int iCount = 0; // 교차 횟수를 세는 카운터
+//	size_t iNumPoints = m_BoundaryPoints.size(); // 폴리곤 꼭짓점의 개수
+//
+//	for (size_t i = 0; i < iNumPoints; ++i)
+//	{
+//		// 현재 꼭짓점과 다음 꼭짓점을 가져옴 (마지막은 첫 번째와 연결)
+//		_float3 vPointA = m_BoundaryPoints[i];
+//		_float3 vPointB = m_BoundaryPoints[(i + 1) % iNumPoints];
+//
+//		// XZ 평면에서 주어진 점(vPoint)의 z좌표가 두 꼭짓점 사이에 있는지 확인
+//		if ((vPointA.z > vPoint.z) != (vPointB.z > vPoint.z))
+//		{
+//			// 해당 z 위치에서 선분 AB와 교차하는 X 좌표 계산
+//			_float fAt_X = (vPointB.x - vPointA.x) * (vPoint.z - vPointA.z) / (vPointB.z - vPointA.z) + vPointA.x;
+//
+//			// 점의 x 좌표가 교차점의 x보다 작으면 교차한 것으로 판단
+//			if (vPoint.x < fAt_X)
+//			{
+//				++iCount; // 교차 횟수 증가
+//
+//				_float t = (vPoint.z - vPointA.z) / (vPointB.z - vPointA.z);
+//				_float3 vIntersect;
+//				vIntersect.x = vPointA.x + (vPointB.x - vPointA.x) * t;
+//				vIntersect.z = vPoint.z;
+//				vIntersect.y = vPointA.y + (vPointB.y - vPointA.y) * t;
+//
+//				vCrossPoints.push_back(vIntersect);
+//			}
+//
+//		}
+//	}
+//
+//	_float fMinDist = FLT_MAX;
+//
+//	//vPoint와 가장 가까운 vCrossPoints 를 저장한다.
+//	for (_float3 vCrossPoint : vCrossPoints)
+//	{
+//		_float fDist = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vCrossPoint) - XMLoadFloat3(&vPoint)));
+//
+//		if (fMinDist > fDist)
+//		{
+//			fMinDist = fDist;
+//			vOutClosestPos = vCrossPoint;
+//		}
+//	}
+//
+//	// 교차 횟수가 홀수이면 내부, 짝수이면 외부에 위치한 것으로 판단
+//	return (iCount % 2 == 1);
+//}
+
 _float3 CBoundary::ClosestPointOnBoundary(const _float3& vPos)
 {
 	_float3 vClosest = vPos;

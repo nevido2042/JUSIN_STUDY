@@ -181,9 +181,6 @@
     <Filter Include="02.GameObjects\06.UIObject\Minimap\PersonalArrowEntry">
       <UniqueIdentifier>{8ab7531b-c809-4f5e-97f4-4b995b6726f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\DamageBar">
-      <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\Crosshair">
       <UniqueIdentifier>{1568540f-f1fe-4fd5-9780-8e6e06ce597b}</UniqueIdentifier>
     </Filter>
@@ -291,6 +288,9 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\AimCircle">
       <UniqueIdentifier>{6275eb25-2b5f-40a3-9b7c-56d795fe00b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamagePannel\DamageBar">
+      <UniqueIdentifier>{fdb2fe1d-d53f-41e5-b1d7-f5e78d022bd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -499,7 +499,7 @@
       <Filter>02.GameObjects\06.UIObject\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DamageBar.h">
-      <Filter>02.GameObjects\06.UIObject\DamageBar</Filter>
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\DamageBar</Filter>
     </ClInclude>
     <ClInclude Include="..\public\GunMarker.h">
       <Filter>02.GameObjects\01.3DUI\GunMarker</Filter>
@@ -784,7 +784,7 @@
       <Filter>02.GameObjects\06.UIObject\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DamageBar.cpp">
-      <Filter>02.GameObjects\06.UIObject\DamageBar</Filter>
+      <Filter>02.GameObjects\06.UIObject\DamagePannel\DamageBar</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GunMarker.cpp">
       <Filter>02.GameObjects\01.3DUI\GunMarker</Filter>

@@ -262,18 +262,28 @@ HRESULT CDamagePanel::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Icon_Module"), TEXT("Part_TurretFuelTank"), &Desc)))
 		return E_FAIL;
 
-	CUIObject::UIOBJECT_DESC				BodyDir_Desc{};
+	CUIObject::UIOBJECT_DESC				DirectionDesc{};
 
-	BodyDir_Desc.bIsChild = true;
-	BodyDir_Desc.fX = 0.f;
-	BodyDir_Desc.fY = 0.f;
-	BodyDir_Desc.fRotationPerSec = 1.f;
-	BodyDir_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	DirectionDesc.bIsChild = true;
+	DirectionDesc.fX = 0.f;
+	DirectionDesc.fY = 0.f;
+	DirectionDesc.fRotationPerSec = 1.f;
+	DirectionDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"), TEXT("Part_DirectionBody"), &BodyDir_Desc)))
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"), TEXT("Part_DirectionBody"), &DirectionDesc)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionTurret"), TEXT("Part_DirectionTurret"), &BodyDir_Desc)))
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionTurret"), TEXT("Part_DirectionTurret"), &DirectionDesc)))
+		return E_FAIL;
+
+	CUIObject::UIOBJECT_DESC				DamageBar_Desc{};
+
+	DamageBar_Desc.bIsChild = true;
+	DamageBar_Desc.fX = 0.f;
+	DamageBar_Desc.fY = 0.37f;
+	DamageBar_Desc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"), TEXT("Part_DamageBar"), &DamageBar_Desc)))
 		return E_FAIL;
 
 	return S_OK;

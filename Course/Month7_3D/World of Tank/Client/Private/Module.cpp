@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Tank.h"
 #include "Shell.h"
+#include "DamageIndicator.h"
 
 CModule::CModule(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -82,6 +83,25 @@ void CModule::On_RaycastHit(CGameObject* pOther)
 
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
 	}
+
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) && m_iID == m_pGameInstance->Get_ID())
+	{
+		//데미지 인디케이터 띄우자 여기서
+		CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
+
+		Desc.fSizeX = 248.f * UI_RATIO;
+		Desc.fSizeY = 716.f * UI_RATIO;
+		Desc.fX = g_iWinSizeX * 0.5f;
+		Desc.fY = g_iWinSizeY * 0.5f;
+		Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+		Desc.fRotationPerSec = 1.f;
+		Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+			ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_DamageIndicator"), &Desc)))
+			return;
+	}
+
 }
 
 void CModule::Set_ModuleState(MODULE_STATE eState)

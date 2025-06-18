@@ -71,10 +71,23 @@ void CTank::Priority_Update(_float fTimeDelta)
 				return;
 		}
 
-		if (m_bisTankDestroyed)
+		if (m_bisDie)
 			return;
 
 		Input();
+	}
+
+	//연습용 더미 조작
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
+	{
+		if (m_pGameInstance->Get_ID() != m_iID)
+		{
+			if (m_pGameInstance->Key_Down(DIK_F))
+			{
+				if (FAILED(Try_Fire()))
+					return;
+			}
+		}
 	}
 
 	CGameObject::Priority_Update(fTimeDelta);
@@ -87,18 +100,18 @@ void CTank::Update(_float fTimeDelta)
 
 	Move(fTimeDelta);
 
-	if (m_pBoundary)
-	{
-		_float3 vPos = {};
-		XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+	//if (m_pBoundary)
+	//{
+	//	_float3 vPos = {};
+	//	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
-		if (!m_pBoundary->IsPointInBoundary(vPos))
-		{
-			_float3 vClosestPos = m_pBoundary->ClosestPointOnBoundary(vPos);
-			m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vClosestPos), 1.f));
+	//	if (!m_pBoundary->IsPointInBoundary(vPos))
+	//	{
+	//		_float3 vClosestPos = m_pBoundary->ClosestPointOnBoundary(vPos);
+	//		m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vClosestPos), 1.f));
 
-		}
-	}
+	//	}
+	//}
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
@@ -132,7 +145,7 @@ void CTank::Late_Update(_float fTimeDelta)
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-	if (m_bisTankDestroyed)
+	if (m_bisDie)
 		return;
 
 	CGameObject::Late_Update(fTimeDelta);
@@ -146,7 +159,7 @@ HRESULT CTank::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (m_pModelCom && !m_bisTankDestroyed)
+	if (m_pModelCom && !m_bisDie)
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
@@ -259,6 +272,8 @@ HRESULT CTank::Try_Fire()
 		if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
 			return E_FAIL;
 
+		static_cast<CGun*>(m_Modules[ENUM_CLASS(MODULE::GUN)])->Set_AngleDegree_Max();
+
 		//꿀렁임
 		m_fRecoilTime = m_fMaxRecoilTime;
 
@@ -270,6 +285,8 @@ HRESULT CTank::Try_Fire()
 		//발사
 		if (FAILED(static_cast<CGun*>(m_Modules.at(ENUM_CLASS(MODULE::GUN)))->Fire()))
 			return E_FAIL;
+
+		static_cast<CGun*>(m_Modules[ENUM_CLASS(MODULE::GUN)])->Set_AngleDegree_Max();
 
 		//꿀렁임
 		m_fRecoilTime = m_fMaxRecoilTime;
@@ -294,11 +311,16 @@ HRESULT CTank::Take_Damage(_float fDamage)
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		//플레이어 탱크라면 체력바 찾아서 깎아라 && 맞는 소리 (꽝)
-		CDamageBar* pDamageBar = static_cast<CDamageBar*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamageBar")));
-		if (nullptr == pDamageBar)
-			return E_FAIL;
-	
-		pDamageBar->Fill(m_fHP / m_fMaxHP);
+		CGameObject* pDamagePanel = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"));
+
+		if (pDamagePanel)
+		{
+			CDamageBar* pDamageBar = static_cast<CDamageBar*>(pDamagePanel->Find_PartObject(TEXT("Part_DamageBar")));
+			if (pDamageBar)
+			{
+				pDamageBar->Fill(m_fHP / m_fMaxHP);
+			}
+		}
 	}
 
 	static_cast<CDamageBar_World*> (Find_PartObject(TEXT("Part_DamageBar")))->Fill(m_fHP / m_fMaxHP);
@@ -308,7 +330,7 @@ HRESULT CTank::Take_Damage(_float fDamage)
 
 void CTank::Repair_All()
 {
-	if (m_bisTankDestroyed == true)
+	if (m_bisDie == true)
 		return;
 
 	for(_uint i = 0; i < ENUM_CLASS(MODULE::END); ++i)
@@ -376,7 +398,6 @@ void CTank::Move(_float fTimeDelta)
 
 	pTrackLeft->Set_Speed(0.f);
 	pTrackRight->Set_Speed(0.f);
-	//m_fTurnDirection = 0.f;
 
 	_float fMovePower = { pEngin->Get_MovePower() };
 	_float fRPMPower = { pEngin->Get_RPM() };
@@ -437,18 +458,26 @@ void CTank::Move(_float fTimeDelta)
 	
 	_float fTurnSpeed = pEngin->Get_TurnPower();
 
-	//if (abs(fTurnSpeed) > 0.f)
-	//{
-
-	//}
+	//이동하기전 위치 저장
+	_vector BeforePos = m_pTransformCom->Get_State(STATE::POSITION);
 
 	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTurnSpeed * fTimeDelta, m_pColliderCom, 0.01f);
 
-	//if(pEngin->Get_Gear() != GEAR::LEFT && pEngin->Get_Gear() != GEAR::RIGHT)
 	if(fMovePower > 0.f)
 		m_pTransformCom->Go_Straight(fMovePower * fTimeDelta, m_pColliderCom, 0.5f);
 	else
 		m_pTransformCom->Go_Backward(-fMovePower * fTimeDelta, m_pColliderCom, 0.5f);
+
+	//바운더리 검사후 경계 안이면 이동 허용
+	//아니면 이전 위치로 돌리기
+	if (m_pBoundary)
+	{
+		_float3 vPos = {};
+		XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+		if (!m_pBoundary->IsPointInBoundary(vPos))
+			m_pTransformCom->Set_State(STATE::POSITION, BeforePos);
+	}
 
 	pTrackLeft->Set_Speed(SpeedTrackLeft);
 	pTrackRight->Set_Speed(SpeedTrackRight);
@@ -456,10 +485,10 @@ void CTank::Move(_float fTimeDelta)
 
 void CTank::Destroyed()
 {
-	if (m_bisTankDestroyed)
+	if (m_bisDie)
 		return;
 
-	m_bisTankDestroyed = true;
+	m_bisDie = true;
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -501,7 +530,7 @@ void CTank::ApplyRecoil(_float fTimeDelta)
 	_float fProgress = 1.f - (m_fRecoilTime / m_fMaxRecoilTime);
 	_float fOscillation = sinf(fProgress * XM_PI * 3.f); // 1.5회 진동
 	_float fDamping = (1.f - fProgress); // 감쇠
-	_float fRecoilStrength = XMConvertToRadians(1.5f); // 최대 회전 각도
+	_float fRecoilStrength = XMConvertToRadians(0.5f); // 최대 회전 각도
 
 	// 회전 각도 계산
 	_float fAngle = fOscillation * fDamping * fRecoilStrength;

@@ -35,7 +35,7 @@ private:
 	const float m_fMaxFov = XMConvertToRadians(60.0f);
 
 private:
-	_float				m_fSensor = { 0.1f };
+	_float				m_fSensor = { 1.0f };
 	CGameObject*		m_pTarget = { nullptr };
 	_float4				m_vLook = {};
 

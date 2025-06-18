@@ -54,10 +54,10 @@ HRESULT CCrosshair::Render()
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-#pragma message ("이놈은 알파 블렌드?? 그게 좋을듯 이미지 구겨짐")
-	_float fAlpha = { 0.1f };
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
-		return E_FAIL;
+//#pragma message ("이놈은 알파 블렌드?? 그게 좋을듯 이미지 구겨짐")
+//	_float fAlpha = { 0.1f };
+//	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
+//		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;

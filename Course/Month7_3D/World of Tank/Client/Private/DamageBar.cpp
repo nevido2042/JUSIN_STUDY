@@ -29,6 +29,7 @@ HRESULT CDamageBar::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->Scaling(0.95f, 0.2f, 0.2f);
 
 	return S_OK;
 }
@@ -41,6 +42,8 @@ void CDamageBar::Priority_Update(_float fTimeDelta)
 
 void CDamageBar::Update(_float fTimeDelta)
 {
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 }
 
@@ -51,7 +54,8 @@ void CDamageBar::Late_Update(_float fTimeDelta)
 
 HRESULT CDamageBar::Render()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFill", &m_fFillAmount, sizeof(_float))))

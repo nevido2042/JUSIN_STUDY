@@ -71,8 +71,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
 		return E_FAIL;
@@ -494,22 +494,22 @@ HRESULT CLevel_Practice::Ready_Layer_Crosshair(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Practice::Ready_Layer_DamageBar(const _wstring strLayerTag)
-{
-	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
-
-	UIObject_Desc.fSizeX = 215.0f * UI_RATIO;
-	UIObject_Desc.fSizeY = 10.0f * UI_RATIO;
-	UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.531f;
-	UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 19.98f;
-	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CLevel_Practice::Ready_Layer_DamageBar(const _wstring strLayerTag)
+//{
+//	//CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+//
+//	//UIObject_Desc.fSizeX = 215.0f * UI_RATIO;
+//	//UIObject_Desc.fSizeY = 10.0f * UI_RATIO;
+//	//UIObject_Desc.fX = UIObject_Desc.fSizeX * 0.531f;
+//	//UIObject_Desc.fY = g_iWinSizeY - UIObject_Desc.fSizeY * 19.98f;
+//	//UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+//
+//	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar"),
+//	//	ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &UIObject_Desc)))
+//	//	return E_FAIL;
+//
+//	return S_OK;
+//}
 
 HRESULT CLevel_Practice::Ready_Layer_DirectionBody(const _wstring strLayerTag)
 {

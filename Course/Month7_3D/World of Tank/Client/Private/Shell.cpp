@@ -55,18 +55,25 @@ void CShell::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
-	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::TURRET), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
-	//m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
+	//맵 밖을 나가면 없애라
+	_float3 vPos{};
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	if (vPos.y < 50.f ||
+		vPos.x < 1.f || vPos.x > TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH - 1.f ||
+		vPos.z < 1.f || vPos.z > TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH - 1.f)
+		Destroy();
+
+	if (m_bisDestroyed == true)
+		return;
 
 #pragma region HIT
-	if (m_pGameInstance->Get_ID() == m_iID)
+	if (m_pGameInstance->Get_ID() == m_iID || m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
 	{
 		Check_RaycastHit();
 	}
 
 #pragma endregion
-
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
@@ -90,15 +97,6 @@ void CShell::Update(_float fTimeDelta)
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DIG), &PosDesc);
 		}
 	}
-
-	_float3 vPos{};
-	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
-	
-	//맵 밖을 나가면 없애라
-	if (vPos.y < 50.f || 
-		vPos.x < 1.f || vPos.x > TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH - 1.f ||
-		vPos.z < 1.f || vPos.z > TERRAIN_SIZE* TERRAIN_OFFSET_WIDTH - 1.f)
-		Destroy();
 }
 
 void CShell::Late_Update(_float fTimeDelta)

@@ -44,7 +44,7 @@ private:
 	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
 	HRESULT Ready_Layer_PersonalArrowEntry(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Crosshair(const _wstring strLayerTag);
-	HRESULT Ready_Layer_DamageBar(const _wstring strLayerTag);
+	//HRESULT Ready_Layer_DamageBar(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DirectionBody(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Icon_Consumables(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Score(const _wstring strLayerTag);

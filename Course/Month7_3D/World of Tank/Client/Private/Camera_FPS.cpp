@@ -33,7 +33,7 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 	pDesc->fSpeedPerSec = 0.0f;
 	lstrcpy(pDesc->szName, TEXT("Camera"));
 
-	m_fSensor = pDesc->fSensor;
+	//m_fSensor = pDesc->fSensor;
 	m_pTarget = pDesc->pTarget;
 	Safe_AddRef(m_pTarget);
 
@@ -48,9 +48,9 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 	//if (GetForegroundWindow() == g_hWnd)
 	//{
 		// 좌우 공전 (Yaw)
-		m_fYaw += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor;
+	m_fYaw += XMConvertToRadians(2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::X) * m_fSensor * (m_fFov / BASE_FOV);
 		// 상하 공전 (Pitch)
-		m_fPitch += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor;
+		m_fPitch += XMConvertToRadians(-2.f) * m_pGameInstance->Get_DIMMoveState(DIMM::Y) * m_fSensor * (m_fFov / BASE_FOV);
 	//}
 
 		if (m_pGameInstance->Get_DIMMoveState(DIMM::WHEEL) < 0.f)
