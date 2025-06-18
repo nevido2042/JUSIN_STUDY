@@ -171,7 +171,7 @@ HRESULT CAmmoBay::Ready_Components()
 
 	/* For.Com_Collider */
 	CBounding_Sphere::SPHERE_DESC	SphereDesc{};
-	SphereDesc.fRadius = 0.5f;
+	SphereDesc.fRadius = 0.3f;
 	SphereDesc.vCenter = _float3(0.f, 0.f, 0.f);
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &SphereDesc)))

@@ -95,6 +95,7 @@ HRESULT CTigerTurret::Ready_PartObjects(TURRET_DESC* pDesc)
 	GunDesc.fRotationPerSec = 0.5f;
 	GunDesc.iID = m_iID;
 	GunDesc.pOwner = pDesc->pOwner;
+	GunDesc.eModuleType = MODULE::GUN;
 
 	lstrcpy(GunDesc.szName, TEXT("TigerGun"));
 

@@ -152,6 +152,24 @@ void CDamagePanel::Play_Voice_ModuleState(MODULE eModule, MODULE_STATE eState)
 			break;
 		}
 		break;
+
+	case MODULE::GUN:
+		switch (eState)
+		{
+		case MODULE_STATE::DESTROYED:
+			m_pSoundCom_Voice->Play("gun_destroyed_1");
+			break;
+		case MODULE_STATE::DAMAGED:
+			m_pSoundCom_Voice->Play("gun_damaged_4");
+			break;
+		case MODULE_STATE::FUNCTIONAL:
+			break;
+		case MODULE_STATE::END:
+			break;
+		default:
+			break;
+		}
+		break;
 	}
 
 

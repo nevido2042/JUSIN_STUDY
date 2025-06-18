@@ -36,6 +36,9 @@ HRESULT CDamageCollider::Initialize(void* pArg)
 	case MODULE::TURRET:
 		m_strText = L"Damage Turret";
 		break;
+	case MODULE::GUN:
+		m_strText = L"Damage Gun";
+		break;
 	}
 
 

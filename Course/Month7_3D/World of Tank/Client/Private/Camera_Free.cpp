@@ -75,10 +75,11 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
-	//POSITION_DESC Desc;
-	//XMStoreFloat3(&Desc.vPos, m_pTransformCom->Get_State(STATE::POSITION));
+	// 커서 다시 보이기
+	while (ShowCursor(TRUE) < 0);   // 카운트가 0 이상 될 때까지 반복
 
-	//m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_POSITION), &Desc);
+	// 커서 이동 제한 해제
+	ClipCursor(nullptr);
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)

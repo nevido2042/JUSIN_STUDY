@@ -57,6 +57,24 @@ HRESULT CCamera::Render()
 	return S_OK;
 }
 
+void CCamera::Clip_Cursor()
+{
+	// 마우스 중앙으로 위치
+	POINT ptCenter = { static_cast<LONG>(g_iWinSizeX / 2), static_cast<LONG>(g_iWinSizeY / 2) };
+	ClientToScreen(g_hWnd, &ptCenter);
+	SetCursorPos(ptCenter.x, ptCenter.y);
+
+	// 마우스 이동 제한
+	RECT rcClient;
+	GetClientRect(g_hWnd, &rcClient);
+	POINT ptLT = { rcClient.left, rcClient.top };
+	POINT ptRB = { rcClient.right, rcClient.bottom };
+	ClientToScreen(g_hWnd, &ptLT);
+	ClientToScreen(g_hWnd, &ptRB);
+	RECT rcClip = { ptLT.x, ptLT.y, ptRB.x, ptRB.y };
+	ClipCursor(&rcClip);
+}
+
 
 void CCamera::Bind_Matrices()
 {

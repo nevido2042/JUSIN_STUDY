@@ -6,6 +6,9 @@
 #include "PickedManager.h"
 #include "Shell.h"
 #include "AimCircle.h"
+#include "DamagePanel.h"
+#include "Icon_Module.h"
+#include "Tank.h"
 
 CGun::CGun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -30,6 +33,8 @@ HRESULT CGun::Initialize(void* pArg)
 
 void CGun::Priority_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
+
 	Input(fTimeDelta);
 
 	if (m_pGameInstance->Get_ID() != m_iID && m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
@@ -88,13 +93,20 @@ void CGun::Update(_float fTimeDelta)
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
 	m_fAngleDegree -= fTimeDelta * 2.f;
 
-	if (m_fAngleDegree < m_fAngleDegree_Min)
-		m_fAngleDegree = m_fAngleDegree_Min;
-
-
+	if (m_eModuleState == MODULE_STATE::FUNCTIONAL)
+	{
+		if (m_fAngleDegree < m_fAngleDegree_Min)
+			m_fAngleDegree = m_fAngleDegree_Min;
+	}
+	else
+	{
+		if (m_fAngleDegree < m_fAngleDegree_Min * 3.f)
+			m_fAngleDegree = m_fAngleDegree_Min * 3.f;
+	}
 }
 
 HRESULT CGun:: Render()
@@ -119,7 +131,40 @@ HRESULT CGun:: Render()
 		}
 	}
 
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
+
 	return S_OK;
+}
+
+void CGun::On_RaycastHit(CGameObject* pOther)
+{
+	CModule::On_RaycastHit(pOther);
+}
+
+void CGun::Set_ModuleState(MODULE_STATE eState)
+{
+	m_eModuleState = eState;
+
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
+		if (pDamagePanel == nullptr)
+			return;
+
+		if (m_pOwner)
+		{
+			if (!m_pOwner->Get_isTankDestroyed())
+				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
+		}
+
+		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_Gun")));
+		if (pIcon == nullptr)
+			return;
+
+		pIcon->Set_ModuleState(m_eModuleState);
+	}
 }
 
 // 랜덤 원뿔 퍼짐 함수
@@ -151,6 +196,8 @@ _vector CGun::GetRandomSpreadDirection(_fvector vLookDir, _float fMaxAngleDegree
 
 HRESULT CGun::Fire()
 {
+	if (m_eModuleState == MODULE_STATE::DESTROYED)
+		return E_FAIL;
 
 	CShell::SHELL_DESC Desc = {};
 	memcpy(&Desc.vInitPosition, m_CombinedWorldMatrix.m[3], sizeof(_float3));
@@ -444,5 +491,6 @@ void CGun::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pSoundCom);
 }

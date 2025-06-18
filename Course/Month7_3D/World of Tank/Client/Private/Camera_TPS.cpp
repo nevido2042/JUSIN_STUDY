@@ -58,6 +58,13 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 void CCamera_TPS::Update(_float fTimeDelta)
 {
 	Picking();
+
+	// 커서 숨기기
+	if (GetForegroundWindow() == g_hWnd)
+	{
+		while (ShowCursor(FALSE) >= 0); // 카운트가 0보다 작아질 때까지 반복
+		Clip_Cursor();
+	}
 }
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)

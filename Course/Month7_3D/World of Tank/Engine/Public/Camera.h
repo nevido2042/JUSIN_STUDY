@@ -34,6 +34,9 @@ public:
 	void	Set_Pitch(_float fPitch) { m_fPitch = fPitch; }
 
 protected:
+	void Clip_Cursor();
+
+protected:
 	_float				m_fFov = { };
 	_float				m_fNear = { };
 	_float				m_fFar = { };
