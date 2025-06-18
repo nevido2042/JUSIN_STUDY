@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Building.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -11,7 +11,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CChurchA final : public CGameObject
+class CChurchA final : public CBuilding
 {
 private:
 	CChurchA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -26,10 +26,10 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-private:
-	CCollider* m_pColliderCom = { nullptr };
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+//private:
+//	CCollider* m_pColliderCom = { nullptr };
+//	CShader* m_pShaderCom = { nullptr };
+//	CModel* m_pModelCom = { nullptr };
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();

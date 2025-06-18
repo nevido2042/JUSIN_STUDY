@@ -582,6 +582,9 @@
     <ClInclude Include="..\public\AimCircle.h">
       <Filter>02.GameObjects\06.UIObject\AimCircle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Building.h">
+      <Filter>02.GameObjects\05.Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -866,6 +869,9 @@
     </ClCompile>
     <ClCompile Include="..\private\AimCircle.cpp">
       <Filter>02.GameObjects\06.UIObject\AimCircle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Building.cpp">
+      <Filter>02.GameObjects\05.Buildings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

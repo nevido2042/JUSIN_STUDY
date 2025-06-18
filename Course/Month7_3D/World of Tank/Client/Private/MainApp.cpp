@@ -1058,7 +1058,7 @@ void CMainApp::Free()
 	Safe_Release(m_pDevice);
 	m_pGameInstance->Release_Engine();
 
-	//Safe_Release(m_pGameInstance);
+	Safe_Release(m_pGameInstance);
 
 #if defined(_DEBUG)
 	FreeConsole();

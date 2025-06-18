@@ -168,6 +168,7 @@
     <ClInclude Include="..\Public\BackGround_Loading.h" />
     <ClInclude Include="..\public\Background_UI.h" />
     <ClInclude Include="..\public\Boundary.h" />
+    <ClInclude Include="..\public\Building.h" />
     <ClInclude Include="..\public\BurntTree.h" />
     <ClInclude Include="..\public\Button_Color.h" />
     <ClInclude Include="..\public\Button_Customize.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
     <ClCompile Include="..\private\Background_UI.cpp" />
     <ClCompile Include="..\private\Boundary.cpp" />
+    <ClCompile Include="..\private\Building.cpp" />
     <ClCompile Include="..\private\BurntTree.cpp" />
     <ClCompile Include="..\private\Button_Color.cpp" />
     <ClCompile Include="..\private\Button_Customize.cpp" />

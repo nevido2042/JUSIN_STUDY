@@ -57,19 +57,6 @@ void CGun::Priority_Update(_float fTimeDelta)
 		else if (m_bDown && fDotY >= m_fMinPitch)
 			m_pTransformCom->Turn(vAxis, fTimeDelta/* * m_fRotateSpeed*/);
 	}
-
-
-	if (m_pGameInstance->Get_ID() == m_iID)
-	{
-		Picking();
-
-		CGameObject* pAimCircle = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_AimCircle"));
-		if (pAimCircle)
-		{
-			static_cast<CAimCircle*>(pAimCircle)->Set_AimRadius(m_fAngleDegree * 0.01f);
-			//cout << m_fAngleDegree << endl;
-		}
-	}
 	
 }
 
@@ -107,6 +94,22 @@ void CGun::Update(_float fTimeDelta)
 		if (m_fAngleDegree < m_fAngleDegree_Min * 3.f)
 			m_fAngleDegree = m_fAngleDegree_Min * 3.f;
 	}
+
+	if (m_pGameInstance->Get_ID() == m_iID)
+	{
+		Picking();
+
+		CGameObject* pAimCircle = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_AimCircle"));
+		if (pAimCircle)
+		{
+			static_cast<CAimCircle*>(pAimCircle)->Set_AimRadius(m_fAngleDegree * 0.01f);
+			//cout << m_fAngleDegree << endl;
+		}
+	}
+}
+
+void CGun::Late_Update(_float fTimeDelta)
+{
 }
 
 HRESULT CGun:: Render()
@@ -207,7 +210,7 @@ HRESULT CGun::Fire()
 
 	vVelocity = GetRandomSpreadDirection(vVelocity, m_fAngleDegree);
 
-	vVelocity = XMVectorScale(vVelocity, 500.f);
+	vVelocity = XMVectorScale(vVelocity, 300.f);
 
 	XMStoreFloat3(&Desc.vVelocity, vVelocity);
 	Desc.iID = m_iID;

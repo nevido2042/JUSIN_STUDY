@@ -26,9 +26,9 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype() { return S_OK; };
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta);
-	virtual void Update(_float fTimeDelta);
-	virtual void Late_Update(_float fTimeDelta) {}
+	virtual void Priority_Update(_float fTimeDelta) override;
+	virtual void Update(_float fTimeDelta) override;
+	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render();
 	virtual void On_RaycastHit(CGameObject* pOther) override;
 
