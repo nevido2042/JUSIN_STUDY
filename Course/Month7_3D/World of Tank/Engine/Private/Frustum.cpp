@@ -96,5 +96,7 @@ CFrustum* CFrustum::Create()
 
 void CFrustum::Free()
 {
+    __super::Free();
+
 	Safe_Release(m_pGameInstance);
 }

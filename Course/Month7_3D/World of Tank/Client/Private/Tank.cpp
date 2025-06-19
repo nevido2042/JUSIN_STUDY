@@ -117,7 +117,9 @@ void CTank::Update(_float fTimeDelta)
 
 	//m_pSoundCom_TankSound3D->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
 
-	CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
+
+	OnGround(fTimeDelta);
+	//CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
 	// 반동 적용
 #pragma message ("FPS 카메라 반동 주는 것이 방향에 따라 달라진다 해결 못함(원본 겜도 못해서 안넣은거일거야)")
@@ -357,6 +359,72 @@ void CTank::Repair_All()
 		pDamagePanel->Repair_All();
 
 	static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Start_Engine();
+}
+
+void CTank::OnGround(_float fTimeDelta)
+{
+#pragma region 노말 평균
+	_vector vLocalPoint[4] =
+	{
+		XMVectorSet(1.3f, 0.f, 2.9f, 1.f),
+		XMVectorSet(-1.3f, 0.f, 2.9f, 1.f),
+		XMVectorSet(1.3f, 0.f, -2.9f, 1.f),
+		XMVectorSet(-1.3f, 0.f, -2.9f, 1.f),
+	};
+
+	_vector vNormalSum = XMVectorZero();
+	for (_int i = 0; i < 4; ++i)
+	{
+		vLocalPoint[i] = XMVector3TransformCoord(vLocalPoint[i], m_pTransformCom->Get_WorldMatrix());
+		vNormalSum += m_pTargetBuffer->Compute_NormalPosition(vLocalPoint[i]);
+	}
+	_vector vTargetUp = XMVector3Normalize(vNormalSum / 4.f);
+
+	// 이전 Up 벡터 가져오기
+	_vector vCurrentUp = m_pTransformCom->Get_State(STATE::UP);
+
+	// 선형 보간으로 부드럽게 변화
+	const _float fLerpSpeed = 15.f; // 클수록 빠르게 보간됨
+	vTargetUp = XMVector3Normalize(XMVectorLerp(vCurrentUp, vTargetUp, fLerpSpeed * fTimeDelta));
+
+	// Look 벡터는 이전 유지
+	_vector vLook = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+
+	// Up과 Look으로부터 Right 재계산
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vTargetUp, vLook));
+
+	// Right와 Up으로 Look 재계산
+	vLook = XMVector3Normalize(XMVector3Cross(vRight, vTargetUp));
+
+	// 방향 벡터 적용
+	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
+	m_pTransformCom->Set_State(STATE::UP, vTargetUp);
+	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+
+#pragma endregion
+
+#pragma region 높이 평균
+	_vector vLocalHeightPoint[2] =
+	{
+		XMVectorSet(1.3f, 0.f, 0.f, 1.f),
+		XMVectorSet(-1.3f, 0.f, 0.f, 1.f),
+	};
+
+	_float fHeightSum = {};
+	for (_int i = 0; i < 2; ++i)
+	{
+		vLocalHeightPoint[i] = XMVector3TransformCoord(vLocalHeightPoint[i], m_pTransformCom->Get_WorldMatrix());
+		fHeightSum += XMVectorGetY(m_pTargetBuffer->Compute_HeightPosition(vLocalHeightPoint[i]));
+	}
+
+	_float fHeight = fHeightSum / 2.f;
+
+	// 최종 위치 설정
+	_vector vPosition = m_pTransformCom->Get_State(STATE::POSITION);
+	vPosition = XMVectorSetY(vPosition, fHeight);
+
+	m_pTransformCom->Set_State(STATE::POSITION, vPosition);
+#pragma endregion
 }
 
 HRESULT CTank::Store_Modules()

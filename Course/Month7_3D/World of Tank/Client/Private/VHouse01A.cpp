@@ -21,9 +21,11 @@ HRESULT CVHouse01A::Initialize_Prototype()
 
 HRESULT CVHouse01A::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC			Desc{};
-	Desc.fRotationPerSec = 0.f;
-	Desc.fSpeedPerSec = 0.f;
+	LANDOBJECT_DESC			Desc{};
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
+	Desc.strLayerTag = TEXT("Layer_Terrain");
+	Desc.strComponentTag = TEXT("Com_VIBuffer");
+	Desc.iIndex = 0;
 	lstrcpy(Desc.szName, TEXT("VHouse01A"));
 
 	if (FAILED(__super::Initialize(&Desc)))
@@ -87,6 +89,66 @@ HRESULT CVHouse01A::Render()
 //#endif
 
 	return S_OK;
+}
+
+void CVHouse01A::OnGround(_float fTimeDelta)
+{// 현재 위치에서 지형 높이 계산
+	_vector vPosition = m_pTransformCom->Get_State(STATE::POSITION);
+	vPosition = m_pTargetBuffer->Compute_HeightPosition(vPosition);
+
+	//x,z임
+	_float2 vCenter = { 1.5f, 0.f };
+
+	_float2 Pos[4] =
+	{
+		{vCenter.x + 8.f, vCenter.y + 4.5f },
+		{vCenter.x + 8.f, vCenter.y - 4.5f },
+		{vCenter.x - 8.f, vCenter.y - 4.5f },
+		{vCenter.x - 8.f, vCenter.y + 4.5f },
+	};
+
+	_vector vOffsets[4] =
+	{
+	XMVectorSet(Pos[0].x, 0.f, Pos[0].y, 0.f),
+	XMVectorSet(Pos[1].x, 0.f, Pos[1].y, 0.f),
+	XMVectorSet(Pos[2].x, 0.f, Pos[2].y, 0.f),
+	XMVectorSet(Pos[3].x, 0.f, Pos[3].y, 0.f)
+	};
+
+	// 4개 위치 노말 평균
+	_vector vNormalSum = XMVectorZero();
+	for (_int i = 0; i < 4; ++i)
+	{
+		_vector vSamplePos = vPosition + vOffsets[i];
+		vSamplePos = m_pTargetBuffer->Compute_HeightPosition(vSamplePos);
+		vNormalSum += m_pTargetBuffer->Compute_NormalPosition(vSamplePos);
+	}
+	_vector vTargetUp = XMVector3Normalize(vNormalSum / 4.f);
+
+	// 이전 Up 벡터 가져오기
+	_vector vCurrentUp = m_pTransformCom->Get_State(STATE::UP);
+
+	// 선형 보간으로 부드럽게 변화
+	const _float fLerpSpeed = 5.f; // 클수록 빠르게 보간됨
+	vTargetUp = XMVector3Normalize(XMVectorLerp(vCurrentUp, vTargetUp, fLerpSpeed * fTimeDelta));
+
+	// Look 벡터는 이전 유지
+	_vector vLook = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+
+	// Up과 Look으로부터 Right 재계산
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vTargetUp, vLook));
+
+	// Right와 Up으로 Look 재계산
+	vLook = XMVector3Normalize(XMVector3Cross(vRight, vTargetUp));
+
+	// 최종 위치 설정
+	vPosition = XMVectorSetY(vPosition, XMVectorGetY(vPosition) + 0.5f);
+	m_pTransformCom->Set_State(STATE::POSITION, vPosition);
+
+	// 방향 벡터 적용
+	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
+	m_pTransformCom->Set_State(STATE::UP, vTargetUp);
+	m_pTransformCom->Set_State(STATE::LOOK, vLook);
 }
 
 HRESULT CVHouse01A::Ready_Components()

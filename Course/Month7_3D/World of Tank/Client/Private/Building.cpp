@@ -4,13 +4,13 @@
 #include "PickedManager.h"
 
 CBuilding::CBuilding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CLandObject{ pDevice, pContext }
 {
 
 }
 
 CBuilding::CBuilding(const CBuilding& Prototype)
-	: CGameObject(Prototype)
+	: CLandObject(Prototype)
 {
 
 }
@@ -38,6 +38,8 @@ void CBuilding::Update(_float fTimeDelta)
 {
 	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
 
+	//CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
+	OnGround(fTimeDelta);
 }
 
 void CBuilding::Late_Update(_float fTimeDelta)
@@ -71,6 +73,11 @@ HRESULT CBuilding::Render()
 	m_pColliderCom->Render();
 #endif
 	return S_OK;
+}
+
+void CBuilding::OnGround(_float fTimeDelta)
+{
+	
 }
 
 HRESULT CBuilding::Bind_ShaderResources()

@@ -22,9 +22,11 @@ HRESULT CChurchA::Initialize_Prototype()
 
 HRESULT CChurchA::Initialize(void* pArg)
 {
-	GAMEOBJECT_DESC			Desc{};
-	Desc.fRotationPerSec = 0.f;
-	Desc.fSpeedPerSec = 0.f;
+	LANDOBJECT_DESC			Desc{};
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
+	Desc.strLayerTag = TEXT("Layer_Terrain");
+	Desc.strComponentTag = TEXT("Com_VIBuffer");
+	Desc.iIndex = 0;
 	lstrcpy(Desc.szName, TEXT("ChurchA"));
 
 	if (FAILED(__super::Initialize(&Desc)))
@@ -39,20 +41,16 @@ HRESULT CChurchA::Initialize(void* pArg)
 void CChurchA::Priority_Update(_float fTimeDelta)
 {
 	CBuilding::Priority_Update(fTimeDelta);
-	//m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"));
 }
 
 void CChurchA::Update(_float fTimeDelta)
 {
 	CBuilding::Update(fTimeDelta);
 
-	//m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
-
 }
 
 void CChurchA::Late_Update(_float fTimeDelta)
 {
-	//CBuilding::Late_Update(fTimeDelta);
 
 	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
@@ -62,29 +60,83 @@ HRESULT CChurchA::Render()
 {
 	CBuilding::Render();
 
-//	if (FAILED(Bind_ShaderResources()))
-//		return E_FAIL;
-//
-//	if (m_pModelCom)
-//	{
-//		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
-//
-//		for (_uint i = 0; i < iNumMesh; i++)
-//		{
-//			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-//				return E_FAIL;
-//
-//			if (FAILED(m_pShaderCom->Begin(0)))
-//				return E_FAIL;
-//
-//			if (FAILED(m_pModelCom->Render(i)))
-//				return E_FAIL;
-//		}
-//	}
-//#ifdef _DEBUG
-//	m_pColliderCom->Render();
-//#endif
 	return S_OK;
+}
+
+void CChurchA::OnGround(_float fTimeDelta)
+{
+	// 현재 위치에서 지형 높이 계산
+	_vector vPosition = m_pTransformCom->Get_State(STATE::POSITION);
+	_vector vLook = m_pTransformCom->Get_State(STATE::LOOK);
+	vLook = XMVector3Normalize(vLook);
+	vPosition = m_pTargetBuffer->Compute_HeightPosition(vPosition - vLook * 11.f);
+	_float fHeight = XMVectorGetY(vPosition);
+
+	// 최종 위치 설정
+	vPosition = m_pTransformCom->Get_State(STATE::POSITION);
+	vPosition = XMVectorSetY(vPosition, fHeight);
+
+	m_pTransformCom->Set_State(STATE::POSITION, vPosition);
+
+	_vector vLocalPoint[4] =
+	{
+		XMVectorSet(8.f, 0.f, 0.f, 1.f),
+		XMVectorSet(-8.f, 0.f, 0.f, 1.f),
+		XMVectorSet(8.f, 0.f, -28.f, 1.f),
+		XMVectorSet(-8.f, 0.f, -28.f, 1.f),
+	};
+
+	_vector vNormalSum = XMVectorZero();
+	for (_int i = 0; i < 4; ++i)
+	{
+		vLocalPoint[i] = XMVector3TransformCoord(vLocalPoint[i], m_pTransformCom->Get_WorldMatrix());
+		vNormalSum += m_pTargetBuffer->Compute_NormalPosition(vLocalPoint[i]);
+	}
+	_vector vTargetUp = XMVector3Normalize(vNormalSum / 4.f);
+
+	// 이전 Up 벡터 가져오기
+	_vector vCurrentUp = m_pTransformCom->Get_State(STATE::UP);
+
+	// 선형 보간으로 부드럽게 변화
+	const _float fLerpSpeed = 5.f; // 클수록 빠르게 보간됨
+	vTargetUp = XMVector3Normalize(XMVectorLerp(vCurrentUp, vTargetUp, fLerpSpeed * fTimeDelta));
+
+	// Look 벡터는 이전 유지
+	vLook = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+
+	// Up과 Look으로부터 Right 재계산
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vTargetUp, vLook));
+
+	// Right와 Up으로 Look 재계산
+	vLook = XMVector3Normalize(XMVector3Cross(vRight, vTargetUp));
+
+	// 방향 벡터 적용
+	m_pTransformCom->Set_State(STATE::RIGHT, vRight);
+	m_pTransformCom->Set_State(STATE::UP, vTargetUp);
+	m_pTransformCom->Set_State(STATE::LOOK, vLook);
+		
+
+
+	//_vector vOffsets[4] = {
+	//XMVectorSet(8.f, 0.f, 0.f, 0.f),
+	//XMVectorSet(-8.f, 0.f, 0.f, 0.f),
+	//XMVectorSet(8.f, 0.f, -28.f, 0.f),
+	//XMVectorSet(-8.f, 0.f, -28.f, 0.f),
+	//};
+
+	//////x,z임
+	//_float2 vCenter = { 0.f, -11.f };
+
+
+	//// 4개 위치 노말 평균
+	//_vector vNormalSum = XMVectorZero();
+	//for (_int i = 0; i < 4; ++i)
+	//{
+	//	_vector vSamplePos = vPosition + vOffsets[i];
+	//	//vSamplePos = m_pTargetBuffer->Compute_HeightPosition(vSamplePos);
+	//	vNormalSum += m_pTargetBuffer->Compute_NormalPosition(vSamplePos);
+	//}
+	
 }
 
 HRESULT CChurchA::Ready_Components()

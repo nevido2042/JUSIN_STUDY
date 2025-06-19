@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "LandObject.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -11,7 +11,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CBuilding abstract : public CGameObject
+class CBuilding abstract : public CLandObject
 {
 protected:
 	CBuilding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -25,6 +25,9 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+
+private:
+	virtual void OnGround(_float fTimeDelta);
 
 protected:
 	CCollider* m_pColliderCom = { nullptr };

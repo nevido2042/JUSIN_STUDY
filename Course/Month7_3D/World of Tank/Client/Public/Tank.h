@@ -54,6 +54,9 @@ public:
 public:
 	void Repair_All();
 
+private:
+	void OnGround(_float fTimeDelta);
+
 protected:
 	HRESULT Store_Modules();
 private:

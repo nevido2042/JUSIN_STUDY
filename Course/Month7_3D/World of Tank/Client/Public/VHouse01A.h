@@ -25,10 +25,8 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-//private:
-//	CCollider* m_pColliderCom = { nullptr };
-//	CShader* m_pShaderCom = { nullptr };
-//	CModel* m_pModelCom = { nullptr };
+	virtual void OnGround(_float fTimeDelta) override;
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
