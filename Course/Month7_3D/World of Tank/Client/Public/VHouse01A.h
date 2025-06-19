@@ -25,7 +25,7 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-	virtual void OnGround(_float fTimeDelta) override;
+	//virtual void OnGround(_float fTimeDelta) override;
 
 private:
 	HRESULT Ready_Components();

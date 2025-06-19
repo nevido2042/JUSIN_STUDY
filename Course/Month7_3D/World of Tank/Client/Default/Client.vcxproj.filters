@@ -402,9 +402,6 @@
     <ClInclude Include="..\public\Skydome.h">
       <Filter>02.GameObjects\Skydome</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Fury.h">
-      <Filter>02.GameObjects\02.LandObject\00.Tank\01.Fury</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\BurntTree.h">
       <Filter>02.GameObjects\04.Enviroments\06.BurntTree</Filter>
     </ClInclude>
@@ -584,6 +581,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Building.h">
       <Filter>02.GameObjects\05.Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Fury.h">
+      <Filter>02.GameObjects\02.LandObject\00.Tank\02.Tiger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

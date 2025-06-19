@@ -366,10 +366,10 @@ void CTank::OnGround(_float fTimeDelta)
 #pragma region 노말 평균
 	_vector vLocalPoint[4] =
 	{
-		XMVectorSet(1.3f, 0.f, 2.9f, 1.f),
-		XMVectorSet(-1.3f, 0.f, 2.9f, 1.f),
-		XMVectorSet(1.3f, 0.f, -2.9f, 1.f),
-		XMVectorSet(-1.3f, 0.f, -2.9f, 1.f),
+		XMVectorSet(1.3f, 0.f, 2.f, 1.f),
+		XMVectorSet(-1.3f, 0.f, 2.f, 1.f),
+		XMVectorSet(1.3f, 0.f, -2.f, 1.f),
+		XMVectorSet(-1.3f, 0.f, -2.f, 1.f),
 	};
 
 	_vector vNormalSum = XMVectorZero();
@@ -384,7 +384,7 @@ void CTank::OnGround(_float fTimeDelta)
 	_vector vCurrentUp = m_pTransformCom->Get_State(STATE::UP);
 
 	// 선형 보간으로 부드럽게 변화
-	const _float fLerpSpeed = 15.f; // 클수록 빠르게 보간됨
+	const _float fLerpSpeed = 5.f; // 클수록 빠르게 보간됨
 	vTargetUp = XMVector3Normalize(XMVectorLerp(vCurrentUp, vTargetUp, fLerpSpeed * fTimeDelta));
 
 	// Look 벡터는 이전 유지
@@ -421,7 +421,7 @@ void CTank::OnGround(_float fTimeDelta)
 
 	// 최종 위치 설정
 	_vector vPosition = m_pTransformCom->Get_State(STATE::POSITION);
-	vPosition = XMVectorSetY(vPosition, fHeight);
+	vPosition = XMVectorSetY(vPosition, fHeight + 0.5f);
 
 	m_pTransformCom->Set_State(STATE::POSITION, vPosition);
 #pragma endregion
