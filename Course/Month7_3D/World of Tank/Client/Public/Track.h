@@ -6,6 +6,7 @@
 NS_BEGIN(Engine)
 class CShader;
 class CModel;
+class CCollider;
 NS_END
 
 NS_BEGIN(Client)
@@ -24,6 +25,7 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual void On_RaycastHit(CGameObject* pOther) override;
 
 public:
 	void Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; }
@@ -35,6 +37,7 @@ protected:
 protected:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
 
 protected:
 	HRESULT Bind_ShaderResources();

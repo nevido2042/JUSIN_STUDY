@@ -31,8 +31,6 @@ CTank::CTank(const CTank& Prototype)
 HRESULT CTank::Initialize(void* pArg)
 {
 	TANK_DESC* pDesc = static_cast<TANK_DESC*>(pArg);
-	//(*pDesc).fRotationPerSec = 0.1f;
-	//(*pDesc).fSpeedPerSec = 0.5f;
 	(*pDesc).iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
 	(*pDesc).strLayerTag = TEXT("Layer_Terrain");
 	(*pDesc).strComponentTag = TEXT("Com_VIBuffer");
@@ -48,9 +46,6 @@ HRESULT CTank::Initialize(void* pArg)
 	m_pBoundary = static_cast<CBoundary*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Boundary")));
 	if(m_pBoundary)
 		Safe_AddRef(m_pBoundary);
-
-	//m_pSoundCom_TankSound3D->Set3DState(0.f, 30.f);
-
 
 	return S_OK;
 }
@@ -115,24 +110,13 @@ void CTank::Update(_float fTimeDelta)
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
-	//m_pSoundCom_TankSound3D->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
-
-
 	OnGround(fTimeDelta);
-	//CLandObject::SetUp_Height_Normal(m_pTransformCom, fTimeDelta, 0.5f);
 
 	// 반동 적용
 #pragma message ("FPS 카메라 반동 주는 것이 방향에 따라 달라진다 해결 못함(원본 겜도 못해서 안넣은거일거야)")
 	ApplyRecoil(fTimeDelta);
 
 	SendMatrixSync(fTimeDelta);
-
-	//if (m_pGameInstance->Get_ID() != m_iID)
-	//{
-	//	Picked_Ray_ScreenCenter();
-	//	Picked_Ray_Gun();
-	//}
-
 
 	CGameObject::Update(fTimeDelta);
 }
@@ -157,7 +141,6 @@ void CTank::Late_Update(_float fTimeDelta)
 
 HRESULT CTank::Render()
 {
-
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -203,8 +186,7 @@ HRESULT CTank::Render()
 
 void CTank::On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal)
 {
-	//if(!m_pSoundCom_TankSound3D->IsPlaying("phys_coll_83"))
-	//	m_pSoundCom_TankSound3D->Play("phys_coll_83");
+	//_int i = 0;
 }
 
 void CTank::Damage_Module(MODULE eModule, _float fDamage)
@@ -214,32 +196,12 @@ void CTank::Damage_Module(MODULE eModule, _float fDamage)
 
 	m_Modules[ENUM_CLASS(eModule)]->TakeDamage(fDamage);
 
-	//switch (eModule)
-	//{
-	//	case MODULE::ENGINE:
-	//	static_cast<CEngine*>(m_Modules[ENUM_CLASS(MODULE::ENGINE)])->Damage_Engine();
-	//		break;
-	//	case MODULE::AMMO_BAY:
-	//		m_Modules[ENUM_CLASS(eModule)]->TakeDamage();
-	//		break;
-	//}
-
 }
 
 
 HRESULT CTank::Set_State_Module(MODULE eModule, MODULE_STATE eState)
 {
 	m_Modules[ENUM_CLASS(eModule)]->Set_ModuleState(eState);
-
-	//switch (eModule)
-	//{
-	//case MODULE::ENGINE:
-	//	m_Modules[ENUM_CLASS(MODULE::ENGINE)]->Set_ModuleState(eState);
-	//	break;
-	//case MODULE::AMMO_BAY:
-	//	m_Modules[ENUM_CLASS(MODULE::AMMO_BAY)]->Set_ModuleState(eState);
-	//		break;
-	//}
 
 	return S_OK;
 }

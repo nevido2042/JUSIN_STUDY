@@ -44,13 +44,6 @@ public:
 private:
 	void Input(_float fTimeDelta);
 
-//private:
-//	void Picked_Ray_ScreenCenter();
-//	void Picked_Ray_Gun();
-
-//private:
-//	_float m_fRotateSpeed = 1.f;
-
 private:
 	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 

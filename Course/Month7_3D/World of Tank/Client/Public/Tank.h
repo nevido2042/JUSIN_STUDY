@@ -69,9 +69,6 @@ private:
 	void ApplyRecoil(_float fTimeDelta);
 private:
 	void SendMatrixSync(_float fTimeDelta);
-//private:
-//	void Picked_Ray_ScreenCenter();
-//	void Picked_Ray_Gun();
 
 private:
 	class CBoundary* m_pBoundary = { nullptr };

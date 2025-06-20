@@ -380,6 +380,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Fury_Hanger(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Fury_Hanger"));
 	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
+	Desc.iID = -100;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
@@ -413,6 +414,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
 	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
 	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
 	Desc.bActive = false;
+	Desc.iID = -100;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))

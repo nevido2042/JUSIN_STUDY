@@ -31,10 +31,11 @@ private:
 	HRESULT Ready_Layer_Button_Colors(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Parts(const _wstring strLayerTag);
 
-	HRESULT Ready_Layer_Button_Fury(const _wstring strLayerTag);
-	HRESULT Ready_Layer_Fury_Hanger(const _wstring strLayerTag);
 
+	HRESULT Ready_Layer_Button_Fury(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Tiger(const _wstring strLayerTag);
+
+	HRESULT Ready_Layer_Fury_Hanger(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Tiger_Hanger(const _wstring strLayerTag);
 
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);

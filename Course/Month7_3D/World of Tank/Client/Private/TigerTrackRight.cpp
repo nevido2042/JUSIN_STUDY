@@ -66,6 +66,16 @@ HRESULT CTigerTrackRight::Ready_Components()
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
+	/* For.Com_Collider */
+	CBounding_OBB::OBB_DESC	OBBDesc{};
+	OBBDesc.vExtents = _float3(0.4f, 0.6f, 2.9f);
+	OBBDesc.vCenter = _float3(1.4f, OBBDesc.vExtents.y, 0.f);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

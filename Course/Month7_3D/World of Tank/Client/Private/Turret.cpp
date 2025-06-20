@@ -179,13 +179,6 @@ void CTurret::Input(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
-		//CGameObject* pGun = Find_PartObject(TEXT("Part_Gun"));
-		//if (nullptr == pGun)
-		//	return;
-
-		//_float4x4 GunMatrix = {};
-		//XMStoreFloat4x4(&GunMatrix, pGun->Get_CombinedWorldMatrix());
-
 		// ³» À§Ä¡
 		_float3 vMyPos = {
 			m_CombinedWorldMatrix.m[3][0],

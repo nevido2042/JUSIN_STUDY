@@ -30,6 +30,7 @@ HRESULT CTrack::Initialize(void* pArg)
 
 void CTrack::Priority_Update(_float fTimeDelta)
 {
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::MODULE), this, TEXT("Com_Collider"));
 
 }
 
@@ -37,6 +38,8 @@ void CTrack::Update(_float fTimeDelta)
 {
 	m_fUVScrollY += m_fSpeed * 0.05f;
 	m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
+
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 }
 
 void CTrack::Late_Update(_float fTimeDelta)
@@ -82,7 +85,15 @@ HRESULT CTrack::Render()
 		}
 	}
 
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
 	return S_OK;
+}
+
+void CTrack::On_RaycastHit(CGameObject* pOther)
+{
+	CModule::On_RaycastHit(pOther);
 }
 
 HRESULT CTrack::Bind_ShaderResources()
@@ -120,6 +131,7 @@ void CTrack::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 }

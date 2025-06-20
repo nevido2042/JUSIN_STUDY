@@ -583,7 +583,7 @@
       <Filter>02.GameObjects\05.Buildings</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Fury.h">
-      <Filter>02.GameObjects\02.LandObject\00.Tank\02.Tiger</Filter>
+      <Filter>02.GameObjects\02.LandObject\00.Tank\01.Fury</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
