@@ -5,13 +5,13 @@
 #include "PickedManager.h"
 
 CGunMarker::CGunMarker(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CUIObject{ pDevice, pContext }
 {
 
 }
 
 CGunMarker::CGunMarker(const CGunMarker& Prototype)
-	: CGameObject(Prototype)
+	: CUIObject(Prototype)
 {
 
 }
@@ -41,45 +41,30 @@ void CGunMarker::Priority_Update(_float fTimeDelta)
 
 void CGunMarker::Update(_float fTimeDelta)
 {
-	//터레인한테 포구 피킹 위치 가져와서 위치시키자
-	//CTerrain* pTerrain = static_cast<CTerrain*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Terrain")));
-	//if (nullptr == pTerrain)
-	//	return;
-
 	_float3 vGunPickedPos = {};
 	CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
 	if (pPickedManager)
 		vGunPickedPos = pPickedManager->Get_GunPickedPos();
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vGunPickedPos), 1.f));
+	_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+	_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
 
-	m_pTransformCom->LookAt_Reverse(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
+	_vector vClipPos = XMVector3TransformCoord(XMVectorSetW(XMLoadFloat3(&vGunPickedPos), 1.f), matView * matProj);
+
+	_float3 vClip;
+	XMStoreFloat3(&vClip, vClipPos);
+
+	_float2 vScreenPos;
+	vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
+	vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
+
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
 
 }
 
 void CGunMarker::Late_Update(_float fTimeDelta)
 {
-	// 1. 카메라 거리 계산
-	_vector vToCamera = XMLoadFloat4(m_pGameInstance->Get_CamPosition()) - m_pTransformCom->Get_State(STATE::POSITION);
-	_float fDistance = XMVectorGetX(XMVector3Length(vToCamera));
-
-	// 2. 현재 FOV와 기준 FOV (라디안)
-	_float fCurrentFov = m_pGameInstance->Get_Fov();
-	_float fBaseFov = XMConvertToRadians(BASE_FOV);
-
-	// 3. FOV 보정 계수
-	_float fFovScale = tanf(fCurrentFov * 0.5f) / tanf(fBaseFov * 0.5f);
-
-	// 4. 최종 스케일 = 거리 * FOV 보정 * 베이스 스케일
-	_float fFinalScale = m_fBaseScale * fDistance * fFovScale;
-
-	_float3 vFinalScale = { fFinalScale, fFinalScale, fFinalScale };
-	m_pTransformCom->Scaling(vFinalScale.x, vFinalScale.y, vFinalScale.z);
-
-
-	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 10.f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
-
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
 HRESULT CGunMarker::Render()
@@ -96,45 +81,6 @@ HRESULT CGunMarker::Render()
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
-
-#pragma region AimCircle
-
-	//// 1. 조준점 월드 위치
-	//_vector vWorldPos = m_pTransformCom->Get_State(STATE::POSITION);
-	//_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
-	//_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
-
-	//// 2. 월드 → 클립 좌표 → 스크린 좌표
-	//_vector vClipPos = XMVector3TransformCoord(vWorldPos, matView * matProj);
-
-	//_float3 vClip;
-	//XMStoreFloat3(&vClip, vClipPos);
-
-	//_float2 vScreenPos;
-	//vScreenPos.x = (vClip.x * 0.5f + 0.5f); // NDC to UV (0~1)
-	//vScreenPos.y = (-vClip.y * 0.5f + 0.5f);
-
-	//// 3. 줌 비율 계산
-	//_float fZoomScale = XMConvertToRadians(BASE_FOV) / m_pGameInstance->Get_Fov();
-
-	//// 4. 셰이더 바인딩
-	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vAimCenter", &vScreenPos, sizeof(_float2))))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pShaderCom->Bind_RawValue("g_fZoomScale", &fZoomScale, sizeof(_float))))
-	//	return E_FAIL;
-
-	//// 5. 조준원 렌더링
-	//if (FAILED(m_pShaderCom->Begin(5)))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
-
-#pragma endregion
 
 	return S_OK;
 }
@@ -164,9 +110,9 @@ HRESULT CGunMarker::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))

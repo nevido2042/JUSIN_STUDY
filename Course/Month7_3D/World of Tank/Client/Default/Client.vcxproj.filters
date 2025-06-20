@@ -139,9 +139,6 @@
     <Filter Include="02.GameObjects\06.UIObject">
       <UniqueIdentifier>{0b062109-8ea6-489d-b955-2a856ff8098a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.3DUI">
-      <UniqueIdentifier>{798b5e6a-f3c6-4dd5-a528-96b1f78aa327}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\BackGround">
       <UniqueIdentifier>{2a95d670-b78b-4365-888f-45a6815fed54}</UniqueIdentifier>
     </Filter>
@@ -265,9 +262,6 @@
     <Filter Include="02.GameObjects\02.LandObject\DamageCollider">
       <UniqueIdentifier>{426337a1-ceb5-4c28-b0ed-ff520707ad79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.3DUI\GunMarker">
-      <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\AimCircle">
       <UniqueIdentifier>{6275eb25-2b5f-40a3-9b7c-56d795fe00b0}</UniqueIdentifier>
     </Filter>
@@ -300,6 +294,9 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\DamageBar_World">
       <UniqueIdentifier>{4e45e9f9-6719-4755-a6e9-a72aed94e952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\GunMarker">
+      <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -508,7 +505,7 @@
       <Filter>02.GameObjects\06.UIObject\DamagePannel\DamageBar</Filter>
     </ClInclude>
     <ClInclude Include="..\public\GunMarker.h">
-      <Filter>02.GameObjects\01.3DUI\GunMarker</Filter>
+      <Filter>02.GameObjects\06.UIObject\GunMarker</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DirectionBody.h">
       <Filter>02.GameObjects\06.UIObject\DamagePannel\DirectionBody</Filter>
@@ -808,7 +805,7 @@
       <Filter>02.GameObjects\06.UIObject\DamagePannel\DamageBar</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GunMarker.cpp">
-      <Filter>02.GameObjects\01.3DUI\GunMarker</Filter>
+      <Filter>02.GameObjects\06.UIObject\GunMarker</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DirectionBody.cpp">
       <Filter>02.GameObjects\06.UIObject\DamagePannel\DirectionBody</Filter>

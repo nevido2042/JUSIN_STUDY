@@ -395,8 +395,11 @@ HRESULT CLevel_Practice::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
 {
-	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.vInitPosition = _float3(320.f, 110.f, 320.f);
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	Desc.fSizeX = 50.f * UI_RATIO;
+	Desc.fSizeY = 50.f * UI_RATIO;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;

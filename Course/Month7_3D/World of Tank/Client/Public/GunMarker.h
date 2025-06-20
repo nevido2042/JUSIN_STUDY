@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "UIObject.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -11,7 +11,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CGunMarker final : public CGameObject
+class CGunMarker final : public CUIObject
 {
 private:
 	CGunMarker(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
