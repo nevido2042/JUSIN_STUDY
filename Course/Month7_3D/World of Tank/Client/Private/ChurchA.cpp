@@ -17,6 +17,11 @@ CChurchA::CChurchA(const CChurchA& Prototype)
 
 HRESULT CChurchA::Initialize_Prototype()
 {
+	m_vLocalPoint[0] = _float3{ 8.f, 0.f, 0.f };
+	m_vLocalPoint[1] = _float3{ -8.f, 0.f, 0.f };
+	m_vLocalPoint[2] = _float3{ 8.f, 0.f, -28.f };
+	m_vLocalPoint[3] = _float3{ -8.f, 0.f, -28.f };
+
 	return S_OK;
 }
 
@@ -34,6 +39,7 @@ HRESULT CChurchA::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
 	return S_OK;
 }
 

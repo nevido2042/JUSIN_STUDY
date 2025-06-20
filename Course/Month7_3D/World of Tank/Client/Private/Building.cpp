@@ -12,7 +12,10 @@ CBuilding::CBuilding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 CBuilding::CBuilding(const CBuilding& Prototype)
 	: CLandObject(Prototype)
 {
-
+	for (_uint i = 0; i < 4; ++i)
+	{
+		m_vLocalPoint[i] = Prototype.m_vLocalPoint[i];
+	}
 }
 
 HRESULT CBuilding::Initialize_Prototype()
@@ -78,19 +81,14 @@ HRESULT CBuilding::Render()
 void CBuilding::OnGround(_float fTimeDelta)
 {
 #pragma region 노말 평균
-	_vector vLocalPoint[4] =
-	{
-		XMVectorSet(8.f, 0.f, 0.f, 1.f),
-		XMVectorSet(-8.f, 0.f, 0.f, 1.f),
-		XMVectorSet(8.f, 0.f, -28.f, 1.f),
-		XMVectorSet(-8.f, 0.f, -28.f, 1.f),
-	};
+
+	_vector vWorldPoint[4] = {};
 
 	_vector vNormalSum = XMVectorZero();
 	for (_int i = 0; i < 4; ++i)
 	{
-		vLocalPoint[i] = XMVector3TransformCoord(vLocalPoint[i], m_pTransformCom->Get_WorldMatrix());
-		vNormalSum += m_pTargetBuffer->Compute_NormalPosition(vLocalPoint[i]);
+		vWorldPoint[i] = XMVector3TransformCoord(XMVectorSetW(XMLoadFloat3(&m_vLocalPoint[i]), 1.f), m_pTransformCom->Get_WorldMatrix());
+		vNormalSum += m_pTargetBuffer->Compute_NormalPosition(vWorldPoint[i]);
 	}
 	_vector vTargetUp = XMVector3Normalize(vNormalSum / 4.f);
 
@@ -98,7 +96,7 @@ void CBuilding::OnGround(_float fTimeDelta)
 	_vector vCurrentUp = m_pTransformCom->Get_State(STATE::UP);
 
 	// 선형 보간으로 부드럽게 변화
-	const _float fLerpSpeed = 5.f; // 클수록 빠르게 보간됨
+	const _float fLerpSpeed = 20.f; // 클수록 빠르게 보간됨
 	vTargetUp = XMVector3Normalize(XMVectorLerp(vCurrentUp, vTargetUp, fLerpSpeed * fTimeDelta));
 
 	// Look 벡터는 이전 유지
@@ -121,7 +119,7 @@ void CBuilding::OnGround(_float fTimeDelta)
 	_float  fHeightSum = {};
 	for (_int i = 0; i < 4; ++i)
 	{
-		fHeightSum += XMVectorGetY(m_pTargetBuffer->Compute_HeightPosition(vLocalPoint[i]));
+		fHeightSum += XMVectorGetY(m_pTargetBuffer->Compute_HeightPosition(vWorldPoint[i]));
 	}
 	_float fHeight = fHeightSum / 4.f;
 

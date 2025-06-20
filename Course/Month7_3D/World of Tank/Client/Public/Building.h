@@ -30,6 +30,9 @@ private:
 	virtual void OnGround(_float fTimeDelta);
 
 protected:
+	_float3 m_vLocalPoint[4] = {};
+
+protected:
 	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };

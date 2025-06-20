@@ -16,6 +16,11 @@ CVHouse01A::CVHouse01A(const CVHouse01A& Prototype)
 
 HRESULT CVHouse01A::Initialize_Prototype()
 {
+	m_vLocalPoint[0] = _float3{ 8.f, 0.f, 4.5f };
+	m_vLocalPoint[1] = _float3{ -8.f, 0.f, 4.5f };
+	m_vLocalPoint[2] = _float3{ 8.f, 0.f, -4.5f };
+	m_vLocalPoint[3] = _float3{ -8.f, 0.f, -4.5f };
+
 	return S_OK;
 }
 
@@ -33,6 +38,8 @@ HRESULT CVHouse01A::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }
