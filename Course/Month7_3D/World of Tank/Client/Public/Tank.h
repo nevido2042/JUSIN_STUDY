@@ -109,6 +109,7 @@ protected:
 
 protected:
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects(TANK_DESC* pDesc);
 	HRESULT Bind_ShaderResources();
 
 public:

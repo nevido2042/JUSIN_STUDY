@@ -635,71 +635,31 @@ void CTank::SendMatrixSync(_float fTimeDelta)
 	}
 }
 
-//void CTank::Picked_Ray_ScreenCenter()
-//{
-//	_float fDist = { 0 };
-//
-//	_bool bisColl = false;
-//	bisColl = m_pColliderCom->Intersect_Ray(XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), 1.f),
-//		XMVectorSetW(XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()), 1.f),
-//		fDist);
-//
-//	if (bisColl)
-//	{
-//		_float3 vPickedPos = {};
-//		_vector vOrigin = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()) };
-//		_vector vDir = { XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay()) };
-//
-//		XMStoreFloat3(&vPickedPos, vOrigin + vDir * fDist);
-//
-//		//여기서 픽된 포즈를 계산해서 올리자
-//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-//		if (pPickedManager)
-//			pPickedManager->Add_ScreenCenterPickedPos(vPickedPos);
-//	}
-//
-//}
-//
-//void CTank::Picked_Ray_Gun()
-//{
-//	_float fDist = { 0 };
-//
-//	_bool bisColl = false;
-//
-//	//포구 피킹
-//	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
-//	if (nullptr == pPlayerTank)
-//		return;
-//
-//	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-//	if (nullptr == pGun)
-//		return;
-//
-//	//카메라 위치르 가져와서, 현재 저장된 포즈의 거리와
-//	_vector vGunPos = pGun->Get_CombinedWorldMatrix().r[3];
-//	_vector vGunLook = pGun->Get_CombinedWorldMatrix().r[2]; //단위 벡터로 전달 안해서 터진듯?
-//	vGunLook = XMVector3Normalize(vGunLook);
-//
-//	bisColl = m_pColliderCom->Intersect_Ray(vGunPos, vGunLook, fDist);
-//
-//	if (bisColl)
-//	{
-//		_float3 vPickedPos = {};
-//		XMStoreFloat3(&vPickedPos, vGunPos + vGunLook * fDist);
-//
-//		//여기서 픽된 포즈를 계산해서 올리자
-//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-//		if (pPickedManager)
-//			pPickedManager->Add_GunPickedPos(vPickedPos);
-//	}
-//}
-
 HRESULT CTank::Ready_Components()
 {
 	/* For.Com_Sound_TankSound3D */
 	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
 	//	TEXT("Com_Sound_TankSound3D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound3D))))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTank::Ready_PartObjects(TANK_DESC* pDesc)
+{
+	CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
+	DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	DamageBarWorldDesc.iID = m_iID;
+	DamageBarWorldDesc.eTeam = pDesc->eTeam;
+	DamageBarWorldDesc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	DamageBarWorldDesc.fSizeX = 120.f * UI_RATIO;
+	DamageBarWorldDesc.fSizeY = 60.f * UI_RATIO;
+
+
+	/* 데미지바_월드를 추가한다. */
+	lstrcpy(DamageBarWorldDesc.szName, TEXT("DamageBar"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &DamageBarWorldDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

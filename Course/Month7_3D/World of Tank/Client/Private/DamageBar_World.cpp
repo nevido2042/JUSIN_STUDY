@@ -5,13 +5,13 @@
 #include "Tank.h"
 
 CDamageBar_World::CDamageBar_World(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+	: CUIObject{ pDevice, pContext }
 {
 
 }
 
 CDamageBar_World::CDamageBar_World(const CDamageBar_World& Prototype)
-	: CGameObject(Prototype)
+	: CUIObject(Prototype)
 {
 
 }
@@ -39,45 +39,37 @@ HRESULT CDamageBar_World::Initialize(void* pArg)
 
 void CDamageBar_World::Priority_Update(_float fTimeDelta)
 {
-
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
 }
 
 void CDamageBar_World::Update(_float fTimeDelta)
 {
+	_vector vScale = {};
+	_vector vRot = {};
+	_vector vWorldPos = {};
+	XMMatrixDecompose(&vScale, &vRot, &vWorldPos, XMLoadFloat4x4(m_pParentWorldMatrix));
 
-	_float4 vParentPosition = {};
-	memcpy(&vParentPosition, m_pParentWorldMatrix->m[3], sizeof(_float4));
+	vWorldPos += XMVectorSet(0.f, 5.f, 0.f, 0.f);
 
-	vParentPosition.y += 6.0f;
+	_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+	_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMLoadFloat4(&vParentPosition));
-	m_pTransformCom->LookAt_Reverse(XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
+	_vector vClipPos = XMVector3TransformCoord(vWorldPos, matView * matProj);
 
+	_float3 vClip;
+	XMStoreFloat3(&vClip, vClipPos);
+
+	_float2 vScreenPos;
+	vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
+	vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
+
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
 }
 
 void CDamageBar_World::Late_Update(_float fTimeDelta)
 {
-
-	// 1. 카메라 거리 계산
-	_vector vToCamera = XMLoadFloat4(m_pGameInstance->Get_CamPosition()) - m_pTransformCom->Get_State(STATE::POSITION);
-	_float fDistance = XMVectorGetX(XMVector3Length(vToCamera));
-
-	// 2. 현재 FOV와 기준 FOV (라디안)
-	_float fCurrentFov = m_pGameInstance->Get_Fov();
-	_float fBaseFov = XMConvertToRadians(BASE_FOV);
-
-	// 3. FOV 보정 계수
-	_float fFovScale = tanf(fCurrentFov * 0.5f) / tanf(fBaseFov * 0.5f);
-
-	// 4. 최종 스케일 = 거리 * FOV 보정 * 베이스 스케일
-	_float fFinalScale = m_fBaseScale * fDistance * fFovScale;
-
-	m_pTransformCom->Scaling(fFinalScale * 2.f, fFinalScale, fFinalScale);
-
-
-	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 10.f))
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
-
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CDamageBar_World::Render()
@@ -87,6 +79,9 @@ HRESULT CDamageBar_World::Render()
 		return E_FAIL;
 
 	//배경
+	_float4 vBaseColor = { 0.f, 0.f, 0.f, 1.f };
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &vBaseColor, sizeof(_float4))))
+		return E_FAIL;
 
 	if (FAILED(m_pTextureCom_Background->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
@@ -94,7 +89,7 @@ HRESULT CDamageBar_World::Render()
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(2)))
+	if (FAILED(m_pShaderCom->Begin(3)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -159,7 +154,7 @@ HRESULT CDamageBar_World::Ready_Components()
 		m_bActive = false;
 
 	/* For.Com_Texture_Background */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Back_Ghost"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar"),
 		TEXT("Com_Texture_Background"), reinterpret_cast<CComponent**>(&m_pTextureCom_Background))))
 		return E_FAIL;
 
@@ -171,15 +166,15 @@ HRESULT CDamageBar_World::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-	_float fAlpha = { 0.1f };
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
-		return E_FAIL;
+	//_float fAlpha = { 0.1f };
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
+	//	return E_FAIL;
 
 	return S_OK;
 }

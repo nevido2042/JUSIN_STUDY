@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "UIObject.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -11,10 +11,10 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CDamageBar_World final : public CGameObject
+class CDamageBar_World final : public CUIObject
 {
 public:
-	typedef struct tagDamageBar_World_Desc : public GAMEOBJECT_DESC
+	typedef struct tagDamageBar_World_Desc : public UIOBJECT_DESC
 	{
 		TEAM eTeam;
 	}DAMAGEBAR_WORLD_DESC;

@@ -112,6 +112,8 @@ HRESULT CFury::Ready_Components()
 
 HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 {
+	CTank::Ready_PartObjects(pDesc);
+
 	/* 포탑을 추가한다. */
 	CTurret::TURRET_DESC TurretDesc{};
 	TurretDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
@@ -163,17 +165,6 @@ HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 		return E_FAIL;
 
 	Store_Modules();
-
-	CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
-	DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	DamageBarWorldDesc.fRotationPerSec = 1.f;
-	DamageBarWorldDesc.iID = m_iID;
-	DamageBarWorldDesc.eTeam = pDesc->eTeam;
-
-	/* 데미지바_월드를 추가한다. */
-	lstrcpy(DamageBarWorldDesc.szName, TEXT("DamageBar"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &DamageBarWorldDesc)))
-		return E_FAIL;
 
 	return S_OK;
 }
