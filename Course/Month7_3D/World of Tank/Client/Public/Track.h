@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "Module.h"
+#include "GameObject.h"
 
 NS_BEGIN(Engine)
 class CShader;
@@ -11,7 +11,7 @@ NS_END
 
 NS_BEGIN(Client)
 
-class CTrack abstract : public CModule
+class CTrack abstract : public CGameObject
 {
 protected:
 	CTrack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

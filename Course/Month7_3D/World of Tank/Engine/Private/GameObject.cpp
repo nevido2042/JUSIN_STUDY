@@ -58,6 +58,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	m_bVisible = pDesc->bVisible;
 	m_pParentWorldMatrix = pDesc->pParentWorldMatrix;
 	m_iID = pDesc->iID;
+	m_pParent = pDesc->pParent;
 
 	if (FAILED(m_pTransformCom->Initialize(pArg)))
 		return E_FAIL;

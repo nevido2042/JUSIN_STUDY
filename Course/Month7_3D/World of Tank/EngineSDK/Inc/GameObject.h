@@ -14,6 +14,7 @@ public:
 		_bool				bActive = { true };
 		_bool				bVisible = { true };
 		_int				iID = { -1 };
+		CGameObject*		pParent = { nullptr };
 	}GAMEOBJECT_DESC;
 
 protected:
@@ -83,6 +84,7 @@ protected:
 	map<const _wstring, class CGameObject*>				m_PartObjects;
 
 protected:
+	CGameObject*			m_pParent = { nullptr };
 	const _float4x4*		m_pParentWorldMatrix = { nullptr };
 	_float4x4				m_CombinedWorldMatrix = {};
 

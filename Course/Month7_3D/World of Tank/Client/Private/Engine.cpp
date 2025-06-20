@@ -141,7 +141,10 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 {
 	m_eModuleState = eState;
 
-	if (!m_IsOn)
+	if (m_IsOn && m_eModuleState == MODULE_STATE::DESTROYED)
+		End_Engine();
+
+	if (!m_IsOn && m_eModuleState != MODULE_STATE::DESTROYED)
 		Start_Engine();
 
 	if (m_pGameInstance->Get_ID() == m_iID)

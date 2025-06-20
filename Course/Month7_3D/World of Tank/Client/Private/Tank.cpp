@@ -394,23 +394,28 @@ HRESULT CTank::Store_Modules()
 	CModule* pEngine = static_cast<CModule*>(Find_PartObject(TEXT("Part_Engine")));
 	CModule* pTurret = static_cast<CModule*>(Find_PartObject(TEXT("Part_Turret")));
 	CModule* pGun = static_cast<CModule*>(Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun")));
-	CModule* pTrackLeft = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackLeft")));
-	CModule* pTrackRight = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackRight")));
+	//CModule* pTrackLeft = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackLeft")));
+	//CModule* pTrackRight = static_cast<CModule*>(Find_PartObject(TEXT("Part_TrackRight")));
+	CModule* pChassis = static_cast<CModule*>(Find_PartObject(TEXT("Part_Chassis")));
 	CModule* pAmmoBay = static_cast<CModule*>(Find_PartObject(TEXT("Part_AmmoBay")));
+
+
 
 	m_Modules.resize(ENUM_CLASS(MODULE::END));
 	m_Modules.at(ENUM_CLASS(MODULE::ENGINE)) = pEngine;
 	m_Modules.at(ENUM_CLASS(MODULE::TURRET)) = pTurret;
 	m_Modules.at(ENUM_CLASS(MODULE::GUN)) = pGun;
-	m_Modules.at(ENUM_CLASS(MODULE::TRACK_LEFT)) = pTrackLeft;
-	m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT)) = pTrackRight;
+	//m_Modules.at(ENUM_CLASS(MODULE::TRACK_LEFT)) = pTrackLeft;
+	//m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT)) = pTrackRight;
+	m_Modules.at(ENUM_CLASS(MODULE::CHASSIS)) = pChassis;
 	m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY)) = pAmmoBay;
 
 	Safe_AddRef(pEngine);
 	Safe_AddRef(pTurret);
 	Safe_AddRef(pGun);
-	Safe_AddRef(pTrackLeft);
-	Safe_AddRef(pTrackRight);
+	Safe_AddRef(pChassis);
+	//Safe_AddRef(pTrackLeft);
+	//Safe_AddRef(pTrackRight);
 	Safe_AddRef(pAmmoBay);
 
 	return S_OK;
@@ -423,8 +428,17 @@ void CTank::Move(_float fTimeDelta)
 	if (!pEngin->Get_isOn())
 		return;
 
-	CTrack* pTrackLeft = static_cast<CTrack*>(m_Modules.at(ENUM_CLASS(MODULE::TRACK_LEFT))); //static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackLeft")));
-	CTrack* pTrackRight = static_cast<CTrack*>(m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT))); //static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackRight")));
+#pragma message ("트랙 돌리는거 구조 이쁘게 하고싶다. 엔진과 엮어서")
+
+	CTrack* pTrackLeft = { nullptr }; //static_cast<CTrack*>(m_Modules.at(ENUM_CLASS(MODULE::CHASSIS))); //static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackLeft")));
+	CTrack* pTrackRight = { nullptr }; //static_cast<CTrack*>(m_Modules.at(ENUM_CLASS(MODULE::TRACK_RIGHT))); //static_cast<CTrack*>(Find_PartObject(TEXT("Part_TrackRight")));
+
+	CGameObject* pChassis = m_Modules.at(ENUM_CLASS(MODULE::CHASSIS));
+	if (pChassis)
+	{
+		pTrackLeft = static_cast<CTrack*>(pChassis->Find_PartObject(TEXT("Part_TrackLeft")));
+		pTrackRight = static_cast<CTrack*>(pChassis->Find_PartObject(TEXT("Part_TrackRight")));
+	}
 
 	pTrackLeft->Set_Speed(0.f);
 	pTrackRight->Set_Speed(0.f);
@@ -491,12 +505,23 @@ void CTank::Move(_float fTimeDelta)
 	//이동하기전 위치 저장
 	_vector BeforePos = m_pTransformCom->Get_State(STATE::POSITION);
 
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTurnSpeed * fTimeDelta, m_pColliderCom, 0.01f);
 
-	if(fMovePower > 0.f)
-		m_pTransformCom->Go_Straight(fMovePower * fTimeDelta, m_pColliderCom, 0.5f);
+	_float fSpeed_TrackState = { 1.f };
+	if (pChassis && static_cast<CModule*>(pChassis)->Get_ModuleState() == MODULE_STATE::FUNCTIONAL)
+		fSpeed_TrackState = 1.f;
+	else if (pChassis && static_cast<CModule*>(pChassis)->Get_ModuleState() == MODULE_STATE::DAMAGED)
+		fSpeed_TrackState = 0.5f;
+	else if (pChassis && static_cast<CModule*>(pChassis)->Get_ModuleState() == MODULE_STATE::DESTROYED)
+		fSpeed_TrackState = 0.f;
+	
+
+	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTurnSpeed * fTimeDelta * fSpeed_TrackState, m_pColliderCom, 0.01f);
+
+	if (fMovePower > 0.f)
+		m_pTransformCom->Go_Straight(fMovePower * fTimeDelta * fSpeed_TrackState, m_pColliderCom, 0.5f);
 	else
-		m_pTransformCom->Go_Backward(-fMovePower * fTimeDelta, m_pColliderCom, 0.5f);
+		m_pTransformCom->Go_Backward(-fMovePower * fTimeDelta * fSpeed_TrackState, m_pColliderCom, 0.5f);
+
 
 	//바운더리 검사후 경계 안이면 이동 허용
 	//아니면 이전 위치로 돌리기

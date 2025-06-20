@@ -182,6 +182,7 @@
     <ClInclude Include="..\public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
+    <ClInclude Include="..\public\Chassis.h" />
     <ClInclude Include="..\public\ChurchA.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\public\FuryTrackLeft.h" />
     <ClInclude Include="..\public\FuryTrackRight.h" />
     <ClInclude Include="..\public\FuryTurret.h" />
+    <ClInclude Include="..\public\Fury_Chassis.h" />
     <ClInclude Include="..\public\Fury_Hanger.h" />
     <ClInclude Include="..\public\GameManager.h" />
     <ClInclude Include="..\public\Gun.h" />
@@ -226,6 +228,7 @@
     <ClInclude Include="..\public\TigerTrackRight.h" />
     <ClInclude Include="..\public\TigerTurret.h" />
     <ClInclude Include="..\public\TigerTurretSkin.h" />
+    <ClInclude Include="..\public\Tiger_Chassis.h" />
     <ClInclude Include="..\public\Tiger_Hanger.h" />
     <ClInclude Include="..\public\Tool_Base.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -281,6 +284,7 @@
     <ClCompile Include="..\private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
+    <ClCompile Include="..\private\Chassis.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />
     <ClCompile Include="..\private\CountdownTimer.cpp" />
     <ClCompile Include="..\private\Crosshair.cpp" />
@@ -298,6 +302,7 @@
     <ClCompile Include="..\private\FuryTrackLeft.cpp" />
     <ClCompile Include="..\private\FuryTrackRight.cpp" />
     <ClCompile Include="..\private\FuryTurret.cpp" />
+    <ClCompile Include="..\private\Fury_Chassis.cpp" />
     <ClCompile Include="..\private\Fury_Hanger.cpp" />
     <ClCompile Include="..\private\GameManager.cpp" />
     <ClCompile Include="..\private\Gun.cpp" />
@@ -323,6 +328,7 @@
     <ClCompile Include="..\private\TigerTrackRight.cpp" />
     <ClCompile Include="..\private\TigerTurret.cpp" />
     <ClCompile Include="..\private\TigerTurretSkin.cpp" />
+    <ClCompile Include="..\private\Tiger_Chassis.cpp" />
     <ClCompile Include="..\private\Tiger_Hanger.cpp" />
     <ClCompile Include="..\private\Tool_Base.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />

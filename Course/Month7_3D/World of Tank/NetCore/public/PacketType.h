@@ -4,7 +4,7 @@
 #include "NetCore_Define.h"
 
 enum class TANK         { FURY, TIGER, END };
-enum class MODULE       { ENGINE, TRACK_LEFT, TRACK_RIGHT, TURRET, GUN, SURVEYING_DEVICE, RADIO, FUEL_TANK, AMMO_BAY, END };
+enum class MODULE       { ENGINE, CHASSIS, TURRET, GUN, SURVEYING_DEVICE, RADIO, FUEL_TANK, AMMO_BAY, END };
 enum class MODULE_STATE { DESTROYED, DAMAGED, FUNCTIONAL, END };
 enum class TEAM         { A, B, END };
 

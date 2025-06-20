@@ -3,13 +3,13 @@
 #include "GameInstance.h"
 
 CTrack::CTrack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CModule{ pDevice, pContext }
+	: CGameObject{ pDevice, pContext }
 {
 
 }
 
 CTrack::CTrack(const CTrack& Prototype)
-	: CModule(Prototype)
+	: CGameObject(Prototype)
 {
 
 }
@@ -39,13 +39,15 @@ void CTrack::Update(_float fTimeDelta)
 	m_fUVScrollY += m_fSpeed * 0.05f;
 	m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
 
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
 }
 
 void CTrack::Late_Update(_float fTimeDelta)
 {
-	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
@@ -93,7 +95,7 @@ HRESULT CTrack::Render()
 
 void CTrack::On_RaycastHit(CGameObject* pOther)
 {
-	CModule::On_RaycastHit(pOther);
+	m_pParent->On_RaycastHit(pOther);
 }
 
 HRESULT CTrack::Bind_ShaderResources()

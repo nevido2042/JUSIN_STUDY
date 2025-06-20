@@ -11,6 +11,8 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Fury_Chassis.h"
+#include "Tiger_Chassis.h"
 #include "AimCircle.h"
 #include "InvisibleWall.h"
 #include "DamageBig.h"
@@ -517,6 +519,16 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Fury_Chassis */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury_Chassis"),
+		CFury_Chassis::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tiger_Chassis */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger_Chassis"),
+		CTiger_Chassis::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_AimCircle */
