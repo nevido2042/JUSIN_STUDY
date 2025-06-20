@@ -2,10 +2,11 @@
 
 /* 상수테이블 ConstantTable */
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-texture2D g_Texture;
+Texture2D g_Texture;
 float g_fAlpha = 0.3f;
 
 float g_fFill = 1.f;
+float g_fFillDelay = 1.f;
 
 float4 g_vBaseColor = float4(1.f, 1.f, 1.f, 1.f);
 
@@ -99,15 +100,27 @@ PS_OUT PS_FILL_COLOR(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_FILL(PS_IN In)
+PS_OUT PS_DAMAGEBAR_WORLD(PS_IN In)
 {
     PS_OUT Out;
 
-    if (In.vTexcoord.x >= g_fFill)
-        discard;
+    float4 texColor;
+    if (In.vTexcoord.x <= g_fFill)
+    {
+        //현재 체력
+        texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    }
+    else if (In.vTexcoord.x <= g_fFillDelay)
+    {
+        texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+        texColor.rgb = float3(1.0, 1.0, 0.0); // 노란색 덮기
+    }
+    else
+    {
+        //어두운 배경
+        texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord) * float4(0.f, 0.f, 0.f, 0.5f);
+    }
 
-    float4 texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    
     Out.vColor = texColor;
 
     return Out;
@@ -115,7 +128,7 @@ PS_OUT PS_FILL(PS_IN In)
 
 PS_OUT PS_AIMCIRCLE(PS_IN In)
 {
-    PS_OUT Out;
+    PS_OUT Out = (PS_OUT) 0; //초기화
 
     float2 uv = In.vTexcoord;
     float scale = g_fZoomScale;
@@ -164,7 +177,7 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_FILL_COLOR();
     }
-    //2
+    //2 (버리기 대기중)
     pass UI3D
     {
         SetRasterizerState(RS_Default);
@@ -185,14 +198,14 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_BASECOLOR();
     }
     //4
-    pass FILL_UI3D
+    pass DamageBar_World
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_FILL();
+        PixelShader = compile ps_5_0 PS_DAMAGEBAR_WORLD();
     }
 
     // 5

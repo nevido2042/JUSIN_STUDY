@@ -38,7 +38,11 @@ private:
 	TEAM m_eTeam = { TEAM::END };
 
 private:
+	//피 딜레이 애니메이션 시작시간 체크하는 함수
+	_float	m_fTimeAcc = { 0.f };
+
 	_float	m_fFillAmount = { 1.f };
+	_float	m_fFillDelay = { 1.f };
 
 private:
 	const _float m_fBaseScale = 0.03f;
@@ -46,7 +50,7 @@ private:
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
-	CTexture* m_pTextureCom_Background = { nullptr };
+	//CTexture* m_pTextureCom_Background = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 private:
 	HRESULT Ready_Components();

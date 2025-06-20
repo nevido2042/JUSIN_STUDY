@@ -65,6 +65,21 @@ void CDamageBar_World::Update(_float fTimeDelta)
 	vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
 
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+
+
+#pragma region 데미지 딜레이 표현
+	if (m_fTimeAcc > 1.0f)
+	{
+		m_fFillDelay -= fTimeDelta * 0.3f;
+		if (m_fFillDelay < m_fFillAmount)
+			m_fFillDelay = m_fFillAmount;
+	}
+	else
+	{
+		m_fTimeAcc += fTimeDelta;
+	}
+#pragma endregion
+
 }
 
 void CDamageBar_World::Late_Update(_float fTimeDelta)
@@ -79,23 +94,26 @@ HRESULT CDamageBar_World::Render()
 		return E_FAIL;
 
 	//배경
-	_float4 vBaseColor = { 0.f, 0.f, 0.f, 1.f };
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &vBaseColor, sizeof(_float4))))
-		return E_FAIL;
+	//_float4 vBaseColor = { 0.f, 0.f, 0.f, 1.f };
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &vBaseColor, sizeof(_float4))))
+	//	return E_FAIL;
 
-	if (FAILED(m_pTextureCom_Background->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
-		return E_FAIL;
+	//if (FAILED(m_pTextureCom_Background->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+	//	return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(3)))
-		return E_FAIL;
+	//if (FAILED(m_pShaderCom->Begin(3)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Render()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Render()))
+	//	return E_FAIL;
 
 	//바
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelay", &m_fFillDelay, sizeof(_float))))
+		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFill", &m_fFillAmount, sizeof(_float))))
 		return E_FAIL;
@@ -114,6 +132,8 @@ HRESULT CDamageBar_World::Render()
 
 void CDamageBar_World::Fill(_float fFillAmount)
 {
+	m_fTimeAcc = 0.f;
+	m_fFillDelay = m_fFillAmount;
 	m_fFillAmount = fFillAmount;
 }
 
@@ -153,10 +173,10 @@ HRESULT CDamageBar_World::Ready_Components()
 	if (nullptr == m_pTextureCom)
 		m_bActive = false;
 
-	/* For.Com_Texture_Background */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar"),
-		TEXT("Com_Texture_Background"), reinterpret_cast<CComponent**>(&m_pTextureCom_Background))))
-		return E_FAIL;
+	///* For.Com_Texture_Background */
+	//if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBar"),
+	//	TEXT("Com_Texture_Background"), reinterpret_cast<CComponent**>(&m_pTextureCom_Background))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -211,6 +231,6 @@ void CDamageBar_World::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pTextureCom_Background);
+	//Safe_Release(m_pTextureCom_Background);
 	Safe_Release(m_pVIBufferCom);
 }
