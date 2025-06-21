@@ -304,6 +304,39 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
+
+
+	const _float fMin = 100.f;
+	const _float fMax = 500.f;
+
+	for (_int i = 0; i < 3; ++i)
+	{	
+		Desc.vInitPosition = _float3(m_pGameInstance->Compute_Random(fMin, fMax), 87.f, m_pGameInstance->Compute_Random(fMin, fMax));
+		Desc.eTeam = TEAM::A;
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+			ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+			return E_FAIL;
+
+		Desc.vInitPosition = _float3(m_pGameInstance->Compute_Random(fMin, fMax), 87.f, m_pGameInstance->Compute_Random(fMin, fMax));
+		Desc.eTeam = TEAM::B;
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+			ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+			return E_FAIL;
+
+		Desc.vInitPosition = _float3(m_pGameInstance->Compute_Random(fMin, fMax), 87.f, m_pGameInstance->Compute_Random(fMin, fMax));
+		Desc.eTeam = TEAM::A;
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
+			ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+			return E_FAIL;
+
+		Desc.vInitPosition = _float3(m_pGameInstance->Compute_Random(fMin, fMax), 87.f, m_pGameInstance->Compute_Random(fMin, fMax));
+		Desc.eTeam = TEAM::B;
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
+			ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+			return E_FAIL;
+	}
+
+
 	return S_OK;
 }
 

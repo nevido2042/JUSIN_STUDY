@@ -108,8 +108,7 @@ PS_OUT PS_DAMAGEBAR_WORLD(PS_IN In)
     float4 texColor;
     
     float4 dark = g_Texture.Sample(DefaultSampler, In.vTexcoord) * float4(0.f, 0.f, 0.f, 0.5f);
-    float4 yellow = float4(1.f, 1.f, 0.f, texColor.a);
-    
+
     if (In.vTexcoord.x <= g_fFill)
     {
         //현재 체력
@@ -118,9 +117,8 @@ PS_OUT PS_DAMAGEBAR_WORLD(PS_IN In)
     else if (In.vTexcoord.x <= g_fFillDelay)
     {
         texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-        // 노란색 덮기
-        yellow = float4(1.f, 1.f, 0.f, texColor.a);
         
+        float4 yellow = float4(1.f, 1.f, 0.f, texColor.a);
         // 시간 기반으로 점점 어두워지는 어두운 색 전환
         texColor = lerp(yellow, dark, g_fFillDelayValue);
 

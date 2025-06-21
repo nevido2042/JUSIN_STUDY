@@ -290,12 +290,19 @@ HRESULT CTank::Take_Damage(_float fDamage)
 			if (pDamageBar)
 			{
 				pDamageBar->Fill(m_fHP / m_fMaxHP);
+				//pDamageBar->Set_Text(m_fHP, m_fMaxHP);
 			}
 		}
 	}
 
-	static_cast<CDamageBar_World*> (Find_PartObject(TEXT("Part_DamageBar")))->Fill(m_fHP / m_fMaxHP);
+	CGameObject* pObject = Find_PartObject(TEXT("Part_DamageBar"));
+	if (pObject)
+	{
+		CDamageBar_World* pWorldDamageBar = static_cast<CDamageBar_World*> (pObject);
+		pWorldDamageBar->Fill(m_fHP / m_fMaxHP);
+		//pWorldDamageBar->Set_Text(m_fHP, m_fMaxHP);
 
+	}
 	return S_OK;
 }
 
@@ -656,6 +663,7 @@ HRESULT CTank::Ready_PartObjects(TANK_DESC* pDesc)
 {
 	CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
 	DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	DamageBarWorldDesc.pParent = this;
 	DamageBarWorldDesc.iID = m_iID;
 	DamageBarWorldDesc.eTeam = pDesc->eTeam;
 	DamageBarWorldDesc.fDepth = DEPTH_BACKGROUND - 0.01f;

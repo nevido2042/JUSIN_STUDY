@@ -79,7 +79,7 @@ void CChassis::Set_ModuleState(MODULE_STATE eState)
 
 		if (m_pOwner)
 		{
-			if (!m_pOwner->Get_isTankDestroyed())
+			if (!m_pOwner->Get_isDie())
 				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
 		}
 

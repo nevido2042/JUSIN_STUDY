@@ -33,10 +33,16 @@ public:
 
 public:
 	void	Fill(_float fFillAmount);
+	//void	Set_Text(_float fHP, _float fMaxHP);
 
 private:
-	TEAM m_eTeam = { TEAM::END };
+	_int	m_iHP = {};
+	_int	m_iMaxHP = {};
 
+private:
+	_float3 m_vClip = {};
+private:
+	TEAM m_eTeam = { TEAM::END };
 private:
 	//피 딜레이 애니메이션 시작시간 체크하는 함수
 	_float	m_fTimeAcc = { 0.f };

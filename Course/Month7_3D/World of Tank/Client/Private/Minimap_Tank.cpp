@@ -1,6 +1,7 @@
 #include "Minimap_Tank.h"
 
 #include "GameInstance.h"
+#include "Tank.h"
 
 CMinimap_Tank::CMinimap_Tank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -75,14 +76,31 @@ HRESULT CMinimap_Tank::Render()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
-	_float fAlpha = { 0.9f };
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
-		return E_FAIL;
+
+	//_float fAlpha = { 0.9f };
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
+	//	return E_FAIL;
+
+	if (m_pTarget)
+	{
+		if (true == static_cast<CTank*>(m_pTarget)->Get_isDie())
+		{
+			_float4 vBaseColor = { 0.f, 0.f, 0.f, 1.f };
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &vBaseColor, sizeof(_float4))))
+				return E_FAIL;
+		}
+		else if (false == static_cast<CTank*>(m_pTarget)->Get_isDie())
+		{
+			_float4 vBaseColor = { 1.f, 1.f, 1.f, 1.f };
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &vBaseColor, sizeof(_float4))))
+				return E_FAIL;
+		}
+	}
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(3)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))

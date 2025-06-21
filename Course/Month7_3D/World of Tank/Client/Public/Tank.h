@@ -14,6 +14,7 @@ NS_BEGIN(Client)
 
 class CTank abstract : public CLandObject
 {
+	friend class CDamageBar_World;
 public:
 	typedef struct tagTankDesc : public LANDOBJECT_DESC
 	{
@@ -39,7 +40,7 @@ public:
 	virtual void On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal) override;
 
 public:
-	_bool Get_isTankDestroyed() const { return m_bisDie; }
+	_bool Get_isDie() const { return m_bisDie; }
 
 public:
 	TEAM Get_Team() const { return m_eTeam; }

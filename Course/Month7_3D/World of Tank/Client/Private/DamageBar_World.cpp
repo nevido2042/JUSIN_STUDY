@@ -45,45 +45,16 @@ void CDamageBar_World::Priority_Update(_float fTimeDelta)
 
 void CDamageBar_World::Update(_float fTimeDelta)
 {
-	_vector vScale = {};
-	_vector vRot = {};
-	_vector vWorldPos = {};
-	XMMatrixDecompose(&vScale, &vRot, &vWorldPos, XMLoadFloat4x4(m_pParentWorldMatrix));
 
-	vWorldPos += XMVectorSet(0.f, 5.f, 0.f, 0.f);
-
-	_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
-	_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
-
-	_vector vClipPos = XMVector3TransformCoord(vWorldPos, matView * matProj);
-
-	_float3 vClip;
-	XMStoreFloat3(&vClip, vClipPos);
-
-	// vClip은 NDC 좌표 (-1 ~ 1)
-	if (vClip.x < -1.f || vClip.x > 1.f ||
-		vClip.y < -1.f || vClip.y > 1.f ||
-		vClip.z < 0.f || vClip.z > 1.f) // z는 0~1 사이
+#pragma region 체력 업데이트
+	if (m_pParent)
 	{
-		// 화면 밖이므로 표시하지 않음
-		m_bVisible = false;
-	}
-	else
-	{
-		m_bVisible = true;
-
-		_float2 vScreenPos;
-		vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
-		vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
-
-		m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+		CTank* pTank = static_cast<CTank*>(m_pParent);
+		m_iHP = static_cast<_int>(pTank->m_fHP);
+		m_iMaxHP = static_cast<_int>(pTank->m_fMaxHP);
 	}
 
-	//_float2 vScreenPos;
-	//vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
-	//vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
-
-	//m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+#pragma endregion
 
 
 #pragma region 데미지 딜레이 표현
@@ -107,6 +78,50 @@ void CDamageBar_World::Update(_float fTimeDelta)
 
 void CDamageBar_World::Late_Update(_float fTimeDelta)
 {
+
+	_vector vScale = {};
+	_vector vRot = {};
+	_vector vWorldPos = {};
+	XMMatrixDecompose(&vScale, &vRot, &vWorldPos, XMLoadFloat4x4(m_pParentWorldMatrix));
+
+	vWorldPos += XMVectorSet(0.f, 5.f, 0.f, 0.f);
+
+	_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+	_matrix matProj = m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
+
+
+	//_float3  m_vClip;
+	_vector vClipPos = XMVector3TransformCoord(vWorldPos, matView * matProj);
+
+	XMStoreFloat3(&m_vClip, vClipPos);
+
+	// vClip은 NDC 좌표 (-1 ~ 1)
+	if (m_vClip.x < -1.f || m_vClip.x > 1.f ||
+		m_vClip.y < -1.f || m_vClip.y > 1.f ||
+		m_vClip.z < 0.f || m_vClip.z > 1.f) // z는 0~1 사이
+	{
+		// 화면 밖이므로 표시하지 않음
+		m_bVisible = false;
+	}
+	else
+	{
+		m_bVisible = true;
+
+		_float2 vScreenPos;
+		vScreenPos.x = (m_vClip.x * 0.5f) * g_iWinSizeX;
+		vScreenPos.y = (m_vClip.y * 0.5f) * g_iWinSizeY;
+
+		m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+	}
+
+	//_float2 vScreenPos;
+	//vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
+	//vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
+
+	//m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+
+
+
 	//_vector vScale = {};
 	//_vector vRot = {};
 	//_vector vWorldPos = {};
@@ -115,7 +130,9 @@ void CDamageBar_World::Late_Update(_float fTimeDelta)
 	//vWorldPos += XMVectorSet(0.f, 5.f, 0.f, 0.f);
 
 	//if(m_pGameInstance->Is_In_Frustum(vWorldPos, 1.f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+
+
 
 }
 
@@ -125,23 +142,35 @@ HRESULT CDamageBar_World::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelayValue", &m_fFillDelayValue, sizeof(_float))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelay", &m_fFillDelay, sizeof(_float))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFill", &m_fFillAmount, sizeof(_float))))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
-		return E_FAIL;
-
 	if (FAILED(m_pShaderCom->Begin(4)))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
+
+
+	wstring strText = to_wstring(m_iHP) + L"/" + to_wstring(m_iMaxHP);
+	size_t strLength = strText.length();
+
+	_float2 vScreenPos;
+	vScreenPos.x = (m_vClip.x * 0.5f + 0.5f - strLength * 0.002f) * g_iWinSizeX;
+	vScreenPos.y = (-m_vClip.y * 0.5f + 0.49f) * g_iWinSizeY;
+
+	m_pGameInstance->Draw_Font(
+		TEXT("Font_WarheliosKO"),
+		strText.c_str(),
+		vScreenPos,
+		XMVectorSet(1.f, 1.f, 1.f, 1.f),
+		0.f,
+		_float2(0.f, 0.f),
+		0.2f * UI_RATIO
+	);
+
+	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("Font_WarheliosKO"), _float2(500.f, 500.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 100.f);
+	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("Font_WarheliosKO"), _float2(g_iWinSizeX * 0.45f, g_iWinSizeY * 0.5f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f);
 
 	return S_OK;
 }
@@ -154,6 +183,12 @@ void CDamageBar_World::Fill(_float fFillAmount)
 
 	m_fFillAmount = fFillAmount;
 }
+
+//void CDamageBar_World::Set_Text(_float fHP, _float fMaxHP)
+//{
+//	m_fHP = fHP;
+//	m_fMaxHP = fMaxHP;
+//}
 
 HRESULT CDamageBar_World::Ready_Components()
 {
@@ -204,10 +239,22 @@ HRESULT CDamageBar_World::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelayValue", &m_fFillDelayValue, sizeof(_float))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelay", &m_fFillDelay, sizeof(_float))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFill", &m_fFillAmount, sizeof(_float))))
 		return E_FAIL;
 
 	//_float fAlpha = { 0.1f };

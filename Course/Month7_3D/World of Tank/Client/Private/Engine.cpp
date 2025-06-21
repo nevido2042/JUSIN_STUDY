@@ -154,7 +154,7 @@ void CEngine::Set_ModuleState(MODULE_STATE eState)
 			return;
 		if (m_pOwner)
 		{
-			if (!m_pOwner->Get_isTankDestroyed())
+			if (!m_pOwner->Get_isDie())
 				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
 		}
 		CIcon_Module* pIcon = static_cast<CIcon_Module*>(pDamagePanel->Find_PartObject(TEXT("Part_Engine")));

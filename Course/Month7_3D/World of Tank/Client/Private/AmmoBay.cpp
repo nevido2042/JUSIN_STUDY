@@ -105,8 +105,12 @@ HRESULT CAmmoBay::Render()
 				strText = format(L"{:.2f}", m_fLoadTime * 2.f);
 
 			m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), strText.c_str(), _float2(g_iWinSizeX * 0.45f, g_iWinSizeY * 0.5f), XMVectorSet(0.f, 1.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f * UI_RATIO);
+
+
 		}
 	}
+
+
 
 	return S_OK;
 }
@@ -128,7 +132,7 @@ void CAmmoBay::Set_ModuleState(MODULE_STATE eState)
 
 		if (m_pOwner)
 		{
-			if (!m_pOwner->Get_isTankDestroyed())
+			if (!m_pOwner->Get_isDie())
 				pDamagePanel->Play_Voice_ModuleState(m_eModuleType, m_eModuleState);
 		}
 
