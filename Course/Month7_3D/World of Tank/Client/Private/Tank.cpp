@@ -293,6 +293,8 @@ HRESULT CTank::Take_Damage(_float fDamage)
 				//pDamageBar->Set_Text(m_fHP, m_fMaxHP);
 			}
 		}
+
+		//카메라 셰이크
 	}
 
 	CGameObject* pObject = Find_PartObject(TEXT("Part_DamageBar"));

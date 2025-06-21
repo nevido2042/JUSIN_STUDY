@@ -26,8 +26,15 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Start_CameraShake(_float fDuration, _float fPower);
+
 private:
 	void Picking();
+
+private:
+	_float	m_fShakeTime = { 0.f };
+	_float	m_fShakePower = { 0.f };
 
 private:
 	_float				m_fSensor = { 0.1f };

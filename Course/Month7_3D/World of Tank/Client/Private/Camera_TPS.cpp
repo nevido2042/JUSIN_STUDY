@@ -57,6 +57,11 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_TPS::Update(_float fTimeDelta)
 {
+	//if (m_pGameInstance->Key_Down(DIK_C))
+	//{
+	//	Start_CameraShake(0.1f, 0.1f);
+	//}
+
 	Picking();
 
 	// 커서 숨기기
@@ -98,6 +103,7 @@ void CCamera_TPS::Late_Update(_float fTimeDelta)
 	m_pTransformCom->Set_State(STATE::UP, vUp);
 	m_pTransformCom->Set_State(STATE::LOOK, vLook);
 
+#pragma region 스프링 암
 	//타겟에서 자신의 위치로 레이를 쏴서 레이쏜 위치로 변경
 	_float fDist = {};
 	_vector vRayDir = vCamPos - vTargetPos;
@@ -109,6 +115,31 @@ void CCamera_TPS::Late_Update(_float fTimeDelta)
 		if (fDist < fDistance/*카메라 암의 길이보다 짧으면*/)
 			m_pTransformCom->Set_State(STATE::POSITION, vTargetPos + vRayDir * fDist * 0.9f);
 	}
+#pragma endregion
+
+#pragma region 카메라 쉐이크 
+	if (m_fShakeTime > 0.f)
+	{
+		m_fShakeTime -= fTimeDelta;
+
+		_vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+
+		// 감쇠 (시간에 따라 줄어드는 진폭)
+		_float fAttenuation = m_fShakeTime / m_fShakeTime;
+		_float fCurrentPower = m_fShakePower * fAttenuation;
+
+		// 랜덤 오프셋
+		_float fX = m_pGameInstance->Compute_Random(-1.f, 1.f);
+		_float fY = m_pGameInstance->Compute_Random(-1.f, 1.f);
+		_float fZ = m_pGameInstance->Compute_Random(-1.f, 1.f);
+
+		_vector vOffset = XMVectorSet(fX, fY, fZ, 0.f) * fCurrentPower;
+		//XMVectorSetW(XMLoadFloat3(&m_vShakeOriginalPos), 1.f)
+		// 흔들린 위치 적용
+		m_pTransformCom->Set_State(STATE::POSITION, m_pTransformCom->Get_State(STATE::POSITION) + vOffset);
+	}
+#pragma endregion
+
 
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
@@ -125,6 +156,12 @@ HRESULT CCamera_TPS::Render()
 {
 
 	return S_OK;
+}
+
+void CCamera_TPS::Start_CameraShake(_float fDuration, _float fPower)
+{
+	m_fShakeTime = fDuration;
+	m_fShakePower = fPower;
 }
 
 void CCamera_TPS::Picking()
