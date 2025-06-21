@@ -60,19 +60,42 @@ void CDamageBar_World::Update(_float fTimeDelta)
 	_float3 vClip;
 	XMStoreFloat3(&vClip, vClipPos);
 
-	_float2 vScreenPos;
-	vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
-	vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
+	// vClip은 NDC 좌표 (-1 ~ 1)
+	if (vClip.x < -1.f || vClip.x > 1.f ||
+		vClip.y < -1.f || vClip.y > 1.f ||
+		vClip.z < 0.f || vClip.z > 1.f) // z는 0~1 사이
+	{
+		// 화면 밖이므로 표시하지 않음
+		m_bVisible = false;
+	}
+	else
+	{
+		m_bVisible = true;
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+		_float2 vScreenPos;
+		vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
+		vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
+
+		m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
+	}
+
+	//_float2 vScreenPos;
+	//vScreenPos.x = (vClip.x * 0.5f) * g_iWinSizeX;
+	//vScreenPos.y = (vClip.y * 0.5f) * g_iWinSizeY;
+
+	//m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
 
 
 #pragma region 데미지 딜레이 표현
 	if (m_fTimeAcc > 1.0f)
 	{
-		m_fFillDelay -= fTimeDelta * 0.3f;
-		if (m_fFillDelay < m_fFillAmount)
-			m_fFillDelay = m_fFillAmount;
+		//m_fFillDelay -= fTimeDelta * 0.3f;
+		//if (m_fFillDelay < m_fFillAmount)
+		//	m_fFillDelay = m_fFillAmount;
+
+		m_fFillDelayValue += fTimeDelta * 0.5f;
+		if (m_fFillDelayValue > 1.f)
+			m_fFillDelayValue = 1.f;
 	}
 	else
 	{
@@ -84,7 +107,16 @@ void CDamageBar_World::Update(_float fTimeDelta)
 
 void CDamageBar_World::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	//_vector vScale = {};
+	//_vector vRot = {};
+	//_vector vWorldPos = {};
+	//XMMatrixDecompose(&vScale, &vRot, &vWorldPos, XMLoadFloat4x4(m_pParentWorldMatrix));
+
+	//vWorldPos += XMVectorSet(0.f, 5.f, 0.f, 0.f);
+
+	//if(m_pGameInstance->Is_In_Frustum(vWorldPos, 1.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+
 }
 
 HRESULT CDamageBar_World::Render()
@@ -93,24 +125,8 @@ HRESULT CDamageBar_World::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	//배경
-	//_float4 vBaseColor = { 0.f, 0.f, 0.f, 1.f };
-	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vBaseColor", &vBaseColor, sizeof(_float4))))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pTextureCom_Background->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pShaderCom->Begin(3)))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
-
-	//바
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelayValue", &m_fFillDelayValue, sizeof(_float))))
+		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFillDelay", &m_fFillDelay, sizeof(_float))))
 		return E_FAIL;
@@ -134,6 +150,8 @@ void CDamageBar_World::Fill(_float fFillAmount)
 {
 	m_fTimeAcc = 0.f;
 	m_fFillDelay = m_fFillAmount;
+	m_fFillDelayValue = 0.f;
+
 	m_fFillAmount = fFillAmount;
 }
 

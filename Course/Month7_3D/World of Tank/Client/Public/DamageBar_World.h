@@ -43,6 +43,7 @@ private:
 
 	_float	m_fFillAmount = { 1.f };
 	_float	m_fFillDelay = { 1.f };
+	_float	m_fFillDelayValue = { 1.f };
 
 private:
 	const _float m_fBaseScale = 0.03f;

@@ -132,7 +132,14 @@ void CTank::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 	if (m_bisDie)
+	{
+
+		CGameObject* pDamageBar = Find_PartObject(TEXT("Part_DamageBar"));
+		if (pDamageBar)
+			pDamageBar->Late_Update(fTimeDelta);
+
 		return;
+	}
 
 	CGameObject::Late_Update(fTimeDelta);
 

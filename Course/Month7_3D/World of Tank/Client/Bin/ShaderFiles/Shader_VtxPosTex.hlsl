@@ -7,6 +7,7 @@ float g_fAlpha = 0.3f;
 
 float g_fFill = 1.f;
 float g_fFillDelay = 1.f;
+float g_fFillDelayValue = 0.f;
 
 float4 g_vBaseColor = float4(1.f, 1.f, 1.f, 1.f);
 
@@ -103,8 +104,12 @@ PS_OUT PS_FILL_COLOR(PS_IN In)
 PS_OUT PS_DAMAGEBAR_WORLD(PS_IN In)
 {
     PS_OUT Out;
-
+    
     float4 texColor;
+    
+    float4 dark = g_Texture.Sample(DefaultSampler, In.vTexcoord) * float4(0.f, 0.f, 0.f, 0.5f);
+    float4 yellow = float4(1.f, 1.f, 0.f, texColor.a);
+    
     if (In.vTexcoord.x <= g_fFill)
     {
         //현재 체력
@@ -113,12 +118,17 @@ PS_OUT PS_DAMAGEBAR_WORLD(PS_IN In)
     else if (In.vTexcoord.x <= g_fFillDelay)
     {
         texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-        texColor.rgb = float3(1.0, 1.0, 0.0); // 노란색 덮기
+        // 노란색 덮기
+        yellow = float4(1.f, 1.f, 0.f, texColor.a);
+        
+        // 시간 기반으로 점점 어두워지는 어두운 색 전환
+        texColor = lerp(yellow, dark, g_fFillDelayValue);
+
     }
     else
     {
         //어두운 배경
-        texColor = g_Texture.Sample(DefaultSampler, In.vTexcoord) * float4(0.f, 0.f, 0.f, 0.5f);
+        texColor = dark;
     }
 
     Out.vColor = texColor;
