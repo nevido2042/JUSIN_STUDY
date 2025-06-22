@@ -25,10 +25,11 @@ public:
 
 public:
 	_bool IsPointInBoundary(const _float3& vPoint);
+	_float3 SafeInsideBoundary(const _float3& vBoundaryPoint, const _float3& vCenter, _float fOffset = 0.01f);
 	_float3 ClosestPointOnBoundary(const _float3& vPos);
 
-private:
-	_bool IsPointOnSegmentXZ(const _float3& p, const _float3& a, const _float3& b, _float fTolerance);
+//private:
+//	_bool IsPointOnSegmentXZ(const _float3& p, const _float3& a, const _float3& b, _float fTolerance);
 
 private:
 	HRESULT Load_BoundaryPoints();

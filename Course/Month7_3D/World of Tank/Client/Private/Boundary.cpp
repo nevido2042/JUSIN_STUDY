@@ -205,6 +205,18 @@ _bool CBoundary::IsPointInBoundary(const _float3& vPoint)
 
 }
 
+_float3 CBoundary::SafeInsideBoundary(const _float3& vBoundaryPoint, const _float3& vCenter, _float fOffset)
+{
+	_vector vDir = XMLoadFloat3(&vCenter) - XMLoadFloat3(&vBoundaryPoint);
+	
+	vDir = XMVectorSetY(vDir, 0.f);
+	vDir = XMVector3Normalize(vDir);
+	_float3 vSafePos;
+	XMStoreFloat3(&vSafePos, XMLoadFloat3(&vBoundaryPoint) + vDir * fOffset);
+	vSafePos.y = vBoundaryPoint.y;
+	return vSafePos;
+}
+
 HRESULT CBoundary::Load_BoundaryPoints()
 {
 	m_BoundaryPoints.clear();

@@ -97,18 +97,22 @@ void CTank::Update(_float fTimeDelta)
 
 	Move(fTimeDelta);
 
-	//if (m_pBoundary)
-	//{
-	//	_float3 vPos = {};
-	//	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+	if (m_pBoundary)
+	{
+		_float3 vPos = {};
+		XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
-	//	if (!m_pBoundary->IsPointInBoundary(vPos))
-	//	{
-	//		_float3 vClosestPos = m_pBoundary->ClosestPointOnBoundary(vPos);
-	//		m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vClosestPos), 1.f));
+		if (!m_pBoundary->IsPointInBoundary(vPos))
+		{
+			_float3 vClosestPos = m_pBoundary->ClosestPointOnBoundary(vPos);
+			_float fTerrainHalf = TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f;
+			_float3 vMapCenter = { fTerrainHalf , 0.f, fTerrainHalf };
+			_float3 vSafePoint = m_pBoundary->SafeInsideBoundary(vClosestPos, vMapCenter, 0.1f);
 
-	//	}
-	//}
+			m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vSafePoint), 1.f));
+
+		}
+	}
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Ptr()));
 
@@ -545,7 +549,7 @@ void CTank::Move(_float fTimeDelta)
 	_float fTurnSpeed = pEngin->Get_TurnPower();
 
 	//이동하기전 위치 저장
-	_vector BeforePos = m_pTransformCom->Get_State(STATE::POSITION);
+	//_vector BeforePos = m_pTransformCom->Get_State(STATE::POSITION);
 
 
 	_float fSpeed_TrackState = { 1.f };
@@ -567,14 +571,14 @@ void CTank::Move(_float fTimeDelta)
 
 	//바운더리 검사후 경계 안이면 이동 허용
 	//아니면 이전 위치로 돌리기
-	if (m_pBoundary)
+	/*if (m_pBoundary)
 	{
 		_float3 vPos = {};
 		XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
 		if (!m_pBoundary->IsPointInBoundary(vPos))
 			m_pTransformCom->Set_State(STATE::POSITION, BeforePos);
-	}
+	}*/
 
 	pTrackLeft->Set_Speed(SpeedTrackLeft);
 	pTrackRight->Set_Speed(SpeedTrackRight);
