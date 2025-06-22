@@ -208,6 +208,7 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_TPS(const _wstring strLayerTag)
 	CCamera_TPS::CAMERA_TPS_DESC Desc{};
 	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));
 	Desc.bActive = true;
+	lstrcpy(Desc.szName, TEXT("Camera_TPS"));
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_TPS"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
@@ -221,6 +222,7 @@ HRESULT CLevel_Practice::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 	CCamera_FPS::CAMERA_FPS_DESC Desc{};
 	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_PlayerTank"))->Find_PartObject(TEXT("Part_Turret"));
 	Desc.bActive = false;
+	lstrcpy(Desc.szName, TEXT("Camera_FPS"));
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_FPS"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))

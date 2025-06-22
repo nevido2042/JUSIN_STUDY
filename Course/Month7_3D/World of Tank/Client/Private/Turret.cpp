@@ -7,6 +7,7 @@
 #include "DamagePanel.h"
 #include "Icon_Module.h"
 #include "Tank.h"
+#include "Gun.h"
 
 CTurret::CTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -154,9 +155,6 @@ void CTurret::Set_ModuleState(MODULE_STATE eState)
 
 void CTurret::Input(_float fTimeDelta)
 {
-	//if (GetForegroundWindow() != g_hWnd)
-	//	return;
-
 	if (m_pGameInstance->Mouse_Pressing(ENUM_CLASS(DIMK::RBUTTON)))
 	{
 		if (m_bLeft || m_bRight)
@@ -179,6 +177,8 @@ void CTurret::Input(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
+
+#pragma region 포탑 좌우 회전
 		// 내 위치
 		_float3 vMyPos = {
 			m_CombinedWorldMatrix.m[3][0],
@@ -226,6 +226,16 @@ void CTurret::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_RIGHT), &Desc);
 				}
 			}
+
+			//주포 명중률 하락
+			CModule* pModule = m_pOwner->Find_Module(MODULE::GUN);
+			if (pModule)
+			{
+				CGun* pGun = static_cast<CGun*>(pModule);
+				if (pGun)
+					pGun->Set_AngleDegree_Max();
+			}
+
 			m_pTransformCom->Turn(vAxis, fTimeDelta /* * 회전속도 */);
 		}
 		else if (fRightDot < -0.01f) // 왼쪽 회전
@@ -243,6 +253,16 @@ void CTurret::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_LEFT), &Desc);
 				}
 			}
+
+			//주포 명중률 하락
+			CModule* pModule = m_pOwner->Find_Module(MODULE::GUN);
+			if (pModule)
+			{
+				CGun* pGun = static_cast<CGun*>(pModule);
+				if (pGun)
+					pGun->Set_AngleDegree_Max();
+			}
+
 			m_pTransformCom->Turn(vAxis, -fTimeDelta /* * 회전속도 */);
 		}
 		else // 정면
@@ -295,6 +315,7 @@ void CTurret::Input(_float fTimeDelta)
 				}
 			}
 		}
+#pragma endregion
 	}
 
 }

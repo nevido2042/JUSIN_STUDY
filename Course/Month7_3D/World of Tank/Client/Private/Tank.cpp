@@ -8,6 +8,8 @@
 #include "GameManager.h"
 #include "AmmoBay.h"
 #include "Boundary.h"
+#include "Layer.h"
+#include "Camera_TPS.h"
 
 #pragma region UI
 #include "Icon_Module.h"
@@ -250,6 +252,19 @@ HRESULT CTank::Try_Fire()
 
 		pAmmoBay->Start_Load();
 
+		//카메라 셰이크
+		CLayer* pLayer = nullptr;
+		pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Camera"));
+		if (pLayer)
+		{
+			CGameObject* pObject = pLayer->Find_GameObject_By_Name(TEXT("Camera_TPS"));
+
+			if (pObject && pObject->Get_isActive())
+			{
+				static_cast<CCamera_TPS*>(pObject)->Start_CameraShake(0.1f, 0.5f);
+			}
+		}
+
 	}
 	else
 	{
@@ -295,6 +310,17 @@ HRESULT CTank::Take_Damage(_float fDamage)
 		}
 
 		//카메라 셰이크
+		CLayer* pLayer = nullptr;
+		pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Camera"));
+		if(pLayer)
+		{
+			CGameObject* pObject = pLayer->Find_GameObject_By_Name(TEXT("Camera_TPS"));
+
+			if (pObject && pObject->Get_isActive())
+			{
+				static_cast<CCamera_TPS*>(pObject)->Start_CameraShake(0.1f, 2.f);
+			}		
+		}
 	}
 
 	CGameObject* pObject = Find_PartObject(TEXT("Part_DamageBar"));
@@ -663,6 +689,10 @@ HRESULT CTank::Ready_Components()
 
 HRESULT CTank::Ready_PartObjects(TANK_DESC* pDesc)
 {
+	//플레이어 탱크는 월드 데미지바 없어도 된다.
+	if (m_pGameInstance->Get_ID() == m_iID)
+		return S_OK;
+
 	CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
 	DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	DamageBarWorldDesc.pParent = this;

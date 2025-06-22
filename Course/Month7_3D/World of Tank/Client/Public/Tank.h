@@ -40,8 +40,9 @@ public:
 	virtual void On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal) override;
 
 public:
+	class CModule* Find_Module(MODULE eModule) const { return m_Modules[ENUM_CLASS(eModule)]; }
+public:
 	_bool Get_isDie() const { return m_bisDie; }
-
 public:
 	TEAM Get_Team() const { return m_eTeam; }
 public:
@@ -54,7 +55,6 @@ public:
 	HRESULT Take_Damage(_float fDamage);
 public:
 	void Repair_All();
-
 private:
 	void OnGround(_float fTimeDelta);
 

@@ -30,7 +30,7 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 	pDesc->fFar = 1000.f;
 	pDesc->fRotationPerSec = XMConvertToRadians(0.0f);
 	pDesc->fSpeedPerSec = 0.0f;
-	lstrcpy(pDesc->szName, TEXT("Camera"));
+	//lstrcpy(pDesc->szName, TEXT("Camera"));
 
 	m_fSensor = pDesc->fSensor;
 	m_pTarget = pDesc->pTarget;

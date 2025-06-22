@@ -238,6 +238,8 @@ void CGun::Input(_float fTimeDelta)
 
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
+#pragma region 주포 상하 회전
+
 		// 내 위치
 		_float3 vMyPos = {
 			m_CombinedWorldMatrix.m[3][0],
@@ -294,8 +296,11 @@ void CGun::Input(_float fTimeDelta)
 					m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DOWN), &Desc);
 				}
 			}
-			if(fDotY >= m_fMinPitch)
+			if (fDotY >= m_fMinPitch)
+			{
+				Set_AngleDegree_Max();
 				m_pTransformCom->Turn(vAxis, fTimeDelta /** m_fRotateSpeed*//** abs(fUpDot)*/);
+			}
 		}
 		else if (fUpDot < -0.01f) //상으로
 		{
@@ -314,14 +319,13 @@ void CGun::Input(_float fTimeDelta)
 
 			}
 			if (fDotY <= m_fMaxPitch)
+			{
 				m_pTransformCom->Turn(vAxis, -fTimeDelta/* * m_fRotateSpeed *//** abs(fUpDot)*/);
+				Set_AngleDegree_Max();
+			}
 		}
 		else
 		{
-			//이 부분 채워줘
-			//오차이내로 들어오면
-			//Gun이 정확히 picekdPos 바라보도록
-
 			// m_CombinedWorldMatrix에서 Right, Look 벡터 추출
 			_vector vUp = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[1]));
 			_vector vLook = XMVector3Normalize(XMLoadFloat3((_float3*)&m_CombinedWorldMatrix.m[2]));
@@ -369,6 +373,7 @@ void CGun::Input(_float fTimeDelta)
 				}
 			}
 		}
+#pragma endregion
 	}
 }
 
