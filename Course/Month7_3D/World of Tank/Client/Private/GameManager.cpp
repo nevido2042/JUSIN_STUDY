@@ -40,7 +40,7 @@ HRESULT CGameManager::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pSoundCom_GUI->SetVolume(0.5f);
+	m_pSoundCom_GUI->SetVolume(0.3f);
 
 	return S_OK;
 }

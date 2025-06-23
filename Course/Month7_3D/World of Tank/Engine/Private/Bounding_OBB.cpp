@@ -80,6 +80,78 @@ HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvec
 #endif
 
 
+_bool CBounding_OBB::Intersect_Ray_ToOBB(_fvector vOrigin, _fvector vDir, _float& fDist, _vector* pOutNormal)
+{
+	OBB_INFO OBBDesc = Compute_OBB();
+
+	// 레이 기준 좌표계로 변환
+	_vector vDelta = XMLoadFloat3(&OBBDesc.vCenter) - vOrigin;
+
+	_vector vAxis[3] =
+	{
+		XMLoadFloat3(&OBBDesc.vAxisDir[0]),
+		XMLoadFloat3(&OBBDesc.vAxisDir[1]),
+		XMLoadFloat3(&OBBDesc.vAxisDir[2])
+	};
+
+	_float fExtent[3] =
+	{
+		XMVectorGetX(XMVector3Length(XMLoadFloat3(&OBBDesc.vCenterDir[0]))),
+		XMVectorGetX(XMVector3Length(XMLoadFloat3(&OBBDesc.vCenterDir[1]))),
+		XMVectorGetX(XMVector3Length(XMLoadFloat3(&OBBDesc.vCenterDir[2])))
+	};
+
+	_float tMin = -FLT_MAX;
+	_float tMax = FLT_MAX;
+	_int iHitAxis = -1;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		_float e = XMVectorGetX(XMVector3Dot(vAxis[i], vDelta));
+		_float f = XMVectorGetX(XMVector3Dot(vAxis[i], vDir));
+
+		if (fabsf(f) > 1e-6f) // 레이와 축이 평행하지 않음
+		{
+			_float t1 = (e + fExtent[i]) / f;
+			_float t2 = (e - fExtent[i]) / f;
+
+			if (t1 > t2) std::swap(t1, t2);
+
+			if (t1 > tMin)
+			{
+				tMin = t1;
+				iHitAxis = i;
+			}
+
+			tMax = min(tMax, t2);
+
+			if (tMin > tMax) return false;
+			if (tMax < 0.f) return false;
+		}
+		else
+		{
+			// 레이가 축과 거의 평행할 때, OBB의 반대편에 있을 경우
+			if (fabsf(e) > fExtent[i])
+				return false;
+		}
+	}
+
+	fDist = (tMin >= 0.f) ? tMin : tMax;
+
+	if (pOutNormal != nullptr && iHitAxis >= 0)
+	{
+		_vector vNormal = vAxis[iHitAxis];
+
+		// 법선 방향은 레이의 반대방향을 기준으로 조정
+		if (XMVectorGetX(XMVector3Dot(vNormal, vDir)) > 0.f)
+			vNormal = -vNormal;
+
+		*pOutNormal = XMVector3Normalize(vNormal);
+	}
+
+	return true;
+}
+
 _bool CBounding_OBB::Intersect_ToOBB(CBounding* pTarget, _vector* pOutNormal)
 {
 	OBB_INFO	OBBDesc[2] = {

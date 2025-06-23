@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Module.h"
 #include "Tank.h"
+#include "DamagePanel.h"
 
 CShell::CShell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -142,8 +143,6 @@ void CShell::Check_RaycastHit()
 				fMinDist = fDist;
 				pHitResult = pHit;
 				eCollGroup = COLLISION_GROUP::BODY;
-
-
 			}
 		}
 	}
@@ -192,6 +191,15 @@ void CShell::Check_RaycastHit()
 			{
 				pHitModule->On_RaycastHit(this);
 			}
+
+			if (m_pGameInstance->Get_ID() == m_iID)
+			{
+				CGameObject* pDamagePanel = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"));
+				if (pDamagePanel)
+				{
+					static_cast<CDamagePanel*>(pDamagePanel)->Play_Voice_Hit_Enemy();
+				}
+			}
 		}
 		//차체를 맞았을 때 부품 검사
 		else if (eCollGroup == COLLISION_GROUP::BODY)
@@ -205,6 +213,15 @@ void CShell::Check_RaycastHit()
 			if (pHitModule)
 			{
 				pHitModule->On_RaycastHit(this);
+			}
+
+			if (m_pGameInstance->Get_ID() == m_iID)
+			{
+				CGameObject* pDamagePanel = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"));
+				if (pDamagePanel)
+				{
+					static_cast<CDamagePanel*>(pDamagePanel)->Play_Voice_Hit_Enemy();
+				}
 			}
 		}
 		else if (eCollGroup == COLLISION_GROUP::BUILDING)

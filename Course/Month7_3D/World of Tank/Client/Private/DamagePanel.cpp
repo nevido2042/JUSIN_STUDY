@@ -199,6 +199,18 @@ void CDamagePanel::Play_Voice_Destroyed()
 	m_pSoundCom_Voice->Play("vehicle_destroyed_2");
 }
 
+void CDamagePanel::Play_Voice_Hit_Enemy()
+{
+	m_pSoundCom_Voice->Play("armor_pierced_by_player_4");
+
+}
+
+void CDamagePanel::Play_Voice_Hit_Ally()
+{
+	m_pSoundCom_Voice->Play("ally_killed_by_player_1");
+
+}
+
 void CDamagePanel::Play_Sound_TakeDamage()
 {
 	m_pSoundCom_TankSound2D->Play("phys_coll_85");

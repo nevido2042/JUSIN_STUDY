@@ -15,10 +15,10 @@ CShed::CShed(const CShed& Prototype)
 
 HRESULT CShed::Initialize_Prototype()
 {
-	m_vLocalPoint[0] = _float3{ 11.f, 0.f, 3.5f };
-	m_vLocalPoint[1] = _float3{ -11.f, 0.f, 3.5f };
-	m_vLocalPoint[2] = _float3{ 11.f, 0.f, -3.5f };
-	m_vLocalPoint[3] = _float3{ -11.f, 0.f, -3.5f };
+	m_vLocalPoint[0] = _float3{ 11.f, 0.f, 3.f };
+	m_vLocalPoint[1] = _float3{ -11.f, 0.f, 3.f };
+	m_vLocalPoint[2] = _float3{ 11.f, 0.f, -3.f };
+	m_vLocalPoint[3] = _float3{ -11.f, 0.f, -3.f };
 
 	return S_OK;
 }
@@ -82,7 +82,7 @@ HRESULT CShed::Ready_Components()
 
 	/* For.Com_Collider */
 	CBounding_OBB::OBB_DESC	OBBDesc{};
-	OBBDesc.vExtents = _float3(11.f, 3.5f, 3.5f);
+	OBBDesc.vExtents = _float3(11.f, 3.5f, 3.0f);
 	OBBDesc.vCenter = _float3(-0.5f, OBBDesc.vExtents.y, 0.f);
 	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
 

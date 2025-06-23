@@ -34,6 +34,9 @@ public:
 public:
 	void Play_Voice_Destroyed();
 public:
+	void Play_Voice_Hit_Enemy();
+	void Play_Voice_Hit_Ally();
+public:
 	void Play_Sound_TakeDamage();
 public:
 	void Repair_All();
