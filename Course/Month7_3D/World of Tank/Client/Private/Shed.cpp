@@ -1,0 +1,133 @@
+#include "Shed.h"
+#include "GameInstance.h"
+
+CShed::CShed(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CBuilding{ pDevice, pContext }
+{
+
+}
+
+CShed::CShed(const CShed& Prototype)
+	: CBuilding(Prototype)
+{
+
+}
+
+HRESULT CShed::Initialize_Prototype()
+{
+	m_vLocalPoint[0] = _float3{ 11.f, 0.f, 3.5f };
+	m_vLocalPoint[1] = _float3{ -11.f, 0.f, 3.5f };
+	m_vLocalPoint[2] = _float3{ 11.f, 0.f, -3.5f };
+	m_vLocalPoint[3] = _float3{ -11.f, 0.f, -3.5f };
+
+	return S_OK;
+}
+
+HRESULT CShed::Initialize(void* pArg)
+{
+	LANDOBJECT_DESC			Desc{};
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
+	Desc.strLayerTag = TEXT("Layer_Terrain");
+	Desc.strComponentTag = TEXT("Com_VIBuffer");
+	Desc.iIndex = 0;
+	lstrcpy(Desc.szName, TEXT("VHouse01A"));
+
+	if (FAILED(__super::Initialize(&Desc)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
+
+	return S_OK;
+}
+
+
+void CShed::Priority_Update(_float fTimeDelta)
+{
+	CBuilding::Priority_Update(fTimeDelta);
+}
+
+void CShed::Update(_float fTimeDelta)
+{
+	CBuilding::Update(fTimeDelta);
+}
+
+void CShed::Late_Update(_float fTimeDelta)
+{
+	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 20.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+}
+
+HRESULT CShed::Render()
+{
+	CBuilding::Render();
+
+	return S_OK;
+}
+
+
+HRESULT CShed::Ready_Components()
+{
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+
+	/* For.Com_Model */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Shed"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_OBB::OBB_DESC	OBBDesc{};
+	OBBDesc.vExtents = _float3(11.f, 3.5f, 3.5f);
+	OBBDesc.vCenter = _float3(-0.5f, OBBDesc.vExtents.y, 0.f);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CShed::Bind_ShaderResources()
+{
+	CBuilding::Bind_ShaderResources();
+
+	return S_OK;
+}
+
+CShed* CShed::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CShed* pInstance = new CShed(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CShed");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CShed::Clone(void* pArg)
+{
+	CShed* pInstance = new CShed(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CShed");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CShed::Free()
+{
+	__super::Free();
+
+}

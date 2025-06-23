@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Shed.h"
 #include "WorkshopNewRoof.h"
 #include "KitCrashFactoryWall01A.h"
 #include "PolishSignboards.h"
@@ -370,6 +371,13 @@ HRESULT CLoader::Loading_For_Static()
 
 	_matrix		PreTransformMatrix = PreTransformMatrix = XMMatrixIdentity();
 
+	/* For.Prototype_Component_Model_Shed */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Shed"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Map/99_poland//content/Buildings/057_Shed/hd_bld_EU_057_Shed_01A.bin", PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_WorkshopNewRoof */
 	PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.f));
@@ -689,6 +697,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_PolishSignboards */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PolishSignboards"),
 		CPolishSignboards::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Shed */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shed"),
+		CShed::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_WorkshopNewRoof */

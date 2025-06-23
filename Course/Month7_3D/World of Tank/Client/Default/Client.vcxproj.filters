@@ -307,6 +307,9 @@
     <Filter Include="02.GameObjects\02.LandObject\Buildings\WorkshopNewRoof">
       <UniqueIdentifier>{2bb5a795-516c-4111-92bc-0e756265f5af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Buildings\Shed">
+      <UniqueIdentifier>{99eaffd5-bbac-4e6a-bfce-7ac8c893de36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -618,6 +621,9 @@
     <ClInclude Include="..\public\WorkshopNewRoof.h">
       <Filter>02.GameObjects\02.LandObject\Buildings\WorkshopNewRoof</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Shed.h">
+      <Filter>02.GameObjects\02.LandObject\Buildings\Shed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -923,6 +929,9 @@
     </ClCompile>
     <ClCompile Include="..\private\WorkshopNewRoof.cpp">
       <Filter>02.GameObjects\02.LandObject\Buildings\WorkshopNewRoof</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shed.cpp">
+      <Filter>02.GameObjects\02.LandObject\Buildings\Shed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

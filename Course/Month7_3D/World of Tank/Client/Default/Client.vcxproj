@@ -220,6 +220,7 @@
     <ClInclude Include="..\public\PolishSignboards.h" />
     <ClInclude Include="..\public\Score.h" />
     <ClInclude Include="..\public\Score_Tank.h" />
+    <ClInclude Include="..\public\Shed.h" />
     <ClInclude Include="..\public\Shell.h" />
     <ClInclude Include="..\public\Skydome.h" />
     <ClInclude Include="..\public\Tank.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="..\private\PolishSignboards.cpp" />
     <ClCompile Include="..\private\Score.cpp" />
     <ClCompile Include="..\private\Score_Tank.cpp" />
+    <ClCompile Include="..\private\Shed.cpp" />
     <ClCompile Include="..\private\Shell.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
     <ClCompile Include="..\private\Tank.cpp" />
