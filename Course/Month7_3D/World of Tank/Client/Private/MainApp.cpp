@@ -1041,9 +1041,9 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 
 	/* For.Prototype_Component_TankSound2D */
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound2D"),
-	//	CSoundController::Create("../Bin/WOT_Resources/Sound/05.TankSound2D/"))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound2D"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/05.TankSound2D/"))))
+		return E_FAIL;
 #pragma endregion
 
 	return S_OK;

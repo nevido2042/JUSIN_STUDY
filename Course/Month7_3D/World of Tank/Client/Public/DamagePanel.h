@@ -34,6 +34,8 @@ public:
 public:
 	void Play_Voice_Destroyed();
 public:
+	void Play_Sound_TakeDamage();
+public:
 	void Repair_All();
 
 private:
@@ -41,6 +43,7 @@ private:
 	CTexture*			m_pTextureCom = { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 	CSoundController*	m_pSoundCom_Voice = { nullptr };
+	CSoundController*	m_pSoundCom_TankSound2D = { nullptr };
 
 private:
 	HRESULT Ready_Components();

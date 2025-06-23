@@ -65,7 +65,7 @@ private:
 private:
 	void Move(_float fTimeDelta);
 private:
-	void Destroyed();
+	void Die();
 private:
 	void ApplyRecoil(_float fTimeDelta);
 private:

@@ -297,7 +297,7 @@ HRESULT CTank::Take_Damage(_float fDamage, CShell* pShell, _float3 vFirePos)
 	{
 		m_fHP = 0.f;
 
-		Destroyed();
+		Die();
 	}
 
 	//네트워크로 받은경우는 메시지 보내면 안됨
@@ -316,9 +316,11 @@ HRESULT CTank::Take_Damage(_float fDamage, CShell* pShell, _float3 vFirePos)
 	{
 		//플레이어 탱크라면 체력바 찾아서 깎아라 && 맞는 소리 (꽝)
 		CGameObject* pDamagePanel = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"));
-
 		if (pDamagePanel)
 		{
+			//피해 받았다는 소리 데미지 판넬한테 요청
+			static_cast<CDamagePanel*>(pDamagePanel)->Play_Sound_TakeDamage();
+
 			CDamageBar* pDamageBar = static_cast<CDamageBar*>(pDamagePanel->Find_PartObject(TEXT("Part_DamageBar")));
 			if (pDamageBar)
 			{
@@ -326,6 +328,9 @@ HRESULT CTank::Take_Damage(_float fDamage, CShell* pShell, _float3 vFirePos)
 				//pDamageBar->Set_Text(m_fHP, m_fMaxHP);
 			}
 		}
+
+
+		
 
 		//카메라 셰이크
 		CLayer* pLayer = nullptr;
@@ -386,7 +391,7 @@ HRESULT CTank::Take_Damage(_float fDamage, CShell* pShell, _float3 vFirePos)
 //	{
 //		m_fHP = 0.f;
 //
-//		Destroyed();
+//		Die();
 //	}
 //
 //	//데미지를 받았다는 메시지를 보내자
@@ -683,7 +688,7 @@ void CTank::Move(_float fTimeDelta)
 	pTrackRight->Set_Speed(SpeedTrackRight);
 }
 
-void CTank::Destroyed()
+void CTank::Die()
 {
 	if (m_bisDie)
 		return;

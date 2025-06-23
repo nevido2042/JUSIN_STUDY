@@ -34,6 +34,7 @@ HRESULT CDamagePanel::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pSoundCom_Voice->SetVolume(0.3f);
+	m_pSoundCom_TankSound2D->SetVolume(0.3f);
 
 	return S_OK;
 }
@@ -198,6 +199,12 @@ void CDamagePanel::Play_Voice_Destroyed()
 	m_pSoundCom_Voice->Play("vehicle_destroyed_2");
 }
 
+void CDamagePanel::Play_Sound_TakeDamage()
+{
+	m_pSoundCom_TankSound2D->Play("phys_coll_85");
+	m_pSoundCom_TankSound2D->Play("phys_coll_86");
+}
+
 void CDamagePanel::Repair_All()
 {
 	static_cast<CIcon_Module*>(Find_PartObject(TEXT("Part_Engine")))->Set_ModuleState(MODULE_STATE::FUNCTIONAL);
@@ -230,6 +237,10 @@ HRESULT CDamagePanel::Ready_Components()
 	/* For.Com_Sound_Voice */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Voice"),
 		TEXT("Com_Sound_Voice"), reinterpret_cast<CComponent**>(&m_pSoundCom_Voice))))
+		return E_FAIL;
+	/* For.Com_Sound_TankSound2D */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound2D"),
+		TEXT("Com_Sound_TankSound2D"), reinterpret_cast<CComponent**>(&m_pSoundCom_TankSound2D))))
 		return E_FAIL;
 
 	return S_OK;
@@ -359,6 +370,7 @@ void CDamagePanel::Free()
 		Safe_Release(Pair.second);
 	m_PartObjects.clear();
 
+	Safe_Release(m_pSoundCom_TankSound2D);
 	Safe_Release(m_pSoundCom_Voice);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
