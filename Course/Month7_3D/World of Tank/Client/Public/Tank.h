@@ -46,13 +46,13 @@ public:
 public:
 	TEAM Get_Team() const { return m_eTeam; }
 public:
-	void Damage_Module(MODULE eModule, _float fDamage);
+	void Damage_Module(MODULE eModule);
 public:
 	HRESULT Set_State_Module(MODULE eModule, MODULE_STATE eState);
 public:
 	HRESULT Try_Fire();
 public:
-	HRESULT Take_Damage(_float fDamage);
+	HRESULT Take_Damage(_float fDamage, class CShell* pShell, _float3 vFirePos = {});
 public:
 	void Repair_All();
 private:

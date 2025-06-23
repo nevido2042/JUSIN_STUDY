@@ -671,6 +671,67 @@ HRESULT CMainApp::Ready_Packets()
 		})))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_TAKE_DAMAGE), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_TAKE_DAMAGE);
+
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(TAKEDAMAGE_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_TAKE_DAMAGE), [this](void* pArg)
+		{
+			TAKEDAMAGE_DESC TakeDamageDesc{};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&TakeDamageDesc), sizeof(TAKEDAMAGE_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			//나의 탱크의 상태 이상 일수도 있음
+			CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"));
+			if (pGameObject && pGameObject->Get_ID() == TakeDamageDesc.iTargetID)
+			{
+				static_cast<CTank*>(pGameObject)->Take_Damage(TakeDamageDesc.fDamage, nullptr, TakeDamageDesc.vFirePos);
+
+				//데미지 인디케이터 띄우자 여기서
+				CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
+
+				Desc.fSizeX = 248.f * UI_RATIO;
+				Desc.fSizeY = 716.f * UI_RATIO;
+				Desc.fX = g_iWinSizeX * 0.5f;
+				Desc.fY = g_iWinSizeY * 0.5f;
+				Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+				Desc.fRotationPerSec = 1.f;
+				Desc.vFirePos = TakeDamageDesc.vFirePos;
+
+				if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+					ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_DamageIndicator"), &Desc)))
+					return;
+			}
+			else
+			{
+				CLayer* pLayer = m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Tank"));
+				if (pLayer == nullptr)
+					return;
+
+				//다른 탱크의 상태이상일수도
+				for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+				{
+					if (pGameObject && TakeDamageDesc.iTargetID == pGameObject->Get_ID())
+					{
+						static_cast<CTank*>(pGameObject)->Take_Damage(TakeDamageDesc.fDamage, nullptr, TakeDamageDesc.vFirePos);
+						break;
+					}
+				}
+			}
+
+		})))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), [this](void* pArg)
 		{
 			m_pGameInstance->Clear_Packet();
@@ -696,22 +757,22 @@ HRESULT CMainApp::Ready_Packets()
 			CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_PlayerTank"));
 			if (pGameObject->Get_ID() == Hit_Desc.iTargetID)
 			{
-				static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule, 30.f);
+				static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule);
 
-				//데미지 인디케이터 띄우자 여기서
-				CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
+				////데미지 인디케이터 띄우자 여기서
+				//CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
 
-				Desc.fSizeX = 248.f * UI_RATIO;
-				Desc.fSizeY = 716.f * UI_RATIO;
-				Desc.fX = g_iWinSizeX * 0.5f;
-				Desc.fY = g_iWinSizeY * 0.5f;
-				Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
-				Desc.fRotationPerSec = 1.f;
-				Desc.vFirePos = Hit_Desc.vFirePos;
+				//Desc.fSizeX = 248.f * UI_RATIO;
+				//Desc.fSizeY = 716.f * UI_RATIO;
+				//Desc.fX = g_iWinSizeX * 0.5f;
+				//Desc.fY = g_iWinSizeY * 0.5f;
+				//Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+				//Desc.fRotationPerSec = 1.f;
+				//Desc.vFirePos = Hit_Desc.vFirePos;
 
-				if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
-					ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_DamageIndicator"), &Desc)))
-					return;
+				//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+				//	ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_DamageIndicator"), &Desc)))
+				//	return;
 			}
 			else
 			{
@@ -724,7 +785,7 @@ HRESULT CMainApp::Ready_Packets()
 				{
 					if (Hit_Desc.iTargetID == pGameObject->Get_ID())
 					{
-						static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule, 30.f);
+						static_cast<CTank*>(pGameObject)->Damage_Module(Hit_Desc.eModule);
 						break;
 					}
 				}

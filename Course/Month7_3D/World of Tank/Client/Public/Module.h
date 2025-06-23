@@ -34,7 +34,8 @@ public:
 	MODULE_STATE	Get_ModuleState() const { return m_eModuleState; }
 
 public:
-	void TakeDamage(_float fDamage);
+	void DamageModule();
+	void TakeDamage_Onwer(_float fDamage, class CShell* pShell);
 
 protected:
 	MODULE_STATE m_eModuleState = { MODULE_STATE::FUNCTIONAL };

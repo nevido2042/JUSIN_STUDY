@@ -18,6 +18,8 @@
 #include "DamagePanel.h"
 #include "PickedManager.h"
 #include "Score.h"
+#include "DamageIndicator.h"
+#include "Shell.h"
 #pragma endregion
 
 CTank::CTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -202,12 +204,12 @@ void CTank::On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal)
 	//_int i = 0;
 }
 
-void CTank::Damage_Module(MODULE eModule, _float fDamage)
+void CTank::Damage_Module(MODULE eModule)
 {
 	if (ENUM_CLASS(eModule) < 0 || ENUM_CLASS(eModule) >= ENUM_CLASS(MODULE::END))
 		return;
 
-	m_Modules[ENUM_CLASS(eModule)]->TakeDamage(fDamage);
+	m_Modules[ENUM_CLASS(eModule)]->DamageModule();
 
 }
 
@@ -287,7 +289,7 @@ HRESULT CTank::Try_Fire()
 
 }
 
-HRESULT CTank::Take_Damage(_float fDamage)
+HRESULT CTank::Take_Damage(_float fDamage, CShell* pShell, _float3 vFirePos)
 {
 	m_fHP -= fDamage;
 
@@ -296,6 +298,18 @@ HRESULT CTank::Take_Damage(_float fDamage)
 		m_fHP = 0.f;
 
 		Destroyed();
+	}
+
+	//네트워크로 받은경우는 메시지 보내면 안됨
+	if (pShell)
+	{
+		//데미지를 받았다는 메시지를 보내자
+		TAKEDAMAGE_DESC TakeDamageDesc = {};
+		TakeDamageDesc.iID = m_pGameInstance->Get_ID();
+		TakeDamageDesc.iTargetID = m_iID;
+		TakeDamageDesc.fDamage = fDamage;
+		TakeDamageDesc.vFirePos = pShell->Get_FirePos();
+		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_TAKE_DAMAGE), &TakeDamageDesc);
 	}
 
 	if (m_pGameInstance->Get_ID() == m_iID)
@@ -316,14 +330,40 @@ HRESULT CTank::Take_Damage(_float fDamage)
 		//카메라 셰이크
 		CLayer* pLayer = nullptr;
 		pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Camera"));
-		if(pLayer)
+		if (pLayer)
 		{
 			CGameObject* pObject = pLayer->Find_GameObject_By_Name(TEXT("Camera_TPS"));
 
 			if (pObject && pObject->Get_isActive())
 			{
 				static_cast<CCamera_TPS*>(pObject)->Start_CameraShake(0.1f, 2.f);
-			}		
+			}
+		}
+
+		if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) && m_iID == m_pGameInstance->Get_ID())
+		{
+			//데미지 인디케이터 띄우자 여기서
+			CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
+
+			Desc.fSizeX = 248.f * UI_RATIO;
+			Desc.fSizeY = 716.f * UI_RATIO;
+			Desc.fX = g_iWinSizeX * 0.5f;
+			Desc.fY = g_iWinSizeY * 0.5f;
+			Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+			Desc.fRotationPerSec = 1.f;
+
+			if (pShell)
+			{
+				Desc.vFirePos = pShell->Get_FirePos();
+			}
+			else
+			{
+				Desc.vFirePos = vFirePos;
+			}
+
+			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+				ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_DamageIndicator"), &Desc)))
+				return E_FAIL;
 		}
 	}
 
@@ -337,6 +377,65 @@ HRESULT CTank::Take_Damage(_float fDamage)
 	}
 	return S_OK;
 }
+
+//HRESULT CTank::Take_Damage(_float fDamage)
+//{
+//	m_fHP -= fDamage;
+//
+//	if (m_fHP <= 0.f)
+//	{
+//		m_fHP = 0.f;
+//
+//		Destroyed();
+//	}
+//
+//	//데미지를 받았다는 메시지를 보내자
+//
+//	//TAKEDAMAGE_DESC TakeDamageDesc = {};
+//	//TakeDamageDesc.iID = m_pGameInstance->Get_ID();
+//	//TakeDamageDesc.iTargetID = m_iID;
+//	//TakeDamageDesc.fDamage = fDamage;
+//	//m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_TAKE_DAMAGE), &TakeDamageDesc);
+//
+//	if (m_pGameInstance->Get_ID() == m_iID)
+//	{
+//		//플레이어 탱크라면 체력바 찾아서 깎아라 && 맞는 소리 (꽝)
+//		CGameObject* pDamagePanel = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel"));
+//
+//		if (pDamagePanel)
+//		{
+//			CDamageBar* pDamageBar = static_cast<CDamageBar*>(pDamagePanel->Find_PartObject(TEXT("Part_DamageBar")));
+//			if (pDamageBar)
+//			{
+//				pDamageBar->Fill(m_fHP / m_fMaxHP);
+//				//pDamageBar->Set_Text(m_fHP, m_fMaxHP);
+//			}
+//		}
+//
+//		//카메라 셰이크
+//		CLayer* pLayer = nullptr;
+//		pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Camera"));
+//		if(pLayer)
+//		{
+//			CGameObject* pObject = pLayer->Find_GameObject_By_Name(TEXT("Camera_TPS"));
+//
+//			if (pObject && pObject->Get_isActive())
+//			{
+//				static_cast<CCamera_TPS*>(pObject)->Start_CameraShake(0.1f, 2.f);
+//			}		
+//		}
+//	}
+//
+//	CGameObject* pObject = Find_PartObject(TEXT("Part_DamageBar"));
+//	if (pObject)
+//	{
+//		CDamageBar_World* pWorldDamageBar = static_cast<CDamageBar_World*> (pObject);
+//		pWorldDamageBar->Fill(m_fHP / m_fMaxHP);
+//		//pWorldDamageBar->Set_Text(m_fHP, m_fMaxHP);
+//
+//	}
+//	return S_OK;
+//}
 
 void CTank::Repair_All()
 {

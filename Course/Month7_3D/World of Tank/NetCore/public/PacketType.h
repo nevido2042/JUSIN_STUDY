@@ -62,6 +62,9 @@ enum class PacketType
     CS_MODULE_STATE,
     SC_MODULE_STATE,
 
+    CS_TAKE_DAMAGE,
+    SC_TAKE_DAMAGE,
+
     CS_HIT_MODULE,
     SC_HIT_MODULE,
 
@@ -94,7 +97,7 @@ typedef struct tagHitModule_Desc : PACKET_DESC
 {
     _int            iTargetID{ -1 };
     MODULE          eModule{ MODULE::END };
-    _float3         vFirePos = {};
+    //_float3         vFirePos = {};
 }HIT_MODULE_DESC;
 
 typedef struct tagModuleState_Desc : PACKET_DESC
@@ -103,6 +106,13 @@ typedef struct tagModuleState_Desc : PACKET_DESC
 	MODULE          eModule{ MODULE::END };
     MODULE_STATE    eState{ MODULE_STATE::END };
 }MODULE_STATE_DESC;
+
+typedef struct tagTakeDamageDesc : PACKET_DESC
+{
+    _int    iTargetID{ -1 };
+    _float  fDamage{ 0 };
+    _float3 vFirePos = {};
+}TAKEDAMAGE_DESC;
 
 typedef struct tagBool_Desc : PACKET_DESC
 {

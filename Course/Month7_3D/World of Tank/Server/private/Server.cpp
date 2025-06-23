@@ -1009,6 +1009,35 @@ HRESULT CServer::Define_Packets()
         })))
         return E_FAIL;
 
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_TAKE_DAMAGE), [this](void* pArg)
+        {
+            TAKEDAMAGE_DESC Desc{};
+            Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(TAKEDAMAGE_DESC));
+            Clear_Packet();
+
+            CSession* pSession = Find_Session(Desc.iID);
+
+            printf_s("(Take_damage) ID: %d\n", Desc.iID);
+
+            //나를 제외한 모든 사람들에게 알려야함
+            Send_Packet_Broadcast(pSession, ENUM_CLASS(PacketType::SC_TAKE_DAMAGE), &Desc);
+        })))
+        return E_FAIL;
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_TAKE_DAMAGE), [this](void* pArg)
+        {
+            Clear_Packet();
+
+            PACKET_HEADER tHeader{};
+            tHeader.byCode = PACKET_CODE;
+            tHeader.byType = ENUM_CLASS(PacketType::SC_TAKE_DAMAGE);
+
+            Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+            Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(TAKEDAMAGE_DESC));
+            Update_Header();
+        })))
+        return E_FAIL;
+
     if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), [this](void* pArg)
         {
             HIT_MODULE_DESC Desc{};

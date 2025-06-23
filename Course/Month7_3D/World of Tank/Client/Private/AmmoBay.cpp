@@ -144,7 +144,7 @@ void CAmmoBay::Set_ModuleState(MODULE_STATE eState)
 	}
 
 	if (m_eModuleState == MODULE_STATE::DESTROYED)
-		m_pOwner->Take_Damage(9999.f);
+		m_pOwner->Take_Damage(9999.f, nullptr);
 }
 
 void CAmmoBay::Start_Load()

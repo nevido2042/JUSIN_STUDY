@@ -2,9 +2,9 @@
 
 #include "Base.h"
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 #include "DebugDraw.h"
-#endif
+//#endif
 
 NS_BEGIN(Engine)
 

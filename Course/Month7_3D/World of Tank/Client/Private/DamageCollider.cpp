@@ -108,7 +108,9 @@ HRESULT CDamageCollider::Render()
 		0.3f * UI_RATIO
 	);
 
+#ifdef _DEBUG
 	m_pColliderCom->Render();
+#endif
 
 	return S_OK;
 }
@@ -123,7 +125,7 @@ void CDamageCollider::On_Collision_Stay(CGameObject* pOther, _fvector vNormal)
 	CTank* pTank = static_cast<CTank*>(pOther);
 	if (pTank)
 	{
-		pTank->Damage_Module(m_eDamageModule, 0.f);
+		pTank->Damage_Module(m_eDamageModule);
 	}
 }
 

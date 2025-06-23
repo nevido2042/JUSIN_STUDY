@@ -1,6 +1,8 @@
 #include "Shell.h"
 
 #include "GameInstance.h"
+#include "Module.h"
+#include "Tank.h"
 
 CShell::CShell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -118,6 +120,7 @@ HRESULT CShell::Render()
 
 void CShell::Check_RaycastHit()
 {
+	COLLISION_GROUP eCollGroup = { COLLISION_GROUP::END };
 	CGameObject* pHitResult = { nullptr };
 	_float fMinDist = FLT_MAX;
 
@@ -128,7 +131,8 @@ void CShell::Check_RaycastHit()
 	vRayDir = XMVector3Normalize(vRayDir);
 	CGameObject* pHit = { nullptr };
 
-	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
+	//차체나 포탑을 맞았을 때, 부품 충돌을 검사하라
+	pHit = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::BODY), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
 	if (pHit)
 	{
 		if (fRayLength > fDist)
@@ -137,6 +141,9 @@ void CShell::Check_RaycastHit()
 			{
 				fMinDist = fDist;
 				pHitResult = pHit;
+				eCollGroup = COLLISION_GROUP::BODY;
+
+
 			}
 		}
 	}
@@ -150,6 +157,7 @@ void CShell::Check_RaycastHit()
 			{
 				fMinDist = fDist;
 				pHitResult = pHit;
+				eCollGroup = COLLISION_GROUP::TURRET;
 			}
 		}
 	}
@@ -163,15 +171,46 @@ void CShell::Check_RaycastHit()
 			{
 				fMinDist = fDist;
 				pHitResult = pHit;
+				eCollGroup = COLLISION_GROUP::BUILDING;
 			}
 		}
 	}
 
 	if (pHitResult != nullptr)
 	{
-		//모듈이라면 데미지를 주고
+		//포탑이나 맞았을 때 부품 검사
+		if (eCollGroup == COLLISION_GROUP::TURRET)
+		{
+			CModule* pTurret = static_cast<CModule*>(pHitResult);
+			pTurret->TakeDamage_Onwer(10.f, this);
+			pTurret->On_RaycastHit(this);
 
-		pHitResult->On_RaycastHit(this);
+			//부품 충돌 검사를 해라
+			CGameObject* pHitModule = { nullptr };
+			pHitModule = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
+			if (pHitModule)
+			{
+				pHitModule->On_RaycastHit(this);
+			}
+		}
+		//차체를 맞았을 때 부품 검사
+		else if (eCollGroup == COLLISION_GROUP::BODY)
+		{
+			CTank* pTank = static_cast<CTank*>(pHitResult);
+			pTank->Take_Damage(10.f, this);
+
+			//부품 충돌 검사를 해라
+			CGameObject* pHitModule = { nullptr };
+			pHitModule = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
+			if (pHitModule)
+			{
+				pHitModule->On_RaycastHit(this);
+			}
+		}
+		else if (eCollGroup == COLLISION_GROUP::BUILDING)
+		{
+
+		}
 
 		Destroy();
 	}

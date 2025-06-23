@@ -1,6 +1,7 @@
 #include "Track.h"
 
 #include "GameInstance.h"
+#include "Module.h"
 
 CTrack::CTrack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }

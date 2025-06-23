@@ -69,7 +69,7 @@ void CModule::On_RaycastHit(CGameObject* pOther)
 	// 게임플레이 일때는 자신의 엔진충돌은 메시지로부터만 받는다.
 	if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY) || m_pGameInstance->Get_ID() != m_iID)
 	{
-		TakeDamage(30.f);
+		DamageModule();
 	}
 
 	// 게임플레이면서 플레이어의 탱크가 아닌애들은 충돌 메시지를 전달한다.
@@ -79,28 +79,28 @@ void CModule::On_RaycastHit(CGameObject* pOther)
 		Desc.iID = m_pGameInstance->Get_ID();
 		Desc.iTargetID = m_iID;
 		Desc.eModule = m_eModuleType;
-		Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
+		//Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
 
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_HIT_MODULE), &Desc);
 	}
 
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) && m_iID == m_pGameInstance->Get_ID())
-	{
-		//데미지 인디케이터 띄우자 여기서
-		CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
+	//if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE) && m_iID == m_pGameInstance->Get_ID())
+	//{
+	//	//데미지 인디케이터 띄우자 여기서
+	//	CDamageIndicator::DAMAGE_INDICATOR_DESC		Desc{};
 
-		Desc.fSizeX = 248.f * UI_RATIO;
-		Desc.fSizeY = 716.f * UI_RATIO;
-		Desc.fX = g_iWinSizeX * 0.5f;
-		Desc.fY = g_iWinSizeY * 0.5f;
-		Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
-		Desc.fRotationPerSec = 1.f;
-		Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
+	//	Desc.fSizeX = 248.f * UI_RATIO;
+	//	Desc.fSizeY = 716.f * UI_RATIO;
+	//	Desc.fX = g_iWinSizeX * 0.5f;
+	//	Desc.fY = g_iWinSizeY * 0.5f;
+	//	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	//	Desc.fRotationPerSec = 1.f;
+	//	Desc.vFirePos = static_cast<CShell*>(pOther)->Get_FirePos();
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
-			ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_DamageIndicator"), &Desc)))
-			return;
-	}
+	//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageIndicator"),
+	//		ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_DamageIndicator"), &Desc)))
+	//		return;
+	//}
 
 }
 
@@ -109,12 +109,25 @@ void CModule::Set_ModuleState(MODULE_STATE eState)
 	m_eModuleState = eState;
 }
 
-void CModule::TakeDamage(_float fDamage)
+void CModule::DamageModule()
 {
-	m_pOwner->Take_Damage(fDamage);
-
 	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
 }
+
+void CModule::TakeDamage_Onwer(_float fDamage, class CShell* pShell)
+{
+	if (m_pOwner)
+	{
+		m_pOwner->Take_Damage(fDamage, pShell);
+	}
+}
+
+//void CModule::TakeDamage(_float fDamage)
+//{
+//	m_pOwner->Take_Damage(fDamage);
+//
+//	Set_ModuleState(static_cast<MODULE_STATE>(max(0, _int(ENUM_CLASS(m_eModuleState) - 1))));
+//}
 
 HRESULT CModule::Ready_Components()
 {
