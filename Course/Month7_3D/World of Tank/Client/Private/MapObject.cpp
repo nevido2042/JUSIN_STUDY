@@ -50,7 +50,7 @@ void CMapObject::Update(_float fTimeDelta)
 
 void CMapObject::Late_Update(_float fTimeDelta)
 {
-	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 0.1f))
+	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 }

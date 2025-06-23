@@ -250,6 +250,7 @@
     <ClInclude Include="..\public\Track.h" />
     <ClInclude Include="..\public\Turret.h" />
     <ClInclude Include="..\public\VHouse01A.h" />
+    <ClInclude Include="..\public\WorkshopNewRoof.h" />
     <ClInclude Include="..\public\WOT_Icon.h" />
     <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.h" />
@@ -352,6 +353,7 @@
     <ClCompile Include="..\private\Track.cpp" />
     <ClCompile Include="..\private\Turret.cpp" />
     <ClCompile Include="..\private\VHouse01A.cpp" />
+    <ClCompile Include="..\private\WorkshopNewRoof.cpp" />
     <ClCompile Include="..\private\WOT_Icon.cpp" />
     <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.cpp" />

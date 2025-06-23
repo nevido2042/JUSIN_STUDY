@@ -304,6 +304,9 @@
     <Filter Include="02.GameObjects\02.LandObject\Buildings\KitCrashFactoryWall01A">
       <UniqueIdentifier>{41bca549-51c5-452c-a702-ec5d6c6f0ed4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Buildings\WorkshopNewRoof">
+      <UniqueIdentifier>{2bb5a795-516c-4111-92bc-0e756265f5af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -612,6 +615,9 @@
     <ClInclude Include="..\public\KitCrashFactoryWall01A.h">
       <Filter>02.GameObjects\02.LandObject\Buildings\KitCrashFactoryWall01A</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\WorkshopNewRoof.h">
+      <Filter>02.GameObjects\02.LandObject\Buildings\WorkshopNewRoof</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -914,6 +920,9 @@
     </ClCompile>
     <ClCompile Include="..\private\KitCrashFactoryWall01A.cpp">
       <Filter>02.GameObjects\02.LandObject\Buildings\KitCrashFactoryWall01A</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WorkshopNewRoof.cpp">
+      <Filter>02.GameObjects\02.LandObject\Buildings\WorkshopNewRoof</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

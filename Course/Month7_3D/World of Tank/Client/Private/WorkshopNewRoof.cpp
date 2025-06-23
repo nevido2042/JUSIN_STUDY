@@ -1,0 +1,141 @@
+#include "WorkshopNewRoof.h"
+
+#include "GameInstance.h"
+
+CWorkshopNewRoof::CWorkshopNewRoof(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CBuilding{ pDevice, pContext }
+{
+
+}
+
+CWorkshopNewRoof::CWorkshopNewRoof(const CWorkshopNewRoof& Prototype)
+	: CBuilding(Prototype)
+{
+
+}
+
+HRESULT CWorkshopNewRoof::Initialize_Prototype()
+{
+	m_vLocalPoint[0] = _float3{ 8.f, 0.f, 4.5f };
+	m_vLocalPoint[1] = _float3{ -8.f, 0.f, 4.5f };
+	m_vLocalPoint[2] = _float3{ 8.f, 0.f, -4.5f };
+	m_vLocalPoint[3] = _float3{ -8.f, 0.f, -4.5f };
+
+	return S_OK;
+}
+
+HRESULT CWorkshopNewRoof::Initialize(void* pArg)
+{
+	LANDOBJECT_DESC			Desc{};
+	Desc.iLevelIndex = m_pGameInstance->Get_NewLevel_Index();
+	Desc.strLayerTag = TEXT("Layer_Terrain");
+	Desc.strComponentTag = TEXT("Com_VIBuffer");
+	Desc.iIndex = 0;
+	lstrcpy(Desc.szName, TEXT("VHouse01A"));
+
+	if (FAILED(__super::Initialize(&Desc)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
+
+	return S_OK;
+}
+
+
+void CWorkshopNewRoof::Priority_Update(_float fTimeDelta)
+{
+	//CBuilding::Priority_Update(fTimeDelta);
+	//m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"));
+	m_pGameInstance->Add_CollisionGroup(ENUM_CLASS(COLLISION_GROUP::BUILDING), this, TEXT("Com_Collider"));
+}
+
+void CWorkshopNewRoof::Update(_float fTimeDelta)
+{
+	//CBuilding::Update(fTimeDelta);
+	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+}
+
+void CWorkshopNewRoof::Late_Update(_float fTimeDelta)
+{
+
+	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+}
+
+HRESULT CWorkshopNewRoof::Render()
+{
+	CBuilding::Render();
+
+	return S_OK;
+}
+
+HRESULT CWorkshopNewRoof::Ready_Components()
+{
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+
+	/* For.Com_Model */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_WorkshopNewRoof"),
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_OBB::OBB_DESC	OBBDesc{};
+	OBBDesc.vExtents = _float3(20.f, 2.f, 5.f);
+	OBBDesc.vCenter = _float3(OBBDesc.vExtents.x, 0.4f * OBBDesc.vExtents.y, -OBBDesc.vExtents.z);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CWorkshopNewRoof::Bind_ShaderResources()
+{
+	CBuilding::Bind_ShaderResources();
+
+	return S_OK;
+}
+
+CWorkshopNewRoof* CWorkshopNewRoof::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CWorkshopNewRoof* pInstance = new CWorkshopNewRoof(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CWorkshopNewRoof");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CWorkshopNewRoof::Clone(void* pArg)
+{
+	CWorkshopNewRoof* pInstance = new CWorkshopNewRoof(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CWorkshopNewRoof");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CWorkshopNewRoof::Free()
+{
+	__super::Free();
+
+	//Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pModelCom);
+	//Safe_Release(m_pShaderCom);
+}
