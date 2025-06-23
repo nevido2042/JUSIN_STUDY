@@ -11,6 +11,8 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "KitCrashFactoryWall01A.h"
+#include "PolishSignboards.h"
 #include "Fury_Chassis.h"
 #include "Tiger_Chassis.h"
 #include "AimCircle.h"
@@ -367,6 +369,13 @@ HRESULT CLoader::Loading_For_Static()
 
 	_matrix		PreTransformMatrix = PreTransformMatrix = XMMatrixIdentity();
 
+	/* For.Prototype_Component_Model_KitCrashFactoryWall */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_KitCrashFactoryWall"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Map/99_poland//content/Buildings/006_KitCrashFactoryA/hd_bld_UNI_006_KitCrashFactory_Wall_01A.bin", PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_VHouse01A */
 	PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.f));
@@ -502,6 +511,13 @@ HRESULT CLoader::Loading_For_Static()
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_BurntTree"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Map/99_poland/content/Environment/hd_env_UNI_073_BurntTree/hd_env_UNI_073_BurntTree_01.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_PolishSignboards */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_PolishSignboards"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Map/99_poland/content/Environment/hd_env_EU_064_PolishSignboards/hd_env_EU_064_PolishSignboards_01.bin", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Skydome */
@@ -656,9 +672,20 @@ HRESULT CLoader::Loading_For_Static()
 		CAmmoBay::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+#pragma region ¸Ê ¿ÀºêÁ§Æ®
 	/* For.Prototype_GameObject_BurntTree */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_BurntTree"),
 		CBurntTree::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PolishSignboards */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_PolishSignboards"),
+		CPolishSignboards::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_KitCrashFactoryWall */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_KitCrashFactoryWall"),
+		CKitCrashFactoryWall01A::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_VHouse01A */
@@ -670,6 +697,8 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ChurchA"),
 		CChurchA::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+#pragma endregion
+
 
 #pragma region Fury
 	/* For.Prototype_GameObject_Fury */

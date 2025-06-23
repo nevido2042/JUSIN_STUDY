@@ -88,15 +88,6 @@
     <Filter Include="02.GameObjects\02.LandObject">
       <UniqueIdentifier>{8701e789-29a7-42b8-8b6b-993f153311d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\02.LandObject\00.Tank">
-      <UniqueIdentifier>{da1f2422-d818-4fbd-952d-74c7f0d3b634}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\02.LandObject\00.Tank\01.Fury">
-      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\02.LandObject\00.Tank\02.Tiger">
-      <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Modules">
       <UniqueIdentifier>{80b184da-797c-4e62-8415-b897cff97fc5}</UniqueIdentifier>
     </Filter>
@@ -120,21 +111,6 @@
     </Filter>
     <Filter Include="02.GameObjects\03.Modules\02.Gun\TigerGun">
       <UniqueIdentifier>{78632613-37c4-45b2-91ad-3d7fdb18de74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Enviroments">
-      <UniqueIdentifier>{fcddbf89-7e5b-4448-8c1f-f38f36d99a49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Enviroments\06.BurntTree">
-      <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Buildings">
-      <UniqueIdentifier>{8e8bad7c-1ed6-485c-bdeb-4a3824a94cec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Buildings\07.VHouse01A">
-      <UniqueIdentifier>{a2135a6c-4067-4158-a479-61462e2152de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Buildings\08.ChurchA">
-      <UniqueIdentifier>{f2b153c0-5025-47e7-beb4-4d377b99a662}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject">
       <UniqueIdentifier>{0b062109-8ea6-489d-b955-2a856ff8098a}</UniqueIdentifier>
@@ -298,6 +274,36 @@
     <Filter Include="02.GameObjects\06.UIObject\GunMarker">
       <UniqueIdentifier>{fdbd0d6e-a787-45fe-9f19-0acf768dae79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Buildings">
+      <UniqueIdentifier>{8e8bad7c-1ed6-485c-bdeb-4a3824a94cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Tank">
+      <UniqueIdentifier>{da1f2422-d818-4fbd-952d-74c7f0d3b634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Tank\01.Fury">
+      <UniqueIdentifier>{c966a2d1-8554-4eeb-9427-6760b2604cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Tank\02.Tiger">
+      <UniqueIdentifier>{53fb97c9-91a5-472a-b681-59405508de74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Enviroments">
+      <UniqueIdentifier>{fcddbf89-7e5b-4448-8c1f-f38f36d99a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Enviroments\BurntTree">
+      <UniqueIdentifier>{0a9216b7-c523-44af-a520-6f8d88df47be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Enviroments\PolishSignboards">
+      <UniqueIdentifier>{2fb97751-a326-493a-91a4-398a818885b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Buildings\ChurchA">
+      <UniqueIdentifier>{f2b153c0-5025-47e7-beb4-4d377b99a662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Buildings\VHouse01A">
+      <UniqueIdentifier>{a2135a6c-4067-4158-a479-61462e2152de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.LandObject\Buildings\KitCrashFactoryWall01A">
+      <UniqueIdentifier>{41bca549-51c5-452c-a702-ec5d6c6f0ed4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -409,7 +415,7 @@
       <Filter>02.GameObjects\Skydome</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BurntTree.h">
-      <Filter>02.GameObjects\04.Enviroments\06.BurntTree</Filter>
+      <Filter>02.GameObjects\02.LandObject\Enviroments\BurntTree</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_TPS.h">
       <Filter>02.GameObjects\Camera\Camera_TPS</Filter>
@@ -418,10 +424,10 @@
       <Filter>02.GameObjects\03.Modules\01.Turret\FuryTurret</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VHouse01A.h">
-      <Filter>02.GameObjects\05.Buildings\07.VHouse01A</Filter>
+      <Filter>02.GameObjects\02.LandObject\Buildings\VHouse01A</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ChurchA.h">
-      <Filter>02.GameObjects\05.Buildings\08.ChurchA</Filter>
+      <Filter>02.GameObjects\02.LandObject\Buildings\ChurchA</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Minimap.h">
       <Filter>02.GameObjects\06.UIObject\Minimap</Filter>
@@ -451,7 +457,7 @@
       <Filter>02.GameObjects\00.GameManager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tiger.h">
-      <Filter>02.GameObjects\02.LandObject\00.Tank\02.Tiger</Filter>
+      <Filter>02.GameObjects\02.LandObject\Tank\02.Tiger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FuryTrackLeft.h">
       <Filter>02.GameObjects\03.Modules\03.Chassis\Track\FuryTrackLeft</Filter>
@@ -490,7 +496,7 @@
       <Filter>02.GameObjects\06.UIObject\DamagePannel\Icon_Module</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tank.h">
-      <Filter>02.GameObjects\02.LandObject\00.Tank</Filter>
+      <Filter>02.GameObjects\02.LandObject\Tank</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Track.h">
       <Filter>02.GameObjects\03.Modules\03.Chassis\Track</Filter>
@@ -586,10 +592,10 @@
       <Filter>02.GameObjects\06.UIObject\AimCircle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Building.h">
-      <Filter>02.GameObjects\05.Buildings</Filter>
+      <Filter>02.GameObjects\02.LandObject\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Fury.h">
-      <Filter>02.GameObjects\02.LandObject\00.Tank\01.Fury</Filter>
+      <Filter>02.GameObjects\02.LandObject\Tank\01.Fury</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Chassis.h">
       <Filter>02.GameObjects\03.Modules\03.Chassis</Filter>
@@ -599,6 +605,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Tiger_Chassis.h">
       <Filter>02.GameObjects\03.Modules\03.Chassis\Tiger_Chassis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PolishSignboards.h">
+      <Filter>02.GameObjects\02.LandObject\Enviroments\PolishSignboards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\KitCrashFactoryWall01A.h">
+      <Filter>02.GameObjects\02.LandObject\Buildings\KitCrashFactoryWall01A</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -706,10 +718,10 @@
       <Filter>02.GameObjects\Skydome</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Fury.cpp">
-      <Filter>02.GameObjects\02.LandObject\00.Tank\01.Fury</Filter>
+      <Filter>02.GameObjects\02.LandObject\Tank\01.Fury</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BurntTree.cpp">
-      <Filter>02.GameObjects\04.Enviroments\06.BurntTree</Filter>
+      <Filter>02.GameObjects\02.LandObject\Enviroments\BurntTree</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_TPS.cpp">
       <Filter>02.GameObjects\Camera\Camera_TPS</Filter>
@@ -718,10 +730,10 @@
       <Filter>02.GameObjects\03.Modules\01.Turret\FuryTurret</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VHouse01A.cpp">
-      <Filter>02.GameObjects\05.Buildings\07.VHouse01A</Filter>
+      <Filter>02.GameObjects\02.LandObject\Buildings\VHouse01A</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ChurchA.cpp">
-      <Filter>02.GameObjects\05.Buildings\08.ChurchA</Filter>
+      <Filter>02.GameObjects\02.LandObject\Buildings\ChurchA</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Minimap.cpp">
       <Filter>02.GameObjects\06.UIObject\Minimap</Filter>
@@ -751,7 +763,7 @@
       <Filter>02.GameObjects\00.GameManager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tiger.cpp">
-      <Filter>02.GameObjects\02.LandObject\00.Tank\02.Tiger</Filter>
+      <Filter>02.GameObjects\02.LandObject\Tank\02.Tiger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FuryTrackLeft.cpp">
       <Filter>02.GameObjects\03.Modules\03.Chassis\Track\FuryTrackLeft</Filter>
@@ -790,7 +802,7 @@
       <Filter>02.GameObjects\06.UIObject\DamagePannel\Icon_Module</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tank.cpp">
-      <Filter>02.GameObjects\02.LandObject\00.Tank</Filter>
+      <Filter>02.GameObjects\02.LandObject\Tank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Track.cpp">
       <Filter>02.GameObjects\03.Modules\03.Chassis\Track</Filter>
@@ -886,7 +898,7 @@
       <Filter>02.GameObjects\06.UIObject\AimCircle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Building.cpp">
-      <Filter>02.GameObjects\05.Buildings</Filter>
+      <Filter>02.GameObjects\02.LandObject\Buildings</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Chassis.cpp">
       <Filter>02.GameObjects\03.Modules\03.Chassis</Filter>
@@ -896,6 +908,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Tiger_Chassis.cpp">
       <Filter>02.GameObjects\03.Modules\03.Chassis\Tiger_Chassis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PolishSignboards.cpp">
+      <Filter>02.GameObjects\02.LandObject\Enviroments\PolishSignboards</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\KitCrashFactoryWall01A.cpp">
+      <Filter>02.GameObjects\02.LandObject\Buildings\KitCrashFactoryWall01A</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
