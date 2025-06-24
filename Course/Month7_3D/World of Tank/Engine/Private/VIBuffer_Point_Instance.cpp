@@ -291,6 +291,34 @@ void CVIBuffer_Point_Instance::Change_NumInstance(_int iNumInstance)
 #pragma endregion 
 }
 
+void CVIBuffer_Point_Instance::Change_Range(_float3 vRange)
+{
+	m_tPointInstanceDesc.vRange = vRange;
+
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	_vector vDir = {};
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+
+		pVertices[i].vTranslation = _float4(
+			m_pGameInstance->Compute_Random(m_tPointInstanceDesc.vCenter.x - m_tPointInstanceDesc.vRange.x * 0.5f, m_tPointInstanceDesc.vCenter.x + m_tPointInstanceDesc.vRange.x * 0.5f),
+			m_pGameInstance->Compute_Random(m_tPointInstanceDesc.vCenter.y - m_tPointInstanceDesc.vRange.y * 0.5f, m_tPointInstanceDesc.vCenter.y + m_tPointInstanceDesc.vRange.y * 0.5f),
+			m_pGameInstance->Compute_Random(m_tPointInstanceDesc.vCenter.z - m_tPointInstanceDesc.vRange.z * 0.5f, m_tPointInstanceDesc.vCenter.z + m_tPointInstanceDesc.vRange.z * 0.5f),
+			1.f
+		);
+
+		m_pVertexInstances[i].vTranslation = pVertices[i].vTranslation;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
 void CVIBuffer_Point_Instance::Reset()
 {
 	D3D11_MAPPED_SUBRESOURCE	SubResource{};

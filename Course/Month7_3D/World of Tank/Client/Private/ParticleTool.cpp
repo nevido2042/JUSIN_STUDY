@@ -38,41 +38,55 @@ void CParticleTool::Priority_Update(_float fTimeDelta)
 void CParticleTool::Update(_float fTimeDelta)
 {
 
-	if (m_pGameInstance->Key_Pressing(DIK_1))
-	{
-
-		CGameObject* pToolBase = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_Tool_Base"));
-
-		m_VIBuffer->Change_NumInstance(100 + rand() % 50);
-		m_VIBuffer->Reset();
-	}
+	//if (m_pGameInstance->Key_Down(DIK_1))
+	//{
+	//	m_VIBuffer->Change_Range(_float3(1.f, 1.f, 1.f));
+	//	m_VIBuffer->Reset();
+	//}
+	//if (m_pGameInstance->Key_Down(DIK_2))
+	//{
+	//	m_VIBuffer->Change_Range(_float3(2.f, 2.f, 2.f));
+	//	m_VIBuffer->Reset();
+	//}
+	//if (m_pGameInstance->Key_Down(DIK_3))
+	//{
+	//	m_VIBuffer->Change_Range(_float3(3.f, 3.f, 3.f));
+	//	m_VIBuffer->Reset();
+	//}
 
 	ImGui::Begin("Particle");
 
 #pragma region 파티클 갯수
-	const _int minCount = 1;
-	const _int maxCount = m_iMaxInstance;
+	const _int iMinCount = 1;
+	const _int iMaxCount = 10000;
 
 	// 텍스트 입력 바
-	if (ImGui::InputInt("Instance Count", &m_iCurrentInstance))
+	if (ImGui::InputInt("Instance Count", &m_iNumInstances))
 	{
-		m_iCurrentInstance = clamp(m_iCurrentInstance, minCount, maxCount);
-		m_VIBuffer->Change_NumInstance(m_iCurrentInstance);
+		m_iNumInstances = clamp(m_iNumInstances, iMinCount, iMaxCount);
+		m_VIBuffer->Change_NumInstance(m_iNumInstances);
 		m_VIBuffer->Reset();
-
 	}
 
 	// 슬라이더
-	if (ImGui::SliderInt("Slider", &m_iCurrentInstance, minCount, maxCount))
+	if (ImGui::SliderInt("Slider", &m_iNumInstances, iMinCount, iMaxCount))
 	{
-		m_VIBuffer->Change_NumInstance(m_iCurrentInstance);
+		m_VIBuffer->Change_NumInstance(m_iNumInstances);
 		m_VIBuffer->Reset();
 	}
 
 	// 상태 출력
-	ImGui::Text("Current: %d / Max: %d", m_iCurrentInstance, m_iMaxInstance);
-
+	ImGui::Text("Current: %d / Max: %d", m_iNumInstances, iMaxCount);
 #pragma endregion
+
+#pragma region 스폰 범위
+	if (ImGui::DragFloat3("Spawn Range", reinterpret_cast<_float*>(&m_vRange), 0.1f, 0.f, 1000.f))
+	{
+		m_VIBuffer->Change_Range(m_vRange);
+		m_VIBuffer->Reset(); // 변경 즉시 반영
+	}
+#pragma endregion
+
 	ImGui::End();
 
 }

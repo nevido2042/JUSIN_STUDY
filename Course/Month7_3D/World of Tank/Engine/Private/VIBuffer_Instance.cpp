@@ -74,6 +74,10 @@ void CVIBuffer_Instance::Change_NumInstance(_int iNumInstance)
 {
 }
 
+void CVIBuffer_Instance::Change_Range(_float3 vRange)
+{
+}
+
 void CVIBuffer_Instance::Reset()
 {
 }

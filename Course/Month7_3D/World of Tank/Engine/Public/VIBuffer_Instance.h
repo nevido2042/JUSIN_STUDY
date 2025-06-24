@@ -35,6 +35,7 @@ public:
 	virtual void Spread(_float fTimeDelta);
 
 	virtual void Change_NumInstance(_int iNumInstance);
+	virtual void Change_Range(_float3 vRange);
 	virtual void Reset();
 
 protected:

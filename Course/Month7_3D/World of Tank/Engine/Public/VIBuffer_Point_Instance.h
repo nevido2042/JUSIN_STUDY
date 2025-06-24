@@ -29,6 +29,7 @@ public:
 	virtual void Spread(_float fTimeDelta)override;
 
 	virtual void Change_NumInstance(_int iNumInstance) override;
+	virtual void Change_Range(_float3 vRange) override;
 	virtual void Reset()override;
 
 

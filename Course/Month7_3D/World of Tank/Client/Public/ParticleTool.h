@@ -26,8 +26,9 @@ public:
 	virtual HRESULT Render();
 
 private:
-	_int			m_iCurrentInstance = { 10 };
-	const _int		m_iMaxInstance = 10000;
+	_int			m_iNumInstances = { 10 };
+	_float3			m_vRange = { 1.f, 1.f, 1.f };
+
 	CVIBuffer_Point_Instance* m_VIBuffer = { nullptr };
 
 public:
