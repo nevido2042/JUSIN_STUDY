@@ -51,6 +51,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -145,6 +146,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <Optimization>Disabled</Optimization>
+      <MaxFilesInUnityFile>5</MaxFilesInUnityFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -217,6 +219,7 @@
     <ClInclude Include="..\public\Minimap_Tank.h" />
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Module.h" />
+    <ClInclude Include="..\public\ParticleTool.h" />
     <ClInclude Include="..\public\PersonalArrowEntry.h" />
     <ClInclude Include="..\public\PickedManager.h" />
     <ClInclude Include="..\public\PolishSignboards.h" />
@@ -324,6 +327,7 @@
     <ClCompile Include="..\private\Minimap_Tank.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Module.cpp" />
+    <ClCompile Include="..\private\ParticleTool.cpp" />
     <ClCompile Include="..\private\PersonalArrowEntry.cpp" />
     <ClCompile Include="..\private\PickedManager.cpp" />
     <ClCompile Include="..\private\PolishSignboards.cpp" />

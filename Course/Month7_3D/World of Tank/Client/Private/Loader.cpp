@@ -103,6 +103,10 @@
 
 #pragma endregion
 
+#pragma region PARTICLETTOOL
+#include "ParticleTool.h"
+#pragma endregion
+
 
 
 _bool CLoader::bLoadStatic = { false };
@@ -405,12 +409,12 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_Component_VIBuffer_Explosion*/
 	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		SmokeDesc{};
 	SmokeDesc.iNumInstance = 500;
-	SmokeDesc.vCenter = _float3(0.f, 0.f, 0.0f);
+	SmokeDesc.vCenter = _float3(0.0f, 0.f, 0.0f);
 	SmokeDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
 	SmokeDesc.vSize = _float2(0.05f, 0.1f);
 	SmokeDesc.vLifeTime = _float2(0.5f, 2.f);
 	SmokeDesc.vSpeed = _float2(1.f, 2.f);
-	SmokeDesc.vPivot = SmokeDesc.vCenter;
+	SmokeDesc.vPivot = _float3(0.0f, 0.f, 0.f);
 	SmokeDesc.isLoop = true;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Smoke"),
@@ -1173,6 +1177,12 @@ HRESULT CLoader::Loading_For_MapTool()
 
 HRESULT CLoader::Loading_For_ParticleTool()
 {
+	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+	/* For.Prototype_GameObject_ParticleTool */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_ParticleTool"),
+		CParticleTool::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;

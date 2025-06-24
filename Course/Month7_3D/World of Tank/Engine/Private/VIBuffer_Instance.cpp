@@ -24,7 +24,6 @@ HRESULT CVIBuffer_Instance::Initialize_Prototype()
 
 HRESULT CVIBuffer_Instance::Initialize(void* pArg)
 {
-
 	return S_OK;
 }
 
@@ -68,6 +67,14 @@ void CVIBuffer_Instance::Drop(_float fTimeDelta)
 }
 
 void CVIBuffer_Instance::Spread(_float fTimeDelta)
+{
+}
+
+void CVIBuffer_Instance::Change_NumInstance(_int iNumInstance)
+{
+}
+
+void CVIBuffer_Instance::Reset()
 {
 }
 

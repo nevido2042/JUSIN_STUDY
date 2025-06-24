@@ -30,6 +30,9 @@ HRESULT CLevel_ParticleTool::Initialize()
 	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_ParticleTool(TEXT("Layer_ParticleTool"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -174,6 +177,15 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Effect(const _wstring strLayerTag)
 	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Ash"),
 	//	ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_ParticleTool::Ready_Layer_ParticleTool(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_ParticleTool"),
+		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }

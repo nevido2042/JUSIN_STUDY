@@ -325,6 +325,9 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\Smoke">
       <UniqueIdentifier>{50a83f9c-6e07-4f88-8cc6-27675e333d6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\01.Tool\02.ParticleTool">
+      <UniqueIdentifier>{6331d4e9-a656-4ed2-a6d4-dc191cfdafd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -648,6 +651,9 @@
     <ClInclude Include="..\public\Smoke.h">
       <Filter>02.GameObjects\07.Effect\Particle\Smoke</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleTool.h">
+      <Filter>02.GameObjects\06.UIObject\01.Tool\02.ParticleTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -965,6 +971,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Smoke.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleTool.cpp">
+      <Filter>02.GameObjects\06.UIObject\01.Tool\02.ParticleTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

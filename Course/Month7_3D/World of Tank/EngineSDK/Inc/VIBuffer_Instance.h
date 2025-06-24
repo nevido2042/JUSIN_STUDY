@@ -34,6 +34,8 @@ public:
 	virtual void Drop(_float fTimeDelta);
 	virtual void Spread(_float fTimeDelta);
 
+	virtual void Change_NumInstance(_int iNumInstance);
+	virtual void Reset();
 
 protected:
 	ID3D11Buffer* m_pVBInstance = { nullptr };
@@ -42,7 +44,7 @@ protected:
 
 
 	_uint					m_iNumIndexPerInstance = {};
-	_uint					m_iNumInstance = {};
+	_uint					m_iNumInstance = {}; //¿ä³ð
 	_uint					m_iVertexInstanceStride = {};
 
 public:

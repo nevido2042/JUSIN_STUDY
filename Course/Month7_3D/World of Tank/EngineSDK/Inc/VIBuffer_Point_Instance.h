@@ -28,12 +28,18 @@ public:
 	virtual void Drop(_float fTimeDelta)override;
 	virtual void Spread(_float fTimeDelta)override;
 
+	virtual void Change_NumInstance(_int iNumInstance) override;
+	virtual void Reset()override;
+
 
 protected:
-	VTXPOS_PARTICLE_INSTANCE* m_pVertexInstances = { nullptr };
+	VTXPOS_PARTICLE_INSTANCE* m_pVertexInstances = { nullptr }; //요놈
 	_float* m_pSpeeds = { nullptr };
 	_float3						m_vPivot = {};
 	_bool						m_isLoop = { false };
+
+	//인스턴스 갯수 변경할 때 초기화하기위해 저장
+	POINT_INSTANCE_DESC			m_tPointInstanceDesc = {};
 
 public:
 	static CVIBuffer_Point_Instance* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const INSTANCE_DESC* pDesc);

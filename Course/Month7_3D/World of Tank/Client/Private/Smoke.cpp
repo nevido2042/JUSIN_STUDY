@@ -33,11 +33,15 @@ HRESULT CSmoke::Initialize(void* pArg)
 
 void CSmoke::Priority_Update(_float fTimeDelta)
 {
-
+	if (m_pGameInstance->Key_Pressing(DIK_1))
+	{
+		m_pVIBufferCom->Change_NumInstance(100 + rand() % 50);
+	}
 }
 
 void CSmoke::Update(_float fTimeDelta)
 {
+	//m_pVIBufferCom->Drop(fTimeDelta);
 	m_pVIBufferCom->Spread(fTimeDelta);
 
 }
