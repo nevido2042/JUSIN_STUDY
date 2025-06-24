@@ -225,6 +225,7 @@
     <ClInclude Include="..\public\Shed.h" />
     <ClInclude Include="..\public\Shell.h" />
     <ClInclude Include="..\public\Skydome.h" />
+    <ClInclude Include="..\public\Smoke.h" />
     <ClInclude Include="..\public\Tank.h" />
     <ClInclude Include="..\public\Tiger.h" />
     <ClInclude Include="..\public\TigerGun.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="..\private\Shed.cpp" />
     <ClCompile Include="..\private\Shell.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
+    <ClCompile Include="..\private\Smoke.cpp" />
     <ClCompile Include="..\private\Tank.cpp" />
     <ClCompile Include="..\private\Tiger.cpp" />
     <ClCompile Include="..\private\TigerGun.cpp" />
@@ -381,6 +383,7 @@
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl" />
   </ItemGroup>

@@ -80,6 +80,27 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXRECT_PARTICLE_INSTANCE;
 
+	typedef struct ENGINE_DLL tagVertexPosition
+	{
+		XMFLOAT3		vPosition;
+
+		static const unsigned int					iNumElements = { 1 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXPOS;
+
+	typedef struct ENGINE_DLL tagVertexPointParticleInstance
+	{
+		XMFLOAT4		vRight;
+		XMFLOAT4		vUp;
+		XMFLOAT4		vLook;
+		XMFLOAT4		vTranslation;
+		XMFLOAT2		vLifeTime;
+
+
+		static const unsigned int					iNumElements = { 6 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXPOS_PARTICLE_INSTANCE;
+
 	//struct QuadTreeNode
 	//{
 	//	_float3 vMin, vMax; // AABB

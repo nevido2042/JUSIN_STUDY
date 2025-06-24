@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Smoke.h"
 #include "Ash.h"
 #include "Shed.h"
 #include "WorkshopNewRoof.h"
@@ -203,10 +204,10 @@ HRESULT CLoader::Loading_For_Static()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectInstance.hlsl"), VTXRECT_PARTICLE_INSTANCE::Elements, VTXRECT_PARTICLE_INSTANCE::iNumElements))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Shader_VtxPosInstance */
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_Component_Shader_VtxPosInstance"),
-	//	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosInstance.hlsl"), VTXPOS_PARTICLE_INSTANCE::Elements, VTXPOS_PARTICLE_INSTANCE::iNumElements))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Shader_VtxPosInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosInstance.hlsl"), VTXPOS_PARTICLE_INSTANCE::Elements, VTXPOS_PARTICLE_INSTANCE::iNumElements))))
+		return E_FAIL;
 #pragma endregion
 
 
@@ -218,6 +219,11 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_Smoke*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Smoke"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output256x256/misc/033.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Ash*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Ash"),
@@ -397,19 +403,19 @@ HRESULT CLoader::Loading_For_Static()
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Explosion*/
-	//CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		ExploDesc{};
-	//ExploDesc.iNumInstance = 500;
-	//ExploDesc.vCenter = _float3(0.f, 0.f, 0.0f);
-	//ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
-	//ExploDesc.vSize = _float2(0.05f, 0.1f);
-	//ExploDesc.vLifeTime = _float2(0.5f, 2.f);
-	//ExploDesc.vSpeed = _float2(1.f, 2.f);
-	//ExploDesc.vPivot = ExploDesc.vCenter;
-	//ExploDesc.isLoop = true;
+	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		SmokeDesc{};
+	SmokeDesc.iNumInstance = 500;
+	SmokeDesc.vCenter = _float3(0.f, 0.f, 0.0f);
+	SmokeDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	SmokeDesc.vSize = _float2(0.05f, 0.1f);
+	SmokeDesc.vLifeTime = _float2(0.5f, 2.f);
+	SmokeDesc.vSpeed = _float2(1.f, 2.f);
+	SmokeDesc.vPivot = SmokeDesc.vCenter;
+	SmokeDesc.isLoop = true;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Explosion"),
-	//	CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &ExploDesc))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Smoke"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &SmokeDesc))))
+		return E_FAIL;
 
 
 
@@ -608,6 +614,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ash */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
+		CSmoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Ash */

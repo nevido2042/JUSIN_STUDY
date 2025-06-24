@@ -319,11 +319,11 @@
     <Filter Include="02.GameObjects\07.Effect\Particle">
       <UniqueIdentifier>{a99704d6-d157-426e-9a14-02bfe39013ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Effect\Particle\Explosion">
-      <UniqueIdentifier>{50a83f9c-6e07-4f88-8cc6-27675e333d6b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.Effect\Particle\Ash">
       <UniqueIdentifier>{d0450365-61b6-46fb-be1e-f7503247f80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\Smoke">
+      <UniqueIdentifier>{50a83f9c-6e07-4f88-8cc6-27675e333d6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -645,6 +645,9 @@
     <ClInclude Include="..\public\Ash.h">
       <Filter>02.GameObjects\07.Effect\Particle\Ash</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Smoke.h">
+      <Filter>02.GameObjects\07.Effect\Particle\Smoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -960,6 +963,9 @@
     <ClCompile Include="..\private\Ash.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\Ash</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Smoke.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\Smoke</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -972,6 +978,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosInstance.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

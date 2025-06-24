@@ -173,7 +173,8 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();        
-        PixelShader = compile ps_5_0 PS_MAIN();      
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
     //1
     pass FILL
@@ -183,6 +184,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_FILL_COLOR();
     }
     //2 (버리기 대기중)
@@ -193,6 +195,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
     //3
@@ -203,6 +206,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_BASECOLOR();
     }
     //4
@@ -213,6 +217,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DAMAGEBAR_WORLD();
     }
 
@@ -224,6 +229,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0, 0, 0, 0), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_AIMCIRCLE();
     }
 

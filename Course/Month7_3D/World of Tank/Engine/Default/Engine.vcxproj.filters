@@ -160,6 +160,9 @@
     <ClInclude Include="..\public\VIBuffer_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instance</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Point_Instance.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\Point</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -305,6 +308,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\Point</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -472,6 +478,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Rect">
       <UniqueIdentifier>{b8ae38bd-f854-4408-b653-e8dab00b649e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Point">
+      <UniqueIdentifier>{8bdef65f-0eb8-4fcd-9b6a-1f42c337afab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
