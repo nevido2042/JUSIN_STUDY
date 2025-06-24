@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Ash.h"
 #include "Shed.h"
 #include "WorkshopNewRoof.h"
 #include "KitCrashFactoryWall01A.h"
@@ -196,6 +197,19 @@ HRESULT CLoader::Loading()
 HRESULT CLoader::Loading_For_Static()
 {
 
+#pragma region 셰이더
+	/* For.Prototype_Component_Shader_VtxRectInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxRectInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectInstance.hlsl"), VTXRECT_PARTICLE_INSTANCE::Elements, VTXRECT_PARTICLE_INSTANCE::iNumElements))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_Shader_VtxPosInstance */
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_Component_Shader_VtxPosInstance"),
+	//	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosInstance.hlsl"), VTXPOS_PARTICLE_INSTANCE::Elements, VTXPOS_PARTICLE_INSTANCE::iNumElements))))
+	//	return E_FAIL;
+#pragma endregion
+
+
 #pragma region 폰트
 	/* MakeSpriteFont "WarheliosKO" /FontSize:60 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 WarheliosKO.spritefont */
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_WarheliosKO"), TEXT("../Bin/WOT_Resources/Font/WarheliosKO.spritefont"))))
@@ -204,6 +218,11 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_Ash*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Ash"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output256x256/misc/032.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DamageBig*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageBig"),
@@ -362,6 +381,40 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 모델
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_VIBuffer_Snow */
+	CVIBuffer_Rect_Instance::RECT_INSTANCE_DESC		AshDesc{};
+	AshDesc.iNumInstance = 25000;
+	AshDesc.vCenter = _float3(64.f, 30.f, 64.0f);
+	AshDesc.vRange = _float3(512.f, 3.0f, 512.f);
+	AshDesc.vSize = _float2(0.1f, 0.4f);
+	AshDesc.vLifeTime = _float2(20.f, 30.f);
+	AshDesc.vSpeed = _float2(1.f, 3.f);
+	AshDesc.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Ash"),
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &AshDesc))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Explosion*/
+	//CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		ExploDesc{};
+	//ExploDesc.iNumInstance = 500;
+	//ExploDesc.vCenter = _float3(0.f, 0.f, 0.0f);
+	//ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	//ExploDesc.vSize = _float2(0.05f, 0.1f);
+	//ExploDesc.vLifeTime = _float2(0.5f, 2.f);
+	//ExploDesc.vSpeed = _float2(1.f, 2.f);
+	//ExploDesc.vPivot = ExploDesc.vCenter;
+	//ExploDesc.isLoop = true;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Explosion"),
+	//	CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &ExploDesc))))
+	//	return E_FAIL;
+
+
+
+
+
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/outland/height_map_cut_128.png"), { TERRAIN_OFFSET_WIDTH, TERRAIN_OFFSET_HEIGHT}))))
@@ -555,6 +608,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ash */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Ash"),
+		CAsh::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Fury_Chassis */

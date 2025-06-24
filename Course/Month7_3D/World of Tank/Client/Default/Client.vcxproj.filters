@@ -313,6 +313,18 @@
     <Filter Include="01.Levels\06.ParticleTool">
       <UniqueIdentifier>{bebe79c9-6dcd-4a25-8128-c23c6808baea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect">
+      <UniqueIdentifier>{19df71fb-f0b7-4842-bb50-8cac79c98836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle">
+      <UniqueIdentifier>{a99704d6-d157-426e-9a14-02bfe39013ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\Explosion">
+      <UniqueIdentifier>{50a83f9c-6e07-4f88-8cc6-27675e333d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\Ash">
+      <UniqueIdentifier>{d0450365-61b6-46fb-be1e-f7503247f80d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -630,6 +642,9 @@
     <ClInclude Include="..\public\Level_ParticleTool.h">
       <Filter>01.Levels\06.ParticleTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Ash.h">
+      <Filter>02.GameObjects\07.Effect\Particle\Ash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -942,6 +957,9 @@
     <ClCompile Include="..\private\Level_ParticleTool.cpp">
       <Filter>01.Levels\06.ParticleTool</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Ash.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\Ash</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -951,6 +969,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

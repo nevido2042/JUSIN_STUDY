@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="..\public\AimCircle.h" />
     <ClInclude Include="..\public\AmmoBay.h" />
+    <ClInclude Include="..\public\Ash.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\BackGround_Loading.h" />
     <ClInclude Include="..\public\Background_UI.h" />
@@ -271,6 +272,7 @@
   <ItemGroup>
     <ClCompile Include="..\private\AimCircle.cpp" />
     <ClCompile Include="..\private\AmmoBay.cpp" />
+    <ClCompile Include="..\private\Ash.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\BackGround_Loading.cpp" />
     <ClCompile Include="..\private\Background_UI.cpp" />
@@ -380,6 +382,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

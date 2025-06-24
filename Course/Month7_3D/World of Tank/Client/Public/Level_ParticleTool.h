@@ -22,6 +22,7 @@ private:
 	HRESULT Load_Map();
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
 	HRESULT Ready_Lights();
+	HRESULT Ready_Layer_Effect(const _wstring strLayerTag);
 
 public:
 	static CLevel_ParticleTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -15,16 +15,19 @@ HRESULT CLevel_ParticleTool::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
+	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	if (FAILED(Load_Map()))
+	if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -66,11 +69,11 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 	CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 300.0f;
+	Desc.fSpeedPerSec = 30.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(150.f, 100.f, 100.f);
-	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.vEye = _float3(300.f, 100.f, 300.f);
+	Desc.vAt = _float3(0.f, 0.f, 1.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
 	Desc.fFar = 4000.f;
@@ -154,6 +157,18 @@ HRESULT CLevel_ParticleTool::Ready_Lights()
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_ParticleTool::Ready_Layer_Effect(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.vInitPosition = _float3(300.f, 100.f, 300.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Ash"),
+		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;
