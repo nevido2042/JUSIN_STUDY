@@ -43,6 +43,7 @@ private:
 	BoundingOrientedBox* m_pDesc = { nullptr };
 
 private:
+	_bool Intersect_Ray_ToOBB(_fvector vOrigin, _fvector vDir, _float& fDist, _vector* pOutNormal);
 	_bool Intersect_ToOBB(CBounding* pTarget, _vector* pOutNormal = nullptr);
 	OBB_INFO Compute_OBB();
 

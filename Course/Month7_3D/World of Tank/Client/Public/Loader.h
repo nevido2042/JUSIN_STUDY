@@ -49,6 +49,7 @@ public:
 	HRESULT Loading_For_Practice();
 	HRESULT Loading_For_GamePlay();
 	HRESULT Loading_For_MapTool();
+	HRESULT Loading_For_ParticleTool();
 
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);

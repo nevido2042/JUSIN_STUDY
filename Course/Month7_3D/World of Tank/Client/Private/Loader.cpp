@@ -177,6 +177,10 @@ HRESULT CLoader::Loading()
 	case LEVEL::MAPTOOL:
 		hr = Loading_For_MapTool();
 		break;
+
+	case LEVEL::PARTICLETOOL:
+		hr = Loading_For_ParticleTool();
+		break;
 	}
 
 	if (FAILED(hr))
@@ -1091,6 +1095,15 @@ HRESULT CLoader::Loading_For_MapTool()
 		CMapObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_ParticleTool()
+{
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;

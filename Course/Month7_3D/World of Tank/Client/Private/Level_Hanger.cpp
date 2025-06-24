@@ -96,7 +96,7 @@ void CLevel_Hanger::Update(_float fTimeDelta)
 	}
 	else if (m_pGameInstance->Key_Down(DIK_P))
 	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PRACTICE))))
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::PARTICLETOOL))))
 			return;
 	}
 	else if (m_pGameInstance->Key_Down(DIK_T))

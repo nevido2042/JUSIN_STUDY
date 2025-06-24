@@ -5,6 +5,7 @@
 #include "Level_Practice.h"
 #include "Level_GamePlay.h"
 #include "Level_MapTool.h"
+#include "Level_ParticleTool.h"
 
 #include "Loader.h"
 
@@ -71,6 +72,9 @@ void CLevel_Loading::Update(_float fTimeDelta)
 				break;
 			case LEVEL::MAPTOOL:
 				pLevel = CLevel_MapTool::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL::PARTICLETOOL:
+				pLevel = CLevel_ParticleTool::Create(m_pDevice, m_pContext);
 				break;
 			}
 
