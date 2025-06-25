@@ -26,6 +26,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	HRESULT Change_Texture(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag);
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

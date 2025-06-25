@@ -85,6 +85,20 @@ HRESULT CSmoke::Render()
 	return S_OK;
 }
 
+HRESULT CSmoke::Change_Texture(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag)
+{
+	Safe_Release(m_pTextureCom);
+
+	Remove_Component(TEXT("Com_Texture"));
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(iPrototypeLevelIndex, strPrototypeTag,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CSmoke::Ready_Components()
 {
 	/* For.Com_Shader */

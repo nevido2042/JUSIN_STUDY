@@ -42,6 +42,7 @@ public:
 	HRESULT Add_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, class CBase* pPrototype);
 	CBase* Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
 	const PROTOTYPES& Get_Prototypes(_uint iPrototypeLevelIndex) const;
+	class CBase* Find_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag);
 #pragma endregion
 
 #pragma region OBJECT_MANAGER

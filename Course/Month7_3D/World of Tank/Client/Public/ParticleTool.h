@@ -26,6 +26,10 @@ public:
 	virtual HRESULT Render();
 
 private:
+	wstring OpenFileDialog();
+	HRESULT Load_Texture(const wstring& strPrototypeTag, const wstring& pTextureFilePath);
+	HRESULT Change_Texture(const wstring& strPrototypeTag);
+private:
 	_int			m_iNumInstances = { 10 };
 	_float3			m_vRange = { 1.f, 1.f, 1.f };
 	_float3			m_vPivot = { 0.f, 0.f, 0.f };
@@ -33,9 +37,11 @@ private:
 	_float2			m_vLifeTime = { 1.f, 3.f };
 	_float2			m_vSpeed = { 1.f, 3.f };
 	_bool			m_bLoop = { true };
-	EMISSION_SHAPE m_eEmissionShape = { EMISSION_SHAPE::END };
-
+	EMISSION_SHAPE	m_eEmissionShape = { EMISSION_SHAPE::END };
+	static _uint	m_strPrototypeTag_ID;
+private:
 	CVIBuffer_Point_Instance* m_VIBuffer = { nullptr };
+	class CSmoke*	m_pSmoke = { nullptr };
 
 public:
 	static CParticleTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

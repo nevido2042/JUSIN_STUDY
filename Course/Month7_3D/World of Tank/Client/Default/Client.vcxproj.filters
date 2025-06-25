@@ -328,6 +328,9 @@
     <Filter Include="02.GameObjects\06.UIObject\01.Tool\02.ParticleTool">
       <UniqueIdentifier>{6331d4e9-a656-4ed2-a6d4-dc191cfdafd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.ThirdParty\imGuiFileDialog">
+      <UniqueIdentifier>{d64bea21-f869-472e-9b6d-f242a6183b17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -654,6 +657,18 @@
     <ClInclude Include="..\public\ParticleTool.h">
       <Filter>02.GameObjects\06.UIObject\01.Tool\02.ParticleTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.h">
+      <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialogConfig.h">
+      <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb_image.h">
+      <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb_image_resize2.h">
+      <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -974,6 +989,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleTool.cpp">
       <Filter>02.GameObjects\06.UIObject\01.Tool\02.ParticleTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.cpp">
+      <Filter>96.ThirdParty\imGuiFileDialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

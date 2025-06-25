@@ -216,6 +216,10 @@ const PROTOTYPES& CGameInstance::Get_Prototypes(_uint iPrototypeLevelIndex) cons
 {
 	return m_pPrototype_Manager->Get_Prototypes(iPrototypeLevelIndex);
 }
+class CBase* CGameInstance::Find_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag)
+{
+	return m_pPrototype_Manager->Find_Prototype(iLevelIndex, strPrototypeTag);
+}
 #pragma endregion
 
 #pragma region OBJECT_MANAGER

@@ -72,7 +72,7 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 	CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 30.0f;
+	Desc.fSpeedPerSec = 10.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
 	Desc.vEye = _float3(300.f, 100.f, 300.f);

@@ -3,6 +3,18 @@
 
 #include "VIBuffer_Point_Instance.h"
 
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
+//
+//#define STB_IMAGE_RESIZE_IMPLEMENTATION
+//#include "stb_image_resize2.h"
+//
+//#include "ImGuiFileDialog.h"
+
+#include "Smoke.h"
+
+_uint CParticleTool::m_strPrototypeTag_ID = { 0 };
+
 CParticleTool::CParticleTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CTool(pDevice, pContext)
 {
@@ -22,11 +34,15 @@ HRESULT CParticleTool::Initialize_Prototype()
 HRESULT CParticleTool::Initialize(void* pArg)
 {
 	CGameObject* pEffect = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Layer_Effect"));
+	
 	if (pEffect)
 	{
 		CComponent* pVIBuffer = pEffect->Get_Component(TEXT("Com_VIBuffer"));
 		m_VIBuffer = static_cast<CVIBuffer_Point_Instance*>(pVIBuffer);
 		Safe_AddRef(m_VIBuffer);
+
+		m_pSmoke = static_cast<CSmoke*>(pEffect);
+		Safe_AddRef(m_pSmoke);
 	}
 
 	return S_OK;
@@ -35,9 +51,44 @@ void CParticleTool::Priority_Update(_float fTimeDelta)
 {
 
 }
+
+
 void CParticleTool::Update(_float fTimeDelta)
 {
 	ImGui::Begin("Particle");
+
+#pragma region 파티클 텍스쳐
+	if (ImGui::Button("Change Texture")) 
+	{
+		wstring pTextureFilePath = OpenFileDialog();
+
+		if (!pTextureFilePath.empty())
+		{
+			//임시로 사용할 프로토타입 이름 지정
+			wstring strPrototypeTag = L"CParticleTool_Temp_" + to_wstring(m_strPrototypeTag_ID);
+
+			//텍스쳐를 로드하고... 로딩이 완료되면 텍스쳐 바꿔 끼워주자.
+			if (FAILED(Load_Texture(strPrototypeTag, pTextureFilePath)))
+			{
+				//이미 있을 수도 있음
+				//MSG_BOX("이미지 로드 실패");
+			}
+
+			if (FAILED(Change_Texture(strPrototypeTag)))
+			{
+				MSG_BOX("텍스쳐 변경 실패");
+			}
+			else
+			{
+				++m_strPrototypeTag_ID;
+			}
+				
+		}
+	}
+
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
 
 #pragma region 파티클 갯수
 	const _int iMinCount = 1;
@@ -155,14 +206,51 @@ void CParticleTool::Update(_float fTimeDelta)
 }
 void CParticleTool::Late_Update(_float fTimeDelta)
 {
-
-
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
-
 }
 HRESULT CParticleTool::Render()
 {
 	ImGui::Render();  // 렌더링 처리
+	return S_OK;
+}
+
+#include <windows.h>
+#include <commdlg.h>  // GetOpenFileName
+wstring CParticleTool::OpenFileDialog()
+{
+	OPENFILENAME ofn;       // common dialog box structure
+	_tchar szFile[MAX_PATH] = { 0 };       // buffer for file name
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = nullptr;  // 필요하면 윈도우 핸들 넣기
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = L"Image Files\0*.png;*.jpg;*.dds;*.tga\0All Files\0*.*\0";
+	ofn.nFilterIndex = 1;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (GetOpenFileName(&ofn) == TRUE) {
+		return _wstring(ofn.lpstrFile);
+	}
+	return wstring(); // 취소 등 실패 시 빈 문자열 반환
+}
+
+HRESULT CParticleTool::Load_Texture(const wstring& strPrototypeTag, const wstring& pTextureFilePath)
+{
+	/* For.Prototype_Component_Texture_Smoke*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag,
+		CTexture::Create(m_pDevice, m_pContext, pTextureFilePath.c_str(), 1))))
+		return E_FAIL;
+
+	return S_OK;
+
+}
+
+HRESULT CParticleTool::Change_Texture(const wstring& strPrototypeTag)
+{
+	return m_pSmoke->Change_Texture(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
+
 	return S_OK;
 }
 
@@ -197,4 +285,5 @@ void CParticleTool::Free()
 	__super::Free();
 
 	Safe_Release(m_VIBuffer);
+	Safe_Release(m_pSmoke);
 }

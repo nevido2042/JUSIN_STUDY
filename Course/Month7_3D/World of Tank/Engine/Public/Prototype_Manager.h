@@ -32,15 +32,12 @@ public:
 	HRESULT				Add_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, class CBase* pPrototype);
 	CBase*				Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg);
 	const PROTOTYPES&	Get_Prototypes(_uint iPrototypeLevelIndex) const;
+	class CBase*		Find_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag);
 
 	void Clear(_uint iLevelIndex);
 private:
 	_uint			m_iNumLevels = {};
 	PROTOTYPES*		m_pPrototypes = { nullptr };
-
-
-private:
-	class CBase* Find_Prototype(_uint iLevelIndex, const _wstring& strPrototypeTag);
 
 public:
 	static CPrototype_Manager* Create(_uint iNumLevels);

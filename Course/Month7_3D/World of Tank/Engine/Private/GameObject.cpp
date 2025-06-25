@@ -160,6 +160,20 @@ HRESULT CGameObject::Add_Component(_uint iPrototypeLevelIndex, const _wstring& s
 	return S_OK;
 }
 
+HRESULT CGameObject::Remove_Component(const _wstring& strComponentTag)
+{
+	CComponent* pCom = Get_Component(strComponentTag);
+
+	if (pCom == nullptr)
+		return E_FAIL;
+
+	m_Components.erase(strComponentTag);
+
+	Safe_Release(pCom);
+
+	return S_OK;
+}
+
 void CGameObject::Free()
 {
 	__super::Free();
