@@ -301,8 +301,6 @@ void CVIBuffer_Point_Instance::Change_Range(_float3 vRange)
 
 	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
 
-	_vector vDir = {};
-
 	for (size_t i = 0; i < m_iNumInstance; i++)
 	{
 
@@ -319,7 +317,77 @@ void CVIBuffer_Point_Instance::Change_Range(_float3 vRange)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
-void CVIBuffer_Point_Instance::Reset()
+void CVIBuffer_Point_Instance::Change_Size(_float2 vSize)
+{
+	m_tPointInstanceDesc.vSize = vSize;
+
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		_float	fSize = m_pGameInstance->Compute_Random(m_tPointInstanceDesc.vSize.x, m_tPointInstanceDesc.vSize.y);
+
+		pVertices[i].vRight = _float4(fSize, 0.f, 0.f, 0.f);
+		pVertices[i].vUp = _float4(0.f, fSize, 0.f, 0.f);
+		pVertices[i].vLook = _float4(0.f, 0.f, fSize, 0.f);
+
+		m_pVertexInstances[i].vRight = pVertices[i].vRight;
+		m_pVertexInstances[i].vUp = pVertices[i].vUp;
+		m_pVertexInstances[i].vLook = pVertices[i].vLook;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance::Change_Pivot(_float3 vPivot)
+{
+	m_vPivot = vPivot;
+}
+
+void CVIBuffer_Point_Instance::Change_LifeTime(_float2 vLifeTime)
+{
+	m_tPointInstanceDesc.vLifeTime = vLifeTime;
+
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vLifeTime = _float2(
+			m_pGameInstance->Compute_Random(m_tPointInstanceDesc.vLifeTime.x, m_tPointInstanceDesc.vLifeTime.y),
+			0.f
+		);
+
+		m_pVertexInstances[i].vLifeTime = pVertices[i].vLifeTime;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance::Change_Speed(_float2 vSpeed)
+{
+	m_tPointInstanceDesc.vSpeed = vSpeed;
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		m_pSpeeds[i] = m_pGameInstance->Compute_Random(m_tPointInstanceDesc.vSpeed.x, m_tPointInstanceDesc.vSpeed.y);
+	}
+
+}
+
+void CVIBuffer_Point_Instance::Change_isLoop(_bool bLoop)
+{
+	m_isLoop = bLoop;
+}
+
+void CVIBuffer_Point_Instance::Replay()
 {
 	D3D11_MAPPED_SUBRESOURCE	SubResource{};
 

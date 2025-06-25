@@ -3119,7 +3119,7 @@ bool ImGui::SliderBehaviorT(const ImRect& bb, ImGuiID id, ImGuiDataType data_typ
         {
             if (g.ActiveIdIsJustActivated)
             {
-                g.SliderCurrentAccum = 0.0f; // Reset any stored nav delta upon activation
+                g.SliderCurrentAccum = 0.0f; // Replay any stored nav delta upon activation
                 g.SliderCurrentAccumDirty = false;
             }
 
@@ -7831,12 +7831,12 @@ ImGuiMultiSelectIO* ImGui::EndMultiSelect()
         // We currently don't allow user code to modify RangeSrcItem by writing to BeginIO's version, but that would be an easy change here.
         if (ms->IO.RangeSrcReset || (ms->RangeSrcPassedBy == false && ms->IO.RangeSrcItem != ImGuiSelectionUserData_Invalid)) // Can't read storage->RangeSrcItem here -> we want the state at beginning of the scope (see tests for easy failure)
         {
-            IMGUI_DEBUG_LOG_SELECTION("[selection] EndMultiSelect: Reset RangeSrcItem.\n"); // Will set be to NavId.
+            IMGUI_DEBUG_LOG_SELECTION("[selection] EndMultiSelect: Replay RangeSrcItem.\n"); // Will set be to NavId.
             storage->RangeSrcItem = ImGuiSelectionUserData_Invalid;
         }
         if (ms->NavIdPassedBy == false && storage->NavIdItem != ImGuiSelectionUserData_Invalid)
         {
-            IMGUI_DEBUG_LOG_SELECTION("[selection] EndMultiSelect: Reset NavIdItem.\n");
+            IMGUI_DEBUG_LOG_SELECTION("[selection] EndMultiSelect: Replay NavIdItem.\n");
             storage->NavIdItem = ImGuiSelectionUserData_Invalid;
             storage->NavIdSelected = -1;
         }

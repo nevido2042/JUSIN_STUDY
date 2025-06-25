@@ -28,6 +28,8 @@ HRESULT CSmoke::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	//m_pVIBufferCom->Set_EmissionShape(CVIBuffer_Instance::EMISSION_SHAPE::SPREAD);
+
 	return S_OK;
 }
 
@@ -41,7 +43,8 @@ void CSmoke::Priority_Update(_float fTimeDelta)
 
 void CSmoke::Update(_float fTimeDelta)
 {
-	m_pVIBufferCom->Drop(fTimeDelta);
+	m_pVIBufferCom->Emission(fTimeDelta);
+	//m_pVIBufferCom->Drop(fTimeDelta);
 	//m_pVIBufferCom->Spread(fTimeDelta);
 
 }

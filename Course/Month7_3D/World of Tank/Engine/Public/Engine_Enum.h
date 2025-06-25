@@ -11,7 +11,7 @@ namespace Engine
 	enum class DIMK { LBUTTON, RBUTTON, WHEEL, END };
 	enum class DIMM { X, Y, WHEEL, END };
 	enum class NETWORK_STATUS { CONNECTED, WARNING, DISCONNECTED };
-
+    enum class EMISSION_SHAPE { DROP, SPREAD, END };
 #pragma region aiTextureType
     enum aiTextureType {
         /** Dummy value.

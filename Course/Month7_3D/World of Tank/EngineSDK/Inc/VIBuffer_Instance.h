@@ -31,18 +31,27 @@ public:
 	virtual HRESULT Bind_Buffers() override;
 	virtual HRESULT Render() override;
 
+	void Emission(_float fTimeDelta);
 	virtual void Drop(_float fTimeDelta);
 	virtual void Spread(_float fTimeDelta);
 
 	virtual void Change_NumInstance(_int iNumInstance);
 	virtual void Change_Range(_float3 vRange);
-	virtual void Reset();
+	virtual void Change_Size(_float2 vSize);
+	virtual void Replay();
+
+public:
+	void Set_EmissionShape(EMISSION_SHAPE eShape) {
+		m_eEmissionShape = eShape;
+	}
+
+protected:
+	EMISSION_SHAPE m_eEmissionShape = { EMISSION_SHAPE::END };
 
 protected:
 	ID3D11Buffer* m_pVBInstance = { nullptr };
 	D3D11_BUFFER_DESC		m_VBInstanceDesc = {};
 	D3D11_SUBRESOURCE_DATA	m_VBInstanceSubresourceData = {};
-
 
 	_uint					m_iNumIndexPerInstance = {};
 	_uint					m_iNumInstance = {}; //¿ä³ð

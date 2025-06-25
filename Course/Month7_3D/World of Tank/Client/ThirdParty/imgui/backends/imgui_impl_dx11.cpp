@@ -19,7 +19,7 @@
 // (minor and older changes stripped away, please see git history for details)
 //  2025-XX-XX: Platform: Added support for multiple windows via the ImGuiPlatformIO interface.
 //  2025-02-24: [Docking] Added undocumented ImGui_ImplDX11_SetSwapChainDescs() to configure swap chain creation for secondary viewports.
-//  2025-01-06: DirectX11: Expose VertexConstantBuffer in ImGui_ImplDX11_RenderState. Reset projection matrix in ImDrawCallback_ResetRenderState handler.
+//  2025-01-06: DirectX11: Expose VertexConstantBuffer in ImGui_ImplDX11_RenderState. Replay projection matrix in ImDrawCallback_ResetRenderState handler.
 //  2024-10-07: DirectX11: Changed default texture sampler to Clamp instead of Repeat/Wrap.
 //  2024-10-07: DirectX11: Expose selected render state in ImGui_ImplDX11_RenderState, which you can access in 'void* platform_io.Renderer_RenderState' during draw callbacks.
 //  2022-10-11: Using 'nullptr' instead of 'NULL' as per our switch to C++11.

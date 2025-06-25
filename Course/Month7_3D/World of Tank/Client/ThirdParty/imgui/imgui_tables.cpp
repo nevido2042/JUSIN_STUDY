@@ -416,7 +416,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
         if (override_content_size.x != FLT_MAX || override_content_size.y != FLT_MAX)
             SetNextWindowContentSize(ImVec2(override_content_size.x != FLT_MAX ? override_content_size.x : 0.0f, override_content_size.y != FLT_MAX ? override_content_size.y : 0.0f));
 
-        // Reset scroll if we are reactivating it
+        // Replay scroll if we are reactivating it
         if ((previous_flags & (ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY)) == 0)
             if ((g.NextWindowData.HasFlags & ImGuiNextWindowDataFlags_HasScroll) == 0)
                 SetNextWindowScroll(ImVec2(0.0f, 0.0f));
@@ -1157,7 +1157,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
         //else if (column->Flags & ImGuiTableColumnFlags_AlignCenter)
         //    column->WorkMinX = ImLerp(column->WorkMinX, ImMax(column->StartX, column->MaxX - column->ContentWidthRowsUnfrozen), 0.5f);
 
-        // Reset content width variables
+        // Replay content width variables
         if (table->InstanceCurrent == 0)
         {
             column->ContentMaxXFrozen = column->WorkMinX;
@@ -3506,7 +3506,7 @@ bool ImGui::TableBeginContextMenuPopup(ImGuiTable* table)
 // FIXME-TABLE: Ideally this should be writable by the user. Full programmatic access to that data?
 // Sections to display are pulled from 'flags_for_section_to_display', which is typically == table->Flags.
 // - ImGuiTableFlags_Resizable   -> display Sizing menu items
-// - ImGuiTableFlags_Reorderable -> display "Reset Order"
+// - ImGuiTableFlags_Reorderable -> display "Replay Order"
 ////- ImGuiTableFlags_Sortable   -> display sorting options (disabled)
 // - ImGuiTableFlags_Hideable    -> display columns visibility menu items
 // It means if you have a custom context menus you can call this section and omit some sections, and add your own.
@@ -3549,8 +3549,8 @@ void ImGui::TableDrawDefaultContextMenu(ImGuiTable* table, ImGuiTableFlags flags
         want_separator = true;
     }
 
-    // Reset all (should work but seems unnecessary/noisy to expose?)
-    //if (MenuItem("Reset all"))
+    // Replay all (should work but seems unnecessary/noisy to expose?)
+    //if (MenuItem("Replay all"))
     //    table->IsResetAllRequest = true;
 
     // Sorting

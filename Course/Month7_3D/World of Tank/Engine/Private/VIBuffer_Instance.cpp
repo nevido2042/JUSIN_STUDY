@@ -60,6 +60,24 @@ HRESULT CVIBuffer_Instance::Render()
 	return S_OK;
 }
 
+void CVIBuffer_Instance::Emission(_float fTimeDelta)
+{
+	switch (m_eEmissionShape)
+	{
+	case Engine::EMISSION_SHAPE::DROP:
+		Drop(fTimeDelta);
+		break;
+	case Engine::EMISSION_SHAPE::SPREAD:
+		Spread(fTimeDelta);
+		break;
+	case Engine::EMISSION_SHAPE::END:
+		break;
+	default:
+		break;
+	}
+
+}
+
 void CVIBuffer_Instance::Drop(_float fTimeDelta)
 {
 
@@ -78,7 +96,11 @@ void CVIBuffer_Instance::Change_Range(_float3 vRange)
 {
 }
 
-void CVIBuffer_Instance::Reset()
+void CVIBuffer_Instance::Change_Size(_float2 vSize)
+{
+}
+
+void CVIBuffer_Instance::Replay()
 {
 }
 

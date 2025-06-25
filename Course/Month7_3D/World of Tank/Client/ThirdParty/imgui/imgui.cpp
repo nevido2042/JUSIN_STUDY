@@ -3146,7 +3146,7 @@ void ImGuiListClipper::Begin(int items_count, float items_height)
     if (++g.ClipperTempDataStacked > g.ClipperTempData.Size)
         g.ClipperTempData.resize(g.ClipperTempDataStacked, ImGuiListClipperData());
     ImGuiListClipperData* data = &g.ClipperTempData[g.ClipperTempDataStacked - 1];
-    data->Reset(this);
+    data->Replay(this);
     data->LossynessOffset = window->DC.CursorStartPosLossyness.y;
     TempData = data;
     StartSeekOffsetY = data->LossynessOffset;
@@ -3969,7 +3969,7 @@ static const ImGuiLocEntry GLocalizationEntriesEnUS[] =
     { ImGuiLocKey_TableSizeOne,         "Size column to fit###SizeOne"          },
     { ImGuiLocKey_TableSizeAllFit,      "Size all columns to fit###SizeAll"     },
     { ImGuiLocKey_TableSizeAllDefault,  "Size all columns to default###SizeAll" },
-    { ImGuiLocKey_TableResetOrder,      "Reset order###ResetOrder"              },
+    { ImGuiLocKey_TableResetOrder,      "Replay order###ResetOrder"              },
     { ImGuiLocKey_WindowingMainMenuBar, "(Main menu bar)"                       },
     { ImGuiLocKey_WindowingPopup,       "(Popup)"                               },
     { ImGuiLocKey_WindowingUntitled,    "(Untitled)"                            },
@@ -10303,7 +10303,7 @@ static ImGuiWindow* FindBestWheelingWindow(const ImVec2& wheel)
 // Called by NewFrame()
 void ImGui::UpdateMouseWheel()
 {
-    // Reset the locked window if we move the mouse or after the timer elapses.
+    // Replay the locked window if we move the mouse or after the timer elapses.
     // FIXME: Ideally we could refactor to have one timer for "changing window w/ same axis" and a shorter timer for "changing window or axis w/ other axis" (#3795)
     ImGuiContext& g = *GImGui;
     if (g.WheelingWindow != NULL)
@@ -16035,7 +16035,7 @@ static void ImGui::UpdateViewportsNewFrame()
         }
         viewport->UpdateWorkRect();
 
-        // Reset alpha every frame. Users of transparency (docking) needs to request a lower alpha back.
+        // Replay alpha every frame. Users of transparency (docking) needs to request a lower alpha back.
         viewport->Alpha = 1.0f;
 
         // Translate Dear ImGui windows when a Host Viewport has been moved
@@ -22320,7 +22320,7 @@ void ImGui::DebugNodeViewport(ImGuiViewportP* viewport)
             viewport->Pos.x, viewport->Pos.y, viewport->Size.x, viewport->Size.y,
             viewport->WorkInsetMin.x, viewport->WorkInsetMin.y, viewport->WorkInsetMax.x, viewport->WorkInsetMax.y,
             viewport->PlatformMonitor, viewport->DpiScale * 100.0f);
-        if (viewport->Idx > 0) { SameLine(); if (SmallButton("Reset Pos")) { viewport->Pos = ImVec2(200, 200); viewport->UpdateWorkRect(); if (viewport->Window) viewport->Window->Pos = viewport->Pos; } }
+        if (viewport->Idx > 0) { SameLine(); if (SmallButton("Replay Pos")) { viewport->Pos = ImVec2(200, 200); viewport->UpdateWorkRect(); if (viewport->Window) viewport->Window->Pos = viewport->Pos; } }
         BulletText("Flags: 0x%04X =%s%s%s%s%s%s%s%s%s%s%s%s%s", viewport->Flags,
             //(flags & ImGuiViewportFlags_IsPlatformWindow) ? " IsPlatformWindow" : "", // Omitting because it is the standard
             (flags & ImGuiViewportFlags_IsPlatformMonitor) ? " IsPlatformMonitor" : "",

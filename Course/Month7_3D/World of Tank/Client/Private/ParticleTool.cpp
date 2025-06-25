@@ -37,23 +37,6 @@ void CParticleTool::Priority_Update(_float fTimeDelta)
 }
 void CParticleTool::Update(_float fTimeDelta)
 {
-
-	//if (m_pGameInstance->Key_Down(DIK_1))
-	//{
-	//	m_VIBuffer->Change_Range(_float3(1.f, 1.f, 1.f));
-	//	m_VIBuffer->Reset();
-	//}
-	//if (m_pGameInstance->Key_Down(DIK_2))
-	//{
-	//	m_VIBuffer->Change_Range(_float3(2.f, 2.f, 2.f));
-	//	m_VIBuffer->Reset();
-	//}
-	//if (m_pGameInstance->Key_Down(DIK_3))
-	//{
-	//	m_VIBuffer->Change_Range(_float3(3.f, 3.f, 3.f));
-	//	m_VIBuffer->Reset();
-	//}
-
 	ImGui::Begin("Particle");
 
 #pragma region 파티클 갯수
@@ -65,25 +48,105 @@ void CParticleTool::Update(_float fTimeDelta)
 	{
 		m_iNumInstances = clamp(m_iNumInstances, iMinCount, iMaxCount);
 		m_VIBuffer->Change_NumInstance(m_iNumInstances);
-		m_VIBuffer->Reset();
+		m_VIBuffer->Replay();
 	}
 
 	// 슬라이더
-	if (ImGui::SliderInt("Slider", &m_iNumInstances, iMinCount, iMaxCount))
+	if (ImGui::SliderInt("##Slider", &m_iNumInstances, iMinCount, iMaxCount))
 	{
 		m_VIBuffer->Change_NumInstance(m_iNumInstances);
-		m_VIBuffer->Reset();
+		m_VIBuffer->Replay();
 	}
 
 	// 상태 출력
 	ImGui::Text("Current: %d / Max: %d", m_iNumInstances, iMaxCount);
 #pragma endregion
 
+	ImGui::Separator(); // 구분선 추가
+
 #pragma region 스폰 범위
 	if (ImGui::DragFloat3("Spawn Range", reinterpret_cast<_float*>(&m_vRange), 0.1f, 0.f, 1000.f))
 	{
 		m_VIBuffer->Change_Range(m_vRange);
-		m_VIBuffer->Reset(); // 변경 즉시 반영
+		m_VIBuffer->Replay(); 
+	}
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 방출 모양
+
+	const _char* szShapes[] = { "DROP", "SPREAD", "END" };
+
+	_int iCurrent = static_cast<_int>(m_eEmissionShape);
+	if (ImGui::Combo("Emission Shape", &iCurrent, szShapes, IM_ARRAYSIZE(szShapes)))
+	{
+		m_eEmissionShape = static_cast<EMISSION_SHAPE>(iCurrent);
+
+		// 선택이 바뀌었을 때 처리
+		m_VIBuffer->Set_EmissionShape(m_eEmissionShape);
+		m_VIBuffer->Replay(); 
+	}
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 방출 피벗
+	if (ImGui::DragFloat3("Emission Pivot", reinterpret_cast<_float*>(&m_vPivot), 0.1f, -100.f, 100.f))
+	{
+		m_VIBuffer->Change_Pivot(m_vPivot);
+		m_VIBuffer->Replay(); 
+	}
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 파티클 사이즈
+	if (ImGui::DragFloat2("Particle Size", reinterpret_cast<_float*>(&m_vSize), 0.1f, 0.f, 100.f))
+	{
+		m_VIBuffer->Change_Size(m_vSize);
+		m_VIBuffer->Replay();
+	}
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 라이프 타임
+	if (ImGui::DragFloat2("Life Time", reinterpret_cast<_float*>(&m_vLifeTime), 0.1f, 0.f, 100.f))
+	{
+		m_VIBuffer->Change_LifeTime(m_vLifeTime);
+		m_VIBuffer->Replay(); 
+	}
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 파티클 속도
+	if (ImGui::DragFloat2("Particle Speed", reinterpret_cast<_float*>(&m_vSpeed), 0.1f, -100.f, 100.f))
+	{
+		m_VIBuffer->Change_Speed(m_vSpeed);
+		m_VIBuffer->Replay(); 
+	}
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 루프
+
+	if (ImGui::Checkbox("Loop", &m_bLoop))
+	{
+		m_VIBuffer->Change_isLoop(m_bLoop);  // 루프 여부 전달
+		m_VIBuffer->Replay();            
+	}
+
+#pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 리플레이
+	if (ImGui::Button("Replay", ImVec2(80.f, 30.f)))
+	{
+		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
 

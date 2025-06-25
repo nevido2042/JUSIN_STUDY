@@ -28,6 +28,12 @@ public:
 private:
 	_int			m_iNumInstances = { 10 };
 	_float3			m_vRange = { 1.f, 1.f, 1.f };
+	_float3			m_vPivot = { 0.f, 0.f, 0.f };
+	_float2			m_vSize = { 1.f, 3.f };
+	_float2			m_vLifeTime = { 1.f, 3.f };
+	_float2			m_vSpeed = { 1.f, 3.f };
+	_bool			m_bLoop = { true };
+	EMISSION_SHAPE m_eEmissionShape = { EMISSION_SHAPE::END };
 
 	CVIBuffer_Point_Instance* m_VIBuffer = { nullptr };
 
