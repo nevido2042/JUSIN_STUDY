@@ -105,6 +105,7 @@
 
 #pragma region PARTICLETTOOL
 #include "ParticleTool.h"
+#include "BaseParticle.h"
 #pragma endregion
 
 
@@ -620,7 +621,7 @@ HRESULT CLoader::Loading_For_Static()
 		CGameManager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Ash */
+	/* For.Prototype_GameObject_Smoke */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
 		CSmoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1177,11 +1178,35 @@ HRESULT CLoader::Loading_For_MapTool()
 
 HRESULT CLoader::Loading_For_ParticleTool()
 {
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	/* For.Prototype_Component_VIBuffer_BaseParticle*/
+	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		BaseDesc{};
+	BaseDesc.iNumInstance = 500;
+	BaseDesc.vCenter = _float3(0.0f, 0.f, 0.0f);
+	BaseDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	BaseDesc.vSize = _float2(0.05f, 0.1f);
+	BaseDesc.vLifeTime = _float2(0.5f, 2.f);
+	BaseDesc.vSpeed = _float2(1.f, 2.f);
+	BaseDesc.vPivot = _float3(0.0f, 0.f, 0.f);
+	BaseDesc.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_Component_VIBuffer_BaseParticle"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &BaseDesc))))
+		return E_FAIL;
+
+
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 	/* For.Prototype_GameObject_ParticleTool */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_ParticleTool"),
 		CParticleTool::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_BaseParticle */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_BaseParticle"),
+		CBaseParticle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

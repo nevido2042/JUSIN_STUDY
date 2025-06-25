@@ -30,18 +30,18 @@ private:
 	HRESULT Load_Texture(const wstring& strPrototypeTag, const wstring& pTextureFilePath);
 	HRESULT Change_Texture(const wstring& strPrototypeTag);
 private:
-	_int			m_iNumInstances = { 10 };
-	_float3			m_vRange = { 1.f, 1.f, 1.f };
+	_int			m_iNumInstances = { 500 };
+	_float3			m_vRange = { 0.2f, 0.2f, 0.2f };
 	_float3			m_vPivot = { 0.f, 0.f, 0.f };
-	_float2			m_vSize = { 1.f, 3.f };
-	_float2			m_vLifeTime = { 1.f, 3.f };
-	_float2			m_vSpeed = { 1.f, 3.f };
+	_float2			m_vSize = { 0.05f, 0.1f };
+	_float2			m_vLifeTime = { 0.5f, 2.f };
+	_float2			m_vSpeed = { 1.f, 2.f };
 	_bool			m_bLoop = { true };
 	EMISSION_SHAPE	m_eEmissionShape = { EMISSION_SHAPE::END };
 	static _uint	m_strPrototypeTag_ID;
 private:
 	CVIBuffer_Point_Instance* m_VIBuffer = { nullptr };
-	class CSmoke*	m_pSmoke = { nullptr };
+	class CBaseParticle*	m_pSmoke = { nullptr };
 
 public:
 	static CParticleTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

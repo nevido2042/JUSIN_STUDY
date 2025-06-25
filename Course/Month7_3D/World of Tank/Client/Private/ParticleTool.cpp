@@ -11,7 +11,7 @@
 //
 //#include "ImGuiFileDialog.h"
 
-#include "Smoke.h"
+#include "BaseParticle.h"
 
 _uint CParticleTool::m_strPrototypeTag_ID = { 0 };
 
@@ -41,7 +41,7 @@ HRESULT CParticleTool::Initialize(void* pArg)
 		m_VIBuffer = static_cast<CVIBuffer_Point_Instance*>(pVIBuffer);
 		Safe_AddRef(m_VIBuffer);
 
-		m_pSmoke = static_cast<CSmoke*>(pEffect);
+		m_pSmoke = static_cast<CBaseParticle*>(pEffect);
 		Safe_AddRef(m_pSmoke);
 	}
 
@@ -153,7 +153,7 @@ void CParticleTool::Update(_float fTimeDelta)
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 파티클 사이즈
-	if (ImGui::DragFloat2("Particle Size", reinterpret_cast<_float*>(&m_vSize), 0.1f, 0.f, 100.f))
+	if (ImGui::DragFloat2("Particle Size", reinterpret_cast<_float*>(&m_vSize), 0.001f, 0.001f, 10.f))
 	{
 		m_VIBuffer->Change_Size(m_vSize);
 		m_VIBuffer->Replay();
@@ -218,6 +218,9 @@ HRESULT CParticleTool::Render()
 #include <commdlg.h>  // GetOpenFileName
 wstring CParticleTool::OpenFileDialog()
 {
+	TCHAR szInitialDir[MAX_PATH] = { 0 };
+	GetCurrentDirectory(MAX_PATH, szInitialDir);  // 원래 작업 디렉터리 저장
+
 	OPENFILENAME ofn;       // common dialog box structure
 	_tchar szFile[MAX_PATH] = { 0 };       // buffer for file name
 
@@ -230,9 +233,17 @@ wstring CParticleTool::OpenFileDialog()
 	ofn.nFilterIndex = 1;
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-	if (GetOpenFileName(&ofn) == TRUE) {
+
+
+	if (GetOpenFileName(&ofn) == TRUE) 
+	{
+		// 원래 디렉터리로 복원
+		SetCurrentDirectory(szInitialDir);
 		return _wstring(ofn.lpstrFile);
 	}
+
+	// 원래 디렉터리로 복원
+	SetCurrentDirectory(szInitialDir);
 	return wstring(); // 취소 등 실패 시 빈 문자열 반환
 }
 
@@ -249,7 +260,12 @@ HRESULT CParticleTool::Load_Texture(const wstring& strPrototypeTag, const wstrin
 
 HRESULT CParticleTool::Change_Texture(const wstring& strPrototypeTag)
 {
-	return m_pSmoke->Change_Texture(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
+	CBase* pTexture = m_pGameInstance->Find_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
+
+	if(pTexture)
+		return m_pSmoke->Change_Texture(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
+	else
+		return S_OK;
 
 	return S_OK;
 }

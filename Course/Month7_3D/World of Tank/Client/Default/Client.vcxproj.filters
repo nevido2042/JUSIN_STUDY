@@ -331,6 +331,9 @@
     <Filter Include="96.ThirdParty\imGuiFileDialog">
       <UniqueIdentifier>{d64bea21-f869-472e-9b6d-f242a6183b17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\BaseParticle">
+      <UniqueIdentifier>{2bf93a34-fb5d-4fd9-a387-854675f581fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -663,11 +666,17 @@
     <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialogConfig.h">
       <Filter>96.ThirdParty\imGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb_image.h">
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\dirent\dirent.h">
       <Filter>96.ThirdParty\imGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb_image_resize2.h">
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb\stb_image.h">
       <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb\stb_image_resize2.h">
+      <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BaseParticle.h">
+      <Filter>02.GameObjects\07.Effect\Particle\BaseParticle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -992,6 +1001,9 @@
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>96.ThirdParty\imGuiFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BaseParticle.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\BaseParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

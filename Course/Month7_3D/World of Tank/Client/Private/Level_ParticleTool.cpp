@@ -170,7 +170,7 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Effect(const _wstring strLayerTag)
 	CGameObject::GAMEOBJECT_DESC Desc{};
 	Desc.vInitPosition = _float3(300.f, 100.f, 300.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_BaseParticle"),
 		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
 		return E_FAIL;
 
