@@ -41,7 +41,7 @@ private:
 	static _uint	m_strPrototypeTag_ID;
 private:
 	CVIBuffer_Point_Instance* m_VIBuffer = { nullptr };
-	class CBaseParticle*	m_pSmoke = { nullptr };
+	class CBaseParticle*	m_pBaseParticle = { nullptr };
 
 public:
 	static CParticleTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

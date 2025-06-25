@@ -87,6 +87,10 @@ HRESULT CBaseParticle::Render()
 
 HRESULT CBaseParticle::Change_Texture(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag)
 {
+	CBase* pTexture = m_pGameInstance->Find_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
+	if (pTexture == nullptr)
+		return E_FAIL;
+
 	Safe_Release(m_pTextureCom);
 
 	Remove_Component(TEXT("Com_Texture"));

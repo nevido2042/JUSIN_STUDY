@@ -41,8 +41,8 @@ HRESULT CParticleTool::Initialize(void* pArg)
 		m_VIBuffer = static_cast<CVIBuffer_Point_Instance*>(pVIBuffer);
 		Safe_AddRef(m_VIBuffer);
 
-		m_pSmoke = static_cast<CBaseParticle*>(pEffect);
-		Safe_AddRef(m_pSmoke);
+		m_pBaseParticle = static_cast<CBaseParticle*>(pEffect);
+		Safe_AddRef(m_pBaseParticle);
 	}
 
 	return S_OK;
@@ -260,12 +260,7 @@ HRESULT CParticleTool::Load_Texture(const wstring& strPrototypeTag, const wstrin
 
 HRESULT CParticleTool::Change_Texture(const wstring& strPrototypeTag)
 {
-	CBase* pTexture = m_pGameInstance->Find_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
-
-	if(pTexture)
-		return m_pSmoke->Change_Texture(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
-	else
-		return S_OK;
+	return m_pBaseParticle->Change_Texture(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
 
 	return S_OK;
 }
@@ -301,5 +296,5 @@ void CParticleTool::Free()
 	__super::Free();
 
 	Safe_Release(m_VIBuffer);
-	Safe_Release(m_pSmoke);
+	Safe_Release(m_pBaseParticle);
 }
