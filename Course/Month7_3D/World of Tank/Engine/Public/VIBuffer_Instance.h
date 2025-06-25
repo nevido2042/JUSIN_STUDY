@@ -17,7 +17,7 @@ public:
 		_float3		vRange;
 		_float2		vSize;
 		_float3		vCenter;
-
+		EMISSION_SHAPE eEmissionShape = { EMISSION_SHAPE::END };
 	}INSTANCE_DESC;
 protected:
 	CVIBuffer_Instance(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -35,7 +35,7 @@ public:
 	virtual void Drop(_float fTimeDelta);
 	virtual void Spread(_float fTimeDelta);
 
-	virtual void Change_NumInstance(_int iNumInstance);
+	virtual void Change_NumInstance(_uint iNumInstance);
 	virtual void Change_Range(_float3 vRange);
 	virtual void Change_Size(_float2 vSize);
 	virtual void Replay();

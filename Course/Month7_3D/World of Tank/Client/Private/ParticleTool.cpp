@@ -45,6 +45,15 @@ HRESULT CParticleTool::Initialize(void* pArg)
 		Safe_AddRef(m_pBaseParticle);
 	}
 
+	m_BaseParticleDesc.iNumInstance = 500;
+	m_BaseParticleDesc.vCenter = _float3(0.0f, 0.f, 0.0f);
+	m_BaseParticleDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	m_BaseParticleDesc.vSize = _float2(0.05f, 0.1f);
+	m_BaseParticleDesc.vLifeTime = _float2(0.5f, 2.f);
+	m_BaseParticleDesc.vSpeed = _float2(1.f, 2.f);
+	m_BaseParticleDesc.vPivot = _float3(0.0f, 0.f, 0.f);
+	m_BaseParticleDesc.isLoop = true;
+
 	return S_OK;
 }
 void CParticleTool::Priority_Update(_float fTimeDelta)
@@ -95,30 +104,30 @@ void CParticleTool::Update(_float fTimeDelta)
 	const _int iMaxCount = 10000;
 
 	// 텍스트 입력 바
-	if (ImGui::InputInt("Instance Count", &m_iNumInstances))
+	if (ImGui::InputInt("Instance Count", reinterpret_cast<_int*>(&m_BaseParticleDesc.iNumInstance)))
 	{
-		m_iNumInstances = clamp(m_iNumInstances, iMinCount, iMaxCount);
-		m_VIBuffer->Change_NumInstance(m_iNumInstances);
+		m_BaseParticleDesc.iNumInstance = clamp(static_cast<_int>(m_BaseParticleDesc.iNumInstance), iMinCount, iMaxCount);
+		m_VIBuffer->Change_NumInstance(m_BaseParticleDesc.iNumInstance);
 		m_VIBuffer->Replay();
 	}
 
 	// 슬라이더
-	if (ImGui::SliderInt("##Slider", &m_iNumInstances, iMinCount, iMaxCount))
+	if (ImGui::SliderInt("##Slider", reinterpret_cast<_int*>(&m_BaseParticleDesc.iNumInstance), iMinCount, iMaxCount))
 	{
-		m_VIBuffer->Change_NumInstance(m_iNumInstances);
+		m_VIBuffer->Change_NumInstance(m_BaseParticleDesc.iNumInstance);
 		m_VIBuffer->Replay();
 	}
 
 	// 상태 출력
-	ImGui::Text("Current: %d / Max: %d", m_iNumInstances, iMaxCount);
+	ImGui::Text("Current: %d / Max: %d", static_cast<_int>(m_BaseParticleDesc.iNumInstance), iMaxCount);
 #pragma endregion
 
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 스폰 범위
-	if (ImGui::DragFloat3("Spawn Range", reinterpret_cast<_float*>(&m_vRange), 0.1f, 0.f, 1000.f))
+	if (ImGui::DragFloat3("Spawn Range", reinterpret_cast<_float*>(&m_BaseParticleDesc.vRange), 0.1f, 0.f, 1000.f))
 	{
-		m_VIBuffer->Change_Range(m_vRange);
+		m_VIBuffer->Change_Range(m_BaseParticleDesc.vRange);
 		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
@@ -129,13 +138,13 @@ void CParticleTool::Update(_float fTimeDelta)
 
 	const _char* szShapes[] = { "DROP", "SPREAD", "END" };
 
-	_int iCurrent = static_cast<_int>(m_eEmissionShape);
+	_int iCurrent = static_cast<_int>(m_BaseParticleDesc.eEmissionShape);
 	if (ImGui::Combo("Emission Shape", &iCurrent, szShapes, IM_ARRAYSIZE(szShapes)))
 	{
-		m_eEmissionShape = static_cast<EMISSION_SHAPE>(iCurrent);
+		m_BaseParticleDesc.eEmissionShape = static_cast<EMISSION_SHAPE>(iCurrent);
 
 		// 선택이 바뀌었을 때 처리
-		m_VIBuffer->Set_EmissionShape(m_eEmissionShape);
+		m_VIBuffer->Set_EmissionShape(m_BaseParticleDesc.eEmissionShape);
 		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
@@ -143,9 +152,9 @@ void CParticleTool::Update(_float fTimeDelta)
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 방출 피벗
-	if (ImGui::DragFloat3("Emission Pivot", reinterpret_cast<_float*>(&m_vPivot), 0.1f, -100.f, 100.f))
+	if (ImGui::DragFloat3("Emission Pivot", reinterpret_cast<_float*>(&m_BaseParticleDesc.vPivot), 0.1f, -100.f, 100.f))
 	{
-		m_VIBuffer->Change_Pivot(m_vPivot);
+		m_VIBuffer->Change_Pivot(m_BaseParticleDesc.vPivot);
 		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
@@ -153,9 +162,9 @@ void CParticleTool::Update(_float fTimeDelta)
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 파티클 사이즈
-	if (ImGui::DragFloat2("Particle Size", reinterpret_cast<_float*>(&m_vSize), 0.001f, 0.001f, 10.f))
+	if (ImGui::DragFloat2("Particle Size", reinterpret_cast<_float*>(&m_BaseParticleDesc.vSize), 0.001f, 0.001f, 10.f))
 	{
-		m_VIBuffer->Change_Size(m_vSize);
+		m_VIBuffer->Change_Size(m_BaseParticleDesc.vSize);
 		m_VIBuffer->Replay();
 	}
 #pragma endregion
@@ -163,9 +172,9 @@ void CParticleTool::Update(_float fTimeDelta)
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 라이프 타임
-	if (ImGui::DragFloat2("Life Time", reinterpret_cast<_float*>(&m_vLifeTime), 0.1f, 0.f, 100.f))
+	if (ImGui::DragFloat2("Life Time", reinterpret_cast<_float*>(&m_BaseParticleDesc.vLifeTime), 0.1f, 0.f, 100.f))
 	{
-		m_VIBuffer->Change_LifeTime(m_vLifeTime);
+		m_VIBuffer->Change_LifeTime(m_BaseParticleDesc.vLifeTime);
 		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
@@ -173,9 +182,9 @@ void CParticleTool::Update(_float fTimeDelta)
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 파티클 속도
-	if (ImGui::DragFloat2("Particle Speed", reinterpret_cast<_float*>(&m_vSpeed), 0.1f, -100.f, 100.f))
+	if (ImGui::DragFloat2("Particle Speed", reinterpret_cast<_float*>(&m_BaseParticleDesc.vSpeed), 0.1f, -100.f, 100.f))
 	{
-		m_VIBuffer->Change_Speed(m_vSpeed);
+		m_VIBuffer->Change_Speed(m_BaseParticleDesc.vSpeed);
 		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
@@ -184,9 +193,9 @@ void CParticleTool::Update(_float fTimeDelta)
 
 #pragma region 루프
 
-	if (ImGui::Checkbox("Loop", &m_bLoop))
+	if (ImGui::Checkbox("Loop", &m_BaseParticleDesc.isLoop))
 	{
-		m_VIBuffer->Change_isLoop(m_bLoop);  // 루프 여부 전달
+		m_VIBuffer->Change_isLoop(m_BaseParticleDesc.isLoop);  // 루프 여부 전달
 		m_VIBuffer->Replay();            
 	}
 
@@ -200,6 +209,31 @@ void CParticleTool::Update(_float fTimeDelta)
 		m_VIBuffer->Replay(); 
 	}
 #pragma endregion
+
+#pragma region 파티클 저장
+
+	ImGui::InputText("Particle Name", m_szParticleName, IM_ARRAYSIZE(m_szParticleName));
+
+	if (ImGui::Button("Save Particle", ImVec2(120.f, 30.f)))
+	{
+		// 널 스트링 체크
+		if (strlen(m_szParticleName) > 0)
+		{
+			// char, wstring 변환
+			wstring wsParticleName(m_szParticleName, m_szParticleName + strlen(m_szParticleName));
+
+			Save_Particle(wsParticleName);
+		}
+		else
+		{
+			// 이름이 비어 있으면 경고를 띄우거나 로그 출력
+			MSG_BOX("파티클 이름을 입력하세요.\n");
+		}
+	}
+
+#pragma endregion
+
+
 
 	ImGui::End();
 
@@ -261,6 +295,36 @@ HRESULT CParticleTool::Load_Texture(const wstring& strPrototypeTag, const wstrin
 HRESULT CParticleTool::Change_Texture(const wstring& strPrototypeTag)
 {
 	return m_pBaseParticle->Change_Texture(ENUM_CLASS(LEVEL::PARTICLETOOL), strPrototypeTag);
+
+	return S_OK;
+}
+
+HRESULT CParticleTool::Save_Particle(const wstring& ParticleName)
+{
+	/* For.Prototype_Component_VIBuffer_BaseParticle*/
+	//CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		BaseDesc{};
+	//BaseDesc.iNumInstance = 500;
+	//BaseDesc.vCenter = _float3(0.0f, 0.f, 0.0f);
+	//BaseDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	//BaseDesc.vSize = _float2(0.05f, 0.1f);
+	//BaseDesc.vLifeTime = _float2(0.5f, 2.f);
+	//BaseDesc.vSpeed = _float2(1.f, 2.f);
+	//BaseDesc.vPivot = _float3(0.0f, 0.f, 0.f);
+	//BaseDesc.isLoop = true;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_Component_VIBuffer_BaseParticle"),
+	//	CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &BaseDesc))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_BaseParticle */
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_BaseParticle"),
+	//	CBaseParticle::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	//파티클 저정한다. (컴포넌트, 게임오브젝트)
+	//1. 컴포넌트 (레벨(static), 컴포넌트 태그)
+	//2. 게임오브젝트(레벨(static), 게임오브젝트 태그)
+	//3. CVIBuffer_Point_Instance::POINT_INSTANCE_DESC m_BaseParticleDesc
 
 	return S_OK;
 }

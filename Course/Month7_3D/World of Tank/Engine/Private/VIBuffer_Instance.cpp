@@ -88,7 +88,7 @@ void CVIBuffer_Instance::Spread(_float fTimeDelta)
 {
 }
 
-void CVIBuffer_Instance::Change_NumInstance(_int iNumInstance)
+void CVIBuffer_Instance::Change_NumInstance(_uint iNumInstance)
 {
 }
 

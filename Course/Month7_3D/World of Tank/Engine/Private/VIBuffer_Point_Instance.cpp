@@ -240,7 +240,7 @@ void CVIBuffer_Point_Instance::Spread(_float fTimeDelta)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
-void CVIBuffer_Point_Instance::Change_NumInstance(_int iNumInstance)
+void CVIBuffer_Point_Instance::Change_NumInstance(_uint iNumInstance)
 {
 	//부모의 인스턴스 갯수 바꾸고
 	m_iNumInstance = iNumInstance;

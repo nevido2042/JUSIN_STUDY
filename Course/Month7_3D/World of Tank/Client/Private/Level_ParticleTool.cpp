@@ -44,7 +44,7 @@ void CLevel_ParticleTool::Update(_float fTimeDelta)
 			CLevel_Loading::Create(m_pDevice, m_pContext, static_cast<LEVEL>(m_iNewLevelIndex)))))
 			return;
 	}
-	else if (m_pGameInstance->Key_Down(DIK_H))
+	else if (m_pGameInstance->Key_Down(DIK_F1))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER))))
 			return;
