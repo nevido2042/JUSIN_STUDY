@@ -121,7 +121,27 @@ PS_OUT PS_MAIN(PS_IN In)
     
     //Out.vColor.rgb = float3(1.f, 0.f, 0.f);
     
-    //Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y);
+    //Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * 0.5f;
+    
+
+    if (In.vLifeTime.y >= In.vLifeTime.x)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_SMOKE(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    
+    if (Out.vColor.a < 0.1f)
+        discard;
+    
+    //Out.vColor.rgb = float3(1.f, 0.f, 0.f);
+    
+    Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * 0.5f;
     
 
     if (In.vLifeTime.y >= In.vLifeTime.x)
@@ -139,11 +159,22 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();    
         GeometryShader = compile gs_5_0 GS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN();      
+    }
+
+    pass Smoke
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = compile gs_5_0 GS_MAIN();
+        PixelShader = compile ps_5_0 PS_SMOKE();
     }
  
 }

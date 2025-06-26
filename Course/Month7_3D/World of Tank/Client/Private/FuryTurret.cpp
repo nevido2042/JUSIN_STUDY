@@ -47,9 +47,11 @@ void CFuryTurret::Update(_float fTimeDelta)
 
 void CFuryTurret::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	CTurret::Late_Update(fTimeDelta);
 
-	CGameObject::Late_Update(fTimeDelta);
+	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+	//CGameObject::Late_Update(fTimeDelta);
 
 }
 

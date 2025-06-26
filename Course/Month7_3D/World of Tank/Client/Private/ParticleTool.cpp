@@ -133,34 +133,6 @@ HRESULT CParticleTool::Change_Texture(const wstring& strPrototypeTag)
 
 HRESULT CParticleTool::Save_Particle(const wstring& ParticleName)
 {
-	/* For.Prototype_Component_VIBuffer_BaseParticle*/
-	//CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		BaseDesc{};
-	//BaseDesc.iNumInstance = 500;
-	//BaseDesc.vCenter = _float3(0.0f, 0.f, 0.0f);
-	//BaseDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
-	//BaseDesc.vSize = _float2(0.05f, 0.1f);
-	//BaseDesc.vLifeTime = _float2(0.5f, 2.f);
-	//BaseDesc.vSpeed = _float2(1.f, 2.f);
-	//BaseDesc.vPivot = _float3(0.0f, 0.f, 0.f);
-	//BaseDesc.isLoop = true;
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_Component_VIBuffer_BaseParticle"),
-	//	CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &BaseDesc))))
-	//	return E_FAIL;
-
-	///* For.Prototype_GameObject_BaseParticle */
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_BaseParticle"),
-	//	CBaseParticle::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
-
-	//파티클 저정한다. (컴포넌트, 게임오브젝트)
-	//1. 컴포넌트 (레벨(static), 컴포넌트 태그)
-	//2. 게임오브젝트(레벨(static), 게임오브젝트 태그)
-	//3. CVIBuffer_Point_Instance::POINT_INSTANCE_DESC m_BaseParticleDesc
-
-	//wstring strComponentTag = TEXT("Prototype_Component_VIBuffer_") + ParticleName;
-	//wstring strGameObjectTag = TEXT("Prototype_GameObject_") + ParticleName;
-
 	// 저장할 파일 경로
 	wstring wstrFullPath = L"../Bin/Particles/" + ParticleName + L".txt";
 
@@ -194,6 +166,8 @@ HRESULT CParticleTool::Save_Particle(const wstring& ParticleName)
 	{
 		MSG_BOX("파일 저장에 실패했습니다.");
 	}
+
+	Load_Particles();
 
 	return S_OK;
 }

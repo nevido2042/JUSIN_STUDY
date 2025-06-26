@@ -49,10 +49,11 @@ void CTigerTurret::Update(_float fTimeDelta)
 
 void CTigerTurret::Late_Update(_float fTimeDelta)
 {
+	CTurret::Late_Update(fTimeDelta);
 
-	CGameObject::Late_Update(fTimeDelta);
+	//CGameObject::Late_Update(fTimeDelta);
 
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
 HRESULT CTigerTurret::Render()

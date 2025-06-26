@@ -120,7 +120,18 @@ void CEngine::Update(_float fTimeDelta)
 
 void CEngine::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+	// 위치만 추출
+	_vector vPos = XMVectorSet(
+		m_CombinedWorldMatrix._41,
+		m_CombinedWorldMatrix._42,
+		m_CombinedWorldMatrix._43,
+		1.f
+	);
+
+	// 프러스텀 안에 있으면 렌더링 추가
+	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+
 }
 
 HRESULT CEngine::Render()

@@ -168,6 +168,7 @@ HRESULT CFury::Ready_PartObjects(TANK_DESC* pDesc)
 
 	GAMEOBJECT_DESC EngineSmokeParticleDesc = {};
 	EngineSmokeParticleDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	EngineSmokeParticleDesc.vInitPosition = _float3(0.5f, 1.5f, -2.0f);
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"), TEXT("Part_EngineSmokeParticle"), &EngineSmokeParticleDesc)))
 		return E_FAIL;
 

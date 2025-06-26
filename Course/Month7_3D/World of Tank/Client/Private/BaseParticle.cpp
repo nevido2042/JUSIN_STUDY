@@ -52,7 +52,7 @@ void CBaseParticle::Update(_float fTimeDelta)
 void CBaseParticle::Late_Update(_float fTimeDelta)
 {
 	/* WeightBlend */
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
 HRESULT CBaseParticle::Render()

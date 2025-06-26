@@ -137,7 +137,8 @@ void CTank::Late_Update(_float fTimeDelta)
 		return;
 	}
 
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 2.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 	if (m_bisDie)
 	{
