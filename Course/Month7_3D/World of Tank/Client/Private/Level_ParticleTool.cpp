@@ -174,9 +174,12 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Effect(const _wstring strLayerTag)
 		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
 		return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Ash"),
-	//	ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
+	//Desc.vInitPosition = _float3(300.f, 90.f, 300.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
+	//	ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Layer_Test"), &Desc)))
 	//	return E_FAIL;
+
 
 	return S_OK;
 }

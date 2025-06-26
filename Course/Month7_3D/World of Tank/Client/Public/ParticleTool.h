@@ -30,6 +30,19 @@ private:
 	HRESULT Load_Texture(const wstring& strPrototypeTag, const wstring& pTextureFilePath);
 	HRESULT Change_Texture(const wstring& strPrototypeTag);
 	HRESULT Save_Particle(const wstring& ParticleName);
+
+
+private:
+	HRESULT Load_Particles();
+	vector<wstring> Get_ParticleFileNames();
+	//HRESULT Make_Particles_List();
+
+
+	void ParticleControl();
+	void ParticleList();
+private:
+	_int m_SelectedIndex = { -1 };
+	vector<CVIBuffer_Point_Instance::POINT_INSTANCE_DESC> m_ParticleDescs = {};
 private:
 	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC m_BaseParticleDesc = {};
 private:

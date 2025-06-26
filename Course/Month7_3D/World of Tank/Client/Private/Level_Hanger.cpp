@@ -83,6 +83,13 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
 		return E_FAIL;
 
+	//CGameObject::GAMEOBJECT_DESC Desc{};
+	//Desc.vInitPosition = _float3(300.f, 90.f, 300.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
+	//	ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Test"), &Desc)))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 

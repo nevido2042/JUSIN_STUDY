@@ -13,6 +13,7 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& Prototype)
 	, m_iNumInstance{ Prototype.m_iNumInstance }
 	, m_iVertexInstanceStride{ Prototype.m_iVertexInstanceStride }
 	, m_iNumIndexPerInstance{ Prototype.m_iNumIndexPerInstance }
+	, m_eEmissionShape{ Prototype.m_eEmissionShape }
 {
 	Safe_AddRef(m_pVBInstance);
 }

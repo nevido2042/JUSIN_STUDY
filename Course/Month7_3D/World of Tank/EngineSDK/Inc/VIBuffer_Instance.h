@@ -18,6 +18,7 @@ public:
 		_float2		vSize;
 		_float3		vCenter;
 		EMISSION_SHAPE eEmissionShape = { EMISSION_SHAPE::END };
+		_tchar		szName[MAX_PATH] = {};
 	}INSTANCE_DESC;
 protected:
 	CVIBuffer_Instance(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

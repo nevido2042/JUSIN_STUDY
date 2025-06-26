@@ -51,6 +51,9 @@ public:
 	HRESULT Loading_For_MapTool();
 	HRESULT Loading_For_ParticleTool();
 
+private:
+	HRESULT Load_Particles();
+	vector<wstring> Get_ParticleFileNames();
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID);
 	virtual void Free() override;

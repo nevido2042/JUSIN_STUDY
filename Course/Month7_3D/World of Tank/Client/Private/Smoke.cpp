@@ -28,6 +28,8 @@ HRESULT CSmoke::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	//m_pVIBufferCom->Load_Particle_Desc
+
 	//m_pVIBufferCom->Set_EmissionShape(CVIBuffer_Instance::EMISSION_SHAPE::SPREAD);
 
 	return S_OK;
@@ -43,6 +45,9 @@ void CSmoke::Priority_Update(_float fTimeDelta)
 
 void CSmoke::Update(_float fTimeDelta)
 {
+	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
 	m_pVIBufferCom->Emission(fTimeDelta);
 	//m_pVIBufferCom->Drop(fTimeDelta);
 	//m_pVIBufferCom->Spread(fTimeDelta);
@@ -58,7 +63,8 @@ void CSmoke::Late_Update(_float fTimeDelta)
 HRESULT CSmoke::Render()
 {
 
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))

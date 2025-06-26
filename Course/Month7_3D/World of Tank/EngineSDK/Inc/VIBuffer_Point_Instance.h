@@ -35,6 +35,9 @@ public:
 	void			Change_LifeTime(_float2 vLifeTime);
 	void			Change_Speed(_float2 vSpeed);
 	void			Change_isLoop(_bool bLoop);
+
+	void			Change_Desc(const POINT_INSTANCE_DESC& Desc);
+
 	virtual void Replay() override;
 
 

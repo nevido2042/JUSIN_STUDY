@@ -393,39 +393,6 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 모델
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
-	/* For.Prototype_Component_VIBuffer_Snow */
-	CVIBuffer_Rect_Instance::RECT_INSTANCE_DESC		AshDesc{};
-	AshDesc.iNumInstance = 25000;
-	AshDesc.vCenter = _float3(64.f, 30.f, 64.0f);
-	AshDesc.vRange = _float3(512.f, 3.0f, 512.f);
-	AshDesc.vSize = _float2(0.1f, 0.4f);
-	AshDesc.vLifeTime = _float2(20.f, 30.f);
-	AshDesc.vSpeed = _float2(1.f, 3.f);
-	AshDesc.isLoop = true;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Ash"),
-		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &AshDesc))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_VIBuffer_Explosion*/
-	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		SmokeDesc{};
-	SmokeDesc.iNumInstance = 500;
-	SmokeDesc.vCenter = _float3(0.0f, 0.f, 0.0f);
-	SmokeDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
-	SmokeDesc.vSize = _float2(0.05f, 0.1f);
-	SmokeDesc.vLifeTime = _float2(0.5f, 2.f);
-	SmokeDesc.vSpeed = _float2(1.f, 2.f);
-	SmokeDesc.vPivot = _float3(0.0f, 0.f, 0.f);
-	SmokeDesc.isLoop = true;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Smoke"),
-		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &SmokeDesc))))
-		return E_FAIL;
-
-
-
-
-
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/outland/height_map_cut_128.png"), { TERRAIN_OFFSET_WIDTH, TERRAIN_OFFSET_HEIGHT}))))
@@ -610,6 +577,11 @@ HRESULT CLoader::Loading_For_Static()
 	PreTransformMatrix = XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Skydome"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Map/99_poland/maps/skyboxes/99_Poland_sky/skydome/99_Poland_sky_forward.bin", PreTransformMatrix))))
+		return E_FAIL;
+#pragma endregion
+
+#pragma region 파티클 로딩
+	if (FAILED(Load_Particles()))
 		return E_FAIL;
 #pragma endregion
 
@@ -1213,6 +1185,100 @@ HRESULT CLoader::Loading_For_ParticleTool()
 	m_isFinished = true;
 
 	return S_OK;
+}
+
+HRESULT CLoader::Load_Particles()
+{
+	vector<wstring> ParticleFileNames = Get_ParticleFileNames();
+
+	for (const wstring& FileName : ParticleFileNames)
+	{
+		// 저장할 파일 경로
+		wstring wstrFullPath = L"../Bin/Particles/" + FileName + L".txt";
+
+		// 유니코드 경로를 ANSI 문자열로 변환
+		_char szFullPath[MAX_PATH];
+		WideCharToMultiByte(CP_ACP, 0, wstrFullPath.c_str(), -1, szFullPath, MAX_PATH, nullptr, nullptr);
+
+		// 파일 열기
+		FILE* pFile = nullptr;
+		_wfopen_s(&pFile, wstrFullPath.c_str(), L"r");
+
+		// 파싱용 임시 변수
+		_tchar szLine[MAX_PATH];
+		CVIBuffer_Point_Instance::POINT_INSTANCE_DESC Desc{};
+
+
+		if (!pFile)
+		{
+			MSG_BOX("파일 열기에 실패했습니다.");
+			return E_FAIL;
+		}
+
+		// 파싱 시작
+		while (fgetws(szLine, sizeof(szLine) / sizeof(_tchar), pFile))
+		{
+			if (wcsstr(szLine, L"ParticleName"))
+				swscanf_s(szLine, L"  ParticleName : %ls\n", Desc.szName, (unsigned)_countof(Desc.szName));
+			else if (wcsstr(szLine, L"SpawnRange"))
+				swscanf_s(szLine, L"  SpawnRange: (%f, %f, %f)", &Desc.vRange.x, &Desc.vRange.y, &Desc.vRange.z);
+			else if (wcsstr(szLine, L"MinScale"))
+				swscanf_s(szLine, L"  MinScale: %f, MaxScale: %f", &Desc.vSize.x, &Desc.vSize.y);
+			else if (wcsstr(szLine, L"LifeTimeMin"))
+				swscanf_s(szLine, L"  LifeTimeMin: %f, LifeTimeMax: %f", &Desc.vLifeTime.x, &Desc.vLifeTime.y);
+			else if (wcsstr(szLine, L"EmissionShape"))
+				swscanf_s(szLine, L"  EmissionShape: %d", (int*)&Desc.eEmissionShape);
+			else if (wcsstr(szLine, L"NumInstance"))
+				swscanf_s(szLine, L"  NumInstance: %d", &Desc.iNumInstance);
+			else if (wcsstr(szLine, L"isLoop"))
+			{
+				_int iLoop = 0;
+				swscanf_s(szLine, L"  isLoop: %d", &iLoop);
+				Desc.isLoop = (iLoop != 0);
+			}
+			else if (wcsstr(szLine, L"Center"))
+				swscanf_s(szLine, L"  Center: (%f, %f, %f)", &Desc.vCenter.x, &Desc.vCenter.y, &Desc.vCenter.z);
+			else if (wcsstr(szLine, L"Pivot"))
+				swscanf_s(szLine, L"  Pivot: (%f, %f, %f)", &Desc.vPivot.x, &Desc.vPivot.y, &Desc.vPivot.z);
+			else if (wcsstr(szLine, L"MinSpeed"))
+				swscanf_s(szLine, L"  MinSpeed: %f, MaxSpeed: %f", &Desc.vSpeed.x, &Desc.vSpeed.y);
+		}
+
+		fclose(pFile);
+
+		wstring strPrototypeName = TEXT("Prototype_Component_VIBuffer_") + FileName;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), strPrototypeName,
+			CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &Desc))))
+			return E_FAIL;
+	}
+
+	return S_OK;
+
+}
+
+vector<wstring> CLoader::Get_ParticleFileNames()
+{
+	vector<wstring> vecFileNames;
+
+	wstring folderPath = L"../Bin/Particles";
+	for (const auto& entry : filesystem::directory_iterator(folderPath))
+	{
+		if (entry.is_regular_file())
+		{
+			wstring filePath = entry.path().filename().wstring();
+
+			// 확장자가 .txt인지 확인
+			if (entry.path().extension() == L".txt")
+			{
+				// .txt 제거한 순수 파일 이름만 추출
+				wstring fileNameWithoutExt = entry.path().stem().wstring();
+				vecFileNames.push_back(fileNameWithoutExt);
+			}
+		}
+	}
+
+	return vecFileNames;
 }
 
 CLoader* CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevelID)

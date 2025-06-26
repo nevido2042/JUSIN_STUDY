@@ -24,6 +24,7 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const INSTANCE_DESC* pArg
 
 	m_tPointInstanceDesc = *pDesc;
 
+	m_eEmissionShape = pDesc->eEmissionShape;
 	m_vPivot = pDesc->vPivot;
 	m_isLoop = pDesc->isLoop;
 	m_iNumIndexPerInstance = 1;
@@ -385,6 +386,18 @@ void CVIBuffer_Point_Instance::Change_Speed(_float2 vSpeed)
 void CVIBuffer_Point_Instance::Change_isLoop(_bool bLoop)
 {
 	m_isLoop = bLoop;
+}
+
+void CVIBuffer_Point_Instance::Change_Desc(const POINT_INSTANCE_DESC& Desc)
+{
+	Change_NumInstance(Desc.iNumInstance);
+	Change_Range(Desc.vRange) ;
+	Change_Size(Desc.vSize);
+	Change_Pivot(Desc.vPivot);
+	Change_LifeTime(Desc.vLifeTime);
+	Change_Speed(Desc.vSpeed);
+	Change_isLoop(Desc.isLoop);
+	Set_EmissionShape(Desc.eEmissionShape);
 }
 
 void CVIBuffer_Point_Instance::Replay()
