@@ -52,8 +52,8 @@ void CFuryGun::Update(_float fTimeDelta)
 
 void CFuryGun::Late_Update(_float fTimeDelta)
 {
-
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	CGun::Late_Update(fTimeDelta);
+	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
 HRESULT CFuryGun::Render()

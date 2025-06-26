@@ -34,6 +34,9 @@ public:
 	virtual HRESULT Render();
 
 public:
+	_float Get_Depth();
+
+public:
 	_bool	Get_IsDestroyed() { return m_bisDestroyed; }
 	void	Destroy() { m_bisDestroyed = true; }
 

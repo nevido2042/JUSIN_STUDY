@@ -431,7 +431,7 @@ HRESULT CLevel_Practice::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
 HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC Desc{};
-	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	Desc.fDepth = 0.f;// DEPTH_BACKGROUND - 0.02f;
 	Desc.fSizeX = 50.f * UI_RATIO;
 	Desc.fSizeY = 50.f * UI_RATIO;
 

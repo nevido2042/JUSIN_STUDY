@@ -100,6 +100,16 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+_float CGameObject::Get_Depth()
+{
+	_vector vWorldPos = m_pTransformCom->Get_State(STATE::POSITION);
+	_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+	_vector vViewSpacePos = XMVector3TransformCoord(vWorldPos, matView);
+
+	return XMVectorGetZ(vViewSpacePos);
+
+}
+
 CGameObject* CGameObject::Find_PartObject(const _wstring& strPartObjectTag)
 {
 	auto	iter = m_PartObjects.find(strPartObjectTag);

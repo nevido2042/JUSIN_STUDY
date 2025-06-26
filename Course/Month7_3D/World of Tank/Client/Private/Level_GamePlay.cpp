@@ -219,7 +219,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Skydome(const _wstring strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_GunMarker(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC Desc{};
-	Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
+	Desc.fDepth = 0.f;// DEPTH_BACKGROUND - 0.01f;
 	Desc.fSizeX = 50.f * UI_RATIO;
 	Desc.fSizeY = 50.f * UI_RATIO;
 

@@ -46,6 +46,7 @@ void CFPS_Renderer::Update(_float fTimeDelta)
 
 void CFPS_Renderer::Late_Update(_float fTimeDelta)
 {
+#pragma message ("왜왜왜왜 파티클?에 가려지는가??? RG_UI인데? 근데 다른데는 잘나옴")
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 

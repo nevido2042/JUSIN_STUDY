@@ -72,7 +72,7 @@ void CDamageCollider::Late_Update(_float fTimeDelta)
 		m_pGameInstance->Check_Collision(ENUM_CLASS(COLLISION_GROUP::BODY), this, TEXT("Com_Collider"), TEXT("Com_Collider"));
 
 		if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 0.1f))
-			m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+			m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 	}
 	else if (!m_bVisible)
 	{
