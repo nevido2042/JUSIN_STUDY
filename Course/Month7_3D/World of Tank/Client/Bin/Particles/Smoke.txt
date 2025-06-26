@@ -1,11 +1,11 @@
 ParticleDesc:
   ParticleName : Smoke
-  SpawnRange: (0.300000, 0.000000, 0.400000)
-  MinScale: 0.050000, MaxScale: 0.157000
-  LifeTimeMin: 2.000000, LifeTimeMax: 3.000000
+  SpawnRange: (0.500000, 0.300000, 0.500000)
+  MinScale: 0.179000, MaxScale: 0.277000
+  LifeTimeMin: 0.200000, LifeTimeMax: 0.500000
   EmissionShape: 1
-  NumInstance: 354
+  NumInstance: 981
   isLoop: 1
   Center: (0.000000, 0.000000, 0.000000) 
-  Pivot: (0.000000, -0.800000, 0.000000)
-  MinSpeed: 0.050000, MaxSpeed: 0.900000
+  Pivot: (0.000000, 0.000000, 1.000000)
+  MinSpeed: 1.650000, MaxSpeed: 3.700000

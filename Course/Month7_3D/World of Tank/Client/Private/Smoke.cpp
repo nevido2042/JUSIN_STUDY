@@ -32,6 +32,8 @@ HRESULT CSmoke::Initialize(void* pArg)
 
 	//m_pVIBufferCom->Set_EmissionShape(CVIBuffer_Instance::EMISSION_SHAPE::SPREAD);
 
+	m_InitPivot = m_pVIBufferCom->Get_Desc().vPivot;
+
 	return S_OK;
 }
 
@@ -41,12 +43,14 @@ void CSmoke::Priority_Update(_float fTimeDelta)
 	//{
 	//	m_pVIBufferCom->Change_NumInstance(100 + rand() % 50);
 	//}
+
 }
 
 void CSmoke::Update(_float fTimeDelta)
 {
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
 
 	m_pVIBufferCom->Emission(fTimeDelta);
 	//m_pVIBufferCom->Drop(fTimeDelta);
@@ -105,6 +109,32 @@ HRESULT CSmoke::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CSmoke::Reset_Smoke_Pivot()
+{
+	m_OffsetPivot = {};
+	m_pVIBufferCom->Change_Pivot(m_InitPivot);
+}
+
+void CSmoke::Add_Smoke_Pivot(_float vSpeed)
+{
+	m_OffsetPivot.z += vSpeed;
+	m_OffsetPivot.z = clamp(m_OffsetPivot.z, -1.f, 1.f);
+
+	m_OffsetPivot.y += abs(vSpeed);
+	m_OffsetPivot.y = clamp(m_OffsetPivot.z, -1.f, 0.f);
+
+	_float3 vResult = {};
+
+	XMStoreFloat3(&vResult, XMLoadFloat3(&m_InitPivot) + XMLoadFloat3(&m_OffsetPivot));
+
+	m_pVIBufferCom->Change_Pivot(vResult);
+}
+
+void CSmoke::Set_Loop(_bool bisLoop)
+{
+	m_pVIBufferCom->Change_isLoop(bisLoop);
 }
 
 HRESULT CSmoke::Ready_Components()

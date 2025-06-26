@@ -25,6 +25,7 @@ public:
 	virtual HRESULT Initialize_Prototype(const INSTANCE_DESC* pDesc);
 	virtual HRESULT Initialize(void* pArg);
 
+public:
 	virtual void Drop(_float fTimeDelta)override;
 	virtual void Spread(_float fTimeDelta)override;
 
@@ -40,12 +41,16 @@ public:
 
 	virtual void Replay() override;
 
+public:
+	const POINT_INSTANCE_DESC& Get_Desc() const {
+		return m_tPointInstanceDesc;
+	}
 
 protected:
 	VTXPOS_PARTICLE_INSTANCE* m_pVertexInstances = { nullptr }; //요놈
 	_float* m_pSpeeds = { nullptr };
-	_float3						m_vPivot = {};
-	_bool						m_isLoop = { false };
+	//_float3						m_vPivot = {};
+	//_bool						m_isLoop = { false };
 
 	//인스턴스 갯수 변경할 때 초기화하기위해 저장
 	POINT_INSTANCE_DESC			m_tPointInstanceDesc = {};

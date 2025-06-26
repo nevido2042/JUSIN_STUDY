@@ -227,7 +227,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_Smoke*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Smoke"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output256x256/misc/033.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex_hangar_v3/18.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Ash*/

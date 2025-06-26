@@ -10,9 +10,9 @@ CVIBuffer_Point_Instance::CVIBuffer_Point_Instance(ID3D11Device* pDevice, ID3D11
 CVIBuffer_Point_Instance::CVIBuffer_Point_Instance(const CVIBuffer_Point_Instance& Prototype)
 	: CVIBuffer_Instance(Prototype)
 	, m_pVertexInstances(Prototype.m_pVertexInstances)
-	, m_vPivot{ Prototype.m_vPivot }
+	//, m_vPivot{ Prototype.m_vPivot }
 	, m_pSpeeds{ Prototype.m_pSpeeds }
-	, m_isLoop{ Prototype.m_isLoop }
+	//, m_isLoop{ Prototype.m_isLoop }
 	, m_tPointInstanceDesc{ Prototype.m_tPointInstanceDesc }
 {
 
@@ -25,8 +25,8 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const INSTANCE_DESC* pArg
 	m_tPointInstanceDesc = *pDesc;
 
 	m_eEmissionShape = pDesc->eEmissionShape;
-	m_vPivot = pDesc->vPivot;
-	m_isLoop = pDesc->isLoop;
+	//m_vPivot = pDesc->vPivot;
+	//m_isLoop = pDesc->isLoop;
 	m_iNumIndexPerInstance = 1;
 	m_iVertexInstanceStride = sizeof(VTXPOS_PARTICLE_INSTANCE);
 	m_iNumInstance = pDesc->iNumInstance;
@@ -200,7 +200,7 @@ void CVIBuffer_Point_Instance::Drop(_float fTimeDelta)
 
 		pVertices[i].vTranslation.y -= m_pSpeeds[i] * fTimeDelta;
 
-		if (true == m_isLoop &&
+		if (true == m_tPointInstanceDesc.isLoop &&
 			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
 		{
 			pVertices[i].vLifeTime.y = 0.f;
@@ -225,12 +225,12 @@ void CVIBuffer_Point_Instance::Spread(_float fTimeDelta)
 	{
 		pVertices[i].vLifeTime.y += fTimeDelta;
 
-		vDir = XMVectorSetW(XMLoadFloat4(&m_pVertexInstances[i].vTranslation) - XMVector3Normalize(XMLoadFloat3(&m_vPivot)), 0.f);
+		vDir = XMVectorSetW(XMLoadFloat4(&m_pVertexInstances[i].vTranslation) - XMVector3Normalize(XMLoadFloat3(&m_tPointInstanceDesc.vPivot)), 0.f);
 
 		XMStoreFloat4(&pVertices[i].vTranslation,
 			XMLoadFloat4(&pVertices[i].vTranslation) + (vDir * m_pSpeeds[i] * fTimeDelta));
 
-		if (true == m_isLoop &&
+		if (true == m_tPointInstanceDesc.isLoop &&
 			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
 		{
 			pVertices[i].vLifeTime.y = 0.f;
@@ -346,7 +346,7 @@ void CVIBuffer_Point_Instance::Change_Size(_float2 vSize)
 
 void CVIBuffer_Point_Instance::Change_Pivot(_float3 vPivot)
 {
-	m_vPivot = vPivot;
+	m_tPointInstanceDesc.vPivot = vPivot;
 }
 
 void CVIBuffer_Point_Instance::Change_LifeTime(_float2 vLifeTime)
@@ -385,7 +385,7 @@ void CVIBuffer_Point_Instance::Change_Speed(_float2 vSpeed)
 
 void CVIBuffer_Point_Instance::Change_isLoop(_bool bLoop)
 {
-	m_isLoop = bLoop;
+	m_tPointInstanceDesc.isLoop = bLoop;
 }
 
 void CVIBuffer_Point_Instance::Change_Desc(const POINT_INSTANCE_DESC& Desc)

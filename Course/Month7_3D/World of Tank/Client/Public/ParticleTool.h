@@ -40,6 +40,9 @@ private:
 
 	void ParticleControl();
 	void ParticleList();
+
+private:
+	_int m_iShaderPass = { 0 };
 private:
 	_int m_SelectedIndex = { -1 };
 	vector<CVIBuffer_Point_Instance::POINT_INSTANCE_DESC> m_ParticleDescs = {};

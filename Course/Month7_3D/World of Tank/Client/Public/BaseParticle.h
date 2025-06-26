@@ -28,6 +28,11 @@ public:
 
 public:
 	HRESULT Change_Texture(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag);
+	void	Change_ShaderPass(_uint iShaderPass) {
+		m_iShaderPass = iShaderPass;
+	}
+private:
+	_uint m_iShaderPass = {0};
 
 private:
 	CShader* m_pShaderCom = { nullptr };

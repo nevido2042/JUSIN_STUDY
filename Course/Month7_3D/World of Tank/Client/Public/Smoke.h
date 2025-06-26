@@ -26,6 +26,24 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Reset_Smoke_Pivot();
+	void Add_Smoke_Pivot(_float vSpeed);
+
+	void Set_Emission(_bool bEmission) {
+		m_bEmission = bEmission;
+	}
+
+	void Set_Loop(_bool bisLoop);
+
+private:
+	_bool	m_bEmission = { true };
+private:
+	_float3	m_InitPivot = {};
+	_float3 m_OffsetPivot = {};
+private:
+	_float2	m_InitSpeed = {};
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

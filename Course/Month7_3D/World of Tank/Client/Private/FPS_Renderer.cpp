@@ -55,6 +55,8 @@ HRESULT CFPS_Renderer::Render()
 	// FPS 값 문자열로 변환
 	wstring fpsText = L"FPS: " + to_wstring(m_iFPS_Render);
 
+	//wcout << fpsText << endl;
+	
 	// 폰트 출력
 	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), fpsText.c_str(), _float2(0.f, 0.f)/*, XMVectorSet(1.f, 0.f, 0.f, 1.f)*/);
 	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), fpsText.c_str(), _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f * UI_RATIO);

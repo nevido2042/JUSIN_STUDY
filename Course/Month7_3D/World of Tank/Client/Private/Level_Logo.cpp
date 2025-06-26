@@ -26,7 +26,6 @@ HRESULT CLevel_Logo::Initialize()
 		return E_FAIL;
 
 
-
 	//½ºÅÂÆ½
 	if (FAILED(Ready_Layer_Tool_Base(TEXT("Layer_Tool_Base"))))
 		return E_FAIL;

@@ -10,6 +10,7 @@
 #include "Boundary.h"
 #include "Layer.h"
 #include "Camera_TPS.h"
+#include "Smoke.h"
 
 #pragma region UI
 #include "Icon_Module.h"
@@ -574,6 +575,10 @@ HRESULT CTank::Store_Modules()
 
 void CTank::Move(_float fTimeDelta)
 {
+	//엔진 연기 흔들림
+	CSmoke* pSmokeLeft = static_cast<CSmoke*>(Find_PartObject(TEXT("Part_EngineSmokeParticle_Left")));
+	CSmoke* pSmokeRight = static_cast<CSmoke*>(Find_PartObject(TEXT("Part_EngineSmokeParticle_Right")));
+
 	CEngine* pEngin = static_cast<CEngine*>(m_Modules.at(ENUM_CLASS(MODULE::ENGINE))); //static_cast<CEngine*>(Find_PartObject(TEXT("Part_Engine")));
 
 	if (!pEngin->Get_isOn())
@@ -648,6 +653,8 @@ void CTank::Move(_float fTimeDelta)
 				SpeedTrackLeft += -fRPMPower;
 				SpeedTrackRight += fRPMPower * 0.3f;
 			}
+
+
 		}
 	}
 	
@@ -669,9 +676,37 @@ void CTank::Move(_float fTimeDelta)
 	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTurnSpeed * fTimeDelta * fSpeed_TrackState, m_pColliderCom, 0.01f);
 
 	if (fMovePower > 0.f)
+	{
 		m_pTransformCom->Go_Straight(fMovePower * fTimeDelta * fSpeed_TrackState, m_pColliderCom, 0.5f);
+	}
 	else
+	{
 		m_pTransformCom->Go_Backward(-fMovePower * fTimeDelta * fSpeed_TrackState, m_pColliderCom, 0.5f);
+	}
+
+	if (pSmokeLeft && pSmokeRight)
+	{
+		if (abs(fMovePower) < 1.f)
+		{
+			//연기 끄고
+			pSmokeLeft->Set_Loop(false);
+			pSmokeRight->Set_Loop(false);
+		}	
+		else
+		{
+			pSmokeLeft->Set_Loop(true);
+			pSmokeRight->Set_Loop(true);
+
+
+			pSmokeLeft->Add_Smoke_Pivot(fMovePower * fTimeDelta * fSpeed_TrackState);
+			pSmokeRight->Add_Smoke_Pivot(fMovePower * fTimeDelta * fSpeed_TrackState);
+		}
+	}
+
+
+
+
+	
 
 
 	//바운더리 검사후 경계 안이면 이동 허용

@@ -97,6 +97,53 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> Triangles)
     Triangles.RestartStrip();
 }
 
+[maxvertexcount(6)]
+void GS_SMOKE(point GS_IN In[1], inout TriangleStream<GS_OUT> Triangles)
+{
+    GS_OUT Out[4];
+    
+    // 남은 시간 비율 계산 (0 ~ 1)
+    float fLerp = saturate(In[0].vLifeTime.y / In[0].vLifeTime.x);
+
+    // 시간에 따라 점점 커지게: 시작 크기의 1.0 ~ 3.0배까지 커지게 설정
+    float fSizeScale = lerp(1.0f, 3.0f, fLerp);
+
+
+    float3 vLook = g_vCamPosition.xyz - In[0].vPosition.xyz;
+    
+    // 크기 적용
+    float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook)) * In[0].vPSize.x * 0.5f * fSizeScale;
+    float3 vUp = normalize(cross(vLook, vRight)) * In[0].vPSize.y * 0.5f * fSizeScale;
+
+    matrix matVP = mul(g_ViewMatrix, g_ProjMatrix);
+    
+    Out[0].vPosition = mul(float4(In[0].vPosition.xyz + vRight + vUp, 1.f), matVP);
+    Out[0].vTexcoord = float2(0.f, 0.f);
+    Out[0].vLifeTime = In[0].vLifeTime;
+    
+    Out[1].vPosition = mul(float4(In[0].vPosition.xyz - vRight + vUp, 1.f), matVP);
+    Out[1].vTexcoord = float2(1.f, 0.f);
+    Out[1].vLifeTime = In[0].vLifeTime;
+    
+    Out[2].vPosition = mul(float4(In[0].vPosition.xyz - vRight - vUp, 1.f), matVP);
+    Out[2].vTexcoord = float2(1.f, 1.f);
+    Out[2].vLifeTime = In[0].vLifeTime;
+    
+    Out[3].vPosition = mul(float4(In[0].vPosition.xyz + vRight - vUp, 1.f), matVP);
+    Out[3].vTexcoord = float2(0.f, 1.f);
+    Out[3].vLifeTime = In[0].vLifeTime;
+    
+    Triangles.Append(Out[0]);
+    Triangles.Append(Out[1]);
+    Triangles.Append(Out[2]);
+    Triangles.RestartStrip();
+    
+    Triangles.Append(Out[0]);
+    Triangles.Append(Out[2]);
+    Triangles.Append(Out[3]);
+    Triangles.RestartStrip();
+}
+
 
 struct PS_IN
 {
@@ -141,7 +188,7 @@ PS_OUT PS_SMOKE(PS_IN In)
     
     //Out.vColor.rgb = float3(1.f, 0.f, 0.f);
     
-    Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * 0.5f;
+    Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * 2.f;
     
 
     if (In.vLifeTime.y >= In.vLifeTime.x)
@@ -173,7 +220,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = compile gs_5_0 GS_MAIN();
+        GeometryShader = compile gs_5_0 GS_SMOKE();
         PixelShader = compile ps_5_0 PS_SMOKE();
     }
  
