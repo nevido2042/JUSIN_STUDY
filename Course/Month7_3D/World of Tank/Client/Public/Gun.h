@@ -42,6 +42,7 @@ public:
 
 public:
 	HRESULT	Fire();
+	void CreateFireEffect();
 
 public:
 	void Set_AngleDegree_Max() { m_fAngleDegree = m_fAngleDegree_Max; }

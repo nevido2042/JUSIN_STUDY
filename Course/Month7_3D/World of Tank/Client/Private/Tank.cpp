@@ -686,17 +686,18 @@ void CTank::Move(_float fTimeDelta)
 
 	if (pSmokeLeft && pSmokeRight)
 	{
-		if (abs(fMovePower) < 1.f)
+		if (abs(fMovePower) < 1.f && abs(fTurnSpeed) < 1.f)
 		{
 			//¿¬±â ²ô°í
 			pSmokeLeft->Set_Loop(false);
 			pSmokeRight->Set_Loop(false);
+			pSmokeLeft->Reset_Smoke_Pivot();
+			pSmokeRight->Reset_Smoke_Pivot();
 		}	
 		else
 		{
 			pSmokeLeft->Set_Loop(true);
 			pSmokeRight->Set_Loop(true);
-
 
 			pSmokeLeft->Add_Smoke_Pivot(fMovePower * fTimeDelta * fSpeed_TrackState);
 			pSmokeRight->Add_Smoke_Pivot(fMovePower * fTimeDelta * fSpeed_TrackState);

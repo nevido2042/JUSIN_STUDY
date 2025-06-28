@@ -37,8 +37,6 @@ private:
 	CShader*			m_pShaderCom = { nullptr };
 	CTexture*			m_pTextureCom = { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
-	//CSoundController*	m_pSoundCom{ nullptr };
-
 
 private:
 	HRESULT Ready_Components();

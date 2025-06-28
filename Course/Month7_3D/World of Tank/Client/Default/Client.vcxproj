@@ -199,6 +199,7 @@
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\DirectionTurret.h" />
     <ClInclude Include="..\public\Engine.h" />
+    <ClInclude Include="..\public\FireEffect.h" />
     <ClInclude Include="..\public\FPS_Renderer.h" />
     <ClInclude Include="..\public\Fury.h" />
     <ClInclude Include="..\public\FuryGun.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\DirectionTurret.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
+    <ClCompile Include="..\private\FireEffect.cpp" />
     <ClCompile Include="..\private\FPS_Renderer.cpp" />
     <ClCompile Include="..\private\Fury.cpp" />
     <ClCompile Include="..\private\FuryGun.cpp" />

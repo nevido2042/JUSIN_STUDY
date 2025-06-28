@@ -187,11 +187,11 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_FILL_COLOR();
     }
-    //2 (버리기 대기중)
-    pass UI3D
+    //2
+    pass FireEffect
     {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
+        SetRasterizerState(RS_Cull_Front);
+        SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();

@@ -240,7 +240,31 @@ HRESULT CGun::Fire()
 
 	m_pSoundCom->Play("wpn_1");
 
+	CreateFireEffect();
+
 	return S_OK;
+}
+
+void CGun::CreateFireEffect()
+{
+	// 1. Look 방향 벡터
+	_vector vLook = XMVectorSet(m_CombinedWorldMatrix._31, m_CombinedWorldMatrix._32, m_CombinedWorldMatrix._33, m_CombinedWorldMatrix._34);
+	vLook = XMVector3Normalize(vLook); // 정규화
+
+	// 2. 살짝 이동시키기
+	_float fOffset = 5.f;
+	_vector vLookOffset = XMVectorScale(vLook, fOffset);
+
+	// 3. 현재 위치
+	_vector vGunPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, m_CombinedWorldMatrix._44);
+	_vector vEffectPos = vGunPos + vLookOffset;
+
+	// 4. GAMEOBJECT_DESC 세팅
+	GAMEOBJECT_DESC Desc{};
+	XMStoreFloat3(&Desc.vInitPosition, vEffectPos);
+
+	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FireEffect"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_FireEffect"), &Desc);
+
 }
 
 void CGun::Input(_float fTimeDelta)

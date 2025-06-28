@@ -334,6 +334,9 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\BaseParticle">
       <UniqueIdentifier>{2bf93a34-fb5d-4fd9-a387-854675f581fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\FireEffect">
+      <UniqueIdentifier>{8d4e5f1c-583d-433c-a3eb-5de265854700}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -678,6 +681,9 @@
     <ClInclude Include="..\public\BaseParticle.h">
       <Filter>02.GameObjects\07.Effect\Particle\BaseParticle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\FireEffect.h">
+      <Filter>02.GameObjects\07.Effect\FireEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1004,6 +1010,9 @@
     </ClCompile>
     <ClCompile Include="..\private\BaseParticle.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\BaseParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FireEffect.cpp">
+      <Filter>02.GameObjects\07.Effect\FireEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

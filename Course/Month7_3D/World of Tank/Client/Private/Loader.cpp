@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "FireEffect.h"
 #include "Smoke.h"
 #include "Ash.h"
 #include "Shed.h"
@@ -224,6 +225,11 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_Smoke*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_FireEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/9/%d.dds"), 32))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Smoke*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Smoke"),
@@ -591,6 +597,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_FireEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FireEffect"),
+		CFireEffect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Smoke */
