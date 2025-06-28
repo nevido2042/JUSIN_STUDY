@@ -84,7 +84,7 @@ private:
 	_float4 m_vBodyColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
-	const	_float m_fMaxHP = { 100.f };
+	const	_float m_fMaxHP = { 30.f };
 	_float	m_fHP = { m_fMaxHP };
 
 private:

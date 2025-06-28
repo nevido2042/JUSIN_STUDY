@@ -1,0 +1,12 @@
+ParticleDesc:
+  ParticleName : Spark
+  SpawnRange: (0.200000, 0.200000, 0.200000)
+  MinScale: 0.203000, MaxScale: 1.056000
+  LifeTimeMin: 0.100000, LifeTimeMax: 0.300000
+  EmissionShape: 1
+  NumInstance: 500
+  isLoop: 0
+  Alpha: 10.000000
+  Center: (0.000000, 0.000000, 0.000000) 
+  Pivot: (0.000000, 0.000000, 0.000000)
+  MinSpeed: 300.000000, MaxSpeed: 500.000000

@@ -732,6 +732,12 @@ void CTank::Die()
 
 	m_bisDie = true;
 
+	GAMEOBJECT_DESC Desc{};
+	XMStoreFloat3(&Desc.vInitPosition, m_pTransformCom->Get_State(STATE::POSITION));
+	Desc.vInitPosition.y += 2.f;
+
+	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TankExplosionEffect"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_TankExplosionEffect"), &Desc);
+
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
 		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));

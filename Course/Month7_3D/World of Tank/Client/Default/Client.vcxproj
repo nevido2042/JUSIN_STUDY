@@ -231,7 +231,9 @@
     <ClInclude Include="..\public\Shell.h" />
     <ClInclude Include="..\public\Skydome.h" />
     <ClInclude Include="..\public\Smoke.h" />
+    <ClInclude Include="..\public\Spark.h" />
     <ClInclude Include="..\public\Tank.h" />
+    <ClInclude Include="..\public\TankExplosionEffect.h" />
     <ClInclude Include="..\public\Tiger.h" />
     <ClInclude Include="..\public\TigerGun.h" />
     <ClInclude Include="..\public\TigerGunSkin.h" />
@@ -347,7 +349,9 @@
     <ClCompile Include="..\private\Shell.cpp" />
     <ClCompile Include="..\private\Skydome.cpp" />
     <ClCompile Include="..\private\Smoke.cpp" />
+    <ClCompile Include="..\private\Spark.cpp" />
     <ClCompile Include="..\private\Tank.cpp" />
+    <ClCompile Include="..\private\TankExplosionEffect.cpp" />
     <ClCompile Include="..\private\Tiger.cpp" />
     <ClCompile Include="..\private\TigerGun.cpp" />
     <ClCompile Include="..\private\TigerGunSkin.cpp" />

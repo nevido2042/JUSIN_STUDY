@@ -400,7 +400,7 @@ void CParticleTool::ParticleControl()
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 파티클 속도
-	if (ImGui::DragFloat2("Particle Speed", reinterpret_cast<_float*>(&m_BaseParticleDesc.vSpeed), 0.1f, -100.f, 100.f))
+	if (ImGui::DragFloat2("Particle Speed", reinterpret_cast<_float*>(&m_BaseParticleDesc.vSpeed), 0.1f, -1000.f, 1000.f))
 	{
 		m_VIBuffer->Change_Speed(m_BaseParticleDesc.vSpeed);
 		m_VIBuffer->Replay();

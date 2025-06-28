@@ -11,6 +11,8 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "TankExplosionEffect.h"
+#include "Spark.h"
 #include "HitSmoke.h"
 #include "Fury_Hanger.h"
 #include "Tiger_Hanger.h"
@@ -226,9 +228,19 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	/* For.Prototype_Component_Texture_TankExplosionEffect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TankExplosionEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/6/%d.dds"), 32))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_FireEffect*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_FireEffect"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/9/%d.dds"), 32))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Spark*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Spark"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/spark/0228.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Smoke*/
@@ -599,6 +611,11 @@ HRESULT CLoader::Loading_For_Static()
 		CGameManager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Spark */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Spark"),
+		CSpark::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_HitSmoke */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"),
 		CHitSmoke::Create(m_pDevice, m_pContext))))
@@ -612,6 +629,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_Tiger_Hanger */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger_Hanger"),
 		CTiger_Hanger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_TankExplosionEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TankExplosionEffect"),
+		CTankExplosionEffect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_FireEffect */

@@ -340,6 +340,12 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\HitSmoke">
       <UniqueIdentifier>{f1c1ba63-9c53-4ba4-a2c7-31b42a666d30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\Spark">
+      <UniqueIdentifier>{c45befa5-ab8b-40db-be6f-3cb54d278f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\TankExplosionEffect">
+      <UniqueIdentifier>{11e9572d-7c76-42a1-9279-99e38a493153}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -690,6 +696,12 @@
     <ClInclude Include="..\public\HitSmoke.h">
       <Filter>02.GameObjects\07.Effect\Particle\HitSmoke</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Spark.h">
+      <Filter>02.GameObjects\07.Effect\Particle\Spark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TankExplosionEffect.h">
+      <Filter>02.GameObjects\07.Effect\TankExplosionEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1022,6 +1034,12 @@
     </ClCompile>
     <ClCompile Include="..\private\HitSmoke.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\HitSmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Spark.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\Spark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TankExplosionEffect.cpp">
+      <Filter>02.GameObjects\07.Effect\TankExplosionEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

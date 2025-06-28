@@ -213,6 +213,21 @@ void CShell::Check_RaycastHit()
 	if (pHitResult != nullptr)
 	{
 
+		_float3 vHitPos = {};
+		XMStoreFloat3(&vHitPos, vOrigin + vRayDir * fMinDist);
+
+		GAMEOBJECT_DESC Desc = {};
+		Desc.vInitPosition = vHitPos;
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
+
+		if (eCollGroup == COLLISION_GROUP::TURRET || eCollGroup == COLLISION_GROUP::BODY)
+		{
+			GAMEOBJECT_DESC Desc = {};
+			Desc.vInitPosition = vHitPos;
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Spark"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Spark"), &Desc);
+		}
+
+
 		//포탑이나 맞았을 때 부품 검사
 		if (eCollGroup == COLLISION_GROUP::TURRET)
 		{
@@ -264,14 +279,6 @@ void CShell::Check_RaycastHit()
 		{
 
 		}
-
-
-		_float3 vHitPos = {};
-		XMStoreFloat3(&vHitPos, vOrigin + vRayDir * fDist);
-
-		GAMEOBJECT_DESC Desc = {};
-		Desc.vInitPosition = vHitPos;
-		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
 
 		Destroy();
 	}
