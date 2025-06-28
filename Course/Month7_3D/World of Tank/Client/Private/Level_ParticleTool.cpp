@@ -33,6 +33,9 @@ HRESULT CLevel_ParticleTool::Initialize()
 	if (FAILED(Ready_Layer_ParticleTool(TEXT("Layer_ParticleTool"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_DummyTank(TEXT("Layer_DummyTank"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -75,7 +78,7 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 10.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(300.f, 100.f, 300.f);
+	Desc.vEye = _float3(300.f, 90.f, 300.f);
 	Desc.vAt = _float3(0.f, 0.f, 1.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
@@ -168,28 +171,11 @@ HRESULT CLevel_ParticleTool::Ready_Lights()
 HRESULT CLevel_ParticleTool::Ready_Layer_Effect(const _wstring strLayerTag)
 {
 	CGameObject::GAMEOBJECT_DESC Desc{};
-	Desc.vInitPosition = _float3(300.f, 100.f, 300.f);
+	Desc.vInitPosition = _float3(300.f, 90.f, 300.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_BaseParticle"),
 		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
 		return E_FAIL;
-
-
-	//for (_int i = 0; i < 100; ++i)
-	//{
-	//	Desc.vInitPosition = _float3(300.f + i, 90.f, 300.f);
-
-	//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
-	//		ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Layer_Test"), &Desc)))
-	//		return E_FAIL;
-	//}
-
-	//Desc.vInitPosition = _float3(300.f, 90.f, 300.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
-	//	ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Layer_Test"), &Desc)))
-	//	return E_FAIL;
-
 
 	return S_OK;
 }
@@ -198,6 +184,18 @@ HRESULT CLevel_ParticleTool::Ready_Layer_ParticleTool(const _wstring strLayerTag
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::PARTICLETOOL), TEXT("Prototype_GameObject_ParticleTool"),
 		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_ParticleTool::Ready_Layer_DummyTank(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.vInitPosition = _float3(303.f, 90.f, 300.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury_Hanger"),
+		ENUM_CLASS(LEVEL::PARTICLETOOL), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

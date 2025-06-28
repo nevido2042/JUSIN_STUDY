@@ -48,9 +48,6 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
-private:
-	const _float4x4* m_pSocketMatrix = { nullptr };
-	const _uint* m_pParentState = { nullptr };
 
 private:
 	HRESULT Ready_Components();

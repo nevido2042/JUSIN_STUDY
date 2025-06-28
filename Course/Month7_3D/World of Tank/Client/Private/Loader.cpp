@@ -11,6 +11,9 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "HitSmoke.h"
+#include "Fury_Hanger.h"
+#include "Tiger_Hanger.h"
 #include "FireEffect.h"
 #include "Smoke.h"
 #include "Ash.h"
@@ -78,8 +81,6 @@
 #pragma endregion
 
 #pragma region HANGER
-#include "Fury_Hanger.h"
-#include "Tiger_Hanger.h"
 #include "Button_Fury.h"
 #include "Button_Tiger.h"
 #include "Button_Start.h"
@@ -216,7 +217,6 @@ HRESULT CLoader::Loading_For_Static()
 		return E_FAIL;
 #pragma endregion
 
-
 #pragma region 폰트
 	/* MakeSpriteFont "WarheliosKO" /FontSize:60 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 WarheliosKO.spritefont */
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_WarheliosKO"), TEXT("../Bin/WOT_Resources/Font/WarheliosKO.spritefont"))))
@@ -226,7 +226,7 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
-	/* For.Prototype_Component_Texture_Smoke*/
+	/* For.Prototype_Component_Texture_FireEffect*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_FireEffect"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/9/%d.dds"), 32))))
 		return E_FAIL;
@@ -597,6 +597,21 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_HitSmoke */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"),
+		CHitSmoke::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Fury_Hanger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury_Hanger"),
+		CFury_Hanger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tiger_Hanger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger_Hanger"),
+		CTiger_Hanger::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_FireEffect */
@@ -1060,20 +1075,11 @@ HRESULT CLoader::Loading_For_Hanger()
 		CButton_Fury::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Fury_Hanger */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Fury_Hanger"),
-		CFury_Hanger::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_Button_Tiger */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Tiger"),
 		CButton_Tiger::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Tiger_Hanger */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Tiger_Hanger"),
-		CTiger_Hanger::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -1247,6 +1253,8 @@ HRESULT CLoader::Load_Particles()
 				swscanf_s(szLine, L"  isLoop: %d", &iLoop);
 				Desc.isLoop = (iLoop != 0);
 			}
+			else if (wcsstr(szLine, L"Alpha"))
+				swscanf_s(szLine, L"  Alpha: %f", &Desc.fAlpha);
 			else if (wcsstr(szLine, L"Center"))
 				swscanf_s(szLine, L"  Center: (%f, %f, %f)", &Desc.vCenter.x, &Desc.vCenter.y, &Desc.vCenter.z);
 			else if (wcsstr(szLine, L"Pivot"))

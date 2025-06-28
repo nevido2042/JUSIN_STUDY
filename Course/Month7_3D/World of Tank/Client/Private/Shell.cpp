@@ -99,6 +99,11 @@ void CShell::Update(_float fTimeDelta)
 			PosDesc.iID = m_iID;
 			PosDesc.vPos = vDigCenter;
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_DIG), &PosDesc);
+
+			GAMEOBJECT_DESC Desc = {};
+			Desc.vInitPosition = vDigCenter;
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
+
 		}
 	}
 
@@ -207,6 +212,7 @@ void CShell::Check_RaycastHit()
 
 	if (pHitResult != nullptr)
 	{
+
 		//포탑이나 맞았을 때 부품 검사
 		if (eCollGroup == COLLISION_GROUP::TURRET)
 		{
@@ -258,6 +264,14 @@ void CShell::Check_RaycastHit()
 		{
 
 		}
+
+
+		_float3 vHitPos = {};
+		XMStoreFloat3(&vHitPos, vOrigin + vRayDir * fDist);
+
+		GAMEOBJECT_DESC Desc = {};
+		Desc.vInitPosition = vHitPos;
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
 
 		Destroy();
 	}

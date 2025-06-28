@@ -388,6 +388,11 @@ void CVIBuffer_Point_Instance::Change_isLoop(_bool bLoop)
 	m_tPointInstanceDesc.isLoop = bLoop;
 }
 
+void CVIBuffer_Point_Instance::Change_Alpha(_float fAlpha)
+{
+	m_tPointInstanceDesc.fAlpha = fAlpha;
+}
+
 void CVIBuffer_Point_Instance::Change_Desc(const POINT_INSTANCE_DESC& Desc)
 {
 	Change_NumInstance(Desc.iNumInstance);
@@ -397,6 +402,7 @@ void CVIBuffer_Point_Instance::Change_Desc(const POINT_INSTANCE_DESC& Desc)
 	Change_LifeTime(Desc.vLifeTime);
 	Change_Speed(Desc.vSpeed);
 	Change_isLoop(Desc.isLoop);
+	Change_Alpha(Desc.fAlpha);
 	Set_EmissionShape(Desc.eEmissionShape);
 }
 

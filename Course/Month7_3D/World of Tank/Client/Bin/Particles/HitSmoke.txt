@@ -1,0 +1,12 @@
+ParticleDesc:
+  ParticleName : HitSmoke
+  SpawnRange: (1.000000, 1.000000, 1.000000)
+  MinScale: 0.612000, MaxScale: 1.957000
+  LifeTimeMin: 0.000000, LifeTimeMax: 1.000000
+  EmissionShape: 1
+  NumInstance: 50
+  isLoop: 0
+  Alpha: 1.600000
+  Center: (0.000000, 0.000000, 0.000000) 
+  Pivot: (0.000000, 0.000000, 0.000000)
+  MinSpeed: 1.200000, MaxSpeed: 11.600000

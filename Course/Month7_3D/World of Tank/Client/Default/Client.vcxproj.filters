@@ -337,6 +337,9 @@
     <Filter Include="02.GameObjects\07.Effect\FireEffect">
       <UniqueIdentifier>{8d4e5f1c-583d-433c-a3eb-5de265854700}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\HitSmoke">
+      <UniqueIdentifier>{f1c1ba63-9c53-4ba4-a2c7-31b42a666d30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -684,6 +687,9 @@
     <ClInclude Include="..\public\FireEffect.h">
       <Filter>02.GameObjects\07.Effect\FireEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\HitSmoke.h">
+      <Filter>02.GameObjects\07.Effect\Particle\HitSmoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1013,6 +1019,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FireEffect.cpp">
       <Filter>02.GameObjects\07.Effect\FireEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HitSmoke.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\HitSmoke</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

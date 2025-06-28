@@ -3,6 +3,7 @@
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_Texture;
 vector g_vCamPosition;
+float g_fAlpah;
 
 struct VS_IN
 {
@@ -106,7 +107,7 @@ void GS_SMOKE(point GS_IN In[1], inout TriangleStream<GS_OUT> Triangles)
     float fLerp = saturate(In[0].vLifeTime.y / In[0].vLifeTime.x);
 
     // 시간에 따라 점점 커지게: 시작 크기의 1.0 ~ 3.0배까지 커지게 설정
-    float fSizeScale = lerp(1.0f, 3.0f, fLerp);
+    float fSizeScale = lerp(1.0f, 5.0f, fLerp);
 
 
     float3 vLook = g_vCamPosition.xyz - In[0].vPosition.xyz;
@@ -168,27 +169,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     //Out.vColor.rgb = float3(1.f, 0.f, 0.f);
     
-    //Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * 0.5f;
-    
-
-    if (In.vLifeTime.y >= In.vLifeTime.x)
-        discard;
-    
-    return Out;
-}
-
-PS_OUT PS_SMOKE(PS_IN In)
-{
-    PS_OUT Out;
-    
-    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
-    
-    if (Out.vColor.a < 0.1f)
-        discard;
-    
-    //Out.vColor.rgb = float3(1.f, 0.f, 0.f);
-    
-    Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * 2.f;
+    Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * Out.vColor.a * g_fAlpah;
     
 
     if (In.vLifeTime.y >= In.vLifeTime.x)
@@ -221,7 +202,7 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = compile gs_5_0 GS_SMOKE();
-        PixelShader = compile ps_5_0 PS_SMOKE();
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
  
 }

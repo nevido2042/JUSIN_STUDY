@@ -52,7 +52,10 @@ HRESULT CParticleTool::Initialize(void* pArg)
 	m_BaseParticleDesc.vLifeTime = _float2(0.5f, 2.f);
 	m_BaseParticleDesc.vSpeed = _float2(1.f, 2.f);
 	m_BaseParticleDesc.vPivot = _float3(0.0f, 0.f, 0.f);
+	m_BaseParticleDesc.fAlpha = 1.f;
 	m_BaseParticleDesc.isLoop = true;
+
+	m_VIBuffer->Change_Desc(m_BaseParticleDesc);
 
 	Load_Particles();
 
@@ -156,11 +159,14 @@ HRESULT CParticleTool::Save_Particle(const wstring& ParticleName)
 		fwprintf(pFile, L"  EmissionShape: %d\n", Desc.eEmissionShape);
 		fwprintf(pFile, L"  NumInstance: %d\n", Desc.iNumInstance);
 		fwprintf(pFile, L"  isLoop: %d\n", Desc.isLoop);
+		fwprintf(pFile, L"  Alpha: %f\n", Desc.fAlpha);
 		fwprintf(pFile, L"  Center: (%f, %f, %f) \n", Desc.vCenter.x, Desc.vCenter.y, Desc.vCenter.z);
 		fwprintf(pFile, L"  Pivot: (%f, %f, %f)\n", Desc.vPivot.x, Desc.vPivot.y, Desc.vPivot.z);
 		fwprintf(pFile, L"  MinSpeed: %f, MaxSpeed: %f\n", Desc.vSpeed.x, Desc.vSpeed.y);
 
 		fclose(pFile);
+
+		memset(m_szParticleName, 0, sizeof(m_szParticleName));
 	}
 	else
 	{
@@ -223,6 +229,8 @@ HRESULT CParticleTool::Load_Particles()
 				swscanf_s(szLine, L"  isLoop: %d", &iLoop);
 				Desc.isLoop = (iLoop != 0);
 			}
+			else if (wcsstr(szLine, L"Alpha"))
+				swscanf_s(szLine, L"  Alpha: %f", &Desc.fAlpha);
 			else if (wcsstr(szLine, L"Center"))
 				swscanf_s(szLine, L"  Center: (%f, %f, %f)", &Desc.vCenter.x, &Desc.vCenter.y, &Desc.vCenter.z);
 			else if (wcsstr(szLine, L"Pivot"))
@@ -410,6 +418,17 @@ void CParticleTool::ParticleControl()
 	}
 
 #pragma endregion
+
+	ImGui::Separator(); // 구분선 추가
+
+#pragma region 투명도
+	if (ImGui::DragFloat("Particle Alpha", reinterpret_cast<_float*>(&m_BaseParticleDesc.fAlpha), 0.1f, 0.f, 10.f))
+	{
+		m_VIBuffer->Change_Alpha(m_BaseParticleDesc.fAlpha);
+		//m_VIBuffer->Replay();
+	}
+#pragma endregion
+
 
 	ImGui::Separator(); // 구분선 추가
 

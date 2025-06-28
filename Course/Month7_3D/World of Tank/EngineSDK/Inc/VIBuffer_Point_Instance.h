@@ -13,6 +13,7 @@ public:
 		_float2		vLifeTime;
 		_float2		vSpeed;
 		_bool		isLoop;
+		_float		fAlpha;
 
 	}POINT_INSTANCE_DESC;
 
@@ -26,9 +27,10 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 public:
-	virtual void Drop(_float fTimeDelta)override;
-	virtual void Spread(_float fTimeDelta)override;
+	virtual void Drop(_float fTimeDelta) override;
+	virtual void Spread(_float fTimeDelta) override;
 
+public:
 	virtual void	Change_NumInstance(_uint iNumInstance) override;
 	virtual void	Change_Range(_float3 vRange) override;
 	virtual void	Change_Size(_float2 vSize) override;
@@ -36,10 +38,10 @@ public:
 	void			Change_LifeTime(_float2 vLifeTime);
 	void			Change_Speed(_float2 vSpeed);
 	void			Change_isLoop(_bool bLoop);
+	void			Change_Alpha(_float fAlpha);
 
 	void			Change_Desc(const POINT_INSTANCE_DESC& Desc);
-
-	virtual void Replay() override;
+	virtual	void	Replay() override;
 
 public:
 	const POINT_INSTANCE_DESC& Get_Desc() const {
