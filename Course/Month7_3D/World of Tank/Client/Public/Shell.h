@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CCollider;
 class CShader;
 class CVIBuffer;
+class CVIBuffer_Trail;
 NS_END
 
 NS_BEGIN(Client)
@@ -52,6 +53,7 @@ private:
 private:
 	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
+	class CVIBuffer_Trail* m_pVIBufferCom = { nullptr };
 	class CVIBuffer* m_pTargetBuffer = { nullptr };
 private:
 	HRESULT Ready_Components();

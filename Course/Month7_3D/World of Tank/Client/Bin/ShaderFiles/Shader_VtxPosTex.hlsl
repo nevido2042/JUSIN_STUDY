@@ -233,6 +233,18 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_AIMCIRCLE();
     }
 
+    //6
+    pass Trail
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend, float4(0, 0, 0, 0), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
 
     //pass Disstortion/* ¿Ö°î 1*/ 
     //{

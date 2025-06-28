@@ -163,6 +163,9 @@
     <ClInclude Include="..\public\VIBuffer_Point_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instance\Point</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Trail.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -311,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instance\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +487,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Point">
       <UniqueIdentifier>{8bdef65f-0eb8-4fcd-9b6a-1f42c337afab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Trail">
+      <UniqueIdentifier>{61ab0ca9-68ba-4348-95b7-0f604bc78006}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
