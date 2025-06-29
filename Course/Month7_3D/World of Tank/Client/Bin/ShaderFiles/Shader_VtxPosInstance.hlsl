@@ -251,8 +251,10 @@ PS_OUT PS_BOUNDARY(PS_IN In)
 {
     PS_OUT Out;
     
-    Out.vColor = float4(1.f, 0.f, 0.f, 0.3f);
-    
+    // y축 기준으로 아래(0.0) 위(1.0)일수록 연하게
+    float alpha = lerp(0.9f, 0.05f, 1.f - In.vTexcoord.y); // 아래: 진함, 위: 연함
+
+    Out.vColor = float4(1.f, 0.f, 0.f, alpha);
     return Out;
 }
 

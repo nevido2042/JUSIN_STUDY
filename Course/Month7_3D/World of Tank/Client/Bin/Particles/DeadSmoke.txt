@@ -1,0 +1,12 @@
+ParticleDesc:
+  ParticleName : DeadSmoke
+  SpawnRange: (0.300000, 0.200000, 0.300000)
+  MinScale: 1.000000, MaxScale: 2.000000
+  LifeTimeMin: 3.000000, LifeTimeMax: 8.000000
+  EmissionShape: 1
+  NumInstance: 20
+  isLoop: 1
+  Alpha: 1.300000
+  Center: (0.000000, 0.000000, 0.000000) 
+  Pivot: (0.000000, -1.000000, 0.000000)
+  MinSpeed: 1.000000, MaxSpeed: 2.000000

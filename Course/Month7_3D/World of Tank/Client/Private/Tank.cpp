@@ -127,29 +127,62 @@ void CTank::Update(_float fTimeDelta)
 
 	SendMatrixSync(fTimeDelta);
 
+#pragma region 죽었을 때 루프 이펙트 좀 이따 추가 블렌드이펙트 때문에
+	//if (m_bisDie)
+	//{
+	//	m_fDieTimeAcc += fTimeDelta;
+
+	//	if (m_bIsCreateDieEffect == false && m_fDieTimeAcc > 1.f)
+	//	{
+	//		m_bIsCreateDieEffect = true;
+
+	//		//몇 초 뒤에 재생하자
+	//		//파괴된 전차의 불(루프) 이펙트 재생
+	//		CGameObject* pDeadFireEffect = Find_PartObject(TEXT("Part_DeadFireEffect"));
+	//		if (pDeadFireEffect)
+	//		{
+	//			pDeadFireEffect->Set_Active(true);
+	//		}
+
+	//		//파괴된 전차의 연기 파티클 재생
+	//		CGameObject* pDeadSmoke = Find_PartObject(TEXT("Part_DeadSmoke"));
+	//		if (pDeadSmoke)
+	//		{
+	//			pDeadSmoke->Set_Active(true);
+	//		}
+	//	}
+	//}
+#pragma endregion
+
 	CGameObject::Update(fTimeDelta);
 }
 
 void CTank::Late_Update(_float fTimeDelta)
 {
-	if (!m_bVisible)
-	{
-		m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY))->Late_Update(fTimeDelta);
-		return;
-	}
+	//if (!m_bVisible)
+	//{
+	//	//보이든 안보이든 돌아야하는 것
+	//	m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY))->Late_Update(fTimeDelta);
+	//	return;
+	//}
 
 	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 2.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-	if (m_bisDie)
-	{
+	//if (m_bisDie)
+	//{ 
+	//	//죽었을 때만 도는 것
+	//	CGameObject* pDeadSmoke = Find_PartObject(TEXT("Part_DeadSmoke"));
+	//	if (pDeadSmoke)
+	//		pDeadSmoke->Late_Update(fTimeDelta);
 
-		CGameObject* pDamageBar = Find_PartObject(TEXT("Part_DamageBar"));
-		if (pDamageBar)
-			pDamageBar->Late_Update(fTimeDelta);
+	//	//죽어도 돌아야 하는 것
+	//	CGameObject* pDamageBar = Find_PartObject(TEXT("Part_DamageBar"));
+	//	if (pDamageBar)
+	//		pDamageBar->Late_Update(fTimeDelta);
 
-		return;
-	}
+	//	return;
+	//}
 
 	CGameObject::Late_Update(fTimeDelta);
 
@@ -727,28 +760,54 @@ void CTank::Move(_float fTimeDelta)
 
 void CTank::Die()
 {
+	//한 번만 죽도록
 	if (m_bisDie)
 		return;
 
 	m_bisDie = true;
 
+	//엔진 연기 비활성화
+	CGameObject* pRight = Find_PartObject(TEXT("Part_EngineSmokeParticle_Right"));
+	CGameObject* pLeft = Find_PartObject(TEXT("Part_EngineSmokeParticle_Left"));
+	if (pRight && pLeft)
+	{
+		pLeft->Set_Active(false);
+		pRight->Set_Active(false);
+	}
+	
+
+	//몇 초 뒤에 재생하자
+			//파괴된 전차의 불(루프) 이펙트 재생
+	CGameObject* pDeadFireEffect = Find_PartObject(TEXT("Part_DeadFireEffect"));
+	if (pDeadFireEffect)
+		pDeadFireEffect->Set_Active(true);
+
+	//파괴된 전차의 연기 파티클 재생
+	CGameObject* pDeadSmoke = Find_PartObject(TEXT("Part_DeadSmoke"));
+	if (pDeadSmoke)
+		pDeadSmoke->Set_Active(true);
+
+	//폭발 파티클
 	GAMEOBJECT_DESC Desc{};
 	XMStoreFloat3(&Desc.vInitPosition, m_pTransformCom->Get_State(STATE::POSITION));
 	Desc.vInitPosition.y += 2.f;
-
 	m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TankExplosionEffect"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_TankExplosionEffect"), &Desc);
 
+	
 	if (m_pGameInstance->Get_ID() == m_iID)
 	{
+		//파괴 보이스 재생
 		CDamagePanel* pDamagePanel = static_cast<CDamagePanel*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamagePanel")));
 		if (pDamagePanel == nullptr)
 			return;
 		pDamagePanel->Play_Voice_Destroyed();
 	}
 
+	//점수판 변경
 	CGameObject* pScore = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Score"));
 	if (pScore)
 	{
+		
 		CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
 		if (nullptr == pPlayerTank)
 			return;
@@ -761,6 +820,7 @@ void CTank::Die()
 			static_cast<CScore*>(pScore)->Set_Destroy_Red();
 	}
 
+	//모든 모듈 파괴
 	for(CModule * pModule : m_Modules)
 	{
 		if (pModule)
@@ -840,24 +900,41 @@ HRESULT CTank::Ready_Components()
 
 HRESULT CTank::Ready_PartObjects(TANK_DESC* pDesc)
 {
-	//플레이어 탱크는 월드 데미지바 없어도 된다.
-	if (m_pGameInstance->Get_ID() == m_iID)
-		return S_OK;
-
-	CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
-	DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	DamageBarWorldDesc.pParent = this;
-	DamageBarWorldDesc.iID = m_iID;
-	DamageBarWorldDesc.eTeam = pDesc->eTeam;
-	DamageBarWorldDesc.fDepth = DEPTH_BACKGROUND - 0.01f;
-	DamageBarWorldDesc.fSizeX = 120.f * UI_RATIO;
-	DamageBarWorldDesc.fSizeY = 60.f * UI_RATIO;
-
-
-	/* 데미지바_월드를 추가한다. */
-	lstrcpy(DamageBarWorldDesc.szName, TEXT("DamageBar"));
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &DamageBarWorldDesc)))
+	/* DeadFireEffect 추가한다. */
+	GAMEOBJECT_DESC DeadFire{};
+	DeadFire.vInitPosition = { 0.f, 2.f, 0.f };
+	DeadFire.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	DeadFire.bActive = false;
+	lstrcpy(DeadFire.szName, TEXT("DeadFireEffect"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DeadFireEffect"), TEXT("Part_DeadFireEffect"), &DeadFire)))
 		return E_FAIL;
+
+
+	/* DeadSmoke 파티클을 추가한다. */
+	GAMEOBJECT_DESC DeadSmokeDesc{};
+	DeadSmokeDesc.vInitPosition = { 0.f, 2.f, 0.f };
+	DeadSmokeDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+	DeadSmokeDesc.bActive = false;
+	lstrcpy(DeadSmokeDesc.szName, TEXT("DeadSmoke"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DeadSmoke"), TEXT("Part_DeadSmoke"), &DeadSmokeDesc)))
+		return E_FAIL;
+
+	//플레이어 탱크는 월드 데미지바 없어도 된다.
+	if (m_pGameInstance->Get_ID() != m_iID)
+	{
+		/* 데미지바_월드를 추가한다. */
+		CDamageBar_World::DAMAGEBAR_WORLD_DESC DamageBarWorldDesc = {};
+		DamageBarWorldDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+		DamageBarWorldDesc.pParent = this;
+		DamageBarWorldDesc.iID = m_iID;
+		DamageBarWorldDesc.eTeam = pDesc->eTeam;
+		DamageBarWorldDesc.fDepth = DEPTH_BACKGROUND - 0.01f;
+		DamageBarWorldDesc.fSizeX = 120.f * UI_RATIO;
+		DamageBarWorldDesc.fSizeY = 60.f * UI_RATIO;
+		lstrcpy(DamageBarWorldDesc.szName, TEXT("DamageBar"));
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageBar_World"), TEXT("Part_DamageBar"), &DamageBarWorldDesc)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

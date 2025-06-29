@@ -195,7 +195,7 @@ HRESULT CScore::Ready_PartObjects()
 
 	CLayer* pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"));
 	if (nullptr == pLayer)
-		return E_FAIL;
+		return S_OK;
 
 	for (CGameObject* pGameObject : pLayer->Get_GameObjects())
 	{

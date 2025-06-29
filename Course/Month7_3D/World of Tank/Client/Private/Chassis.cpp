@@ -53,7 +53,8 @@ void CChassis::Late_Update(_float fTimeDelta)
 
 	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-	CGameObject::Late_Update(fTimeDelta);
+	if(m_pOwner->Get_isDie() == false && m_pOwner->Get_isVisible())
+		CGameObject::Late_Update(fTimeDelta);
 
 }
 

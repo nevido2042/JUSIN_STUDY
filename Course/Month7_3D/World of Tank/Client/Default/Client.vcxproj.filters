@@ -346,6 +346,12 @@
     <Filter Include="02.GameObjects\07.Effect\TankExplosionEffect">
       <UniqueIdentifier>{11e9572d-7c76-42a1-9279-99e38a493153}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\DeadSmoke">
+      <UniqueIdentifier>{da6657a3-204f-4534-a0a0-208ea1695328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\DeadFireEffect">
+      <UniqueIdentifier>{fb1d42bf-4bd1-488e-81b1-9b722bd73ff0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -702,6 +708,12 @@
     <ClInclude Include="..\public\TankExplosionEffect.h">
       <Filter>02.GameObjects\07.Effect\TankExplosionEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DeadSmoke.h">
+      <Filter>02.GameObjects\07.Effect\Particle\DeadSmoke</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DeadFireEffect.h">
+      <Filter>02.GameObjects\07.Effect\DeadFireEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1040,6 +1052,12 @@
     </ClCompile>
     <ClCompile Include="..\private\TankExplosionEffect.cpp">
       <Filter>02.GameObjects\07.Effect\TankExplosionEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DeadSmoke.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\DeadSmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DeadFireEffect.cpp">
+      <Filter>02.GameObjects\07.Effect\DeadFireEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

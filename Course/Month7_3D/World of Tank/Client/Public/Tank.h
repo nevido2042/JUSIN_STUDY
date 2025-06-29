@@ -98,6 +98,10 @@ private:
 private:
 	_bool	m_bisDie = { false };
 
+//private:
+//	_bool	m_bIsCreateDieEffect = false; //연기랑 불꽃 루프
+//	_float	m_fDieTimeAcc = 0.f;
+
 private:
 	//_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
 

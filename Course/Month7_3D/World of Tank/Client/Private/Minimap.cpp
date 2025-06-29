@@ -129,7 +129,7 @@ HRESULT CMinimap::Ready_PartObjects()
 
 	CLayer* pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"));
 	if (pLayer == nullptr)
-		return E_FAIL;
+		return S_OK;
 
 	CMinimap_Tank::MINIMAP_TANK_DESC MinimapTankDesc{};
 	MinimapTankDesc.fDepth = DEPTH_BACKGROUND - 0.1f;

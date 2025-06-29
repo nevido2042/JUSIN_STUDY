@@ -88,7 +88,7 @@ void CTurret::Late_Update(_float fTimeDelta)
 	);
 
 	// 프러스텀 안에 있으면 렌더링 추가
-	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f) && m_pOwner->Get_isDie() == false && m_pOwner->Get_isVisible())
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 

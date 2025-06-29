@@ -11,6 +11,8 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "DeadFireEffect.h"
+#include "DeadSmoke.h"
 #include "TankExplosionEffect.h"
 #include "Spark.h"
 #include "HitSmoke.h"
@@ -228,6 +230,11 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	/* For.Prototype_Component_Texture_DeadFireEffect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DeadFireEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/FireLoop2/%d.dds"), 64))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_TankExplosionEffect*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TankExplosionEffect"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/6/%d.dds"), 32))))
@@ -241,6 +248,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_Component_Texture_Spark*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Spark"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/spark/0228.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_DeadSmoke*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DeadSmoke"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output256x256/misc/033.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Smoke*/
@@ -609,6 +621,16 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DeadFireEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DeadFireEffect"),
+		CDeadFireEffect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DeadSmoke */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DeadSmoke"),
+		CDeadSmoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Spark */

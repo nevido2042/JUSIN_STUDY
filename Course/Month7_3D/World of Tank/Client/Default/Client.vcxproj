@@ -185,6 +185,8 @@
     <ClInclude Include="..\public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
+    <ClInclude Include="..\public\DeadFireEffect.h" />
+    <ClInclude Include="..\public\DeadSmoke.h" />
     <ClInclude Include="..\public\Chassis.h" />
     <ClInclude Include="..\public\ChurchA.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -314,6 +316,8 @@
     <ClCompile Include="..\private\DamageCollider.cpp" />
     <ClCompile Include="..\private\DamageIndicator.cpp" />
     <ClCompile Include="..\private\DamagePanel.cpp" />
+    <ClCompile Include="..\private\DeadFireEffect.cpp" />
+    <ClCompile Include="..\private\DeadSmoke.cpp" />
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\DirectionTurret.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
