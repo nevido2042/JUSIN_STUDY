@@ -393,6 +393,51 @@ void CVIBuffer_Point_Instance::Change_Alpha(_float fAlpha)
 	m_tPointInstanceDesc.fAlpha = fAlpha;
 }
 
+void CVIBuffer_Point_Instance::Change_Translation(const vector<_float3>& Translations)
+{
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	size_t iCount = min(Translations.size(), m_iNumInstance);
+
+	for (size_t i = 0; i < iCount; i++)
+	{
+		pVertices[i].vTranslation = _float4(Translations[i].x, Translations[i].y, Translations[i].z, 1.f);
+
+		m_pVertexInstances[i].vTranslation = pVertices[i].vTranslation;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance::Change_Matrix(const vector<_float4x4>& Matrixs)
+{
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	size_t iCount = min(Matrixs.size(), m_iNumInstance);
+
+	for (size_t i = 0; i < iCount; i++)
+	{
+		pVertices[i].vRight = {Matrixs[i]._11, Matrixs[i]._12, Matrixs[i]._13, 1.f};
+		pVertices[i].vUp = { Matrixs[i]._21, Matrixs[i]._22, Matrixs[i]._23, 1.f };
+		pVertices[i].vLook = { Matrixs[i]._31, Matrixs[i]._32, Matrixs[i]._33, 1.f };
+		pVertices[i].vTranslation = { Matrixs[i]._41, Matrixs[i]._42, Matrixs[i]._43, 1.f };
+
+		m_pVertexInstances[i].vTranslation = pVertices[i].vTranslation;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+
+
 void CVIBuffer_Point_Instance::Change_Desc(const POINT_INSTANCE_DESC& Desc)
 {
 	Change_NumInstance(Desc.iNumInstance);

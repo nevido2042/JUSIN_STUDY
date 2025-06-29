@@ -39,6 +39,8 @@ public:
 	void			Change_Speed(_float2 vSpeed);
 	void			Change_isLoop(_bool bLoop);
 	void			Change_Alpha(_float fAlpha);
+	void			Change_Translation(const vector<_float3>& Translations);
+	void			Change_Matrix(const vector<_float4x4>& Matrixs);
 
 	void			Change_Desc(const POINT_INSTANCE_DESC& Desc);
 	virtual	void	Replay() override;

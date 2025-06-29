@@ -26,9 +26,13 @@ HRESULT CBoundary::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+	
 	if (FAILED(Load_BoundaryPoints()))
 		return E_FAIL;
 
+#ifdef _DEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -43,6 +47,59 @@ HRESULT CBoundary::Initialize(void* pArg)
 		pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
 		return E_FAIL;
 
+#endif // _DEBUG
+
+	//vector<_float3> Temp{};
+	//Temp.resize(500);
+	//for (_float3& T : Temp)
+	//{
+	//	T = { 300.f, 90.f, 300.f };
+	//}
+
+	const size_t iPointCount = m_BoundaryPoints.size();
+	if (iPointCount < 2)
+		return E_FAIL; // 최소 두 개 이상이어야 선을 그을 수 있음
+
+	vector<_float4x4> Matrixs;
+	Matrixs.reserve(iPointCount); // 폐구간이므로 최대 iPointCount개
+
+	for (_uint i = 0; i < iPointCount; ++i)
+	{
+		// 마지막 점은 첫 번째 점과 이어짐 (i+1에서 % 사용)
+		_vector vStart = XMVectorSetW(XMLoadFloat3(&m_BoundaryPoints[i]), 1.f);
+		_vector vEnd = XMVectorSetW(XMLoadFloat3(&m_BoundaryPoints[(i + 1) % iPointCount]), 1.f);
+
+		_vector vDir = vEnd - vStart;
+		_float fLength = XMVectorGetX(XMVector3Length(vDir));
+
+		// 방향 벡터 정규화 후, 길이만큼 스케일
+		_vector vRight = XMVector3Normalize(-vDir) * fLength;
+
+		// Up은 Y축으로 고정 (높이 강조 시 y=10)
+		_vector vUp = XMVectorSet(0.f, 10.f, 0.f, 0.f);
+
+		// Look (정확한 직교 확보용)
+		_vector vLook = XMVector3Cross(vRight, vUp);
+		vLook = XMVector3Normalize(vLook);
+
+		// 중점 계산
+		_vector vMid = (vStart + vEnd) * 0.5f;
+
+		_matrix matWorld = {
+			XMVectorSet(vRight.m128_f32[0], vRight.m128_f32[1], vRight.m128_f32[2], 0.f),
+			XMVectorSet(vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2], 0.f),
+			XMVectorSet(vLook.m128_f32[0], vLook.m128_f32[1], vLook.m128_f32[2], 0.f),
+			XMVectorSet(vMid.m128_f32[0], vMid.m128_f32[1], vMid.m128_f32[2], 1.f)
+		};
+
+		_float4x4 mat{};
+		XMStoreFloat4x4(&mat, matWorld);
+		Matrixs.push_back(mat);
+	}
+
+	m_pVIBufferCom->Change_Matrix(Matrixs);
+
+
 	return S_OK;
 }
 
@@ -54,7 +111,7 @@ void CBoundary::Priority_Update(_float fTimeDelta)
 
 void CBoundary::Update(_float fTimeDelta)
 {
-
+	m_pVIBufferCom->Emission(fTimeDelta);
 
 }
 
@@ -65,6 +122,8 @@ void CBoundary::Late_Update(_float fTimeDelta)
 
 HRESULT CBoundary::Render()
 {
+#ifdef _DEBUG
+#pragma region 빨간 선
 	m_pEffect->SetWorld(XMMatrixIdentity());
 	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
 	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
@@ -78,6 +137,35 @@ HRESULT CBoundary::Render()
 	Draw_Boundary();
 
 	m_pBatch->End();
+#pragma endregion
+#endif // _DEBUG
+
+#pragma region  빨간 장벽
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpah", &m_pVIBufferCom->Get_Desc().fAlpha, sizeof(_float))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+	//	return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Begin(2)))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
+#pragma endregion
 
 	return S_OK;
 }
@@ -247,7 +335,7 @@ HRESULT CBoundary::Load_BoundaryPoints()
 	return S_OK;
 }
 
-
+#ifdef _DEBUG
 void CBoundary::Draw_Boundary()
 {
 	if (m_BoundaryPoints.size() < 2)
@@ -278,6 +366,27 @@ void CBoundary::Draw_Boundary()
 		);
 
 	}
+}
+#endif // _DEBUG
+
+HRESULT CBoundary::Ready_Components()
+{
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosInstance"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+
+	/* For.Com_VIBuffer */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Boundary"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Smoke"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 CBoundary* CBoundary::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -310,7 +419,13 @@ void CBoundary::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pVIBufferCom);
+
+#ifdef _DEBUG
 	Safe_Release(m_pInputLayout);
 	Safe_Delete(m_pBatch);
 	Safe_Delete(m_pEffect);
+#endif // _DEBUG
 }

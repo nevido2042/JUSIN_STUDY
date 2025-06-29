@@ -3,6 +3,13 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
+NS_BEGIN(Engine)
+class CShader;
+class CTexture;
+class CVIBuffer_Point_Instance;
+NS_END
+
+
 NS_BEGIN(Client)
 
 class CBoundary final : public CGameObject
@@ -33,13 +40,26 @@ public:
 
 private:
 	HRESULT Load_BoundaryPoints();
+
+#ifdef _DEBUG
 	void Draw_Boundary();
+#endif // _DEBUG
+
 private:
 	vector<_float3> m_BoundaryPoints;
 
+	CShader* m_pShaderCom = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
+
+#ifdef _DEBUG
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
 	BasicEffect* m_pEffect = { nullptr };
 	ID3D11InputLayout* m_pInputLayout = { nullptr };
+#endif // _DEBUG
+
+private:
+	HRESULT Ready_Components();
 
 public:
 	static CBoundary* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
