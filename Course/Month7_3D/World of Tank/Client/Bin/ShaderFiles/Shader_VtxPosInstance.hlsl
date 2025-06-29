@@ -29,7 +29,7 @@ struct VS_OUT_BOUNDARY
 {
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE;
-    float2 vLifeTime : TEXCOORD0;
+    //float2 vLifeTime : TEXCOORD0;
 
     float3 vRight : TEXCOORD1;
     float3 vUp : TEXCOORD2;
@@ -62,9 +62,6 @@ VS_OUT_BOUNDARY VS_BOUNDARY(VS_IN In)
 
     // 사이즈 계산
     Out.vPSize = float2(length(In.TransformMatrix._11_12_13), length(In.TransformMatrix._21_22_23));
-    
-    // 생존 시간 정보
-    Out.vLifeTime = In.vLifeTime;
 
     // 방향 벡터 전달 (GS에서 billboard 사용 안 하게 하기 위함)
     Out.vRight = normalize(In.TransformMatrix._11_12_13);
@@ -88,7 +85,6 @@ struct GS_IN_BOUNDARY
 {
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE;
-    float2 vLifeTime : TEXCOORD0;
 
     float3 vRight : TEXCOORD1;
     float3 vUp : TEXCOORD2;
@@ -193,30 +189,21 @@ void GS_BOUNDARY(point GS_IN_BOUNDARY In[1], inout TriangleStream<GS_OUT> Triang
     float3 vRight = normalize(In[0].vRight.xyz) * In[0].vPSize.x * 0.5f;
     float3 vUp = normalize(In[0].vUp.xyz) * In[0].vPSize.y * 0.5f;
 
-    
-    // 지정된 방향 사용
-    //float3 vRight = float3(1.f, 0.f, 0.f) * In[0].vPSize.x * 0.5f; // ← 이 방향으로 길어짐
-    //float3 vUp = float3(0.f, 1.f, 0.f) * In[0].vPSize.y * 0.5f; // ↑ 이 방향으로 높이
-
     float3 vCenter = In[0].vPosition.xyz;
 
     matrix matVP = mul(g_ViewMatrix, g_ProjMatrix);
 
     Out[0].vPosition = mul(float4(vCenter + vRight + vUp, 1.f), matVP);
     Out[0].vTexcoord = float2(0.f, 0.f);
-    Out[0].vLifeTime = In[0].vLifeTime;
 
     Out[1].vPosition = mul(float4(vCenter - vRight + vUp, 1.f), matVP);
     Out[1].vTexcoord = float2(1.f, 0.f);
-    Out[1].vLifeTime = In[0].vLifeTime;
 
     Out[2].vPosition = mul(float4(vCenter - vRight - vUp, 1.f), matVP);
     Out[2].vTexcoord = float2(1.f, 1.f);
-    Out[2].vLifeTime = In[0].vLifeTime;
 
     Out[3].vPosition = mul(float4(vCenter + vRight - vUp, 1.f), matVP);
     Out[3].vTexcoord = float2(0.f, 1.f);
-    Out[3].vLifeTime = In[0].vLifeTime;
 
     Triangles.Append(Out[0]);
     Triangles.Append(Out[1]);
@@ -251,8 +238,6 @@ PS_OUT PS_MAIN(PS_IN In)
     if(Out.vColor.a < 0.3f)
         discard;
     
-    //Out.vColor.rgb = float3(1.f, 0.f, 0.f);
-    
     Out.vColor.a = saturate(In.vLifeTime.x - In.vLifeTime.y) * Out.vColor.a * g_fAlpah;
     
 
@@ -266,10 +251,7 @@ PS_OUT PS_BOUNDARY(PS_IN In)
 {
     PS_OUT Out;
     
-    Out.vColor = float4(1.f, 0.f, 0.f, 0.5f);
-    
-    //if (Out.vColor.a < 0.3f)
-    //    discard;
+    Out.vColor = float4(1.f, 0.f, 0.f, 0.3f);
     
     return Out;
 }

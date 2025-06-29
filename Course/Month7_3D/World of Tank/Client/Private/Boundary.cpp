@@ -49,19 +49,14 @@ HRESULT CBoundary::Initialize(void* pArg)
 
 #endif // _DEBUG
 
-	//vector<_float3> Temp{};
-	//Temp.resize(500);
-	//for (_float3& T : Temp)
-	//{
-	//	T = { 300.f, 90.f, 300.f };
-	//}
-
 	const size_t iPointCount = m_BoundaryPoints.size();
 	if (iPointCount < 2)
 		return E_FAIL; // 최소 두 개 이상이어야 선을 그을 수 있음
 
 	vector<_float4x4> Matrixs;
 	Matrixs.reserve(iPointCount); // 폐구간이므로 최대 iPointCount개
+
+	m_pVIBufferCom->Change_NumInstance(static_cast<_uint>(iPointCount));
 
 	for (_uint i = 0; i < iPointCount; ++i)
 	{
@@ -75,10 +70,8 @@ HRESULT CBoundary::Initialize(void* pArg)
 		// 방향 벡터 정규화 후, 길이만큼 스케일
 		_vector vRight = XMVector3Normalize(-vDir) * fLength;
 
-		// Up은 Y축으로 고정 (높이 강조 시 y=10)
 		_vector vUp = XMVectorSet(0.f, 10.f, 0.f, 0.f);
 
-		// Look (정확한 직교 확보용)
 		_vector vLook = XMVector3Cross(vRight, vUp);
 		vLook = XMVector3Normalize(vLook);
 
@@ -86,10 +79,10 @@ HRESULT CBoundary::Initialize(void* pArg)
 		_vector vMid = (vStart + vEnd) * 0.5f;
 
 		_matrix matWorld = {
-			XMVectorSet(vRight.m128_f32[0], vRight.m128_f32[1], vRight.m128_f32[2], 0.f),
-			XMVectorSet(vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2], 0.f),
-			XMVectorSet(vLook.m128_f32[0], vLook.m128_f32[1], vLook.m128_f32[2], 0.f),
-			XMVectorSet(vMid.m128_f32[0], vMid.m128_f32[1], vMid.m128_f32[2], 1.f)
+			vRight,
+			vUp,
+			vLook,
+			XMVectorSetW(vMid,1.f)
 		};
 
 		_float4x4 mat{};
