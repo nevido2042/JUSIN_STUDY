@@ -110,7 +110,7 @@ void CBoundary::Update(_float fTimeDelta)
 
 void CBoundary::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND_FIRST, this);
 }
 
 HRESULT CBoundary::Render()
@@ -150,7 +150,7 @@ HRESULT CBoundary::Render()
 	//if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 	//	return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(2)))
+	if (FAILED(m_pShaderCom->Begin(0)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -365,7 +365,7 @@ void CBoundary::Draw_Boundary()
 HRESULT CBoundary::Ready_Components()
 {
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosInstance"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_Boundary"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 

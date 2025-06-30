@@ -429,18 +429,16 @@ void CParticleTool::ParticleControl()
 	}
 #pragma endregion
 
-
 	ImGui::Separator(); // 구분선 추가
 
 #pragma region 쉐이더 패스
-	if (ImGui::SliderInt("Shader Pass", &m_iShaderPass, 0, 1))
+	if (ImGui::SliderInt("Shader Pass", &m_iShaderPass, 0, 2))
 	{
 		m_pBaseParticle->Change_ShaderPass(m_iShaderPass);
 	}
 	if (ImGui::IsItemHovered())
-		ImGui::SetTooltip("Select shader pass index (0: Default, 1: Smoke)");
+		ImGui::SetTooltip("Select shader pass index (0: Default, 1: ScaleUp, 2: ScaleDown)");
 #pragma endregion
-
 
 	ImGui::Separator(); // 구분선 추가
 

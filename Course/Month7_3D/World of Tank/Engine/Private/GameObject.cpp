@@ -102,10 +102,23 @@ HRESULT CGameObject::Render()
 
 _float CGameObject::Get_Depth()
 {
-	_vector vWorldPos = m_pTransformCom->Get_State(STATE::POSITION);
-	_matrix matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
-	_vector vViewSpacePos = XMVector3TransformCoord(vWorldPos, matView);
+	_vector vWorldPos = {};
+	_matrix matView = {};
+	_vector vViewSpacePos = {};
 
+	//파츠 들은 컴바인드매트릭스로 계산해야함
+	if (m_pParent)
+	{
+		vWorldPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.f);
+	}
+	else
+	{
+		vWorldPos = m_pTransformCom->Get_State(STATE::POSITION);
+	}
+
+	matView = m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW);
+	vViewSpacePos = XMVector3TransformCoord(vWorldPos, matView);
+	
 	return XMVectorGetZ(vViewSpacePos);
 
 }

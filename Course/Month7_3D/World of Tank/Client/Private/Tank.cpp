@@ -903,6 +903,7 @@ HRESULT CTank::Ready_PartObjects(TANK_DESC* pDesc)
 	/* DeadFireEffect 추가한다. */
 	GAMEOBJECT_DESC DeadFire{};
 	DeadFire.vInitPosition = { 0.f, 2.f, 0.f };
+	DeadFire.pParent = this;
 	DeadFire.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	DeadFire.bActive = false;
 	lstrcpy(DeadFire.szName, TEXT("DeadFireEffect"));
@@ -912,6 +913,7 @@ HRESULT CTank::Ready_PartObjects(TANK_DESC* pDesc)
 
 	/* DeadSmoke 파티클을 추가한다. */
 	GAMEOBJECT_DESC DeadSmokeDesc{};
+	DeadSmokeDesc.pParent = this;
 	DeadSmokeDesc.vInitPosition = { 0.f, 2.f, 0.f };
 	DeadSmokeDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 	DeadSmokeDesc.bActive = false;

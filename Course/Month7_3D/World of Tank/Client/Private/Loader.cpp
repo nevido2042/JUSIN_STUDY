@@ -219,6 +219,11 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosInstance"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosInstance.hlsl"), VTXPOS_PARTICLE_INSTANCE::Elements, VTXPOS_PARTICLE_INSTANCE::iNumElements))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_Boundary */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_Boundary"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Boundary.hlsl"), VTXPOINT_INSTANCE::Elements, VTXPOINT_INSTANCE::iNumElements))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region ÆùÆ®
@@ -357,7 +362,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/global_AM.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/99_poland/maps/landscape/00_All_Outland_Tiles/Grass_Green_Dark_01_AM.dds"), 1))))
 		return E_FAIL;
 	//"../Bin/WOT_Resources/Map/99_poland/maps/landscape/00_AllTerrain3_tiles/Foliage_yellow_02_00236_am.dds"
 	//"../Bin/WOT_Resources/Map/99_poland/spaces/99_poland/global_AM.dds"

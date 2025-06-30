@@ -27,7 +27,7 @@ HRESULT CDeadFireEffect::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Scaling(10.f, 10.f, 10.f);
+	//m_pTransformCom->Scaling(10.f, 10.f, 10.f);
 
 	return S_OK;
 }

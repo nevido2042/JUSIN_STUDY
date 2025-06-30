@@ -30,6 +30,8 @@ HRESULT CRenderer::Draw()
 		return E_FAIL;
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
+	if (FAILED(Render_Blend_First()))
+		return E_FAIL;
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
 	if (FAILED(Render_UI()))
@@ -66,11 +68,24 @@ HRESULT CRenderer::Render_NonBlend()
 
 	return S_OK;
 }
-//
-//_bool Compare(CGameObject* pSour, CGameObject* pDest)
-//{
-//	return dynamic_cast<CBlendObject*>(pSour)->Get_Depth() > dynamic_cast<CBlendObject*>(pDest)->Get_Depth();
-//}
+HRESULT CRenderer::Render_Blend_First()
+{
+	//m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_BLEND_FIRST)].sort([](CGameObject* pSour, CGameObject* pDest)->_bool
+	//	{
+	//		return pSour->Get_Depth() > pDest->Get_Depth();
+	//	});
+
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_BLEND_FIRST)])
+	{
+		if (nullptr != pGameObject && pGameObject->Get_isVisible())
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_BLEND_FIRST)].clear();
+
+	return S_OK;
+}
 
 HRESULT CRenderer::Render_Blend()
 {

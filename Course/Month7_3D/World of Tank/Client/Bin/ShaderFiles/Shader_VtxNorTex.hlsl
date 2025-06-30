@@ -6,7 +6,7 @@ Texture2D   g_DiffuseTexture;
 float4 g_vLightDir;
 float4 g_vLightDiffuse;
 float4 g_vLightAmbient;
-float4 g_vLightSpecular;
+//float4 g_vLightSpecular;
 
 float4 g_vCamPosition;
 
@@ -60,16 +60,16 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out;
 
-    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord * 100.f);
     
     float4 vShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f) +
         (g_vLightAmbient * g_vMtrlAmibient);
     
     float4 vLook = In.vWorldPos - g_vCamPosition;    
     float4 vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
-    float4 vSpecular = pow(max(dot(normalize(vLook) * -1.f, vReflect), 0.f), 1000.f);
+    //float4 vSpecular = pow(max(dot(normalize(vLook) * -1.f, vReflect), 0.f), 1000.f);
     
-    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * vShade + (g_vLightSpecular * g_vMtrlSpecular) * vSpecular;
+    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * vShade; + (/*g_vLightSpecular * */g_vMtrlSpecular); // * vSpecular;
 
     return Out;
 }

@@ -33,7 +33,7 @@ void CNetwork::Update(_float fTimeDelta)
 		{
 			m_fConnectTryElapsed = 0.f;
 			Try_Connect();
-			cout << "Try_Connect()" << endl;
+			//cout << "Try_Connect()" << endl;
 		}
 	}
 
