@@ -166,6 +166,12 @@
     <ClInclude Include="..\public\VIBuffer_Trail.h">
       <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RenderTarget.h">
+      <Filter>01.Utility\12.RenderTargets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Target_Manager.h">
+      <Filter>01.Utility\12.RenderTargets\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -317,6 +323,12 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Trail.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderTarget.cpp">
+      <Filter>01.Utility\12.RenderTargets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Target_Manager.cpp">
+      <Filter>01.Utility\12.RenderTargets\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,10 +503,21 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Trail">
       <UniqueIdentifier>{61ab0ca9-68ba-4348-95b7-0f604bc78006}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\12.RenderTargets">
+      <UniqueIdentifier>{2e62f0cf-fbe7-440d-ab50-ff1146ce1055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\12.RenderTargets\Manager">
+      <UniqueIdentifier>{2bf7e5ba-01f7-460b-8505-982162a975bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
       <Filter>01.Utility\98.ShaderFiles</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>01.Utility\98.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

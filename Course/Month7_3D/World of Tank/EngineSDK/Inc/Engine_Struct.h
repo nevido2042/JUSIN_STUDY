@@ -23,7 +23,7 @@ namespace Engine
 		float				fRange;
 
 		_float4			vDiffuse;
-		_float4			vAmbient;
+		_float			fAmbient;
 		_float4			vSpecular;
 	}LIGHT_DESC;
 

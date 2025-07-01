@@ -55,24 +55,19 @@ struct PS_IN
 
 struct PS_OUT
 {
-    vector vColor : SV_TARGET0;
+    vector vDiffuse : SV_TARGET0;
+    vector vNormal : SV_TARGET1;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out;
 
-    //vector vSourMtrlDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexcoord * 1.f);
-    //vector vDestMtrlDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexcoord * 50.f);
-    
-    //vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexcoord);
-    
     vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexcoord);
     float r = vMask.r;
     float g = vMask.g;
     float b = vMask.b;
-    //float rest = max(0.f, 1.f - (r + g + b));
-    
+
     // RGB 평균값 사용 (혹은 밝기 기준)
     float brightness = (r + g + b) / 3.f;
 
@@ -81,31 +76,18 @@ PS_OUT PS_MAIN(PS_IN In)
     vector tex2 = g_DiffuseTexture[2].Sample(DefaultSampler, In.vTexcoord * 100.f);
     vector tex3 = g_DiffuseTexture[3].Sample(DefaultSampler, In.vTexcoord * 100.f);
 
-    // 기준치 (예: 밝기 0.95 이상이면 흰색으로 간주)
+    // 기준치 (밝기 일정 이상이면 흰색으로 간주)
     bool isWhite = brightness > 0.50f;
     
     // 일반 블렌딩
-    //float rest = max(0.f, 1.f - (r + g + b));
-    vector vBlend = tex0 * r + tex1 * g + tex2 * b;/* + tex3 * rest;*/
+    vector vBlend = tex0 * r + tex1 * g + tex2 * b;
 
     // 흰색이면 tex3 사용, 아니면 블렌드
     vector vMtrlDiffuse = isWhite ? tex3 : vBlend;
     
-   // vector vMtrlDiffuse = tex0 * r + tex1 * g + tex2 * b + tex3 * rest;
+    Out.vDiffuse = vector(vMtrlDiffuse.rgb, 1.f);
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     
-    
-    //vector vMtrlDiffuse = vDestMtrlDiffuse * vMask + vSourMtrlDiffuse * (1.f - vMask);
-    //g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord /** 100.f*/);
-    
-    float4 vShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f) +
-        (g_vLightAmbient * g_vMtrlAmibient);
-    
-    float4 vLook = In.vWorldPos - g_vCamPosition;    
-    float4 vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
-    //float4 vSpecular = pow(max(dot(normalize(vLook) * -1.f, vReflect), 0.f), 1000.f);
-    
-    Out.vColor = g_vLightDiffuse * vMtrlDiffuse * vShade; + (/*g_vLightSpecular * */g_vMtrlSpecular); // * vSpecular;
-
     return Out;
 }
 

@@ -15,6 +15,7 @@
 #include "Light_Manager.h"
 #include "Font_Manager.h"
 #include "Collider_Manager.h"
+#include "Target_Manager.h"
 
 
 _uint g_iWinSizeX;
@@ -52,6 +53,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 	m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	//렌더러가 사용 할 것이기 때문에 렌더러 전에 만들어둬야 한다.
+	m_pTarget_Manager = CTarget_Manager::Create(*ppDeviceOut, *ppContextOut);
+	if (nullptr == m_pTarget_Manager)
 		return E_FAIL;
 
 	m_pRenderer = CRenderer::Create(*ppDeviceOut, *ppContextOut);
@@ -519,6 +525,10 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 {
 	return m_pLight_Manager->Add_Light(LightDesc);
 }
+HRESULT CGameInstance::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pLight_Manager->Render_Lights(pShader, pVIBuffer);
+}
 #pragma endregion
 
 #pragma region FONT_MANAGER
@@ -555,9 +565,55 @@ class CGameObject* CGameInstance::Check_RaycastHit(_uint iGroupIndex, wstring st
 }
 #pragma endregion
 
+#pragma region TARGET_MANAGER
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iWidth, iHeight, ePixelFormat, vClearColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+}
+
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+{
+	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	return m_pTarget_Manager->End_MRT();
+}
+
+HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pContantName)
+{
+	return m_pTarget_Manager->Bind_ShaderResource(strTargetTag, pShader, pContantName);
+}
+
+#ifdef _DEBUG
+
+HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX, fSizeY);
+}
+
+HRESULT CGameInstance::Render_MRT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pTarget_Manager->Render_Debug(strMRTTag, pShader, pVIBuffer);
+}
+
+#endif
+
+#pragma endregion
+
+
 
 void CGameInstance::Release_Engine()
 {
+	if (0 != Safe_Release(m_pTarget_Manager))
+		MSG_BOX("Failed to Release : m_pTarget_Manager");
+
 	if (0 != Safe_Release(m_pTimer_Manager))
 		MSG_BOX("Failed to Release : m_pTimer_Manager");
 
