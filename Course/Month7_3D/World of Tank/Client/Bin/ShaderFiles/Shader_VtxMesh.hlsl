@@ -109,7 +109,7 @@ PS_OUT PS_SKY(PS_IN In)
     vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
 
     Out.vDiffuse = vMtrlDiffuse;
-    
+    Out.vNormal = In.vNormal;
     return Out;
 }
 

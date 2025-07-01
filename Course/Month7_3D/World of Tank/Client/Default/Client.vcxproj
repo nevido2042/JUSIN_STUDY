@@ -266,11 +266,26 @@
     <ClInclude Include="..\public\VHouse01A.h" />
     <ClInclude Include="..\public\WorkshopNewRoof.h" />
     <ClInclude Include="..\public\WOT_Icon.h" />
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\dirent\dirent.h" />
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.h" />
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialogConfig.h" />
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb\stb_image.h" />
-    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb\stb_image_resize2.h" />
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\dirent\dirent.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialogConfig.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb\stb_image.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\imGuiFileDialog\stb\stb_image_resize2.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="..\ThirdParty\imgui\backends\imgui_impl_win32.h" />
@@ -386,7 +401,10 @@
     <ClCompile Include="..\private\VHouse01A.cpp" />
     <ClCompile Include="..\private\WorkshopNewRoof.cpp" />
     <ClCompile Include="..\private\WOT_Icon.cpp" />
-    <ClCompile Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.cpp" />
+    <ClCompile Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_win32.cpp" />

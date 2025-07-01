@@ -233,7 +233,7 @@ HRESULT CRenderer::Render_UI()
 
 	return S_OK;
 }
-
+#ifdef _DEBUG
 HRESULT CRenderer::Render_Debug()
 {
 	//for (auto& pDebugCom : m_DebugComponent)
@@ -252,6 +252,7 @@ HRESULT CRenderer::Render_Debug()
 
 	return S_OK;
 }
+#endif // _DEBUG
 
 CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
