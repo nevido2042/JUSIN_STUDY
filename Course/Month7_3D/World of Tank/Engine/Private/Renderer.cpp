@@ -80,21 +80,27 @@ HRESULT CRenderer::Draw()
 		return E_FAIL;
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
-
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
+	if (FAILED(Render_BackBuffer()))
+		return E_FAIL;
+
+
 
 	if (FAILED(Render_Blend_First()))
 		return E_FAIL;
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
-	if (FAILED(Render_UI()))
-		return E_FAIL;
-	
+
 #ifdef _DEBUG
 	if (FAILED(Render_Debug()))
 		return E_FAIL;
 #endif
+
+	if (FAILED(Render_UI()))
+		return E_FAIL;
+	
+
 
 	return S_OK;
 }
@@ -152,6 +158,27 @@ HRESULT CRenderer::Render_Lights()
 	/* 장치에 백버퍼로 복구한다. */
 	if (FAILED(m_pGameInstance->End_MRT()))
 		return E_FAIL;
+
+	return S_OK;
+}
+HRESULT CRenderer::Render_BackBuffer()
+{
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Diffuse"), m_pShader, "g_DiffuseTexture")))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Shade"), m_pShader, "g_ShadeTexture")))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	m_pShader->Begin(3);
+
+	m_pVIBuffer->Bind_Buffers();
+	m_pVIBuffer->Render();
 
 	return S_OK;
 }

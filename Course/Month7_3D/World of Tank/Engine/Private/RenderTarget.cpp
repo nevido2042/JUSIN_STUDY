@@ -22,6 +22,8 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixe
 	TextureDesc.ArraySize = 1;
 	TextureDesc.Format = ePixelFormat;
 
+	m_ePixelFormat = ePixelFormat;
+
 	TextureDesc.SampleDesc.Quality = 0;
 	TextureDesc.SampleDesc.Count = 1;
 	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -73,7 +75,11 @@ HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float f
 }
 
 HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
-{
+{	
+	if(g_bWindowResizeRequired)
+		if(FAILED(Resize(g_iWinSizeX, g_iWinSizeY)))
+			return E_FAIL;
+
 	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
 
@@ -93,6 +99,19 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 }
 
 #endif
+
+HRESULT CRenderTarget::Resize(_uint iNewWidth, _uint iNewHeight)
+{
+	// 기존 리소스 해제
+	Safe_Release(m_pSRV);
+	Safe_Release(m_pRTV);
+	Safe_Release(m_pTexture2D);
+
+	// 재초기화
+	return Initialize(iNewWidth, iNewHeight, m_ePixelFormat, m_vClearColor);
+
+	return S_OK;
+}
 
 CRenderTarget* CRenderTarget::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
 {

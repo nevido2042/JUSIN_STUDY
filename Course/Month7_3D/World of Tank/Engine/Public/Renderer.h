@@ -38,6 +38,7 @@ private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonBlend();
 	HRESULT Render_Lights();
+	HRESULT Render_BackBuffer();
 
 	HRESULT Render_Blend_First();
 	HRESULT Render_Blend();

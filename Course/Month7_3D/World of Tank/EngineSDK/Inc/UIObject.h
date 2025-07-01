@@ -41,10 +41,10 @@ protected:
 	/* 직교 투영을 위한 행렬. */
 	_float4x4		m_ViewMatrix{}, m_ProjMatrix{};
 
-	_float m_fXRatio;      // m_fX / OldWidth
-	_float m_fYRatio;      // m_fY / OldHeight
-	_float m_fSizeXRatio;  // m_fSizeX / OldWidth
-	_float m_fSizeYRatio;  // m_fSizeY / OldHeight
+	_float m_fXRatio{};      // m_fX / OldWidth
+	_float m_fYRatio{};      // m_fY / OldHeight
+	_float m_fSizeXRatio{};  // m_fSizeX / OldWidth
+	_float m_fSizeYRatio{};  // m_fSizeY / OldHeight
 
 protected:
 	_bool m_bIsChild = { false }; // 자식 유아이 여부

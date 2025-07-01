@@ -124,8 +124,6 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 	m_pSound_Device->Update();
 
 	m_pLevel_Manager->Update(fTimeDelta);
-
-	g_bWindowResizeRequired = false;
 }
 
 HRESULT CGameInstance::Begin_Draw()
@@ -154,6 +152,8 @@ HRESULT CGameInstance::Draw()
 HRESULT CGameInstance::End_Draw()
 {
 	m_pGraphic_Device->Present();
+
+	g_bWindowResizeRequired = false;
 
 	return S_OK;
 }

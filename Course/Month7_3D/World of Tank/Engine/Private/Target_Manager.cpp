@@ -65,6 +65,9 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
+		if (iNumTargets >= 8)
+			break;
+
 		pRenderTarget->Clear();
 		pRenderTargets[iNumTargets++] = pRenderTarget->Get_RTV();
 	}

@@ -28,6 +28,12 @@ public:
 #endif
 
 private:
+	HRESULT Resize(_uint iNewWidth, _uint iNewHeight);
+
+private:
+	DXGI_FORMAT m_ePixelFormat = {};
+
+private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 
