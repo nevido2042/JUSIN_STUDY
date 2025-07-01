@@ -13,6 +13,8 @@ NS_BEGIN(Client)
 
 class CTerrain final : public CGameObject
 {
+public:
+	enum TEXTURE { TEXTURE_DIFFUSE, TEXTURE_MASK, TEXTURE_END };
 private:
 	CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTerrain(const CTerrain& Prototype);
@@ -31,28 +33,17 @@ public:
 
 public:
 	_float3						Get_PickedPos() const { return m_vPickedPos; }
-	//const _float3&				Get_PickedPos_Gun() { return m_vPickedPos_Gun; }
 
 private:
 	HRESULT Picking_Mouse();
-	//HRESULT Picking_ScreenCenter();
-	//HRESULT Picking_Gun();
 
 private:
 	_float3				m_vPickedPos = { 0.f, 0.f, 0.f };
-	//_float3				m_vPickedPos_Gun = { 0.f, 0.f, 0.f };
 
 private:
 	CShader*			m_pShaderCom = { nullptr };
-	CTexture*			m_pTextureCom = { nullptr };
+	CTexture*			m_pTextureCom[TEXTURE_END] = { nullptr };
 	CVIBuffer_Terrain*	m_pVIBufferCom = { nullptr };
-
-#ifdef _DEBUG
-//private:
-//	PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
-//	BasicEffect* m_pEffect = { nullptr };
-//	ID3D11InputLayout* m_pInputLayout = { nullptr };
-#endif
 
 private:
 	HRESULT Ready_Components();

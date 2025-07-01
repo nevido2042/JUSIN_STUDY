@@ -110,58 +110,6 @@ HRESULT CTerrain::Picking_Mouse()
 	return S_OK;
 }
 
-//HRESULT CTerrain::Picking_ScreenCenter()
-//{
-//	_uint iLevelIndex = { m_pGameInstance->Get_NewLevel_Index() };
-//
-//	if (iLevelIndex != ENUM_CLASS(LEVEL::GAMEPLAY) && iLevelIndex != ENUM_CLASS(LEVEL::PRACTICE))
-//		return E_FAIL;
-//
-//	// 쿼드트리 픽킹
-//	_float fDist = { 0 }; //거리
-//	_uint iPickedTri = { 0 }; //피킹된 인덱스
-//	_float3 vPos = {}; //포지션
-//	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterPos()), XMLoadFloat3(&m_pGameInstance->Get_ScreenCenterRay())))
-//	{
-//		m_vPickedPos = vPos;
-//
-//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-//		if (pPickedManager)
-//			pPickedManager->Add_ScreenCenterPickedPos(m_vPickedPos);
-//	}
-//
-//	return S_OK;
-//}
-//
-//HRESULT CTerrain::Picking_Gun()
-//{
-//	//포구 피킹
-//	CGameObject* pPlayerTank = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));
-//	if (nullptr == pPlayerTank)
-//		return E_FAIL;
-//
-//	CGameObject* pGun = pPlayerTank->Find_PartObject(TEXT("Part_Turret"))->Find_PartObject(TEXT("Part_Gun"));
-//	if (nullptr == pGun)
-//		return E_FAIL;
-//
-//	pGun->Get_CombinedWorldMatrix();
-//
-//	// 쿼드트리 픽킹
-//	_float fDist = { 0 }; //거리
-//	_uint iPickedTri = { 0 }; //피킹된 인덱스
-//	_float3 vPos = {}; //포지션
-//	if (m_pVIBufferCom->PickQuadTreeNode(vPos, fDist, iPickedTri, pGun->Get_CombinedWorldMatrix().r[3], pGun->Get_CombinedWorldMatrix().r[2]))
-//	{
-//		m_vPickedPos_Gun = vPos;
-//
-//		CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
-//		if (pPickedManager)
-//			pPickedManager->Add_GunPickedPos(m_vPickedPos_Gun);
-//	}
-//
-//	return S_OK;
-//}
-
 HRESULT CTerrain::Ready_Components()
 {
 	/* For.Com_Shader */
@@ -176,7 +124,12 @@ HRESULT CTerrain::Ready_Components()
 
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Terrain"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TEXTURE_DIFFUSE]))))
+		return E_FAIL;
+
+	/* For.Com_Mask*/
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Mask"),
+		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TEXTURE_MASK]))))
 		return E_FAIL;
 
 	return S_OK;
@@ -195,7 +148,10 @@ HRESULT CTerrain::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom[TEXTURE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom[TEXTURE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture", 0)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
@@ -250,5 +206,8 @@ void CTerrain::Free()
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pTextureCom);
+	//Safe_Release(m_pTextureCom);
+
+	for (auto& pTextureCom : m_pTextureCom)
+		Safe_Release(pTextureCom);
 }

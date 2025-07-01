@@ -24,6 +24,7 @@ public:
 	//HRESULT Bind_TexScale(const _char* pConstantName, const _float2* pTexScale);
 
 	HRESULT Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV);
+	HRESULT Bind_SRVs(const _char* pConstantName, ID3D11ShaderResourceView** ppSRV, _uint iNumTextures);
 
 private:
 	ID3DX11Effect*					m_pEffect = { nullptr };

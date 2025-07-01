@@ -1,7 +1,9 @@
 #include "Engine_Shader_Defines.hlsli"
 
 matrix  g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-Texture2D   g_DiffuseTexture;
+
+Texture2D g_DiffuseTexture[4];
+Texture2D g_MaskTexture;
 
 float4 g_vLightDir;
 float4 g_vLightDiffuse;
@@ -60,7 +62,40 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out;
 
-    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord * 100.f);
+    //vector vSourMtrlDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexcoord * 1.f);
+    //vector vDestMtrlDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexcoord * 50.f);
+    
+    //vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexcoord);
+    
+    vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexcoord);
+    float r = vMask.r;
+    float g = vMask.g;
+    float b = vMask.b;
+    //float rest = max(0.f, 1.f - (r + g + b));
+    
+    // RGB 평균값 사용 (혹은 밝기 기준)
+    float brightness = (r + g + b) / 3.f;
+
+    vector tex0 = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexcoord * 100.f);
+    vector tex1 = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexcoord * 100.f);
+    vector tex2 = g_DiffuseTexture[2].Sample(DefaultSampler, In.vTexcoord * 100.f);
+    vector tex3 = g_DiffuseTexture[3].Sample(DefaultSampler, In.vTexcoord * 100.f);
+
+    // 기준치 (예: 밝기 0.95 이상이면 흰색으로 간주)
+    bool isWhite = brightness > 0.50f;
+    
+    // 일반 블렌딩
+    //float rest = max(0.f, 1.f - (r + g + b));
+    vector vBlend = tex0 * r + tex1 * g + tex2 * b;/* + tex3 * rest;*/
+
+    // 흰색이면 tex3 사용, 아니면 블렌드
+    vector vMtrlDiffuse = isWhite ? tex3 : vBlend;
+    
+   // vector vMtrlDiffuse = tex0 * r + tex1 * g + tex2 * b + tex3 * rest;
+    
+    
+    //vector vMtrlDiffuse = vDestMtrlDiffuse * vMask + vSourMtrlDiffuse * (1.f - vMask);
+    //g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord /** 100.f*/);
     
     float4 vShade = max(dot(normalize(g_vLightDir) * -1.f, In.vNormal), 0.f) +
         (g_vLightAmbient * g_vMtrlAmibient);
