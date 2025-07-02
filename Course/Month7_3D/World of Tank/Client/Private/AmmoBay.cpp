@@ -80,15 +80,15 @@ void CAmmoBay::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 
 #ifdef _DEBUG
-	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+	//m_pGameInstance->Add_DebugComponent(m_pColliderCom);
 #endif
 }
 
 HRESULT CAmmoBay::Render()
 {
-//#ifdef _DEBUG
-//	m_pColliderCom->Render();
-//#endif
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
 
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return S_OK;

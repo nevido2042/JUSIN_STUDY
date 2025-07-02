@@ -76,9 +76,9 @@ HRESULT CBuilding::Render()
 				return E_FAIL;
 		}
 	}
-//#ifdef _DEBUG
-//	m_pColliderCom->Render();
-//#endif
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
 	return S_OK;
 }
 

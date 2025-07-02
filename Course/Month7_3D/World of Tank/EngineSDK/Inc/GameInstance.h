@@ -58,8 +58,8 @@ public:
 	HRESULT Add_RenderGroup(RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
 
 #ifdef _DEBUG
-public:
-	HRESULT Add_DebugComponent(class CComponent* pDebugCom);
+//public:
+//	HRESULT Add_DebugComponent(class CComponent* pDebugCom);
 #endif
 #pragma endregion
 

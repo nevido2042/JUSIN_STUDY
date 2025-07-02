@@ -269,10 +269,10 @@ HRESULT CGameInstance::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pR
 }
 
 #ifdef _DEBUG
-HRESULT CGameInstance::Add_DebugComponent(CComponent* pDebugCom)
-{
-	return m_pRenderer->Add_DebugComponent(pDebugCom);
-}
+//HRESULT CGameInstance::Add_DebugComponent(CComponent* pDebugCom)
+//{
+//	return m_pRenderer->Add_DebugComponent(pDebugCom);
+//}
 #endif
 
 #pragma endregion
