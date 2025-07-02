@@ -129,12 +129,7 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const INSTANCE_DESC* pArg
 
 	//m_VBInstanceSubresourceData.pSysMem = m_pVertexInstances;
 
-
-
 #pragma endregion 
-
-
-
 
 	return S_OK;
 }

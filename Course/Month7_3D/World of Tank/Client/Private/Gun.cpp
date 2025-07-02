@@ -122,7 +122,9 @@ void CGun::Late_Update(_float fTimeDelta)
 	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f) && m_pOwner->Get_isDie() == false && m_pOwner->Get_isVisible())
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-
+#ifdef _DEBUG
+	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+#endif
 }
 
 HRESULT CGun:: Render()
@@ -147,9 +149,9 @@ HRESULT CGun:: Render()
 		}
 	}
 
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif
+//#ifdef _DEBUG
+//	m_pColliderCom->Render();
+//#endif
 
 	return S_OK;
 }

@@ -18,7 +18,7 @@ public:
 	_bool Intersect(CCollider* pTargetCollider, _vector* pOutNormal);
 	_bool Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist);
 #ifdef _DEBUG
-	HRESULT Render();
+	virtual HRESULT Render() override;
 #endif
 
 public:

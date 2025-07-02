@@ -80,15 +80,19 @@ HRESULT CRenderer::Draw()
 		return E_FAIL;
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
+
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
+
 	if (FAILED(Render_BackBuffer()))
 		return E_FAIL;
 
-
+	if (FAILED(Render_NonLight()))
+		return E_FAIL;
 
 	if (FAILED(Render_Blend_First()))
 		return E_FAIL;
+
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
 
@@ -104,6 +108,19 @@ HRESULT CRenderer::Draw()
 
 	return S_OK;
 }
+
+#ifdef _DEBUG
+
+HRESULT CRenderer::Add_DebugComponent(CComponent* pDebugCom)
+{
+	m_DebugComponent.push_back(pDebugCom);
+
+	Safe_AddRef(pDebugCom);
+
+	return S_OK;
+}
+
+#endif
 
 HRESULT CRenderer::Render_Priority()
 {
@@ -182,13 +199,23 @@ HRESULT CRenderer::Render_BackBuffer()
 
 	return S_OK;
 }
+
+HRESULT CRenderer::Render_NonLight()
+{
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONLIGHT)])
+	{
+		if (nullptr != pGameObject && pGameObject->Get_isVisible())
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONLIGHT)].clear();
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Render_Blend_First()
 {
-	//m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_BLEND_FIRST)].sort([](CGameObject* pSour, CGameObject* pDest)->_bool
-	//	{
-	//		return pSour->Get_Depth() > pDest->Get_Depth();
-	//	});
-
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_BLEND_FIRST)])
 	{
 		if (nullptr != pGameObject && pGameObject->Get_isVisible())
@@ -236,12 +263,12 @@ HRESULT CRenderer::Render_UI()
 #ifdef _DEBUG
 HRESULT CRenderer::Render_Debug()
 {
-	//for (auto& pDebugCom : m_DebugComponent)
-	//{
-	//	pDebugCom->Render();
-	//	Safe_Release(pDebugCom);
-	//}
-	//m_DebugComponent.clear();
+	for (auto& pDebugCom : m_DebugComponent)
+	{
+		pDebugCom->Render();
+		Safe_Release(pDebugCom);
+	}
+	m_DebugComponent.clear();
 
 	m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
 	m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);

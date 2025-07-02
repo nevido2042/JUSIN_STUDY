@@ -34,12 +34,18 @@ private:
 	list<class CComponent*>		m_DebugComponent;
 #endif
 
+#ifdef _DEBUG
+public:
+	HRESULT Add_DebugComponent(class CComponent* pDebugCom);
+#endif
+
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonBlend();
 	HRESULT Render_Lights();
 	HRESULT Render_BackBuffer();
 
+	HRESULT Render_NonLight();
 	HRESULT Render_Blend_First();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();

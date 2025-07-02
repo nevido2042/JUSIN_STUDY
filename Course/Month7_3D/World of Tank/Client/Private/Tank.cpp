@@ -159,30 +159,13 @@ void CTank::Update(_float fTimeDelta)
 
 void CTank::Late_Update(_float fTimeDelta)
 {
-	//if (!m_bVisible)
-	//{
-	//	//보이든 안보이든 돌아야하는 것
-	//	m_Modules.at(ENUM_CLASS(MODULE::AMMO_BAY))->Late_Update(fTimeDelta);
-	//	return;
-	//}
 
 	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 2.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
-	//if (m_bisDie)
-	//{ 
-	//	//죽었을 때만 도는 것
-	//	CGameObject* pDeadSmoke = Find_PartObject(TEXT("Part_DeadSmoke"));
-	//	if (pDeadSmoke)
-	//		pDeadSmoke->Late_Update(fTimeDelta);
-
-	//	//죽어도 돌아야 하는 것
-	//	CGameObject* pDamageBar = Find_PartObject(TEXT("Part_DamageBar"));
-	//	if (pDamageBar)
-	//		pDamageBar->Late_Update(fTimeDelta);
-
-	//	return;
-	//}
+#ifdef _DEBUG
+	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+#endif
 
 	CGameObject::Late_Update(fTimeDelta);
 
@@ -227,9 +210,9 @@ HRESULT CTank::Render()
 		}
 	}
 
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif
+//#ifdef _DEBUG
+//	m_pColliderCom->Render();
+//#endif
 
 	return S_OK;
 }

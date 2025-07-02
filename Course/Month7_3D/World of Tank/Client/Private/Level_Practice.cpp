@@ -49,9 +49,6 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_DummyTank(TEXT("Layer_Tank"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Camera_Free(TEXT("Layer_Camera"))))
-	//	return E_FAIL;
-
 	if (FAILED(Ready_Layer_Camera_FPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -70,9 +67,6 @@ HRESULT CLevel_Practice::Initialize()
 
 	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
 		return E_FAIL;
-
-	//if (FAILED(Ready_Layer_DamageBar(TEXT("Layer_DamageBar"))))
-	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_GunMarker(TEXT("Layer_GunMarker"))))
 		return E_FAIL;

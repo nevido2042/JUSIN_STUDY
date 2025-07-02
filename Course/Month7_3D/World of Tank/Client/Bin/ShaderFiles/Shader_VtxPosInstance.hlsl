@@ -222,7 +222,6 @@ PS_OUT PS_MAIN(PS_IN In)
 
 technique11 DefaultTechnique
 {
-  
     pass Default//0
     {
         SetRasterizerState(RS_Default);

@@ -53,8 +53,7 @@ void CSmoke::Update(_float fTimeDelta)
 
 
 	m_pVIBufferCom->Emission(fTimeDelta);
-	//m_pVIBufferCom->Drop(fTimeDelta);
-	//m_pVIBufferCom->Spread(fTimeDelta);
+
 
 }
 
@@ -70,7 +69,7 @@ void CSmoke::Late_Update(_float fTimeDelta)
 
 	// 프러스텀 안에 있으면 렌더링 추가
 	if (m_pGameInstance->Is_In_Frustum(vPos, 1.f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 
 
 	/* WeightBlend */
