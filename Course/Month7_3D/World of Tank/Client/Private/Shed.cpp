@@ -60,7 +60,7 @@ void CShed::Late_Update(_float fTimeDelta)
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
-	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+	//m_pGameInstance->Add_DebugComponent(m_pColliderCom);
 #endif
 }
 
