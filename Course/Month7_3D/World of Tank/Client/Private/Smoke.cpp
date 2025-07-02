@@ -52,7 +52,7 @@ void CSmoke::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
 
-	//m_pVIBufferCom->Emission(fTimeDelta);
+	m_pVIBufferCom->Emission(fTimeDelta);
 
 
 }

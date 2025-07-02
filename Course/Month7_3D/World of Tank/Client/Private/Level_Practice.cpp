@@ -36,8 +36,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Boundary(TEXT("Layer_Boundary"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Boundary(TEXT("Layer_Boundary"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_InvisibleWalls(TEXT("Layer_InvisibleWall"))))
 		return E_FAIL;
