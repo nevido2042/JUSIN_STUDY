@@ -78,25 +78,38 @@ HRESULT CRenderer::Draw()
 {
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
+
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
 
+	/*렌더 라이트와 , 렌더 백버퍼에서 깊이버퍼를 초기화 하는 것 같음 왜인지 모르겠다.*/
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
 
 	if (FAILED(Render_BackBuffer()))
 		return E_FAIL;
 
-	if (FAILED(Render_NonLight()))
-		return E_FAIL;
+#ifdef _DEBUG
+#pragma message("파티클 렌더링 후, 콜라이더 렌더하면 프레임 드랍한다. (파티클이 더 범인 유력)")
+	for (auto& pDebugCom : m_DebugComponent)
+	{
+		pDebugCom->Render();
+		Safe_Release(pDebugCom);
+	}
+	m_DebugComponent.clear();
+#endif
 
 	if (FAILED(Render_Blend_First()))
+		return E_FAIL;
+
+	if (FAILED(Render_NonLight()))
 		return E_FAIL;
 
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
 
 #ifdef _DEBUG
+
 	if (FAILED(Render_Debug()))
 		return E_FAIL;
 #endif
@@ -104,7 +117,6 @@ HRESULT CRenderer::Draw()
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 	
-
 
 	return S_OK;
 }
@@ -263,12 +275,6 @@ HRESULT CRenderer::Render_UI()
 #ifdef _DEBUG
 HRESULT CRenderer::Render_Debug()
 {
-	for (auto& pDebugCom : m_DebugComponent)
-	{
-		pDebugCom->Render();
-		Safe_Release(pDebugCom);
-	}
-	m_DebugComponent.clear();
 
 	m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
 	m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);

@@ -53,7 +53,7 @@ void CTankExplosionEffect::Update(_float fTimeDelta)
 
 void CTankExplosionEffect::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 }
 
 HRESULT CTankExplosionEffect::Render()

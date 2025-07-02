@@ -43,7 +43,7 @@ void CAsh::Update(_float fTimeDelta)
 void CAsh::Late_Update(_float fTimeDelta)
 {
 	/* WeightBlend */
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 }
 
 HRESULT CAsh::Render()

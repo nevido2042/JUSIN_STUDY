@@ -69,7 +69,7 @@ void CDeadSmoke::Late_Update(_float fTimeDelta)
 
 	// 프러스텀 안에 있으면 렌더링 추가
 	if (m_pGameInstance->Is_In_Frustum(vPos, 0.1f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 
 
 	/* WeightBlend */
