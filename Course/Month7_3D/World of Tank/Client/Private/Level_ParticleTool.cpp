@@ -82,7 +82,7 @@ HRESULT CLevel_ParticleTool::Ready_Layer_Camera_Free(const _wstring strLayerTag)
 	Desc.vAt = _float3(0.f, 0.f, 1.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
-	Desc.fFar = 4000.f;
+	Desc.fFar = 500.f;
 
 	Desc.fSensor = 0.1f;
 

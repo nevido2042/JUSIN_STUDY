@@ -18,10 +18,20 @@ public:
 	void Set_Transform(D3DTS eState, _fmatrix TransformMatrix);
 	const _float4x4* Get_Transform_Float4x4(D3DTS eState) const;
 	_matrix Get_Transform_Matrix(D3DTS eState) const;
+
+	const _float4x4* Get_Transform_Float4x4_Inv(D3DTS eState) const;
+	_matrix Get_Transform_Matrix_Inv(D3DTS eState) const;
+
 	const _float4* Get_CamPosition() const;
+
 	void Set_Fov(_float fFov);
 	_float Get_Fov() const;
 
+	void Save_Near(_float fNear) { m_fNear = fNear; }
+	_float* Get_Near() { return &m_fNear; }
+
+	void Save_Far(_float fFar) { m_fFar = fFar; }
+	_float* Get_Far() { return &m_fFar; }
 
 public:
 	void Update();
@@ -31,6 +41,9 @@ private:
 	_float4x4				m_TransformationMatrixInverse[ENUM_CLASS(D3DTS::END)] = {};
 	_float4					m_vCamPosition = {};
 	_float					m_fFov = {};
+
+	_float					m_fNear = {};
+	_float					m_fFar = {};
 
 public:
 	static CPipeLine* Create();

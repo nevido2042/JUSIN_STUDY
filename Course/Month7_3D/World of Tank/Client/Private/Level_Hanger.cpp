@@ -157,7 +157,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
 	Desc.vAt = _float3(60.f, 80.f, 0.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
-	Desc.fFar = 4000.f;
+	Desc.fFar = 500.f;
 
 	Desc.fSensor = 0.1f;
 

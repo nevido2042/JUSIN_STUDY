@@ -111,10 +111,21 @@ public:
 #pragma region 	PIPELINE
 	void				Set_Transform(D3DTS eState, _fmatrix TransformMatrix);
 	const _float4x4*	Get_Transform_Float4x4(D3DTS eState) const;
+
+	const _float4x4* Get_Transform_Float4x4_Inv(D3DTS eState) const;
+	_matrix Get_Transform_Matrix_Inv(D3DTS eState) const;
+
 	_matrix			Get_Transform_Matrix(D3DTS eState) const;
 	const _float4*	Get_CamPosition() const;
+
 	void	Set_Fov(_float fFov);
 	_float	Get_Fov() const;
+
+	//void Save_Near(_float fNear);
+	//_float* Get_Near();
+
+	//void Save_Far(_float fFar);
+	//_float* Get_Far();
 #pragma endregion
 
 #pragma region 	NETWORK

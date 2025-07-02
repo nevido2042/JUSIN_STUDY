@@ -432,6 +432,17 @@ const _float4x4* CGameInstance::Get_Transform_Float4x4(D3DTS eState) const
 	return m_pPipeLine->Get_Transform_Float4x4(eState);
 }
 
+const _float4x4* CGameInstance::Get_Transform_Float4x4_Inv(D3DTS eState) const
+{
+	return m_pPipeLine->Get_Transform_Float4x4_Inv(eState);
+}
+
+
+_matrix CGameInstance::Get_Transform_Matrix_Inv(D3DTS eState) const
+{
+	return m_pPipeLine->Get_Transform_Matrix_Inv(eState);
+}
+
 _matrix CGameInstance::Get_Transform_Matrix(D3DTS eState) const
 {
 	return m_pPipeLine->Get_Transform_Matrix(eState);
@@ -450,6 +461,24 @@ _float	CGameInstance::Get_Fov() const
 {
 	return m_pPipeLine->Get_Fov();
 }
+
+//void CGameInstance::Save_Near(_float fNear)
+//{
+//	m_pPipeLine->Save_Near(fNear);
+//}
+//_float* CGameInstance::Get_Near()
+//{
+//	return m_pPipeLine->Get_Near();
+//}
+//
+//void CGameInstance::Save_Far(_float fFar)
+//{
+//	m_pPipeLine->Save_Far(fFar);
+//}
+//_float* CGameInstance::Get_Far()
+//{
+//	return m_pPipeLine->Get_Far();
+//}
 
 #pragma endregion
 

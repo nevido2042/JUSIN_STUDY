@@ -28,7 +28,7 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 	pDesc->vAt = _float3(0.f, 0.f, 0.f);
 	pDesc->fFov = XMConvertToRadians(BASE_FOV);
 	pDesc->fNear = 0.1f;
-	pDesc->fFar = 1000.f;
+	pDesc->fFar = 500.f;
 	pDesc->fRotationPerSec = XMConvertToRadians(0.0f);
 	pDesc->fSpeedPerSec = 0.0f;
 	//lstrcpy(pDesc->szName, TEXT("Camera"));
