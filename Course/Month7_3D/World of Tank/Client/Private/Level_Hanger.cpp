@@ -44,11 +44,11 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Background_UI(TEXT("Layer_Background_UI"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Ash(TEXT("Layer_Ash"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Ash(TEXT("Layer_Ash"))))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Explosion(TEXT("Layer_Explosion"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Explosion(TEXT("Layer_Explosion"))))
+	//	return E_FAIL;
 
 #pragma region 기본 버튼
 	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button"))))
