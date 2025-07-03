@@ -14,55 +14,12 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype()
 {
 
 	m_iNumVertexBuffers = 1;
-	m_iNumVertices = 4;
+	m_iNumVertices = 8;
 	m_iVertexStride = sizeof(VTXPOSTEX);
-	m_iNumIndices = 6;
+	m_iNumIndices = 12;
 	m_iIndexStride = sizeof(_ushort);
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
 	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-	//D3D11_BUFFER_DESC			VBBufferDesc{};
-	//VBBufferDesc.ByteWidth = m_iNumVertices * m_iVertexStride;
-	//VBBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	//VBBufferDesc.Usage = D3D11_USAGE_DYNAMIC;            // CPU에서 매 프레임 쓰기 가능하도록
-	//VBBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // CPU 쓰기 권한 부여
-	//VBBufferDesc.StructureByteStride = m_iVertexStride;
-	//VBBufferDesc.MiscFlags = 0;
-
-	//D3D11_SUBRESOURCE_DATA		VBInitialData{};
-
-	//VTXPOSTEX* pVertices = new VTXPOSTEX[m_iNumVertices];
-	//ZeroMemory(pVertices, sizeof(VTXPOSTEX) * m_iNumVertices);
-
-	//m_pVertexPositions = new _float3[m_iNumVertices];
-	//ZeroMemory(m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
-
-	//pVertices[0].vPosition = _float3(-0.5f, 0.5f, 0.f);
-	//pVertices[0].vTexcoord = _float2(0.f, 0.f);
-
-	//pVertices[1].vPosition = _float3(0.5f, 0.5f, 0.f);
-	//pVertices[1].vTexcoord = _float2(1.f, 0.f);
-
-	//pVertices[2].vPosition = _float3(0.5f, -0.5f, 0.f);
-	//pVertices[2].vTexcoord = _float2(1.f, 1.f);
-
-	//pVertices[3].vPosition = _float3(-0.5f, -0.5f, 0.f);
-	//pVertices[3].vTexcoord = _float2(0.f, 1.f);
-
-	//for (_uint i = 0; i < m_iNumVertices; ++i)
-	//	m_pVertexPositions[i] = pVertices[i].vPosition;
-
-	//VBInitialData.pSysMem = pVertices;
-
-	//if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, &VBInitialData, &m_pVB)))
-	//	return E_FAIL;
-
-	//Safe_Delete_Array(pVertices);
-	
-	// 초기 데이터 없이 생성 (DYNAMIC)
-	//if (FAILED(m_pDevice->CreateBuffer(&VBBufferDesc, nullptr, &m_pVB)))
-	//	return E_FAIL;
-
 
 	D3D11_BUFFER_DESC			IBBufferDesc{};
 	IBBufferDesc.ByteWidth = m_iNumIndices * m_iIndexStride;
@@ -75,6 +32,7 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype()
 	_ushort* pIndices = new _ushort[m_iNumIndices];
 	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumIndices);
 
+	//수직 트레일
 	pIndices[0] = 0;
 	pIndices[1] = 1;
 	pIndices[2] = 2;
@@ -83,6 +41,15 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype()
 	pIndices[4] = 2;
 	pIndices[5] = 3;
 
+	//수평 트레일
+	pIndices[6] = 4;
+	pIndices[7] = 5;
+	pIndices[8] = 6;
+
+	pIndices[9] = 4;
+	pIndices[10] = 6;
+	pIndices[11] = 7;
+
 	D3D11_SUBRESOURCE_DATA		IBInitialData{};
 	IBInitialData.pSysMem = pIndices;
 
@@ -90,9 +57,6 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype()
 		return E_FAIL;
 
 	Safe_Delete_Array(pIndices);
-
-
-
 
 	return S_OK;
 }
@@ -122,24 +86,17 @@ void CVIBuffer_Trail::UpdateTrailBuffer(_fvector vPrevPos, _fvector vCurPos, con
 
 	VTXPOSTEX* pVertices = static_cast<VTXPOSTEX*>(SubResource.pData);
 
-
 	_vector vCur = XMVector3TransformCoord(vCurPos, WorldInverse);
 	_vector vPrev = XMVector3TransformCoord(vPrevPos, WorldInverse);
 
-	// 1. 선분 방향 및 수직 벡터 계산 (XZ 평면 기준 예시)
+	// 방향
 	_vector vDir = vCur - vPrev;
-	//vDir = XMVectorSetY(vDir, 0.f);
 	vDir = XMVector3Normalize(vDir);
 
-	// 수직 벡터 (XZ 평면에서 y축 위 방향 기준)
-	//_vector vNormal = XMVector3Cross(vDir, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+	//트레일 너비
+	_vector vOffset = XMVectorSet(0.f, fTrailWidth, 0.f, 0.f);
 
-	// 좌우 오프셋
-	_vector vOffset = XMVectorSet(0.f, fTrailWidth, 0.f, 0.f); //vDir * fTrailWidth;
-
-	// 2. 정점 4개 계산
-	//VTXPOSTEX pVertices[4];
-
+	//수직 트레일
 	XMStoreFloat3(&pVertices[0].vPosition, vCur + vOffset);
 	pVertices[0].vTexcoord = { 0.f, 0.f };
 
@@ -152,6 +109,24 @@ void CVIBuffer_Trail::UpdateTrailBuffer(_fvector vPrevPos, _fvector vCurPos, con
 	XMStoreFloat3(&pVertices[3].vPosition, vCur - vOffset);
 	pVertices[3].vTexcoord = { 0.f, 1.f };
 
+	//수평 트레일
+	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	_vector vRight = XMVector3Normalize(XMVector3Cross(vUp, vDir));
+
+	// 트레일 너비만큼 오프셋
+	vOffset = vRight * fTrailWidth * 0.5f;
+
+	XMStoreFloat3(&pVertices[4].vPosition, vCur + vOffset);
+	pVertices[4].vTexcoord = { 0.f, 0.f };
+
+	XMStoreFloat3(&pVertices[5].vPosition, vPrev + vOffset);
+	pVertices[5].vTexcoord = { 1.f, 0.f };
+
+	XMStoreFloat3(&pVertices[6].vPosition, vPrev - vOffset);
+	pVertices[6].vTexcoord = { 1.f, 1.f };
+
+	XMStoreFloat3(&pVertices[7].vPosition, vCur - vOffset);
+	pVertices[7].vTexcoord = { 0.f, 1.f };
 
 	m_pContext->Unmap(m_pVB, 0);
 }

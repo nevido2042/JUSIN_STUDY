@@ -110,7 +110,7 @@ void CShell::Update(_float fTimeDelta)
 
 #pragma region 트레일 업데이트
 
-	m_pVIBufferCom->UpdateTrailBuffer(XMVectorSetW(XMLoadFloat3(&m_vPreviousPos), 1.f), m_pTransformCom->Get_State(STATE::POSITION), m_pTransformCom->Get_WorldMatrix_Inverse(), 1.f);
+	m_pVIBufferCom->UpdateTrailBuffer(XMVectorSetW(XMLoadFloat3(&m_vPreviousPos), 1.f), m_pTransformCom->Get_State(STATE::POSITION), m_pTransformCom->Get_WorldMatrix_Inverse(), 0.15f);
 
 #pragma endregion
 
@@ -119,7 +119,7 @@ void CShell::Update(_float fTimeDelta)
 void CShell::Late_Update(_float fTimeDelta)
 {
 	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 0.1f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 
 	XMStoreFloat3(&m_vPreviousPos, m_pTransformCom->Get_State(STATE::POSITION));
 
@@ -149,7 +149,7 @@ HRESULT CShell::Render()
 		return E_FAIL;
 
 #ifdef _DEBUG
-	m_pColliderCom->Render();
+	//m_pColliderCom->Render();
 #endif
 	return S_OK;
 }

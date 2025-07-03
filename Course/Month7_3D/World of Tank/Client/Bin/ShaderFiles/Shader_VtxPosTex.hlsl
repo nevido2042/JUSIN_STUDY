@@ -223,6 +223,15 @@ PS_OUT PS_MAIN_BLEND(PS_IN_BLEND In)
     return Out;
 }
 
+PS_OUT PS_COLOR(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = float4(1.f, 1.f, 0.f, 1.f);
+    
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -306,13 +315,13 @@ technique11 DefaultTechnique
     //6
     pass Trail
     {
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_AlphaBlend, float4(0, 0, 0, 0), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_COLOR();
     }
 
 
