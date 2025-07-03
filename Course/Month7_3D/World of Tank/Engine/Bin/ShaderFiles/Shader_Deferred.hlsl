@@ -132,7 +132,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     
     vector vWorldPos;
     
-    /* 로컬위치 * 월드 *뷰 * 투영 / w : 투영공간상의 위치. */
+    /* 로컬위치 * 월드 *뷰 * 투영(CLIP) / w : 투영공간상(NDC)의 위치. */
     vWorldPos.x = In.vTexcoord.x * 2.f - 1.f;
     vWorldPos.y = In.vTexcoord.y * -2.f + 1.f;
     vWorldPos.z = vDepthDesc.x;

@@ -199,7 +199,6 @@ PS_OUT PS_MAIN_BLEND(PS_IN_BLEND In)
     
     Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
    
-    
     /*화면 전체 기준(0, 0 ~ 1, 1)으로 이펙트의 픽셀이 그려질 위치에 해당하는 좌표 */    
     float2 vTexcoord;
     
@@ -212,11 +211,15 @@ PS_OUT PS_MAIN_BLEND(PS_IN_BLEND In)
     vTexcoord.y = vTexcoord.y * -0.5f + 0.5f;
     
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, vTexcoord);
-    
+     
+    if (vDepthDesc.y == 0.f)
+        return Out;
+
     float fOldViewZ = vDepthDesc.y * 500.f;
+    float fRealDistance = (fOldViewZ /*이것도 진짜 카메라와의 옛날 거리*/ - In.vProjPos.w/*이거 진짜 카메라 와의 거리*/); 
     
-    Out.vColor.a = Out.vColor.a * (fOldViewZ - In.vProjPos.w);
-    
+    Out.vColor.a = Out.vColor.a * (saturate(fRealDistance));
+   
     return Out;
 }
 
