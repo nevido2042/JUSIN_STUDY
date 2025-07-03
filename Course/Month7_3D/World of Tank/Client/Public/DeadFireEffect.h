@@ -30,8 +30,8 @@ private:
 	_float m_fSize = 1.f;
 
 private:
-	_float		fCurTexture = { 0.f };
-	;	const _uint iMaxTextureCount = { 64 };
+	_float		m_fFrame = { 0.f };
+	const _uint iMaxTextureCount = { 64 };
 
 private:
 	CShader* m_pShaderCom = { nullptr };

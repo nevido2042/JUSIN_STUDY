@@ -305,7 +305,7 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 	const _float fMin = 100.f;
 	const _float fMax = 500.f;
 
-	for (_int i = 0; i < 3; ++i)
+	for (_int i = 0; i < 1; ++i)
 	{	
 		Desc.vInitPosition = _float3(m_pGameInstance->Compute_Random(fMin, fMax), 87.f, m_pGameInstance->Compute_Random(fMin, fMax));
 		Desc.eTeam = TEAM::A;

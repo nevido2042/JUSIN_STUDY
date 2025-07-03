@@ -27,7 +27,7 @@ public:
 	virtual HRESULT Render();
 
 private:
-	_float		fCurTexture = { 0.f };
+	_float		m_fFrame = { 0.f };
 	;	const _uint iMaxTextureCount = { 32 };
 
 private:

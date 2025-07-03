@@ -101,26 +101,14 @@ HRESULT CRenderer::Draw()
 	if (FAILED(Render_BackBuffer()))
 		return E_FAIL;
 
-
+	if (FAILED(Render_NonLight()))
+		return E_FAIL;
 
 	if (FAILED(Render_Blend_First()))
 		return E_FAIL;
 
-	if (FAILED(Render_NonLight()))
-		return E_FAIL;
-
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
-
-#ifdef _DEBUG
-#pragma message("파티클 렌더링 후, 콜라이더 렌더하면 프레임 드랍한다. (파티클이 더 범인 유력)")
-	for (auto& pDebugCom : m_DebugComponent)
-	{
-		pDebugCom->Render();
-		Safe_Release(pDebugCom);
-	}
-	m_DebugComponent.clear();
-#endif
 
 #ifdef _DEBUG
 
@@ -304,6 +292,17 @@ HRESULT CRenderer::Render_UI()
 #ifdef _DEBUG
 HRESULT CRenderer::Render_Debug()
 {
+
+#ifdef _DEBUG
+#pragma message("파티클 렌더링 후, 콜라이더 렌더하면 프레임 드랍한다. (파티클이 더 범인 유력)")
+	for (auto& pDebugCom : m_DebugComponent)
+	{
+		pDebugCom->Render();
+		Safe_Release(pDebugCom);
+	}
+	m_DebugComponent.clear();
+#endif
+
 
 	m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
 	m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);

@@ -40,11 +40,11 @@ void CTankExplosionEffect::Priority_Update(_float fTimeDelta)
 
 void CTankExplosionEffect::Update(_float fTimeDelta)
 {
-	fCurTexture += fTimeDelta * 20.f;
+	m_fFrame += fTimeDelta * 20.f;
 
-	if (static_cast<_float>(iMaxTextureCount) < fCurTexture)
+	if (static_cast<_float>(iMaxTextureCount) < m_fFrame)
 	{
-		fCurTexture = static_cast<_float>(iMaxTextureCount);
+		m_fFrame = static_cast<_float>(iMaxTextureCount);
 		Destroy();
 	}
 
@@ -53,7 +53,7 @@ void CTankExplosionEffect::Update(_float fTimeDelta)
 
 void CTankExplosionEffect::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
 HRESULT CTankExplosionEffect::Render()
@@ -61,7 +61,7 @@ HRESULT CTankExplosionEffect::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", static_cast<_uint>(fCurTexture))))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", static_cast<_uint>(m_fFrame))))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(2)))
@@ -103,6 +103,9 @@ HRESULT CTankExplosionEffect::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Depth"), m_pShaderCom, "g_DepthTexture")))
 		return E_FAIL;
 
 	return S_OK;

@@ -334,26 +334,29 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\BaseParticle">
       <UniqueIdentifier>{2bf93a34-fb5d-4fd9-a387-854675f581fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Effect\FireEffect">
-      <UniqueIdentifier>{8d4e5f1c-583d-433c-a3eb-5de265854700}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.Effect\Particle\HitSmoke">
       <UniqueIdentifier>{f1c1ba63-9c53-4ba4-a2c7-31b42a666d30}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\07.Effect\Particle\Spark">
       <UniqueIdentifier>{c45befa5-ab8b-40db-be6f-3cb54d278f48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Effect\TankExplosionEffect">
-      <UniqueIdentifier>{11e9572d-7c76-42a1-9279-99e38a493153}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.Effect\Particle\DeadSmoke">
       <UniqueIdentifier>{da6657a3-204f-4534-a0a0-208ea1695328}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Effect\DeadFireEffect">
-      <UniqueIdentifier>{fb1d42bf-4bd1-488e-81b1-9b722bd73ff0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.Effect\Particle\Explosion">
       <UniqueIdentifier>{c5c35542-8ebf-4883-aaac-851883f1a2c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Effect">
+      <UniqueIdentifier>{adc000bd-1974-4018-bfd2-909c2762bac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Effect\TankExplosionEffect">
+      <UniqueIdentifier>{11e9572d-7c76-42a1-9279-99e38a493153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Effect\FireEffect">
+      <UniqueIdentifier>{8d4e5f1c-583d-433c-a3eb-5de265854700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Effect\DeadFireEffect">
+      <UniqueIdentifier>{fb1d42bf-4bd1-488e-81b1-9b722bd73ff0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -700,7 +703,7 @@
       <Filter>02.GameObjects\07.Effect\Particle\BaseParticle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FireEffect.h">
-      <Filter>02.GameObjects\07.Effect\FireEffect</Filter>
+      <Filter>02.GameObjects\07.Effect\Effect\FireEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\HitSmoke.h">
       <Filter>02.GameObjects\07.Effect\Particle\HitSmoke</Filter>
@@ -709,13 +712,13 @@
       <Filter>02.GameObjects\07.Effect\Particle\Spark</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TankExplosionEffect.h">
-      <Filter>02.GameObjects\07.Effect\TankExplosionEffect</Filter>
+      <Filter>02.GameObjects\07.Effect\Effect\TankExplosionEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DeadSmoke.h">
       <Filter>02.GameObjects\07.Effect\Particle\DeadSmoke</Filter>
     </ClInclude>
     <ClInclude Include="..\public\DeadFireEffect.h">
-      <Filter>02.GameObjects\07.Effect\DeadFireEffect</Filter>
+      <Filter>02.GameObjects\07.Effect\Effect\DeadFireEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Explosion.h">
       <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
@@ -1048,7 +1051,7 @@
       <Filter>02.GameObjects\07.Effect\Particle\BaseParticle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FireEffect.cpp">
-      <Filter>02.GameObjects\07.Effect\FireEffect</Filter>
+      <Filter>02.GameObjects\07.Effect\Effect\FireEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\HitSmoke.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\HitSmoke</Filter>
@@ -1057,13 +1060,13 @@
       <Filter>02.GameObjects\07.Effect\Particle\Spark</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TankExplosionEffect.cpp">
-      <Filter>02.GameObjects\07.Effect\TankExplosionEffect</Filter>
+      <Filter>02.GameObjects\07.Effect\Effect\TankExplosionEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DeadSmoke.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\DeadSmoke</Filter>
     </ClCompile>
     <ClCompile Include="..\private\DeadFireEffect.cpp">
-      <Filter>02.GameObjects\07.Effect\DeadFireEffect</Filter>
+      <Filter>02.GameObjects\07.Effect\Effect\DeadFireEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Explosion.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>

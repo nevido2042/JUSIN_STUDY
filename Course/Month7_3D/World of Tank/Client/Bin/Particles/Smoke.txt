@@ -4,7 +4,7 @@ ParticleDesc:
   MinScale: 0.001000, MaxScale: 0.140000
   LifeTimeMin: 0.200000, LifeTimeMax: 0.500000
   EmissionShape: 1
-  NumInstance: 550
+  NumInstance: 50
   isLoop: 1
   Alpha: 4.300000
   Center: (0.000000, 0.000000, 0.000000) 

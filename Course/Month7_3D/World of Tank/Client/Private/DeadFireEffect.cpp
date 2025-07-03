@@ -49,13 +49,16 @@ void CDeadFireEffect::Update(_float fTimeDelta)
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
-	fCurTexture += fTimeDelta * 20.f;
-	fCurTexture = fmodf(fCurTexture, static_cast<_float>(iMaxTextureCount));
+	m_fFrame += fTimeDelta * iMaxTextureCount;
+	if(m_fFrame >= iMaxTextureCount)
+		m_fFrame = 0.f;
 
-	//if (static_cast<_float>(iMaxTextureCount) < fCurTexture)
+	//m_fFrame = fmodf(m_fFrame, static_cast<_float>(iMaxTextureCount));
+
+	//if (static_cast<_float>(iMaxTextureCount) < m_fFrame)
 	//{
-	//	fCurTexture = static_cast<_float>(iMaxTextureCount);
-	//	fCurTexture = 0.f;
+	//	m_fFrame = static_cast<_float>(iMaxTextureCount);
+	//	m_fFrame = 0.f;
 	//}
 
 	_float3		vScaled = _float3(
@@ -74,7 +77,7 @@ void CDeadFireEffect::Update(_float fTimeDelta)
 
 void CDeadFireEffect::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_BLEND, this);
 }
 
 HRESULT CDeadFireEffect::Render()
@@ -82,7 +85,7 @@ HRESULT CDeadFireEffect::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", static_cast<_uint>(fCurTexture))))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", static_cast<_uint>(m_fFrame))))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(2)))
@@ -128,6 +131,9 @@ HRESULT CDeadFireEffect::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Depth"), m_pShaderCom, "g_DepthTexture")))
 		return E_FAIL;
 
 	return S_OK;
