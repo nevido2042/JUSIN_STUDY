@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Explosion.h"
 #include "DeadFireEffect.h"
 #include "DeadSmoke.h"
 #include "TankExplosionEffect.h"
@@ -622,6 +623,37 @@ HRESULT CLoader::Loading_For_Static()
 #pragma endregion
 
 #pragma region 파티클 로딩
+
+	/* For.Prototype_Component_VIBuffer_Snow */
+	CVIBuffer_Rect_Instance::RECT_INSTANCE_DESC		AshDesc{};
+	AshDesc.iNumInstance = 5000;
+	AshDesc.vCenter = _float3(300.f, 90.f, 300.0f);
+	AshDesc.vRange = _float3(128.f, 3.0f, 128.f);
+	AshDesc.vSize = _float2(0.1f, 0.4f);
+	AshDesc.vLifeTime = _float2(5.f, 8.f);
+	AshDesc.vSpeed = _float2(3.f, 5.f);
+	AshDesc.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Ash"),
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &AshDesc))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Explosion*/
+	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		ExploDesc{};
+	ExploDesc.iNumInstance = 500;
+	ExploDesc.vCenter = _float3(300.f, 90.f, 300.0f);
+	ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	ExploDesc.vSize = _float2(1.05f, 1.1f);
+	ExploDesc.vLifeTime = _float2(0.5f, 2.f);
+	ExploDesc.vSpeed = _float2(1.f, 2.f);
+	ExploDesc.vPivot = ExploDesc.vCenter;
+	ExploDesc.isLoop = true;
+	ExploDesc.fAlpha = 1.f;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Explosion"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &ExploDesc))))
+		return E_FAIL;
+
 	if (FAILED(Load_Particles()))
 		return E_FAIL;
 #pragma endregion
@@ -682,6 +714,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_Ash */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Ash"),
 		CAsh::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Explosion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"),
+		CExplosion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Fury_Chassis */

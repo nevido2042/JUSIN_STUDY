@@ -101,15 +101,7 @@ HRESULT CRenderer::Draw()
 	if (FAILED(Render_BackBuffer()))
 		return E_FAIL;
 
-#ifdef _DEBUG
-#pragma message("파티클 렌더링 후, 콜라이더 렌더하면 프레임 드랍한다. (파티클이 더 범인 유력)")
-	for (auto& pDebugCom : m_DebugComponent)
-	{
-		pDebugCom->Render();
-		Safe_Release(pDebugCom);
-	}
-	m_DebugComponent.clear();
-#endif
+
 
 	if (FAILED(Render_Blend_First()))
 		return E_FAIL;
@@ -119,6 +111,16 @@ HRESULT CRenderer::Draw()
 
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
+
+#ifdef _DEBUG
+#pragma message("파티클 렌더링 후, 콜라이더 렌더하면 프레임 드랍한다. (파티클이 더 범인 유력)")
+	for (auto& pDebugCom : m_DebugComponent)
+	{
+		pDebugCom->Render();
+		Safe_Release(pDebugCom);
+	}
+	m_DebugComponent.clear();
+#endif
 
 #ifdef _DEBUG
 

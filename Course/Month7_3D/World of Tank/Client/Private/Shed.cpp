@@ -56,8 +56,11 @@ void CShed::Update(_float fTimeDelta)
 
 void CShed::Late_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 20.f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	CBuilding::Late_Update(fTimeDelta);
+
+
+	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 20.f))
+	//	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
 	//m_pGameInstance->Add_DebugComponent(m_pColliderCom);

@@ -82,6 +82,9 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
     PS_OUT_LIGHT Out;
     
+    //터레인 스페큘러 빼려고 뎁스 기록안했는데도 스페큘러가 고정되서 나오는 문제 발생.
+    //이유는 기록된 노말로 스페큘러를 계산하기 때문이었음.
+    
     vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexcoord);
     
     float4 vNormal = float4(vNormalDesc.xyz * 2.f - 1.f, 0.f);
@@ -110,7 +113,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     vector vReflect = reflect(normalize(g_vLightDir), vNormal);
     vector vLook = vWorldPos - g_vCamPosition;
     
-    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 50.f);
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 1000.f);
     
     return Out;
 }

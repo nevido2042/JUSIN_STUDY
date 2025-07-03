@@ -65,12 +65,12 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
-		if (iNumTargets >= 8)
-			break;
-
 		pRenderTarget->Clear();
 		pRenderTargets[iNumTargets++] = pRenderTarget->Get_RTV();
 	}
+
+	if (iNumTargets == 0 || iNumTargets > 8)
+		return E_FAIL;
 
 	m_pContext->OMSetRenderTargets(iNumTargets, pRenderTargets, m_pOriginalDSV);
 

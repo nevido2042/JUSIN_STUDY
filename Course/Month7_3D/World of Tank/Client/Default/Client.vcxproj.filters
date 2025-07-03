@@ -352,6 +352,9 @@
     <Filter Include="02.GameObjects\07.Effect\DeadFireEffect">
       <UniqueIdentifier>{fb1d42bf-4bd1-488e-81b1-9b722bd73ff0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\Explosion">
+      <UniqueIdentifier>{c5c35542-8ebf-4883-aaac-851883f1a2c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -714,6 +717,9 @@
     <ClInclude Include="..\public\DeadFireEffect.h">
       <Filter>02.GameObjects\07.Effect\DeadFireEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Explosion.h">
+      <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1058,6 +1064,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DeadFireEffect.cpp">
       <Filter>02.GameObjects\07.Effect\DeadFireEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Explosion.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

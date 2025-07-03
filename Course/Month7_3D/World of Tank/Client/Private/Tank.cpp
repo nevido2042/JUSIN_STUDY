@@ -164,7 +164,7 @@ void CTank::Late_Update(_float fTimeDelta)
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
-	//m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
 #endif
 
 	CGameObject::Late_Update(fTimeDelta);
@@ -211,7 +211,7 @@ HRESULT CTank::Render()
 	}
 
 #ifdef _DEBUG
-	m_pColliderCom->Render();
+	//m_pColliderCom->Render();
 #endif
 
 	return S_OK;

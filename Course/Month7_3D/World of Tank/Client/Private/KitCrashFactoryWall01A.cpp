@@ -60,10 +60,10 @@ void CKitCrashFactoryWall01A::Update(_float fTimeDelta)
 
 void CKitCrashFactoryWall01A::Late_Update(_float fTimeDelta)
 {
-	//CBuilding::Late_Update(fTimeDelta);
+	CBuilding::Late_Update(fTimeDelta);
 
-	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 20.f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 20.f))
+	//	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
 	//m_pGameInstance->Add_DebugComponent(m_pColliderCom);

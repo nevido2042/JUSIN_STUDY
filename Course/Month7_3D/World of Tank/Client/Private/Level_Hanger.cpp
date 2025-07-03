@@ -44,6 +44,12 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Background_UI(TEXT("Layer_Background_UI"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Ash(TEXT("Layer_Ash"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Explosion(TEXT("Layer_Explosion"))))
+		return E_FAIL;
+
 #pragma region 기본 버튼
 	if (FAILED(Ready_Layer_Button_Start(TEXT("Layer_Button"))))
 		return E_FAIL;
@@ -433,6 +439,24 @@ HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
 HRESULT CLevel_Hanger::Ready_Layer_Skydome(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Skydome"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Ash(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Ash"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Explosion(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
 		return E_FAIL;
 
