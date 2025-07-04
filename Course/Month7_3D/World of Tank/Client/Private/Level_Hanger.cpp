@@ -35,8 +35,8 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	//if (FAILED(Load_Map()))
-	//	return E_FAIL;
+	if (FAILED(Load_Map()))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
@@ -86,8 +86,8 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Tiger_Hanger(TEXT("Layer_Tiger_Hanger"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
+		return E_FAIL;
 
 	//CGameObject::GAMEOBJECT_DESC Desc{};
 	//Desc.vInitPosition = _float3(300.f, 90.f, 300.f);
