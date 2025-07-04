@@ -5,7 +5,7 @@ int main()
     _int argc = 0;
     LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-    //wstring wPath = L"../bin/Fury_Body.fbx";
+    //wstring wPath = L"../bin/Untitled.fbx";
     wstring wPath = argv[1];
 
     CAssimpBinaryConverter Converter;
