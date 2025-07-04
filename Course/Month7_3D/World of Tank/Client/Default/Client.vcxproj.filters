@@ -358,6 +358,9 @@
     <Filter Include="02.GameObjects\07.Effect\Effect\DeadFireEffect">
       <UniqueIdentifier>{fb1d42bf-4bd1-488e-81b1-9b722bd73ff0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapTree">
+      <UniqueIdentifier>{6e3c1e38-5a10-4e71-94b1-75b22e925530}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -723,6 +726,9 @@
     <ClInclude Include="..\public\Explosion.h">
       <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MapTree.h">
+      <Filter>02.GameObjects\MapTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1070,6 +1076,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Explosion.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MapTree.cpp">
+      <Filter>02.GameObjects\MapTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

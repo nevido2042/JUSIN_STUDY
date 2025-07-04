@@ -221,6 +221,7 @@
     <ClInclude Include="..\public\KitCrashFactoryWall01A.h" />
     <ClInclude Include="..\public\Level_ParticleTool.h" />
     <ClInclude Include="..\public\MapObject.h" />
+    <ClInclude Include="..\public\MapTree.h" />
     <ClInclude Include="..\public\Minimap_Tank.h" />
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Module.h" />
@@ -357,6 +358,7 @@
     <ClCompile Include="..\private\KitCrashFactoryWall01A.cpp" />
     <ClCompile Include="..\private\Level_ParticleTool.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
+    <ClCompile Include="..\private\MapTree.cpp" />
     <ClCompile Include="..\private\Minimap_Tank.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Module.cpp" />

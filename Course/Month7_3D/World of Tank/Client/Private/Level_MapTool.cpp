@@ -27,6 +27,12 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_MapTool(TEXT("Layer_MapTool"))))
 		return E_FAIL;
 
+	CGameObject::GAMEOBJECT_DESC GameObjectDesc = {};
+	GameObjectDesc.vInitPosition = _float3(300.f, 90.f, 300.f);
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTree"),
+		ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapTree"),&GameObjectDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -109,7 +115,7 @@ HRESULT CLevel_MapTool::Ready_Layer_Camera(const _wstring strLayerTag)
 	CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
 	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 300.0f;
+	Desc.fSpeedPerSec = 50.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
 	Desc.vEye = _float3(150.f, 100.f, 100.f);
