@@ -42,7 +42,6 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_InvisibleWalls(TEXT("Layer_InvisibleWall"))))
 		return E_FAIL;
 
-
 	if (FAILED(Ready_Layer_PlayerTank(TEXT("Layer_PlayerTank"))))
 		return E_FAIL;
 

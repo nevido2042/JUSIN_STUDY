@@ -88,6 +88,9 @@ PS_OUT PS_MAIN(PS_IN In)
     //if (vMtrlDiffuse.a < 0.3f)
     //    discard;
     
+    //건물중에 투명한게 나와서
+    vMtrlDiffuse.a = 1.f;
+    
     vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexcoord);
     float3 vNormal = vNormalDesc.xyz * 2.f - 1.f;
     
