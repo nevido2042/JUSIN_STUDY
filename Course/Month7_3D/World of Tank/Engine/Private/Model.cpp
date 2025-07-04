@@ -93,6 +93,7 @@ HRESULT CModel::Load_Binary_Model(MODEL eType, const _char* pModelFilePath)
 
 	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
+#pragma region 메시로드
 		_uint vertexCount, indexCount;
 		fread(&vertexCount, sizeof(_uint), 1, fp);
 		fread(&indexCount, sizeof(_uint), 1, fp);
@@ -119,18 +120,6 @@ HRESULT CModel::Load_Binary_Model(MODEL eType, const _char* pModelFilePath)
 		//_uint materialIndex;
 		fread(&Desc.MaterialIndex, sizeof(_uint), 1, fp);
 
-		_char texPath[256] = {};
-		fread(texPath, sizeof(_char), 256, fp);
-
-		_char texDrive[MAX_PATH] = {};
-		_char texDir[MAX_PATH] = {};
-		_char texFileName[MAX_PATH] = {};
-		_char texExt[MAX_PATH] = {};
-
-		_splitpath_s(texPath, texDrive, MAX_PATH, texDir, MAX_PATH, texFileName, MAX_PATH, texExt, MAX_PATH);
-
-		string texFilePath = modelDirPath + texFileName + texExt;
-
 		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, Desc, eType, XMLoadFloat4x4(&m_PreTransformMatrix));
 		if (nullptr == pMesh)
 		{
@@ -138,14 +127,53 @@ HRESULT CModel::Load_Binary_Model(MODEL eType, const _char* pModelFilePath)
 			return E_FAIL;
 		}
 
-		CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, texFilePath.c_str());
+		m_Meshes.push_back(pMesh);
+
+#pragma endregion
+
+		//메쉬가 가지고 있는 텍스쳐 갯수, 텍스쳐 종류 읽고
+		//파일패스로 로드 한다.
+#pragma region 텍스쳐 로드
+
+		//여기서 텍스쳐 저장해야함
+		CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext);
 		if (nullptr == pMaterial)
 		{
 			fclose(fp);
 			return E_FAIL;
 		}
 
-		m_Meshes.push_back(pMesh);
+		// 파일에 저장할 구조체
+		struct TextureInfo
+		{
+			_int type;           // aiTextureType
+			_int index;          // 텍스처 번호
+			_char path[256];     // 경로
+		};
+
+		// 텍스처 개수부터 읽기
+		_uint iTexCount = 0;
+		fread(&iTexCount, sizeof(_uint), 1, fp);
+
+		for (_uint t = 0; t < iTexCount; ++t)
+		{
+			TextureInfo texInfo;
+			fread(&texInfo, sizeof(TextureInfo), 1, fp);
+
+			// 텍스처 경로 재조합
+			_char texDrive[MAX_PATH] = {};
+			_char texDir[MAX_PATH] = {};
+			_char texFileName[MAX_PATH] = {};
+			_char texExt[MAX_PATH] = {};
+
+			_splitpath_s(texInfo.path, texDrive, MAX_PATH, texDir, MAX_PATH, texFileName, MAX_PATH, texExt, MAX_PATH);
+
+			string texFilePath = modelDirPath + texFileName + texExt;
+
+			pMaterial->Add_SRV(texFilePath.c_str(), static_cast<aiTextureType>(texInfo.type));
+		}
+
+#pragma endregion
 		m_Materials.push_back(pMaterial);
 	}
 

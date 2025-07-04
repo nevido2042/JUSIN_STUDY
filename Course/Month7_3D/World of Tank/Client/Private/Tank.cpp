@@ -185,6 +185,9 @@ HRESULT CTank::Render()
 		{
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 				return E_FAIL;
+			
+			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+				return E_FAIL;
 
 			if (FAILED(m_pShaderCom->Begin(2)))
 				return E_FAIL;
@@ -200,6 +203,9 @@ HRESULT CTank::Render()
 		for (_uint i = 0; i < iNumMesh; i++)
 		{
 			if (FAILED(m_pModelCom_Destroyed->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+				return E_FAIL;
+
+			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
 				return E_FAIL;
 
 			if (FAILED(m_pShaderCom->Begin(2)))

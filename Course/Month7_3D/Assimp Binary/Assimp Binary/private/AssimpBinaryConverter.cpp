@@ -97,15 +97,52 @@ HRESULT CAssimpBinaryConverter::Export()
 		_char texPath[256] = {};
 		if (mesh->mMaterialIndex < m_pAIScene->mNumMaterials)
 		{
-			aiMaterial* material = m_pAIScene->mMaterials[mesh->mMaterialIndex];
 			aiString path;
-			if (AI_SUCCESS == material->GetTexture(aiTextureType_DIFFUSE, 0, &path))
-			{
-				strncpy_s(texPath, path.C_Str(), 255);
-			}
-		}
+			aiMaterial* pMaterial = m_pAIScene->mMaterials[mesh->mMaterialIndex];
 
-		fwrite(texPath, sizeof(_char), 256, fp);
+			// 파일에 저장할 구조체
+			struct TextureInfo
+			{
+				_int type;           // aiTextureType
+				_int index;          // 텍스처 번호
+				_char path[256];     // 경로
+			};
+
+			// 예시: mesh별 텍스처 정보를 저장
+			vector<TextureInfo> vecTexInfos;
+
+			// 텍스처가 여러 개일 수 있으므로 반복
+			for (_int type = 1; type < AI_TEXTURE_TYPE_MAX; ++type)
+			{
+				aiTextureType texType = static_cast<aiTextureType>(type);
+				UINT textureCount = pMaterial->GetTextureCount(texType);
+
+				for (UINT texIndex = 0; texIndex < textureCount; ++texIndex)
+				{
+					aiString path;
+					if (pMaterial->GetTexture(texType, texIndex, &path) == AI_SUCCESS)
+					{
+						TextureInfo info = {};
+						info.type = texType;
+						info.index = texIndex;
+						strncpy_s(info.path, path.C_Str(), 255);
+
+						vecTexInfos.push_back(info);
+					}
+				}
+			}
+
+			// 1. 개수 먼저 저장
+			_uint iTexCount = static_cast<_uint>(vecTexInfos.size());
+			fwrite(&iTexCount, sizeof(_uint), 1, fp);
+
+			// 2. 각각의 TextureInfo 저장
+			for (const auto& tex : vecTexInfos)
+			{
+				fwrite(&tex, sizeof(TextureInfo), 1, fp);
+			}
+
+		}
 	}
 
 	fclose(fp);

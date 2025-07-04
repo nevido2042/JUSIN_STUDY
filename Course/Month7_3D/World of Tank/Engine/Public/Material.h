@@ -11,9 +11,9 @@ private:
 	virtual ~CMaterial() = default;
 
 public:
-	HRESULT Initialize(const _char* pTexPath);
+	HRESULT Initialize();
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName, aiTextureType eType, _uint iTextureIndex);
-
+	HRESULT Add_SRV(const _char* pTexPath, aiTextureType eType);
 
 
 private:
@@ -23,7 +23,7 @@ private:
 
 
 public:
-	static CMaterial* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pTexPath);
+	static CMaterial* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 	
 

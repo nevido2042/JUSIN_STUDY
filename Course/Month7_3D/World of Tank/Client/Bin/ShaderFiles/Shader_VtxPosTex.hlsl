@@ -212,8 +212,8 @@ PS_OUT PS_MAIN_BLEND(PS_IN_BLEND In)
     
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, vTexcoord);
      
-    if (vDepthDesc.y == 0.f)
-        return Out;
+    //if (vDepthDesc.y == 0.f)
+    //    return Out;
 
     float fOldViewZ = vDepthDesc.y * 500.f;
     float fRealDistance = (fOldViewZ /*이것도 진짜 카메라와의 옛날 거리*/ - In.vProjPos.w/*이거 진짜 카메라 와의 거리*/); 

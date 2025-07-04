@@ -2,16 +2,7 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_DiffuseTexture;
-
-//float4 g_vLightDir;
-//float4 g_vLightDiffuse;
-//float4 g_vLightAmbient;
-//float4 g_vLightSpecular;
-
-//float4 g_vCamPosition;
-
-//float4 g_vMtrlAmibient = float4(0.5f, 0.5f, 0.5f, 1.f);
-//float4 g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);
+Texture2D g_NormalTexture;
 
 float2  g_UVOffset = float2(0.f, 0.f);
 
@@ -30,6 +21,8 @@ struct VS_OUT
 {      
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
+    float4 vTangent : TANGENT;
+    float3 vBinormal : BINORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
@@ -48,6 +41,8 @@ VS_OUT VS_MAIN(VS_IN In)
     
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+    Out.vTangent = normalize(mul(vector(In.vTangent, 0.f), g_WorldMatrix));
+    Out.vBinormal = normalize(cross(Out.vNormal.xyz, Out.vTangent.xyz));
     float2 uv = In.vTexcoord;
 
     uv += g_UVOffset;
@@ -66,6 +61,8 @@ struct PS_IN
 {
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
+    float4 vTangent : TANGENT;
+    float3 vBinormal : BINORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
@@ -90,8 +87,6 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out;    
     
     vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
-    //if (vMtrlDiffuse.a < 0.3f)
-    //    discard;
    
     Out.vDiffuse = vMtrlDiffuse;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
@@ -105,9 +100,15 @@ PS_OUT PS_BASECOLOR(PS_IN In)
     PS_OUT Out;
     
     vector vMtrlDiffuse = g_vBaseColor * g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
-    //if (vMtrlDiffuse.a < 0.3f)
-    //    discard;
    
+    //노말 맵핑을 적용
+    vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexcoord);
+    //0~1 사이의 값을 -1~1로 변환한다.
+    float3 vNormal = vNormalDesc.xyz * 2.f - 1.f;
+    //월드매트릭스 상에 있는 픽셀의 노말을 노말맵에 곱한다.
+    float3x3 WorldMatrix = float3x3(In.vTangent.xyz, In.vBinormal, In.vNormal.xyz);
+    vNormal = mul(vNormal, WorldMatrix);
+    
     Out.vDiffuse = vMtrlDiffuse;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
