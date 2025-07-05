@@ -93,7 +93,7 @@ HRESULT CTigerTurret::Ready_PartObjects(TURRET_DESC* pDesc)
 	CGun::GUN_DESC GunDesc{};
 	GunDesc.vBaseColor = pDesc->vGunColor;
 	GunDesc.pParentWorldMatrix = &m_CombinedWorldMatrix;
-	GunDesc.fRotationPerSec = 0.5f;
+	GunDesc.fRotationPerSec = 0.25f;
 	GunDesc.iID = m_iID;
 	GunDesc.pOwner = pDesc->pOwner;
 	GunDesc.eModuleType = MODULE::GUN;

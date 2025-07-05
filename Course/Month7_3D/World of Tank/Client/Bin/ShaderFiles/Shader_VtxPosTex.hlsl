@@ -110,6 +110,18 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_ALPHATESTA(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    
+    if (Out.vColor.a < 0.3f)
+        discard;
+    
+    return Out;
+}
+
 PS_OUT PS_BASECOLOR(PS_IN In)
 {
     PS_OUT Out;
@@ -227,7 +239,7 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out;
     
-    Out.vColor = float4(1.f, 1.f, 0.f, 1.f);
+    Out.vColor = float4(1.f, 0.8f, 0.f, 1.f);
     
     return Out;
 }
@@ -245,7 +257,7 @@ technique11 DefaultTechnique
     /* 렌더스테이츠에 대한 설정*/ 
 
     //0
-    pass Default/* 명암 + 스펙큘러 + 그림자 + ssao + 림라이트 */ 
+    pass AlphaBlend/* 명암 + 스펙큘러 + 그림자 + ssao + 림라이트 */ 
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -316,14 +328,13 @@ technique11 DefaultTechnique
     pass Trail
     {
         SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_AlphaBlend, float4(0, 0, 0, 0), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0, 0, 0, 0), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_COLOR();
     }
-
 
     //pass Disstortion/* 왜곡 1*/ 
     //{

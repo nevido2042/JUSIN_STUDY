@@ -33,6 +33,9 @@ private:
 	void Picking();
 
 private:
+	_float m_fArmLength = { 20.f };
+
+private:
 	_float	m_fShakeTime = { 0.f };
 	_float	m_fShakePower = { 0.f };
 

@@ -339,6 +339,28 @@ void CVIBuffer_Point_Instance::Change_Size(_float2 vSize)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
+void CVIBuffer_Point_Instance::Change_Size_XY(_float2 vSizeXY)
+{
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOS_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOS_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vRight = _float4(vSizeXY.x, 0.f, 0.f, 0.f);
+		pVertices[i].vUp = _float4(0.f, vSizeXY.y, 0.f, 0.f);
+		pVertices[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+
+		m_pVertexInstances[i].vRight = pVertices[i].vRight;
+		m_pVertexInstances[i].vUp = pVertices[i].vUp;
+		m_pVertexInstances[i].vLook = pVertices[i].vLook;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
 void CVIBuffer_Point_Instance::Change_Pivot(_float3 vPivot)
 {
 	m_tPointInstanceDesc.vPivot = vPivot;

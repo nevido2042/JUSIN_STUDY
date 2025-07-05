@@ -20,7 +20,9 @@ private:
 	HRESULT Ready_Lights();
 
 	HRESULT Ready_Layer_Terrain(const _wstring strLayerTag);
+
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Camera_Hanger(const _wstring strLayerTag);
 
 	HRESULT Ready_Layer_Background_UI(const _wstring strLayerTag);
 
@@ -42,6 +44,7 @@ private:
 
 	HRESULT Ready_Layer_Ash(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Explosion(const _wstring strLayerTag);
+	HRESULT Ready_Layer_MapVegetation(const _wstring strLayerTag);
 
 	//Static
 	HRESULT Ready_Layer_StatusLight(const _wstring strLayerTag);

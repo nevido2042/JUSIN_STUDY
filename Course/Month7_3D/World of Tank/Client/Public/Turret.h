@@ -54,7 +54,7 @@ protected:
 protected:
 	_bool	m_bLeft = { false };
 	_bool	m_bRight = { false };
-
+	_float	m_fRotateSpeed = 1.f;
 
 protected:
 	CCollider* m_pColliderCom = { nullptr };

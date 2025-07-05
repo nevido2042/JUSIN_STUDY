@@ -34,6 +34,7 @@ public:
 	virtual void	Change_NumInstance(_uint iNumInstance) override;
 	virtual void	Change_Range(_float3 vRange) override;
 	virtual void	Change_Size(_float2 vSize) override;
+	void			Change_Size_XY(_float2 vSizeXY);
 	void			Change_Pivot(_float3 vPivot);
 	void			Change_LifeTime(_float2 vLifeTime);
 	void			Change_Speed(_float2 vSpeed);

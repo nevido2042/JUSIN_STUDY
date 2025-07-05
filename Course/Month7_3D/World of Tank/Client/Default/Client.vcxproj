@@ -184,6 +184,7 @@
     <ClInclude Include="..\public\Button_Tiger.h" />
     <ClInclude Include="..\public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
+    <ClInclude Include="..\public\Camera_Hanger.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\DeadFireEffect.h" />
     <ClInclude Include="..\public\DeadSmoke.h" />
@@ -221,7 +222,7 @@
     <ClInclude Include="..\public\KitCrashFactoryWall01A.h" />
     <ClInclude Include="..\public\Level_ParticleTool.h" />
     <ClInclude Include="..\public\MapObject.h" />
-    <ClInclude Include="..\public\MapTree.h" />
+    <ClInclude Include="..\public\MapVegetation.h" />
     <ClInclude Include="..\public\Minimap_Tank.h" />
     <ClInclude Include="..\public\Minimap.h" />
     <ClInclude Include="..\public\Module.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="..\private\Button_Tiger.cpp" />
     <ClCompile Include="..\private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\Camera_Hanger.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\Chassis.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />
@@ -358,7 +360,7 @@
     <ClCompile Include="..\private\KitCrashFactoryWall01A.cpp" />
     <ClCompile Include="..\private\Level_ParticleTool.cpp" />
     <ClCompile Include="..\private\MapObject.cpp" />
-    <ClCompile Include="..\private\MapTree.cpp" />
+    <ClCompile Include="..\private\MapVegetation.cpp" />
     <ClCompile Include="..\private\Minimap_Tank.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
     <ClCompile Include="..\private\Module.cpp" />

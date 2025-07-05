@@ -88,6 +88,9 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_AimCircle(TEXT("Layer_AimCircle"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_MapVegetation(TEXT("Layer_MapVegetation"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -416,6 +419,15 @@ HRESULT CLevel_Practice::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
 	Desc.vInitPosition = _float3(0.f, 50.f, 320.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_MapVegetation(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MapVegetation"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

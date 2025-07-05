@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "Tool.h"
 
+NS_BEGIN(Engine)
+class CVIBuffer_Point_Instance;
+NS_END
+
 NS_BEGIN(Client)
 
 class CMapTool final : public CTool
@@ -22,6 +26,11 @@ public:
 
 public:
 	static string WStringToString(const wstring& wstr);
+
+private:
+	void Control_Vegetation();
+	void Save_Vegetation();
+	void Load_Vegetation();
 
 private:
 	CGameObject* Get_Selected_GameObject(vector<string>& HierarchyNames);
@@ -59,6 +68,10 @@ private:
 	_int m_iSelectedHierarchyIndex = -1; // 선택된 항목 인덱스
 
 	ImGuizmo::OPERATION m_currentOperation = { ImGuizmo::TRANSLATE };
+
+private:
+	class CVIBuffer_Point_Instance* m_pVegeVIBuffer = { nullptr };
+	vector<_float3> m_VegeTranslates = {};
 
 public:
 	static CMapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

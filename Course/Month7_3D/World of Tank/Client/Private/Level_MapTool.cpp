@@ -24,14 +24,33 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MapVegetation"),
+		ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapVegetation"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_MapTool(TEXT("Layer_MapTool"))))
 		return E_FAIL;
 
-	CGameObject::GAMEOBJECT_DESC GameObjectDesc = {};
-	GameObjectDesc.vInitPosition = _float3(300.f, 90.f, 300.f);
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTree"),
-		ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapTree"),&GameObjectDesc)))
-		return E_FAIL;
+	/*for (_int i = 0; i < 100; ++i)
+	{
+		_float _fX = m_pGameInstance->Compute_Random(100.f, 400.f);
+		_float _fZ = m_pGameInstance->Compute_Random(100.f, 400.f);
+
+		CGameObject::GAMEOBJECT_DESC GameObjectDesc = {};
+		GameObjectDesc.vInitPosition = _float3(_fX, 90.f, _fZ);
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapVegetation"),
+			ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapTree"), &GameObjectDesc)))
+			return E_FAIL;
+	}*/
+	//for (_int i = 0; i < 10; ++i)
+	//{
+	//	CGameObject::GAMEOBJECT_DESC GameObjectDesc = {};
+	//	GameObjectDesc.vInitPosition = _float3(300.f, 90.f, 300.f);
+	//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapVegetation"),
+	//		ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapVegetation"), &GameObjectDesc)))
+	//		return E_FAIL;
+	//}
+
 
 	return S_OK;
 }
@@ -118,7 +137,7 @@ HRESULT CLevel_MapTool::Ready_Layer_Camera(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 50.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(150.f, 100.f, 100.f);
+	Desc.vEye = _float3(300.f, 90.f, 300.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;

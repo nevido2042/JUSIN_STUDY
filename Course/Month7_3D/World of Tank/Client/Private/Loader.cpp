@@ -86,6 +86,7 @@
 #pragma endregion
 
 #pragma region HANGER
+#include "Camera_Hanger.h"
 #include "Button_Fury.h"
 #include "Button_Tiger.h"
 #include "Button_Start.h"
@@ -100,7 +101,7 @@
 #pragma region MAPTOOL
 #include "MapTool.h"
 #include "MapObject.h"
-#include "MapTree.h"
+#include "MapVegetation.h"
 #pragma endregion
 
 #pragma region PRACTICE
@@ -239,7 +240,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_Tree*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Tree"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/Vegetation/bb_tree_eastern_spring_AM.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/Vegetation/Grass_FWD.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DeadFireEffect*/
@@ -646,6 +647,13 @@ HRESULT CLoader::Loading_For_Static()
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &ExploDesc))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_Boundary*/
+	CVIBuffer_Point_Instance::POINT_INSTANCE_DESC		BoundaryDesc{};
+	BoundaryDesc.iNumInstance = 1;
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Boundary"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &BoundaryDesc))))
+		return E_FAIL;
+
 	if (FAILED(Load_Particles()))
 		return E_FAIL;
 #pragma endregion
@@ -656,6 +664,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_MapVegetation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MapVegetation"),
+		CMapVegetation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DeadFireEffect */
@@ -1109,6 +1122,12 @@ HRESULT CLoader::Loading_For_Hanger()
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
 #pragma region 원형 객체
+
+	/* For.Prototype_GameObject_Camera_Hanger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Camera_Hanger"),
+		CCamera_Hanger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Button_Color */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Color"),
 		CButton_Color::Create(m_pDevice, m_pContext))))
@@ -1230,11 +1249,6 @@ HRESULT CLoader::Loading_For_MapTool()
 	/* For.Prototype_GameObject_MapObject */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapObject"),
 		CMapObject::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_MapTree */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapTree"),
-		CMapTree::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

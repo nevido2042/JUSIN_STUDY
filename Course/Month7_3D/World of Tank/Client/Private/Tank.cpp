@@ -676,8 +676,6 @@ void CTank::Move(_float fTimeDelta)
 				SpeedTrackLeft += -fRPMPower;
 				SpeedTrackRight += fRPMPower * 0.3f;
 			}
-
-
 		}
 	}
 	
@@ -727,12 +725,6 @@ void CTank::Move(_float fTimeDelta)
 		}
 	}
 
-
-
-
-	
-
-
 	//바운더리 검사후 경계 안이면 이동 허용
 	//아니면 이전 위치로 돌리기
 	/*if (m_pBoundary)
@@ -744,8 +736,8 @@ void CTank::Move(_float fTimeDelta)
 			m_pTransformCom->Set_State(STATE::POSITION, BeforePos);
 	}*/
 
-	pTrackLeft->Set_Speed(SpeedTrackLeft);
-	pTrackRight->Set_Speed(SpeedTrackRight);
+	pTrackLeft->Set_Speed(SpeedTrackLeft * 0.3f);
+	pTrackRight->Set_Speed(SpeedTrackRight * 0.3f);
 }
 
 void CTank::Die()

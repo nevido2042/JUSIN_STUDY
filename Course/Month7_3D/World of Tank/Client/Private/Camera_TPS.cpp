@@ -74,7 +74,7 @@ void CCamera_TPS::Update(_float fTimeDelta)
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
-	_float fDistance = 20.f;
+	_float fDistance = m_fArmLength;
 
 	// Å¸°Ù À§Ä¡
 	_vector vTargetPos = m_pTarget->Get_CombinedWorldMatrix().r[3];

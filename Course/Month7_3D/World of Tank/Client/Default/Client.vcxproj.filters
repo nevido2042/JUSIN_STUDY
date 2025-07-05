@@ -70,9 +70,6 @@
     <Filter Include="02.GameObjects\Camera\Camera_FPS">
       <UniqueIdentifier>{338c494c-1d2d-4fc0-ad8d-88c6ae972446}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MapObject">
-      <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Skydome">
       <UniqueIdentifier>{f2ac6b87-9feb-427d-9cd4-64a57cb94d14}</UniqueIdentifier>
     </Filter>
@@ -162,15 +159,6 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\00.Button\11.Button_Practice">
       <UniqueIdentifier>{2bc91c6c-3bd8-4330-8093-ce8ca39e5e25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\01.Tool">
-      <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\01.Tool\00.Base_Tool">
-      <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\01.Tool\01.MapTool">
-      <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\CountdownTimer">
       <UniqueIdentifier>{8b57e999-4c20-4fc8-8470-b52c7bf7f545}</UniqueIdentifier>
@@ -325,9 +313,6 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\Smoke">
       <UniqueIdentifier>{50a83f9c-6e07-4f88-8cc6-27675e333d6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\01.Tool\02.ParticleTool">
-      <UniqueIdentifier>{6331d4e9-a656-4ed2-a6d4-dc191cfdafd3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.ThirdParty\imGuiFileDialog">
       <UniqueIdentifier>{d64bea21-f869-472e-9b6d-f242a6183b17}</UniqueIdentifier>
     </Filter>
@@ -358,8 +343,26 @@
     <Filter Include="02.GameObjects\07.Effect\Effect\DeadFireEffect">
       <UniqueIdentifier>{fb1d42bf-4bd1-488e-81b1-9b722bd73ff0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MapTree">
+    <Filter Include="02.GameObjects\01.Tool">
+      <UniqueIdentifier>{208adb01-9e12-4601-84ef-9e861391dfd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Tool\00.Base_Tool">
+      <UniqueIdentifier>{8aeb35db-0c2f-4631-a64e-f31061829e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Tool\01.MapTool">
+      <UniqueIdentifier>{30165e83-5cac-404b-b8eb-0338e0512b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Tool\02.ParticleTool">
+      <UniqueIdentifier>{6331d4e9-a656-4ed2-a6d4-dc191cfdafd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Tool\MapObject">
+      <UniqueIdentifier>{09d7c3fa-c02b-41c5-89b1-984da2cab58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Tool\MapVegetation">
       <UniqueIdentifier>{6e3c1e38-5a10-4e71-94b1-75b22e925530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\Camera_Hanger">
+      <UniqueIdentifier>{06388f54-ce6b-44d5-bd29-68ec8c1914cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -448,7 +451,7 @@
       <Filter>96.ThirdParty\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapTool.h">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\01.MapTool</Filter>
+      <Filter>02.GameObjects\01.Tool\01.MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\ThirdParty\imGuizmo\ImGuizmo.h">
       <Filter>96.ThirdParty\imGuizmo</Filter>
@@ -460,13 +463,13 @@
       <Filter>01.Levels\04.Practice</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
-      <Filter>02.GameObjects\06.UIObject\01.Tool</Filter>
+      <Filter>02.GameObjects\01.Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool_Base.h">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\00.Base_Tool</Filter>
+      <Filter>02.GameObjects\01.Tool\00.Base_Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapObject.h">
-      <Filter>02.GameObjects\MapObject</Filter>
+      <Filter>02.GameObjects\01.Tool\MapObject</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Skydome.h">
       <Filter>02.GameObjects\Skydome</Filter>
@@ -685,7 +688,7 @@
       <Filter>02.GameObjects\07.Effect\Particle\Smoke</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleTool.h">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\02.ParticleTool</Filter>
+      <Filter>02.GameObjects\01.Tool\02.ParticleTool</Filter>
     </ClInclude>
     <ClInclude Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.h">
       <Filter>96.ThirdParty\imGuiFileDialog</Filter>
@@ -726,8 +729,11 @@
     <ClInclude Include="..\public\Explosion.h">
       <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\MapTree.h">
-      <Filter>02.GameObjects\MapTree</Filter>
+    <ClInclude Include="..\public\MapVegetation.h">
+      <Filter>02.GameObjects\01.Tool\MapVegetation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_Hanger.h">
+      <Filter>02.GameObjects\Camera\Camera_Hanger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -811,7 +817,7 @@
       <Filter>96.ThirdParty\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MapTool.cpp">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\01.MapTool</Filter>
+      <Filter>02.GameObjects\01.Tool\01.MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imGuizmo\ImGuizmo.cpp">
       <Filter>96.ThirdParty\imGuizmo</Filter>
@@ -823,13 +829,13 @@
       <Filter>01.Levels\04.Practice</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
-      <Filter>02.GameObjects\06.UIObject\01.Tool</Filter>
+      <Filter>02.GameObjects\01.Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool_Base.cpp">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\00.Base_Tool</Filter>
+      <Filter>02.GameObjects\01.Tool\00.Base_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapObject.cpp">
-      <Filter>02.GameObjects\MapObject</Filter>
+      <Filter>02.GameObjects\01.Tool\MapObject</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Skydome.cpp">
       <Filter>02.GameObjects\Skydome</Filter>
@@ -1048,7 +1054,7 @@
       <Filter>02.GameObjects\07.Effect\Particle\Smoke</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleTool.cpp">
-      <Filter>02.GameObjects\06.UIObject\01.Tool\02.ParticleTool</Filter>
+      <Filter>02.GameObjects\01.Tool\02.ParticleTool</Filter>
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>96.ThirdParty\imGuiFileDialog</Filter>
@@ -1077,8 +1083,11 @@
     <ClCompile Include="..\private\Explosion.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\Explosion</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\MapTree.cpp">
-      <Filter>02.GameObjects\MapTree</Filter>
+    <ClCompile Include="..\private\MapVegetation.cpp">
+      <Filter>02.GameObjects\01.Tool\MapVegetation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_Hanger.cpp">
+      <Filter>02.GameObjects\Camera\Camera_Hanger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

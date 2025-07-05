@@ -39,9 +39,9 @@ void CTurret::Priority_Update(_float fTimeDelta)
 	if (m_pGameInstance->Get_ID() != m_iID && m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::GAMEPLAY))
 	{
 		if (m_bLeft)
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta /** m_fRotateSpeed*/);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -fTimeDelta * m_fRotateSpeed);
 		else if (m_bRight)
-			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta /** m_fRotateSpeed*/);
+			m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * m_fRotateSpeed);
 		else if (!m_bLeft && !m_bRight)
 		{
 			//int a = 10;
@@ -142,13 +142,16 @@ void CTurret::Set_ModuleState(MODULE_STATE eState)
 	switch (m_eModuleState)
 	{
 	case MODULE_STATE::DESTROYED:
-		m_pTransformCom->Set_RotationPerSec(0.f);
+		//m_pTransformCom->Set_RotationPerSec(0.f);
+		m_fRotateSpeed = 0.f;
 		break;
 	case MODULE_STATE::DAMAGED:
-		m_pTransformCom->Set_RotationPerSec(0.5f);
+		//m_pTransformCom->Set_RotationPerSec(0.5f);
+		m_fRotateSpeed = 0.5f;
 		break;
 	case MODULE_STATE::FUNCTIONAL:
-		m_pTransformCom->Set_RotationPerSec(1.f);
+		//m_pTransformCom->Set_RotationPerSec(1.f);
+		m_fRotateSpeed = 1.f;
 		break;
 	case MODULE_STATE::END:
 		break;
@@ -260,7 +263,7 @@ void CTurret::Input(_float fTimeDelta)
 					pGun->Set_AngleDegree_Max();
 			}
 
-			m_pTransformCom->Turn(vAxis, fTimeDelta /* * 회전속도 */);
+			m_pTransformCom->Turn(vAxis, fTimeDelta * m_fRotateSpeed);
 		}
 		else if (fRightDot < -0.01f) // 왼쪽 회전
 		{
@@ -287,7 +290,7 @@ void CTurret::Input(_float fTimeDelta)
 					pGun->Set_AngleDegree_Max();
 			}
 
-			m_pTransformCom->Turn(vAxis, -fTimeDelta /* * 회전속도 */);
+			m_pTransformCom->Turn(vAxis, -fTimeDelta * m_fRotateSpeed);
 		}
 		else // 정면
 		{
@@ -313,7 +316,7 @@ void CTurret::Input(_float fTimeDelta)
 				if (fSign < 0)
 					fRotateAngle = -fRotateAngle;
 
-				// 제한된 속도로 회전 (fTimeDelta * m_fRotateSpeed 등 곱해줘도 됨)
+				// 제한된 속도로 회전
 				_float fRotationSpeed = 0.01f; // 필요시 조절
 				_float fDeltaAngle = min(fRotationSpeed * fTimeDelta, fabsf(fRotateAngle));
 

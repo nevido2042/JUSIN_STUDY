@@ -3,7 +3,9 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
-#include "Camera_Free.h"
+//#include "Camera_Free.h"
+#include "Camera_Hanger.h"
+
 #include "UIObject.h"
 #include "GameManager.h"
 #include "LandObject.h"
@@ -38,10 +40,10 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	if (FAILED(Ready_Layer_Background_UI(TEXT("Layer_Background_UI"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Background_UI(TEXT("Layer_Background_UI"))))
+	if (FAILED(Ready_Layer_MapVegetation(TEXT("Layer_MapVegetation"))))
 		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Ash(TEXT("Layer_Ash"))))
@@ -89,12 +91,12 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Skydome(TEXT("Layer_Skydome"))))
 		return E_FAIL;
 
-	//CGameObject::GAMEOBJECT_DESC Desc{};
-	//Desc.vInitPosition = _float3(300.f, 90.f, 300.f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"),
-	//	ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Test"), &Desc)))
+	//if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 	//	return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera_Hanger(TEXT("Layer_Camera"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -153,23 +155,37 @@ HRESULT CLevel_Hanger::Ready_Layer_Terrain(const _wstring strLayerTag)
 
 HRESULT CLevel_Hanger::Ready_Layer_Camera(const _wstring strLayerTag)
 {
-	CCamera_Free::CAMERA_FREE_DESC Desc = {};
+	//CCamera_Free::CAMERA_FREE_DESC Desc = {};
 
-	Desc.fRotationPerSec = XMConvertToRadians(180.0f);
-	Desc.fSpeedPerSec = 10.0f;
-	lstrcpy(Desc.szName, TEXT("Camera_Free"));
+	//Desc.fRotationPerSec = XMConvertToRadians(180.0f);
+	//Desc.fSpeedPerSec = 10.0f;
+	//lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(325.f, 90.f, 291.f);
-	Desc.vAt = _float3(60.f, 80.f, 0.f);
-	Desc.fFov = XMConvertToRadians(60.0f);
-	Desc.fNear = 0.1f;
-	Desc.fFar = 500.f;
+	//Desc.vEye = _float3(325.f, 90.f, 291.f);
+	//Desc.vAt = _float3(60.f, 80.f, 0.f);
+	//Desc.fFov = XMConvertToRadians(60.0f);
+	//Desc.fNear = 0.1f;
+	//Desc.fFar = 500.f;
 
-	Desc.fSensor = 0.1f;
+	//Desc.fSensor = 0.1f;
 
-	//Desc.vInitPosition = { 1000.f, 1000.f, 1000.f };
+	////Desc.vInitPosition = { 1000.f, 1000.f, 1000.f };
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Free"),
+	//	ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Camera_Hanger(const _wstring strLayerTag)
+{
+	CCamera_Hanger::CAMERA_HANGER_DESC Desc{};
+	Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Fury_Hanger"));
+	Desc.bActive = true;
+	lstrcpy(Desc.szName, TEXT("Camera_TPS"));
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Camera_Hanger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
@@ -457,6 +473,15 @@ HRESULT CLevel_Hanger::Ready_Layer_Ash(const _wstring strLayerTag)
 HRESULT CLevel_Hanger::Ready_Layer_Explosion(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_MapVegetation(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MapVegetation"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
 		return E_FAIL;
 

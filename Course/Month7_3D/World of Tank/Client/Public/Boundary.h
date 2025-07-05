@@ -42,7 +42,7 @@ private:
 	HRESULT Load_BoundaryPoints();
 
 #ifdef _DEBUG
-	void Draw_Boundary();
+	//void Draw_Boundary();
 #endif // _DEBUG
 
 private:
@@ -53,9 +53,9 @@ private:
 	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
 
 #ifdef _DEBUG
-	PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
-	BasicEffect* m_pEffect = { nullptr };
-	ID3D11InputLayout* m_pInputLayout = { nullptr };
+	//PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
+	//BasicEffect* m_pEffect = { nullptr };
+	//ID3D11InputLayout* m_pInputLayout = { nullptr };
 #endif // _DEBUG
 
 private:

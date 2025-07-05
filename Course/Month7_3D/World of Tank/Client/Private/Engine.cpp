@@ -262,6 +262,10 @@ void CEngine::Input(_float fTimeDelta)
 
 			Accel_Move(-fTimeDelta);
 		}
+		else
+		{
+			m_eGear = GEAR::DRIVE;
+		}
 
 		if (m_pGameInstance->Key_Pressing(DIK_A))
 		{
@@ -387,6 +391,10 @@ void CEngine::Input_Network(_float fTimeDelta)
 			m_eGear = GEAR::REVERSE;
 
 			Accel_Move(-fTimeDelta);
+		}
+		else
+		{
+			m_eGear = GEAR::DRIVE;
 		}
 
 		if (m_bPressA)

@@ -33,19 +33,19 @@ HRESULT CBoundary::Initialize(void* pArg)
 		return E_FAIL;
 
 #ifdef _DEBUG
-	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
-	m_pEffect = new BasicEffect(m_pDevice);
+	//m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+	//m_pEffect = new BasicEffect(m_pDevice);
 
-	const void* pShaderByteCode = { nullptr };
-	size_t		iShaderByteCodeLength = {  };
+	//const void* pShaderByteCode = { nullptr };
+	//size_t		iShaderByteCodeLength = {  };
 
-	m_pEffect->SetVertexColorEnabled(true);
+	//m_pEffect->SetVertexColorEnabled(true);
 
-	m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iShaderByteCodeLength);
+	//m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iShaderByteCodeLength);
 
-	if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount,
-		pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
-		return E_FAIL;
+	//if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount,
+	//	pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
+	//	return E_FAIL;
 
 #endif // _DEBUG
 
@@ -104,7 +104,7 @@ void CBoundary::Priority_Update(_float fTimeDelta)
 
 void CBoundary::Update(_float fTimeDelta)
 {
-	m_pVIBufferCom->Emission(fTimeDelta);
+	//m_pVIBufferCom->Emission(fTimeDelta);
 
 }
 
@@ -117,19 +117,19 @@ HRESULT CBoundary::Render()
 {
 #ifdef _DEBUG
 #pragma region 빨간 선
-	m_pEffect->SetWorld(XMMatrixIdentity());
-	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
-	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
+	//m_pEffect->SetWorld(XMMatrixIdentity());
+	//m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
+	//m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
 
-	m_pContext->IASetInputLayout(m_pInputLayout);
+	//m_pContext->IASetInputLayout(m_pInputLayout);
 
-	m_pEffect->Apply(m_pContext);
+	//m_pEffect->Apply(m_pContext);
 
-	m_pBatch->Begin();
+	//m_pBatch->Begin();
 
-	Draw_Boundary();
+	//Draw_Boundary();
 
-	m_pBatch->End();
+	//m_pBatch->End();
 #pragma endregion
 #endif // _DEBUG
 
@@ -329,37 +329,37 @@ HRESULT CBoundary::Load_BoundaryPoints()
 }
 
 #ifdef _DEBUG
-void CBoundary::Draw_Boundary()
-{
-	if (m_BoundaryPoints.size() < 2)
-		return;
-
-	_float3 vPointA = {};
-	_float3 vPointB = {};
-
-	for (_uint i = 0; i < m_BoundaryPoints.size(); ++i)
-	{
-		if (i == m_BoundaryPoints.size() - 1)
-		{
-			vPointA = m_BoundaryPoints.at(i);
-			vPointB = m_BoundaryPoints.at(0);
-		}
-		else
-		{
-			vPointA = m_BoundaryPoints.at(i);
-			vPointB = m_BoundaryPoints.at(i + 1);
-		}
-
-		DX::DrawRay(
-			m_pBatch,
-			XMVectorSetW(XMLoadFloat3(&vPointA), 1.f),     // 시작점 A
-			XMVectorSubtract(XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointA)), // 방향 벡터 (B - A)
-			false,
-			DirectX::Colors::Red
-		);
-
-	}
-}
+//void CBoundary::Draw_Boundary()
+//{
+//	if (m_BoundaryPoints.size() < 2)
+//		return;
+//
+//	_float3 vPointA = {};
+//	_float3 vPointB = {};
+//
+//	for (_uint i = 0; i < m_BoundaryPoints.size(); ++i)
+//	{
+//		if (i == m_BoundaryPoints.size() - 1)
+//		{
+//			vPointA = m_BoundaryPoints.at(i);
+//			vPointB = m_BoundaryPoints.at(0);
+//		}
+//		else
+//		{
+//			vPointA = m_BoundaryPoints.at(i);
+//			vPointB = m_BoundaryPoints.at(i + 1);
+//		}
+//
+//		DX::DrawRay(
+//			m_pBatch,
+//			XMVectorSetW(XMLoadFloat3(&vPointA), 1.f),     // 시작점 A
+//			XMVectorSubtract(XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointA)), // 방향 벡터 (B - A)
+//			false,
+//			DirectX::Colors::Red
+//		);
+//
+//	}
+//}
 #endif // _DEBUG
 
 HRESULT CBoundary::Ready_Components()
@@ -417,8 +417,8 @@ void CBoundary::Free()
 	Safe_Release(m_pVIBufferCom);
 
 #ifdef _DEBUG
-	Safe_Release(m_pInputLayout);
-	Safe_Delete(m_pBatch);
-	Safe_Delete(m_pEffect);
+	//Safe_Release(m_pInputLayout);
+	//Safe_Delete(m_pBatch);
+	//Safe_Delete(m_pEffect);
 #endif // _DEBUG
 }

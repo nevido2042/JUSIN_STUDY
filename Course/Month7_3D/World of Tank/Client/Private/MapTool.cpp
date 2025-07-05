@@ -5,6 +5,7 @@
 #include "Layer.h"
 
 #include "MapObject.h"
+#include "VIBuffer_Point_Instance.h"
 
 CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTool{ pDevice, pContext }
@@ -37,11 +38,22 @@ HRESULT CMapTool::Initialize(void* pArg)
 		return E_FAIL;
 	Safe_AddRef(m_pTerrain);
 
+	CGameObject* pMapVegetation = m_pGameInstance->Get_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Layer_MapVegetation"), 0);
+	if (pMapVegetation == nullptr)
+		return E_FAIL;
+
+	m_pVegeVIBuffer = static_cast<CVIBuffer_Point_Instance*>(pMapVegetation->Get_Component(TEXT("Com_VIBuffer")));
+	if (nullptr == m_pVegeVIBuffer)
+		return E_FAIL;
+	Safe_AddRef(m_pVegeVIBuffer);
+
 	if (FAILED(Load_Map()))
 		return E_FAIL;
 
 	if (FAILED(Load_BoundaryPoints()))
 		return E_FAIL;
+
+	Load_Vegetation();
 
 #pragma region 제한구역 설정
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
@@ -359,6 +371,11 @@ void CMapTool::Update(_float fTimeDelta)
 	}
 
 #pragma endregion
+
+#pragma region 식생 조절
+	Control_Vegetation();
+#pragma endregion
+
 }
 
 void CMapTool::Late_Update(_float fTimeDelta)
@@ -673,6 +690,95 @@ string CMapTool::WStringToString(const wstring& wstr)
 	return str;
 }
 
+void CMapTool::Control_Vegetation()
+{
+	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON) && m_pGameInstance->Key_Pressing(DIK_V)))
+	{
+		_float3 vPos = m_pTerrain->Get_PickedPos();
+		vPos.y += 1.5f;
+
+		m_VegeTranslates.push_back(vPos);
+		m_pVegeVIBuffer->Change_NumInstance(static_cast<_uint>(m_VegeTranslates.size()));
+		m_pVegeVIBuffer->Change_Translation(m_VegeTranslates);
+		m_pVegeVIBuffer->Change_Size_XY(_float2(209.f * 0.01f, 345.f * 0.01f));
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_S) && m_pGameInstance->Key_Pressing(DIK_V))
+	{
+		Save_Vegetation();
+	}
+}
+
+void CMapTool::Save_Vegetation()
+{
+	// 폴더 없으면 생성
+	if (!filesystem::exists("../Bin/Map/"))
+		filesystem::create_directories("../Bin/Map/");
+
+	filesystem::path Path = "../Bin/Map/VegeTranslates.bin";
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, Path.string().c_str(), "wb");
+	if (!fp)
+	{
+		cout << "Fail!!!!!!    Save_Vegetation" << endl;
+		return;
+	}
+
+	size_t Count = { m_VegeTranslates.size() };
+	fwrite(&Count, sizeof(size_t), 1, fp);
+
+	for (_float3& vPos : m_VegeTranslates)
+	{
+		fwrite(&vPos, sizeof(_float3), 1, fp);
+	}
+
+	fclose(fp);
+
+	cout << "Save_Vegetation" << endl;
+}
+
+void CMapTool::Load_Vegetation()
+{
+	m_VegeTranslates.clear();
+
+	filesystem::path Path = "../Bin/Map/VegeTranslates.bin";
+
+	FILE* fp = nullptr;
+	fopen_s(&fp, Path.string().c_str(), "rb");
+	if (!fp)
+	{
+		cout << "Fail!!!!!! Load_Vegetation" << endl;
+		return;
+	}
+
+	size_t Count = { 0 };
+	fread(&Count, sizeof(size_t), 1, fp);
+
+	m_VegeTranslates.reserve(Count);
+
+
+	while (true)
+	{
+		_float3 vPos = {};
+		size_t readCount = fread(&vPos, sizeof(_float3), 1, fp);
+
+		// 더 이상 읽을게 없으면 종료
+		if (readCount != 1)
+			break;
+
+		m_VegeTranslates.push_back(vPos);
+	}
+
+	m_pVegeVIBuffer->Change_NumInstance(static_cast<_uint>(m_VegeTranslates.size()));
+	m_pVegeVIBuffer->Change_Translation(m_VegeTranslates);
+	m_pVegeVIBuffer->Change_Size_XY(_float2(209.f * 0.01f, 345.f * 0.01f));
+
+	fclose(fp);
+
+	cout << "(Load)Vege Count:" << m_VegeTranslates.size() << endl;
+}
+
 CMapTool* CMapTool::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CMapTool* pInstance = new CMapTool(pDevice, pContext);
@@ -702,6 +808,8 @@ CGameObject* CMapTool::Clone(void* pArg)
 void CMapTool::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pVegeVIBuffer);
 
 	Safe_Release(m_pTerrain);
 

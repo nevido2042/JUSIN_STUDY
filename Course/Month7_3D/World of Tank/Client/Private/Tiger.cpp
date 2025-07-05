@@ -29,6 +29,8 @@ HRESULT CTiger::Initialize(void* pArg)
 {
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	lstrcpy((*pDesc).szName, TEXT("Tiger"));
+	(*pDesc).fRotationPerSec = 0.5f;
+	(*pDesc).fSpeedPerSec = 0.5f;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -108,7 +110,7 @@ HRESULT CTiger::Ready_PartObjects(TANK_DESC* pDesc)
 	/* 포탑을 추가한다. */
 	CTurret::TURRET_DESC TurretDesc{};
 	TurretDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
-	TurretDesc.fRotationPerSec = 1.f;
+	TurretDesc.fRotationPerSec = 0.5f;
 	TurretDesc.iID = m_iID;
 	lstrcpy(TurretDesc.szName, TEXT("Turret"));
 	TurretDesc.vBaseColor = pDesc->vTurretColor;
