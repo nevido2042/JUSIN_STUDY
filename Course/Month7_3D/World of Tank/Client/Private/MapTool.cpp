@@ -692,7 +692,7 @@ string CMapTool::WStringToString(const wstring& wstr)
 
 void CMapTool::Control_Vegetation()
 {
-	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON) && m_pGameInstance->Key_Pressing(DIK_V)))
+	if (m_pGameInstance->Mouse_Down(ENUM_CLASS(DIMK::LBUTTON)) && m_pGameInstance->Key_Pressing(DIK_V))
 	{
 		_float3 vPos = m_pTerrain->Get_PickedPos();
 		vPos.y += 1.5f;

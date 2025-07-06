@@ -107,10 +107,11 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 
 	m_pInputDevice->Update();
 
+	m_pLevel_Manager->Update(fTimeDelta);
+
 	m_pNetwork->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pPipeLine->Update();
-
 
 	m_pFrustum->Update();
 	m_pPicking->Update(iWinSizeX, iWinSizeY);
@@ -123,7 +124,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta, _uint iWinSizeX, _uint iWin
 
 	m_pSound_Device->Update();
 
-	m_pLevel_Manager->Update(fTimeDelta);
+
 }
 
 HRESULT CGameInstance::Begin_Draw()
@@ -649,51 +650,67 @@ void CGameInstance::Release_Engine()
 {
 	if (0 != Safe_Release(m_pTarget_Manager))
 		MSG_BOX("Failed to Release : m_pTarget_Manager");
+	cout << m_iRefCnt << endl;//449
 
 	if (0 != Safe_Release(m_pTimer_Manager))
 		MSG_BOX("Failed to Release : m_pTimer_Manager");
+	cout << m_iRefCnt << endl;//449
 
 	if (0 != Safe_Release(m_pRenderer))
 		MSG_BOX("Failed to Release : m_pRenderer");
+	cout << m_iRefCnt << endl;//446
 
 	if (0 != Safe_Release(m_pObject_Manager))
 		MSG_BOX("Failed to Release : m_pObject_Manager");
+	cout << m_iRefCnt << endl;//239
 
 	if (0 != Safe_Release(m_pPrototype_Manager))
 		MSG_BOX("Failed to Release : m_pPrototype_Manager");
+	cout << m_iRefCnt << endl;//3(여기서 왜 2개나 사라지지?)
 
 	if (0 != Safe_Release(m_pLevel_Manager))
 		MSG_BOX("Failed to Release : m_pLevel_Manager");
+	cout << m_iRefCnt << endl;//1
 
 	if (0 != Safe_Release(m_pSound_Device))
 		MSG_BOX("Failed to Release : m_pSound_Device");
+	cout << m_iRefCnt << endl;//1
 
 	if (0 != Safe_Release(m_pInputDevice))
 		MSG_BOX("Failed to Release : m_pInputDevice");
+	cout << m_iRefCnt << endl;//1
 
 	if (0 != Safe_Release(m_pPipeLine))
 		MSG_BOX("Failed to Release : m_pPipeLine");
+	cout << m_iRefCnt << endl;//1
 
 	if (0 != Safe_Release(m_pNetwork))
 		MSG_BOX("Failed to Release : m_pNetwork");
+	cout << m_iRefCnt << endl;//1
 
 	if (0 != Safe_Release(m_pPicking))
 		MSG_BOX("Failed to Release : m_pPicking");
+	cout << m_iRefCnt << endl;//0
 
 	if (0 != Safe_Release(m_pFrustum))
 		MSG_BOX("Failed to Release : m_pFrustum");
+	cout << m_iRefCnt << endl;//3722304989(-1)
 
 	if (0 != Safe_Release(m_pLight_Manager))
 		MSG_BOX("Failed to Release : m_pLight_Manager");
+	cout << m_iRefCnt << endl;
 
 	if (0 != Safe_Release(m_pFont_Manager))
 		MSG_BOX("Failed to Release : m_pFont_Manager");
+	cout << m_iRefCnt << endl;
 
 	if (0 != Safe_Release(m_pCollider_Manager))
 		MSG_BOX("Failed to Release : m_pCollider_Manager");
+	cout << m_iRefCnt << endl;
 
 	if (0 != Safe_Release(m_pGraphic_Device))
 		MSG_BOX("Failed to Release : m_pGraphic_Device");
+	cout << m_iRefCnt << endl;
 
 	Destroy_Instance();
 }

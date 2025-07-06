@@ -132,6 +132,22 @@ HRESULT CGun:: Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
+#pragma region ¿Ü°û¼±
+	if (m_pModelCom)
+	{
+		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+		for (_uint i = 0; i < iNumMesh; i++)
+		{
+			if (FAILED(m_pShaderCom->Begin(3)))
+				return E_FAIL;
+
+			if (FAILED(m_pModelCom->Render(i)))
+				return E_FAIL;
+		}
+	}
+#pragma endregion
+
 	if (m_pModelCom)
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();

@@ -88,7 +88,7 @@ void CTurret::Late_Update(_float fTimeDelta)
 	);
 
 	// 프러스텀 안에 있으면 렌더링 추가
-	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f) && m_pOwner->Get_isDie() == false && m_pOwner->Get_isVisible())
+	if (m_pGameInstance->Is_In_Frustum(vPos, 5.f) && m_pOwner->Get_isDie() == false && m_pOwner->Get_isVisible())
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
@@ -102,6 +102,22 @@ HRESULT CTurret::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
+
+#pragma region 외곽선
+	if (m_pModelCom)
+	{
+		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+		for (_uint i = 0; i < iNumMesh; i++)
+		{
+			if (FAILED(m_pShaderCom->Begin(3)))
+				return E_FAIL;
+
+			if (FAILED(m_pModelCom->Render(i)))
+				return E_FAIL;
+		}
+	}
+#pragma endregion
 
 	if (m_pModelCom)
 	{

@@ -11,6 +11,8 @@ Texture2D g_DiffuseTexture;
 Texture2D g_ShadeTexture;
 Texture2D g_DepthTexture;
 Texture2D g_SpecularTexture;
+Texture2D g_OutlineTexture;
+Texture2D g_OutlineDepthTexture;
 
 vector g_vLightDir;
 vector g_vLightPos;
@@ -164,20 +166,30 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 PS_OUT PS_MAIN_DEFERRED(PS_IN In)
 {
     PS_OUT Out;
-    
+
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
-    //if (all(vDiffuse.rgb == 0.f))
-    if(vDiffuse.a == 0.f)
-        discard;
-    
+
+    vector vOutlineDepth = g_OutlineDepthTexture.Sample(DefaultSampler, In.vTexcoord);
+    vector vOutline = g_OutlineTexture.Sample(DefaultSampler, In.vTexcoord);
+
     vector vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexcoord);
-    
     vector vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexcoord);
-    
-    Out.vBackBuffer = vDiffuse * vShade + vSpecular;
-    
-    return Out;    
+
+    vector vColor = vDiffuse * vShade + vSpecular;
+
+    if (vOutlineDepth.y >= 1.f && vOutline.z <= 1.0f)
+    {
+        vColor += vOutline;
+    }
+
+    if (vColor.a == 0.f)
+        discard;
+
+    Out.vBackBuffer = vColor;
+
+    return Out;
 }
+
 
 
 
