@@ -93,9 +93,6 @@ _bool CServer::Update()
 
     }
 
-
-
-
     return Network();
 }
 
@@ -565,13 +562,23 @@ HRESULT CServer::Define_Packets()
 
                     ++iCount;
 
-                    //일단 랜덤 배치
-                    _pSession->Get_SessionInfo().vPosition = _float3{ 300.f + rand() % 30, 100.f + +rand() % 30, 292.f + rand() % 30 };
+					//A팀은 200 라인, B팀은 400라인에 배치
+                    if (_pSession->Get_SessionInfo().eTeam == TEAM::A)
+                    {
+                        _pSession->Get_SessionInfo().vPosition = _float3{ 150.f + rand() % 30, 0.f,  300.f + rand() % 30  };
+                    }
+                    else
+                    {
+                        _pSession->Get_SessionInfo().vPosition = _float3{ 500.f + rand() % 30, 0.f, 300.f + rand() % 30 };
+                    }
+
                 }
 
                 cout << "Start_Game" << endl;
                 //게임 씬 전환 해라
                 Send_Packet_Broadcast(nullptr, ENUM_CLASS(PacketType::SC_START_GAME), pArg);
+
+                m_bIsGameRunning = true;
             }
         })))
         return E_FAIL;
@@ -587,6 +594,28 @@ HRESULT CServer::Define_Packets()
             Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
 
             Update_Header();
+        })))
+        return E_FAIL;
+
+    if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::CS_END_GAME), [this](void* pArg)
+        {
+			//이미 게임이 끝났다고 알려져 있으면
+            if (m_bIsGameRunning == false)
+                return;
+
+            //격납고로 모두 돌려보내고
+            cout << "SC_RETURN_HANGER" << endl;
+            Send_Packet_Broadcast(nullptr, ENUM_CLASS(PacketType::SC_RETURN_HANGER));
+
+            //게임이 종료되었음 저장
+            m_bIsGameRunning = false;
+
+			//모든 플레이어 isJoinMatch를 false로 바꿔라
+            for (CSession* pSession : m_vecSession)
+            {
+                pSession->Get_SessionInfo().isJoinMatch = false;
+            }
+
         })))
         return E_FAIL;
 

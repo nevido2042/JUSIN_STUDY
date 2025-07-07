@@ -65,7 +65,16 @@ void CScore::Update(_float fTimeDelta)
 		//5초간 대기하다가 격납고로 이동
 		if (m_fAccTime > 5.f)
 		{
-			//m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
+			//계속 보내도 될까?
+			PACKET_DESC PacketDesc = {};
+			PacketDesc.iID = m_pGameInstance->Get_ID();
+			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_END_GAME), &PacketDesc);
+
+			//게임플레이가 아니면 알아서 넘어가게
+			if(m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY))
+			{
+				m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
+			}
 		}
 	}
 

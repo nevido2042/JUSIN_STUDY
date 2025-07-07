@@ -167,6 +167,18 @@ HRESULT CMainApp::Ready_Packets()
 		})))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::CS_END_GAME), [this](void* pArg)
+		{
+			m_pGameInstance->Clear_Packet();
+			PACKET_HEADER tHeader{};
+			tHeader.byCode = PACKET_CODE;
+			tHeader.byType = ENUM_CLASS(PacketType::CS_END_GAME);
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(&tHeader), sizeof(PACKET_HEADER));
+			m_pGameInstance->Input_Data(reinterpret_cast<_byte*>(pArg), sizeof(PACKET_DESC));
+			m_pGameInstance->Update_Header();
+		})))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_RETURN_HANGER), [this](void* pArg)
 		{
 			if(m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::HANGER))

@@ -36,7 +36,7 @@ HRESULT CShell::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_vFirePos = pDesc->vFirePos;
-	//m_vPreviousPos = m_vFirePos;
+
 	XMStoreFloat3(&m_vPreviousPos, m_pTransformCom->Get_State(STATE::POSITION));
 
 	if (FAILED(Ready_Components()))

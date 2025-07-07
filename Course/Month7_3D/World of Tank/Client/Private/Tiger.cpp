@@ -159,6 +159,16 @@ HRESULT CTiger::Ready_PartObjects(TANK_DESC* pDesc)
 
 	Store_Modules();
 
+	GAMEOBJECT_DESC EngineSmokeParticleDesc = {};
+	EngineSmokeParticleDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
+
+	EngineSmokeParticleDesc.vInitPosition = _float3(0.5f, 1.7f, -3.0f);
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"), TEXT("Part_EngineSmokeParticle_Right"), &EngineSmokeParticleDesc)))
+		return E_FAIL;
+	EngineSmokeParticleDesc.vInitPosition = _float3(-0.5f, 1.7f, -3.0f);
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Smoke"), TEXT("Part_EngineSmokeParticle_Left"), &EngineSmokeParticleDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

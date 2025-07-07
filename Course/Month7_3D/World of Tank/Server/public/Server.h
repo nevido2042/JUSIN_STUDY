@@ -63,6 +63,8 @@ private:
 	fd_set						m_tReadSet;
 	CPacket						m_Packet;
 
+	_bool						m_bIsGameRunning = { false };
+
 	unordered_map<_uint, function<void(void*)>> m_PacketTypes;
 
 };
