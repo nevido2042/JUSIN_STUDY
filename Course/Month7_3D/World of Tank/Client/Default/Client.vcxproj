@@ -225,6 +225,7 @@
     <ClInclude Include="..\public\MapVegetation.h" />
     <ClInclude Include="..\public\Minimap_Tank.h" />
     <ClInclude Include="..\public\Minimap.h" />
+    <ClInclude Include="..\public\Missile.h" />
     <ClInclude Include="..\public\Module.h" />
     <ClInclude Include="..\public\ParticleTool.h" />
     <ClInclude Include="..\public\PersonalArrowEntry.h" />
@@ -363,6 +364,7 @@
     <ClCompile Include="..\private\MapVegetation.cpp" />
     <ClCompile Include="..\private\Minimap_Tank.cpp" />
     <ClCompile Include="..\private\Minimap.cpp" />
+    <ClCompile Include="..\private\Missile.cpp" />
     <ClCompile Include="..\private\Module.cpp" />
     <ClCompile Include="..\private\ParticleTool.cpp" />
     <ClCompile Include="..\private\PersonalArrowEntry.cpp" />

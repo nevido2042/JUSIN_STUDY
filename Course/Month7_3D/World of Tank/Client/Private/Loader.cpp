@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Missile.h"
 #include "Explosion.h"
 #include "DeadFireEffect.h"
 #include "DeadSmoke.h"
@@ -455,6 +456,13 @@ HRESULT CLoader::Loading_For_Static()
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
+	/* For.Prototype_Component_Model_Missile */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Missile"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/Rocket/rocket_mlrs/rocket_mlrs.bin", PreTransformMatrix))))
+		return E_FAIL;
+
 #pragma region Fury
 	/* For.Prototype_Component_Model_FuryDestroyed */
 	PreTransformMatrix = XMMatrixIdentity();
@@ -664,6 +672,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Missile */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"),
+		CMissile::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_MapVegetation */

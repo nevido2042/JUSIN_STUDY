@@ -177,7 +177,7 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
 
     vector vColor = vDiffuse * vShade + vSpecular;
 
-    if (vOutlineDepth.y >= 1.f && vOutline.z <= 1.0f)
+    if (vOutlineDepth.y >= 1.f)
     {
         vColor += vOutline;
     }

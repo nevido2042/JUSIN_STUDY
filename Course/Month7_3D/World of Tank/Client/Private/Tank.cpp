@@ -179,24 +179,24 @@ HRESULT CTank::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-#pragma region ¿Ü°û¼±
-	if (m_pModelCom && !m_bisDie && m_bisPicked)
-	{
-		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
-
-		for (_uint i = 0; i < iNumMesh; i++)
-		{
-			if (FAILED(m_pShaderCom->Begin(3)))
-				return E_FAIL;
-
-			if (FAILED(m_pModelCom->Render(i)))
-				return E_FAIL;
-		}
-	}
-#pragma endregion
-
 	if (m_pModelCom && !m_bisDie)
 	{
+#pragma region ¿Ü°û¼±
+		if (m_bisPicked)
+		{
+			_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+			for (_uint i = 0; i < iNumMesh; i++)
+			{
+				if (FAILED(m_pShaderCom->Begin(3)))
+					return E_FAIL;
+
+				if (FAILED(m_pModelCom->Render(i)))
+					return E_FAIL;
+			}
+		}
+#pragma endregion
+
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
 		for (_uint i = 0; i < iNumMesh; i++)
@@ -216,6 +216,23 @@ HRESULT CTank::Render()
 	}
 	else if (m_pModelCom_Destroyed)
 	{
+
+#pragma region ¿Ü°û¼±
+		if (m_bisPicked)
+		{
+			_uint		iNumMesh = m_pModelCom_Destroyed->Get_NumMeshes();
+
+			for (_uint i = 0; i < iNumMesh; i++)
+			{
+				if (FAILED(m_pShaderCom->Begin(3)))
+					return E_FAIL;
+
+				if (FAILED(m_pModelCom_Destroyed->Render(i)))
+					return E_FAIL;
+			}
+		}
+#pragma endregion
+
 		_uint		iNumMesh = m_pModelCom_Destroyed->Get_NumMeshes();
 
 		for (_uint i = 0; i < iNumMesh; i++)

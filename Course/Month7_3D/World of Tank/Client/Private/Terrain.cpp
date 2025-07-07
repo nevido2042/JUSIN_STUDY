@@ -50,6 +50,13 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 
 void CTerrain::Update(_float fTimeDelta)
 {
+	//if (m_pGameInstance->Key_Down(DIK_K))
+	//{
+	//	_vector vTerrainCenter = m_pVIBufferCom->Compute_HeightPosition(XMVectorSet(TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f,  0.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 1.f));
+	//	_float3 vDigCenter = {};
+	//	XMStoreFloat3(&vDigCenter, vTerrainCenter);
+	//	m_pVIBufferCom->DigGround(vDigCenter, TERRAIN_SIZE, 100.f);
+	//}
 
 }
 

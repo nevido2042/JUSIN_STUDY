@@ -51,12 +51,21 @@ void CScore::Update(_float fTimeDelta)
 	//게임이 끝났으면
 	if (m_bIsGameEnd)
 	{
+		if (m_bIsSpawnMissile == false)
+		{
+			m_bIsSpawnMissile = true;
+
+			GAMEOBJECT_DESC Desc = {};
+			Desc.vInitPosition = _float3(TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 100.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f);
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &Desc);
+		}
+
 		m_fAccTime += fTimeDelta;
 
 		//5초간 대기하다가 격납고로 이동
 		if (m_fAccTime > 5.f)
 		{
-			m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
+			//m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
 		}
 	}
 

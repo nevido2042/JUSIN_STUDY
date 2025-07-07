@@ -364,6 +364,9 @@
     <Filter Include="02.GameObjects\Camera\Camera_Hanger">
       <UniqueIdentifier>{06388f54-ce6b-44d5-bd29-68ec8c1914cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Missile">
+      <UniqueIdentifier>{6ec4e12f-ed34-443d-81b0-36b7b7c65e43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -735,6 +738,9 @@
     <ClInclude Include="..\public\Camera_Hanger.h">
       <Filter>02.GameObjects\Camera\Camera_Hanger</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Missile.h">
+      <Filter>02.GameObjects\Missile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1088,6 +1094,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Hanger.cpp">
       <Filter>02.GameObjects\Camera\Camera_Hanger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Missile.cpp">
+      <Filter>02.GameObjects\Missile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
