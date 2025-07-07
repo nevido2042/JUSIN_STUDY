@@ -793,7 +793,7 @@ void CTank::Die()
 	
 
 	//몇 초 뒤에 재생하자
-			//파괴된 전차의 불(루프) 이펙트 재생
+	//파괴된 전차의 불(루프) 이펙트 재생
 	CGameObject* pDeadFireEffect = Find_PartObject(TEXT("Part_DeadFireEffect"));
 	if (pDeadFireEffect)
 		pDeadFireEffect->Set_Active(true);

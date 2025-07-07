@@ -364,8 +364,14 @@
     <Filter Include="02.GameObjects\Camera\Camera_Hanger">
       <UniqueIdentifier>{06388f54-ce6b-44d5-bd29-68ec8c1914cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Missile">
+    <Filter Include="02.GameObjects\06.UIObject\Score\Missile">
       <UniqueIdentifier>{6ec4e12f-ed34-443d-81b0-36b7b7c65e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Score\Missile\MissileSmoke">
+      <UniqueIdentifier>{5eb680aa-776e-44d1-9ce4-83ca2adcd919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\Score\Missile\MissileExplosionEffect">
+      <UniqueIdentifier>{657664b0-e3c6-4a67-b902-ac4ab3198db7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -739,7 +745,13 @@
       <Filter>02.GameObjects\Camera\Camera_Hanger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Missile.h">
-      <Filter>02.GameObjects\Missile</Filter>
+      <Filter>02.GameObjects\06.UIObject\Score\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MissileSmoke.h">
+      <Filter>02.GameObjects\06.UIObject\Score\Missile\MissileSmoke</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MissileExplosionEffect.h">
+      <Filter>02.GameObjects\06.UIObject\Score\Missile\MissileExplosionEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1096,7 +1108,13 @@
       <Filter>02.GameObjects\Camera\Camera_Hanger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Missile.cpp">
-      <Filter>02.GameObjects\Missile</Filter>
+      <Filter>02.GameObjects\06.UIObject\Score\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MissileSmoke.cpp">
+      <Filter>02.GameObjects\06.UIObject\Score\Missile\MissileSmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MissileExplosionEffect.cpp">
+      <Filter>02.GameObjects\06.UIObject\Score\Missile\MissileExplosionEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

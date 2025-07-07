@@ -56,14 +56,14 @@ void CScore::Update(_float fTimeDelta)
 			m_bIsSpawnMissile = true;
 
 			GAMEOBJECT_DESC Desc = {};
-			Desc.vInitPosition = _float3(TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 100.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f);
+			Desc.vInitPosition = _float3(TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 300.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f);
 			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &Desc);
 		}
 
 		m_fAccTime += fTimeDelta;
 
 		//5초간 대기하다가 격납고로 이동
-		if (m_fAccTime > 5.f)
+		if (m_fAccTime > 30.f)
 		{
 			//계속 보내도 될까?
 			PACKET_DESC PacketDesc = {};

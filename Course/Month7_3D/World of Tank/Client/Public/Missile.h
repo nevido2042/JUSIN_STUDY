@@ -28,12 +28,15 @@ public:
 
 private:
 	class CVIBuffer* m_pTargetBuffer = { nullptr };
+private:
+	class CCamera_TPS* m_pCameraTPS = { nullptr };
 
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 private:
 	HRESULT Ready_Components();
+	HRESULT Ready_PartObjects();
 	HRESULT Bind_ShaderResources();
 
 public:

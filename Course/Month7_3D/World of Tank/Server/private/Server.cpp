@@ -20,7 +20,7 @@ _bool CServer::Initialize()
 {
     Define_Packets();
 
-    m_iPort = Load_Config_File(TEXT("../bin/config.txt"));
+    Load_Config_File(TEXT("../bin/config.txt"));
 
     setlocale(LC_ALL, "KOREAN");
 
@@ -412,22 +412,28 @@ void CServer::Set_Session_Dead(CSession* _pSession)
     _pSession->Set_IsDead();
 }
 
-int CServer::Load_Config_File(const wstring& filename)
+void CServer::Load_Config_File(const wstring& filename)
 {
     wifstream inFile(filename);
     if (!inFile.is_open())
     {
         cout << "Can't Open ServerConfigFile" << endl;
-        return 2042;
+        m_iPort = 2042;
+        m_iMaxPlayer = 2;
+        return;
     }
 
-    // 파일의 첫 줄에서 포트 번호 읽기
-    wstring PortLine;
-    getline(inFile, PortLine);
-    wstringstream wss(PortLine);
-    int iPort;
-    wss >> iPort;
-    return iPort;
+    wstring line;
+
+    // 포트
+    getline(inFile, line);
+    m_iPort = stoi(line);
+
+    // 최대 플레이어 수
+    getline(inFile, line);
+    m_iMaxPlayer = stoi(line);
+
+    return;
 }
 
 HRESULT CServer::Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg)
@@ -549,7 +555,7 @@ HRESULT CServer::Define_Packets()
              cout << "Total iPlayerCount_JoinMatch: " << iPlayerCount_JoinMatch << endl;
 
 
-            if (iPlayerCount_JoinMatch == 2) //두명이 ready 상태면 시작시키기
+            if (iPlayerCount_JoinMatch == m_iMaxPlayer) //두명이 ready 상태면 시작시키기
             {
                 _uint iCount = 1;
                 for (CSession* _pSession : m_vecSession)
@@ -561,6 +567,9 @@ HRESULT CServer::Define_Packets()
                         _pSession->Get_SessionInfo().eTeam = TEAM::B;
 
                     ++iCount;
+
+					//가운데에 배치
+                    //_pSession->Get_SessionInfo().vPosition = _float3{ 300.f + rand() % 30, 0.f,  300.f + rand() % 30 };
 
 					//A팀은 200 라인, B팀은 400라인에 배치
                     if (_pSession->Get_SessionInfo().eTeam == TEAM::A)

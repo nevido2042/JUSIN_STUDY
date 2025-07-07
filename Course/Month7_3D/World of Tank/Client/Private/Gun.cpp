@@ -242,7 +242,9 @@ HRESULT CGun::Fire()
 	_vector vVelocity = XMLoadFloat3(&Desc.vVelocity);
 	vVelocity = XMVector3Normalize(vVelocity);
 
-	vVelocity = GetRandomSpreadDirection(vVelocity, m_fAngleDegree);
+	//네트워크로 들어온 탱크의 총은 잘 나가게 하자
+	if(m_pGameInstance->Get_ID() == m_iID)
+		vVelocity = GetRandomSpreadDirection(vVelocity, m_fAngleDegree);
 
 	vVelocity = XMVectorScale(vVelocity, 300.f);
 

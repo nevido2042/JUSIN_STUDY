@@ -36,7 +36,7 @@ private:
 	void Check_Session_State(SOCKET sock);
 	void Set_Session_Dead(CSession* pSession);
 private:
-	_int Load_Config_File(const wstring& filename);
+	void Load_Config_File(const wstring& filename);
 
 public:
 	HRESULT Send_Packet_Unicast(CSession* pSession, _uint iPacketType, void* pArg = nullptr);
@@ -64,6 +64,7 @@ private:
 	CPacket						m_Packet;
 
 	_bool						m_bIsGameRunning = { false };
+	_uint	m_iMaxPlayer = { 2 };
 
 	unordered_map<_uint, function<void(void*)>> m_PacketTypes;
 

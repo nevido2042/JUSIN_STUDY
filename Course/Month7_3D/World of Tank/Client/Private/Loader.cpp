@@ -11,6 +11,8 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "MissileExplosionEffect.h"
+#include "MissileSmoke.h"
 #include "Missile.h"
 #include "Explosion.h"
 #include "DeadFireEffect.h"
@@ -672,6 +674,16 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_MissileExplosionEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MissileExplosionEffect"),
+		CMissileExplosionEffect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_MissileSmoke */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MissileSmoke"),
+		CMissileSmoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Missile */

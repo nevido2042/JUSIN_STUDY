@@ -50,7 +50,7 @@ void CIcon_Consumables::Update(_float fTimeDelta)
 	{
 		if(chrono::steady_clock::now() < m_CanUseTime)
 			return; // 아직 사용 불가 시간이라면 리턴
-		m_CanUseTime = chrono::steady_clock::now() + chrono::seconds(5);
+		m_CanUseTime = chrono::steady_clock::now() + chrono::seconds(60);
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		//해당 아이템 효과 발동
 		switch (m_eConsumables)
