@@ -37,6 +37,9 @@ public:
 	void DamageModule();
 	void TakeDamage_Onwer(_float fDamage, class CShell* pShell);
 
+public:
+	CTank* Get_Owner() const { return m_pOwner; }
+
 protected:
 	MODULE_STATE m_eModuleState = { MODULE_STATE::FUNCTIONAL };
 	MODULE		 m_eModuleType = { MODULE::END };

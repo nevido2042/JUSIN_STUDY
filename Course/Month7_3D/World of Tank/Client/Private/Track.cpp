@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "Module.h"
+#include "Chassis.h"
 
 CTrack::CTrack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
@@ -76,7 +77,7 @@ HRESULT CTrack::Render()
 		return E_FAIL;
 
 #pragma region ¿Ü°û¼±
-	if (m_pModelCom)
+	if (m_pModelCom && static_cast<CChassis*>(m_pParent)->Get_isPicked())
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 

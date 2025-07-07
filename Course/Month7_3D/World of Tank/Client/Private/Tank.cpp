@@ -57,6 +57,8 @@ HRESULT CTank::Initialize(void* pArg)
 
 void CTank::Priority_Update(_float fTimeDelta)
 {
+	m_bisPicked = false;
+
 	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
 		return;
 
@@ -178,7 +180,7 @@ HRESULT CTank::Render()
 		return E_FAIL;
 
 #pragma region ¿Ü°û¼±
-	if (m_pModelCom && !m_bisDie)
+	if (m_pModelCom && !m_bisDie && m_bisPicked)
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 

@@ -4,6 +4,9 @@
 #include "PickedManager.h"
 #include "Terrain.h"
 
+#include "Tank.h"
+#include "Module.h"
+
 CCamera_FPS::CCamera_FPS(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
 {
@@ -177,6 +180,8 @@ void CCamera_FPS::Picking()
 		{
 			fMinDist = fDist;
 			pHitClosest = pHit;
+
+			static_cast<CTank*>(pHit)->Set_IsPicked(true);
 		}
 	}
 
@@ -187,6 +192,8 @@ void CCamera_FPS::Picking()
 		{
 			fMinDist = fDist;
 			pHitClosest = pHit;
+
+			static_cast<CModule*>(pHit)->Get_Owner()->Set_IsPicked(true);
 		}
 	}
 

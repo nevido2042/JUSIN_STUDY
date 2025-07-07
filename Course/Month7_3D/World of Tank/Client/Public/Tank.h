@@ -71,6 +71,10 @@ private:
 private:
 	void SendMatrixSync(_float fTimeDelta);
 
+public:
+	_bool Get_IsPicked() const { return m_bisPicked; }
+	void Set_IsPicked(_bool bIsPicked) { m_bisPicked = bIsPicked; }
+
 private:
 	class CBoundary* m_pBoundary = { nullptr };
 
@@ -97,6 +101,9 @@ private:
 
 private:
 	_bool	m_bisDie = { false };
+
+private:
+	_bool   m_bisPicked = { false };
 
 //private:
 //	_bool	m_bIsCreateDieEffect = false; //¿¬±â¶û ºÒ²É ·çÇÁ

@@ -28,6 +28,12 @@ public:
 public:
 	virtual void	Set_ModuleState(MODULE_STATE eState) override;
 
+public:
+	_bool	Get_isPicked() const { return m_bisPicked; }
+
+private:
+	_bool			m_bisPicked = { false };
+
 protected:
 	HRESULT Bind_ShaderResources();
 

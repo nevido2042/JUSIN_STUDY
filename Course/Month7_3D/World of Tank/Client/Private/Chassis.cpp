@@ -51,6 +51,8 @@ void CChassis::Update(_float fTimeDelta)
 void CChassis::Late_Update(_float fTimeDelta)
 {
 
+	m_bisPicked = m_pOwner->Get_IsPicked();
+
 	//m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 	if(m_pOwner->Get_isDie() == false && m_pOwner->Get_isVisible())
@@ -60,6 +62,7 @@ void CChassis::Late_Update(_float fTimeDelta)
 
 HRESULT CChassis::Render()
 {
+
 	return S_OK;
 }
 

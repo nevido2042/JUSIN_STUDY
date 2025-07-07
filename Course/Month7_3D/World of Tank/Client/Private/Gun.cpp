@@ -133,7 +133,7 @@ HRESULT CGun:: Render()
 		return E_FAIL;
 
 #pragma region ¿Ü°û¼±
-	if (m_pModelCom)
+	if (m_pModelCom && m_pOwner->Get_IsPicked())
 	{
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
