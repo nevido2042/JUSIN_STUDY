@@ -1,0 +1,8 @@
+# Exported by wot-python-lib 2.0.0
+
+newmtl set_0_group_0
+map_Kd content/3D_Customization/Cus_34_SP_TreasureChest/Cus_34_SP_Vegetation_AM.dds
+map_norm content/3D_Customization/Cus_34_SP_TreasureChest/Cus_34_SP_Vegetation_ANM.dds
+newmtl set_0_group_1
+map_Kd content/3D_Customization/Cus_32_SP_GoldPot/Cus_32_SP_GoldPot_AM.dds
+map_norm content/3D_Customization/Cus_32_SP_GoldPot/Cus_32_SP_GoldPot_ANM.dds

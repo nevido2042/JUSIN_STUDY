@@ -1,0 +1,9 @@
+# Exported by wot-python-lib 2.0.0
+
+newmtl set_0_group_0
+map_Kd particles/3D_Customization/Cus_26_Mystic_Mirror/mystic_mirror.dds
+newmtl set_0_group_1
+map_Kd particles/content_deferred/GFX_models/GFX_textures/hw_crystal_smoke.dds
+newmtl set_0_group_2
+map_Kd content/3D_Customization/Cus_26_Mystic_Mirror/Mirror_AM.dds
+map_norm content/3D_Customization/Cus_26_Mystic_Mirror/Mirror_ANM.dds

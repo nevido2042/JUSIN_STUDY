@@ -1,0 +1,7 @@
+# Exported by wot-python-lib 2.0.0
+
+newmtl set_0_group_0
+map_Kd particles/3D_Customization/Cus_11_Marine_Shark/shark_eyes.dds
+newmtl set_1_group_0
+map_Kd content/3D_Customization/Cus_11_Marine_Shark/Shark_AM.dds
+map_norm content/3D_Customization/Cus_11_Marine_Shark/Shark_ANM.dds
