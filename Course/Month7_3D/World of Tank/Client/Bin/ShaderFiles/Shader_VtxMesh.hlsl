@@ -115,40 +115,12 @@ struct PS_IN
     float4 vProjPos : TEXCOORD2;
 };
 
-struct PS_IN_OUTLINE
-{
-    float4 vPosition : SV_POSITION;
-    float4 vProjPos : TEXCOORD0;
-};
-
-struct PS_OUT_OUTLINE
-{
-    //vector vDepth : SV_TARGET2;
-    vector vOutline : SV_TARGET3;
-    //vector vOutlineDepth : SV_TARGET4;
-};
-
-
 struct PS_OUT
 {
     vector vDiffuse : SV_TARGET0;
     vector vNormal : SV_TARGET1;
     vector vDepth : SV_TARGET2;
     //vector vDepthOutline : SV_TARGET4;
-};
-
-struct PS_OUT_TANK
-{
-    vector vDiffuse : SV_TARGET0;
-    vector vNormal : SV_TARGET1;
-    vector vDepth : SV_TARGET2;
-    vector vDepthOutline : SV_TARGET4;
-};
-
-struct PS_OUT_SKY
-{
-    vector vDiffuse : SV_TARGET0;
-    vector vNormal : SV_TARGET1;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -177,6 +149,15 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;    
 }
 
+
+struct PS_OUT_TANK
+{
+    vector vDiffuse : SV_TARGET0;
+    vector vNormal : SV_TARGET1;
+    vector vDepth : SV_TARGET2;
+    vector vDepthOutline : SV_TARGET4;
+};
+
 PS_OUT_TANK PS_BASECOLOR(PS_IN In)
 {
     PS_OUT_TANK Out;
@@ -199,6 +180,12 @@ PS_OUT_TANK PS_BASECOLOR(PS_IN In)
     return Out;
 }
 
+struct PS_OUT_SKY
+{
+    vector vDiffuse : SV_TARGET0;
+    vector vNormal : SV_TARGET1;
+};
+
 PS_OUT_SKY PS_SKY(PS_IN In)
 {
     PS_OUT_SKY Out;
@@ -210,6 +197,19 @@ PS_OUT_SKY PS_SKY(PS_IN In)
 
     return Out;
 }
+
+struct PS_IN_OUTLINE
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0;
+};
+
+struct PS_OUT_OUTLINE
+{
+    //vector vDepth : SV_TARGET2;
+    vector vOutline : SV_TARGET3;
+    //vector vOutlineDepth : SV_TARGET4;
+};
 
 PS_OUT_OUTLINE PS_OUTLINE(PS_IN_OUTLINE In)
 {
@@ -236,7 +236,8 @@ PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN_SHADOW In)
     PS_OUT_SHADOW Out;
     
     Out.vShadow = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
-    
+    //In.vProjPos.z(0~Far) / In.vProjPos.w(Near~Far) -> 투영 스페이스의 깊이(0~1)
+    //In.vProjPos.w(Near~Far) / 500.0f(Far) -> (Near/Far ~ 1)
     return Out;
 }
 
