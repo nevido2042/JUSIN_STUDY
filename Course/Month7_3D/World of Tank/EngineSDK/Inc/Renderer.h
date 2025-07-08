@@ -41,6 +41,7 @@ public:
 
 private:
 	HRESULT Render_Priority();
+	HRESULT Render_Outline();
 	HRESULT Render_Shadow();
 	HRESULT Render_NonBlend();
 	HRESULT Render_Lights();

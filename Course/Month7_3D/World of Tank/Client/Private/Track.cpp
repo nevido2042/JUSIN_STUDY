@@ -59,6 +59,13 @@ void CTrack::Late_Update(_float fTimeDelta)
 		1.f
 	);
 
+
+	if (static_cast<CChassis*>(m_pParent)->Get_isPicked() && m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_OUTLINE, this);
+
+	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
+
 	// 프러스텀 안에 있으면 렌더링 추가
 	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
@@ -77,19 +84,19 @@ HRESULT CTrack::Render()
 		return E_FAIL;
 
 #pragma region 외곽선
-	if (m_pModelCom && static_cast<CChassis*>(m_pParent)->Get_isPicked())
-	{
-		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+	//if (m_pModelCom && static_cast<CChassis*>(m_pParent)->Get_isPicked())
+	//{
+	//	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
-		for (_uint i = 0; i < iNumMesh; i++)
-		{
-			if (FAILED(m_pShaderCom->Begin(3)))
-				return E_FAIL;
+	//	for (_uint i = 0; i < iNumMesh; i++)
+	//	{
+	//		if (FAILED(m_pShaderCom->Begin(3)))
+	//			return E_FAIL;
 
-			if (FAILED(m_pModelCom->Render(i)))
-				return E_FAIL;
-		}
-	}
+	//		if (FAILED(m_pModelCom->Render(i)))
+	//			return E_FAIL;
+	//	}
+	//}
 #pragma endregion
 
 	if (m_pModelCom)
@@ -127,6 +134,55 @@ HRESULT CTrack::Render()
 #ifdef _DEBUG
 	m_pColliderCom->Render();
 #endif
+	return S_OK;
+}
+
+HRESULT CTrack::Render_Outline()
+{
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+
+	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+	for (_uint i = 0; i < iNumMesh; i++)
+	{
+		if (FAILED(m_pShaderCom->Begin(3)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CTrack::Render_Shadow()
+{
+	//파트 오브젝트는 자기 트랜스폼 안써야한다
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Light_ViewMatrix())))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Light_ProjMatrix())))
+		return E_FAIL;
+
+	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+	for (_uint i = 0; i < iNumMesh; i++)
+	{
+		if (FAILED(m_pShaderCom->Begin(4)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+	}
+
 	return S_OK;
 }
 

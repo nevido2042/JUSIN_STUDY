@@ -31,7 +31,7 @@ private:
 	void Picking();
 
 private:
-	const float m_fMinFov = XMConvertToRadians(10.0f);
+	const float m_fMinFov = XMConvertToRadians(5.0f);
 	const float m_fMaxFov = XMConvertToRadians(60.0f);
 
 private:

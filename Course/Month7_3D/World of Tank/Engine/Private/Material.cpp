@@ -65,6 +65,8 @@ HRESULT CMaterial::Add_SRV(const _char* pTexPath, aiTextureType eType)
 
     // Diffuse 슬롯 (1번)에 등록
     m_SRVs[eType].push_back(pSRV);
+
+    return S_OK;
 }
 CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

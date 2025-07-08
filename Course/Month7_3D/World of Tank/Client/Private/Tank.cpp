@@ -161,6 +161,9 @@ void CTank::Update(_float fTimeDelta)
 
 void CTank::Late_Update(_float fTimeDelta)
 {
+	if (m_bisPicked && m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 2.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_OUTLINE, this);
+
 	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 2.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 
@@ -184,19 +187,19 @@ HRESULT CTank::Render()
 	if (m_pModelCom && !m_bisDie)
 	{
 #pragma region ¿Ü°û¼±
-		if (m_bisPicked)
-		{
-			_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+		//if (m_bisPicked)
+		//{
+		//	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
-			for (_uint i = 0; i < iNumMesh; i++)
-			{
-				if (FAILED(m_pShaderCom->Begin(3)))
-					return E_FAIL;
+		//	for (_uint i = 0; i < iNumMesh; i++)
+		//	{
+		//		if (FAILED(m_pShaderCom->Begin(3)))
+		//			return E_FAIL;
 
-				if (FAILED(m_pModelCom->Render(i)))
-					return E_FAIL;
-			}
-		}
+		//		if (FAILED(m_pModelCom->Render(i)))
+		//			return E_FAIL;
+		//	}
+		//}
 #pragma endregion
 
 		_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
@@ -220,19 +223,19 @@ HRESULT CTank::Render()
 	{
 
 #pragma region ¿Ü°û¼±
-		if (m_bisPicked)
-		{
-			_uint		iNumMesh = m_pModelCom_Destroyed->Get_NumMeshes();
+		//if (m_bisPicked)
+		//{
+		//	_uint		iNumMesh = m_pModelCom_Destroyed->Get_NumMeshes();
 
-			for (_uint i = 0; i < iNumMesh; i++)
-			{
-				if (FAILED(m_pShaderCom->Begin(3)))
-					return E_FAIL;
+		//	for (_uint i = 0; i < iNumMesh; i++)
+		//	{
+		//		if (FAILED(m_pShaderCom->Begin(3)))
+		//			return E_FAIL;
 
-				if (FAILED(m_pModelCom_Destroyed->Render(i)))
-					return E_FAIL;
-			}
-		}
+		//		if (FAILED(m_pModelCom_Destroyed->Render(i)))
+		//			return E_FAIL;
+		//	}
+		//}
 #pragma endregion
 
 		_uint		iNumMesh = m_pModelCom_Destroyed->Get_NumMeshes();
@@ -256,6 +259,29 @@ HRESULT CTank::Render()
 #ifdef _DEBUG
 	m_pColliderCom->Render();
 #endif
+
+	return S_OK;
+}
+
+HRESULT CTank::Render_Outline()
+{
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+
+	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+	for (_uint i = 0; i < iNumMesh; i++)
+	{
+		if (FAILED(m_pShaderCom->Begin(3)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

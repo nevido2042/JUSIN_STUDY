@@ -58,7 +58,8 @@ VS_OUT VS_MAIN(VS_IN In)
 struct VS_OUT_OUTLINE
 {
     float4 vPosition : SV_POSITION;
-    float4 vProjPos : TEXCOORD0;
+    //float4 vProjPos : TEXCOORD0; // 기본
+    //float4 vOutlineProjPos : TEXCOORD1; //불린 것
 };
 
 VS_OUT_OUTLINE VS_OUTLINE(VS_IN In)
@@ -71,10 +72,12 @@ VS_OUT_OUTLINE VS_OUTLINE(VS_IN In)
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
     
+    //Out.vProjPos = mul(vector(In.vPosition, 1.f), matWVP);
+    
     In.vPosition.xyz += In.vNormal * g_OutlineSize;
     Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
 
-    Out.vProjPos = Out.vPosition;
+    //Out.vOutlineProjPos = Out.vPosition;
     
     return Out;
 }
@@ -155,7 +158,7 @@ struct PS_OUT_TANK
     vector vDiffuse : SV_TARGET0;
     vector vNormal : SV_TARGET1;
     vector vDepth : SV_TARGET2;
-    vector vDepthOutline : SV_TARGET4;
+    vector vDepthOutline : SV_TARGET3;
 };
 
 PS_OUT_TANK PS_BASECOLOR(PS_IN In)
@@ -201,21 +204,21 @@ PS_OUT_SKY PS_SKY(PS_IN In)
 struct PS_IN_OUTLINE
 {
     float4 vPosition : SV_POSITION;
-    float4 vProjPos : TEXCOORD0;
+    //float4 vProjPos : TEXCOORD0; // 기본
+    //float4 vOutlineProjPos : TEXCOORD1; //불린 것
 };
 
 struct PS_OUT_OUTLINE
 {
-    //vector vDepth : SV_TARGET2;
-    vector vOutline : SV_TARGET3;
-    //vector vOutlineDepth : SV_TARGET4;
+    vector vOutline : SV_TARGET0;
+    //vector vOutlineDepth : SV_TARGET1;
 };
 
 PS_OUT_OUTLINE PS_OUTLINE(PS_IN_OUTLINE In)
 {
     PS_OUT_OUTLINE Out;
     Out.vOutline = float4(1.f, 0.f, 0.f, 1.f);
-    //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+    //Out.vOutlineDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
     
     return Out;
 }

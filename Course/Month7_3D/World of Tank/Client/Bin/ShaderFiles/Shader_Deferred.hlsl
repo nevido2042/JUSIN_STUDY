@@ -172,6 +172,8 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
 
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
 
+    //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
+    //Out.vDepthOutline = Out.vDepth;
     vector vOutlineDepth = g_OutlineDepthTexture.Sample(DefaultSampler, In.vTexcoord);
     vector vOutline = g_OutlineTexture.Sample(DefaultSampler, In.vTexcoord);
 
@@ -180,7 +182,7 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
 
     vector vColor = vDiffuse * vShade + vSpecular;
 
-    if (vOutlineDepth.y >= 1.f)
+    if (vOutlineDepth.y/*(Near/Far ~ 1)*/ >= 1.f)//깊이값이 없거나, 해당 픽셀이 비어있다(깊이 텍스처에 아무것도 안 찍혔으면)
     {
         vColor += vOutline;
     }
@@ -191,24 +193,33 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
     Out.vBackBuffer = vColor;
     
     
+    /* 투영상의 z는 0 ~ far, w는 near에서 far까지, 그러니까 vDepth의 x에는 0 ~ 1까지의 값이 참 ( 깊이 ) */
+    /* 그리고 월드까지의 변환을 해줄 때, 필요한 w값을 구해주되, 플래그를 UNORM으로 받아왔기 때문에 0 ~ 1로 치환 해주어야 함 */
+    
     //그림자
+    //Out.vShadow = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+    //In.vProjPos.z(0~Far) / In.vProjPos.w(Near~Far) -> 투영 스페이스의 깊이(0~1)
+    //In.vProjPos.w(Near~Far) / 500.0f(Far) -> (Near/Far ~ 1)
+    
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
-    float fViewZ = vDepthDesc.y * 500.f;
+    float fViewZ = vDepthDesc.y * 500.f; //(Near~Far)
     
     vector vPosition;
 
     vPosition.x = In.vTexcoord.x * 2.f - 1.f;
     vPosition.y = In.vTexcoord.y * -2.f + 1.f;
-    vPosition.z = vDepthDesc.x;
+    vPosition.z = vDepthDesc.x;//투영 스페이스의 깊이(0~1)
     vPosition.w = 1.f;
 
-    vPosition = vPosition * fViewZ;
+    vPosition = vPosition * fViewZ; //w나누던 연산을 역으로 곱하는 부분
     
-    vPosition = mul(vPosition, g_ProjMatrixInv);
-    vPosition = mul(vPosition, g_ViewMatrixInv);
+    vPosition = mul(vPosition, g_ProjMatrixInv); //투영 역행렬
+    vPosition = mul(vPosition, g_ViewMatrixInv); //뷰 역행렬
     
-    vPosition = mul(vPosition, g_LightViewMatrix);
-    vPosition = mul(vPosition, g_LightProjMatrix);
+    //월드로 왔음
+    
+    vPosition = mul(vPosition, g_LightViewMatrix); //빛(카메라) 행렬
+    vPosition = mul(vPosition, g_LightProjMatrix); //빛(카메라) 투영 행렬
     
     float2 vTexcoord;
     
@@ -217,9 +228,9 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
     vTexcoord.y = vPosition.y / vPosition.w * -0.5f + 0.5f;
     
     float4 vOldDepthDesc = g_ShadowTexture.Sample(DefaultSampler, vTexcoord);
-    float fOldViewZ = vOldDepthDesc.y * 500.f;
+    float fOldViewZ = vOldDepthDesc.y * 500.f;//(Near~Far)
     
-    if (fOldViewZ < vPosition.w)
+    if (fOldViewZ < vPosition.w/*(Near~Far)*/)
         Out.vBackBuffer = Out.vBackBuffer * 0.5f;
 
     return Out;
