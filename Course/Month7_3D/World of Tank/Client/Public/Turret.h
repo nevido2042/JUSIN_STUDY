@@ -65,7 +65,9 @@ protected:
 
 protected:
 	HRESULT Bind_ShaderResources();
+	HRESULT Ready_PartObjects();
 
+public:
 	virtual void Free() override;
 };
 

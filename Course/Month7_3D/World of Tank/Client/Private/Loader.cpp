@@ -11,6 +11,8 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "DragonHead.h"
+#include "Monkey.h"
 #include "MissileExplosionEffect.h"
 #include "MissileSmoke.h"
 #include "Missile.h"
@@ -458,6 +460,23 @@ HRESULT CLoader::Loading_For_Static()
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
+#pragma region ºÎÂø¹°
+	/* For.Prototype_Component_Model_Monkey */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.03f, 0.03f, 0.03f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Monkey"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Monkey/Monkey.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_DragonHead */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.03f, 0.03f, 0.03f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_DragonHead"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/DragonHead/DragonHead.bin", PreTransformMatrix))))
+		return E_FAIL;
+#pragma endregion
+
+
 	/* For.Prototype_Component_Model_Missile */
 	PreTransformMatrix = XMMatrixIdentity();
 	PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -675,6 +694,19 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+#pragma region 3DºÎÂø¹°
+	/* For.Prototype_GameObject_Monkey */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Monkey"),
+		CMonkey::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DragonHead */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHead"),
+		CDragonHead::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+#pragma endregion
+
 
 	/* For.Prototype_GameObject_MissileExplosionEffect */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MissileExplosionEffect"),

@@ -89,6 +89,9 @@ HRESULT CTigerTurret::Ready_Components()
 
 HRESULT CTigerTurret::Ready_PartObjects(TURRET_DESC* pDesc)
 {
+	if (FAILED(__super::Ready_PartObjects()))
+		return E_FAIL;
+
 	/* 주포을 추가한다. */
 	CGun::GUN_DESC GunDesc{};
 	GunDesc.vBaseColor = pDesc->vGunColor;

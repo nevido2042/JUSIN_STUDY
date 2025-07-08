@@ -87,10 +87,10 @@ void CTurret::Late_Update(_float fTimeDelta)
 		1.f
 	);
 
-	if (m_pOwner->Get_IsPicked() && m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+	if (m_pOwner->Get_IsPicked() && m_pGameInstance->Is_In_Frustum(vPos, 5.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_OUTLINE, this);
 
-	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+	if (m_pGameInstance->Is_In_Frustum(vPos, 5.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 
 	// 프러스텀 안에 있으면 렌더링 추가
@@ -443,6 +443,21 @@ HRESULT CTurret::Bind_ShaderResources()
 			return E_FAIL;
 	}
 
+
+	return S_OK;
+}
+
+HRESULT CTurret::Ready_PartObjects()
+{
+	/* 3D커스텀 파츠를 추가한다. */
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.pParentWorldMatrix = &m_CombinedWorldMatrix;
+	Desc.iID = m_iID;
+	Desc.vInitPosition = _float3(0.f, 3.f, 0.f);
+	lstrcpy(Desc.szName, TEXT("3DCustom"));
+
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHead"), TEXT("Part_3DCustom"), &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -164,6 +164,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\public\3DCustom.h" />
     <ClInclude Include="..\public\AimCircle.h" />
     <ClInclude Include="..\public\AmmoBay.h" />
     <ClInclude Include="..\public\Ash.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\public\DamagePanel.h" />
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\DirectionTurret.h" />
+    <ClInclude Include="..\public\DragonHead.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Explosion.h" />
     <ClInclude Include="..\public\FireEffect.h" />
@@ -229,6 +231,7 @@
     <ClInclude Include="..\public\MissileExplosionEffect.h" />
     <ClInclude Include="..\public\MissileSmoke.h" />
     <ClInclude Include="..\public\Module.h" />
+    <ClInclude Include="..\public\Monkey.h" />
     <ClInclude Include="..\public\ParticleTool.h" />
     <ClInclude Include="..\public\PersonalArrowEntry.h" />
     <ClInclude Include="..\public\PickedManager.h" />
@@ -307,6 +310,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\3DCustom.cpp" />
     <ClCompile Include="..\private\AimCircle.cpp" />
     <ClCompile Include="..\private\AmmoBay.cpp" />
     <ClCompile Include="..\private\Ash.cpp" />
@@ -342,6 +346,7 @@
     <ClCompile Include="..\private\DeadSmoke.cpp" />
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\DirectionTurret.cpp" />
+    <ClCompile Include="..\private\DragonHead.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Explosion.cpp" />
     <ClCompile Include="..\private\FireEffect.cpp" />
@@ -370,6 +375,7 @@
     <ClCompile Include="..\private\MissileExplosionEffect.cpp" />
     <ClCompile Include="..\private\MissileSmoke.cpp" />
     <ClCompile Include="..\private\Module.cpp" />
+    <ClCompile Include="..\private\Monkey.cpp" />
     <ClCompile Include="..\private\ParticleTool.cpp" />
     <ClCompile Include="..\private\PersonalArrowEntry.cpp" />
     <ClCompile Include="..\private\PickedManager.cpp" />

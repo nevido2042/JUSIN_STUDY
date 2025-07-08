@@ -373,6 +373,15 @@
     <Filter Include="02.GameObjects\06.UIObject\Score\Missile\MissileExplosionEffect">
       <UniqueIdentifier>{657664b0-e3c6-4a67-b902-ac4ab3198db7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\3DCustom">
+      <UniqueIdentifier>{d586e4d9-112e-4148-88af-9342f441164d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DCustom\Monkey">
+      <UniqueIdentifier>{e5c46f9c-9267-4e07-b6ae-a3dba1dca86a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DCustom\DragonHead">
+      <UniqueIdentifier>{b43d6045-4e81-4827-bdef-0e20a9fb494e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -753,6 +762,15 @@
     <ClInclude Include="..\public\MissileExplosionEffect.h">
       <Filter>02.GameObjects\06.UIObject\Score\Missile\MissileExplosionEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\3DCustom.h">
+      <Filter>02.GameObjects\3DCustom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Monkey.h">
+      <Filter>02.GameObjects\3DCustom\Monkey</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonHead.h">
+      <Filter>02.GameObjects\3DCustom\DragonHead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1115,6 +1133,15 @@
     </ClCompile>
     <ClCompile Include="..\private\MissileExplosionEffect.cpp">
       <Filter>02.GameObjects\06.UIObject\Score\Missile\MissileExplosionEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\3DCustom.cpp">
+      <Filter>02.GameObjects\3DCustom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Monkey.cpp">
+      <Filter>02.GameObjects\3DCustom\Monkey</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonHead.cpp">
+      <Filter>02.GameObjects\3DCustom\DragonHead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
