@@ -29,12 +29,6 @@ struct VS_OUT
     float4 vProjPos : TEXCOORD2;
 };
 
-struct VS_OUT_OUTLINE
-{
-    float4 vPosition : SV_POSITION;
-    float4 vProjPos : TEXCOORD0;
-};
-
 // === 정점 셰이더 ===
 VS_OUT VS_MAIN(VS_IN In)
 {
@@ -61,6 +55,12 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+struct VS_OUT_OUTLINE
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0;
+};
+
 VS_OUT_OUTLINE VS_OUTLINE(VS_IN In)
 {
     VS_OUT_OUTLINE Out;
@@ -79,7 +79,28 @@ VS_OUT_OUTLINE VS_OUTLINE(VS_IN In)
     return Out;
 }
 
+struct VS_OUT_SHADOW
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0;
+};
 
+
+VS_OUT_SHADOW VS_MAIN_SHADOW(VS_IN In)
+{
+    VS_OUT_SHADOW Out;
+    
+    matrix matWV, matWVP;
+    
+    /* mul : 모든 행렬의 곱하기를 수행한다. /w연산을 수행하지 않는다. */
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+    Out.vProjPos = Out.vPosition;
+    
+    return Out;
+}
 
 
 // === 픽셀 셰이더 ===
@@ -199,7 +220,25 @@ PS_OUT_OUTLINE PS_OUTLINE(PS_IN_OUTLINE In)
     return Out;
 }
 
+struct PS_IN_SHADOW
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0;
+};
 
+struct PS_OUT_SHADOW
+{
+    vector vShadow : SV_TARGET0;
+};
+
+PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN_SHADOW In)
+{
+    PS_OUT_SHADOW Out;
+    
+    Out.vShadow = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
+    
+    return Out;
+}
 
 // === 테크닉 ===
 technique11 DefaultTechnique
@@ -250,5 +289,16 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_OUTLINE();
     }
 
+    //4
+    pass Shadow
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        
+        VertexShader = compile vs_5_0 VS_MAIN_SHADOW();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
+    }
    
 }

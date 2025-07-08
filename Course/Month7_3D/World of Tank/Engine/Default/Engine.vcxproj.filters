@@ -172,6 +172,9 @@
     <ClInclude Include="..\public\Target_Manager.h">
       <Filter>01.Utility\12.RenderTargets\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Shadow.h">
+      <Filter>01.Utility\13.Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -329,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Target_Manager.cpp">
       <Filter>01.Utility\12.RenderTargets\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shadow.cpp">
+      <Filter>01.Utility\13.Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -508,6 +514,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Point">
       <UniqueIdentifier>{8bdef65f-0eb8-4fcd-9b6a-1f42c337afab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\13.Shadow">
+      <UniqueIdentifier>{a50e8c48-fd6f-4a27-9434-fdbcbb9daa17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

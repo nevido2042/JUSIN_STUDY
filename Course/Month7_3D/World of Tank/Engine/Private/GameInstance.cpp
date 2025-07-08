@@ -96,6 +96,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
+	m_pShadow = CShadow::Create(*ppDeviceOut, *ppContextOut);
+	if (nullptr == m_pShadow)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -613,9 +617,9 @@ HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTar
 	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
 }
 
-HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear)
 {
-	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, isDepthClear);
 }
 
 HRESULT CGameInstance::End_MRT()
@@ -644,10 +648,30 @@ HRESULT CGameInstance::Render_MRT_Debug(const _wstring& strMRTTag, CShader* pSha
 
 #pragma endregion
 
+#pragma region SHADOW
 
+HRESULT CGameInstance::Ready_Light_For_Shadow(const CShadow::SHADOW_DESC& Desc)
+{
+	return m_pShadow->Ready_Light_For_Shadow(Desc);
+}
+
+const _float4x4* CGameInstance::Get_Light_ViewMatrix()
+{
+	return m_pShadow->Get_Light_ViewMatrix();
+}
+const _float4x4* CGameInstance::Get_Light_ProjMatrix()
+{
+	return m_pShadow->Get_Light_ProjMatrix();
+}
+#pragma endregion
 
 void CGameInstance::Release_Engine()
 {
+
+	if (0 != Safe_Release(m_pShadow))
+		MSG_BOX("Failed to Release : m_pShadow");
+	cout << m_iRefCnt << endl;
+
 	if (0 != Safe_Release(m_pTarget_Manager))
 		MSG_BOX("Failed to Release : m_pTarget_Manager");
 	cout << m_iRefCnt << endl;//449

@@ -3,7 +3,9 @@
 /* 상수테이블 ConstantTable */
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix g_ViewMatrixInv, g_ProjMatrixInv;
-float g_fFar;
+matrix g_LightViewMatrix, g_LightProjMatrix;
+
+//float g_fFar;
 
 Texture2D g_RenderTargetTexture;
 Texture2D g_NormalTexture;
@@ -13,6 +15,7 @@ Texture2D g_DepthTexture;
 Texture2D g_SpecularTexture;
 Texture2D g_OutlineTexture;
 Texture2D g_OutlineDepthTexture;
+Texture2D g_ShadowTexture;
 
 vector g_vLightDir;
 vector g_vLightPos;
@@ -186,6 +189,38 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
         discard;
 
     Out.vBackBuffer = vColor;
+    
+    
+    //그림자
+    vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
+    float fViewZ = vDepthDesc.y * 500.f;
+    
+    vector vPosition;
+
+    vPosition.x = In.vTexcoord.x * 2.f - 1.f;
+    vPosition.y = In.vTexcoord.y * -2.f + 1.f;
+    vPosition.z = vDepthDesc.x;
+    vPosition.w = 1.f;
+
+    vPosition = vPosition * fViewZ;
+    
+    vPosition = mul(vPosition, g_ProjMatrixInv);
+    vPosition = mul(vPosition, g_ViewMatrixInv);
+    
+    vPosition = mul(vPosition, g_LightViewMatrix);
+    vPosition = mul(vPosition, g_LightProjMatrix);
+    
+    float2 vTexcoord;
+    
+    /* (-1, 1 ~ 1, -1) -> (0, 0 ~ 1, 1) */
+    vTexcoord.x = vPosition.x / vPosition.w * 0.5f + 0.5f;
+    vTexcoord.y = vPosition.y / vPosition.w * -0.5f + 0.5f;
+    
+    float4 vOldDepthDesc = g_ShadowTexture.Sample(DefaultSampler, vTexcoord);
+    float fOldViewZ = vOldDepthDesc.y * 500.f;
+    
+    if (fOldViewZ < vPosition.w)
+        Out.vBackBuffer = Out.vBackBuffer * 0.5f;
 
     return Out;
 }

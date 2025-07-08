@@ -32,11 +32,12 @@ protected:
 
 public:
 	virtual HRESULT Initialize_Prototype() = 0;
-	virtual HRESULT Initialize(void* pArg);
-	virtual void Priority_Update(_float fTimeDelta);
+	virtual HRESULT Initialize(void* pArg) override;
+	virtual void Priority_Update(_float fTimeDelta) override;
 	virtual void Update(_float fTimeDelta);
-	virtual void Late_Update(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual void Late_Update(_float fTimeDelta) override;
+	virtual HRESULT Render() override;
+	virtual HRESULT Render_Shadow() override;
 	virtual void On_Collision_Stay(CGameObject* pGameObject, _fvector vNormal) override;
 
 public:
