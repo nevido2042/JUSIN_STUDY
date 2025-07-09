@@ -92,6 +92,7 @@ HRESULT CGameManager::Ready_Layer_PlayerTank(const _wstring strLayerTag, SPAWN_T
 	Desc.vBodyColor = m_vBodyColor;
 	Desc.vTurretColor = m_vTurretColor;
 	Desc.vGunColor = m_vGunColor;
+	Desc.e3DCustom = m_e3DCustom;
 
 	switch (m_eSelectTank)
 	{

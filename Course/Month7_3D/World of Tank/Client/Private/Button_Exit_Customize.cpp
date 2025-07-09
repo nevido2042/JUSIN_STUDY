@@ -60,6 +60,11 @@ void CButton_Exit_Customize::Update(_float fTimeDelta)
 		{
 			pGameObject->Set_Visible(true);
 		}
+
+		for (CGameObject* pGameObject : m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Button_3DCustom"))->Get_GameObjects())
+		{
+			pGameObject->Set_Visible(false);
+		}
 	}
 }
 

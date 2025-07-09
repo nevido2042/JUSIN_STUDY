@@ -13,6 +13,8 @@ typedef struct tagSessionInfo
 	_float4			vBodyColor = { 1.f, 1.f, 1.f, 1.f };
 	_float4			vTurretColor = { 1.f, 1.f, 1.f, 1.f };
 	_float4			vGunColor = { 1.f, 1.f, 1.f, 1.f };
+	
+	CUSTOM3D		eCustom3D = { CUSTOM3D::END };
 
 	TEAM			eTeam = { TEAM::END };
 

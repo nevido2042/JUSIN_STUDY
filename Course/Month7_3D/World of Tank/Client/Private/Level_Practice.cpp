@@ -281,6 +281,7 @@ HRESULT CLevel_Practice::Ready_Layer_PlayerTank(const _wstring strLayerTag)
 	Desc.vBodyColor = pGameManager->Get_BodyColor();
 	Desc.vTurretColor = pGameManager->Get_TurretColor();
 	Desc.vGunColor = pGameManager->Get_GunColor();
+	Desc.e3DCustom = pGameManager->Get_3DCustom();
 	
 	Desc.eTeam = TEAM::A;
 	switch (eSelectTank)
@@ -310,7 +311,7 @@ HRESULT CLevel_Practice::Ready_Layer_DummyTank(const _wstring strLayerTag)
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	Desc.iID = -100;
-
+	Desc.e3DCustom = CUSTOM3D::END;
 
 	Desc.vInitPosition = _float3(300.f, 87.f, 300.f);
 	Desc.eTeam = TEAM::A;

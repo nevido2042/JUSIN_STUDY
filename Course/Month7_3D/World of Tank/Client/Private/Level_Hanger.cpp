@@ -12,6 +12,7 @@
 #include "LandObject.h"
 #include "Button_Color.h"
 #include "Button_Part.h"
+#include "Button_3DCustom.h"
 
 CLevel_Hanger::CLevel_Hanger(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -81,6 +82,10 @@ HRESULT CLevel_Hanger::Initialize()
 
 	if (FAILED(Ready_Layer_Button_Parts(TEXT("Layer_Button_Customize"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button_3DCustoms(TEXT("Layer_Button_3DCustom"))))
+		return E_FAIL;
+
 #pragma endregion
 
 	if (FAILED(Ready_Layer_Fury_Hanger(TEXT("Layer_Fury_Hanger"))))
@@ -391,6 +396,46 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Parts(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Part"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &ButtonPartDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_3DCustoms(const _wstring strLayerTag)
+{
+	CButton_3DCustom::BUTTON_3DCUSTOM_DESC				Desc{};
+
+	Desc.fSizeX = 102.f * UI_RATIO;
+	Desc.fSizeY = 102.f * UI_RATIO;
+	Desc.fY = g_iWinSizeY * 0.8f;
+	Desc.bVisible = false;
+
+	Desc.fX = g_iWinSizeX * 0.6f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Monkey");
+	Desc.e3DCustom = CUSTOM3D::MONKEY;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.65f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_DragonHead");
+	Desc.e3DCustom = CUSTOM3D::DRAGONHEAD;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.70f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Drum");
+	Desc.e3DCustom = CUSTOM3D::DRUM;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.9f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Default");
+	Desc.e3DCustom = CUSTOM3D::END;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

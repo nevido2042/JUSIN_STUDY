@@ -26,6 +26,7 @@ HRESULT CTurret::Initialize(void* pArg)
 
 	TURRET_DESC* pDesc = static_cast<TURRET_DESC*>(pArg);
 	m_vBaseColor = pDesc->vBaseColor;
+	m_eCustom3D = pDesc->e3DCustom;
 
 	return S_OK;
 }
@@ -455,9 +456,52 @@ HRESULT CTurret::Ready_PartObjects()
 	Desc.iID = m_iID;
 	Desc.vInitPosition = _float3(0.f, 3.f, 0.f);
 	lstrcpy(Desc.szName, TEXT("3DCustom"));
+	Desc.bVisible = false;
 
-	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHead"), TEXT("Part_3DCustom"), &Desc)))
-		return E_FAIL;
+	//°Ý³³°í ÀÏ ¶§´Â 3D Ä¿½ºÅÒ ÆÄÃ÷ ´Ù Ãß°¡ÇÏ°í ²¯´Ù Å°ÀÚ
+	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
+	{
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Monkey"), TEXT("Part_Monkey"), &Desc)))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHead"), TEXT("Part_DragonHead"), &Desc)))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Drum"), TEXT("Part_Drum"), &Desc)))
+			return E_FAIL;
+
+		CGameManager* pGameManager = GET_GAMEMANAGER;
+		switch (pGameManager->Get_3DCustom())
+		{
+		case CUSTOM3D::MONKEY:
+			Find_PartObject(TEXT("Part_Monkey"))->Set_Visible(true);
+			break;
+		case CUSTOM3D::DRAGONHEAD:
+			Find_PartObject(TEXT("Part_DragonHead"))->Set_Visible(true);
+			break;
+		case CUSTOM3D::DRUM:
+			Find_PartObject(TEXT("Part_Drum"))->Set_Visible(true);
+			break;
+		}
+	}
+
+	Desc.bVisible = true;
+	switch (m_eCustom3D)
+	{
+	case CUSTOM3D::MONKEY:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Monkey"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	case CUSTOM3D::DRAGONHEAD:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHead"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	case CUSTOM3D::DRUM:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Drum"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	}
+	
 
 	return S_OK;
 }

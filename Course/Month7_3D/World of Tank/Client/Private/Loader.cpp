@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Drum.h"
 #include "DragonHead.h"
 #include "Monkey.h"
 #include "MissileExplosionEffect.h"
@@ -91,6 +92,7 @@
 #pragma endregion
 
 #pragma region HANGER
+#include "Button_3DCustom.h"
 #include "Camera_Hanger.h"
 #include "Button_Fury.h"
 #include "Button_Tiger.h"
@@ -463,16 +465,23 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 부착물
 	/* For.Prototype_Component_Model_Monkey */
 	PreTransformMatrix = XMMatrixIdentity();
-	PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationX(XMConvertToRadians(90.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Monkey"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Monkey/Monkey.bin", PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_DragonHead */
 	PreTransformMatrix = XMMatrixIdentity();
-	PreTransformMatrix = XMMatrixScaling(0.02f, 0.02f, 0.02f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationX(XMConvertToRadians(90.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_DragonHead"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/DragonHead/DragonHead.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Drum */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.f, -1.5f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Drum"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Drum/Drum.bin", PreTransformMatrix))))
 		return E_FAIL;
 #pragma endregion
 
@@ -704,6 +713,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_DragonHead */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHead"),
 		CDragonHead::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Drum */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Drum"),
+		CDrum::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 
@@ -1097,7 +1111,25 @@ HRESULT CLoader::Loading_For_Hanger()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 #pragma region 텍스쳐
 	
-#pragma region 커스터마이징
+#pragma region 3D커스터마이징 텍스쳐
+	/* For.Prototype_Component_Texture_3DCustom_Monkey*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_Monkey"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_28_Mystic_Monkey.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_3DCustom_DragonHead*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_DragonHead"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_12_Asia_Dragon_Head.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_3DCustom_Drum*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_Drum"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_23_Rock_Drums.dds"), 1))))
+		return E_FAIL;
+#pragma endregion
+
+
+#pragma region 색상 커스터마이징
 	/* For.Prototype_Component_Texture_CustomColor_Default*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_CustomColor_Default"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/closeBtnIcon.dds"), 1))))
@@ -1179,6 +1211,13 @@ HRESULT CLoader::Loading_For_Hanger()
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
 #pragma region 원형 객체
+
+#pragma region 3D커스터마이징 버튼
+	/* For.Prototype_GameObject_Button_3DCustom */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		CButton_3DCustom::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+#pragma endregion
 
 	/* For.Prototype_GameObject_Camera_Hanger */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Camera_Hanger"),

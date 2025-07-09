@@ -174,6 +174,7 @@
     <ClInclude Include="..\public\Boundary.h" />
     <ClInclude Include="..\public\Building.h" />
     <ClInclude Include="..\public\BurntTree.h" />
+    <ClInclude Include="..\public\Button_3DCustom.h" />
     <ClInclude Include="..\public\Button_Color.h" />
     <ClInclude Include="..\public\Button_Customize.h" />
     <ClInclude Include="..\public\Button_Exit_Customize.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\DirectionTurret.h" />
     <ClInclude Include="..\public\DragonHead.h" />
+    <ClInclude Include="..\public\Drum.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Explosion.h" />
     <ClInclude Include="..\public\FireEffect.h" />
@@ -320,6 +322,7 @@
     <ClCompile Include="..\private\Boundary.cpp" />
     <ClCompile Include="..\private\Building.cpp" />
     <ClCompile Include="..\private\BurntTree.cpp" />
+    <ClCompile Include="..\private\Button_3DCustom.cpp" />
     <ClCompile Include="..\private\Button_Color.cpp" />
     <ClCompile Include="..\private\Button_Customize.cpp" />
     <ClCompile Include="..\private\Button_Exit_Customize.cpp" />
@@ -347,6 +350,7 @@
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\DirectionTurret.cpp" />
     <ClCompile Include="..\private\DragonHead.cpp" />
+    <ClCompile Include="..\private\Drum.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Explosion.cpp" />
     <ClCompile Include="..\private\FireEffect.cpp" />

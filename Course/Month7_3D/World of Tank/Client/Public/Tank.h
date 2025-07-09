@@ -23,6 +23,8 @@ public:
 		_float4 vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
 
 		TEAM	eTeam = { TEAM::END };
+
+		CUSTOM3D e3DCustom = { CUSTOM3D::END };
 	} TANK_DESC;
 
 protected:

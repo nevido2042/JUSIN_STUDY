@@ -17,6 +17,7 @@ public:
 	{
 		_float4 vBaseColor =	{ 1.f, 1.f, 1.f, 1.f };
 		_float4 vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
+		CUSTOM3D e3DCustom = { CUSTOM3D::END };
 	}TURRET_DESC;
 
 protected:
@@ -48,6 +49,8 @@ private:
 
 private:
 	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
+private:
+	CUSTOM3D m_eCustom3D = { CUSTOM3D::END };
 
 protected:
 	const _float	m_fSyncInterval = { 0.5f };

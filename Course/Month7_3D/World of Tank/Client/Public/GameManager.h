@@ -62,6 +62,9 @@ public:
 
 	const PART_REPAINT& Get_PartRepaint() const { return m_ePartRepaint; }
 	void				Set_PartRepaint(const PART_REPAINT& ePartRepaint);
+
+	const CUSTOM3D	Get_3DCustom() const { return m_e3DCustom; }
+	void			Set_3DCustom(CUSTOM3D e3DCustom) { m_e3DCustom = e3DCustom; }
 private:
 	PART_REPAINT	m_ePartRepaint = { PART_REPAINT::BODY };
 private:
@@ -69,6 +72,7 @@ private:
 	_float4		m_vBodyColor =		{ 1.f, 1.f, 1.f, 1.f };
 	_float4		m_vTurretColor =	{ 1.f, 1.f, 1.f, 1.f };
 	_float4		m_vGunColor =		{ 1.f, 1.f, 1.f, 1.f };
+	CUSTOM3D	m_e3DCustom = { CUSTOM3D::END };
 private:
 	_bool		m_isGameStart = { false };
 

@@ -539,6 +539,7 @@ HRESULT CServer::Define_Packets()
 			pSession->Get_SessionInfo().vBodyColor = Desc.vBodyColor;
 			pSession->Get_SessionInfo().vTurretColor = Desc.vTurretColor;
 			pSession->Get_SessionInfo().vGunColor = Desc.vGunColor;
+            pSession->Get_SessionInfo().eCustom3D = Desc.e3DCustom;
 
             cout << "ID: " << Desc.iID << " TankType: " << ENUM_CLASS(pSession->Get_SessionInfo().eTank) << endl;
 
@@ -683,6 +684,7 @@ HRESULT CServer::Define_Packets()
 				Other_Desc.vTurretColor = pOther->Get_SessionInfo().vTurretColor;
 				Other_Desc.vGunColor = pOther->Get_SessionInfo().vGunColor;
                 Other_Desc.eTeam = pOther->Get_SessionInfo().eTeam;
+				Other_Desc.e3DCustom = pOther->Get_SessionInfo().eCustom3D;
 
                 cout << "Send_Packet_Unicast(SC_CREATE_OTHER_CHARACTER)" << endl;
                 cout << "ID: " << Other_Desc.iID << endl;

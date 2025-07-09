@@ -231,6 +231,7 @@ HRESULT CMainApp::Ready_Packets()
 			Desc.vBodyColor = Packet_Desc.vBodyColor;
 			Desc.vTurretColor = Packet_Desc.vTurretColor;
 			Desc.vGunColor = Packet_Desc.vGunColor;
+			Desc.e3DCustom = Packet_Desc.e3DCustom;
 
 			cout << "SC_CREATE_OTHER_CHARACTER" << endl;
 			cout << "ID: " << Packet_Desc.iID << endl;

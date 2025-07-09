@@ -66,6 +66,7 @@ void CButton_Start::Update(_float fTimeDelta)
 		Desc.vBodyColor = pGameManager->Get_BodyColor();
 		Desc.vTurretColor = pGameManager->Get_TurretColor();
 		Desc.vGunColor = pGameManager->Get_GunColor();
+		Desc.e3DCustom = pGameManager->Get_3DCustom();
 
 		m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_JOIN_MATCH), &Desc);
 

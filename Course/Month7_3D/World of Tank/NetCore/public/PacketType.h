@@ -3,6 +3,7 @@
 #include "Engine_Defines.h"
 #include "NetCore_Define.h"
 
+enum class CUSTOM3D     { MONKEY, DRAGONHEAD, DRUM, END };
 enum class TANK         { FURY, TIGER, END };
 enum class MODULE       { ENGINE, CHASSIS, TURRET, GUN, SURVEYING_DEVICE, RADIO, FUEL_TANK, AMMO_BAY, END };
 enum class MODULE_STATE { DESTROYED, DAMAGED, FUNCTIONAL, END };
@@ -138,6 +139,7 @@ typedef struct tagJoinMatch_Desc : PACKET_DESC
     _float4 vBodyColor      { 1.f, 1.f, 1.f, 1.f };
     _float4 vTurretColor    { 1.f, 1.f, 1.f, 1.f };
     _float4 vGunColor       { 1.f, 1.f, 1.f, 1.f };
+    CUSTOM3D e3DCustom = { CUSTOM3D::END };
 }JOIN_MATCH_DESC;
 
 typedef struct tagCreateOtherTank_Desc : SPAWN_TANK_DESC
@@ -146,6 +148,7 @@ typedef struct tagCreateOtherTank_Desc : SPAWN_TANK_DESC
     _float4 vBodyColor      { 1.f, 1.f, 1.f, 1.f };
     _float4 vTurretColor    { 1.f, 1.f, 1.f, 1.f };
     _float4 vGunColor       { 1.f, 1.f, 1.f, 1.f };
+    CUSTOM3D e3DCustom = { CUSTOM3D::END };
 }CREATE_OTHER_TANK_DESC;
 
 typedef struct tagMatrix_Desc : PACKET_DESC
