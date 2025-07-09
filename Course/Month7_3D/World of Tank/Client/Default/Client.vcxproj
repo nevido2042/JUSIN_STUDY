@@ -204,6 +204,7 @@
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\DirectionTurret.h" />
     <ClInclude Include="..\public\DragonHead.h" />
+    <ClInclude Include="..\public\DragonHeadSmoke.h" />
     <ClInclude Include="..\public\Drum.h" />
     <ClInclude Include="..\public\Engine.h" />
     <ClInclude Include="..\public\Explosion.h" />
@@ -350,6 +351,7 @@
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\DirectionTurret.cpp" />
     <ClCompile Include="..\private\DragonHead.cpp" />
+    <ClCompile Include="..\private\DragonHeadSmoke.cpp" />
     <ClCompile Include="..\private\Drum.cpp" />
     <ClCompile Include="..\private\Engine.cpp" />
     <ClCompile Include="..\private\Explosion.cpp" />

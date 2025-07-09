@@ -51,7 +51,7 @@ struct PS_IN
 struct PS_OUT
 {
     vector vDiffuse : SV_TARGET0;
-    vector vNormal : SV_TARGET1;
+    //vector vNormal : SV_TARGET1;
     vector vDepth : SV_TARGET2;
 };
 
@@ -64,7 +64,7 @@ PS_OUT PS_MAIN(PS_IN In)
     float g = vMask.g;
     float b = vMask.b;
 
-    // RGB 평균값 사용 (혹은 밝기 기준)
+    // RGB 평균값 사용 
     float brightness = (r + g + b) / 3.f;
 
     vector tex0 = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexcoord * 100.f);
@@ -72,7 +72,7 @@ PS_OUT PS_MAIN(PS_IN In)
     vector tex2 = g_DiffuseTexture[2].Sample(DefaultSampler, In.vTexcoord * 100.f);
     vector tex3 = g_DiffuseTexture[3].Sample(DefaultSampler, In.vTexcoord * 100.f);
 
-    // 기준치 (밝기 일정 이상이면 흰색으로 간주)
+    // 기준치
     bool isWhite = brightness > 0.50f;
     
     // 일반 블렌딩
@@ -82,7 +82,7 @@ PS_OUT PS_MAIN(PS_IN In)
     vector vMtrlDiffuse = isWhite ? tex3 : vBlend;
     
     Out.vDiffuse = vector(vMtrlDiffuse.rgb, 1.f);
-    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    //Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.f, 0.f, 0.f);
     
     return Out;

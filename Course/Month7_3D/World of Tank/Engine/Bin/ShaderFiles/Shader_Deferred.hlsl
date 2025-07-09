@@ -230,14 +230,11 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
     float4 vOldDepthDesc = g_ShadowTexture.Sample(DefaultSampler, vTexcoord);
     float fOldViewZ = vOldDepthDesc.y * 1000.f; //(Near~Far)
     
-    if (fOldViewZ + 0.5f < vPosition.w/*(Near~Far)*/)
+    if (fOldViewZ + 0.1f < vPosition.w/*(Near~Far)*/)
         Out.vBackBuffer = Out.vBackBuffer * 0.5f;
 
     return Out;
 }
-
-
-
 
 technique11 DefaultTechnique
 {

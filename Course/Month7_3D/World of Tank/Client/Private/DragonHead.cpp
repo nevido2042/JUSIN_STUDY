@@ -18,22 +18,31 @@ HRESULT CDragonHead::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if(FAILED(Ready_PartObjects()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CDragonHead::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
+
+	CGameObject::Priority_Update(fTimeDelta);
 }
 
 void CDragonHead::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
+
+	CGameObject::Update(fTimeDelta);
 }
 
 void CDragonHead::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	CGameObject::Late_Update(fTimeDelta);
 }
 
 HRESULT CDragonHead::Render()
@@ -53,6 +62,20 @@ HRESULT CDragonHead::Ready_Components()
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_DragonHead"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CDragonHead::Ready_PartObjects()
+{
+	/* DragonHeadSmoke 파티클을 추가한다. */
+	GAMEOBJECT_DESC Desc{};
+	Desc.pParent = this;
+	Desc.vInitPosition = { 0.f, 0.3f, 0.6f };
+	Desc.pParentWorldMatrix = &m_CombinedWorldMatrix;
+	lstrcpy(Desc.szName, TEXT("DragonHeadSmoke"));
+	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DragonHeadSmoke"), TEXT("Part_DragonHeadSmoke"), &Desc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -87,4 +110,8 @@ CGameObject* CDragonHead::Clone(void* pArg)
 void CDragonHead::Free()
 {
 	__super::Free();
+
+	for (auto& Pair : m_PartObjects)
+		Safe_Release(Pair.second);
+	m_PartObjects.clear();
 }

@@ -388,6 +388,9 @@
     <Filter Include="02.GameObjects\3DCustom\02.Drum">
       <UniqueIdentifier>{f4045432-c5a0-47bf-9946-0c0c503aefc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\DragonHeadSmoke">
+      <UniqueIdentifier>{ba5138ed-e857-4ddc-ae56-e0bb6904bb41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -783,6 +786,9 @@
     <ClInclude Include="..\public\Drum.h">
       <Filter>02.GameObjects\3DCustom\02.Drum</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DragonHeadSmoke.h">
+      <Filter>02.GameObjects\07.Effect\Particle\DragonHeadSmoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1160,6 +1166,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Drum.cpp">
       <Filter>02.GameObjects\3DCustom\02.Drum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonHeadSmoke.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\DragonHeadSmoke</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
