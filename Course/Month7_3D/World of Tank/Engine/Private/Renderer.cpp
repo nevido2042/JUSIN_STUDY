@@ -40,7 +40,7 @@ HRESULT CRenderer::Initialize()
 	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
 	//	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), g_iMaxWidth, g_iMaxHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), m_iMaxWidth, m_iMaxHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 1.0f, 1.0f, 1.0f), true)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
@@ -82,7 +82,7 @@ HRESULT CRenderer::Initialize()
 	//m_iOriginalViewportWidth = static_cast<_uint>(ViewportDesc.Width);
 	//m_iOriginalViewportHeight = static_cast<_uint>(ViewportDesc.Height);
 
-	if (FAILED(Ready_DepthStencilView(g_iMaxWidth, g_iMaxHeight)))
+	if (FAILED(Ready_DepthStencilView(m_iMaxWidth, m_iMaxHeight)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -209,13 +209,14 @@ HRESULT CRenderer::Render_Outline()
 	return S_OK;
 }
 
+#pragma message("카메라를 움직일 때 그림자가 한프레임 늦는 현상 있음")
 HRESULT CRenderer::Render_Shadow()
 {
 	//m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), nullptr, true);
 
 	m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), m_pShadowDSV, true);
 
-	if (FAILED(Change_ViewportDesc(g_iMaxWidth, g_iMaxHeight)))
+	if (FAILED(Change_ViewportDesc(m_iMaxWidth, m_iMaxHeight)))
 		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_SHADOW)])

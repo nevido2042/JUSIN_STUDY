@@ -143,11 +143,11 @@ HRESULT CLevel_Hanger::Ready_Lights()
 		return E_FAIL;
 
 	CShadow::SHADOW_DESC		Desc{};
-	Desc.vEye = _float4(300.f, 200.f, 0.f, 1.f);
-	Desc.vAt = _float4(300.f, 90.f, 300.f, 1.f);
+	Desc.vEye = _float4(TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE, 200.f, TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE, 1.f);
+	Desc.vAt = _float4(TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.5f, 0.f, TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.5f, 1.f);
 	Desc.fFovy = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
-	Desc.fFar = 500.f;
+	Desc.fFar = CAMERA_FAR;
 
 	if (FAILED(m_pGameInstance->Ready_Light_For_Shadow(Desc)))
 		return E_FAIL;

@@ -60,21 +60,6 @@ namespace Engine
 
 	constexpr _uint g_iBase_WinSizeX = 1920;
 	constexpr _uint g_iBase_WinSizeY = 1080;
-
-	//const unsigned int g_iMaxWidth = 16384;
-	//const unsigned int g_iMaxHeight = 9216;	
-
-	//const unsigned int g_iMaxWidth = 8192;
-	//const unsigned int g_iMaxHeight = 4608;
-
-	//const unsigned int g_iMaxWidth = 4096;
-	//const unsigned int g_iMaxHeight = 2304;
-
-	//const unsigned int g_iMaxWidth = 1280;
-	//const unsigned int g_iMaxHeight = 720;
-
-	const unsigned int g_iMaxWidth = 2560;
-	const unsigned int g_iMaxHeight = 1440;
 }
 
 using namespace Engine;

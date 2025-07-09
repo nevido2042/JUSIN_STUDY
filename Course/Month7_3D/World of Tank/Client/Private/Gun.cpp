@@ -121,7 +121,7 @@ void CGun::Late_Update(_float fTimeDelta)
 	if (m_pOwner->Get_IsPicked() && m_pGameInstance->Is_In_Frustum(vPos, 2.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_OUTLINE, this);
 
-	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f) && m_pOwner->Get_isVisible())
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 
 	// 프러스텀 안에 있으면 렌더링 추가

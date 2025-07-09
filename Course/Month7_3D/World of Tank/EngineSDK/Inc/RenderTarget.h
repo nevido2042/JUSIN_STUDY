@@ -16,7 +16,7 @@ public:
 	}
 
 public:
-	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed);
 	void Clear();
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pContant);
 
@@ -29,6 +29,9 @@ public:
 
 private:
 	HRESULT Resize(_uint iNewWidth, _uint iNewHeight);
+
+private:
+	_bool m_bIsSizeFixed = { false };
 
 private:
 	DXGI_FORMAT m_ePixelFormat = {};
@@ -47,7 +50,7 @@ private:
 
 
 public:
-	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed);
 	virtual void Free() override;
 };
 

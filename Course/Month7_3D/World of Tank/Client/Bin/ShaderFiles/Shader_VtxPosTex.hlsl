@@ -227,7 +227,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN_BLEND In)
     //if (vDepthDesc.y == 0.f)
     //    return Out;
 
-    float fOldViewZ = vDepthDesc.y * 500.f;
+    float fOldViewZ = vDepthDesc.y * 1000.f;
     float fRealDistance = (fOldViewZ /*이것도 진짜 카메라와의 옛날 거리*/ - In.vProjPos.w/*이거 진짜 카메라 와의 거리*/); 
     
     Out.vColor.a = Out.vColor.a * (saturate(fRealDistance));

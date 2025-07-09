@@ -26,7 +26,7 @@ HRESULT CCamera_Hanger::Initialize(void* pArg)
 	pDesc->vAt = _float3(0.f, 0.f, 0.f);
 	pDesc->fFov = XMConvertToRadians(BASE_FOV);
 	pDesc->fNear = 0.1f;
-	pDesc->fFar = 500.f;
+	pDesc->fFar = CAMERA_FAR;
 	pDesc->fRotationPerSec = XMConvertToRadians(0.0f);
 	pDesc->fSpeedPerSec = 0.0f;
 	//lstrcpy(pDesc->szName, TEXT("Camera"));

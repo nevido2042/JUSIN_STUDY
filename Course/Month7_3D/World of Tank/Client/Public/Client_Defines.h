@@ -67,4 +67,6 @@ using namespace Client;
 #define SHELL_DIG_DEPTH				3.f			//포탄 땅 파임 정도
 #define SHELL_DIG_RADIUS			10.f			//포탄 땅 파임 범위
 
+#define CAMERA_FAR 1000.f		//카메라 최대 거리
+
 

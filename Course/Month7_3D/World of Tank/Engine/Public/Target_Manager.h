@@ -12,7 +12,7 @@ private:
 
 public:
 	HRESULT Initialize();
-	HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed);
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 
 	/*특정 타겟들을 장치에 동시(최대8개)에 바인딩한다. */

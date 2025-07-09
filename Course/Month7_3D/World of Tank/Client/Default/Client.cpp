@@ -226,6 +226,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+#pragma message("그림자가 안그려진다!!!!! 사이즈 문제 인듯!!")
     case WM_SIZE:
         if (wParam != SIZE_MINIMIZED) // 최소화 상태가 아닐 때만 처리
         { 

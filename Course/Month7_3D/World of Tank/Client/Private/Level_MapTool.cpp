@@ -141,7 +141,7 @@ HRESULT CLevel_MapTool::Ready_Layer_Camera(const _wstring strLayerTag)
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
-	Desc.fFar = 500.f;
+	Desc.fFar = CAMERA_FAR;
 
 	Desc.fSensor = 0.1f;
 

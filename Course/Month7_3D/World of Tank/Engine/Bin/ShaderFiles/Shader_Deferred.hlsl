@@ -99,7 +99,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     Out.vShade = g_vLightDiffuse * saturate(fShade);
     
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
-    float fViewZ = vDepthDesc.y * 500.f;
+    float fViewZ = vDepthDesc.y * 1000.f;
     
     vector vWorldPos;
     
@@ -133,7 +133,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     
         
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
-    float fViewZ = vDepthDesc.y * 500.f;
+    float fViewZ = vDepthDesc.y * 1000.f;
     
     vector vWorldPos;
     
@@ -202,7 +202,7 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
     //In.vProjPos.w(Near~Far) / 500.0f(Far) -> (Near/Far ~ 1)
     
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
-    float fViewZ = vDepthDesc.y * 500.f; //(Near~Far)
+    float fViewZ = vDepthDesc.y * 1000.f; //(Near~Far)
     
     vector vPosition;
 
@@ -228,9 +228,9 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
     vTexcoord.y = vPosition.y / vPosition.w * -0.5f + 0.5f;
     
     float4 vOldDepthDesc = g_ShadowTexture.Sample(DefaultSampler, vTexcoord);
-    float fOldViewZ = vOldDepthDesc.y * 500.f;//(Near~Far)
+    float fOldViewZ = vOldDepthDesc.y * 1000.f; //(Near~Far)
     
-    if (fOldViewZ + 0.f < vPosition.w/*(Near~Far)*/)
+    if (fOldViewZ + 0.5f < vPosition.w/*(Near~Far)*/)
         Out.vBackBuffer = Out.vBackBuffer * 0.5f;
 
     return Out;

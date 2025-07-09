@@ -11,8 +11,10 @@ CRenderTarget::CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 	Safe_AddRef(m_pContext);
 }
 
-HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed)
 {
+	m_bIsSizeFixed = bIsSizeFixed;
+
 	m_vClearColor = vClearColor;
 
 	D3D11_TEXTURE2D_DESC			TextureDesc{};
@@ -102,22 +104,25 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 
 HRESULT CRenderTarget::Resize(_uint iNewWidth, _uint iNewHeight)
 {
+	if(m_bIsSizeFixed)
+		return E_FAIL;
+
 	// 기존 리소스 해제
 	Safe_Release(m_pSRV);
 	Safe_Release(m_pRTV);
 	Safe_Release(m_pTexture2D);
 
 	// 재초기화
-	return Initialize(iNewWidth, iNewHeight, m_ePixelFormat, m_vClearColor);
+	return Initialize(iNewWidth, iNewHeight, m_ePixelFormat, m_vClearColor, m_bIsSizeFixed);
 
 	return S_OK;
 }
 
-CRenderTarget* CRenderTarget::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+CRenderTarget* CRenderTarget::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed)
 {
 	CRenderTarget* pInstance = new CRenderTarget(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(iWidth, iHeight, ePixelFormat, vClearColor)))
+	if (FAILED(pInstance->Initialize(iWidth, iHeight, ePixelFormat, vClearColor, bIsSizeFixed)))
 	{
 		MSG_BOX("Failed to Created : CRenderTarget");
 		Safe_Release(pInstance);
