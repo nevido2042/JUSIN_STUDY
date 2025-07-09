@@ -225,7 +225,7 @@ struct PS_OUT_SHADOW
 PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN_SHADOW In)
 {
     PS_OUT_SHADOW Out;
-    
+    //Out.vShadow = (0.f, 0.f, 0.f, 1.f);
     Out.vShadow = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.0f, 0.f, 0.f);
     //In.vProjPos.z(0~Far) / In.vProjPos.w(Near~Far) -> 투영 스페이스의 깊이(0~1)
     //In.vProjPos.w(Near~Far) / 500.0f(Far) -> (Near/Far ~ 1)

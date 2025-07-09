@@ -16,7 +16,7 @@ public:
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 
 	/*특정 타겟들을 장치에 동시(최대8개)에 바인딩한다. */
-	HRESULT Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear);
+	HRESULT Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV, _bool isDepthClear);
 	HRESULT End_MRT();
 	HRESULT Bind_ShaderResource(const _wstring& strTargetTag, class CShader* pShader, const _char* pContantName);
 

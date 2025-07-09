@@ -37,7 +37,10 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Outline"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+	//	return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), g_iMaxWidth, g_iMaxHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
@@ -75,6 +78,12 @@ HRESULT CRenderer::Initialize()
 	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(ViewportDesc.Width, ViewportDesc.Height, 1.f));
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.0f, 1.f));
+
+	//m_iOriginalViewportWidth = static_cast<_uint>(ViewportDesc.Width);
+	//m_iOriginalViewportHeight = static_cast<_uint>(ViewportDesc.Height);
+
+	if (FAILED(Ready_DepthStencilView(g_iMaxWidth, g_iMaxHeight)))
+		return E_FAIL;
 
 #ifdef _DEBUG
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 100.0f, 100.0f, 200.0f, 200.0f)))
@@ -202,7 +211,12 @@ HRESULT CRenderer::Render_Outline()
 
 HRESULT CRenderer::Render_Shadow()
 {
-	m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), true);
+	//m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), nullptr, true);
+
+	m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), m_pShadowDSV, true);
+
+	if (FAILED(Change_ViewportDesc(g_iMaxWidth, g_iMaxHeight)))
+		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_SHADOW)])
 	{
@@ -215,13 +229,16 @@ HRESULT CRenderer::Render_Shadow()
 
 	m_pGameInstance->End_MRT();
 
+	if (FAILED(Change_ViewportDesc(g_iWinSizeX, g_iWinSizeY)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 HRESULT CRenderer::Render_NonBlend()
 {
 	/* Diffuse + Normal */
-	m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"), true);
+	m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"));
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONBLEND)])
 	{
@@ -375,6 +392,58 @@ HRESULT CRenderer::Render_UI()
 
 	return S_OK;
 }
+
+HRESULT CRenderer::Ready_DepthStencilView(_uint iWidth, _uint iHeight)
+{
+	ID3D11Texture2D* pDepthStencilTexture = nullptr;
+
+	D3D11_TEXTURE2D_DESC	TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	/* 깊이 버퍼의 픽셀은 백버퍼의 픽셀과 갯수가 동일해야만 깊이 텍스트가 가능해진다. */
+	/* 픽셀의 수가 다르면 아에 렌더링을 못함. */
+	TextureDesc.Width = iWidth;
+	TextureDesc.Height = iHeight;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	TextureDesc.CPUAccessFlags = 0;
+	TextureDesc.MiscFlags = 0;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
+		return E_FAIL;
+
+
+	if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pShadowDSV)))
+		return E_FAIL;
+
+	Safe_Release(pDepthStencilTexture);
+
+	return S_OK;
+}
+HRESULT CRenderer::Change_ViewportDesc(_uint iWidth, _uint iHeight)
+{
+	D3D11_VIEWPORT			ViewportDesc{};
+	_uint					iNumViewports = { 1 };
+
+	ViewportDesc.TopLeftX = 0;
+	ViewportDesc.TopLeftY = 0;
+	ViewportDesc.Width = static_cast<_float>(iWidth);
+	ViewportDesc.Height = static_cast<_float>(iHeight);
+	ViewportDesc.MinDepth = 0.f;
+	ViewportDesc.MaxDepth = 1.f;
+
+	m_pContext->RSSetViewports(iNumViewports, &ViewportDesc);
+
+	return S_OK;
+}
+
 #ifdef _DEBUG
 HRESULT CRenderer::Render_Debug()
 {
@@ -420,6 +489,9 @@ void CRenderer::Free()
 	__super::Free();
 
 	Safe_Release(m_pGameInstance);
+
+	Safe_Release(m_pShadowDSV);
+
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
