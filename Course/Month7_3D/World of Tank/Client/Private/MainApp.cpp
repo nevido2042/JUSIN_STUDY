@@ -162,7 +162,12 @@ HRESULT CMainApp::Ready_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
 		{
-			CGameManager* pGameManager = static_cast<CGameManager*>(m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_GameManager")));
+			GAMESTART_DESC Desc = {};
+			m_pGameInstance->Output_Data(reinterpret_cast<_byte*>(&Desc), sizeof(GAMESTART_DESC));
+			m_pGameInstance->Clear_Packet();
+
+			CGameManager* pGameManager = GET_GAMEMANAGER;
+			pGameManager->Set_GameEndTime(Desc.GameEndTime);
 			pGameManager->Set_isGameStart(true);
 		})))
 		return E_FAIL;

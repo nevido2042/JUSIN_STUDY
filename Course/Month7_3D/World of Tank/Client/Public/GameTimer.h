@@ -22,7 +22,11 @@ public:
 
 
 private:
-	chrono::high_resolution_clock::time_point m_StartTime = {};
+	chrono::high_resolution_clock::time_point m_GameEndTime = {};
+	chrono::high_resolution_clock::time_point m_GameStartTime = {};
+	chrono::seconds m_Remaining = {};
+private:
+	_bool m_bIsSpawnMissile = { false };
 
 public:
 	static CGameTimer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

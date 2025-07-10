@@ -110,12 +110,12 @@ void CMissile::Update(_float fTimeDelta)
 		}
 
 		CLayer* pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Tank"));
-		if (pLayer == nullptr)
-			return;
-
-		for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+		if (pLayer)
 		{
-			static_cast<CTank*>(pGameObject)->Take_Damage(999.f, nullptr, vDigCenter);
+			for (CGameObject* pGameObject : pLayer->Get_GameObjects())
+			{
+				static_cast<CTank*>(pGameObject)->Take_Damage(999.f, nullptr, vDigCenter);
+			}
 		}
 
 		//모든 나무 파괴

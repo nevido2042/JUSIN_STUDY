@@ -96,6 +96,11 @@ typedef struct tagPacket_Desc
     _int iID{ -1 };
 }PACKET_DESC;
 
+typedef struct tagGameStartDesc : PACKET_DESC
+{
+    chrono::steady_clock::time_point GameEndTime = {};
+}GAMESTART_DESC;
+
 typedef struct tagHitModule_Desc : PACKET_DESC
 {
     _int            iTargetID{ -1 };

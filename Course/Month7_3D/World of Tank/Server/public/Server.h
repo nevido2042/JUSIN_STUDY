@@ -66,9 +66,9 @@ private:
 	_bool						m_bIsGameRunning = { false };
 	_uint	m_iMaxPlayer = { 2 };
 
-	chrono::steady_clock::time_point m_StartTime;
-	_uint m_iGameDurationSec = 180; // 3Ка
-	_uint Get_RemainingTime();
+	//chrono::steady_clock::time_point m_StartTime;
+	//_uint m_iGameDurationSec = 180; // 3Ка
+	//_uint Get_RemainingTime();
 
 	unordered_map<_uint, function<void(void*)>> m_PacketTypes;
 

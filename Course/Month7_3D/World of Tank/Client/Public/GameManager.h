@@ -65,6 +65,22 @@ public:
 
 	const CUSTOM3D	Get_3DCustom() const { return m_e3DCustom; }
 	void			Set_3DCustom(CUSTOM3D e3DCustom) { m_e3DCustom = e3DCustom; }
+
+	const chrono::high_resolution_clock::time_point	Get_GameEndTime() const { 
+		return m_GameEndTime; 
+	}
+	void			Set_GameEndTime(chrono::high_resolution_clock::time_point GameEndTime) {
+		m_GameEndTime = GameEndTime;
+	}
+
+	const chrono::high_resolution_clock::time_point	Get_GameStartTime() const {
+		return m_GameStartTime;
+	}
+	void			Set_GameStartTime(chrono::high_resolution_clock::time_point GameStartTime) {
+		m_GameStartTime = GameStartTime;
+	}
+
+
 private:
 	PART_REPAINT	m_ePartRepaint = { PART_REPAINT::BODY };
 private:
@@ -79,6 +95,11 @@ private:
 private:
 	CSoundController* m_pSoundCom_BGM = { nullptr };
 	CSoundController* m_pSoundCom_GUI = { nullptr };
+
+private:
+	chrono::high_resolution_clock::time_point m_GameEndTime = {};
+	chrono::high_resolution_clock::time_point m_GameStartTime = {};
+
 private:
 	HRESULT Ready_Components();
 

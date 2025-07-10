@@ -54,8 +54,8 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_CountdownTimer(TEXT("Layer_CountdownTimer"))))
 		return E_FAIL;

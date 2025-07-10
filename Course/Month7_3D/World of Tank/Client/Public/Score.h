@@ -42,7 +42,7 @@ private:
 private:
 	_bool m_bIsGameEnd = { false };
 	
-	_bool m_bIsSpawnMissile = { false };
+	//_bool m_bIsSpawnMissile = { false };
 
 private:
 	_uint m_iGreenScore = {};

@@ -50,6 +50,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	/*if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
 		return E_FAIL;*/
 
+	if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_CountdownTimer(TEXT("Layer_CountdownTimer"))))
 		return E_FAIL;
 
@@ -245,6 +248,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_GunMarker(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_GameTimer(const _wstring strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameTimer"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

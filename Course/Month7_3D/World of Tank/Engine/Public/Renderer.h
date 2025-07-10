@@ -33,11 +33,13 @@ private:
 	list<class CGameObject*>	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_END)];
 
 private:
+	//그림자용 깊이버퍼
+
 	/*const _uint m_iMaxWidth = 16384;
 	const _uint m_iMaxHeight = 9216;	*/
 
-	const _uint m_iMaxWidth = 8192;
-	const _uint m_iMaxHeight = 4608;
+	/*const _uint m_iMaxWidth = 8192;
+	const _uint m_iMaxHeight = 4608;*/
 
 	/*const _uint m_iMaxWidth = 4096;
 	const _uint m_iMaxHeight = 2304;*/
@@ -45,8 +47,8 @@ private:
 	/*const _uint m_iMaxWidth = 2560;
 	const _uint m_iMaxHeight = 1440;*/
 
-	//const _uint m_iMaxWidth = 1280;
-	//const _uint m_iMaxHeight = 720;
+	const _uint m_iMaxWidth = 1280;
+	const _uint m_iMaxHeight = 720;
 
 #ifdef _DEBUG
 private:

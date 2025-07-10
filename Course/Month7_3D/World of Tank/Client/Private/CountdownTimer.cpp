@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "DamagePanel.h"
+#include "GameManager.h"
 
 CCountdownTimer::CCountdownTimer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -26,7 +27,11 @@ HRESULT CCountdownTimer::Initialize(void* pArg)
 		return E_FAIL;
 
 	//m_bisCounting = true;;
-	m_StartTime = chrono::steady_clock::now() + chrono::seconds(2);
+	CGameManager* pGameManager = GET_GAMEMANAGER;
+	if (pGameManager == nullptr)
+		return E_FAIL;
+
+	m_StartTime = pGameManager->Get_GameStartTime();
 
 	return S_OK;
 }

@@ -25,6 +25,7 @@ HRESULT CTarget_Manager::Update()
 				return E_FAIL;
 		}
 	}
+	return S_OK;
 }
 
 HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed)
