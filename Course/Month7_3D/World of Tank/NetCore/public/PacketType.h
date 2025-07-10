@@ -3,7 +3,7 @@
 #include "Engine_Defines.h"
 #include "NetCore_Define.h"
 
-enum class CUSTOM3D     { MONKEY, DRAGONHEAD, DRUM, END };
+enum class CUSTOM3D     { MONKEY, DRAGONHEAD, DRUM, SPEAKER, GUITAR, SHARK, GOLDPOT, END };
 enum class TANK         { FURY, TIGER, END };
 enum class MODULE       { ENGINE, CHASSIS, TURRET, GUN, SURVEYING_DEVICE, RADIO, FUEL_TANK, AMMO_BAY, END };
 enum class MODULE_STATE { DESTROYED, DAMAGED, FUNCTIONAL, END };

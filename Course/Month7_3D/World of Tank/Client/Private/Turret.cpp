@@ -470,6 +470,18 @@ HRESULT CTurret::Ready_PartObjects()
 		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Drum"), TEXT("Part_Drum"), &Desc)))
 			return E_FAIL;
 
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Speaker"), TEXT("Part_Speaker"), &Desc)))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Guitar"), TEXT("Part_Guitar"), &Desc)))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shark"), TEXT("Part_Shark"), &Desc)))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GoldPot"), TEXT("Part_GoldPot"), &Desc)))
+			return E_FAIL;
+
 		CGameManager* pGameManager = GET_GAMEMANAGER;
 		switch (pGameManager->Get_3DCustom())
 		{
@@ -481,6 +493,18 @@ HRESULT CTurret::Ready_PartObjects()
 			break;
 		case CUSTOM3D::DRUM:
 			Find_PartObject(TEXT("Part_Drum"))->Set_Visible(true);
+			break;
+		case CUSTOM3D::SPEAKER:
+			Find_PartObject(TEXT("Part_Speaker"))->Set_Visible(true);
+			break;
+		case CUSTOM3D::GUITAR:
+			Find_PartObject(TEXT("Part_Guitar"))->Set_Visible(true);
+			break;
+		case CUSTOM3D::SHARK:
+			Find_PartObject(TEXT("Part_Shark"))->Set_Visible(true);
+			break;
+		case CUSTOM3D::GOLDPOT:
+			Find_PartObject(TEXT("Part_GoldPot"))->Set_Visible(true);
 			break;
 		}
 	}
@@ -498,6 +522,22 @@ HRESULT CTurret::Ready_PartObjects()
 		break;
 	case CUSTOM3D::DRUM:
 		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Drum"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	case CUSTOM3D::SPEAKER:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Speaker"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	case CUSTOM3D::GUITAR:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Guitar"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	case CUSTOM3D::SHARK:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shark"), TEXT("Part_3DCustom"), &Desc)))
+			return E_FAIL;
+		break;
+	case CUSTOM3D::GOLDPOT:
+		if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GoldPot"), TEXT("Part_3DCustom"), &Desc)))
 			return E_FAIL;
 		break;
 	}

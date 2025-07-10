@@ -24,7 +24,7 @@ vector g_vLightDiffuse;
 float  g_fLightAmbient;
 vector g_vLightSpecular;
 
-float  g_fMtrlAmbient = 0.4f;
+float  g_fMtrlAmbient = 0.8f;
 vector g_vMtrlSpecular = 1.f;
 
 vector g_vCamPosition;

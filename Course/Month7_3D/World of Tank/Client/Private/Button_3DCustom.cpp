@@ -68,6 +68,18 @@ void CButton_3DCustom::Update(_float fTimeDelta)
 
 		pFuryTurret->Find_PartObject(TEXT("Part_Drum"))->Set_Visible(false);
 		pTigerTurret->Find_PartObject(TEXT("Part_Drum"))->Set_Visible(false);
+
+		pFuryTurret->Find_PartObject(TEXT("Part_Speaker"))->Set_Visible(false);
+		pTigerTurret->Find_PartObject(TEXT("Part_Speaker"))->Set_Visible(false);
+
+		pFuryTurret->Find_PartObject(TEXT("Part_Guitar"))->Set_Visible(false);
+		pTigerTurret->Find_PartObject(TEXT("Part_Guitar"))->Set_Visible(false);
+
+		pFuryTurret->Find_PartObject(TEXT("Part_Shark"))->Set_Visible(false);
+		pTigerTurret->Find_PartObject(TEXT("Part_Shark"))->Set_Visible(false);
+
+		pFuryTurret->Find_PartObject(TEXT("Part_GoldPot"))->Set_Visible(false);
+		pTigerTurret->Find_PartObject(TEXT("Part_GoldPot"))->Set_Visible(false);
 #pragma endregion
 
 		switch (m_e3DCustom)
@@ -88,6 +100,30 @@ void CButton_3DCustom::Update(_float fTimeDelta)
 			pFuryTurret->Find_PartObject(TEXT("Part_Drum"))->Set_Visible(true);
 			pTigerTurret->Find_PartObject(TEXT("Part_Drum"))->Set_Visible(true);
 			pGameManager->Set_3DCustom(CUSTOM3D::DRUM);
+			break;
+
+		case CUSTOM3D::SPEAKER:
+			pFuryTurret->Find_PartObject(TEXT("Part_Speaker"))->Set_Visible(true);
+			pTigerTurret->Find_PartObject(TEXT("Part_Speaker"))->Set_Visible(true);
+			pGameManager->Set_3DCustom(CUSTOM3D::SPEAKER);
+			break;
+
+		case CUSTOM3D::GUITAR:
+			pFuryTurret->Find_PartObject(TEXT("Part_Guitar"))->Set_Visible(true);
+			pTigerTurret->Find_PartObject(TEXT("Part_Guitar"))->Set_Visible(true);
+			pGameManager->Set_3DCustom(CUSTOM3D::GUITAR);
+			break;
+
+		case CUSTOM3D::SHARK:
+			pFuryTurret->Find_PartObject(TEXT("Part_Shark"))->Set_Visible(true);
+			pTigerTurret->Find_PartObject(TEXT("Part_Shark"))->Set_Visible(true);
+			pGameManager->Set_3DCustom(CUSTOM3D::SHARK);
+			break;
+
+		case CUSTOM3D::GOLDPOT:
+			pFuryTurret->Find_PartObject(TEXT("Part_GoldPot"))->Set_Visible(true);
+			pTigerTurret->Find_PartObject(TEXT("Part_GoldPot"))->Set_Visible(true);
+			pGameManager->Set_3DCustom(CUSTOM3D::GOLDPOT);
 			break;
 
 		case CUSTOM3D::END:

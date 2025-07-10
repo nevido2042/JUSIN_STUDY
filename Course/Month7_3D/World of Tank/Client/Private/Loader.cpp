@@ -11,6 +11,12 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "GuitarFire.h"
+#include "GoldPotShining.h"
+#include "GoldPot.h"
+#include "Shark.h"
+#include "Guitar.h"
+#include "Speaker.h"
 #include "DragonHeadSmoke.h"
 #include "Drum.h"
 #include "DragonHead.h"
@@ -246,9 +252,19 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
-	/* For.Prototype_Component_Texture_Tree*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Tree"),
+	/* For.Prototype_Component_Texture_Grass*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Grass"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Map/Vegetation/Grass_FWD.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GoldPotShining*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_GoldPotShining"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/19_CE/16.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GuitarFire*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_GuitarFire"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Particle/eff_tex/output128x128/Fire/0536.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DeadFireEffect*/
@@ -484,6 +500,35 @@ HRESULT CLoader::Loading_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Drum"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Drum/Drum.bin", PreTransformMatrix))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Speaker */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.f, -1.5f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Speaker"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Speakers/Speakers.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Guitar */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Guitar"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Guitar/Guitar.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Shark */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.f, -1.5f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Shark"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/Shark/Shark.bin", PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_GoldPot */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_GoldPot"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/3D_Customization/GoldPot/GoldPot.bin", PreTransformMatrix))))
+		return E_FAIL;
+
 #pragma endregion
 
 
@@ -703,6 +748,36 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_GoldPotShining */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GoldPotShining"),
+		CGoldPotShining::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_GuitarFire */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GuitarFire"),
+		CGuitarFire::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Speaker */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Speaker"),
+		CSpeaker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Guitar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Guitar"),
+		CGuitar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Shark */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Shark"),
+		CShark::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_GoldPot */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GoldPot"),
+		CGoldPot::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_DragonHeadSmoke */
@@ -1131,6 +1206,26 @@ HRESULT CLoader::Loading_For_Hanger()
 	/* For.Prototype_Component_Texture_3DCustom_Drum*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_Drum"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_23_Rock_Drums.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_3DCustom_Speaker*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_Speaker"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_24_Rock_Speakers.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_3DCustom_Guitar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_Guitar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_20_Rock_Guitar.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_3DCustom_Shark*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_Shark"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_11_Marine_Shark.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_3DCustom_GoldPot*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_3DCustom_GoldPot"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/3D_Customization/00.Image/Cus_32_SP_GoldPot.dds"), 1))))
 		return E_FAIL;
 #pragma endregion
 

@@ -410,28 +410,56 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_3DCustoms(const _wstring strLayerTag)
 	Desc.fY = g_iWinSizeY * 0.8f;
 	Desc.bVisible = false;
 
-	Desc.fX = g_iWinSizeX * 0.6f;
+	Desc.fX = g_iWinSizeX * 0.55f;
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Monkey");
 	Desc.e3DCustom = CUSTOM3D::MONKEY;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
-	Desc.fX = g_iWinSizeX * 0.65f;
+	Desc.fX = g_iWinSizeX * 0.60f;
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_DragonHead");
 	Desc.e3DCustom = CUSTOM3D::DRAGONHEAD;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
-	Desc.fX = g_iWinSizeX * 0.70f;
+	Desc.fX = g_iWinSizeX * 0.65f;
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Drum");
 	Desc.e3DCustom = CUSTOM3D::DRUM;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
-	Desc.fX = g_iWinSizeX * 0.9f;
+	Desc.fX = g_iWinSizeX * 0.70f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Speaker");
+	Desc.e3DCustom = CUSTOM3D::SPEAKER;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.75f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Guitar");
+	Desc.e3DCustom = CUSTOM3D::GUITAR;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.80f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_Shark");
+	Desc.e3DCustom = CUSTOM3D::SHARK;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.85f;
+	Desc.strTextureName = TEXT("Prototype_Component_Texture_3DCustom_GoldPot");
+	Desc.e3DCustom = CUSTOM3D::GOLDPOT;
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.fX = g_iWinSizeX * 0.90f;
 	Desc.strTextureName = TEXT("Prototype_Component_Texture_CustomColor_Default");
 	Desc.e3DCustom = CUSTOM3D::END;
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),

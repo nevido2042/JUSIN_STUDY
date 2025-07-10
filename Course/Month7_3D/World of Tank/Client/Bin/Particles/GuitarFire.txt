@@ -1,0 +1,12 @@
+ParticleDesc:
+  ParticleName : GuitarFire
+  SpawnRange: (0.100000, 0.100000, 0.100000)
+  MinScale: 0.500000, MaxScale: 0.600000
+  LifeTimeMin: 0.500000, LifeTimeMax: 1.000000
+  EmissionShape: 1
+  NumInstance: 20
+  isLoop: 1
+  Alpha: 1.000000
+  Center: (0.000000, 0.000000, 0.000000) 
+  Pivot: (0.000000, -1.000000, -1.000000)
+  MinSpeed: 1.000000, MaxSpeed: 1.000000

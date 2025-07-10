@@ -391,6 +391,24 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\DragonHeadSmoke">
       <UniqueIdentifier>{ba5138ed-e857-4ddc-ae56-e0bb6904bb41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\3DCustom\03.Speaker">
+      <UniqueIdentifier>{6e23b09c-76b7-4b62-961d-c03e128de9e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DCustom\04.Guitar">
+      <UniqueIdentifier>{714778db-c00c-4de9-a678-8d73fceab6f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DCustom\05.Shark">
+      <UniqueIdentifier>{dc459423-6868-457c-b4ca-36dd13772756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\3DCustom\06.GoldPot">
+      <UniqueIdentifier>{5e6a0944-7d06-4701-b43a-93d90793e512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\GuitarFire">
+      <UniqueIdentifier>{adddae3c-0973-444d-9f41-931dc628961d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Effect\Particle\GoldPotShining">
+      <UniqueIdentifier>{b59d1a06-9c3c-4e77-9474-831f68d0e2c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -789,6 +807,24 @@
     <ClInclude Include="..\public\DragonHeadSmoke.h">
       <Filter>02.GameObjects\07.Effect\Particle\DragonHeadSmoke</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Speaker.h">
+      <Filter>02.GameObjects\3DCustom\03.Speaker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Guitar.h">
+      <Filter>02.GameObjects\3DCustom\04.Guitar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Shark.h">
+      <Filter>02.GameObjects\3DCustom\05.Shark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GoldPot.h">
+      <Filter>02.GameObjects\3DCustom\06.GoldPot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GuitarFire.h">
+      <Filter>02.GameObjects\07.Effect\Particle\GuitarFire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GoldPotShining.h">
+      <Filter>02.GameObjects\07.Effect\Particle\GoldPotShining</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1169,6 +1205,24 @@
     </ClCompile>
     <ClCompile Include="..\private\DragonHeadSmoke.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\DragonHeadSmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Speaker.cpp">
+      <Filter>02.GameObjects\3DCustom\03.Speaker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Guitar.cpp">
+      <Filter>02.GameObjects\3DCustom\04.Guitar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shark.cpp">
+      <Filter>02.GameObjects\3DCustom\05.Shark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GoldPot.cpp">
+      <Filter>02.GameObjects\3DCustom\06.GoldPot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GuitarFire.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\GuitarFire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GoldPotShining.cpp">
+      <Filter>02.GameObjects\07.Effect\Particle\GoldPotShining</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
