@@ -12,6 +12,7 @@ private:
 
 public:
 	HRESULT Initialize();
+	HRESULT Update(); //윈도우 사이즈 바뀔때 렌더 타겟들 사이즈 조정용
 	HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed);
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 

@@ -42,11 +42,11 @@ private:
 	/*const _uint m_iMaxWidth = 4096;
 	const _uint m_iMaxHeight = 2304;*/
 
-	//const _uint m_iMaxWidth = 1280;
-	//const _uint m_iMaxHeight = 720;
-
 	/*const _uint m_iMaxWidth = 2560;
 	const _uint m_iMaxHeight = 1440;*/
+
+	//const _uint m_iMaxWidth = 1280;
+	//const _uint m_iMaxHeight = 720;
 
 #ifdef _DEBUG
 private:

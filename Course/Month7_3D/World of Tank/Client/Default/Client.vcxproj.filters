@@ -409,6 +409,9 @@
     <Filter Include="02.GameObjects\07.Effect\Particle\GoldPotShining">
       <UniqueIdentifier>{b59d1a06-9c3c-4e77-9474-831f68d0e2c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\GameTimer">
+      <UniqueIdentifier>{7632a65b-b396-4f32-ab5e-b2506ff77221}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -825,6 +828,9 @@
     <ClInclude Include="..\public\GoldPotShining.h">
       <Filter>02.GameObjects\07.Effect\Particle\GoldPotShining</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\GameTimer.h">
+      <Filter>02.GameObjects\06.UIObject\GameTimer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1223,6 +1229,9 @@
     </ClCompile>
     <ClCompile Include="..\private\GoldPotShining.cpp">
       <Filter>02.GameObjects\07.Effect\Particle\GoldPotShining</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameTimer.cpp">
+      <Filter>02.GameObjects\06.UIObject\GameTimer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -93,6 +93,8 @@ _bool CServer::Update()
 
     }
 
+    cout << Get_RemainingTime() << endl;
+
     return Network();
 }
 
@@ -595,6 +597,8 @@ HRESULT CServer::Define_Packets()
 
     if (FAILED(Ready_Packet(ENUM_CLASS(PacketType::SC_START_GAME), [this](void* pArg)
         {
+            m_StartTime = chrono::steady_clock::now();
+
             Clear_Packet();
 
             PACKET_HEADER tHeader{};
@@ -1306,4 +1310,12 @@ HRESULT CServer::Flush_SendBuffer(CSession* pSession)
     }
 
 	return S_OK;
+}
+
+_uint CServer::Get_RemainingTime()
+{
+    auto now = chrono::steady_clock::now();
+    auto elapsed = chrono::duration_cast<chrono::seconds>(now - m_StartTime).count();
+
+    return (elapsed < m_iGameDurationSec) ? (m_iGameDurationSec - static_cast<_uint>(elapsed)) : 0;
 }

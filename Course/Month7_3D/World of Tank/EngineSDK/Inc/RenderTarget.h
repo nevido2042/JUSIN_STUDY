@@ -27,7 +27,7 @@ public:
 
 #endif
 
-private:
+public:
 	HRESULT Resize(_uint iNewWidth, _uint iNewHeight);
 
 private:

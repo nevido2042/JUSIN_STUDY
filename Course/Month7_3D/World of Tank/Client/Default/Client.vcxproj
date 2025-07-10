@@ -218,6 +218,7 @@
     <ClInclude Include="..\public\Fury_Chassis.h" />
     <ClInclude Include="..\public\Fury_Hanger.h" />
     <ClInclude Include="..\public\GameManager.h" />
+    <ClInclude Include="..\public\GameTimer.h" />
     <ClInclude Include="..\public\GoldPot.h" />
     <ClInclude Include="..\public\GoldPotShining.h" />
     <ClInclude Include="..\public\Guitar.h" />
@@ -371,6 +372,7 @@
     <ClCompile Include="..\private\Fury_Chassis.cpp" />
     <ClCompile Include="..\private\Fury_Hanger.cpp" />
     <ClCompile Include="..\private\GameManager.cpp" />
+    <ClCompile Include="..\private\GameTimer.cpp" />
     <ClCompile Include="..\private\GoldPot.cpp" />
     <ClCompile Include="..\private\GoldPotShining.cpp" />
     <ClCompile Include="..\private\Guitar.cpp" />

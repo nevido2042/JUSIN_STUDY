@@ -78,9 +78,9 @@ HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float f
 
 HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 {	
-	if(g_bWindowResizeRequired)
-		if(FAILED(Resize(g_iWinSizeX, g_iWinSizeY)))
-			return E_FAIL;
+	//if(g_bWindowResizeRequired)
+	//	if(FAILED(Resize(g_iWinSizeX, g_iWinSizeY)))
+	//		return E_FAIL;
 
 	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
@@ -105,7 +105,7 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 HRESULT CRenderTarget::Resize(_uint iNewWidth, _uint iNewHeight)
 {
 	if(m_bIsSizeFixed)
-		return E_FAIL;
+		return S_OK;
 
 	// 기존 리소스 해제
 	Safe_Release(m_pSRV);

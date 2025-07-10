@@ -615,7 +615,7 @@ HRESULT CLevel_Hanger::Ready_Layer_FPS_Renderer(const _wstring strLayerTag)
 		return S_OK;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
-		ENUM_CLASS(LEVEL::STATIC), strLayerTag)))
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

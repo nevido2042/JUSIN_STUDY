@@ -40,6 +40,7 @@ private:
 	HRESULT Ready_Layer_PickedManager(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Boundary(const _wstring strLayerTag);
 	HRESULT Ready_Layer_AimCircle(const _wstring strLayerTag);
+	HRESULT Ready_Layer_FPS_Renderer(const _wstring strLayerTag);
 
 private:
 	HRESULT Load_Map();

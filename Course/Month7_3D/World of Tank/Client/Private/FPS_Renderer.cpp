@@ -46,7 +46,11 @@ void CFPS_Renderer::Update(_float fTimeDelta)
 
 void CFPS_Renderer::Late_Update(_float fTimeDelta)
 {
-#pragma message ("왜왜왜왜 파티클?에 가려지는가??? RG_UI인데? 근데 다른데는 잘나옴")
+	/*
+	* 이유는 모르지만 스태틱레벨(클론)의 폰트는 자꾸 가려진다.
+	*/
+
+#pragma message ("발사 이펙트 올때만 보임. RG_UI인데? 근데 다른데는 잘나옴")
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 

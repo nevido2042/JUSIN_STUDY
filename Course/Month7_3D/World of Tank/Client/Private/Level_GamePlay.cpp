@@ -77,8 +77,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_AimCircle(TEXT("Layer_AimCircle"))))
 		return E_FAIL;
 
-
-
+	if (FAILED(Ready_Layer_FPS_Renderer(TEXT("Layer_FPS_Renderer"))))
+		return E_FAIL;
 
 	PACKET_DESC Desc = {};
 	Desc.iID = m_pGameInstance->Get_ID();
@@ -438,6 +438,19 @@ HRESULT CLevel_GamePlay::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
 	Desc.vInitPosition = _float3(0.f, 50.f, 320.f);
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_InvisibleWall"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_FPS_Renderer(const _wstring strLayerTag)
+{
+	//이미 있으면 안만듬
+	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_FPS_Renderer")))
+		return S_OK;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

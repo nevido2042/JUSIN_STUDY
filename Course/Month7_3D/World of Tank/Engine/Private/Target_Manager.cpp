@@ -14,6 +14,19 @@ HRESULT CTarget_Manager::Initialize()
 	return S_OK;
 }
 
+HRESULT CTarget_Manager::Update()
+{
+	//윈도우 리사이즈가 필요한 경우, 렌더 타겟을 업데이트해야 함
+	if (g_bWindowResizeRequired)
+	{
+		for (auto pRT : m_RenderTargets)
+		{
+			if(FAILED(pRT.second->Resize(g_iWinSizeX, g_iWinSizeY)))
+				return E_FAIL;
+		}
+	}
+}
+
 HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor, _bool bIsSizeFixed)
 {
 	if (nullptr != Find_RenderTarget(strTargetTag))

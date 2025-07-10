@@ -40,6 +40,7 @@ private:
 	HRESULT Ready_Layer_GunMarker(const _wstring strLayerTag);
 
 	//UI
+	HRESULT Ready_Layer_GameTimer(const _wstring strLayerTag);
 	HRESULT Ready_Layer_CountdownTimer(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Minimap(const _wstring strLayerTag);
 	HRESULT Ready_Layer_DamagePanel(const _wstring strLayerTag);
@@ -49,6 +50,7 @@ private:
 	HRESULT Ready_Layer_Icon_Consumables(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Score(const _wstring strLayerTag);
 	HRESULT Ready_Layer_AimCircle(const _wstring strLayerTag);
+	HRESULT Ready_Layer_FPS_Renderer(const _wstring strLayerTag);
 private:
 	HRESULT Load_Map();
 
