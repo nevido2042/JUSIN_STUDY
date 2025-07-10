@@ -40,6 +40,12 @@ void CAimCircle::Priority_Update(_float fTimeDelta)
 
 void CAimCircle::Update(_float fTimeDelta)
 {
+
+
+}
+
+void CAimCircle::Late_Update(_float fTimeDelta)
+{
 	_float3 vGunPickedPos = {};
 	CPickedManager* pPickedManager = static_cast<CPickedManager*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PickedManager")));
 	if (pPickedManager)
@@ -61,10 +67,6 @@ void CAimCircle::Update(_float fTimeDelta)
 
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(vScreenPos.x, vScreenPos.y, m_fDepth, 1.f));
 
-}
-
-void CAimCircle::Late_Update(_float fTimeDelta)
-{
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 

@@ -77,7 +77,10 @@ void CBurntTree::Update(_float fTimeDelta)
 
 void CBurntTree::Late_Update(_float fTimeDelta)
 {
-	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 10.f))
+	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 30.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
+
+	if(m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 30.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
@@ -114,6 +117,29 @@ HRESULT CBurntTree::Render()
 #ifdef _DEBUG
 	m_pColliderCom->Render();
 #endif
+	return S_OK;
+}
+
+HRESULT CBurntTree::Render_Shadow()
+{
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Light_ViewMatrix())))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Light_ProjMatrix())))
+		return E_FAIL;
+
+	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+	for (_uint i = 0; i < iNumMesh; i++)
+	{
+		if (FAILED(m_pShaderCom->Begin(4)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+	}
+
 	return S_OK;
 }
 

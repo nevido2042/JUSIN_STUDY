@@ -77,6 +77,13 @@ HRESULT CKitCrashFactoryWall01A::Render()
 	return S_OK;
 }
 
+HRESULT CKitCrashFactoryWall01A::Render_Shadow()
+{
+	CBuilding::Render_Shadow();
+
+	return S_OK;
+}
+
 
 HRESULT CKitCrashFactoryWall01A::Ready_Components()
 {

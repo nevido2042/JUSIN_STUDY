@@ -48,6 +48,9 @@ void CSmoke::Priority_Update(_float fTimeDelta)
 
 void CSmoke::Update(_float fTimeDelta)
 {
+	if(m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
+		return;
+
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
 
@@ -59,6 +62,9 @@ void CSmoke::Update(_float fTimeDelta)
 
 void CSmoke::Late_Update(_float fTimeDelta)
 {
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::HANGER))
+		return;
+
 	// 위치만 추출
 	_vector vPos = XMVectorSet(
 		m_CombinedWorldMatrix._41,

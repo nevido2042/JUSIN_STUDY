@@ -75,6 +75,13 @@ HRESULT CChurchA::Render()
 	return S_OK;
 }
 
+HRESULT CChurchA::Render_Shadow()
+{
+	CBuilding::Render_Shadow();
+
+	return S_OK;
+}
+
 HRESULT CChurchA::Ready_Components()
 {
 	/* For.Com_Shader */

@@ -47,6 +47,10 @@ void C3DCustom::Late_Update(_float fTimeDelta)
 
 	// 프러스텀 안에 있으면 렌더링 추가
 	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
+
+	// 프러스텀 안에 있으면 렌더링 추가
+	if (m_pGameInstance->Is_In_Frustum(vPos, 2.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 }
@@ -74,6 +78,29 @@ HRESULT C3DCustom::Render()
 			if (FAILED(m_pModelCom->Render(i)))
 				return E_FAIL;
 		}
+	}
+
+	return S_OK;
+}
+
+HRESULT C3DCustom::Render_Shadow()
+{
+	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Light_ViewMatrix())))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Light_ProjMatrix())))
+		return E_FAIL;
+
+	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+	for (_uint i = 0; i < iNumMesh; i++)
+	{
+		if (FAILED(m_pShaderCom->Begin(4)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
 	}
 
 	return S_OK;

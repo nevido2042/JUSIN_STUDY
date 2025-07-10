@@ -74,6 +74,13 @@ HRESULT CShed::Render()
 	return S_OK;
 }
 
+HRESULT CShed::Render_Shadow()
+{
+	CBuilding::Render_Shadow();
+
+	return S_OK;
+}
+
 
 HRESULT CShed::Ready_Components()
 {

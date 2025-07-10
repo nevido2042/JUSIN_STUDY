@@ -59,15 +59,7 @@ void CCamera_Hanger::Priority_Update(_float fTimeDelta)
 
 void CCamera_Hanger::Update(_float fTimeDelta)
 {
-	// 커서 다시 보이기
-	while (ShowCursor(TRUE) < 0);   // 카운트가 0 이상 될 때까지 반복
-
-	// 커서 이동 제한 해제
-	ClipCursor(nullptr);
-}
-
-void CCamera_Hanger::Late_Update(_float fTimeDelta)
-{
+#pragma region 카메라 움직임
 	_float fDistance = m_fArmLength;
 
 	// 타겟 위치
@@ -131,9 +123,21 @@ void CCamera_Hanger::Late_Update(_float fTimeDelta)
 
 #pragma endregion
 
-
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
+#pragma endregion
+
+
+	// 커서 다시 보이기
+	while (ShowCursor(TRUE) < 0);   // 카운트가 0 이상 될 때까지 반복
+
+	// 커서 이동 제한 해제
+	ClipCursor(nullptr);
+}
+
+void CCamera_Hanger::Late_Update(_float fTimeDelta)
+{
+	
 }
 
 HRESULT CCamera_Hanger::Render()

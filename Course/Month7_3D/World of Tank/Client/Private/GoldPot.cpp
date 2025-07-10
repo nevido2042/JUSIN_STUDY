@@ -52,6 +52,13 @@ HRESULT CGoldPot::Render()
 	return S_OK;
 }
 
+//HRESULT CGoldPot::Render_Shadow()
+//{
+//	__super::Render_Shadow();
+//
+//	return S_OK;
+//}
+
 HRESULT CGoldPot::Ready_Components()
 {
 	/* For.Com_Shader */

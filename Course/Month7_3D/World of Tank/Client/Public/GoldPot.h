@@ -24,6 +24,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+	//너무 작아서 안보이는 듯?
+	//virtual HRESULT Render_Shadow() override;
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();

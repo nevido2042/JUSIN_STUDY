@@ -66,23 +66,12 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 
 #pragma message ("이동 방향을 넣으란거 같은데 일딴 뺌, 도플러 효과 주라는 듯")
 	m_pGameInstance->Set_Listener_Position(m_pTransformCom, _float3{});
+
 }
 
 void CCamera_FPS::Update(_float fTimeDelta)
 {
-	Picking();
-
-	// 커서 숨기기
-	if (GetForegroundWindow() == g_hWnd)
-	{
-		while (ShowCursor(FALSE) >= 0); // 카운트가 0보다 작아질 때까지 반복
-		Clip_Cursor();
-	}
-
-}
-
-void CCamera_FPS::Late_Update(_float fTimeDelta)
-{
+#pragma region 카메라 움직임
 	// Pitch 각도 제한
 	m_fPitch = max(XMConvertToRadians(-20.f), min(XMConvertToRadians(70.f), m_fPitch));
 
@@ -123,6 +112,22 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 
 	// 뷰/프로젝션 갱신
 	__super::Bind_Matrices();
+#pragma endregion
+
+	Picking();
+
+	// 커서 숨기기
+	if (GetForegroundWindow() == g_hWnd)
+	{
+		while (ShowCursor(FALSE) >= 0); // 카운트가 0보다 작아질 때까지 반복
+		Clip_Cursor();
+	}
+
+}
+
+void CCamera_FPS::Late_Update(_float fTimeDelta)
+{
+	
 
 #pragma message ("계속 끄는거 맘에안들지만 일단")
 	CGameObject* pGameObject = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_PlayerTank"));

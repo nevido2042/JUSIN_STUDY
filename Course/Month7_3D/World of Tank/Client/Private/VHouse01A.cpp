@@ -78,6 +78,13 @@ HRESULT CVHouse01A::Render()
 	return S_OK;
 }
 
+HRESULT CVHouse01A::Render_Shadow()
+{
+	CBuilding::Render_Shadow();
+
+	return S_OK;
+}
+
 HRESULT CVHouse01A::Ready_Components()
 {
 	/* For.Com_Shader */

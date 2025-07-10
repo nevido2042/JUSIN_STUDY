@@ -492,11 +492,29 @@ HRESULT CLevel_Hanger::Ready_Layer_Fury_Hanger(const _wstring strLayerTag)
 	Desc.fRotationPerSec = 0.f;
 	Desc.fSpeedPerSec = 0.f;
 	lstrcpy(Desc.szName, TEXT("Fury_Hanger"));
-	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
+	Desc.vInitPosition = _float3(330.f, 0.f, 235.f);
 	Desc.iID = -100;
 	Desc.vBodyColor = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
+{
+	CTank::TANK_DESC Desc = {};
+	Desc.fRotationPerSec = 0.f;
+	Desc.fSpeedPerSec = 0.f;
+	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
+	Desc.vInitPosition = _float3(330.f, 0.f, 235.f);
+	Desc.bActive = false;
+	Desc.iID = -100;
+	Desc.vBodyColor = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
@@ -515,24 +533,6 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Tiger(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
-{
-	CTank::TANK_DESC Desc = {};
-	Desc.fRotationPerSec = 0.f;
-	Desc.fSpeedPerSec = 0.f;
-	lstrcpy(Desc.szName, TEXT("Tiger_Hanger"));
-	Desc.vInitPosition = _float3(322.f, 86.5f, 286.f);
-	Desc.bActive = false;
-	Desc.iID = -100;
-	Desc.vBodyColor = _float4(1.f, 1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
-		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

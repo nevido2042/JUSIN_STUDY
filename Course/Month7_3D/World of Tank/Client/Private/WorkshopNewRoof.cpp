@@ -74,6 +74,13 @@ HRESULT CWorkshopNewRoof::Render()
 	return S_OK;
 }
 
+HRESULT CWorkshopNewRoof::Render_Shadow()
+{
+	CBuilding::Render_Shadow();
+
+	return S_OK;
+}
+
 HRESULT CWorkshopNewRoof::Ready_Components()
 {
 	/* For.Com_Shader */
