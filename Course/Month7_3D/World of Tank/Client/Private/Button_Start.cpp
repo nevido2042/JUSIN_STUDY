@@ -77,7 +77,7 @@ void CButton_Start::Update(_float fTimeDelta)
 
 void CButton_Start::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI_NONBLEND, this);
 }
 
 HRESULT CButton_Start::Render()
@@ -97,7 +97,7 @@ HRESULT CButton_Start::Render()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(7)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))

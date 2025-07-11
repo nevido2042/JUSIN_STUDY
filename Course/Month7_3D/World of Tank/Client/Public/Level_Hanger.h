@@ -25,11 +25,16 @@ private:
 	HRESULT Ready_Layer_Camera_Hanger(const _wstring strLayerTag);
 
 	HRESULT Ready_Layer_Background_UI(const _wstring strLayerTag);
+	HRESULT Ready_Layer_TopBar(const _wstring strLayerTag);
+
+
 
 	HRESULT Ready_Layer_Button_Start(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Practice(const _wstring strLayerTag);
+
 	HRESULT Ready_Layer_Button_Customize(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Exit_Customize(const _wstring strLayerTag);
+
 	HRESULT Ready_Layer_Button_Colors(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Parts(const _wstring strLayerTag);
 

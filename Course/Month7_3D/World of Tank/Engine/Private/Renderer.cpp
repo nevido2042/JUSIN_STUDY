@@ -160,6 +160,9 @@ HRESULT CRenderer::Draw()
 	//	return E_FAIL;
 #endif
 
+	if (FAILED(Render_UI_NonBlend()))
+		return E_FAIL;
+	
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 	
@@ -378,6 +381,20 @@ HRESULT CRenderer::Render_Blend()
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_BLEND)].clear();
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_UI_NonBlend()
+{
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_UI_NONBLEND)])
+	{
+		if (nullptr != pGameObject && pGameObject->Get_isVisible())
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_UI_NONBLEND)].clear();
 
 	return S_OK;
 }

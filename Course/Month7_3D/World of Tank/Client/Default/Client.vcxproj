@@ -280,6 +280,7 @@
     <ClInclude Include="..\public\StatusLight.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
+    <ClInclude Include="..\public\TopBar.h" />
     <ClInclude Include="..\public\Track.h" />
     <ClInclude Include="..\public\Turret.h" />
     <ClInclude Include="..\public\VHouse01A.h" />
@@ -434,6 +435,7 @@
     <ClCompile Include="..\private\StatusLight.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
+    <ClCompile Include="..\private\TopBar.cpp" />
     <ClCompile Include="..\private\Track.cpp" />
     <ClCompile Include="..\private\Turret.cpp" />
     <ClCompile Include="..\private\VHouse01A.cpp" />

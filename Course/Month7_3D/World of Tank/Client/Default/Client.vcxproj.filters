@@ -148,9 +148,6 @@
     <Filter Include="02.GameObjects\06.UIObject\00.Button\10.Button_Tiger">
       <UniqueIdentifier>{131c3715-2a1a-4997-abed-8e51f83a3333}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.UIObject\00.Button\08.Button_Start">
-      <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.UIObject\00.Button\09.Button_Fury">
       <UniqueIdentifier>{c0424797-a47c-4f09-b6bd-2a5e0d6ae945}</UniqueIdentifier>
     </Filter>
@@ -411,6 +408,12 @@
     </Filter>
     <Filter Include="02.GameObjects\06.UIObject\GameTimer\Missile\MissileExplosionEffect">
       <UniqueIdentifier>{657664b0-e3c6-4a67-b902-ac4ab3198db7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\TopBar">
+      <UniqueIdentifier>{1739437c-ea93-4d34-bcd3-a7009fb1b465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\00.Button\08.Button_Start">
+      <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -831,6 +834,9 @@
     <ClInclude Include="..\public\GameTimer.h">
       <Filter>02.GameObjects\06.UIObject\GameTimer</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TopBar.h">
+      <Filter>02.GameObjects\06.UIObject\TopBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1232,6 +1238,9 @@
     </ClCompile>
     <ClCompile Include="..\private\GameTimer.cpp">
       <Filter>02.GameObjects\06.UIObject\GameTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TopBar.cpp">
+      <Filter>02.GameObjects\06.UIObject\TopBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

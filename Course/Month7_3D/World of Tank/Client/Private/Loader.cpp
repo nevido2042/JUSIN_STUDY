@@ -100,6 +100,7 @@
 #pragma endregion
 
 #pragma region HANGER
+#include "TopBar.h"
 #include "Button_3DCustom.h"
 #include "Camera_Hanger.h"
 #include "Button_Fury.h"
@@ -1298,6 +1299,11 @@ HRESULT CLoader::Loading_For_Hanger()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/cm_sub_item_bg.dds"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_TopBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_TopBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/cm_item_over.dds"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Button_Fury*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Button_Fury"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Tanks/a104_m4a3e8a.dds"), 1))))
@@ -1306,6 +1312,11 @@ HRESULT CLoader::Loading_For_Hanger()
 	/* For.Prototype_Component_Texture_Button_Tiger*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Button_Tiger"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Tanks/g04_pzvi_tiger_i.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_BackPrimary*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_BackPrimary"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/back_primary.dds"), 1))))
 		return E_FAIL;
 #pragma endregion
 
@@ -1344,6 +1355,11 @@ HRESULT CLoader::Loading_For_Hanger()
 	/* For.Prototype_GameObject_Background_UI */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Background_UI"),
 		CBackground_UI::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_TopBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_TopBar"),
+		CTopBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Button_Exit_Customize */

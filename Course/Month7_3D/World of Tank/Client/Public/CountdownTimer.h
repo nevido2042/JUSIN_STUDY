@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "UIObject.h"
 
+NS_BEGIN(Engine)
+class CSoundController;
+NS_END
+
 NS_BEGIN(Client)
 
 class CCountdownTimer final : public CUIObject
@@ -23,6 +27,14 @@ public:
 
 private:
 	chrono::high_resolution_clock::time_point m_StartTime = {};
+
+	chrono::seconds m_Remaining = {};
+	chrono::seconds m_PrevRemaining = {};
+private:
+	CSoundController* m_pSoundCom = { nullptr };
+
+private:
+	HRESULT Ready_Components();
 
 public:
 	static CCountdownTimer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

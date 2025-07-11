@@ -58,13 +58,13 @@ void CDamageBar_World::Update(_float fTimeDelta)
 
 
 #pragma region 데미지 딜레이 표현
-	if (m_fTimeAcc > 1.0f)
+	if (m_fTimeAcc > 0.5f)
 	{
 		//m_fFillDelay -= fTimeDelta * 0.3f;
 		//if (m_fFillDelay < m_fFillAmount)
 		//	m_fFillDelay = m_fFillAmount;
 
-		m_fFillDelayValue += fTimeDelta * 0.5f;
+		m_fFillDelayValue += fTimeDelta * 0.8f;
 		if (m_fFillDelayValue > 1.f)
 			m_fFillDelayValue = 1.f;
 	}

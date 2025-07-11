@@ -329,9 +329,11 @@ HRESULT CDamagePanel::Ready_PartObjects()
 	DirectionDesc.fRotationPerSec = 1.f;
 	DirectionDesc.pParentWorldMatrix = m_pTransformCom->Get_WorldMatrix_Ptr();
 
+	DirectionDesc.fDepth = DEPTH_BACKGROUND - 0.1f;
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionBody"), TEXT("Part_DirectionBody"), &DirectionDesc)))
 		return E_FAIL;
 
+	DirectionDesc.fDepth = DEPTH_BACKGROUND - 0.2f;
 	if (FAILED(__super::Add_PartObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DirectionTurret"), TEXT("Part_DirectionTurret"), &DirectionDesc)))
 		return E_FAIL;
 

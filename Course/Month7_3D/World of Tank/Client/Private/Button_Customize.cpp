@@ -72,7 +72,7 @@ void CButton_Customize::Update(_float fTimeDelta)
 
 void CButton_Customize::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI_NONBLEND, this);
 }
 
 HRESULT CButton_Customize::Render()
@@ -92,7 +92,7 @@ HRESULT CButton_Customize::Render()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(7)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -101,7 +101,7 @@ HRESULT CButton_Customize::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("전차 꾸미기"), _float2(m_fX - m_fSizeX * 0.35f, m_fY - m_fSizeY * 0.3f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.5f * UI_RATIO);
+	m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("전차 꾸미기"), _float2(m_fX - m_fSizeX * 0.35f, m_fY - m_fSizeY * 0.3f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.25f * UI_RATIO);
 
 	return S_OK;
 }
@@ -117,7 +117,7 @@ HRESULT CButton_Customize::Ready_Components()
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Button_Login"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_BackPrimary"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

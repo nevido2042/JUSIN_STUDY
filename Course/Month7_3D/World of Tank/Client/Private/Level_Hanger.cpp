@@ -45,6 +45,9 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_Background_UI(TEXT("Layer_Background_UI"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_TopBar(TEXT("Layer_TopBar"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_MapVegetation(TEXT("Layer_MapVegetation"))))
 		return E_FAIL;
 
@@ -225,6 +228,23 @@ HRESULT CLevel_Hanger::Ready_Layer_Background_UI(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Hanger::Ready_Layer_TopBar(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = static_cast<_float>(g_iWinSizeX);
+	UIObject_Desc.fSizeY = 100.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.04f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_TopBar"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
@@ -232,7 +252,8 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
 	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.04f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Start"),
@@ -249,8 +270,8 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Practice(const _wstring strLayerTag)
 	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
 	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.3f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
-
+	UIObject_Desc.fY = g_iWinSizeY * 0.04f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Practice"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
@@ -263,11 +284,11 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Customize(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
-	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
-	UIObject_Desc.fX = g_iWinSizeX * 0.7f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
-
+	UIObject_Desc.fSizeX = 150.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 40.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.7f;
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Customize"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
@@ -280,12 +301,12 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Exit_Customize(const _wstring strLayer
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
 
-	UIObject_Desc.fSizeX = 300.f * UI_RATIO;
-	UIObject_Desc.fSizeY = 80.f * UI_RATIO;
-	UIObject_Desc.fX = g_iWinSizeX * 0.3f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.1f;
+	UIObject_Desc.fSizeX = 150.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 40.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.7f;
 	UIObject_Desc.bVisible = false;
-
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Exit_Customize"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
@@ -475,11 +496,28 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Fury(const _wstring strLayerTag)
 
 	UIObject_Desc.fSizeX = 420.f * UI_RATIO;
 	UIObject_Desc.fSizeY = 307.f * UI_RATIO;
-	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fX = g_iWinSizeX * 0.4f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Fury"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hanger::Ready_Layer_Button_Tiger(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 420.f * UI_RATIO;
+	UIObject_Desc.fSizeY = 307.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.6f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
@@ -516,23 +554,6 @@ HRESULT CLevel_Hanger::Ready_Layer_Tiger_Hanger(const _wstring strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Tiger"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_Hanger::Ready_Layer_Button_Tiger(const _wstring strLayerTag)
-{
-	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
-
-	UIObject_Desc.fSizeX = 420.f * UI_RATIO;
-	UIObject_Desc.fSizeY = 307.f * UI_RATIO;
-	UIObject_Desc.fX = g_iWinSizeX * 0.7f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.8f;
-
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Tiger"),
-		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -585,7 +606,7 @@ HRESULT CLevel_Hanger::Ready_Layer_StatusLight(const _wstring strLayerTag)
 	UIObject_Desc.fSizeX = 40.0f * UI_RATIO;
 	UIObject_Desc.fSizeY = 50.0f * UI_RATIO;
 	UIObject_Desc.fX = g_iWinSizeX * 0.05f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.05f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.015f;
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_StatusLight"),

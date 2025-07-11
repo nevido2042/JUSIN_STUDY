@@ -40,7 +40,7 @@ void CFireEffect::Priority_Update(_float fTimeDelta)
 
 void CFireEffect::Update(_float fTimeDelta)
 {
-	m_fFrame += fTimeDelta * 32.f;
+	m_fFrame += fTimeDelta * 64.f;
 
 	if (static_cast<_float>(iMaxTextureCount) < m_fFrame)
 	{

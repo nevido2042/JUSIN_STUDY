@@ -1063,9 +1063,14 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CSoundController::Create("../Bin/WOT_Resources/Sound/04.GUI/"))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_TankSound2D */
+	/* For.Prototype_Component_SoundController_TankSound2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound2D"),
 		CSoundController::Create("../Bin/WOT_Resources/Sound/05.TankSound2D/"))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_SoundController_Clock */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Clock"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/08.Clock/"))))
 		return E_FAIL;
 #pragma endregion
 

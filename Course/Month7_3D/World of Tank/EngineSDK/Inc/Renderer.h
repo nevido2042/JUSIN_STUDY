@@ -71,6 +71,8 @@ private:
 	HRESULT Render_NonLight();
 	HRESULT Render_Blend_First();
 	HRESULT Render_Blend();
+
+	HRESULT Render_UI_NonBlend();
 	HRESULT Render_UI();
 
 private:
