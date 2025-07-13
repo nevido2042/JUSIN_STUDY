@@ -29,7 +29,7 @@ HRESULT CFury::Initialize(void* pArg)
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	lstrcpy((*pDesc).szName, TEXT("Fury"));
 	(*pDesc).fRotationPerSec = 0.5f;
-	(*pDesc).fSpeedPerSec = 10.5f;
+	(*pDesc).fSpeedPerSec = 5.5f;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

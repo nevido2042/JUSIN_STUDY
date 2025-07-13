@@ -245,6 +245,13 @@ void CShell::Check_RaycastHit()
 				pTotalDamage->AddDamage(10.f);
 			}
 
+			//부품 부순 횟수 증가
+			CCountDamageModule* pCountDamageModule = static_cast<CCountDamageModule*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountDamageModule")));
+			if (pCountDamageModule)
+			{
+				pCountDamageModule->AddCountDamageModule();
+			}
+
 			//부품 충돌 검사를 해라
 			CGameObject* pHitModule = { nullptr };
 			pHitModule = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
@@ -253,11 +260,7 @@ void CShell::Check_RaycastHit()
 				pHitModule->On_RaycastHit(this);
 
 				//부품 부순 횟수 증가
-				CCountDamageModule* pCountDamageModule = static_cast<CCountDamageModule*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountDamageModule")));
-				if (pCountDamageModule)
-				{
-					pCountDamageModule->AddCountDamageModule();
-				}
+				pCountDamageModule->AddCountDamageModule();
 			}
 
 			if (m_pGameInstance->Get_ID() == m_iID)

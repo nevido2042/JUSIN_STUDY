@@ -54,11 +54,19 @@ public:
 	const _float4&  Get_BodyColor() const { return m_vBodyColor; }
 	void			Set_BodyColor(const _float4& vColor) { m_vBodyColor = vColor; }
 
-	const _float4&	Get_TurretColor() const { return m_vTurretColor; }
-	void 			Set_TurretColor(const _float4& vColor) { m_vTurretColor = vColor; }
+	const _float4&	Get_TurretColor() const { 
+		return m_vTurretColor; 
+	}
+	void 			Set_TurretColor(const _float4& vColor) { 
+		m_vTurretColor = vColor; 
+	}
 
-	const _float4&	Get_GunColor() const { return m_vGunColor; }
-	void 			Set_GunColor(const _float4& vColor) { m_vGunColor = vColor; }
+	const _float4&	Get_GunColor() const {
+		return m_vGunColor; 
+	}
+	void 			Set_GunColor(const _float4& vColor) { 
+		m_vGunColor = vColor;
+	}
 
 	const PART_REPAINT& Get_PartRepaint() const { return m_ePartRepaint; }
 	void				Set_PartRepaint(const PART_REPAINT& ePartRepaint);

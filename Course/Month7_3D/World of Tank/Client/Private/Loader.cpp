@@ -268,7 +268,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_CountDamageModule*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_CountDamageModule"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/output/ribbonsCritsEnemy.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/output/ribbonsCrits.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_TotalDamage*/
