@@ -112,23 +112,27 @@ _bool CUIObject::isPick(HWND hWnd)
 
 	RECT			rcUI = {};
 
-	//if (m_bIsChild)
-	//{
-	//	_vector vRight = XMVectorSet(m_CombinedWorldMatrix._11, m_CombinedWorldMatrix._12, m_CombinedWorldMatrix._13, 0.f);
-	//	_vector vUp = XMVectorSet(m_CombinedWorldMatrix._21, m_CombinedWorldMatrix._22, m_CombinedWorldMatrix._23, 0.f);
+	if (m_bIsChild)
+	{
+		_vector vRight = XMVectorSet(m_CombinedWorldMatrix._11, m_CombinedWorldMatrix._12, m_CombinedWorldMatrix._13, 0.f);
+		_vector vUp = XMVectorSet(m_CombinedWorldMatrix._21, m_CombinedWorldMatrix._22, m_CombinedWorldMatrix._23, 0.f);
 
-	//	rcUI = {
-	//	static_cast<LONG>(m_CombinedWorldMatrix._41 - XMVectorGetX(XMVector3Length(vRight)) * 0.5f),
-	//	static_cast<LONG>(m_CombinedWorldMatrix._42 - XMVectorGetX(XMVector3Length(vUp)) * 0.5f),
-	//	static_cast<LONG>(m_CombinedWorldMatrix._41 + XMVectorGetX(XMVector3Length(vRight)) * 0.5f),
-	//	static_cast<LONG>(m_CombinedWorldMatrix._42 + XMVectorGetX(XMVector3Length(vUp)) * 0.5f) };
-	//}
+		rcUI = {
+		static_cast<LONG>(g_iWinSizeX * 0.5f + m_CombinedWorldMatrix._41 - XMVectorGetX(XMVector3Length(vRight) * 0.5f)),
+		static_cast<LONG>(g_iWinSizeY * 0.5f - m_CombinedWorldMatrix._42 - XMVectorGetX(XMVector3Length(vUp) * 0.5f)),
+		static_cast<LONG>(g_iWinSizeX * 0.5f + m_CombinedWorldMatrix._41 + XMVectorGetX(XMVector3Length(vRight) * 0.5f)),
+		static_cast<LONG>(g_iWinSizeY * 0.5f - m_CombinedWorldMatrix._42 + XMVectorGetX(XMVector3Length(vUp) * 0.5f)) };
+	}
+	else
+	{
+		rcUI = {
+		static_cast<LONG>(m_fX - m_fSizeX * 0.5f),
+		static_cast<LONG>(m_fY - m_fSizeY * 0.5f),
+		static_cast<LONG>(m_fX + m_fSizeX * 0.5f),
+		static_cast<LONG>(m_fY + m_fSizeY * 0.5f) };
+	}
 
-	rcUI = {
-	static_cast<LONG>(m_fX - m_fSizeX * 0.5f),
-	static_cast<LONG>(m_fY - m_fSizeY * 0.5f),
-	static_cast<LONG>(m_fX + m_fSizeX * 0.5f),
-	static_cast<LONG>(m_fY + m_fSizeY * 0.5f) };
+
 
 	return PtInRect(&rcUI, ptMouse);
 }

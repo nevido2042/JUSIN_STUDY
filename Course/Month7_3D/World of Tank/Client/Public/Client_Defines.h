@@ -19,6 +19,7 @@
 #include "../Default/framework.h"
 #include <process.h>
 #include "Client_Enum.h"
+#include "Client_Struct.h"
 
 #include "PacketType.h"
 

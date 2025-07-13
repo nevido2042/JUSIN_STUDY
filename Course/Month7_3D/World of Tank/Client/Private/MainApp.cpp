@@ -186,8 +186,11 @@ HRESULT CMainApp::Ready_Packets()
 
 	if (FAILED(m_pGameInstance->Define_Packet(ENUM_CLASS(PacketType::SC_RETURN_HANGER), [this](void* pArg)
 		{
-			if(m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::HANGER))
+			if (m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::HANGER))
+			{
 				m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
+			}
+
 		})))
 		return E_FAIL;
 

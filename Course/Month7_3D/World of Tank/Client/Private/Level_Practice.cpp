@@ -57,6 +57,9 @@ HRESULT CLevel_Practice::Initialize()
 	//if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
 	//	return E_FAIL;
 
+	if (FAILED(Ready_Layer_TotalDamage(TEXT("Layer_TotalDamage"))))
+		return E_FAIL;
+	
 	if (FAILED(Ready_Layer_CountdownTimer(TEXT("Layer_CountdownTimer"))))
 		return E_FAIL;
 
@@ -464,6 +467,21 @@ HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Practice::Ready_Layer_TotalDamage(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fSizeX = 50.f * UI_RATIO;
+	Desc.fSizeY = 50.f * UI_RATIO;
+	Desc.fX = g_iWinSizeX * 0.13f;
+	Desc.fY = g_iWinSizeY * 0.8f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TotalDamage"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Practice::Ready_Layer_GameTimer(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameTimer"),
@@ -671,9 +689,6 @@ HRESULT CLevel_Practice::Ready_Layer_AimCircle(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_FPS_Renderer(const _wstring strLayerTag)
 {
-	//이미 있으면 안만듬
-	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_FPS_Renderer")))
-		return S_OK;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))

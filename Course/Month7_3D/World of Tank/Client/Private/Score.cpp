@@ -4,6 +4,9 @@
 #include "Score_Tank.h"
 #include "Tank.h"
 #include "Layer.h"
+#include "GameManager.h"
+#include "TotalDamage.h"
+#include "CountDamageModule.h"
 
 CScore::CScore(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
@@ -54,17 +57,44 @@ void CScore::Update(_float fTimeDelta)
 		m_fAccTime += fTimeDelta;
 
 		//5초간 대기하다가 격납고로 이동
-		if (m_fAccTime > 30.f)
+		if (m_fAccTime > 5.f)
 		{
+			//계속 실행 안되도록 초기화
+			m_fAccTime = 0.f;
+
 			//계속 보내도 될까?
 			PACKET_DESC PacketDesc = {};
 			PacketDesc.iID = m_pGameInstance->Get_ID();
 			m_pGameInstance->Send_Packet(ENUM_CLASS(PacketType::CS_END_GAME), &PacketDesc);
 
+			//게임매니저에 결과 저장
+			CGameManager* pGameManager = GET_GAMEMANAGER;
+
+			//총합데미지 UI 한테 딜량 가져오기
+			CTotalDamage* pTotalDamage = static_cast<CTotalDamage*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_TotalDamage")));
+			if (pTotalDamage)
+			{
+				m_tGameResult.fTotalDamage = pTotalDamage->Get_TotalDamage();
+
+			}
+
+			//파괴한 모듈 수 가져오기
+			CCountDamageModule* pCountDamageModule = static_cast<CCountDamageModule*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountDamageModule")));
+			if (pCountDamageModule)
+			{
+				m_tGameResult.iNumDamageModule = pCountDamageModule->Get_CountDamageModule();
+
+			}
+
+			pGameManager->Set_GameResult(m_tGameResult);
+
+
 			//게임플레이가 아니면 알아서 넘어가게
 			if(m_pGameInstance->Get_NewLevel_Index() != ENUM_CLASS(LEVEL::GAMEPLAY))
 			{
 				m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER));
+
+				//게임 매니저한테 점수판을 띄우라고 요청
 			}
 		}
 	}
@@ -154,12 +184,16 @@ void CScore::Draw_GameResult()
 	//승리 패배 출력해라
 	if (m_iNumGreen == 0)
 	{
+		m_tGameResult.bIsVictory = false;
+
 		//패배
 		// 폰트 출력
 		m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("패배"), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), fSize);
 	}
 	else
 	{
+		m_tGameResult.bIsVictory = true;
+
 		//승리
 		// 폰트 출력
 		m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("승리"), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), fSize);

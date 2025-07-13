@@ -11,6 +11,9 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "CountDamageModule.h"
+#include "CloseButton.h"
+#include "TotalDamage.h"
 #include "GameTimer.h"
 #include "GuitarFire.h"
 #include "GoldPotShining.h"
@@ -100,6 +103,10 @@
 #pragma endregion
 
 #pragma region HANGER
+#include "ScoreBoard_CountDamageModule.h"
+#include "ScoreBoard_GameResult.h"
+#include "ScoreBoard_TotalDamage.h"
+#include "ScoreBoard.h"
 #include "TopBar.h"
 #include "Button_3DCustom.h"
 #include "Camera_Hanger.h"
@@ -253,6 +260,21 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_CloseButton*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_CloseButton"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/closeBtnIcon.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CountDamageModule*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_CountDamageModule"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/output/ribbonsCritsEnemy.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_TotalDamage*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TotalDamage"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/output/ribbonsDamage.dds"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Grass*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Grass"),
@@ -750,6 +772,21 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CloseButton */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_CloseButton"),
+		CCloseButton::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CountDamageModule */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_CountDamageModule"),
+		CCountDamageModule::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_TotalDamage */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TotalDamage"),
+		CTotalDamage::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_GameTimer */
@@ -1318,6 +1355,22 @@ HRESULT CLoader::Loading_For_Hanger()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_BackPrimary"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/back_primary.dds"), 1))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ScoreBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_ScoreBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/components/output/tooltip_background.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Victory*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Victory"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Loading/Background/loading_06.dds"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Defeat*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_Component_Texture_Defeat"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Loading/Background/loading_07.dds"), 1))))
+		return E_FAIL;
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -1330,12 +1383,30 @@ HRESULT CLoader::Loading_For_Hanger()
 
 #pragma region 원형 객체
 
-#pragma region 3D커스터마이징 버튼
+	/* For.Prototype_GameObject_ScoreBoard_CountDamageModule */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_ScoreBoard_CountDamageModule"),
+		CScoreBoard_CountDamageModule::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ScoreBoard_GameResult */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_ScoreBoard_GameResult"),
+		CScoreBoard_GameResult::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ScoreBoard_TotalDamage */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_ScoreBoard_TotalDamage"),
+		CScoreBoard_TotalDamage::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ScoreBoard */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_ScoreBoard"),
+		CScoreBoard::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Button_3DCustom */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_3DCustom"),
 		CButton_3DCustom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-#pragma endregion
 
 	/* For.Prototype_GameObject_Camera_Hanger */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Camera_Hanger"),

@@ -80,6 +80,17 @@ public:
 		m_GameStartTime = GameStartTime;
 	}
 
+public:
+	const GAME_RESULT& Get_GameResult() const {
+		return m_tGameResult;
+	}
+
+	void Set_GameResult(GAME_RESULT& tGameResult) {
+		m_tGameResult = tGameResult;
+	}
+
+private:
+	GAME_RESULT	m_tGameResult = {};
 
 private:
 	PART_REPAINT	m_ePartRepaint = { PART_REPAINT::BODY };

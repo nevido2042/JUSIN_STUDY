@@ -415,6 +415,27 @@
     <Filter Include="02.GameObjects\06.UIObject\00.Button\08.Button_Start">
       <UniqueIdentifier>{de31479c-fd90-4066-8382-6dbdf56591ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\TotalDamage">
+      <UniqueIdentifier>{abc9733d-cd62-4f27-8ce9-4cdee6006784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\ScoreBoard">
+      <UniqueIdentifier>{8606bb2e-c847-4d7a-8084-38ef1c7745cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_TotalDamage">
+      <UniqueIdentifier>{4320e33d-be29-4dc9-9119-e25d77bb7acf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\ScoreBoard\CloseButton">
+      <UniqueIdentifier>{fe87921d-1d1c-4875-b4fe-a7f6f63e5c48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_GameResult">
+      <UniqueIdentifier>{161a1778-29c5-4bab-b84e-db1889ed9f50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_CountDamgeModule">
+      <UniqueIdentifier>{e2f5ec3d-45e7-44ec-8789-33632eff624f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\CountDamageModule">
+      <UniqueIdentifier>{4329d4fa-2e04-4f3c-a894-3bb119c2c247}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -837,6 +858,30 @@
     <ClInclude Include="..\public\TopBar.h">
       <Filter>02.GameObjects\06.UIObject\TopBar</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TotalDamage.h">
+      <Filter>02.GameObjects\06.UIObject\TotalDamage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ScoreBoard.h">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ScoreBoard_TotalDamage.h">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_TotalDamage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CloseButton.h">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\CloseButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ScoreBoard_GameResult.h">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_GameResult</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ScoreBoard_CountDamageModule.h">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_CountDamgeModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CountDamageModule.h">
+      <Filter>02.GameObjects\06.UIObject\CountDamageModule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1241,6 +1286,27 @@
     </ClCompile>
     <ClCompile Include="..\private\TopBar.cpp">
       <Filter>02.GameObjects\06.UIObject\TopBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TotalDamage.cpp">
+      <Filter>02.GameObjects\06.UIObject\TotalDamage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ScoreBoard.cpp">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ScoreBoard_TotalDamage.cpp">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_TotalDamage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CloseButton.cpp">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\CloseButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ScoreBoard_GameResult.cpp">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_GameResult</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ScoreBoard_CountDamageModule.cpp">
+      <Filter>02.GameObjects\06.UIObject\ScoreBoard\ScoreBoard_CountDamgeModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CountDamageModule.cpp">
+      <Filter>02.GameObjects\06.UIObject\CountDamageModule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

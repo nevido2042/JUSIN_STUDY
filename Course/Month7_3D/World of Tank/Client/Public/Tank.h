@@ -92,7 +92,7 @@ private:
 	_float4 m_vBodyColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
-	const	_float m_fMaxHP = { 100.f };
+	const	_float m_fMaxHP = { 10.f };
 	_float	m_fHP = { m_fMaxHP };
 
 private:
@@ -109,19 +109,13 @@ private:
 private:
 	_bool   m_bisPicked = { false };
 
-//private:
-//	_bool	m_bIsCreateDieEffect = false; //연기랑 불꽃 루프
-//	_float	m_fDieTimeAcc = 0.f;
-
 private:
-	//_bool	m_bIsBattleStartVoice = { false }; //배틀 보이스 했는지 여부
 
 protected:
 	CCollider*			m_pColliderCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
 	CModel*				m_pModelCom_Destroyed = { nullptr };
-	//CSoundController*	m_pSoundCom_TankSound3D = { nullptr };
 
 protected:
 	HRESULT Ready_Components();

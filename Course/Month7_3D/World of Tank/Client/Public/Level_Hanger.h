@@ -24,9 +24,10 @@ private:
 	HRESULT Ready_Layer_Camera(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Camera_Hanger(const _wstring strLayerTag);
 
-	HRESULT Ready_Layer_Background_UI(const _wstring strLayerTag);
+
 	HRESULT Ready_Layer_TopBar(const _wstring strLayerTag);
 
+	HRESULT Ready_Layer_ScoreBoard(const _wstring strLayerTag);
 
 
 	HRESULT Ready_Layer_Button_Start(const _wstring strLayerTag);
@@ -40,7 +41,7 @@ private:
 
 	HRESULT Ready_Layer_Button_3DCustoms(const _wstring strLayerTag);
 
-
+	HRESULT Ready_Layer_Background_UI(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Fury(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Button_Tiger(const _wstring strLayerTag);
 

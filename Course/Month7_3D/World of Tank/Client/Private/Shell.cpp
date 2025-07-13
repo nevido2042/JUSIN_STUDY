@@ -6,6 +6,9 @@
 #include "DamagePanel.h"
 #include "VIBuffer_Trail.h"
 
+#include "TotalDamage.h"
+#include "CountDamageModule.h"
+
 CShell::CShell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject{ pDevice, pContext }
 {
@@ -235,12 +238,26 @@ void CShell::Check_RaycastHit()
 			pTurret->TakeDamage_Onwer(10.f, this);
 			pTurret->On_RaycastHit(this);
 
+			//딜량 UI에 누적해라
+			CTotalDamage* pTotalDamage = static_cast<CTotalDamage*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_TotalDamage")));
+			if (pTotalDamage)
+			{
+				pTotalDamage->AddDamage(10.f);
+			}
+
 			//부품 충돌 검사를 해라
 			CGameObject* pHitModule = { nullptr };
 			pHitModule = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
 			if (pHitModule)
 			{
 				pHitModule->On_RaycastHit(this);
+
+				//부품 부순 횟수 증가
+				CCountDamageModule* pCountDamageModule = static_cast<CCountDamageModule*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountDamageModule")));
+				if (pCountDamageModule)
+				{
+					pCountDamageModule->AddCountDamageModule();
+				}
 			}
 
 			if (m_pGameInstance->Get_ID() == m_iID)
@@ -258,12 +275,26 @@ void CShell::Check_RaycastHit()
 			CTank* pTank = static_cast<CTank*>(pHitResult);
 			pTank->Take_Damage(10.f, this);
 
+			//딜량 UI에 누적해라
+			CTotalDamage* pTotalDamage = static_cast<CTotalDamage*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_TotalDamage")));
+			if (pTotalDamage)
+			{
+				pTotalDamage->AddDamage(10.f);
+			}
+
 			//부품 충돌 검사를 해라
 			CGameObject* pHitModule = { nullptr };
 			pHitModule = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
 			if (pHitModule)
 			{
 				pHitModule->On_RaycastHit(this);
+
+				//부품 부순 횟수 증가
+				CCountDamageModule* pCountDamageModule = static_cast<CCountDamageModule*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountDamageModule")));
+				if (pCountDamageModule)
+				{
+					pCountDamageModule->AddCountDamageModule();
+				}
 			}
 
 			if (m_pGameInstance->Get_ID() == m_iID)

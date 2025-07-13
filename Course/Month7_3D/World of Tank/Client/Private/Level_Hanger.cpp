@@ -33,8 +33,8 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_StatusLight(TEXT("Layer_StatusLight"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_FPS_Renderer(TEXT("Layer_FPS_Renderer"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_FPS_Renderer(TEXT("Layer_FPS_Renderer"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
@@ -106,6 +106,22 @@ HRESULT CLevel_Hanger::Initialize()
 
 	if (FAILED(Ready_Layer_Camera_Hanger(TEXT("Layer_Camera"))))
 		return E_FAIL;
+
+	CGameManager* pGameManager = GET_GAMEMANAGER;
+	if (pGameManager)
+	{
+		//게임 중이었다면, 종료했음을 저장하고 점수판을 생성해라
+		if (pGameManager->Get_isGameStart() == true)
+		{
+			pGameManager->Set_isGameStart(false);
+
+			if (FAILED(Ready_Layer_ScoreBoard(TEXT("Layer_ScoreBoard"))))
+				return E_FAIL;
+		}
+	}
+
+	//if (FAILED(Ready_Layer_ScoreBoard(TEXT("Layer_ScoreBoard"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -245,6 +261,24 @@ HRESULT CLevel_Hanger::Ready_Layer_TopBar(const _wstring strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Hanger::Ready_Layer_ScoreBoard(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
+
+	UIObject_Desc.fSizeX = 500.f* UI_RATIO;
+	UIObject_Desc.fSizeY = 500.f * UI_RATIO;
+	UIObject_Desc.fX = g_iWinSizeX * 0.2f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.5f;
+	
+	UIObject_Desc.fDepth = DEPTH_BACKGROUND;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_ScoreBoard"),
+		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &UIObject_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Hanger::Ready_Layer_Button_Start(const _wstring strLayerTag)
 {
 	CUIObject::UIOBJECT_DESC				UIObject_Desc{};
@@ -286,8 +320,8 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Customize(const _wstring strLayerTag)
 
 	UIObject_Desc.fSizeX = 150.f * UI_RATIO;
 	UIObject_Desc.fSizeY = 40.f * UI_RATIO;
-	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
-	UIObject_Desc.fY = g_iWinSizeY * 0.7f;
+	UIObject_Desc.fX = g_iWinSizeX * 0.9f;
+	UIObject_Desc.fY = g_iWinSizeY * 0.67f;
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::HANGER), TEXT("Prototype_GameObject_Button_Customize"),
@@ -303,7 +337,7 @@ HRESULT CLevel_Hanger::Ready_Layer_Button_Exit_Customize(const _wstring strLayer
 
 	UIObject_Desc.fSizeX = 150.f * UI_RATIO;
 	UIObject_Desc.fSizeY = 40.f * UI_RATIO;
-	UIObject_Desc.fX = g_iWinSizeX * 0.5f;
+	UIObject_Desc.fX = g_iWinSizeX * 0.9f;
 	UIObject_Desc.fY = g_iWinSizeY * 0.7f;
 	UIObject_Desc.bVisible = false;
 	UIObject_Desc.fDepth = DEPTH_BACKGROUND - 0.01f;
@@ -631,9 +665,6 @@ HRESULT CLevel_Hanger::Ready_Layer_GameManger(const _wstring strLayerTag)
 
 HRESULT CLevel_Hanger::Ready_Layer_FPS_Renderer(const _wstring strLayerTag)
 {
-	//이미 있으면 안만듬
-	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_FPS_Renderer")))
-		return S_OK;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag)))

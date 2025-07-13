@@ -50,6 +50,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	/*if (FAILED(Ready_Layer_Minimap(TEXT("Layer_Minimap"))))
 		return E_FAIL;*/
 
+	if (FAILED(Ready_Layer_CountDamageModule(TEXT("Layer_CountDamageModule"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_TotalDamage(TEXT("Layer_TotalDamage"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
 		return E_FAIL;
 
@@ -247,6 +253,36 @@ HRESULT CLevel_GamePlay::Ready_Layer_GunMarker(const _wstring strLayerTag)
 	Desc.fSizeY = 50.f * UI_RATIO;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_TotalDamage(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fSizeX = 50.f * UI_RATIO;
+	Desc.fSizeY = 50.f * UI_RATIO;
+	Desc.fX = g_iWinSizeX * 0.13f;
+	Desc.fY = g_iWinSizeY * 0.8f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TotalDamage"),
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_CountDamageModule(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fSizeX = 50.f * UI_RATIO;
+	Desc.fSizeY = 50.f * UI_RATIO;
+	Desc.fX = g_iWinSizeX * 0.13f;
+	Desc.fY = g_iWinSizeY * 0.83f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_CountDamageModule"),
 		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
@@ -457,9 +493,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_InvisibleWalls(const _wstring strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_FPS_Renderer(const _wstring strLayerTag)
 {
-	//이미 있으면 안만듬
-	if (m_pGameInstance->Find_Layer(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_FPS_Renderer")))
-		return S_OK;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_FPS_Renderer"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
