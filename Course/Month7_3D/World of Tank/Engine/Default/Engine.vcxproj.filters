@@ -175,6 +175,9 @@
     <ClInclude Include="..\public\Shadow.h">
       <Filter>01.Utility\13.Shadow</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_VolumeMesh.h">
+      <Filter>01.Utility\04.Components\VIBuffer\VolumeMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -335,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Shadow.cpp">
       <Filter>01.Utility\13.Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_VolumeMesh.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\VolumeMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -517,6 +523,9 @@
     </Filter>
     <Filter Include="01.Utility\13.Shadow">
       <UniqueIdentifier>{a50e8c48-fd6f-4a27-9434-fdbcbb9daa17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\VolumeMesh">
+      <UniqueIdentifier>{7c71526f-8fae-430e-9e6b-69d446145319}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,9 @@ HRESULT CLevel_MapTool::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
+	if(FAILED(Ready_Layer_Decal(TEXT("Layer_Decal"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -137,7 +140,7 @@ HRESULT CLevel_MapTool::Ready_Layer_Camera(const _wstring strLayerTag)
 	Desc.fSpeedPerSec = 50.0f;
 	lstrcpy(Desc.szName, TEXT("Camera_Free"));
 
-	Desc.vEye = _float3(300.f, 90.f, 300.f);
+	Desc.vEye = _float3(-1.f, 100.f, -1.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFov = XMConvertToRadians(60.0f);
 	Desc.fNear = 0.1f;
@@ -156,6 +159,18 @@ HRESULT CLevel_MapTool::Ready_Layer_Fury(const _wstring strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Fury"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_MapTool::Ready_Layer_Decal(const _wstring strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc{};
+	Desc.vInitPosition = _float3(6.72f, 108.32f, 6.60f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_Decal"),
+		ENUM_CLASS(LEVEL::MAPTOOL), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

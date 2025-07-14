@@ -39,6 +39,13 @@ RasterizerState RS_Cull_None
     CullMode = None;
 };
 
+RasterizerState RS_Wireframe
+{
+    FillMode = Wireframe; // 와이어프레임 모드
+    CullMode = None; // 전면/후면 컬링 안 함 (원하는 경우 back 또는 front로 바꿔도 됨)
+};
+
+
 DepthStencilState DSS_Default
 {
     DepthEnable = true;

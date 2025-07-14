@@ -205,6 +205,7 @@
     <ClInclude Include="..\public\DamageCollider.h" />
     <ClInclude Include="..\public\DamageIndicator.h" />
     <ClInclude Include="..\public\DamagePanel.h" />
+    <ClInclude Include="..\public\Decal.h" />
     <ClInclude Include="..\public\DirectionBody.h" />
     <ClInclude Include="..\public\DirectionTurret.h" />
     <ClInclude Include="..\public\DragonHead.h" />
@@ -369,6 +370,7 @@
     <ClCompile Include="..\private\DamagePanel.cpp" />
     <ClCompile Include="..\private\DeadFireEffect.cpp" />
     <ClCompile Include="..\private\DeadSmoke.cpp" />
+    <ClCompile Include="..\private\Decal.cpp" />
     <ClCompile Include="..\private\DirectionBody.cpp" />
     <ClCompile Include="..\private\DirectionTurret.cpp" />
     <ClCompile Include="..\private\DragonHead.cpp" />
@@ -485,6 +487,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Boundary.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPos.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl" />

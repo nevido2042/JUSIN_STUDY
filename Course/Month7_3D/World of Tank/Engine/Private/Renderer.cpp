@@ -33,6 +33,8 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_OutlineDepth"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 1.f, 0.f, 0.f))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Decal"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Outline"), static_cast<_uint>(ViewportDesc.Width), static_cast<_uint>(ViewportDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
@@ -51,13 +53,15 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_OutlineDepth"))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Decal"))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Specular"))))
 		return E_FAIL;
 
-	//외곽선 멀테렌더타겟 추가해서 하면 좋을 듯
+
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_OutlineObjects"), TEXT("Target_Outline"))))
 		return E_FAIL;
 
@@ -93,6 +97,8 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Depth"), 500.0f, 100.0f, 200.0f, 200.0f)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_OutlineDepth"), 700.0f, 100.0f, 200.0f, 200.0f)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Decal"), 900.0f, 100.0f, 200.0f, 200.0f)))
 		return E_FAIL;
 
 
@@ -156,8 +162,8 @@ HRESULT CRenderer::Draw()
 		return E_FAIL;
 
 #ifdef _DEBUG
-	//if (FAILED(Render_Debug()))
-	//	return E_FAIL;
+	if (FAILED(Render_Debug()))
+		return E_FAIL;
 #endif
 
 	if (FAILED(Render_UI_NonBlend()))

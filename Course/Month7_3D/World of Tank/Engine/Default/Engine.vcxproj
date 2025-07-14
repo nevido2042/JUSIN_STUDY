@@ -173,6 +173,7 @@
     <ClInclude Include="..\public\Collider.h" />
     <ClInclude Include="..\public\Collider_Manager.h" />
     <ClInclude Include="..\public\Component.h" />
+    <ClInclude Include="..\public\VIBuffer_VolumeMesh.h" />
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\public\DebugDraw.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="..\private\Collider.cpp" />
     <ClCompile Include="..\private\Collider_Manager.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
+    <ClCompile Include="..\private\VIBuffer_VolumeMesh.cpp" />
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Engine_Struct.cpp" />

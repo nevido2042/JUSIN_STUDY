@@ -235,6 +235,10 @@ void CShell::Check_RaycastHit()
 		if (eCollGroup == COLLISION_GROUP::TURRET)
 		{
 			CModule* pTurret = static_cast<CModule*>(pHitResult);
+			//죽었으면 무시
+			if (pTurret->Get_Owner()->Get_isDie())
+				return;
+
 			pTurret->TakeDamage_Onwer(10.f, this);
 			pTurret->On_RaycastHit(this);
 
@@ -296,6 +300,10 @@ void CShell::Check_RaycastHit()
 		else if (eCollGroup == COLLISION_GROUP::BODY)
 		{
 			CTank* pTank = static_cast<CTank*>(pHitResult);
+			//죽었으면 무시
+			if (pTank->Get_isDie())
+				return;
+
 			pTank->Take_Damage(10.f, this);
 
 			//딜량 UI에 누적해라

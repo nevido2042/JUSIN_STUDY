@@ -127,6 +127,7 @@
 #include "MapTool.h"
 #include "MapObject.h"
 #include "MapVegetation.h"
+#include "Decal.h"
 #pragma endregion
 
 #pragma region PRACTICE
@@ -270,7 +271,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_DamageLog*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_DamageLog"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/ribbonsBgGreenLarge.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/DamageLog.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_CloseButton*/
@@ -1561,6 +1562,11 @@ HRESULT CLoader::Loading_For_MapTool()
 	/* For.Prototype_GameObject_MapObject */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_MapObject"),
 		CMapObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Decal */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::MAPTOOL), TEXT("Prototype_GameObject_Decal"),
+		CDecal::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

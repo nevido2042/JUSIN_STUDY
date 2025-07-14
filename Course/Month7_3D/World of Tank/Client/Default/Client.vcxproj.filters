@@ -442,6 +442,9 @@
     <Filter Include="02.GameObjects\06.UIObject\DamageLogModule">
       <UniqueIdentifier>{8a5d0f3e-ad47-4a1e-8902-ec3c6298dbf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Decal">
+      <UniqueIdentifier>{9f6f9cba-f699-40c3-8d52-160d56439bb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -894,6 +897,9 @@
     <ClInclude Include="..\public\DamageLogModule.h">
       <Filter>02.GameObjects\06.UIObject\DamageLogModule</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Decal.h">
+      <Filter>02.GameObjects\Decal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1326,6 +1332,9 @@
     <ClCompile Include="..\private\DamageLogModule.cpp">
       <Filter>02.GameObjects\06.UIObject\DamageLogModule</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Decal.cpp">
+      <Filter>02.GameObjects\Decal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -1344,6 +1353,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Boundary.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPos.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
