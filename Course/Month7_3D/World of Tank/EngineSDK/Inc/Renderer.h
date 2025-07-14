@@ -65,6 +65,7 @@ private:
 	HRESULT Render_Outline();
 	HRESULT Render_Shadow();
 	HRESULT Render_NonBlend();
+	HRESULT Render_Decal();
 	HRESULT Render_Lights();
 	HRESULT Render_BackBuffer();
 

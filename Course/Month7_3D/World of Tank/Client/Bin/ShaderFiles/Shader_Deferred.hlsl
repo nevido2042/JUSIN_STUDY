@@ -16,6 +16,7 @@ Texture2D g_SpecularTexture;
 Texture2D g_OutlineTexture;
 Texture2D g_OutlineDepthTexture;
 Texture2D g_ShadowTexture;
+Texture2D g_DecalTexture;
 
 vector g_vLightDir;
 vector g_vLightPos;
@@ -171,7 +172,9 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
     PS_OUT Out;
 
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
-
+    vector vDecal = g_DecalTexture.Sample(DefaultSampler, In.vTexcoord);
+    vDiffuse += vDecal;
+    
     //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
     //Out.vDepthOutline = Out.vDepth;
     vector vOutlineDepth = g_OutlineDepthTexture.Sample(DefaultSampler, In.vTexcoord);

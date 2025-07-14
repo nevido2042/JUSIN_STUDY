@@ -28,7 +28,7 @@ HRESULT CDecal::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Scaling(10.f, 10.f, 10.f);
+	m_pTransformCom->Scaling(10.f, 1.f, 10.f);
 
 	return S_OK;
 }
@@ -46,8 +46,8 @@ void CDecal::Update(_float fTimeDelta)
 
 void CDecal::Late_Update(_float fTimeDelta)
 {
-	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 0.1f))
-		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 0.1f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_DECAL, this);
 
 }
 
@@ -65,14 +65,14 @@ HRESULT CDecal::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	//if (FAILED(m_pShaderCom->Begin(1)))
-	//	return E_FAIL;
+	if (FAILED(m_pShaderCom->Begin(1)))
+		return E_FAIL;
 
-	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-	//	return E_FAIL;
+	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+		return E_FAIL;
 
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -88,7 +88,7 @@ HRESULT CDecal::Ready_Components()
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_MediumTank_Enemy_Red"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TankExplosionEffect"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

@@ -53,7 +53,8 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_OutlineDepth"))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Decal"))))
+
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Decals"), TEXT("Target_Decal"))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
@@ -143,6 +144,9 @@ HRESULT CRenderer::Draw()
 		return E_FAIL;
 
 	if (FAILED(Render_NonBlend()))
+		return E_FAIL;
+
+	if (FAILED(Render_Decal()))
 		return E_FAIL;
 
 	/*렌더 라이트와 , 렌더 백버퍼에서 깊이버퍼를 초기화 하는 것 같음 왜인지 모르겠다.*/
@@ -265,6 +269,23 @@ HRESULT CRenderer::Render_NonBlend()
 
 	return S_OK;
 }
+HRESULT CRenderer::Render_Decal()
+{
+	m_pGameInstance->Begin_MRT(TEXT("MRT_Decals"));
+
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_DECAL)])
+	{
+		if (nullptr != pGameObject && pGameObject->Get_isVisible())
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_DECAL)].clear();
+
+	m_pGameInstance->End_MRT();
+
+	return S_OK;
+}
 HRESULT CRenderer::Render_Lights()
 {
 	/* Shade */
@@ -315,6 +336,8 @@ HRESULT CRenderer::Render_BackBuffer()
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_OutlineDepth"), m_pShader, "g_OutlineDepthTexture")))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Shadow"), m_pShader, "g_ShadowTexture")))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Decal"), m_pShader, "g_DecalTexture")))
 		return E_FAIL;
 
 	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
@@ -492,6 +515,7 @@ HRESULT CRenderer::Render_Debug()
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer);
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_OutlineObjects"), m_pShader, m_pVIBuffer);
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer);
+	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Decals"), m_pShader, m_pVIBuffer);
 
 	return S_OK;
 }
