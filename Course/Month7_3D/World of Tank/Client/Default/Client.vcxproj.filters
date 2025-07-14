@@ -436,6 +436,12 @@
     <Filter Include="02.GameObjects\06.UIObject\CountDamageModule">
       <UniqueIdentifier>{4329d4fa-2e04-4f3c-a894-3bb119c2c247}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamageLog">
+      <UniqueIdentifier>{974529c3-46ac-4523-9306-b5e95cf60f92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\DamageLogModule">
+      <UniqueIdentifier>{8a5d0f3e-ad47-4a1e-8902-ec3c6298dbf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -882,6 +888,12 @@
     <ClInclude Include="..\public\CountDamageModule.h">
       <Filter>02.GameObjects\06.UIObject\CountDamageModule</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DamageLog.h">
+      <Filter>02.GameObjects\06.UIObject\DamageLog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DamageLogModule.h">
+      <Filter>02.GameObjects\06.UIObject\DamageLogModule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1307,6 +1319,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CountDamageModule.cpp">
       <Filter>02.GameObjects\06.UIObject\CountDamageModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamageLog.cpp">
+      <Filter>02.GameObjects\06.UIObject\DamageLog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DamageLogModule.cpp">
+      <Filter>02.GameObjects\06.UIObject\DamageLogModule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

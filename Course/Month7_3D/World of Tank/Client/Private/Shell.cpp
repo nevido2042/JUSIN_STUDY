@@ -245,12 +245,32 @@ void CShell::Check_RaycastHit()
 				pTotalDamage->AddDamage(10.f);
 			}
 
+			//데미지 로그를 띄워라
+			CUIObject::UIOBJECT_DESC				Desc{};
+			Desc.fSizeX = 400.f * 2.f * UI_RATIO;
+			Desc.fSizeY = 38.f * 2.f * UI_RATIO;
+			Desc.fY = g_iWinSizeY * 0.8f;
+			Desc.fX = g_iWinSizeX * 0.5f;
+
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageLog"),
+				m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamageLog"), &Desc);
+
 			//부품 부순 횟수 증가
 			CCountDamageModule* pCountDamageModule = static_cast<CCountDamageModule*>(m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_CountDamageModule")));
 			if (pCountDamageModule)
 			{
 				pCountDamageModule->AddCountDamageModule();
 			}
+
+			//데미지 로그를 띄워라
+			CUIObject::UIOBJECT_DESC				DMGLogModuleDesc{};
+			DMGLogModuleDesc.fSizeX = 400.f * 2.f * UI_RATIO;
+			DMGLogModuleDesc.fSizeY = 38.f * 2.f * UI_RATIO;
+			DMGLogModuleDesc.fY = g_iWinSizeY * 0.75f;
+			DMGLogModuleDesc.fX = g_iWinSizeX * 0.5f;
+
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageLogModule"),
+				m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamageLogModule"), &DMGLogModuleDesc);
 
 			//부품 충돌 검사를 해라
 			CGameObject* pHitModule = { nullptr };
@@ -285,6 +305,16 @@ void CShell::Check_RaycastHit()
 				pTotalDamage->AddDamage(10.f);
 			}
 
+			//데미지 로그를 띄워라
+			CUIObject::UIOBJECT_DESC				Desc{};
+			Desc.fSizeX = 400.f * 2.f * UI_RATIO;
+			Desc.fSizeY = 38.f * 2.f * UI_RATIO;
+			Desc.fY = g_iWinSizeY * 0.8f;
+			Desc.fX = g_iWinSizeX * 0.5f;
+
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageLog"),
+				m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamageLog"), &Desc);
+
 			//부품 충돌 검사를 해라
 			CGameObject* pHitModule = { nullptr };
 			pHitModule = m_pGameInstance->Check_RaycastHit(ENUM_CLASS(COLLISION_GROUP::MODULE), TEXT("Com_Collider"), vOrigin, vRayDir, fDist, m_iID);
@@ -297,6 +327,16 @@ void CShell::Check_RaycastHit()
 				if (pCountDamageModule)
 				{
 					pCountDamageModule->AddCountDamageModule();
+
+					//데미지 로그를 띄워라
+					CUIObject::UIOBJECT_DESC				DMGLogModuleDesc{};
+					DMGLogModuleDesc.fSizeX = 400.f * 2.f * UI_RATIO;
+					DMGLogModuleDesc.fSizeY = 38.f * 2.f * UI_RATIO;
+					DMGLogModuleDesc.fY = g_iWinSizeY * 0.75f;
+					DMGLogModuleDesc.fX = g_iWinSizeX * 0.5f;
+
+					m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_DamageLogModule"),
+						m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_DamageLogModule"), &DMGLogModuleDesc);
 				}
 			}
 

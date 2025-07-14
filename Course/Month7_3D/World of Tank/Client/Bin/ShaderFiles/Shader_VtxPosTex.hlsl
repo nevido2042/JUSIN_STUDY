@@ -110,6 +110,17 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_DAMAGELOG(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexcoord);
+    Out.vColor.rgb = float3(0.f, 1.f, 0.f);
+    Out.vColor.a *= 4.f;
+    
+    return Out;
+}
+
 PS_OUT PS_ALPHATESTA(PS_IN In)
 {
     PS_OUT Out;
@@ -345,6 +356,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_ALPHATESTA();
+    }
+    //8
+    pass DamageLog
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DAMAGELOG();
     }
     //pass Disstortion/* ¿Ö°î 1*/ 
     //{

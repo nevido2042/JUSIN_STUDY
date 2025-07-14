@@ -57,11 +57,11 @@ void CChurchA::Update(_float fTimeDelta)
 
 void CChurchA::Late_Update(_float fTimeDelta)
 {
-	CBuilding::Late_Update(fTimeDelta);
+	//그림자가 너무커서 이건 계속 그리자
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 
-
-	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
-	//	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
 #ifdef _DEBUG
 	//m_pGameInstance->Add_DebugComponent(m_pColliderCom);
