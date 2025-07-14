@@ -106,6 +106,8 @@ void CShell::Update(_float fTimeDelta)
 			GAMEOBJECT_DESC Desc = {};
 			Desc.vInitPosition = vDigCenter;
 			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
+			Desc.vInitPosition.y -= SHELL_DIG_DEPTH * 0.5f;
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ShellDecal"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_ShellDecal"), &Desc);
 
 		}
 	}
@@ -222,6 +224,9 @@ void CShell::Check_RaycastHit()
 		GAMEOBJECT_DESC Desc = {};
 		Desc.vInitPosition = vHitPos;
 		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
+
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ShellDecal"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_ShellDecal"), &Desc);
+
 
 		if (eCollGroup == COLLISION_GROUP::TURRET || eCollGroup == COLLISION_GROUP::BODY)
 		{

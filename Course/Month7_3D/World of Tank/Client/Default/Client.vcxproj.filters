@@ -445,6 +445,12 @@
     <Filter Include="02.GameObjects\Decal">
       <UniqueIdentifier>{9f6f9cba-f699-40c3-8d52-160d56439bb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Decal\ShellDecal">
+      <UniqueIdentifier>{6c788e33-9a67-43fe-899e-70dd86694063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Decal\TrackDecal">
+      <UniqueIdentifier>{e7eed1a5-7a20-45ac-9042-68ab4e07ba69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -900,6 +906,12 @@
     <ClInclude Include="..\public\Decal.h">
       <Filter>02.GameObjects\Decal</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ShellDecal.h">
+      <Filter>02.GameObjects\Decal\ShellDecal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TrackDecal.h">
+      <Filter>02.GameObjects\Decal\TrackDecal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1334,6 +1346,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Decal.cpp">
       <Filter>02.GameObjects\Decal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ShellDecal.cpp">
+      <Filter>02.GameObjects\Decal\ShellDecal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TrackDecal.cpp">
+      <Filter>02.GameObjects\Decal\TrackDecal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
