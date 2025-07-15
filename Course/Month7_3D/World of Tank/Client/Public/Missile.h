@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CShader;
 class CModel;
 class CVIBuffer;
+class CSoundController;
 NS_END
 
 NS_BEGIN(Client)
@@ -27,6 +28,13 @@ public:
 	virtual HRESULT Render();
 
 private:
+	_vector Bezier2(_float3 vStart, _float3 vControl, _float3 vEnd, _float fT);
+
+private:
+	_float3 vStartPos = {};
+	_float fProgress = {0.f};
+
+private:
 	class CVIBuffer* m_pTargetBuffer = { nullptr };
 private:
 	class CCamera_TPS* m_pCameraTPS = { nullptr };
@@ -34,6 +42,7 @@ private:
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
+	CSoundController* m_pSoundCom = { nullptr };
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();

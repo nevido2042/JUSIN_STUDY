@@ -4,6 +4,8 @@
 
 #include "GameManager.h"
 
+#include "Camera_Missile.h"
+
 CGameTimer::CGameTimer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
 {
@@ -63,9 +65,22 @@ void CGameTimer::Update(_float fTimeDelta)
 			{
 				m_bIsSpawnMissile = true;
 
-				GAMEOBJECT_DESC Desc = {};
-				Desc.vInitPosition = _float3(TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 300.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f);
-				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &Desc);
+				//GAMEOBJECT_DESC Desc = {};
+				//Desc.vInitPosition = _float3(TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 300.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f);
+				//m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &Desc);
+
+				CGameObject::GAMEOBJECT_DESC MissileDesc = {};
+				MissileDesc.vInitPosition = _float3(0.f, 110.f, 0.f);
+				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &MissileDesc);
+
+				CCamera_Missile::CAMERA_MISSILE_DESC Desc{};
+				Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Missile"));
+				Desc.bActive = true;
+				lstrcpy(Desc.szName, TEXT("Camera_Missile"));
+
+				if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Missile"),
+					ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Camera_Missile"), &Desc)))
+					return;
 			}
 		}
 	}

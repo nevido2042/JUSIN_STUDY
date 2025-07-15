@@ -14,6 +14,7 @@
 #include "Icon_Consumables.h"
 #include "InvisibleWall.h"
 #include "DamageCollider.h"
+#include "Camera_Missile.h"
 
 
 CLevel_Practice::CLevel_Practice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -152,6 +153,24 @@ void CLevel_Practice::Update(_float fTimeDelta)
 			}
 		}
 	}
+	else if (m_pGameInstance->Key_Down(DIK_M))
+	{
+		CGameObject::GAMEOBJECT_DESC MissileDesc = {};
+		MissileDesc.vInitPosition = _float3(0.f, 110.f, 0.f);
+		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &MissileDesc);
+
+
+		CCamera_Missile::CAMERA_MISSILE_DESC Desc{};
+		Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_Missile"));
+		Desc.bActive = true;
+		lstrcpy(Desc.szName, TEXT("Camera_Missile"));
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Missile"),
+			ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_Camera_Missile"), &Desc)))
+			return;
+	}
+
+
 }
 
 HRESULT CLevel_Practice::Render()

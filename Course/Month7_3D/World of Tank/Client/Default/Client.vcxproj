@@ -187,6 +187,7 @@
     <ClInclude Include="..\public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_Hanger.h" />
+    <ClInclude Include="..\public\Camera_Missile.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CloseButton.h" />
@@ -357,6 +358,7 @@
     <ClCompile Include="..\private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_Hanger.cpp" />
+    <ClCompile Include="..\private\Camera_Missile.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\Chassis.cpp" />
     <ClCompile Include="..\private\ChurchA.cpp" />
