@@ -65,7 +65,7 @@ HRESULT CDamageLog::Render()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DecalTexture", 0)))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(0)))

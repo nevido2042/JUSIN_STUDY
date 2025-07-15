@@ -99,16 +99,16 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_OutlineDepth"), 700.0f, 100.0f, 200.0f, 200.0f)))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Decal"), 900.0f, 100.0f, 200.0f, 200.0f)))
-		return E_FAIL;
-
-
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Outline"), 100.0f, 500.0f, 200.0f, 200.0f)))
-		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), 100.0f, 300.f, 200.0f, 200.0f)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), 300.f, 300.0f, 200.0f, 200.0f)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Outline"), 100.0f, 500.0f, 200.0f, 200.0f)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Decal"), 500.0f, 500.0f, 200.0f, 200.0f)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shadow"), ViewportDesc.Width - 100.f, 100.0f, 200.0f, 200.0f)))
@@ -165,16 +165,16 @@ HRESULT CRenderer::Draw()
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
 
-#ifdef _DEBUG
-	if (FAILED(Render_Debug()))
-		return E_FAIL;
-#endif
-
 	if (FAILED(Render_UI_NonBlend()))
 		return E_FAIL;
 	
 	if (FAILED(Render_UI()))
 		return E_FAIL;
+
+#ifdef _DEBUG
+	//if (FAILED(Render_Debug()))
+	//	return E_FAIL;
+#endif
 	
 	return S_OK;
 }

@@ -11,6 +11,7 @@
 #include "Layer.h"
 #include "Camera_TPS.h"
 #include "Smoke.h"
+#include "TrackDecal.h"
 
 #pragma region UI
 #include "Icon_Module.h"
@@ -802,6 +803,17 @@ void CTank::Move(_float fTimeDelta)
 		}	
 		else
 		{
+			m_fTimeAccDecal += fTimeDelta;
+			if (m_fTimeAccDecal > 0.1f)
+			{
+				m_fTimeAccDecal = 0.f;
+
+				CTrackDecal::TRACKDECAL_DESC Desc = {};
+				Desc.vRot = m_pTransformCom->Get_Rotation();
+				XMStoreFloat3(&Desc.vInitPosition, m_pTransformCom->Get_State(STATE::POSITION));
+				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_TrackDecal"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_TrackDecal"), &Desc);
+			}
+
 			pSmokeLeft->Set_Loop(true);
 			pSmokeRight->Set_Loop(true);
 

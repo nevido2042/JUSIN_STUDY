@@ -28,7 +28,25 @@ HRESULT CShellDecal::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Scaling(3.f, 3.f, 3.f);
+	SHELLDECAL_DESC* pShellDecalDesc = static_cast<SHELLDECAL_DESC*>(pArg);
+
+	if (pShellDecalDesc->bIsGround)
+	{
+		//m_pTransformCom->LookAt(XMVectorSet(300.f, 1000.f, 300.f, 1.f));
+
+		_vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) + 100.f);
+		vPos = XMVectorSetX(vPos, XMVectorGetX(vPos) + 0.01f);//짐벌락때문에 약간 수정
+		m_pTransformCom->LookAt(vPos); //위를 바라보도록
+		m_pTransformCom->Scaling(3.f, 3.f, SHELL_DIG_DEPTH);
+	}
+	else
+	{
+		m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&pShellDecalDesc->vFirePos), 1.f));
+		m_pTransformCom->Scaling(3.f, 3.f, 1.f);
+	}
+
+
 
 	return S_OK;
 }
@@ -69,13 +87,13 @@ HRESULT CShellDecal::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(1)))
-		return E_FAIL;
+	//if (FAILED(m_pShaderCom->Begin(1)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Render()))
+	//if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
 	return S_OK;

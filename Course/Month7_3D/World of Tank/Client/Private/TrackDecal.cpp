@@ -28,7 +28,14 @@ HRESULT CTrackDecal::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Scaling(3.f, 3.f, 3.f);
+	TRACKDECAL_DESC* pDesc = static_cast<TRACKDECAL_DESC*>(pArg);
+	
+	m_pTransformCom->Rotation(pDesc->vRot.x + XMConvertToRadians(90.f), -pDesc->vRot.y, -pDesc->vRot.z);
+	//m_pTransformCom->Rotation(XMConvertToRadians(pDesc->vRot.x), XMConvertToRadians(pDesc->vRot.y), XMConvertToRadians(pDesc->vRot.z));
+	//m_pTransformCom->Rotation(XMConvertToDegrees(pDesc->vRot.x), XMConvertToDegrees(pDesc->vRot.y), XMConvertToDegrees(pDesc->vRot.z));
+	m_pTransformCom->Scaling(4.f, 1.f, 1.f);
+
+	//m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
 
 	return S_OK;
 }
@@ -69,14 +76,14 @@ HRESULT CTrackDecal::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(1)))
-		return E_FAIL;
+	//if (FAILED(m_pShaderCom->Begin(1)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Render()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Render()))
+	//	return E_FAIL;
 
 	return S_OK;
 }

@@ -267,7 +267,7 @@ HRESULT CLoader::Loading_For_Static()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
 	/* For.Prototype_Component_Texture_TrackDecal*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ShellHole"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TrackDecal"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Decal/Road_Track_12_AM.dds"), 1))))
 		return E_FAIL;
 

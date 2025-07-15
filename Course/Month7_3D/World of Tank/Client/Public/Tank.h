@@ -80,6 +80,9 @@ public:
 	void Set_IsPicked(_bool bIsPicked) { m_bisPicked = bIsPicked; }
 
 private:
+	_float m_fTimeAccDecal = { 0.f };
+
+private:
 	class CBoundary* m_pBoundary = { nullptr };
 
 protected:

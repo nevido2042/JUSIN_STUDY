@@ -173,7 +173,8 @@ PS_OUT PS_MAIN_DEFERRED(PS_IN In)
 
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
     vector vDecal = g_DecalTexture.Sample(DefaultSampler, In.vTexcoord);
-    vDiffuse += vDecal;
+    
+    vDiffuse.rgb = vDiffuse.rgb * (1 - vDecal.a) + vDecal.rgb * vDecal.a;
     
     //Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
     //Out.vDepthOutline = Out.vDepth;

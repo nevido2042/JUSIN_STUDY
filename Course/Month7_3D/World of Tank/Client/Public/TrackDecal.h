@@ -13,6 +13,12 @@ NS_BEGIN(Client)
 
 class CTrackDecal final : public CGameObject
 {
+public:
+	typedef struct tagTrackDecalDesc : public GAMEOBJECT_DESC
+	{
+		_float3 vRot = {};
+	}TRACKDECAL_DESC;
+
 private:
 	CTrackDecal(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTrackDecal(const CTrackDecal& Prototype);

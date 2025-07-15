@@ -13,6 +13,12 @@ NS_BEGIN(Client)
 
 class CShellDecal final : public CGameObject
 {
+public:
+	typedef struct tagShellDecalDesc :public GAMEOBJECT_DESC
+	{
+		_bool   bIsGround = { false };
+		_float3 vFirePos = { 0.f, 0.f, 0.f };
+	}SHELLDECAL_DESC;
 private:
 	CShellDecal(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CShellDecal(const CShellDecal& Prototype);
