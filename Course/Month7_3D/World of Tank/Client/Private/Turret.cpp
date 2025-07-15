@@ -8,6 +8,7 @@
 #include "Icon_Module.h"
 #include "Tank.h"
 #include "Gun.h"
+#include "SoundController.h"
 
 CTurret::CTurret(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CModule(pDevice, pContext)
@@ -24,9 +25,15 @@ HRESULT CTurret::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
 	TURRET_DESC* pDesc = static_cast<TURRET_DESC*>(pArg);
 	m_vBaseColor = pDesc->vBaseColor;
 	m_eCustom3D = pDesc->e3DCustom;
+
+	m_pSoundCom->Set3DState(0.f, 30.f);
+	m_pSoundCom->SetVolume(0.25f);
 
 	return S_OK;
 }
@@ -71,6 +78,9 @@ void CTurret::Update(_float fTimeDelta)
 
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(m_pTransformCom->Get_WorldMatrix(), XMLoadFloat4x4(m_pParentWorldMatrix)));
+
+	_vector vPos = XMVectorSet(m_CombinedWorldMatrix._41, m_CombinedWorldMatrix._42, m_CombinedWorldMatrix._43, 1.0f);
+	m_pSoundCom->Update3DPosition(vPos);
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
@@ -312,8 +322,17 @@ void CTurret::Input(_float fTimeDelta)
 
 		if (fRightDot > 0.01f) // 오른쪽 회전
 		{
+			m_fTimeAccSameDir += fTimeDelta;
+
+			if (m_pSoundCom->IsPlaying("turret_26") == false && m_fTimeAccSameDir > 0.25f)
+				m_pSoundCom->Play("turret_26");
+
 			if (m_bRight == false)
 			{
+				m_fTimeAccSameDir = 0.f;
+
+
+
 				m_bRight = true;
 				m_bLeft = false;
 
@@ -339,8 +358,14 @@ void CTurret::Input(_float fTimeDelta)
 		}
 		else if (fRightDot < -0.01f) // 왼쪽 회전
 		{
+			m_fTimeAccSameDir += fTimeDelta;
+			if (m_pSoundCom->IsPlaying("turret_26") == false && m_fTimeAccSameDir > 0.25f)
+				m_pSoundCom->Play("turret_26");
+
 			if (m_bLeft == false)
 			{
+				m_fTimeAccSameDir = 0.f;
+
 				m_bLeft = true;
 				m_bRight = false;
 
@@ -366,6 +391,13 @@ void CTurret::Input(_float fTimeDelta)
 		}
 		else // 정면
 		{
+			if (m_pSoundCom->IsPlaying("turret_26"))
+				m_pSoundCom->Stop("turret_26");
+
+			//끼긱 하고 멈추는 소리
+			if (m_pSoundCom->IsPlaying("turret_2") == false)
+				m_pSoundCom->Play("turret_2");
+
 			// 터렛이 pickedPos를 정확히 바라보도록 회전 조정 (Yaw 방향만 고려)
 			// 목표 방향 (Up 축 평면에 투영한 방향) - 이미 vProjected에 있음
 			// 현재 터렛의 Look 방향 (Yaw 평면)
@@ -444,6 +476,16 @@ HRESULT CTurret::Bind_ShaderResources()
 			return E_FAIL;
 	}
 
+
+	return S_OK;
+}
+
+HRESULT CTurret::Ready_Components()
+{
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_TankSound3D"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -557,5 +599,7 @@ void CTurret::Free()
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pSoundCom);
+	
 
 }

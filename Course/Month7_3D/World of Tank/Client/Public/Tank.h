@@ -7,7 +7,6 @@ NS_BEGIN(Engine)
 class CCollider;
 class CShader;
 class CModel;
-class CSoundController;
 NS_END
 
 NS_BEGIN(Client)

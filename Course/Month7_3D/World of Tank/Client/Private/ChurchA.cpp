@@ -96,7 +96,7 @@ HRESULT CChurchA::Ready_Components()
 
 	/* For.Com_Collider */
 	CBounding_OBB::OBB_DESC	OBBDesc{};
-	OBBDesc.vExtents = _float3(8.f, 30.f, 14.f);
+	OBBDesc.vExtents = _float3(7.5f, 30.f, 13.5f);
 	OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, -11.f);
 	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
 

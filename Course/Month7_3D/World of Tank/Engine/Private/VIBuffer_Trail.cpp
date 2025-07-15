@@ -16,7 +16,7 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype()
 	m_iNumVertexBuffers = 1;
 	m_iNumVertices = 8;
 	m_iVertexStride = sizeof(VTXPOSTEX);
-	m_iNumIndices = 12;
+	m_iNumIndices = 18;
 	m_iIndexStride = sizeof(_ushort);
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
 	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -49,6 +49,15 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype()
 	pIndices[9] = 4;
 	pIndices[10] = 6;
 	pIndices[11] = 7;
+
+	//µÞÆÇ
+	pIndices[12] = 1;
+	pIndices[13] = 5;
+	pIndices[14] = 2;
+
+	pIndices[15] = 1;
+	pIndices[16] = 2;
+	pIndices[17] = 6;
 
 	D3D11_SUBRESOURCE_DATA		IBInitialData{};
 	IBInitialData.pSysMem = pIndices;

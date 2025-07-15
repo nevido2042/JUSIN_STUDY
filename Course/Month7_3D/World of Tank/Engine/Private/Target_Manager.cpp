@@ -67,6 +67,15 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring& strMRTTag, const _wstring& strT
 
 HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV, _bool isDepthClear)
 {
+	// 모든 픽셀 셰이더 리소스 슬롯을 초기화 (바인딩 해제용)
+	// D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT = 128 (최대 슬롯 수)
+	ID3D11ShaderResourceView* pSRV[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = {
+	nullptr
+	};
+
+	// 픽셀 셰이더에 바인딩된 모든 리소스를 해제 (nullptr로 설정)
+	m_pContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pSRV);
+
 	list<CRenderTarget*>* pMRTList = Find_MRT(strMRTTag);
 	if (nullptr == pMRTList)
 		return E_FAIL;

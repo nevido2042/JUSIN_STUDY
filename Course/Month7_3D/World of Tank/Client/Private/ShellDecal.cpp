@@ -46,8 +46,6 @@ HRESULT CShellDecal::Initialize(void* pArg)
 		m_pTransformCom->Scaling(3.f, 3.f, 1.f);
 	}
 
-
-
 	return S_OK;
 }
 
@@ -60,7 +58,7 @@ void CShellDecal::Priority_Update(_float fTimeDelta)
 void CShellDecal::Update(_float fTimeDelta)
 {
 	m_fAccTime += fTimeDelta;
-	if(m_fAccTime > 3.f)
+	if(m_fAccTime > 5.f)
 	{
 		Destroy();
 	}

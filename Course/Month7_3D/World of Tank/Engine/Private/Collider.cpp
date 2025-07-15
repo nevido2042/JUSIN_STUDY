@@ -105,19 +105,19 @@ _bool CCollider::Intersect_Ray(_fvector vOrigin, _fvector vDir, _float& fDist)
 #ifdef _DEBUG
 HRESULT CCollider::Render()
 {
-	//m_pEffect->SetWorld(XMMatrixIdentity());
-	//m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
-	//m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
+	m_pEffect->SetWorld(XMMatrixIdentity());
+	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
+	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));
 
-	//m_pContext->IASetInputLayout(m_pInputLayout);
+	m_pContext->IASetInputLayout(m_pInputLayout);
 
-	//m_pEffect->Apply(m_pContext);
+	m_pEffect->Apply(m_pContext);
 
-	//m_pBatch->Begin();
+	m_pBatch->Begin();
 
-	//m_pBounding->Render(m_pBatch, true == m_isColl || true == m_isRaycastHit ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
+	m_pBounding->Render(m_pBatch, true == m_isColl || true == m_isRaycastHit ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
-	//m_pBatch->End();
+	m_pBatch->End();
 
 	return S_OK;
 }

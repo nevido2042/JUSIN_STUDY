@@ -804,7 +804,7 @@ void CTank::Move(_float fTimeDelta)
 		else
 		{
 			m_fTimeAccDecal += fTimeDelta;
-			if (m_fTimeAccDecal > 0.1f)
+			if (m_fTimeAccDecal > 0.15f)
 			{
 				m_fTimeAccDecal = 0.f;
 

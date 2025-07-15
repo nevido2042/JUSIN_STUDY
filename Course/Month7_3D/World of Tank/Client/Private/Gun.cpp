@@ -301,7 +301,7 @@ HRESULT CGun::Fire()
 	if(m_pGameInstance->Get_ID() == m_iID)
 		vVelocity = GetRandomSpreadDirection(vVelocity, m_fAngleDegree);
 
-	vVelocity = XMVectorScale(vVelocity, 300.f);
+	vVelocity = XMVectorScale(vVelocity, 200.f);
 
 	XMStoreFloat3(&Desc.vVelocity, vVelocity);
 	Desc.iID = m_iID;

@@ -6,6 +6,7 @@ NS_BEGIN(Engine)
 class CCollider;
 class CShader;
 class CModel;
+class CSoundController;
 NS_END
 
 NS_BEGIN(Client)
@@ -48,6 +49,9 @@ private:
 	void Input(_float fTimeDelta);
 
 private:
+	_float m_fTimeAccSameDir = { 0.f };//한 방향으로 계속 이동하는시간, 움직이는 소리 때문에
+
+private:
 	_float4 m_vBaseColor = { 1.f, 1.f, 1.f, 1.f };
 private:
 	CUSTOM3D m_eCustom3D = { CUSTOM3D::END };
@@ -65,8 +69,10 @@ protected:
 	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
+	CSoundController* m_pSoundCom = { nullptr };
 
 protected:
+	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_PartObjects();
 

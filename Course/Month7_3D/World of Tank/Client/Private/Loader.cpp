@@ -273,7 +273,7 @@ HRESULT CLoader::Loading_For_Static()
 
 	/* For.Prototype_Component_Texture_ShellHole*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ShellHole"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Decal/PBS_ShellHole_12_AM.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Decal/PBS_ShellHole_114_AM.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_DamageLogModule*/

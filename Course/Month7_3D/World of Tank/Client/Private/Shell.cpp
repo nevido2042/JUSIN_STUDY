@@ -231,16 +231,21 @@ void CShell::Check_RaycastHit()
 		Desc.vInitPosition = vHitPos;
 		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_HitSmoke"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_HitSmoke"), &Desc);
 
-		CShellDecal::SHELLDECAL_DESC ShellDecalDesc = {};
-		ShellDecalDesc.vInitPosition = vHitPos;
-		ShellDecalDesc.vFirePos = m_vFirePos;
-		m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ShellDecal"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_ShellDecal"), &ShellDecalDesc);
-
 		if (eCollGroup == COLLISION_GROUP::TURRET || eCollGroup == COLLISION_GROUP::BODY)
 		{
 			GAMEOBJECT_DESC Desc = {};
 			Desc.vInitPosition = vHitPos;
 			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Spark"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Spark"), &Desc);
+
+			//맞은 것이 전차일때 데칼을 파츠오브젝트로 넣어줘야겠다.
+		}
+		else
+		{
+			//맞은 것이 건물일때
+			CShellDecal::SHELLDECAL_DESC ShellDecalDesc = {};
+			ShellDecalDesc.vInitPosition = vHitPos;
+			ShellDecalDesc.vFirePos = m_vFirePos;
+			m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ShellDecal"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_ShellDecal"), &ShellDecalDesc);
 		}
 
 
