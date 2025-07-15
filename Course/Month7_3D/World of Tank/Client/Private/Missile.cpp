@@ -36,7 +36,7 @@ HRESULT CMissile::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pSoundCom->Set3DState(0.f, 100.f);
+	m_pSoundCom->Set3DState(0.f, 500.f);
 
 	m_pSoundCom->Play("rocket_accelerator_10");
 

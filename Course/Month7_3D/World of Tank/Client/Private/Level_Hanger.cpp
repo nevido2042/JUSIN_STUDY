@@ -572,6 +572,12 @@ HRESULT CLevel_Hanger::Ready_Layer_Fury_Hanger(const _wstring strLayerTag)
 		ENUM_CLASS(LEVEL::HANGER), strLayerTag, &Desc)))
 		return E_FAIL;
 
+	//CGameObject::GAMEOBJECT_DESC DescPlane = {};
+	//DescPlane.vInitPosition = _float3(330.f, 90.f, 235.f);
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Plane"),
+	//	ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Plane"), &DescPlane)))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 

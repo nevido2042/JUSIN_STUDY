@@ -55,6 +55,42 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+struct VS_NONNORMAL_OUT
+{
+    float4 vPosition : SV_POSITION;
+    float4 vNormal : NORMAL;
+    float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
+};
+
+// === 정점 셰이더 ===
+VS_NONNORMAL_OUT VS_NONNORMAL(VS_IN In)
+{
+    VS_NONNORMAL_OUT Out;
+    
+    matrix matWV, matWVP;
+    
+    /* mul : 모든 행렬의 곱하기를 수행한다. /w연산을 수행하지 않는다. */
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+    float2 uv = In.vTexcoord;
+
+    uv += g_UVOffset;
+
+    Out.vTexcoord = uv;
+    
+    Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
+    
+    
+    return Out;
+}
+
+
 struct VS_OUT_OUTLINE
 {
     float4 vPosition : SV_POSITION;
@@ -140,6 +176,30 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.0f, 0.f, 0.f);
     
     return Out;    
+}
+
+struct PS_NONNORMAL_IN
+{
+    float4 vPosition : SV_POSITION;
+    float4 vNormal : NORMAL;
+    float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
+};
+
+PS_OUT PS_NONNORMAL(PS_NONNORMAL_IN In)
+{
+    PS_OUT Out;
+    
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
+    //if (vMtrlDiffuse.a < 0.3f)
+    //    discard;
+   
+    Out.vDiffuse = vMtrlDiffuse;
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.f, 0.f, 0.f);
+    
+    return Out;
 }
 
 struct PS_OUT_TANK
@@ -291,6 +351,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_SHADOW();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
+    }
+    //5
+    pass NonNormal
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        
+        VertexShader = compile vs_5_0 VS_NONNORMAL();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_NONNORMAL();
     }
    
 }

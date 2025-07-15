@@ -454,6 +454,9 @@
     <Filter Include="02.GameObjects\Camera\Camera_Missile">
       <UniqueIdentifier>{5e8ece20-838c-4538-96f0-622a08ad1816}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Plane">
+      <UniqueIdentifier>{438b92b1-3351-465e-ab8c-ea82cc0ae572}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -918,6 +921,9 @@
     <ClInclude Include="..\public\Camera_Missile.h">
       <Filter>02.GameObjects\Camera\Camera_Missile</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Plane.h">
+      <Filter>02.GameObjects\Plane</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1361,6 +1367,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Missile.cpp">
       <Filter>02.GameObjects\Camera\Camera_Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Plane.cpp">
+      <Filter>02.GameObjects\Plane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -55,6 +55,10 @@ HRESULT CLevel_Practice::Initialize()
 	if (FAILED(Ready_Layer_Camera_TPS(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Planes(TEXT("Layer_Plane"))))
+		return E_FAIL;
+	
+
 	//if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
 	//	return E_FAIL;
 
@@ -471,6 +475,18 @@ HRESULT CLevel_Practice::Ready_Layer_MapVegetation(const _wstring strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_MapVegetation"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_Planes(const _wstring strLayerTag)
+{
+	for (_uint i = 0; i < 10; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Plane"),
+			ENUM_CLASS(LEVEL::PRACTICE), TEXT("Layer_Plane"))))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

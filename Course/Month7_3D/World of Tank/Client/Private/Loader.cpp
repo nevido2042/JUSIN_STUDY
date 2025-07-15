@@ -11,6 +11,7 @@
 #pragma endregion
 
 #pragma region STATIC
+#include "Plane.h"
 #include "Camera_Missile.h"
 #include "TrackDecal.h"
 #include "ShellDecal.h"
@@ -581,6 +582,12 @@ HRESULT CLoader::Loading_For_Static()
 
 #pragma endregion
 
+	/* For.Prototype_Component_Model_Plane */
+	PreTransformMatrix = XMMatrixIdentity();
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f) * XMMatrixRotationX(XMConvertToRadians(90.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Plane"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, "../Bin/WOT_Resources/Plane/mle206_C47.bin", PreTransformMatrix))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Missile */
 	PreTransformMatrix = XMMatrixIdentity();
@@ -798,6 +805,11 @@ HRESULT CLoader::Loading_For_Static()
 	/* For.Prototype_GameObject_GameManager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameManager"),
 		CGameManager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Plane */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Plane"),
+		CPlane::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Missile */

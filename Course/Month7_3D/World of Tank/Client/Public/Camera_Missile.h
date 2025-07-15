@@ -30,7 +30,7 @@ private:
 	_float m_fTimeAcc = { 0.f };
 
 private:
-	_float m_fArmLength = { 20.f };
+	_float m_fArmLength = { 30.f };
 
 private:
 	_float m_fSensor = { 0.1f };

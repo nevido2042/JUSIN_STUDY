@@ -1088,7 +1088,12 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 	/* For.Prototype_Component_SoundController_Missile */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Missile"),
-		CSoundController::Create("../Bin/WOT_Resources/Sound/07.Missile/"))))
+		CSoundController::Create("../Bin/WOT_Resources/Sound/07.Missile/", true))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_SoundController_Plane */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Plane"),
+		CSoundController::Create("../Bin/WOT_Resources/Sound/09.Plane/", true))))
 		return E_FAIL;
 #pragma endregion
 

@@ -250,6 +250,7 @@
     <ClInclude Include="..\public\ParticleTool.h" />
     <ClInclude Include="..\public\PersonalArrowEntry.h" />
     <ClInclude Include="..\public\PickedManager.h" />
+    <ClInclude Include="..\public\Plane.h" />
     <ClInclude Include="..\public\PolishSignboards.h" />
     <ClInclude Include="..\public\Score.h" />
     <ClInclude Include="..\public\ScoreBoard.h" />
@@ -418,6 +419,7 @@
     <ClCompile Include="..\private\ParticleTool.cpp" />
     <ClCompile Include="..\private\PersonalArrowEntry.cpp" />
     <ClCompile Include="..\private\PickedManager.cpp" />
+    <ClCompile Include="..\private\Plane.cpp" />
     <ClCompile Include="..\private\PolishSignboards.cpp" />
     <ClCompile Include="..\private\Score.cpp" />
     <ClCompile Include="..\private\ScoreBoard.cpp" />
