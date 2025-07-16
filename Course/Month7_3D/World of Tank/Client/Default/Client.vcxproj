@@ -252,6 +252,7 @@
     <ClInclude Include="..\public\PickedManager.h" />
     <ClInclude Include="..\public\Plane.h" />
     <ClInclude Include="..\public\PolishSignboards.h" />
+    <ClInclude Include="..\public\ReloadBar.h" />
     <ClInclude Include="..\public\Score.h" />
     <ClInclude Include="..\public\ScoreBoard.h" />
     <ClInclude Include="..\public\ScoreBoard_CountDamageModule.h" />
@@ -421,6 +422,7 @@
     <ClCompile Include="..\private\PickedManager.cpp" />
     <ClCompile Include="..\private\Plane.cpp" />
     <ClCompile Include="..\private\PolishSignboards.cpp" />
+    <ClCompile Include="..\private\ReloadBar.cpp" />
     <ClCompile Include="..\private\Score.cpp" />
     <ClCompile Include="..\private\ScoreBoard.cpp" />
     <ClCompile Include="..\private\ScoreBoard_CountDamageModule.cpp" />

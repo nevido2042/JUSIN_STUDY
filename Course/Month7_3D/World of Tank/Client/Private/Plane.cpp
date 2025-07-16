@@ -31,11 +31,14 @@ HRESULT CPlane::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pSoundCom->Set3DState(0.f, 500.f);
-	m_pSoundCom->SetVolume(0.0f);
+	m_pSoundCom[PLANE_SOUND_FLY]->Set3DState(0.f, 300.f);
+	m_pSoundCom[PLANE_SOUND_FLY]->SetVolume(0.0f);
 
-	m_pSoundCom->Play("Fly");
-	m_pSoundCom->Set_Loop("Fly");
+	m_pSoundCom[PLANE_SOUND_GUN]->Set3DState(0.f, 200.f);
+	m_pSoundCom[PLANE_SOUND_GUN]->SetVolume(0.0f);
+
+	m_pSoundCom[PLANE_SOUND_FLY]->Play("Fly");
+	m_pSoundCom[PLANE_SOUND_FLY]->Set_Loop("Fly");
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -63,10 +66,12 @@ void CPlane::Update(_float fTimeDelta)
 	//화면전환시 처음 소리 나는거 싫어서
 	if (m_fProgress > 0.1f)
 	{
-		m_pSoundCom->SetVolume(0.05f);
+		m_pSoundCom[PLANE_SOUND_FLY]->SetVolume(0.1f);
+		m_pSoundCom[PLANE_SOUND_GUN]->SetVolume(0.1f);
 	}
 
-	m_pSoundCom->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
+	m_pSoundCom[PLANE_SOUND_FLY]->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
+	m_pSoundCom[PLANE_SOUND_GUN]->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
 
 	_float3 vControlPos = { TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, m_fControlHeight, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f };
 
@@ -86,20 +91,20 @@ void CPlane::Update(_float fTimeDelta)
 
 #pragma region 랜덤 소리 재생
 
-	if (!m_pSoundCom->IsPlaying("Gun") &&
-		!m_pSoundCom->IsPlaying("GunMix") &&
-		!m_pSoundCom->IsPlaying("PlaneGun"))
+	if (!m_pSoundCom[PLANE_SOUND_GUN]->IsPlaying("Gun") &&
+		!m_pSoundCom[PLANE_SOUND_GUN]->IsPlaying("GunMix") &&
+		!m_pSoundCom[PLANE_SOUND_GUN]->IsPlaying("PlaneGun"))
 	{
 		switch (rand() % 3)
 		{
 		case 0:
-			m_pSoundCom->Play("Gun");
+			m_pSoundCom[PLANE_SOUND_GUN]->Play("Gun");
 			break;
 		case 1:
-			m_pSoundCom->Play("GunMix");
+			m_pSoundCom[PLANE_SOUND_GUN]->Play("GunMix");
 			break;
 		case 2:
-			m_pSoundCom->Play("PlaneGun");
+			m_pSoundCom[PLANE_SOUND_GUN]->Play("PlaneGun");
 			break;
 		default:
 			break;
@@ -236,7 +241,12 @@ HRESULT CPlane::Ready_Components()
 
 	/* For.Com_Sound */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Plane"),
-		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		TEXT("Com_Sound_Fly"), reinterpret_cast<CComponent**>(&m_pSoundCom[PLANE_SOUND_FLY]))))
+		return E_FAIL;
+
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Plane"),
+		TEXT("Com_Sound_Gun"), reinterpret_cast<CComponent**>(&m_pSoundCom[PLANE_SOUND_GUN]))))
 		return E_FAIL;
 
 	return S_OK;
@@ -301,6 +311,10 @@ void CPlane::Free()
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pSoundCom);
+
+	for (auto pSoundCom : m_pSoundCom)
+	{
+		Safe_Release(pSoundCom);
+	}
 
 }

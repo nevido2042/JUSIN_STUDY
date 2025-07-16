@@ -457,6 +457,9 @@
     <Filter Include="02.GameObjects\Plane">
       <UniqueIdentifier>{438b92b1-3351-465e-ab8c-ea82cc0ae572}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.UIObject\ReloadBar">
+      <UniqueIdentifier>{3f0c7faa-04c4-4452-9316-ec2ffe5dd2a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -924,6 +927,9 @@
     <ClInclude Include="..\public\Plane.h">
       <Filter>02.GameObjects\Plane</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ReloadBar.h">
+      <Filter>02.GameObjects\06.UIObject\ReloadBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1370,6 +1376,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Plane.cpp">
       <Filter>02.GameObjects\Plane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ReloadBar.cpp">
+      <Filter>02.GameObjects\06.UIObject\ReloadBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

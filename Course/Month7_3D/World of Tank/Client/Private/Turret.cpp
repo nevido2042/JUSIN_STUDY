@@ -32,8 +32,8 @@ HRESULT CTurret::Initialize(void* pArg)
 	m_vBaseColor = pDesc->vBaseColor;
 	m_eCustom3D = pDesc->e3DCustom;
 
-	m_pSoundCom->Set3DState(0.f, 30.f);
-	m_pSoundCom->SetVolume(0.15f);
+	m_pSoundCom->Set3DState(0.f, 20.f);
+	m_pSoundCom->SetVolume(0.3f);
 
 	return S_OK;
 }

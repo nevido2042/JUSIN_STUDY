@@ -62,6 +62,10 @@ HRESULT CLevel_Practice::Initialize()
 	//if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
 	//	return E_FAIL;
 
+	
+	//if (FAILED(Ready_Layer_ReloadBar(TEXT("Layer_ReloadBar"))))
+	//	return E_FAIL;
+
 	if (FAILED(Ready_Layer_CountDamageModule(TEXT("Layer_CountDamageModule"))))
 		return E_FAIL;
 
@@ -504,6 +508,21 @@ HRESULT CLevel_Practice::Ready_Layer_GunMarker(const _wstring strLayerTag)
 	Desc.fSizeY = 50.f * UI_RATIO;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GunMarker"),
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Practice::Ready_Layer_ReloadBar(const _wstring strLayerTag)
+{
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fSizeX = 600.f * UI_RATIO;
+	Desc.fSizeY = 600.f * UI_RATIO;
+	Desc.fX = g_iWinSizeX * 0.48f;
+	Desc.fY = g_iWinSizeY * 0.62f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_ReloadBar"),
 		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 

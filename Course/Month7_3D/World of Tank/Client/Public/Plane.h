@@ -15,7 +15,7 @@ class CPlane final : public CGameObject
 {
 private:
 	enum PLANE_DIR { PLANE_DIR_RIGHT = 0, PLANE_DIR_LEFT, PLANE_DIR_UP, PLANE_DIR_DOWN, PLANE_DIR_END };
-
+	enum PLANE_SOUND { PLANE_SOUND_FLY, PLANE_SOUND_GUN, PLANE_SOUND_END };
 private:
 	CPlane(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlane(const CPlane& Prototype);
@@ -45,7 +45,7 @@ private:
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
-	CSoundController* m_pSoundCom = { nullptr };
+	CSoundController* m_pSoundCom[PLANE_SOUND_END] = {nullptr};
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_PartObjects();
