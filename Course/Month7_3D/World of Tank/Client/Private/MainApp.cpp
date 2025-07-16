@@ -167,7 +167,8 @@ HRESULT CMainApp::Ready_Packets()
 			m_pGameInstance->Clear_Packet();
 
 			CGameManager* pGameManager = GET_GAMEMANAGER;
-			pGameManager->Set_GameEndTime(Desc.GameEndTime);
+			//로컬 타이머라 불가능, 서버에서 주는 시간으로 하기 불가능
+			//pGameManager->Set_GameEndTime(Desc.GameEndTime);
 			pGameManager->Set_isGameStart(true);
 		})))
 		return E_FAIL;

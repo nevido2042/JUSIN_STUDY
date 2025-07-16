@@ -37,18 +37,23 @@ HRESULT CGameTimer::Initialize(void* pArg)
 	if (pGameManager == nullptr)
 		return E_FAIL;
 
-	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
-	{
-		m_GameEndTime = chrono::steady_clock::now() + chrono::seconds(30); // 연습 모드에서는 30초로 설정
-		m_GameStartTime = m_GameEndTime - chrono::seconds(20); // 대기 10초, 게임시간 20초 (총 30초)
-		pGameManager->Set_GameStartTime(m_GameStartTime);
-	}
-	else
-	{
-		m_GameEndTime = pGameManager->Get_GameEndTime();
-		m_GameStartTime = m_GameEndTime - chrono::seconds(170); //대기 10초, 게임시간 170초 (총 180초)
-		pGameManager->Set_GameStartTime(m_GameStartTime);
-	}
+#pragma message ("로컬 타이머라 불가능, 서버에서 주는 시간으로 하기 불가능")
+	//if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
+	//{
+	//	m_GameEndTime = chrono::steady_clock::now() + chrono::seconds(30); // 연습 모드에서는 30초로 설정
+	//	m_GameStartTime = m_GameEndTime - chrono::seconds(20); // 대기 10초, 게임시간 20초 (총 30초)
+	//	pGameManager->Set_GameStartTime(m_GameStartTime);
+	//}
+	//else
+	//{
+	//	m_GameEndTime = pGameManager->Get_GameEndTime();
+	//	m_GameStartTime = m_GameEndTime - chrono::seconds(170); //대기 10초, 게임시간 170초 (총 180초)
+	//	pGameManager->Set_GameStartTime(m_GameStartTime);
+	//}
+
+	m_GameEndTime = chrono::steady_clock::now() + chrono::seconds(180);
+	m_GameStartTime = m_GameEndTime - chrono::seconds(170); // 대기 10초, 게임시간 170초(총 180초)
+	pGameManager->Set_GameStartTime(m_GameStartTime);
 
 	return S_OK;
 }
