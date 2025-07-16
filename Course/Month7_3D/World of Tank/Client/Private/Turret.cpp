@@ -33,7 +33,7 @@ HRESULT CTurret::Initialize(void* pArg)
 	m_eCustom3D = pDesc->e3DCustom;
 
 	m_pSoundCom->Set3DState(0.f, 30.f);
-	m_pSoundCom->SetVolume(0.25f);
+	m_pSoundCom->SetVolume(0.15f);
 
 	return S_OK;
 }

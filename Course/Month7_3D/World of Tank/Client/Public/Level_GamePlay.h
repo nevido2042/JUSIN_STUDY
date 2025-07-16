@@ -25,7 +25,7 @@ private:
 	HRESULT Ready_Layer_Skydome(const _wstring strLayerTag);
 	HRESULT Ready_Layer_InvisibleWalls(const _wstring strLayerTag);
 	HRESULT Ready_Layer_MapVegetation(const _wstring strLayerTag);
-
+	HRESULT Ready_Layer_Planes(const _wstring strLayerTag);
 
 	HRESULT Ready_Layer_GunMarker(const _wstring strLayerTag);
 

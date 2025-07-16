@@ -31,43 +31,16 @@ HRESULT CPlane::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pSoundCom->Set3DState(0.f, 200.f);
+	m_pSoundCom->Set3DState(0.f, 500.f);
 	m_pSoundCom->SetVolume(0.0f);
 
 	m_pSoundCom->Play("Fly");
 	m_pSoundCom->Set_Loop("Fly");
 
-	m_fWaitTime = rand() % 5 + 15.f; //5초 ~ 10초 사이에 랜덤으로 대기시간 설정
-
-	//m_pSoundCom->Play("GunMix");
-	//m_pSoundCom->Set_Loop("GunMix");
-
-//위치 랜덤	
-	switch (rand() % PLANE_DIR_END)
-	{
-	case PLANE_DIR_RIGHT:
-		m_vStartPos = { -500.f, 200.f, rand() % 1501 - 500.f };
-		m_vEndPos = { 1000.f, 200.f, rand() % 1501 - 500.f };
-		break;
-	case PLANE_DIR_LEFT:
-
-		m_vStartPos = { 1000.f, 200.f, rand() % 1501 - 500.f };
-		m_vEndPos = { -500.f, 200.f, rand() % 1501 - 500.f };
-		break;
-	case PLANE_DIR_UP:
-		m_vStartPos = { rand() % 1501 - 500.f, 200.f,   -500.f };
-		m_vEndPos = { rand() % 1501 - 500.f , 200.f, 1000.f };
-		break;
-	case PLANE_DIR_DOWN:
-		m_vStartPos = { rand() % 1501 - 500.f , 200.f, 1000.f };
-		m_vEndPos = { rand() % 1501 - 500.f, 200.f,   -500.f };
-		break;
-	default:
-		break;
-	}
-
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
+
+	Reset_Plane();
 
 	return S_OK;
 }
@@ -88,58 +61,27 @@ void CPlane::Update(_float fTimeDelta)
 	m_bVisible = true;
 
 	//화면전환시 처음 소리 나는거 싫어서
-	if (fProgress > 0.1f)
+	if (m_fProgress > 0.1f)
 	{
-		m_pSoundCom->SetVolume(0.2f);
+		m_pSoundCom->SetVolume(0.05f);
 	}
 
 	m_pSoundCom->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));
 
-	_float3 vControlPos = { TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 0.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f };
+	_float3 vControlPos = { TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, m_fControlHeight, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f };
 
-	_vector vCurPos = Bezier2(m_vStartPos, vControlPos, m_vEndPos, fProgress);
-	_vector vNextPos = Bezier2(m_vStartPos, vControlPos, m_vEndPos, fProgress + fTimeDelta * 0.05f);
+	_vector vCurPos = Bezier2(m_vStartPos, vControlPos, m_vEndPos, m_fProgress);
+	_vector vNextPos = Bezier2(m_vStartPos, vControlPos, m_vEndPos, m_fProgress + fTimeDelta * 0.05f);
 
 	m_pTransformCom->Set_State(STATE::POSITION, vCurPos);
 
 	m_pTransformCom->LookAt(vNextPos);
 
-	fProgress += fTimeDelta * 0.05f;
+	m_fProgress += fTimeDelta * 0.05f;
 
-	if (fProgress > 1.f)
+	if (m_fProgress > 1.f)
 	{
-		m_bVisible = false;
-
-		//위치 초기화
-		fProgress = 0.f;
-		m_fAccTime = 0.f;
-		m_fWaitTime = rand() % 5 + 5.f; //5초 ~ 10초 사이에 랜덤으로 대기시간 설정
-
-		//위치 랜덤	
-		switch (rand()% PLANE_DIR_END)
-		{
-		case PLANE_DIR_RIGHT:
-			m_vStartPos = { -500.f, 200.f, rand() % 1501 - 500.f };
-			m_vEndPos = { 1000.f, 200.f, rand() % 1501 - 500.f };
-			break;
-		case PLANE_DIR_LEFT:
-		
-			m_vStartPos = { 1000.f, 200.f, rand() % 1501 - 500.f };
-			m_vEndPos = { -500.f, 200.f, rand() % 1501 - 500.f };
-			break;
-		case PLANE_DIR_UP:
-			m_vStartPos = { rand() % 1501 - 500.f, 200.f,   -500.f };
-			m_vEndPos = { rand() % 1501 - 500.f , 200.f, 1000.f };
-			break;
-		case PLANE_DIR_DOWN:
-			m_vStartPos = { rand() % 1501 - 500.f , 200.f, 1000.f };
-			m_vEndPos = { rand() % 1501 - 500.f, 200.f,   -500.f };
-			break;
-		default:
-			break;
-		}
-
-
+		Reset_Plane();
 	}
 
 #pragma region 랜덤 소리 재생
@@ -242,6 +184,42 @@ _vector CPlane::Bezier2(_float3 vStart, _float3 vControl, _float3 vEnd, _float f
 	_vector vAB = XMVectorLerp(vA, vB, fT);
 	_vector vBC = XMVectorLerp(vB, vC, fT);
 	return XMVectorLerp(vAB, vBC, fT);
+}
+
+void CPlane::Reset_Plane()
+{
+	m_bVisible = false;
+
+	//위치 초기화
+	m_fProgress = 0.f;
+	m_fAccTime = 0.f;
+	m_fWaitTime = rand() % 20 + 0.f; //랜덤으로 대기시간 설정
+
+	_float fHeight = 200.f + rand() % 100; //랜덤으로 높이 설정
+	m_fControlHeight = -10.f + rand() % 10; //랜덤으로 컨트롤 높이 설정
+	//위치 랜덤	
+	switch (rand() % PLANE_DIR_END)
+	{
+	case PLANE_DIR_RIGHT:
+		m_vStartPos = { -500.f, fHeight, rand() % 1501 - 500.f };
+		m_vEndPos = { 1000.f, fHeight, rand() % 1501 - 500.f };
+		break;
+	case PLANE_DIR_LEFT:
+
+		m_vStartPos = { 1000.f, fHeight, rand() % 1501 - 500.f };
+		m_vEndPos = { -500.f, fHeight, rand() % 1501 - 500.f };
+		break;
+	case PLANE_DIR_UP:
+		m_vStartPos = { rand() % 1501 - 500.f, fHeight,   -500.f };
+		m_vEndPos = { rand() % 1501 - 500.f , fHeight, 1000.f };
+		break;
+	case PLANE_DIR_DOWN:
+		m_vStartPos = { rand() % 1501 - 500.f , fHeight, 1000.f };
+		m_vEndPos = { rand() % 1501 - 500.f, fHeight,   -500.f };
+		break;
+	default:
+		break;
+	}
 }
 
 HRESULT CPlane::Ready_Components()

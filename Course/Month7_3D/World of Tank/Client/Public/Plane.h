@@ -39,7 +39,8 @@ private:
 
 	_float3 m_vStartPos = {};
 	_float3 m_vEndPos = {};
-	_float fProgress = { 0.f };
+	_float m_fProgress = { 0.f };
+	_float m_fControlHeight = { 0.f };
 
 private:
 	CShader* m_pShaderCom = { nullptr };

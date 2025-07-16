@@ -53,6 +53,7 @@ private:
 	HRESULT Ready_Layer_Ash(const _wstring strLayerTag);
 	HRESULT Ready_Layer_Explosion(const _wstring strLayerTag);
 	HRESULT Ready_Layer_MapVegetation(const _wstring strLayerTag);
+	HRESULT Ready_Layer_Planes(const _wstring strLayerTag);
 
 	//Static
 	HRESULT Ready_Layer_StatusLight(const _wstring strLayerTag);

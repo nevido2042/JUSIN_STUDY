@@ -51,6 +51,9 @@ HRESULT CLevel_Hanger::Initialize()
 	if (FAILED(Ready_Layer_MapVegetation(TEXT("Layer_MapVegetation"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Planes(TEXT("Layer_Plane"))))
+		return E_FAIL;
+
 	//if (FAILED(Ready_Layer_Ash(TEXT("Layer_Ash"))))
 	//	return E_FAIL;
 
@@ -634,6 +637,19 @@ HRESULT CLevel_Hanger::Ready_Layer_MapVegetation(const _wstring strLayerTag)
 
 	return S_OK;
 }
+
+HRESULT CLevel_Hanger::Ready_Layer_Planes(const _wstring strLayerTag)
+{
+	for (_uint i = 0; i < 10; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Plane"),
+			ENUM_CLASS(LEVEL::HANGER), TEXT("Layer_Plane"))))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
 
 HRESULT CLevel_Hanger::Ready_Layer_StatusLight(const _wstring strLayerTag)
 {
