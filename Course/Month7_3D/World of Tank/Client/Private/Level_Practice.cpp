@@ -59,8 +59,8 @@ HRESULT CLevel_Practice::Initialize()
 		return E_FAIL;
 	
 
-	//if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_CountDamageModule(TEXT("Layer_CountDamageModule"))))
 		return E_FAIL;
@@ -107,6 +107,11 @@ HRESULT CLevel_Practice::Initialize()
 
 	if (FAILED(Ready_Layer_FPS_Renderer(TEXT("Layer_FPS_Renderer"))))
 		return E_FAIL;
+
+	CGameManager* pGameManager = GET_GAMEMANAGER;
+	if (pGameManager == nullptr)
+		return E_FAIL;
+	pGameManager->StopBGM();
 
 	return S_OK;
 }
@@ -537,8 +542,14 @@ HRESULT CLevel_Practice::Ready_Layer_TotalDamage(const _wstring strLayerTag)
 
 HRESULT CLevel_Practice::Ready_Layer_GameTimer(const _wstring strLayerTag)
 {
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fSizeX = 230.f * UI_RATIO;
+	Desc.fSizeY = 38.f * UI_RATIO;
+	Desc.fX = g_iWinSizeX * 0.98f;
+	Desc.fY = g_iWinSizeY * 0.01f;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameTimer"),
-		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag)))
+		ENUM_CLASS(LEVEL::PRACTICE), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

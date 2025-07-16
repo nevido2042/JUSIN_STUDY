@@ -38,8 +38,8 @@ public:
 	HRESULT		Ready_Layer_Camera_TPS(const _wstring strLayerTag);
 	HRESULT		Ready_Layer_Camera_FPS(const _wstring strLayerTag);
 public:
-	HRESULT		PlayBGM_LoadingGame();
-	HRESULT		StopBGM_LoadingGame();
+	HRESULT		PlayBGM();
+	HRESULT		StopBGM();
 public:
 	HRESULT		PlayBGM_Game();
 	HRESULT		StopBGM_Game();

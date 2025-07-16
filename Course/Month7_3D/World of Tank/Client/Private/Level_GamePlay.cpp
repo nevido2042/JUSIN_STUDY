@@ -98,7 +98,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//m_pGameInstance->Clear_Packet();
 
 	CGameManager* pGameManager = GET_GAMEMANAGER;
-	pGameManager->StopBGM_LoadingGame();
+	pGameManager->StopBGM();
 	pGameManager->PlayBGM_Game();
 
 	return S_OK;
@@ -306,8 +306,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_CountDamageModule(const _wstring strLayerTa
 
 HRESULT CLevel_GamePlay::Ready_Layer_GameTimer(const _wstring strLayerTag)
 {
+	CUIObject::UIOBJECT_DESC Desc{};
+	Desc.fSizeX = 230.f * UI_RATIO;
+	Desc.fSizeY = 38.f * UI_RATIO;
+	Desc.fX = g_iWinSizeX * 0.98f;
+	Desc.fY = g_iWinSizeY * 0.01f;
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_GameTimer"),
-		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag)))
+		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

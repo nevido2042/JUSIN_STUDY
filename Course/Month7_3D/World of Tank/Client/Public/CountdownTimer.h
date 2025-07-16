@@ -30,6 +30,8 @@ private:
 
 	chrono::seconds m_Remaining = {};
 	chrono::seconds m_PrevRemaining = {};
+
+
 private:
 	CSoundController* m_pSoundCom = { nullptr };
 

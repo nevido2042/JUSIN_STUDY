@@ -123,6 +123,10 @@ HRESULT CLevel_Hanger::Initialize()
 		}
 	}
 
+	pGameManager->StopBGM_Game();
+	pGameManager->StopBGM();
+
+	pGameManager->PlayBGM();
 	//if (FAILED(Ready_Layer_ScoreBoard(TEXT("Layer_ScoreBoard"))))
 	//	return E_FAIL;
 

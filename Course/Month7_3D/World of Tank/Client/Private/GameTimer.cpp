@@ -28,13 +28,25 @@ HRESULT CGameTimer::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	m_pSoundCom->SetVolume(0.5f);
+	
 	CGameManager* pGameManager = GET_GAMEMANAGER;
-	if (pGameManager)
+	if (pGameManager == nullptr)
+		return E_FAIL;
+
+	if (m_pGameInstance->Get_NewLevel_Index() == ENUM_CLASS(LEVEL::PRACTICE))
+	{
+		m_GameEndTime = chrono::steady_clock::now() + chrono::seconds(30); // 연습 모드에서는 30초로 설정
+		m_GameStartTime = m_GameEndTime - chrono::seconds(20); // 대기 10초, 게임시간 20초 (총 30초)
+		pGameManager->Set_GameStartTime(m_GameStartTime);
+	}
+	else
 	{
 		m_GameEndTime = pGameManager->Get_GameEndTime();
-
 		m_GameStartTime = m_GameEndTime - chrono::seconds(20); //대기 10초, 게임시간 20초 (총 30초)
-
 		pGameManager->Set_GameStartTime(m_GameStartTime);
 	}
 
@@ -43,7 +55,8 @@ HRESULT CGameTimer::Initialize(void* pArg)
 
 void CGameTimer::Priority_Update(_float fTimeDelta)
 {
-
+	if (g_bWindowResizeRequired)
+		Resize(g_iWinSizeX, g_iWinSizeY);
 }
 
 void CGameTimer::Update(_float fTimeDelta)
@@ -59,7 +72,19 @@ void CGameTimer::Update(_float fTimeDelta)
 		//게임 종료 까지 남은 시간을 계산
 		m_Remaining = chrono::duration_cast<chrono::seconds>(m_GameEndTime - chrono::steady_clock::now());
 
-		if (max<_int>(0, static_cast<_int>(m_Remaining.count())) == 0)
+		_int RemainTime = static_cast<_int>(m_Remaining.count());
+
+		//15초 남았을 때 사이렌 소리 재생
+		if (m_bIsPlaySiren == false)
+		{
+			if (RemainTime < 15)
+			{
+				m_bIsPlaySiren = true;
+				m_pSoundCom->Play("Siren");
+			}
+		}
+
+		if (max<_int>(0, RemainTime) == 0)
 		{
 			if (m_bIsSpawnMissile == false)
 			{
@@ -74,12 +99,12 @@ void CGameTimer::Update(_float fTimeDelta)
 				m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Missile"), m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"), &MissileDesc);
 
 				CCamera_Missile::CAMERA_MISSILE_DESC Desc{};
-				Desc.pTarget = m_pGameInstance->Get_Last_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Missile"));
+				Desc.pTarget = m_pGameInstance->Get_Last_GameObject(m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Missile"));
 				Desc.bActive = true;
 				lstrcpy(Desc.szName, TEXT("Camera_Missile"));
 
 				if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Camera_Missile"),
-					ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Layer_Camera_Missile"), &Desc)))
+					m_pGameInstance->Get_NewLevel_Index(), TEXT("Layer_Camera_Missile"), &Desc)))
 					return;
 			}
 		}
@@ -95,6 +120,32 @@ void CGameTimer::Late_Update(_float fTimeDelta)
 
 HRESULT CGameTimer::Render()
 {
+#pragma region 빨간배경
+	if (m_bIsPlaySiren)
+	{
+		if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+		//_float fAlpha = { 0.3f };
+		//if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &fAlpha, sizeof(_float))))
+		//	return E_FAIL;
+		if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Begin(0)))
+			return E_FAIL;
+
+		if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+			return E_FAIL;
+
+		if (FAILED(m_pVIBufferCom->Render()))
+			return E_FAIL;
+	}
+#pragma endregion
 
 	// 음수 방지 (시간이 지났으면 0초로 표시)
 	_int iTotalSeconds = max<_int>(0, static_cast<_int>(m_Remaining.count()));
@@ -116,6 +167,27 @@ HRESULT CGameTimer::Render()
 	return S_OK;
 }
 
+HRESULT CGameTimer::Ready_Components()
+{
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+	/* For.Com_VIBuffer */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_RibbonsBgRedSmall"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+	/* For.Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_SoundController_Clock"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
 
 CGameTimer* CGameTimer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -146,4 +218,9 @@ CGameObject* CGameTimer::Clone(void* pArg)
 void CGameTimer::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pSoundCom);
 }

@@ -143,16 +143,16 @@ HRESULT CGameManager::Ready_Layer_Camera_FPS(const _wstring strLayerTag)
 	return S_OK;
 }
 
-HRESULT CGameManager::PlayBGM_LoadingGame()
+HRESULT CGameManager::PlayBGM()
 {
 	m_pSoundCom_BGM->Play("19. Studzianki");
-	m_pSoundCom_BGM->SetVolume(0.2f);
+	m_pSoundCom_BGM->SetVolume(0.05f);
 	m_pSoundCom_BGM->Set_Loop("19. Studzianki");
 
 	return S_OK;
 }
 
-HRESULT CGameManager::StopBGM_LoadingGame()
+HRESULT CGameManager::StopBGM()
 {
 	m_pSoundCom_BGM->Stop("19. Studzianki");
 

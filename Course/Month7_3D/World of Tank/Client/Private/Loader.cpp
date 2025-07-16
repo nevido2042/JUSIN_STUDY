@@ -268,6 +268,11 @@ HRESULT CLoader::Loading_For_Static()
 #pragma region 텍스쳐
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	/* For.Prototype_Component_Texture_RibbonsBgRedSmall*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_RibbonsBgRedSmall"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/UI/Atlas/commonBattleLobby/output/ribbonsBgRedSmall.dds"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_TrackDecal*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TrackDecal"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/WOT_Resources/Decal/Road_Track_12_AM.dds"), 1))))

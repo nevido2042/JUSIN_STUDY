@@ -57,7 +57,7 @@ void CButton_Start::Update(_float fTimeDelta)
 
 		pGameManager->PlaySound_Button();
 
-		pGameManager->PlayBGM_LoadingGame();
+		//pGameManager->PlayBGM();
 
 		JOIN_MATCH_DESC Desc{};
 		Desc.eTank = pGameManager->Get_Select_Tank();
