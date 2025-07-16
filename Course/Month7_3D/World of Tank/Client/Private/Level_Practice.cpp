@@ -59,8 +59,8 @@ HRESULT CLevel_Practice::Initialize()
 		return E_FAIL;
 	
 
-	if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_GameTimer(TEXT("Layer_GameTimer"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_CountDamageModule(TEXT("Layer_CountDamageModule"))))
 		return E_FAIL;

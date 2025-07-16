@@ -24,6 +24,7 @@
 #include "PacketType.h"
 
 // ------ 여기서부터 ImGui 전용 안전 구역 -------
+//#define IMGUI_DEFINE_MATH_OPERATORS
 #undef new
 #include "imgui.h"
 #include "imgui_impl_win32.h"

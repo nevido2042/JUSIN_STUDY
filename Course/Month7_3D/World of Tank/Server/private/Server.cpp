@@ -597,7 +597,7 @@ HRESULT CServer::Define_Packets()
         {
             //m_StartTime = chrono::steady_clock::now();
             GAMESTART_DESC Desc = {};
-            Desc.GameEndTime = chrono::steady_clock::now() + chrono::seconds(30);
+            Desc.GameEndTime = chrono::steady_clock::now() + chrono::seconds(180);//게임시간 180초
             Clear_Packet();
 
             PACKET_HEADER tHeader{};

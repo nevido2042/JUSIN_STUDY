@@ -46,7 +46,7 @@ HRESULT CGameTimer::Initialize(void* pArg)
 	else
 	{
 		m_GameEndTime = pGameManager->Get_GameEndTime();
-		m_GameStartTime = m_GameEndTime - chrono::seconds(20); //대기 10초, 게임시간 20초 (총 30초)
+		m_GameStartTime = m_GameEndTime - chrono::seconds(170); //대기 10초, 게임시간 170초 (총 180초)
 		pGameManager->Set_GameStartTime(m_GameStartTime);
 	}
 
