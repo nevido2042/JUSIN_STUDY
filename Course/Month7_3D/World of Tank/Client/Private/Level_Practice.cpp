@@ -129,7 +129,7 @@ void CLevel_Practice::Update(_float fTimeDelta)
 			CLevel_Loading::Create(m_pDevice, m_pContext, static_cast<LEVEL>(m_iNewLevelIndex)))))
 			return;
 	}
-	else if (m_pGameInstance->Key_Down(DIK_H))
+	else if (m_pGameInstance->Key_Down(DIK_H) && m_pGameInstance->Key_Pressing(DIK_LCONTROL))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::HANGER))))
 			return;

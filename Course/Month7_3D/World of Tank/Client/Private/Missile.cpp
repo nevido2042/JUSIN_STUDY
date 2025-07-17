@@ -92,7 +92,7 @@ void CMissile::Update(_float fTimeDelta)
 	_float3 vEndPos = { TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f, 0.f, TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f };
 
 	_vector vCurPos = Bezier2(vStartPos, vControlPos, vEndPos, fProgress);
-	_vector vNextPos = Bezier2(vStartPos, vControlPos, vEndPos, fProgress + fTimeDelta * 0.1f);
+	_vector vNextPos = Bezier2(vStartPos, vControlPos, vEndPos, fProgress + fTimeDelta * 0.05f);
 
 	//_vector vDir = XMVector3Normalize(vNextPos - vCurPos);
 
@@ -103,7 +103,7 @@ void CMissile::Update(_float fTimeDelta)
 
 	m_pTransformCom->LookAt(vNextPos);
 
-	fProgress += fTimeDelta * 0.1f;
+	fProgress += fTimeDelta * 0.05f;
 
 #pragma region 떨어지는 동안 카메라 쉐이크
 	//카메라 셰이크
