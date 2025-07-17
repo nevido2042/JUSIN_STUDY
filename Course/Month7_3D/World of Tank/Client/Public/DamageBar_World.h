@@ -52,6 +52,9 @@ private:
 	_float	m_fFillDelayValue = { 1.f };
 
 private:
+	_float m_fProgress = { 0.f };
+
+private:
 	const _float m_fBaseScale = 0.03f;
 
 private:

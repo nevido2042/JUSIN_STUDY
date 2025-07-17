@@ -51,7 +51,7 @@ struct PS_IN
 struct PS_OUT
 {
     vector vDiffuse : SV_TARGET0;
-    //vector vNormal : SV_TARGET1;
+    vector vNormal : SV_TARGET1;
     vector vDepth : SV_TARGET2;
 };
 
@@ -82,7 +82,8 @@ PS_OUT PS_MAIN(PS_IN In)
     vector vMtrlDiffuse = isWhite ? tex3 : vBlend;
     
     Out.vDiffuse = vector(vMtrlDiffuse.rgb, 1.f);
-    //Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    //w에 1채워서 터레인이라는것을 알릴예정
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.f, 0.f, 0.f);
     
     return Out;

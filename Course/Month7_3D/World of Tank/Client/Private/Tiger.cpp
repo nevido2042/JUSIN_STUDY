@@ -30,7 +30,7 @@ HRESULT CTiger::Initialize(void* pArg)
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 	lstrcpy((*pDesc).szName, TEXT("Tiger"));
 	(*pDesc).fRotationPerSec = 0.5f;
-	(*pDesc).fSpeedPerSec = 0.5f;
+	(*pDesc).fSpeedPerSec = 0.75f;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

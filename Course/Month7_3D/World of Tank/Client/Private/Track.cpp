@@ -38,7 +38,7 @@ void CTrack::Priority_Update(_float fTimeDelta)
 
 void CTrack::Update(_float fTimeDelta)
 {
-	m_fUVScrollY += m_fSpeed * 0.05f;
+	m_fUVScrollY += m_fSpeed * 0.075f;
 	m_fUVScrollY = fmodf(m_fUVScrollY, 1.0f); // 0~1 사이 유지
 
 	//부모의 월드 행렬을 가져와서 자신의 월드 행렬과 곱해준다.

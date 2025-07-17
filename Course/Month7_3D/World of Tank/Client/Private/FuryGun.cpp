@@ -32,7 +32,7 @@ HRESULT CFuryGun::Initialize(void* pArg)
 	//2. 축 순서 변경
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(-0.0041f, 2.2863f, 0.8589f, 1.0f));
 
-	m_pSoundCom->Set3DState(0.f, 100.f);
+	m_pSoundCom->Set3DState(0.f, 200.f);
 
 	return S_OK;
 }

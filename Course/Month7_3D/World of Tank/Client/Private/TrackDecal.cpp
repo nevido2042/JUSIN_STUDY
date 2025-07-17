@@ -33,7 +33,7 @@ HRESULT CTrackDecal::Initialize(void* pArg)
 	m_pTransformCom->Rotation(pDesc->vRot.x + XMConvertToRadians(90.f), -pDesc->vRot.y, -pDesc->vRot.z);
 	//m_pTransformCom->Rotation(XMConvertToRadians(pDesc->vRot.x), XMConvertToRadians(pDesc->vRot.y), XMConvertToRadians(pDesc->vRot.z));
 	//m_pTransformCom->Rotation(XMConvertToDegrees(pDesc->vRot.x), XMConvertToDegrees(pDesc->vRot.y), XMConvertToDegrees(pDesc->vRot.z));
-	m_pTransformCom->Scaling(4.f, 1.f, 1.f);
+	m_pTransformCom->Scaling(4.f, 2.f, 1.f);
 
 	//m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
 

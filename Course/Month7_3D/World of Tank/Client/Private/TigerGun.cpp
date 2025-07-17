@@ -32,7 +32,7 @@ HRESULT CTigerGun::Initialize(void* pArg)
 	//2. 축 순서 변경
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(-0.098f, 2.2237f, 1.0188f, 1.0f));
 
-	m_pSoundCom->Set3DState(0.f, 100.f);
+	m_pSoundCom->Set3DState(0.f, 200.f);
 
 	return S_OK;
 }

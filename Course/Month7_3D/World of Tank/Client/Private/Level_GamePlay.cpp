@@ -163,25 +163,25 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Lights()
 {
+	CShadow::SHADOW_DESC		Desc{};
+	Desc.vEye = _float4(TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.75f, 150.f, TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.75f, 1.f);
+	Desc.vAt = _float4(TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.5f, 0.f, TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.25f, 1.f);
+	Desc.fFovy = XMConvertToRadians(40.0f);
+	Desc.fNear = 0.1f;
+	Desc.fFar = CAMERA_FAR;
+
+	if (FAILED(m_pGameInstance->Ready_Light_For_Shadow(Desc)))
+		return E_FAIL;
+
 	LIGHT_DESC			LightDesc{};
 
 	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	XMStoreFloat4(&LightDesc.vDirection, XMVector4Normalize(XMLoadFloat4(&Desc.vAt) - XMLoadFloat4(&Desc.vEye))); //_float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.fAmbient = 1.f;
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
-		return E_FAIL;
-
-	CShadow::SHADOW_DESC		Desc{};
-	Desc.vEye = _float4(TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE, 200.f, TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE, 1.f);
-	Desc.vAt = _float4(TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.5f, 0.f, TERRAIN_OFFSET_WIDTH * TERRAIN_SIZE * 0.5f, 1.f);
-	Desc.fFovy = XMConvertToRadians(60.0f);
-	Desc.fNear = 0.1f;
-	Desc.fFar = CAMERA_FAR;
-
-	if (FAILED(m_pGameInstance->Ready_Light_For_Shadow(Desc)))
 		return E_FAIL;
 
 	return S_OK;

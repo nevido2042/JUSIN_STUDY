@@ -47,7 +47,7 @@ void CBuilding::Update(_float fTimeDelta)
 
 void CBuilding::Late_Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
+	//if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 
 	if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(STATE::POSITION), 50.f))

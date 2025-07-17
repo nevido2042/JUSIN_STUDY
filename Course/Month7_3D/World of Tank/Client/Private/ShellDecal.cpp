@@ -43,7 +43,7 @@ HRESULT CShellDecal::Initialize(void* pArg)
 	else
 	{
 		m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&pShellDecalDesc->vFirePos), 1.f));
-		m_pTransformCom->Scaling(3.f, 3.f, 1.f);
+		m_pTransformCom->Scaling(3.f, 3.f, 3.f);
 	}
 
 	return S_OK;

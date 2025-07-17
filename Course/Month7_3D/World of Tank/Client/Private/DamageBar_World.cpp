@@ -33,6 +33,8 @@ HRESULT CDamageBar_World::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_fProgress = 2.f; // 초기화 시 폰트가 보이지 않도록 설정
+
 	return S_OK;
 }
 
@@ -73,6 +75,15 @@ void CDamageBar_World::Update(_float fTimeDelta)
 		m_fTimeAcc += fTimeDelta;
 	}
 #pragma endregion
+
+#pragma region 데미지 폰트 표현
+	m_fProgress += fTimeDelta;
+	if (m_fProgress > 1.f)
+	{
+		m_fProgress = 2.f;
+	}
+#pragma endregion
+
 
 }
 
@@ -172,6 +183,26 @@ HRESULT CDamageBar_World::Render()
 	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("Font_WarheliosKO"), _float2(500.f, 500.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 100.f);
 	//m_pGameInstance->Draw_Font(TEXT("Font_WarheliosKO"), TEXT("Font_WarheliosKO"), _float2(g_iWinSizeX * 0.45f, g_iWinSizeY * 0.5f), XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.3f);
 
+#pragma region 데미지 폰트 표현
+
+	if (m_fProgress > 0.f && m_fProgress <= 1.f)
+	{
+		vScreenPos.x = (m_vClip.x * 0.5f + 0.5f + 0.05f) * g_iWinSizeX;
+		vScreenPos.y = (-m_vClip.y * 0.5f + lerp(0.48f, 0.45f, m_fProgress)) * g_iWinSizeY; //0.48 -> 0.45
+
+		m_pGameInstance->Draw_Font(
+			TEXT("Font_WarheliosKO"),
+			TEXT("-10"),
+			vScreenPos,
+			XMVectorSet(1.f, 1.f, 0.f, 1.f),
+			0.f,
+			_float2(0.f, 0.f),
+			0.5f * UI_RATIO
+		);
+	}
+
+#pragma endregion
+
 	return S_OK;
 }
 
@@ -182,6 +213,9 @@ void CDamageBar_World::Fill(_float fFillAmount)
 	m_fFillDelayValue = 0.f;
 
 	m_fFillAmount = fFillAmount;
+
+	//데미지 폰트 표시 시작
+	m_fProgress = 0.f;
 }
 
 //void CDamageBar_World::Set_Text(_float fHP, _float fMaxHP)
