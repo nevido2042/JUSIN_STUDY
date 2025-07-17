@@ -111,11 +111,11 @@ void CTank::Update(_float fTimeDelta)
 		if (!m_pBoundary->IsPointInBoundary(vPos))
 		{
 			_float3 vClosestPos = m_pBoundary->ClosestPointOnBoundary(vPos);
-			_float fTerrainHalf = TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f;
-			_float3 vMapCenter = { fTerrainHalf , 0.f, fTerrainHalf };
-			_float3 vSafePoint = m_pBoundary->SafeInsideBoundary(vClosestPos, vMapCenter, 0.1f);
+			//_float fTerrainHalf = TERRAIN_SIZE * TERRAIN_OFFSET_WIDTH * 0.5f;
+			//_float3 vMapCenter = { fTerrainHalf , 0.f, fTerrainHalf };
+			//_float3 vSafePoint = m_pBoundary->SafeInsideBoundary(vClosestPos, vMapCenter, 0.1f);
 
-			m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vSafePoint), 1.f));
+			m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vClosestPos), 1.f));
 
 		}
 	}

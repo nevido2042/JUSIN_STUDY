@@ -25,7 +25,7 @@ vector g_vLightDiffuse;
 float  g_fLightAmbient;
 vector g_vLightSpecular;
 
-float  g_fMtrlAmbient = 0.8f;
+float  g_fMtrlAmbient = 0.4f;
 vector g_vMtrlSpecular = 1.f;
 
 vector g_vCamPosition;
@@ -119,6 +119,14 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     vector vReflect = reflect(normalize(g_vLightDir), vNormal);
     vector vLook = vWorldPos - g_vCamPosition;
     
+        //터레인은 w 1 채울것임
+    if (vNormalDesc.w > 0.9f)
+    {
+        Out.vSpecular = vector(0.f, 0.f, 0.f, 0.f);
+
+        return Out;
+    }
+        
     Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 1000.f);
     
     return Out;

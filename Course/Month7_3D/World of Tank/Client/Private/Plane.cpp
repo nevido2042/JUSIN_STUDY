@@ -31,10 +31,10 @@ HRESULT CPlane::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pSoundCom[PLANE_SOUND_FLY]->Set3DState(0.f, 300.f);
+	m_pSoundCom[PLANE_SOUND_FLY]->Set3DState(0.f, 200.f);
 	m_pSoundCom[PLANE_SOUND_FLY]->SetVolume(0.0f);
 
-	m_pSoundCom[PLANE_SOUND_GUN]->Set3DState(0.f, 200.f);
+	m_pSoundCom[PLANE_SOUND_GUN]->Set3DState(0.f, 100.f);
 	m_pSoundCom[PLANE_SOUND_GUN]->SetVolume(0.0f);
 
 	m_pSoundCom[PLANE_SOUND_FLY]->Play("Fly");
@@ -66,8 +66,8 @@ void CPlane::Update(_float fTimeDelta)
 	//화면전환시 처음 소리 나는거 싫어서
 	if (m_fProgress > 0.1f)
 	{
-		m_pSoundCom[PLANE_SOUND_FLY]->SetVolume(0.1f);
-		m_pSoundCom[PLANE_SOUND_GUN]->SetVolume(0.1f);
+		m_pSoundCom[PLANE_SOUND_FLY]->SetVolume(0.2f);
+		m_pSoundCom[PLANE_SOUND_GUN]->SetVolume(0.2f);
 	}
 
 	m_pSoundCom[PLANE_SOUND_FLY]->Update3DPosition(m_pTransformCom->Get_State(STATE::POSITION));

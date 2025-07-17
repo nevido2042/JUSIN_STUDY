@@ -575,11 +575,11 @@ HRESULT CServer::Define_Packets()
 					//A팀은 200 라인, B팀은 400라인에 배치
                     if (_pSession->Get_SessionInfo().eTeam == TEAM::A)
                     {
-                        _pSession->Get_SessionInfo().vPosition = _float3{ 150.f + rand() % 30, 0.f,  300.f + rand() % 30  };
+                        _pSession->Get_SessionInfo().vPosition = _float3{ 200.f + rand() % 30, 0.f,  220.f + rand() % 30  };
                     }
                     else
                     {
-                        _pSession->Get_SessionInfo().vPosition = _float3{ 500.f + rand() % 30, 0.f, 300.f + rand() % 30 };
+                        _pSession->Get_SessionInfo().vPosition = _float3{ 450.f + rand() % 30, 0.f, 220.f + rand() % 30 };
                     }
 
                 }

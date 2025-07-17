@@ -172,7 +172,7 @@ PS_OUT PS_MAIN(PS_IN In)
     vNormal = mul(vNormal, WorldMatrix);
     
     Out.vDiffuse = vMtrlDiffuse;
-    Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vNormal = vector(-1.f * vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.0f, 0.f, 0.f);
     
     return Out;    
