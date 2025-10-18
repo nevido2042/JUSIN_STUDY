@@ -2,10 +2,11 @@
 
 matrix g_ViewMatrix, g_ProjMatrix, g_WorldMatrix;
 
-matrix g_WorldMatrixInv;
+//matrix g_WorldMatrixInv;
 matrix g_ProjMatrixInv;
-matrix g_ViewMatrixInv;
-
+//matrix g_ViewMatrixInv;
+matrix g_ViewWorldMatrixInv;
+float2 g_ScreenSize; //= float2(1600.f, 900.f);
 
 Texture2D g_DepthTexture;
 Texture2D g_Texture;
@@ -18,7 +19,7 @@ struct VS_IN
 struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD0;
+    //float2 vTexcoord : TEXCOORD0;
 };
 
 VS_OUT VS_DECAL(VS_IN In)
@@ -31,15 +32,8 @@ VS_OUT VS_DECAL(VS_IN In)
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
     
-    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    
-    
-    float4 WorldPos = mul(float4(In.vPosition, 1.f), g_WorldMatrix);
-    float4 ViewPos = mul(WorldPos, g_ViewMatrix);
-    float4 ProjPos = mul(ViewPos, g_ProjMatrix);
-
-    Out.vTexcoord.x = ProjPos.x / ProjPos.w * 0.5f + 0.5f; // -1~1 -> 0~1
-    Out.vTexcoord.y = ProjPos.y / ProjPos.w * -0.5f + 0.5f; // -1~1 -> 0~1
+    float4 ProjPos = mul(vector(In.vPosition, 1.f), matWVP);
+    Out.vPosition = ProjPos;
     
     return Out;
 }
@@ -53,25 +47,36 @@ PS_OUT PS_DECAL(VS_OUT In)
 {
     PS_OUT Out;
 
-    vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
-    float fViewZ = vDepthDesc.y * 1000.f; //(Near~Far)
+    // 화면 좌표 → UV
+    float2 vUV = In.vPosition.xy / g_ScreenSize;
     
-    vector vPosition;
-
-    vPosition.x = In.vTexcoord.x * 2.f - 1.f;
-    vPosition.y = In.vTexcoord.y * -2.f + 1.f;
-    vPosition.z = vDepthDesc.x; //투영 스페이스의 깊이(0~1)
+    // Depth
+    vector vDepthDesc = g_DepthTexture.Sample(PointSampler, vUV);
+    float fViewZ = vDepthDesc.y * 1000.f;
+    
+    //vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
+    //float fViewZ = vDepthDesc.y * 1000.f; //(Near~Far)
+    
+    // NDC → View Space
+    float4 vPosition;
+    vPosition.x = vUV.x * 2.f - 1.f;
+    vPosition.y = vUV.y * -2.f + 1.f;
+    vPosition.z = vDepthDesc.x;
     vPosition.w = 1.f;
 
     vPosition = vPosition * fViewZ; //w나누던 연산을 역으로 곱하는 부분
     
     vPosition = mul(vPosition, g_ProjMatrixInv); //투영 역행렬
-    vPosition = mul(vPosition, g_ViewMatrixInv); //뷰 역행렬
+    //vPosition = mul(vPosition, g_ViewMatrixInv); //뷰 역행렬
     //월드로 왔음
 
     // 데칼 로컬 공간으로 변환
-    float3 vLocalPos = mul(float4(vPosition.xyz, 1.f), g_WorldMatrixInv).xyz;
+    //float3 vLocalPos = mul(float4(vPosition.xyz, 1.f), g_WorldMatrixInv).xyz;
 
+    // Local space
+    float3 vLocalPos = mul(float4(vPosition.xyz, 1.f), g_ViewWorldMatrixInv).xyz;
+
+    
     // 데칼 범위 바깥이면 버리기
     if (any(abs(vLocalPos) > 0.5f))
         discard;

@@ -124,6 +124,9 @@ HRESULT CShellDecal::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 
+	_float2 vScreenSize = { static_cast<_float>(g_iWinSizeX), static_cast<_float>(g_iWinSizeY) };
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_ScreenSize", &vScreenSize, sizeof(_float2))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Depth"), m_pShaderCom, "g_DepthTexture")))
 		return E_FAIL;
@@ -131,7 +134,7 @@ HRESULT CShellDecal::Bind_ShaderResources()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	_float4x4 WorldMatrixInv = {};
+	/*_float4x4 WorldMatrixInv = {};
 	XMStoreFloat4x4(&WorldMatrixInv, m_pTransformCom->Get_WorldMatrix_Inverse());
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrixInv", &WorldMatrixInv)))
 		return E_FAIL;
@@ -139,11 +142,16 @@ HRESULT CShellDecal::Bind_ShaderResources()
 	_float4x4 ViewMatrixInv = {};
 	XMStoreFloat4x4(&ViewMatrixInv, m_pGameInstance->Get_Transform_Matrix_Inv(D3DTS::VIEW));
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrixInv", &ViewMatrixInv)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	_float4x4 ProjMatrixInv = {};
 	XMStoreFloat4x4(&ProjMatrixInv, m_pGameInstance->Get_Transform_Matrix_Inv(D3DTS::PROJ));
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrixInv", &ProjMatrixInv)))
+		return E_FAIL;
+
+	_float4x4 ViewWorldMatrixInv = {};
+	XMStoreFloat4x4(&ViewWorldMatrixInv, m_pGameInstance->Get_Transform_Matrix_Inv(D3DTS::VIEW) * m_pTransformCom->Get_WorldMatrix_Inverse());
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewWorldMatrixInv", &ViewWorldMatrixInv)))
 		return E_FAIL;
 
 	//matrix g_ProjMatrixInv;
